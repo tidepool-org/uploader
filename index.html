@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tidepool Uploader</title>
+    <link href="styles/main.css" rel="stylesheet">
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="buildUI.js" type="text/javascript"></script>
+</head>
+<body>
+    <img id="logo" src="tidepoolLogoWhite_256.png">
+    <form class="showWhenNotLoggedIn">
+        <div class="loginStatus">
+            <p id="loggedout"><span>Not logged in.</span></p>
+        </div>
+        <p>
+            <label for="username">Email:</label>
+            <input type=email id="username">
+        </p>
+        <p>
+            <label for="password">Password:</label>
+            <input type=password id="password">
+        </p>
+        <p>
+            <label for="loginButton"></label>
+            <input id="loginButton" type=button value="Log in">
+        </p>
+        <span>
+        </span>
+    </form>
+    <form class="showWhenLoggedIn loginStatus">
+        <p id="loggedinas"><span>Logged in as </span><span class="loginname">User</span></p>
+        <p><input id="logoutButton" type=button name="log out" value="Log Out"></p>        
+    </form>
+    <h1>Let's Upload!</h1>
+</body>
+</html>

@@ -1,0 +1,65 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 0;
+}
+
+h1 {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  line-height: 120%;
+  font-family: Arial, sans-serif;
+  color: rgb(66,66,66);
+  letter-spacing: -0.05em;
+}
+
+.loginStatus {
+  font-size: medium;
+  color: #777777;
+  display: block;
+  position: absolute;
+  top: 0px;
+  right: 120px;
+}
+
+.showWhenNotLoggedIn {
+  margin-top: 80px;
+}
+
+.showWhenNotLoggedIn label {
+  width: 200px;
+  display: inline-block;
+  text-align: right;
+  font-size: larger;
+}
+
+.showWhenNotLoggedIn input {
+  width: 300px;
+  font-size: larger;
+  margin-left: 10px;
+}
+
+#logo {
+  position: absolute;
+  top: 0px;
+  left: 20px
+}
+
+#loginButton {
+  margin-left: 120px;
+  width: 80px;
+}
+
+#logoutButton {
+  position: absolute;
+  display: block;
+  right: -100px;
+  top: 14px;
+  width: 80px;
+}

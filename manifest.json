@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Tidepool Uploader",
+  "version": "0.1",
+  "minimum_chrome_version": "32",
+  "icons": {
+    "16": "T_icon_dark_16.png",
+    "32": "T_icon_dark_32.png",
+    "64": "T_icon_dark_64.png",
+    "128": "T_icon_dark_128.png",
+    "512": "T_icon_dark_512.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["main.js", "jquery.min.js", "buildUI.js"]
+    }
+  }
+}
