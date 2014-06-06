@@ -32,17 +32,30 @@ h1 {
   margin-top: 80px;
 }
 
-.showWhenNotLoggedIn label {
+.showWhenConnected {
+  clear: both;
+}
+
+label {
   width: 200px;
   display: inline-block;
   text-align: right;
   font-size: larger;
 }
 
-.showWhenNotLoggedIn input {
+.showWhenNotLoggedIn input,
+.showWhenNotLoggedIn select {
   width: 300px;
   font-size: larger;
   margin-left: 10px;
+}
+
+textarea {
+  position: relative;
+  top: 100px;
+}
+
+#serverUrl {
 }
 
 #logo {

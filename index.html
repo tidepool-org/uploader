@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Tidepool Uploader</title>
     <link href="styles/main.css" rel="stylesheet">
-    <script src="jquery.min.js" type="text/javascript"></script>
-    <script src="buildUI.js" type="text/javascript"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="index.js" type="text/javascript"></script>
 </head>
 <body>
     <img id="logo" src="tidepoolLogoWhite_256.png">
@@ -15,11 +15,20 @@
         </div>
         <p>
             <label for="username">Email:</label>
-            <input type=email id="username">
+            <input type=email id="username" placeholder="user@example.com">
         </p>
         <p>
             <label for="password">Password:</label>
             <input type=password id="password">
+        </p>
+        <p>
+            <label for="serverURL">Server:</label>
+            <select id="serverURL">
+                <option value="http://localhost:8009">Local</option>
+                <option value="https://devel-api.tidepool.io">Devel</option>
+                <option value="https://staging-api.tidepool.io">Staging</option>
+                <option value="https://prod-api.tidepool.io">Prod</option>
+            </select>
         </p>
         <p>
             <label for="loginButton"></label>
@@ -32,6 +41,13 @@
         <p id="loggedinas"><span>Logged in as </span><span class="loginname">User</span></p>
         <p><input id="logoutButton" type=button name="log out" value="Log Out"></p>        
     </form>
+    <form class="showWhenConnected">
+        <p>
+            <label for="connectionLog">Connection log:</label>
+            <textarea id="connectionLog" rows="8" cols="60"></textarea>
+        </p>
+    </form>
+    <p><input id="testButton" type=button name="test" value="Test"></p>
     <h1>Let's Upload!</h1>
 </body>
 </html>

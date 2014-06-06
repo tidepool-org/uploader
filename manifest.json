@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Tidepool Uploader",
+  "name": "Tidepool Device Uploader",
+  "short_name": "Uploader",
   "version": "0.1",
   "minimum_chrome_version": "32",
   "icons": {
@@ -10,9 +11,12 @@
     "128": "T_icon_dark_128.png",
     "512": "T_icon_dark_512.png"
   },
+  "permissions": [
+    "usb"
+  ],
   "app": {
     "background": {
-      "scripts": ["main.js", "jquery.min.js", "buildUI.js"]
+      "scripts": ["main.js"]
     }
   }
 }
