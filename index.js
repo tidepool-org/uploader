@@ -137,17 +137,31 @@ function constructUI() {
         loggedIn(false);
     });
 
+    var processOneDevice = function(devname, deviceArray) {
+        for (var d=0; d<deviceArray.length; ++d) {
+            dev = deviceArray[d];
+            connectLog(devname);
+            connectLog(dev.device);
+            connectLog(dev.vendorId);
+            connectLog(dev.productId);
+        }
+    };
+
     var getUSBDevices = function() {
-        chrome.usb.getDevices({vendorId: 0x091E, productId: 0x240C}, function(deviceArray) {
-            console.log("deviceArray = %s", deviceArray);
-            for (var d=0; d<deviceArray.length; ++d) {
-                dev = deviceArray[d];
-                connectLog(dev);
-                connectLog(dev.device);
-                connectLog(dev.vendorId);
-                connectLog(dev.productId);
+        manifest = chrome.runtime.getManifest();
+        for (var p = 0; p < manifest.permissions.length; ++p) {
+            var perm = manifest.permissions[p];
+            if (perm.usbDevices) {
+                for (d = 0; d < perm.usbDevices.length; ++d) {
+                    console.log(perm.usbDevices[d]);
+                    var f = processOneDevice.bind(this, perm.usbDevices[d].deviceName);
+                    chrome.usb.getDevices({
+                        vendorId: perm.usbDevices[d].vendorId,
+                        productId: perm.usbDevices[d].productId
+                    }, f);
+                }
             }
-        });
+        }
     };
 
     chrome.system.storage.onAttached.addListener(function (info){

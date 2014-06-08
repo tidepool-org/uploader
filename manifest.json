@@ -18,6 +18,12 @@
   {
     "usbDevices": [
       {
+        "deviceName": "Kindle PaperWhite",
+        "vendorId": 6473, 
+        "productId": 4
+      },
+      {
+        "deviceName": "Garmin 500",
         "vendorId": 2334, 
         "productId": 9228
       }
