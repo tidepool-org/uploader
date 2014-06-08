@@ -5,7 +5,7 @@ var make_base_auth = function (username, password) {
   var tok = username + ':' + password;
   var hash = btoa(tok);
   return "Basic " + hash;
-}
+};
 
 var tidepoolServerData = {
     host: '',
@@ -13,6 +13,8 @@ var tidepoolServerData = {
     userdata: null,
     isLoggedIn: false,
 };
+
+var storageDeviceInfo = {};
 
 var tidepoolServer = {
     get: function(url, query, happycb, sadcb) {
@@ -48,7 +50,7 @@ var tidepoolServer = {
         var url = tidepoolServerData.host + "/metadata/" + tidepoolServerData.userdata.userid + "/profile";
         this.get(url, null, happycb, sadcb);
     }
-}
+};
 
 
 function constructUI() {
@@ -64,7 +66,7 @@ function constructUI() {
                 $(".showWhenNotLoggedIn").fadeIn();
             });
         }
-    }
+    };
 
     loggedIn(false);
 
@@ -81,18 +83,18 @@ function constructUI() {
                 $(".showWhenNotConnected").fadeIn();
             });
         }
-    }
+    };
 
     connected(true);
 
     // displays text on the connect log
     var connectLog = function(s) {
         if (s[s.length-1] !== '\n') {
-            s += '\n'
+            s += '\n';
         }
         var all = $("#connectionLog").val();
         $("#connectionLog").val(all + s);
-    }
+    };
 
     $("#loginButton").click(function() {
         var username = $('#username').val();
@@ -106,22 +108,22 @@ function constructUI() {
             connectLog(status);
             getProfile();
             loggedIn(true);
-        }
+        };
 
         var failLogin = function(jqxhr, status, error) {
             connectLog("Login FAILED!", status, error);
             loggedIn(false);
-        }
+        };
 
         var goodProfile = function(data, status, jqxhr) {
             connectLog(status);
             connectLog(data.toString());
             $(".loginname").text(data.fullName);
-        }
+        };
 
         var failProfile = function(jqxhr, status, error) {
             connectLog("FAILED!", status, error);
-        }
+        };
 
         var getProfile = function() {
             connectLog("Fetching profile.");
@@ -135,7 +137,56 @@ function constructUI() {
         loggedIn(false);
     });
 
-    $("#testButton").click(getProfile);
+    var getUSBDevices = function() {
+        chrome.usb.getDevices({vendorId: 0x091E, productId: 0x240C}, function(deviceArray) {
+            console.log("deviceArray = %s", deviceArray);
+            for (var d=0; d<deviceArray.length; ++d) {
+                dev = deviceArray[d];
+                connectLog(dev);
+                connectLog(dev.device);
+                connectLog(dev.vendorId);
+                connectLog(dev.productId);
+            }
+        });
+    };
+
+    chrome.system.storage.onAttached.addListener(function (info){
+        connectLog("attached: " + info.name);
+        storageDeviceInfo[info.id] = {
+            id: info.id,
+            name: info.name,
+            type: info.type
+        };
+    });
+
+    chrome.system.storage.onDetached.addListener(function (id){
+        connectLog("detached: " + storageDeviceInfo[id].name);
+        delete(storageDeviceInfo[id]);
+    });
+
+    var openFile = function() {
+        console.log("OpenFile");
+        chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
+            console.log(readOnlyEntry);
+            readOnlyEntry.file(function(file) {
+                var reader = new FileReader();
+
+                reader.onerror = function() {
+                    connectLog("Error reading file!");
+                };
+                reader.onloadend = function(e) {
+                    // e.target.result contains the contents of the file
+                    // console.log(e.target.result);
+                };
+
+                reader.readAsText(file);
+            });
+        });
+    };
+
+    $("#testButton").click(getUSBDevices);
+
 }
 
-$(constructUI)
+$(constructUI);
+

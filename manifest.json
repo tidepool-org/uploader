@@ -12,7 +12,17 @@
     "512": "T_icon_dark_512.png"
   },
   "permissions": [
-    "usb"
+    "fileSystem",
+    "system.storage",
+    "usb",
+  {
+    "usbDevices": [
+      {
+        "vendorId": 2334, 
+        "productId": 9228
+      }
+    ]
+  }
   ],
   "app": {
     "background": {
