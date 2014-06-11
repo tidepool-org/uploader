@@ -119,14 +119,14 @@ var asanteDriver = {
 
         plen = bytes.length;
         packet.descriptor = bytes[1];
-        packet.payload_len = bytes[3] << 8 + bytes[2];
+        packet.payload_len = (bytes[3] << 8) + bytes[2];
         if ((packet.payload_len + 6) < plen) {
             return packet;  // we're not done yet
         }
 
         // we now have enough length for a complete packet, so calc the CRC 
         packet._len = packet.payload_len + 6;
-        var sentCRC = bytes[packet.payload_len + 6] << 8 + bytes[packet.payload_len + 5];
+        var sentCRC = (bytes[packet.payload_len + 6] << 8) + bytes[packet.payload_len + 5];
         packet.crc = sentCRC;
         var crc = crcCalculator.calcAsanteCRC(bytes, packet.payload_len + 6);
         if (crc != sentCRC) {

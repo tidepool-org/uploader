@@ -75,7 +75,7 @@ var serialDevice = {
                 console.log(ports[i].path);
                 if (ports[i].path.slice(0, serialDevice.portprefix.length) == serialDevice.portprefix) {
                     serialDevice.port = ports[i];
-                    chrome.serial.connect(serialDevice.port.path, { bitrate: 9600 }, connected);
+                    chrome.serial.connect(serialDevice.port.path, { bitrate: 115200 }, connected);
                 }
             }
         });
@@ -89,6 +89,9 @@ var serialDevice = {
             }
         });
     },
+    discardBytes: function(discardCount) {
+        serialDevice.buffer = serialDevice.buffer.slice(discardCount);
+    },
     // When you call this, it looks to see if a complete Asante packet has
     // arrived and it calls the callback with it and strips it from the buffer. 
     // It returns true if a packet was found, and false if not.
@@ -101,18 +104,46 @@ var serialDevice = {
             ++discardCount;
         }
         if (discardCount) {
-            serialDevice.buffer = serialDevice.buffer.slice(discardCount);
+            serialDevice.discardBytes(discardCount);
         }
 
-        if (serialDevice.buffer.length <= 6) { // all complete packets must be this long
+        if (serialDevice.buffer.length < 6) { // all complete packets must be this long
             return false;       // not enough there yet
         }
 
         // there's enough there to try, anyway
-        var packet = asanteDriver.unpackPacket(serialDevice.buffer);
+        var packet = asanteDriver.extractPacket(serialDevice.buffer);
         if (packet.packet_len !== 0) {
             // remove the now-processed packet
-            packet.serialDevice.buffer.slice(packet.packet_len);
+            serialDevice.discardBytes(packet.packet_len);
+        }
+        callback(packet);
+        return true;
+    },
+    // When you call this, it looks to see if a complete Asante packet has
+    // arrived and it calls the callback with it and strips it from the buffer. 
+    // It returns true if a packet was found, and false if not.
+    readDexcomPacket: function(callback) {
+        // for efficiency reasons, we're not going to bother to ask the driver
+        // to decode things that can't possibly be a packet
+        // first, discard bytes that can't start a packet
+        var discardCount = 0;
+        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != dexcomDriver.SYNC_BYTE) {
+            ++discardCount;
+        }
+        if (discardCount) {
+            serialDevice.discardBytes(discardCount);
+        }
+
+        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
+            return false;       // not enough there yet
+        }
+
+        // there's enough there to try, anyway
+        var packet = dexcomDriver.extractPacket(serialDevice.buffer);
+        if (packet.packet_len !== 0) {
+            // remove the now-processed packet
+            serialDevice.discardBytes(packet.packet_len);
         }
         callback(packet);
         return true;
@@ -338,20 +369,20 @@ function constructUI() {
     };
 
     // $("#testButton").click(findAsante);
-    $("#testButton").click(getUSBDevices);
-    var sp = serialDevice;
-    sp.connect(function() {connectLog("connected");});
+    $("#testButton1").click(getUSBDevices);
+    var deviceComms = serialDevice;
+    deviceComms.connect(function() {connectLog("connected");});
     var testSerial = function() {
-        buf = new ArrayBuffer(1);
-        bytes = new Uint8Array(buf);
+        var buf = new ArrayBuffer(1);
+        var bytes = new Uint8Array(buf);
         bytes[0] = 97;
-        sp.writeSerial(buf, function() {connectLog("'a' sent");});
+        deviceComms.writeSerial(buf, function() {connectLog("'a' sent");});
     };
 
     var getSerial = function(timeout) {
-        sp.readSerial(200, timeout, function(packet) {
+        deviceComms.readSerial(200, timeout, function(packet) {
             connectLog("received " + packet.length + " bytes");
-            s = "";
+            var s = "";
             for (var c in packet) {
                 s += String.fromCharCode(packet[c]);
             }
@@ -366,9 +397,45 @@ function constructUI() {
         }, 1000);
     };
 
-    // watchSerial();
+    // callback gets a result packet with parsed payload
+    var dexcomCommandResponse = function(commandpacket, callback) {
+        var processResult = function(result) {
+            console.log(result);
+            if (result.payload) {
+                result.parsed_payload = commandpacket.parser(result);
+            }
+            callback(result);
+        };
+
+        var waitloop = function() {
+            if (!deviceComms.readDexcomPacket(processResult)) {
+                console.log('.');
+                setTimeout(waitloop, 1000);
+            }
+        };
+
+        deviceComms.writeSerial(commandpacket.packet, function() {
+            console.log("->");
+            waitloop();
+        });
+    };
+
+    var testDexcom = function() {
+        var cmd = dexcomDriver.readFirmwareHeader();
+        dexcomCommandResponse(cmd, function(result) {
+            console.log("firmware header");
+            console.log(result);
+            var cmd2 = dexcomDriver.readDataPageRange(dexcomDriver.RECORD_TYPES.EGV_DATA);
+            dexcomCommandResponse(cmd2, function(pagerange) {
+                console.log("page range");
+                console.log(pagerange.parsed_payload);
+            });
+        });
+    };
+
 
     // $("#testButton").click(testSerial);
+    $("#testButton2").click(testDexcom);
 
 }
 
