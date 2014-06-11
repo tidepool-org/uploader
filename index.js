@@ -57,7 +57,7 @@ var serialDevice = {
     connection: null,
     port: null,
     buffer: [],
-    portprefix: "/dev/cu.usb",
+    portprefix: "/dev/cu.usbmodem",
     setup: function(portprefix) {
         if (portprefix) {
             serialDevice.portprefix = portprefix;
