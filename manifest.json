@@ -13,10 +13,21 @@
   },
   "permissions": [
     "fileSystem",
+    "serial",
     "system.storage",
     "usb",
   {
     "usbDevices": [
+      {
+        "deviceName": "Dexcom G4 CGM",
+        "vendorId": 8867,
+        "productId": 71
+      },
+      {
+        "deviceName": "Asante SNAP",
+        "vendorId": 1027, 
+        "productId": 32568
+      },
       {
         "deviceName": "Kindle PaperWhite",
         "vendorId": 6473, 
@@ -26,6 +37,11 @@
         "deviceName": "Garmin 500",
         "vendorId": 2334, 
         "productId": 9228
+      },
+      {
+        "deviceName": "Arduino Esplora",
+        "vendorId": 9025, 
+        "productId": 32828
       }
     ]
   }
