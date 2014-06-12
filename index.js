@@ -401,8 +401,19 @@ function constructUI() {
     var dexcomCommandResponse = function(commandpacket, callback) {
         var processResult = function(result) {
             console.log(result);
-            if (result.payload) {
-                result.parsed_payload = commandpacket.parser(result);
+            if (result.command != 1) {
+                console.log("Bad result %d from data packet", 
+                    result.command, dexcomDriver.getCmdName(result.command));
+                console.log("Command packet was:");
+                bytes = new Uint8Array(commandpacket.packet);
+                console.log(bytes);
+                console.log("Result was:");
+                console.log(result);
+            } else {
+                // only attempt to parse the payload if it worked
+                if (result.payload) {
+                    result.parsed_payload = commandpacket.parser(result);
+                }
             }
             callback(result);
         };
@@ -410,7 +421,7 @@ function constructUI() {
         var waitloop = function() {
             if (!deviceComms.readDexcomPacket(processResult)) {
                 console.log('.');
-                setTimeout(waitloop, 1000);
+                setTimeout(waitloop, 100);
             }
         };
 
@@ -429,13 +440,36 @@ function constructUI() {
             dexcomCommandResponse(cmd2, function(pagerange) {
                 console.log("page range");
                 console.log(pagerange.parsed_payload);
+                var cmd3 = dexcomDriver.readDataPages(
+                    dexcomDriver.RECORD_TYPES.EGV_DATA, 
+                    pagerange.parsed_payload.lo,
+                    1
+                );
+                dexcomCommandResponse(cmd3, function(page) {
+                    console.log("page");
+                    console.log(page.parsed_payload);
+                });
             });
         });
     };
 
+    var testPack = function() {
+        buf = new Uint8Array(30);
+        len = util.pack(buf, 0, "IIbsIb", 254, 65534, 55, 1023, 256, 7);
+        console.log(buf);
+        result = util.unpack(buf, 0, "IIbsIb", ['a', 'b', 'c', 'd', 'e', 'f']);
+        console.log(result);
+        buf[0] = 0xff;
+        buf[1] = 0xff;
+        buf[2] = 0xff;
+        buf[3] = 0xff;
+        result = util.unpack(buf, 0, "I", ['x']);
+        console.log(result);
+    };
 
     // $("#testButton").click(testSerial);
     $("#testButton2").click(testDexcom);
+    $("#testButton3").click(testPack);
 
 }
 

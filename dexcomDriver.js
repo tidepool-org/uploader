@@ -1,25 +1,14 @@
-var util = {
-    extractString: function(bytes, start, len) {
-        if (!len) {
-            len = bytes.length;
-        }
-        s = "";
-        for (var i=start; i<len; ++i) {
-            s += String.fromCharCode(bytes[i]);
-        }
-        return s;
-    },
-    extractInt: function(b, st) {
-        return ((b[st+3] << 24) + (b[st+2] << 16) + (b[st+1] << 8) + b[st]);
-    },
-    extractShort: function(b, st) {
-        return ((b[st+1] << 8) + b[st]);
-    }
-};
-
 var dexcomDriver = {
     SYNC_BYTE: 0x01,
     CMDS: {
+        NULL: { value: 0, name: "NULL" },
+        ACK: { value: 1, name: "ACK" },
+        NAK: { value: 2, name: "NAK" },
+        INVALID_COMMAND: { value: 3, name: "INVALID_COMMAND" },
+        INVALID_PARAM: { value: 4, name: "INVALID_PARAM" },
+        INCOMPLETE_PACKET_RECEIVED: { value: 5, name: "INCOMPLETE_PACKET_RECEIVED" },
+        RECEIVER_ERROR: { value: 6, name: "RECEIVER_ERROR" },
+        INVALID_MODE: { value: 7, name: "INVALID_MODE" },
         READ_FIRMWARE_HEADER: { value: 11, name: "Read Firmware Header" },
         READ_DATA_PAGE_RANGE: { value: 16, name: "Read Data Page Range" },
         READ_DATA_PAGES: { value: 17, name: "Read Data Pages" },
@@ -41,7 +30,37 @@ var dexcomDriver = {
         USER_SETTING_DATA: { value: 12, name: "USER_SETTING_DATA" },
         MAX_VALUE: { value: 13, name: "MAX_VALUE" }
     },
+    TRENDS: {
+        NONE: { value: 0, name: "None" },
+        DOUBLEUP: { value: 1, name: "DoubleUp" },
+        SINGLEUP: { value: 2, name: "SingleUp" },
+        FORTYFIVEUP: { value: 3, name: "FortyFiveUp" },
+        FLAT: { value: 4, name: "Flat" },
+        FORTYFIVEDOWN: { value: 5, name: "FortyFiveDown" },
+        SINGLEDOWN: { value: 6, name: "SingleDown" },
+        DOUBLEDOWN: { value: 7, name: "DoubleDown" },
+        NOTCOMPUTABLE: { value: 8, name: "Not Computable" },
+        RATEOUTOFRANGE: { value: 9, name: "Rate Out Of Range" }
+    },
+    BASE_DATE: new Date(2009, 0, 1).valueOf(),
 
+    getCmdName: function(idx) {
+        for (var i in dexcomDriver.CMDS) {
+            if (dexcomDriver.CMDS[i].value == idx) {
+                return dexcomDriver.CMDS[i].name;
+            }
+        }
+        return "UNKNOWN COMMAND!";
+    },
+
+    getTrendName: function(idx) {
+        for (var i in dexcomDriver.TRENDS) {
+            if (dexcomDriver.TRENDS[i].value == idx) {
+                return dexcomDriver.TRENDS[i].name;
+            }
+        }
+        return "UNKNOWN TREND!";
+    },
 
     /*********************************************************************
      * Function:    calcCRC()
@@ -70,16 +89,11 @@ var dexcomDriver = {
         var datalen = payloadLength + 6;
         var buf = new ArrayBuffer(datalen);
         var bytes = new Uint8Array(buf);
-        bytes[0] = dexcomDriver.SYNC_BYTE;
-        bytes[1] = datalen & 0xFF;
-        bytes[2] = (datalen >> 8) & 0xFF;
-        bytes[3] = command;
-        for (var i = 0; i < payloadLength; ++i) {
-            bytes[4 + i] = payload[i];
-        }
-        var crc = crcCalculator.calcDexcomCRC(bytes, payloadLength+4);
-        bytes[payloadLength + 4] = crc & 0xFF;
-        bytes[payloadLength + 5] = (crc >> 8) & 0xFF;
+        var ctr = util.pack(bytes, 0, "bsb", dexcomDriver.SYNC_BYTE,
+            datalen, command);
+        ctr += util.copyBytes(bytes, ctr, payload, payloadLength);
+        var crc = crcCalculator.calcDexcomCRC(bytes, ctr);
+        util.pack(bytes, ctr, "s", crc);
         return buf;
     },
 
@@ -100,20 +114,53 @@ var dexcomDriver = {
                 [rectype.value]
             ),
             parser: function(result) {
-                return [
-                    util.extractInt(result.payload, 0),
-                    util.extractInt(result.payload, 4)
-                    ];
+                return util.unpack(result.payload, 0, "II", ["lo", "hi"]);
                 }
             };
     },
 
-    readDataPages: function() {
+    readDataPages: function(rectype, startPage, numPages) {
+        var parser = function(result) {
+            var header = util.unpack(result.payload, 0, "IIbbIIIIbb", [
+                    "index", "nrecs", "rectype", "revision", 
+                    "pagenum", "r1", "r2", "r3", "j1", "j2"
+                ]);
+            return {
+                header: header,
+                // data: result.payload.subarray(header.unpack_length)
+                data: parse_records(header, result.payload.subarray(header.unpack_length))
+            };
+        };
+
+        var parse_records = function(header, data) {
+            all = [];
+            var ctr = 0;
+            for (var i = 0; i<header.nrecs; ++i) {
+                var rec = util.unpack(data, ctr, "IIsbs", [
+                    "systemSeconds", "displaySeconds", "glucose", "trend", "crc"   
+                ]);
+                rec.glucose &= 0x3FF;
+                rec.trend &= 0xF;
+                rec.trendText = dexcomDriver.getTrendName(rec.trend);
+                rec.systemTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.systemSeconds).toString();
+                rec.displayTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.displaySeconds).toString();
+                rec.data = data.subarray(ctr, ctr + rec.unpack_length);
+                ctr += rec.unpack_length;
+                all.push(rec);
+            }
+            return all;
+        };
+
+        var struct = "bIb";
+        var len = util.structlen(struct);
+        var payload = new Uint8Array(len);
+        util.pack(payload, 0, struct, rectype.value, startPage, numPages);
+
         return {
             packet: dexcomDriver.buildPacket(
-                dexcomDriver.CMDS.READ_DATA_PAGES.value, 0, null
+                dexcomDriver.CMDS.READ_DATA_PAGES.value, len, payload
             ),
-            parser: null
+            parser: parser
         };
     },
 
