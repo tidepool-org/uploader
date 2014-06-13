@@ -5,6 +5,7 @@
     <title>Tidepool Uploader</title>
     <link href="styles/main.css" rel="stylesheet">
     <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="async.js" type="text/javascript"></script>
     <script src="index.js" type="text/javascript"></script>
     <script src="crc.js" type="text/javascript"></script>
     <script src="util.js" type="text/javascript"></script>
@@ -28,10 +29,10 @@
         <p>
             <label for="serverURL">Server:</label>
             <select id="serverURL">
-                <option value="http://localhost:8009">Local</option>
-                <option value="https://devel-api.tidepool.io">Devel</option>
-                <option value="https://staging-api.tidepool.io">Staging</option>
-                <option value="https://api.tidepool.io">Prod</option>
+                <option value="local">Local</option>
+                <option value="devel">Devel</option>
+                <option value="staging">Staging</option>
+                <option value="prod">Prod</option>
             </select>
         </p>
         <p>
@@ -54,6 +55,9 @@
     <p><input id="testButton1" type=button name="test1" value="Test 1"></p>
     <p><input id="testButton2" type=button name="test2" value="Test 2"></p>
     <p><input id="testButton3" type=button name="test3" value="Test 3"></p>
-    <h1>Let's Upload!</h1>
+    <p>
+        <label for="lastpage">Last Page:</label>
+        <input type=number min=0 max=100 value=0 id="lastpage">
+    </p>
 </body>
 </html>

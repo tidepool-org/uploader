@@ -12,9 +12,11 @@
     "512": "T_icon_dark_512.png"
   },
   "permissions": [
+    "http://localhost/",
+    "https://*.tidepool.io/",
     "fileSystem",
-    "serial",
     "system.storage",
+    "serial",
     "usb",
   {
     "usbDevices": [

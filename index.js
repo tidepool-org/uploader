@@ -7,8 +7,16 @@ var make_base_auth = function (username, password) {
   return "Basic " + hash;
 };
 
+var tidepoolHosts = {
+    local: { host: "http://localhost:8009", jellyfish: "http://localhost:9122" },
+    devel: { host: "https://devel-api.tidepool.io", jellyfish: "https://devel-uploads.tidepool.io" },
+    staging: { host: "https://staging-api.tidepool.io", jellyfish: "https://staging-uploads.tidepool.io" },
+    prod: { host: "https://api.tidepool.io", jellyfish: "https://uploads.tidepool.io" }
+};
+
 var tidepoolServerData = {
     host: '',
+    jellyfish: '',
     usertoken: '',
     userdata: null,
     isLoggedIn: false,
@@ -17,20 +25,37 @@ var tidepoolServerData = {
 var storageDeviceInfo = {};
 
 var tidepoolServer = {
-    get: function(url, query, happycb, sadcb) {
-        jqxhr = $.ajax({
+    get: function(url, happycb, sadcb) {
+        var jqxhr = $.ajax({
             type: 'GET',
             url: url,
             headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
         }).success(function(data, status, jqxhr) {
-            tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
+            var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
+            if (tok && tok != tidepoolServerData.usertoken) {
+                tidepoolServerData.usertoken = tok;
+            }
             happycb(data, status, jqxhr);
         }).error(function(jqxhr, status, err) {
             sadcb(jqxhr, status, err);
         });
     },
-    post: function(path, data, happycb, sadcb) {
-        jqxhr = $.post(url, query, happycb).fail(sadcb);
+    post: function(url, data, happycb, sadcb) {
+        var jqxhr = $.ajax({
+            type: 'POST',
+            url: url,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
+        }).success(function(data, status, jqxhr) {
+            var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
+            if (tok && tok != tidepoolServerData.usertoken) {
+                tidepoolServerData.usertoken = tok;
+            }
+            happycb(data, status, jqxhr);
+        }).error(function(jqxhr, status, err) {
+            sadcb(jqxhr, status, err);
+        });
     },
     login: function(username, password, happycb, sadcb) {
         var url = tidepoolServerData.host + "/auth/login";
@@ -48,7 +73,11 @@ var tidepoolServer = {
     },
     getProfile: function(happycb, sadcb) {
         var url = tidepoolServerData.host + "/metadata/" + tidepoolServerData.userdata.userid + "/profile";
-        this.get(url, null, happycb, sadcb);
+        this.get(url, happycb, sadcb);
+    },
+    postToJellyfish: function(data, happycb, sadcb) {
+        var url = tidepoolServerData.jellyfish + "/data";
+        this.post(url, data, happycb, sadcb);
     }
 };
 
@@ -198,9 +227,6 @@ function constructUI() {
 
     loggedIn(false);
 
-    // var serverURL = 'http://localhost:8009';
-    // $('#serverURL').change(function() {
-
     var connected = function (isConnected) {
         if (isConnected) {
             $(".showWhenNotConnected").fadeOut(400, function() {
@@ -227,9 +253,10 @@ function constructUI() {
     $("#loginButton").click(function() {
         var username = $('#username').val();
         var password = $('#password').val();
-        var server = $('#serverURL').val();
-        console.log(username, password, server);
-        tidepoolServerData.host = server;
+        var serverIndex = $('#serverURL').val();
+        console.log(username, password, serverIndex);
+        tidepoolServerData.host = tidepoolHosts[serverIndex].host;
+        tidepoolServerData.jellyfish = tidepoolHosts[serverIndex].jellyfish;
 
         var goodLogin = function(data, status, jqxhr) {
             console.log(data);
@@ -369,7 +396,7 @@ function constructUI() {
     };
 
     // $("#testButton").click(findAsante);
-    $("#testButton1").click(getUSBDevices);
+    // $("#testButton1").click(getUSBDevices);
     var deviceComms = serialDevice;
     deviceComms.connect(function() {connectLog("connected");});
     var testSerial = function() {
@@ -431,24 +458,101 @@ function constructUI() {
         });
     };
 
-    var testDexcom = function() {
+    var deviceInfo = null;
+    var counter=0;
+    var postJellyfish = function (egvpage, callback) {
+        console.log("poster");
+        console.log(deviceInfo);
+        var datapt = {
+          "type": "cbg",
+          "units": "mg/dL",
+          "value": 0,
+          "time": "",
+          "deviceTime": "",
+          "deviceId": deviceInfo.ProductName + "/12345",
+          "source": "device"
+        };
+
+        var localtime = function(t) {
+            var s = t.toISOString();
+            return s.substring(0, s.length - 1);
+        };
+        var data = [];
+        var recCount = 0;
+        for (var i = 0; i<egvpage.header.nrecs; ++i) {
+            datapt.value = egvpage.data[i].glucose;
+            datapt.time = egvpage.data[i].systemTime.toISOString();
+            datapt.deviceTime = localtime(egvpage.data[i].displayTime);
+            if (datapt.value < 15) {    // it's a "special" (error) value
+                console.log("Skipping datapoint with special bg.");
+                console.log(datapt);
+                continue;
+            }
+            data.push($.extend({}, datapt));
+            recCount++;
+        }
+        console.log(data);
+        var happy = function(resp, status, jqxhr) {
+            console.log("Jellyfish post succeeded.");
+            console.log(status);
+            console.log(resp);
+            callback(null, recCount);
+        };
+        var sad = function(jqxhr, status, err) {
+            if (jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == "duplicate") {
+                callback("STOP", jqxhr.responseJSON.index);
+            } else {
+                console.log("Jellyfish post failed.");
+                console.log(status);
+                console.log(err);
+                callback(err, 0);
+            }
+        };
+        tidepoolServer.postToJellyfish(data, happy, sad);
+    };
+
+    var fetchOneEGVPage = function(pagenum, callback) {
+        var cmd = dexcomDriver.readDataPages(
+            dexcomDriver.RECORD_TYPES.EGV_DATA, pagenum, 1);
+        dexcomCommandResponse(cmd, function(page) {
+            console.log("page");
+            console.log(page.parsed_payload);
+            postJellyfish(page.parsed_payload, callback);
+        });
+    };
+
+    var connectDexcom = function() {
         var cmd = dexcomDriver.readFirmwareHeader();
         dexcomCommandResponse(cmd, function(result) {
             console.log("firmware header");
+            deviceInfo = result.parsed_payload.attrs;
             console.log(result);
             var cmd2 = dexcomDriver.readDataPageRange(dexcomDriver.RECORD_TYPES.EGV_DATA);
             dexcomCommandResponse(cmd2, function(pagerange) {
                 console.log("page range");
-                console.log(pagerange.parsed_payload);
-                var cmd3 = dexcomDriver.readDataPages(
-                    dexcomDriver.RECORD_TYPES.EGV_DATA, 
-                    pagerange.parsed_payload.lo,
-                    1
-                );
-                dexcomCommandResponse(cmd3, function(page) {
-                    console.log("page");
-                    console.log(page.parsed_payload);
+                var range = pagerange.parsed_payload;
+                console.log(range);
+                var pages = [];
+                var lastpage = $("#lastpage").val();
+                for (var pg = range.hi-lastpage; pg >= range.lo; --pg) {
+                    pages.push(pg);
+                }
+                async.mapSeries(pages, fetchOneEGVPage, function(err, results) {
+                    console.log(results);
+                    var sum = 0;
+                    for (var i=0; i<results.length; ++i) {
+                        sum += results[i];
+                    }
+                    var msg = sum + " new records uploaded.";
+                    if (err == 'STOP') {
+                        console.log(msg);
+                    } else if (err) {
+                        console.log("Error: ", err);
+                    } else {
+                        console.log(msg);
+                    }
                 });
+
             });
         });
     };
@@ -468,7 +572,38 @@ function constructUI() {
     };
 
     // $("#testButton").click(testSerial);
-    $("#testButton2").click(testDexcom);
+
+    var testJellyfish = function() {
+        var datapt = {
+          "type": "cbg",
+          "units": "mg/dL",
+          "value": 0,
+          "time": "",
+          "deviceTime": "",
+          "deviceId": "KentTest123",
+          "source": "device"
+        };
+
+        var data = [];
+        var starttime = new Date(2014, 1, 23, 6);
+        var increment = 10 * 60 * 1000;  // 10 minutes
+        var duration = 30 * 60 * 60 * 1000; // 30 hours
+        var EDT_offset = -4 * 60 * 60 * 1000; // 4 hours
+        var startbg = 150;
+        for (var dt = 0; dt < duration; dt += increment) {
+            datapt.value = (startbg + 105 * Math.sin(dt/(10 * increment)));
+            var t = starttime.valueOf() + dt;
+            datapt.time = new Date(t).toISOString();
+            var devtime = new Date(t + EDT_offset).toISOString();
+            datapt.deviceTime = devtime.substring(0, devtime.length-1);
+            data.push($.extend({}, datapt));
+        }
+        console.log(data);
+        postJellyfish(data);
+    };
+
+    $("#testButton1").click(testJellyfish);
+    $("#testButton2").click(connectDexcom);
     $("#testButton3").click(testPack);
 
 }

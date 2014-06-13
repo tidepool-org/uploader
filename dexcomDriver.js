@@ -102,7 +102,11 @@ var dexcomDriver = {
             packet: dexcomDriver.buildPacket(
                 dexcomDriver.CMDS.READ_FIRMWARE_HEADER.value, 0, null
             ),
-            parser: dexcomDriver.parseXMLPayload
+            parser: function(packet) {
+                data = dexcomDriver.parseXMLPayload(packet);
+                dexcomDriver.firmwareHeader = data;
+                return data;
+            }
         };
     },
 
@@ -142,8 +146,8 @@ var dexcomDriver = {
                 rec.glucose &= 0x3FF;
                 rec.trend &= 0xF;
                 rec.trendText = dexcomDriver.getTrendName(rec.trend);
-                rec.systemTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.systemSeconds).toString();
-                rec.displayTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.displaySeconds).toString();
+                rec.systemTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.systemSeconds);
+                rec.displayTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.displaySeconds);
                 rec.data = data.subarray(ctr, ctr + rec.unpack_length);
                 ctr += rec.unpack_length;
                 all.push(rec);
