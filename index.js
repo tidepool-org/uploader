@@ -602,9 +602,9 @@ function constructUI() {
         postJellyfish(data);
     };
 
-    $("#testButton1").click(testJellyfish);
+    // $("#testButton1").click(testJellyfish);
     $("#testButton2").click(connectDexcom);
-    $("#testButton3").click(testPack);
+    // $("#testButton3").click(testPack);
 
 }
 
