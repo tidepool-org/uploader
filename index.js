@@ -460,6 +460,7 @@ function constructUI() {
 
     var deviceInfo = null;
     var counter=0;
+    var prevTimestamp = null;
     var postJellyfish = function (egvpage, callback) {
         console.log("poster");
         console.log(deviceInfo);
@@ -479,16 +480,19 @@ function constructUI() {
         };
         var data = [];
         var recCount = 0;
-        for (var i = 0; i<egvpage.header.nrecs; ++i) {
+        for (var i = egvpage.header.nrecs - 1; i>=0; --i) {
             datapt.value = egvpage.data[i].glucose;
-            datapt.time = egvpage.data[i].systemTime.toISOString();
+            datapt.time = egvpage.data[i].displayTime.toISOString();
             datapt.deviceTime = localtime(egvpage.data[i].displayTime);
             if (datapt.value < 15) {    // it's a "special" (error) value
                 console.log("Skipping datapoint with special bg.");
                 console.log(datapt);
                 continue;
             }
-            data.push($.extend({}, datapt));
+	    if (prevTimestamp == null || datapt.time !== prevTimestamp) {
+              data.push($.extend({}, datapt));
+              prevTimestamp = datapt.time;
+            }
             recCount++;
         }
         console.log(data);
