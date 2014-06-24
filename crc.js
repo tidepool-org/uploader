@@ -1,7 +1,8 @@
 var crcCalculator = {
     ASANTE_INITIAL_REMAINDER: 0xFFFF,
+    ASANTE_FINAL_XOR_VALUE: 0x0000,
     DEXCOM_INITIAL_REMAINDER: 0x0000,
-    FINAL_XOR_VALUE: 0x0000,
+    DEXCOM_FINAL_XOR_VALUE: 0x0000,
     CRC_TABLE: new Array(
         0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
         0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef,
@@ -39,20 +40,19 @@ var crcCalculator = {
 
     /*********************************************************************
      * Function:    calcCRC()
-     * Description: Compute the Zmodem CRC of a given array of bytes, which has
-     *              been tested to be compatible with the C++ code that we
-     *              were given by Asante.
+     * Description: Compute the Zmodem CRC of a given array of bytes.
      * Notes:       The CRC table is well-known and dates back at least to the 
-     *              1980s where it was used in the Zmodem protocol. However, 
-     *              in Zmodem and many other implementations, the INITIAL_REMAINDER
-     *              was 0, not 0xFFFF. Consequently, be careful if you use
-     *              any other implementation of CRC.
-     * Inputs:      dataRec - pointer to ArrayBuffer to have crc performed.
-     *              Does not include the CRC field.
-     *              size - Number of bytes in dataRec.
+     *              1980s where it was used in the Zmodem protocol. 
+     *              In Zmodem and many other implementations, the INITIAL_REMAINDER
+     *              is 0, but other values exist even in this file (Asante). 
+     *              Be careful if you use any other implementation of CRC.
+     * Inputs:      bytes - pointer to ArrayBuffer to have crc performed.
+     *              size - Number of bytes in dataRec. Do not include the CRC field.
+     *              initial_remainder - starting value for CRC calculation
+     *              final_xor - value to XOR before returning the result
      * Returns:     The CRC of the buffer.
      *********************************************************************/
-    calcCRC : function (bytes, size, initial_remainder) {
+    calcCRC : function (bytes, size, initial_remainder, final_xor) {
         var crc16;
         var i, j;
 
@@ -63,15 +63,34 @@ var crcCalculator = {
             crc16 = crcCalculator.CRC_TABLE[(bytes[i] ^ (crc16 >> 8)) & 0xFF] ^ ((crc16 << 8) & 0xFFFF);
         }
         // The final remainder is the CRC.
-        return (crc16 ^ crcCalculator.FINAL_XOR_VALUE);
+        return (crc16 ^ final_xor);
     },
 
+    /*********************************************************************
+     * Function:    calcAsanteCRC()
+     * Description: Compute the Asante CRC of a given array of bytes; this is
+     *              compatible with the C++ code that we were given by Asante.
+     * Inputs:      bytes - ArrayBuffer to have crc performed.
+     *              size - Number of bytes in dataRec. Do not include the CRC field.
+     * Returns:     The CRC of the buffer.
+     *********************************************************************/
     calcAsanteCRC: function (bytes, size) {
-        return crcCalculator.calcCRC(bytes, size, crcCalculator.ASANTE_INITIAL_REMAINDER);
+        return crcCalculator.calcCRC(bytes, size, 
+            crcCalculator.ASANTE_INITIAL_REMAINDER,
+            crcCalculator.ASANTE_FINAL_XOR_VALUE);
     },
 
+    /*********************************************************************
+     * Function:    calcDexcomCRC()
+     * Description: Compute the Dexcom CRC of a given array of bytes.
+     * Inputs:      bytes - ArrayBuffer to have crc performed.
+     *              size - Number of bytes in dataRec. Do not include the CRC field.
+     * Returns:     The CRC of the buffer.
+     *********************************************************************/
     calcDexcomCRC: function (bytes, size) {
-        return crcCalculator.calcCRC(bytes, size, crcCalculator.DEXCOM_INITIAL_REMAINDER);
+        return crcCalculator.calcCRC(bytes, size, 
+            crcCalculator.DEXCOM_INITIAL_REMAINDER,
+            crcCalculator.DEXCOM_FINAL_XOR_VALUE);
     },
 
     testAsanteCRC: function(s) {
@@ -100,15 +119,16 @@ var crcCalculator = {
 
 
     validateCRC: function () {
-        if (crcCalculator.testAsanteCRC('\x02\x06\x06\x03') == 0x41CD) {
-            console.log("Asante CRC logic is correct.");
-        } else {
+        // this line of code is straight from Asante's documentation as a test case
+        if (crcCalculator.testAsanteCRC('\x02\x06\x06\x03') != 0x41CD) {
             console.log("Asante CRC logic is NOT CORRECT!!!");
+            return false;
         }
-        if (crcCalculator.testDexcomCRC('\x02\x06\x06\x03') == 50445) {
-            console.log("Dexcom CRC logic is correct.");
-        } else {
+        // this is backsolved from Dexcom code that works to mimic the test case above.
+        if (crcCalculator.testDexcomCRC('\x02\x06\x06\x03') != 50445) {
             console.log("Dexcom CRC logic is NOT CORRECT!!!");
+            return false;
         }
+        return true;
     },
 };

@@ -62,21 +62,6 @@ var dexcomDriver = {
         return "UNKNOWN TREND!";
     },
 
-    /*********************************************************************
-     * Function:    calcCRC()
-     * Description: Compute the Zmodem CRC of a given array of bytes, which has
-     *              been tested to be compatible with the C++ code that we
-     *              were given by dexcom.
-     * Notes:       The CRC table is well-known and dates back at least to the 
-     *              1980s where it was used in the Zmodem protocol. However, 
-     *              in Zmodem and many other implementations, the INITIAL_REMAINDER
-     *              was 0, not 0xFFFF. Consequently, be careful if you use
-     *              any other implementation of CRC.
-     * Inputs:      dataRec - pointer to ArrayBuffer to have crc performed.
-     *              Does not include the CRC field.
-     *              size - Number of bytes in dataRec.
-     * Returns:     The CRC of the buffer.
-     *********************************************************************/
     // builds a command in an ArrayBuffer
     // The first byte is always 0x01 (SYNC), 
     // the second and third bytes are a little-endian payload length.
