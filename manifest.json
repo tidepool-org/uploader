@@ -26,9 +26,19 @@
         "productId": 71
       },
       {
-        "deviceName": "Asante SNAP",
+        "deviceName": "Asante SNAP w/Asante cable",
         "vendorId": 1027, 
         "productId": 32568
+      },
+      {
+        "deviceName": "Asante SNAP w/FTDI cable",
+        "vendorId": 1027, 
+        "productId": 24577
+      },
+      {
+        "deviceName": "Insulet OmniPod",
+        "vendorId": 7734, 
+        "productId": 2
       },
       {
         "deviceName": "Kindle PaperWhite",

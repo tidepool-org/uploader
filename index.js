@@ -86,7 +86,7 @@ var serialDevice = {
     connection: null,
     port: null,
     buffer: [],
-    portprefix: "/dev/cu.usbmodem",
+    portprefix: "/dev/cu.usb",
     setup: function(portprefix) {
         if (portprefix) {
             serialDevice.portprefix = portprefix;
@@ -104,7 +104,7 @@ var serialDevice = {
                 console.log(ports[i].path);
                 if (ports[i].path.slice(0, serialDevice.portprefix.length) == serialDevice.portprefix) {
                     serialDevice.port = ports[i];
-                    chrome.serial.connect(serialDevice.port.path, { bitrate: 115200 }, connected);
+                    chrome.serial.connect(serialDevice.port.path, { bitrate: 9600 }, connected);
                 }
             }
         });
@@ -121,35 +121,7 @@ var serialDevice = {
     discardBytes: function(discardCount) {
         serialDevice.buffer = serialDevice.buffer.slice(discardCount);
     },
-    // When you call this, it looks to see if a complete Asante packet has
-    // arrived and it calls the callback with it and strips it from the buffer. 
-    // It returns true if a packet was found, and false if not.
-    readAsantePacket: function(callback) {
-        // for efficiency reasons, we're not going to bother to ask the driver
-        // to decode things that can't possibly be a packet
-        // first, discard bytes that can't start a packet
-        var discardCount = 0;
-        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != asanteDriver.SYNC_BYTE) {
-            ++discardCount;
-        }
-        if (discardCount) {
-            serialDevice.discardBytes(discardCount);
-        }
-
-        if (serialDevice.buffer.length < 6) { // all complete packets must be this long
-            return false;       // not enough there yet
-        }
-
-        // there's enough there to try, anyway
-        var packet = asanteDriver.extractPacket(serialDevice.buffer);
-        if (packet.packet_len !== 0) {
-            // remove the now-processed packet
-            serialDevice.discardBytes(packet.packet_len);
-        }
-        callback(packet);
-        return true;
-    },
-    // When you call this, it looks to see if a complete Asante packet has
+    // When you call this, it looks to see if a complete Dexcom packet has
     // arrived and it calls the callback with it and strips it from the buffer. 
     // It returns true if a packet was found, and false if not.
     readDexcomPacket: function(callback) {
@@ -196,6 +168,7 @@ var serialDevice = {
     writeSerial: function(bytes, callback) {
         var l = new Uint8Array(bytes).length;
         var sendcheck = function(info) {
+            console.log("Sent %d bytes", info.bytesSent);
             if (l != info.bytesSent) {
                 console.log("Only " + info.bytesSent + " bytes sent out of " + l);
             }
@@ -319,48 +292,6 @@ function constructUI() {
         }
     };
 
-    var receiveAsante = function(info) {
-        console.log(info);
-        if (info.resultCode == 0) {
-            console.log("Success");
-            // info.data is an ArrayBuffer
-            packet = new Uint8Array(info.data);
-            console.log(packet);
-        }
-    };
-
-    var handleAsante = function(handleArray) {
-        // handleArray should have just one entry
-        console.log(handleArray);
-        var h = handleArray[0];
-        // the bulk input number is 0x81, the output is 0x82
-        var trinput = {
-            direction: "in",
-            endpoint: 0x81,
-            length: 200,
-            data: null
-        };
-
-        chrome.usb.bulkTransfer(h, trinput, receiveAsante);
-    };
-
-    var findAsante = function() {
-        manifest = chrome.runtime.getManifest();
-        for (var p = 0; p < manifest.permissions.length; ++p) {
-            var perm = manifest.permissions[p];
-            if (perm.usbDevices) {
-                for (d = 0; d < perm.usbDevices.length; ++d) {
-                    if (perm.usbDevices[d].deviceName == 'Asante SNAP') {
-                        chrome.usb.findDevices({
-                            vendorId: perm.usbDevices[d].vendorId,
-                            productId: perm.usbDevices[d].productId
-                        }, handleAsante);
-                    }
-                }
-            }
-        }
-    };
-
     chrome.system.storage.onAttached.addListener(function (info){
         connectLog("attached: " + info.name);
         storageDeviceInfo[info.id] = {
@@ -368,6 +299,7 @@ function constructUI() {
             name: info.name,
             type: info.type
         };
+        console.log(storageDeviceInfo[info.id]);
     });
 
     chrome.system.storage.onDetached.addListener(function (id){
@@ -380,6 +312,7 @@ function constructUI() {
         chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
             console.log(readOnlyEntry);
             readOnlyEntry.file(function(file) {
+                console.log(file);
                 var reader = new FileReader();
 
                 reader.onerror = function() {
@@ -388,6 +321,7 @@ function constructUI() {
                 reader.onloadend = function(e) {
                     // e.target.result contains the contents of the file
                     // console.log(e.target.result);
+                    console.log(e.target.result);
                 };
 
                 reader.readAsText(file);
@@ -398,6 +332,8 @@ function constructUI() {
     // $("#testButton").click(findAsante);
     // $("#testButton1").click(getUSBDevices);
     var deviceComms = serialDevice;
+    var asanteDevice = asanteDriver({deviceComms: deviceComms});
+
     deviceComms.connect(function() {connectLog("connected");});
     var testSerial = function() {
         var buf = new ArrayBuffer(1);
@@ -428,8 +364,8 @@ function constructUI() {
     var dexcomCommandResponse = function(commandpacket, callback) {
         var processResult = function(result) {
             console.log(result);
-            if (result.command != 1) {
-                console.log("Bad result %d from data packet", 
+            if (result.command != dexcomDriver.CMDS.ACK) {
+                console.log("Bad result %d (%s) from data packet", 
                     result.command, dexcomDriver.getCmdName(result.command));
                 console.log("Command packet was:");
                 bytes = new Uint8Array(commandpacket.packet);
@@ -606,9 +542,28 @@ function constructUI() {
         postJellyfish(data);
     };
 
-    // $("#testButton1").click(testJellyfish);
-    $("#testButton2").click(connectDexcom);
-    // $("#testButton3").click(testPack);
+    var test1 = function() {
+        var get = function(url, happycb, sadcb) {
+            var jqxhr = $.ajax({
+                type: 'GET',
+                url: url
+            }).success(function(data, status, jqxhr) {
+                // happycb(data, status, jqxhr);
+                console.log("success!");
+                console.log(data);
+            }).error(function(jqxhr, status, err) {
+                // sadcb(jqxhr, status, err);
+                console.log("FAIL");
+            });
+        };
+
+        var url = "http://localhost:8888/foo.txt";
+        get(url);
+    };
+
+    $("#testButton1").click(asanteDevice.findAsante);
+    $("#testButton2").click(test1);
+    $("#testButton3").click(asanteDevice.listenForBeacon);
 
 }
 

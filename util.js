@@ -39,7 +39,7 @@ var util = {
         b[st] = v & 0xFF;
     },
 
-    structs: {
+    fields: {
         'I': { len: 4, put: 'storeInt', get: 'extractInt' },
         's': { len: 2, put: 'storeShort', get: 'extractShort' },
         'b': { len: 1, put: 'storeByte', get: 'extractByte' }
@@ -48,7 +48,7 @@ var util = {
     structlen: function(s) {
         var t = 0;
         for (var i = 0; i < s.length; ++i) {
-            t += util.structs[s[i]].len;
+            t += util.fields[s[i]].len;
         }
         return t;
     },
@@ -63,27 +63,55 @@ var util = {
         ctr = 0;
         for (var i=0; i < format.length; ++i) {
             var c = format[i];
-            var put = util[util.structs[c].put];
+            var put = util[util.fields[c].put];
             put(arguments[i+3], buf, offset + ctr);
-            ctr += util.structs[c].len;
+            ctr += util.fields[c].len;
         }
         return ctr;
     },
 
-    unpack: function(buf, offset, format, names) {
+    createUnpacker: function() {
+        return {
+            format: "",
+            names: [],
+            add: function(fmts, nms) {
+                this.format += fmts;
+                this.names = names.concat(nms);
+            },
+            go: function(buf, offset, o) {
+                return utils.unpack(buf, offset, this.format, this.names, o);
+            }
+        };
+    },
+
+
+
+    // buf is an indexable array of bytes
+    // offset is the starting offset within buf to unpack the structure
+    // format is a format string
+    // names is an array of names (within the result object) to store the unpacked data
+    // o is the result object -- if it does not exist, it will be created
+    // returns (and potentially modifies o)
+    unpack: function(buf, offset, format, names, o) {
+        var result;
+        if (o != null) {
+            result = o;
+        } else {
+            result = {};
+        }
+
         if (format.length != names.length) {
             console.log("Bad args to unpack!");
-            return {};
+            return result;
         }
 
         // var len = util.structlen(format);
-        ctr = 0;
-        result = {};
+        var ctr = 0;
         for (var i=0; i < format.length; ++i) {
             var c = format[i];
-            var get = util[util.structs[c].get];
+            var get = util[util.fields[c].get];
             result[names[i]] = get(buf, offset + ctr);
-            ctr += util.structs[c].len;
+            ctr += util.fields[c].len;
         }
         result.unpack_length = ctr;
         return result;

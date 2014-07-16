@@ -186,7 +186,7 @@ var dexcomDriver = {
         plen = bytes.length;
         packet_len = util.extractShort(bytes, 1);
         // minimum packet len is 6
-        if (packet_len < plen) {
+        if (packet_len > plen) {
             return packet;  // we're not done yet
         }
 
