@@ -27,8 +27,11 @@ testDriver = function(config) {
         },
 
         processData: function (progress, cb) {
-            progress(100);
-            cb(null, "processData");
+            progress(40);
+            setTimeout(function() {
+                progress(100);
+                cb(null, "processData");
+            }, Math.random() * 10000);
         },
 
         uploadData: function (progress, cb) {

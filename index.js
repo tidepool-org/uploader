@@ -239,7 +239,7 @@ function driverManager(driverObjects, config) {
             }
         },
 
-        process: function (driver) {
+        process: function (driver, cb) {
             drvr = drivers[driver];
             async.series([
                     drvr.setup.bind(drvr, stat.bind(0)),
@@ -250,14 +250,7 @@ function driverManager(driverObjects, config) {
                     drvr.uploadData.bind(drvr, stat.bind(5)),
                     drvr.disconnect.bind(drvr, stat.bind(6)),
                     drvr.cleanup.bind(drvr, stat.bind(7))
-                ], function(err, results) {
-                    if (err) {
-                        console.log("Error from processing driver.");
-                        console.log(err);
-                    } else {
-                        console.log("Success!");
-                    }
-                });
+                ], cb);
         }
     };
 }
@@ -560,7 +553,7 @@ function constructUI() {
         get(url);
     };
 
-    var searchOnce = function() {
+    var search = function(cb) {
         var driverObjects = {
             // "AsanteSNAP": asanteDriver,
             // "InsuletOmniPod": insuletDriver,
@@ -570,14 +563,50 @@ function constructUI() {
         var dm = driverManager(driverObjects, {});
         var drv = dm.detect();
         if (drv) {
-            dm.process(drv);
+            dm.process(drv, function(err, results){
+                if (err) {
+                    console.log("Fail");
+                    console.log(err);
+                } else {
+                    console.log("Success!");
+                }
+                if (cb) {
+                    cb(err, results);
+                }
+            });
         }
 
     };
 
-    $("#testButton1").click(asanteDevice.findAsante);
-    $("#testButton2").click(searchOnce);
-    $("#testButton3").click(asanteDevice.listenForBeacon);
+    var searchOnce = function() {
+        search();
+    };
+
+    var searching = null;
+    var processing = false;
+    var searchRepeatedly = function() {
+        searching = setInterval(function () {
+            if (processing) {
+                console.log("skipping");
+                return;
+            }
+            processing = true;
+            search(function(err, results){
+                processing = false;
+            });
+        }, 5000);
+    };
+
+    var cancelSearch = function() {
+        if (searching) {
+            clearInterval(searching);
+            searching = null;
+        }
+    };
+
+    $("#testButton1").click(searchOnce);
+    $("#testButton2").click(searchRepeatedly);
+    $("#testButton3").click(cancelSearch);
 
 }
 
