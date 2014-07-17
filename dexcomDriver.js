@@ -250,3 +250,117 @@ var dexcomDriver = {
         return data;
     }
 };
+
+// Everything below here was copied over from index.js where it didn't belong -- but
+// it hasn't been converted to be part of this file yet.
+/*
+    // When you call this, it looks to see if a complete Dexcom packet has
+    // arrived and it calls the callback with it and strips it from the buffer. 
+    // It returns true if a packet was found, and false if not.
+    readDexcomPacket: function(callback) {
+        // for efficiency reasons, we're not going to bother to ask the driver
+        // to decode things that can't possibly be a packet
+        // first, discard bytes that can't start a packet
+        var discardCount = 0;
+        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != dexcomDriver.SYNC_BYTE) {
+            ++discardCount;
+        }
+        if (discardCount) {
+            serialDevice.discardBytes(discardCount);
+        }
+
+        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
+            return false;       // not enough there yet
+        }
+
+        // there's enough there to try, anyway
+        var packet = dexcomDriver.extractPacket(serialDevice.buffer);
+        if (packet.packet_len !== 0) {
+            // remove the now-processed packet
+            serialDevice.discardBytes(packet.packet_len);
+        }
+        callback(packet);
+        return true;
+    },
+
+    // callback gets a result packet with parsed payload
+    var dexcomCommandResponse = function(commandpacket, callback) {
+        var processResult = function(result) {
+            console.log(result);
+            if (result.command != dexcomDriver.CMDS.ACK) {
+                console.log("Bad result %d (%s) from data packet", 
+                    result.command, dexcomDriver.getCmdName(result.command));
+                console.log("Command packet was:");
+                bytes = new Uint8Array(commandpacket.packet);
+                console.log(bytes);
+                console.log("Result was:");
+                console.log(result);
+            } else {
+                // only attempt to parse the payload if it worked
+                if (result.payload) {
+                    result.parsed_payload = commandpacket.parser(result);
+                }
+            }
+            callback(result);
+        };
+
+        var waitloop = function() {
+            if (!deviceComms.readDexcomPacket(processResult)) {
+                console.log('.');
+                setTimeout(waitloop, 100);
+            }
+        };
+
+        deviceComms.writeSerial(commandpacket.packet, function() {
+            console.log("->");
+            waitloop();
+        });
+    };
+
+    var fetchOneEGVPage = function(pagenum, callback) {
+        var cmd = dexcomDriver.readDataPages(
+            dexcomDriver.RECORD_TYPES.EGV_DATA, pagenum, 1);
+        dexcomCommandResponse(cmd, function(page) {
+            console.log("page");
+            console.log(page.parsed_payload);
+            postJellyfish(page.parsed_payload, callback);
+        });
+    };
+
+    var connectDexcom = function() {
+        var cmd = dexcomDriver.readFirmwareHeader();
+        dexcomCommandResponse(cmd, function(result) {
+            console.log("firmware header");
+            deviceInfo = result.parsed_payload.attrs;
+            console.log(result);
+            var cmd2 = dexcomDriver.readDataPageRange(dexcomDriver.RECORD_TYPES.EGV_DATA);
+            dexcomCommandResponse(cmd2, function(pagerange) {
+                console.log("page range");
+                var range = pagerange.parsed_payload;
+                console.log(range);
+                var pages = [];
+                var lastpage = $("#lastpage").val();
+                for (var pg = range.hi-lastpage; pg >= range.lo; --pg) {
+                    pages.push(pg);
+                }
+                async.mapSeries(pages, fetchOneEGVPage, function(err, results) {
+                    console.log(results);
+                    var sum = 0;
+                    for (var i=0; i<results.length; ++i) {
+                        sum += results[i];
+                    }
+                    var msg = sum + " new records uploaded.";
+                    if (err == 'STOP') {
+                        console.log(msg);
+                    } else if (err) {
+                        console.log("Error: ", err);
+                    } else {
+                        console.log(msg);
+                    }
+                });
+
+            });
+        });
+    };
+
+*/

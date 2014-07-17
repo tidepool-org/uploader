@@ -121,34 +121,6 @@ var serialDevice = {
     discardBytes: function(discardCount) {
         serialDevice.buffer = serialDevice.buffer.slice(discardCount);
     },
-    // When you call this, it looks to see if a complete Dexcom packet has
-    // arrived and it calls the callback with it and strips it from the buffer. 
-    // It returns true if a packet was found, and false if not.
-    readDexcomPacket: function(callback) {
-        // for efficiency reasons, we're not going to bother to ask the driver
-        // to decode things that can't possibly be a packet
-        // first, discard bytes that can't start a packet
-        var discardCount = 0;
-        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != dexcomDriver.SYNC_BYTE) {
-            ++discardCount;
-        }
-        if (discardCount) {
-            serialDevice.discardBytes(discardCount);
-        }
-
-        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
-            return false;       // not enough there yet
-        }
-
-        // there's enough there to try, anyway
-        var packet = dexcomDriver.extractPacket(serialDevice.buffer);
-        if (packet.packet_len !== 0) {
-            // remove the now-processed packet
-            serialDevice.discardBytes(packet.packet_len);
-        }
-        callback(packet);
-        return true;
-    },
     readSerial: function(bytes, timeout, callback) {
         var packet;
         if (serialDevice.buffer.length >= bytes) {
@@ -181,7 +153,114 @@ var serialDevice = {
     }
 };
 
+function statusManager(config) {
+    var progress = function(msg, pctg) {
+        console.log("Progress: %s -- %d", msg, pctg);
+    };
 
+    var cfg = config;
+    if (config.progress) {
+        progress = config.progress;
+    }
+    var statuses = config.steps;
+
+    var setStatus = function(stage, pct) {
+        var msg = statuses[stage].name;
+        var range = statuses[stage].max - statuses[stage].min;
+        var displayPctg = statuses[stage].min + Math.floor(range * pct / 100.0);
+        progress(msg, displayPctg);
+    };
+
+    return {
+        bind: function(stage) {
+            return setStatus.bind(this, stage);
+        }
+    };
+}
+
+/* Here's what we want to do:
+    call init() on every driver
+    do forever:
+        call detect() on every driver in a loop or when notified by an insertion
+        when a device is detected:
+            setup
+            connect
+            getConfigInfo
+            fetchData
+            processData
+            uploadData
+            disconnect
+            cleanup
+*/
+
+function driverManager(driverObjects, config) {
+    var cfg = config;
+    var drivers = {};
+    var required = [
+            "detect",
+            "setup",
+            "connect",
+            "getConfigInfo",
+            "fetchData",
+            "processData",
+            "uploadData",
+            "disconnect",
+            "cleanup",
+        ];
+
+    for (var d in driverObjects) {
+        drivers[d] = driverObjects[d](config[d]);
+        for (var i=0; i<required.length; ++i) {
+            if (typeof(drivers[d][required[i]]) != "function") {
+                console.log("!!!! Driver %s must implement %s", d, required[i]);
+            }
+        }
+    }
+
+    var stat = statusManager({progress: null, steps: [
+        { name: "setting up", min: 0, max: 5 },
+        { name: "connecting", min: 5, max: 10 },
+        { name: "getting configuration data", min: 10, max: 15 },
+        { name: "fetching data", min: 15, max: 40 },
+        { name: "processing data", min: 40, max: 50 },
+        { name: "uploading data", min: 50, max: 90 },
+        { name: "disconnecting", min: 90, max: 95 },
+        { name: "cleaning up", min: 95, max: 100 }
+    ]});
+
+    return {
+        // iterates the driver list and calls detect; first one to return
+        // true gets returned from detect
+        detect: function () {
+            for (var d in drivers) {
+                if (drivers[d].detect()) {
+                    return d;
+                }
+            }
+        },
+
+        process: function (driver) {
+            drvr = drivers[driver];
+            async.series([
+                    drvr.setup.bind(drvr, stat.bind(0)),
+                    drvr.connect.bind(drvr, stat.bind(1)),
+                    drvr.getConfigInfo.bind(drvr, stat.bind(2)),
+                    drvr.fetchData.bind(drvr, stat.bind(3)),
+                    drvr.processData.bind(drvr, stat.bind(4)),
+                    drvr.uploadData.bind(drvr, stat.bind(5)),
+                    drvr.disconnect.bind(drvr, stat.bind(6)),
+                    drvr.cleanup.bind(drvr, stat.bind(7))
+                ], function(err, results) {
+                    if (err) {
+                        console.log("Error from processing driver.");
+                        console.log(err);
+                    } else {
+                        console.log("Success!");
+                    }
+                });
+        }
+    };
+}
 
 function constructUI() {
     //$('body').append('This is a test.');
@@ -360,40 +439,6 @@ function constructUI() {
         }, 1000);
     };
 
-    // callback gets a result packet with parsed payload
-    var dexcomCommandResponse = function(commandpacket, callback) {
-        var processResult = function(result) {
-            console.log(result);
-            if (result.command != dexcomDriver.CMDS.ACK) {
-                console.log("Bad result %d (%s) from data packet", 
-                    result.command, dexcomDriver.getCmdName(result.command));
-                console.log("Command packet was:");
-                bytes = new Uint8Array(commandpacket.packet);
-                console.log(bytes);
-                console.log("Result was:");
-                console.log(result);
-            } else {
-                // only attempt to parse the payload if it worked
-                if (result.payload) {
-                    result.parsed_payload = commandpacket.parser(result);
-                }
-            }
-            callback(result);
-        };
-
-        var waitloop = function() {
-            if (!deviceComms.readDexcomPacket(processResult)) {
-                console.log('.');
-                setTimeout(waitloop, 100);
-            }
-        };
-
-        deviceComms.writeSerial(commandpacket.packet, function() {
-            console.log("->");
-            waitloop();
-        });
-    };
-
     var deviceInfo = null;
     var counter=0;
     var prevTimestamp = null;
@@ -449,52 +494,6 @@ function constructUI() {
             }
         };
         tidepoolServer.postToJellyfish(data, happy, sad);
-    };
-
-    var fetchOneEGVPage = function(pagenum, callback) {
-        var cmd = dexcomDriver.readDataPages(
-            dexcomDriver.RECORD_TYPES.EGV_DATA, pagenum, 1);
-        dexcomCommandResponse(cmd, function(page) {
-            console.log("page");
-            console.log(page.parsed_payload);
-            postJellyfish(page.parsed_payload, callback);
-        });
-    };
-
-    var connectDexcom = function() {
-        var cmd = dexcomDriver.readFirmwareHeader();
-        dexcomCommandResponse(cmd, function(result) {
-            console.log("firmware header");
-            deviceInfo = result.parsed_payload.attrs;
-            console.log(result);
-            var cmd2 = dexcomDriver.readDataPageRange(dexcomDriver.RECORD_TYPES.EGV_DATA);
-            dexcomCommandResponse(cmd2, function(pagerange) {
-                console.log("page range");
-                var range = pagerange.parsed_payload;
-                console.log(range);
-                var pages = [];
-                var lastpage = $("#lastpage").val();
-                for (var pg = range.hi-lastpage; pg >= range.lo; --pg) {
-                    pages.push(pg);
-                }
-                async.mapSeries(pages, fetchOneEGVPage, function(err, results) {
-                    console.log(results);
-                    var sum = 0;
-                    for (var i=0; i<results.length; ++i) {
-                        sum += results[i];
-                    }
-                    var msg = sum + " new records uploaded.";
-                    if (err == 'STOP') {
-                        console.log(msg);
-                    } else if (err) {
-                        console.log("Error: ", err);
-                    } else {
-                        console.log(msg);
-                    }
-                });
-
-            });
-        });
     };
 
     var testPack = function() {
@@ -561,11 +560,28 @@ function constructUI() {
         get(url);
     };
 
+    var searchOnce = function() {
+        var driverObjects = {
+            // "AsanteSNAP": asanteDriver,
+            // "InsuletOmniPod": insuletDriver,
+            "Test": testDriver
+        };
+
+        var dm = driverManager(driverObjects, {});
+        var drv = dm.detect();
+        if (drv) {
+            dm.process(drv);
+        }
+
+    };
+
     $("#testButton1").click(asanteDevice.findAsante);
-    $("#testButton2").click(test1);
+    $("#testButton2").click(searchOnce);
     $("#testButton3").click(asanteDevice.listenForBeacon);
 
 }
 
 $(constructUI);
+
+
 
