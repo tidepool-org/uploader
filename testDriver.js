@@ -2,8 +2,19 @@ testDriver = function(config) {
     var cfg = config;
 
     return {
-        detect: function () {
-            return true;
+        // should call the callback with null, obj if the item 
+        // was detected, with null, null if not detected.
+        // call err only if there's something unrecoverable.
+        detect: function (obj, cb) {
+            setTimeout(function() {
+                // for our demo, sometimes we don't detect a driver
+                if (Math.random() > 0.2) {
+                    cb(null, obj);
+                } else {
+                    cb(null, null);
+                }
+                // and we may take a while to respond
+            }, Math.random() * 10000);
         },
 
         setup: function (progress, cb) {

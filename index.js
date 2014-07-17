@@ -172,7 +172,7 @@ function statusManager(config) {
     };
 
     return {
-        bind: function(stage) {
+        statf: function(stage) {
             return setStatus.bind(this, stage);
         }
     };
@@ -229,27 +229,43 @@ function driverManager(driverObjects, config) {
     ]});
 
     return {
-        // iterates the driver list and calls detect; first one to return
-        // true gets returned from detect
-        detect: function () {
+        // iterates the driver list and calls detect; returns the list 
+        // of driver keys for the ones that called the callback
+        detect: function (cb) {
+            detectfuncs = [];
             for (var d in drivers) {
-                if (drivers[d].detect()) {
-                    return d;
-                }
+                detectfuncs.push(drivers[d].detect.bind(drivers[d], d));
             }
+            async.series(detectfuncs, function(err, result) {
+                if (err) {
+                    // something went wrong
+                    cb(err, result);
+                } else {
+                    var ret = [];
+                    for (var r=0; r<result.length; ++r) {
+                        if (result[r]) {
+                            ret.push(result[r]);
+                        }
+                    }
+                    cb(null, ret);
+                }
+            });
         },
 
         process: function (driver, cb) {
             drvr = drivers[driver];
+            console.log(driver);
+            console.log(drivers);
+            console.log(drvr);
             async.series([
-                    drvr.setup.bind(drvr, stat.bind(0)),
-                    drvr.connect.bind(drvr, stat.bind(1)),
-                    drvr.getConfigInfo.bind(drvr, stat.bind(2)),
-                    drvr.fetchData.bind(drvr, stat.bind(3)),
-                    drvr.processData.bind(drvr, stat.bind(4)),
-                    drvr.uploadData.bind(drvr, stat.bind(5)),
-                    drvr.disconnect.bind(drvr, stat.bind(6)),
-                    drvr.cleanup.bind(drvr, stat.bind(7))
+                    drvr.setup.bind(drvr, stat.statf(0)),
+                    drvr.connect.bind(drvr, stat.statf(1)),
+                    drvr.getConfigInfo.bind(drvr, stat.statf(2)),
+                    drvr.fetchData.bind(drvr, stat.statf(3)),
+                    drvr.processData.bind(drvr, stat.statf(4)),
+                    drvr.uploadData.bind(drvr, stat.statf(5)),
+                    drvr.disconnect.bind(drvr, stat.statf(6)),
+                    drvr.cleanup.bind(drvr, stat.statf(7))
                 ], cb);
         }
     };
@@ -557,29 +573,35 @@ function constructUI() {
         var driverObjects = {
             // "AsanteSNAP": asanteDriver,
             // "InsuletOmniPod": insuletDriver,
-            "Test": testDriver
+            "Test": testDriver,
+            "AnotherTest": testDriver
         };
 
         var dm = driverManager(driverObjects, {});
-        var drv = dm.detect();
-        if (drv) {
-            dm.process(drv, function(err, results){
-                if (err) {
-                    console.log("Fail");
-                    console.log(err);
-                } else {
-                    console.log("Success!");
+        dm.detect(function (err, found) {
+            if (err) {
+                cb(err, driver);
+            } else {
+                var devices = [];
+                for (var f=0; f < found.length; ++f) {
+                    devices.push(dm.process.bind(dm, found[f]));
                 }
-                if (cb) {
-                    cb(err, results);
-                }
-            });
-        }
+                async.series(devices, cb);
+            }
+        });
 
     };
 
     var searchOnce = function() {
-        search();
+        search(function(err, results) {
+            if (err) {
+                console.log("Fail");
+                console.log(err);
+            } else {
+                console.log("Success");
+                console.log(results);
+            }
+        });
     };
 
     var searching = null;
@@ -591,7 +613,7 @@ function constructUI() {
                 return;
             }
             processing = true;
-            search(function(err, results){
+            search(function(err, results) {
                 processing = false;
             });
         }, 5000);
