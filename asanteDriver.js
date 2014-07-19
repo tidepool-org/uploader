@@ -321,7 +321,7 @@ asanteDriver = function (config) {
     var unpackDataRecord = function(rec) {
         switch (rec.rectype) {
             case PUMP_DATA_RECORDS.LOG_BOLUS.value:
-                util.unpack(rec.data, 0, "sIIssssIbbbbbb", [
+                util.unpack(rec.data, 0, "siissssibbbbbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -339,7 +339,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_SMART.value:
-                util.unpack(rec.data, 0, "sIIsssIsssssssbb", [
+                util.unpack(rec.data, 0, "siisssisssssssbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -359,7 +359,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL.value:
-                util.unpack(rec.data, 0, "sIIbb", [
+                util.unpack(rec.data, 0, "siibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -368,7 +368,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL_CONFIG.value:
-                util.unpack(rec.data, 0, "sIIbb", [
+                util.unpack(rec.data, 0, "siibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -378,7 +378,7 @@ asanteDriver = function (config) {
                     // some conditional code goes here based on EventType
                 break;
             case PUMP_DATA_RECORDS.LOG_ALARM_ALERT.value:
-                util.unpack(rec.data, 0, "sIIbssbb", [
+                util.unpack(rec.data, 0, "siibssbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -390,7 +390,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PRIME.value:
-                util.unpack(rec.data, 0, "sIIssbb", [
+                util.unpack(rec.data, 0, "siissbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -401,7 +401,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PUMP.value:
-                util.unpack(rec.data, 0, "sIIIIsbb", [
+                util.unpack(rec.data, 0, "siiiisbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -413,7 +413,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_MISSED_BASAL.value:
-                util.unpack(rec.data, 0, "sIIIsbb", [
+                util.unpack(rec.data, 0, "siiisbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -424,7 +424,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_EDIT.value:
-                util.unpack(rec.data, 0, "sIIIIbb", [
+                util.unpack(rec.data, 0, "siiiibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -434,7 +434,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value:
-                util.unpack(rec.data, 0, "sIIs", [
+                util.unpack(rec.data, 0, "siis", [
                     "crc",
                     "RtcAtSetTime",
                     "UserSetTime",
@@ -725,7 +725,54 @@ asanteDriver = function (config) {
     };
 
     return {
-        listenForBeacon: listenForBeacon,
-        findAsante: findAsante
+        // should call the callback with null, obj if the item 
+        // was detected, with null, null if not detected.
+        // call err only if there's something unrecoverable.
+        detect: function (obj, cb) {
+            cb(null, obj);
+        },
+
+        setup: function (progress, cb) {
+            progress(100);
+            cb(null, "setup");
+        },
+
+        connect: function (progress, cb) {
+            progress(100);
+            cb(null, "connect");
+        },
+
+        getConfigInfo: function (progress, cb) {
+            progress(100);
+            cb(null, "getConfigInfo");
+        },
+
+        fetchData: function (progress, cb) {
+            progress(100);
+            cb(null, "fetchData");
+        },
+
+        processData: function (progress, cb) {
+            progress(40);
+            setTimeout(function() {
+                progress(100);
+                cb(null, "processData");
+            }, Math.random() * 10000);
+        },
+
+        uploadData: function (progress, cb) {
+            progress(100);
+            cb(null, "uploadData");
+        },
+
+        disconnect: function (progress, cb) {
+            progress(100);
+            cb(null, "disconnect");
+        },
+
+        cleanup: function (progress, cb) {
+            progress(100);
+            cb(null, "cleanup");
+        }
     };
 };

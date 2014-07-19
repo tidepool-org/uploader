@@ -1,6 +1,8 @@
 // buildUI.js
 // this constructs the UI in jQuery
 
+util = utils();
+
 var make_base_auth = function (username, password) {
   var tok = username + ':' + password;
   var hash = btoa(tok);
@@ -505,51 +507,6 @@ function constructUI() {
         tidepoolServer.postToJellyfish(data, happy, sad);
     };
 
-    var testPack = function() {
-        buf = new Uint8Array(30);
-        len = util.pack(buf, 0, "IIbsIb", 254, 65534, 55, 1023, 256, 7);
-        console.log(buf);
-        result = util.unpack(buf, 0, "IIbsIb", ['a', 'b', 'c', 'd', 'e', 'f']);
-        console.log(result);
-        buf[0] = 0xff;
-        buf[1] = 0xff;
-        buf[2] = 0xff;
-        buf[3] = 0xff;
-        result = util.unpack(buf, 0, "I", ['x']);
-        console.log(result);
-    };
-
-    // $("#testButton").click(testSerial);
-
-    var testJellyfish = function() {
-        var datapt = {
-          "type": "cbg",
-          "units": "mg/dL",
-          "value": 0,
-          "time": "",
-          "deviceTime": "",
-          "deviceId": "KentTest123",
-          "source": "device"
-        };
-
-        var data = [];
-        var starttime = new Date(2014, 1, 23, 6);
-        var increment = 10 * 60 * 1000;  // 10 minutes
-        var duration = 30 * 60 * 60 * 1000; // 30 hours
-        var EDT_offset = -4 * 60 * 60 * 1000; // 4 hours
-        var startbg = 150;
-        for (var dt = 0; dt < duration; dt += increment) {
-            datapt.value = (startbg + 105 * Math.sin(dt/(10 * increment)));
-            var t = starttime.valueOf() + dt;
-            datapt.time = new Date(t).toISOString();
-            var devtime = new Date(t + EDT_offset).toISOString();
-            datapt.deviceTime = devtime.substring(0, devtime.length-1);
-            data.push($.extend({}, datapt));
-        }
-        console.log(data);
-        postJellyfish(data);
-    };
-
     var test1 = function() {
         var get = function(url, happycb, sadcb) {
             var jqxhr = $.ajax({
@@ -569,20 +526,32 @@ function constructUI() {
         get(url);
     };
 
-    var search = function(cb) {
-        var driverObjects = {
+    var serialDevices = {
             // "AsanteSNAP": asanteDriver,
-            // "InsuletOmniPod": insuletDriver,
             "Test": testDriver,
             "AnotherTest": testDriver
         };
 
-        var dm = driverManager(driverObjects, {});
+    var serialConfigs = {
+        "AsanteSNAP": {
+            deviceComms: deviceComms
+        }
+    };
+
+    var blockDevices = {
+            "InsuletOmniPod": insuletDriver,
+        };
+
+
+    var search = function(driverObjects, driverConfigs, cb) {
+        var dm = driverManager(driverObjects, driverConfigs);
         dm.detect(function (err, found) {
             if (err) {
-                cb(err, driver);
+                cb(err, found);
             } else {
                 var devices = [];
+                // we might have found several devices, so make a binding
+                // for the process functor for each, then run them in series.
                 for (var f=0; f < found.length; ++f) {
                     devices.push(dm.process.bind(dm, found[f]));
                 }
@@ -593,7 +562,7 @@ function constructUI() {
     };
 
     var searchOnce = function() {
-        search(function(err, results) {
+        search(serialDevices, serialConfigs, function(err, results) {
             if (err) {
                 console.log("Fail");
                 console.log(err);
@@ -613,7 +582,7 @@ function constructUI() {
                 return;
             }
             processing = true;
-            search(function(err, results) {
+            search(serialDevices, serialConfigs, function(err, results) {
                 processing = false;
             });
         }, 5000);
@@ -626,9 +595,50 @@ function constructUI() {
         }
     };
 
+    var handleFileSelect = function (evt) {
+        var files = evt.target.files;
+        // can't ever be more than one in this array since it's not a multiple
+        var i = 0;
+        if (files[i].name.slice(-4) == ".ibf") {
+            var reader = new FileReader();
+
+            reader.onerror = function(evt) {
+                console.log("Reader error!");
+                console.log(evt);
+            };
+
+            // closure to bind the filename
+            reader.onloadend = (function (theFile) {
+                return function(e) {
+                    console.log(e);
+                    var cfg = {
+                        "InsuletOmniPod": {
+                            filename: theFile.name,
+                            filedata: e.srcElement.result
+                        }
+                    };
+                    search(blockDevices, cfg, function(err, results) {
+                        if (err) {
+                            console.log("Fail");
+                            console.log(err);
+                        } else {
+                            console.log("Success");
+                            console.log(results);
+                        }
+                    });
+                };
+            })(files[i]);
+
+            reader.readAsArrayBuffer(files[i]);
+        }
+    };
+
+    $("#filechooser").change(handleFileSelect);
+
     $("#testButton1").click(searchOnce);
     $("#testButton2").click(searchRepeatedly);
-    $("#testButton3").click(cancelSearch);
+    // $("#testButton3").click(cancelSearch);
+    $("#testButton3").click(testPack);
 
 }
 

@@ -103,14 +103,14 @@ var dexcomDriver = {
                 [rectype.value]
             ),
             parser: function(result) {
-                return util.unpack(result.payload, 0, "II", ["lo", "hi"]);
+                return util.unpack(result.payload, 0, "ii", ["lo", "hi"]);
                 }
             };
     },
 
     readDataPages: function(rectype, startPage, numPages) {
         var parser = function(result) {
-            var header = util.unpack(result.payload, 0, "IIbbIIIIbb", [
+            var header = util.unpack(result.payload, 0, "iibbiiiibb", [
                     "index", "nrecs", "rectype", "revision", 
                     "pagenum", "r1", "r2", "r3", "j1", "j2"
                 ]);
@@ -125,7 +125,7 @@ var dexcomDriver = {
             all = [];
             var ctr = 0;
             for (var i = 0; i<header.nrecs; ++i) {
-                var rec = util.unpack(data, ctr, "IIsbs", [
+                var rec = util.unpack(data, ctr, "iisbs", [
                     "systemSeconds", "displaySeconds", "glucose", "trend", "crc"   
                 ]);
                 rec.glucose &= 0x3FF;
@@ -140,7 +140,7 @@ var dexcomDriver = {
             return all;
         };
 
-        var struct = "bIb";
+        var struct = "bib";
         var len = util.structlen(struct);
         var payload = new Uint8Array(len);
         util.pack(payload, 0, struct, rectype.value, startPage, numPages);
