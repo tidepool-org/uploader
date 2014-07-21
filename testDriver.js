@@ -17,47 +17,56 @@ testDriver = function(config) {
             }, Math.random() * 10000);
         },
 
+        // this function starts the chain, so it has to create but not accept
+        // the result (data) object; it's then passed down the rest of the chain
         setup: function (progress, cb) {
             progress(100);
-            cb(null, "setup");
+            cb(null, { setup: true });
         },
 
-        connect: function (progress, cb) {
+        connect: function (progress, data, cb) {
             progress(100);
-            cb(null, "connect");
+            data.connect = true;
+            cb(null, data);
         },
 
-        getConfigInfo: function (progress, cb) {
+        getConfigInfo: function (progress, data, cb) {
             progress(100);
-            cb(null, "getConfigInfo");
+            data.getConfigInfo = true;
+            cb(null, data);
         },
 
-        fetchData: function (progress, cb) {
+        fetchData: function (progress, data, cb) {
             progress(100);
-            cb(null, "fetchData");
+            data.fetchData = true;
+            cb(null, data);
         },
 
-        processData: function (progress, cb) {
+        processData: function (progress, data, cb) {
             progress(40);
             setTimeout(function() {
                 progress(100);
-                cb(null, "processData");
+                data.processData = true;
+                cb(null, data);
             }, Math.random() * 10000);
         },
 
-        uploadData: function (progress, cb) {
+        uploadData: function (progress, data, cb) {
             progress(100);
-            cb(null, "uploadData");
+            data.uploadData = true;
+            cb(null, data);
         },
 
-        disconnect: function (progress, cb) {
+        disconnect: function (progress, data, cb) {
             progress(100);
-            cb(null, "disconnect");
+            data.disconnect = true;
+            cb(null, data);
         },
 
-        cleanup: function (progress, cb) {
+        cleanup: function (progress, data, cb) {
             progress(100);
-            cb(null, "cleanup");
+            data.cleanup = true;
+            cb(null, data);
         }
     };
 };

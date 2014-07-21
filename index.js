@@ -6,14 +6,14 @@ util = utils();
 var make_base_auth = function (username, password) {
   var tok = username + ':' + password;
   var hash = btoa(tok);
-  return "Basic " + hash;
+  return 'Basic ' + hash;
 };
 
 var tidepoolHosts = {
-    local: { host: "http://localhost:8009", jellyfish: "http://localhost:9122" },
-    devel: { host: "https://devel-api.tidepool.io", jellyfish: "https://devel-uploads.tidepool.io" },
-    staging: { host: "https://staging-api.tidepool.io", jellyfish: "https://staging-uploads.tidepool.io" },
-    prod: { host: "https://api.tidepool.io", jellyfish: "https://uploads.tidepool.io" }
+    local: { host: 'http://localhost:8009', jellyfish: 'http://localhost:9122' },
+    devel: { host: 'https://devel-api.tidepool.io', jellyfish: 'https://devel-uploads.tidepool.io' },
+    staging: { host: 'https://staging-api.tidepool.io', jellyfish: 'https://staging-uploads.tidepool.io' },
+    prod: { host: 'https://api.tidepool.io', jellyfish: 'https://uploads.tidepool.io' }
 };
 
 var tidepoolServerData = {
@@ -60,11 +60,11 @@ var tidepoolServer = {
         });
     },
     login: function(username, password, happycb, sadcb) {
-        var url = tidepoolServerData.host + "/auth/login";
+        var url = tidepoolServerData.host + '/auth/login';
         jqxhr = $.ajax({
             type: 'POST',
             url: url,
-            headers: { "Authorization": make_base_auth(username, password) }, 
+            headers: { 'Authorization': make_base_auth(username, password) }, 
         }).success(function(data, status, jqxhr) {
             tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
             tidepoolServerData.userdata = data;
@@ -74,11 +74,11 @@ var tidepoolServer = {
         });
     },
     getProfile: function(happycb, sadcb) {
-        var url = tidepoolServerData.host + "/metadata/" + tidepoolServerData.userdata.userid + "/profile";
+        var url = tidepoolServerData.host + '/metadata/' + tidepoolServerData.userdata.userid + '/profile';
         this.get(url, happycb, sadcb);
     },
     postToJellyfish: function(data, happycb, sadcb) {
-        var url = tidepoolServerData.jellyfish + "/data";
+        var url = tidepoolServerData.jellyfish + '/data';
         this.post(url, data, happycb, sadcb);
     }
 };
@@ -88,7 +88,7 @@ var serialDevice = {
     connection: null,
     port: null,
     buffer: [],
-    portprefix: "/dev/cu.usb",
+    portprefix: '/dev/cu.usb',
     setup: function(portprefix) {
         if (portprefix) {
             serialDevice.portprefix = portprefix;
@@ -99,7 +99,7 @@ var serialDevice = {
             var connected = function(conn) {
                 serialDevice.connection = conn;
                 serialDevice.connected = true;
-                console.log("connected to " + serialDevice.port.path);
+                console.log('connected to ' + serialDevice.port.path);
                 connectedCB();
             };
             for (var i=0; i<ports.length; i++) {
@@ -142,12 +142,12 @@ var serialDevice = {
     writeSerial: function(bytes, callback) {
         var l = new Uint8Array(bytes).length;
         var sendcheck = function(info) {
-            console.log("Sent %d bytes", info.bytesSent);
+            console.log('Sent %d bytes', info.bytesSent);
             if (l != info.bytesSent) {
-                console.log("Only " + info.bytesSent + " bytes sent out of " + l);
+                console.log('Only ' + info.bytesSent + ' bytes sent out of ' + l);
             }
             else if (info.error) {
-                console.log("Serial send returned " + info.error);
+                console.log('Serial send returned ' + info.error);
             }
             callback(info);
         };
@@ -157,7 +157,7 @@ var serialDevice = {
 
 function statusManager(config) {
     var progress = function(msg, pctg) {
-        console.log("Progress: %s -- %d", msg, pctg);
+        console.log('Progress: %s -- %d', msg, pctg);
     };
 
     var cfg = config;
@@ -199,42 +199,42 @@ function driverManager(driverObjects, config) {
     var cfg = config;
     var drivers = {};
     var required = [
-            "detect",
-            "setup",
-            "connect",
-            "getConfigInfo",
-            "fetchData",
-            "processData",
-            "uploadData",
-            "disconnect",
-            "cleanup",
+            'detect',
+            'setup',
+            'connect',
+            'getConfigInfo',
+            'fetchData',
+            'processData',
+            'uploadData',
+            'disconnect',
+            'cleanup',
         ];
 
     for (var d in driverObjects) {
         drivers[d] = driverObjects[d](config[d]);
         for (var i=0; i<required.length; ++i) {
-            if (typeof(drivers[d][required[i]]) != "function") {
-                console.log("!!!! Driver %s must implement %s", d, required[i]);
+            if (typeof(drivers[d][required[i]]) != 'function') {
+                console.log('!!!! Driver %s must implement %s', d, required[i]);
             }
         }
     }
 
     var stat = statusManager({progress: null, steps: [
-        { name: "setting up", min: 0, max: 5 },
-        { name: "connecting", min: 5, max: 10 },
-        { name: "getting configuration data", min: 10, max: 15 },
-        { name: "fetching data", min: 15, max: 40 },
-        { name: "processing data", min: 40, max: 50 },
-        { name: "uploading data", min: 50, max: 90 },
-        { name: "disconnecting", min: 90, max: 95 },
-        { name: "cleaning up", min: 95, max: 100 }
+        { name: 'setting up', min: 0, max: 5 },
+        { name: 'connecting', min: 5, max: 10 },
+        { name: 'getting configuration data', min: 10, max: 25 },
+        { name: 'fetching data', min: 25, max: 40 },
+        { name: 'processing data', min: 40, max: 50 },
+        { name: 'uploading data', min: 50, max: 90 },
+        { name: 'disconnecting', min: 90, max: 95 },
+        { name: 'cleaning up', min: 95, max: 100 }
     ]});
 
     return {
         // iterates the driver list and calls detect; returns the list 
         // of driver keys for the ones that called the callback
         detect: function (cb) {
-            detectfuncs = [];
+            var detectfuncs = [];
             for (var d in drivers) {
                 detectfuncs.push(drivers[d].detect.bind(drivers[d], d));
             }
@@ -255,11 +255,11 @@ function driverManager(driverObjects, config) {
         },
 
         process: function (driver, cb) {
-            drvr = drivers[driver];
+            var drvr = drivers[driver];
             console.log(driver);
             console.log(drivers);
             console.log(drvr);
-            async.series([
+            async.waterfall([
                     drvr.setup.bind(drvr, stat.statf(0)),
                     drvr.connect.bind(drvr, stat.statf(1)),
                     drvr.getConfigInfo.bind(drvr, stat.statf(2)),
@@ -278,12 +278,12 @@ function constructUI() {
 
     var loggedIn = function (isLoggedIn) {
         if (isLoggedIn) {
-            $(".showWhenNotLoggedIn").fadeOut(400, function() {
-                $(".showWhenLoggedIn").fadeIn();
+            $('.showWhenNotLoggedIn').fadeOut(400, function() {
+                $('.showWhenLoggedIn').fadeIn();
             });
         } else {
-            $(".showWhenLoggedIn").fadeOut(400, function() {
-                $(".showWhenNotLoggedIn").fadeIn();
+            $('.showWhenLoggedIn').fadeOut(400, function() {
+                $('.showWhenNotLoggedIn').fadeIn();
             });
         }
     };
@@ -292,12 +292,12 @@ function constructUI() {
 
     var connected = function (isConnected) {
         if (isConnected) {
-            $(".showWhenNotConnected").fadeOut(400, function() {
-                $(".showWhenConnected").fadeIn();
+            $('.showWhenNotConnected').fadeOut(400, function() {
+                $('.showWhenConnected').fadeIn();
             });
         } else {
-            $(".showWhenConnected").fadeOut(400, function() {
-                $(".showWhenNotConnected").fadeIn();
+            $('.showWhenConnected').fadeOut(400, function() {
+                $('.showWhenNotConnected').fadeIn();
             });
         }
     };
@@ -309,11 +309,11 @@ function constructUI() {
         if (s[s.length-1] !== '\n') {
             s += '\n';
         }
-        var all = $("#connectionLog").val();
-        $("#connectionLog").val(all + s);
+        var all = $('#connectionLog').val();
+        $('#connectionLog').val(all + s);
     };
 
-    $("#loginButton").click(function() {
+    $('#loginButton').click(function() {
         var username = $('#username').val();
         var password = $('#password').val();
         var serverIndex = $('#serverURL').val();
@@ -329,35 +329,35 @@ function constructUI() {
         };
 
         var failLogin = function(jqxhr, status, error) {
-            connectLog("Login FAILED!", status, error);
+            connectLog('Login FAILED!', status, error);
             loggedIn(false);
         };
 
         var goodProfile = function(data, status, jqxhr) {
             connectLog(status);
             connectLog(data.toString());
-            $(".loginname").text(data.fullName);
+            $('.loginname').text(data.fullName);
         };
 
         var failProfile = function(jqxhr, status, error) {
-            connectLog("FAILED!", status, error);
+            connectLog('FAILED!', status, error);
         };
 
         var getProfile = function() {
-            connectLog("Fetching profile.");
+            connectLog('Fetching profile.');
             tidepoolServer.getProfile(goodProfile, failProfile);
         };
 
         tidepoolServer.login(username, password, goodLogin, failLogin);
     });
 
-    $("#logoutButton").click(function() {
+    $('#logoutButton').click(function() {
         loggedIn(false);
     });
 
     var processOneDevice = function(devname, deviceArray) {
         for (var d=0; d<deviceArray.length; ++d) {
-            dev = deviceArray[d];
+            var dev = deviceArray[d];
             connectLog(devname);
             connectLog(dev.device);
             connectLog(dev.vendorId);
@@ -366,11 +366,11 @@ function constructUI() {
     };
 
     var getUSBDevices = function() {
-        manifest = chrome.runtime.getManifest();
+        var manifest = chrome.runtime.getManifest();
         for (var p = 0; p < manifest.permissions.length; ++p) {
             var perm = manifest.permissions[p];
             if (perm.usbDevices) {
-                for (d = 0; d < perm.usbDevices.length; ++d) {
+                for (var d = 0; d < perm.usbDevices.length; ++d) {
                     console.log(perm.usbDevices[d]);
                     var f = processOneDevice.bind(this, perm.usbDevices[d].deviceName);
                     chrome.usb.getDevices({
@@ -383,7 +383,7 @@ function constructUI() {
     };
 
     chrome.system.storage.onAttached.addListener(function (info){
-        connectLog("attached: " + info.name);
+        connectLog('attached: ' + info.name);
         storageDeviceInfo[info.id] = {
             id: info.id,
             name: info.name,
@@ -393,12 +393,12 @@ function constructUI() {
     });
 
     chrome.system.storage.onDetached.addListener(function (id){
-        connectLog("detached: " + storageDeviceInfo[id].name);
+        connectLog('detached: ' + storageDeviceInfo[id].name);
         delete(storageDeviceInfo[id]);
     });
 
     var openFile = function() {
-        console.log("OpenFile");
+        console.log('OpenFile');
         chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
             console.log(readOnlyEntry);
             readOnlyEntry.file(function(file) {
@@ -406,7 +406,7 @@ function constructUI() {
                 var reader = new FileReader();
 
                 reader.onerror = function() {
-                    connectLog("Error reading file!");
+                    connectLog('Error reading file!');
                 };
                 reader.onloadend = function(e) {
                     // e.target.result contains the contents of the file
@@ -419,23 +419,23 @@ function constructUI() {
         });
     };
 
-    // $("#testButton").click(findAsante);
-    // $("#testButton1").click(getUSBDevices);
+    // $('#testButton').click(findAsante);
+    // $('#testButton1').click(getUSBDevices);
     var deviceComms = serialDevice;
     var asanteDevice = asanteDriver({deviceComms: deviceComms});
 
-    deviceComms.connect(function() {connectLog("connected");});
+    deviceComms.connect(function() {connectLog('connected');});
     var testSerial = function() {
         var buf = new ArrayBuffer(1);
         var bytes = new Uint8Array(buf);
         bytes[0] = 97;
-        deviceComms.writeSerial(buf, function() {connectLog("'a' sent");});
+        deviceComms.writeSerial(buf, function() {connectLog('"a" sent');});
     };
 
     var getSerial = function(timeout) {
         deviceComms.readSerial(200, timeout, function(packet) {
-            connectLog("received " + packet.length + " bytes");
-            var s = "";
+            connectLog('received ' + packet.length + ' bytes');
+            var s = '';
             for (var c in packet) {
                 s += String.fromCharCode(packet[c]);
             }
@@ -451,19 +451,18 @@ function constructUI() {
     };
 
     var deviceInfo = null;
-    var counter=0;
     var prevTimestamp = null;
     var postJellyfish = function (egvpage, callback) {
-        console.log("poster");
+        console.log('poster');
         console.log(deviceInfo);
         var datapt = {
-          "type": "cbg",
-          "units": "mg/dL",
-          "value": 0,
-          "time": "",
-          "deviceTime": "",
-          "deviceId": deviceInfo.ProductName + "/12345",
-          "source": "device"
+          'type': 'cbg',
+          'units': 'mg/dL',
+          'value': 0,
+          'time': '',
+          'deviceTime': '',
+          'deviceId': deviceInfo.ProductName + '/12345',
+          'source': 'device'
         };
 
         var localtime = function(t) {
@@ -476,8 +475,8 @@ function constructUI() {
             datapt.value = egvpage.data[i].glucose;
             datapt.time = egvpage.data[i].displayTime.toISOString();
             datapt.deviceTime = localtime(egvpage.data[i].displayTime);
-            if (datapt.value < 15) {    // it's a "special" (error) value
-                console.log("Skipping datapoint with special bg.");
+            if (datapt.value < 15) {    // it's a 'special' (error) value
+                console.log('Skipping datapoint with special bg.');
                 console.log(datapt);
                 continue;
             }
@@ -489,16 +488,16 @@ function constructUI() {
         }
         console.log(data);
         var happy = function(resp, status, jqxhr) {
-            console.log("Jellyfish post succeeded.");
+            console.log('Jellyfish post succeeded.');
             console.log(status);
             console.log(resp);
             callback(null, recCount);
         };
         var sad = function(jqxhr, status, err) {
-            if (jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == "duplicate") {
-                callback("STOP", jqxhr.responseJSON.index);
+            if (jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == 'duplicate') {
+                callback('STOP', jqxhr.responseJSON.index);
             } else {
-                console.log("Jellyfish post failed.");
+                console.log('Jellyfish post failed.');
                 console.log(status);
                 console.log(err);
                 callback(err, 0);
@@ -509,37 +508,37 @@ function constructUI() {
 
     var test1 = function() {
         var get = function(url, happycb, sadcb) {
-            var jqxhr = $.ajax({
+            $.ajax({
                 type: 'GET',
                 url: url
             }).success(function(data, status, jqxhr) {
                 // happycb(data, status, jqxhr);
-                console.log("success!");
+                console.log('success!');
                 console.log(data);
             }).error(function(jqxhr, status, err) {
                 // sadcb(jqxhr, status, err);
-                console.log("FAIL");
+                console.log('FAIL');
             });
         };
 
-        var url = "http://localhost:8888/foo.txt";
+        var url = 'http://localhost:8888/foo.txt';
         get(url);
     };
 
     var serialDevices = {
-            // "AsanteSNAP": asanteDriver,
-            "Test": testDriver,
-            "AnotherTest": testDriver
+            // 'AsanteSNAP': asanteDriver,
+            'Test': testDriver,
+            'AnotherTest': testDriver
         };
 
     var serialConfigs = {
-        "AsanteSNAP": {
+        'AsanteSNAP': {
             deviceComms: deviceComms
         }
     };
 
     var blockDevices = {
-            "InsuletOmniPod": insuletDriver,
+            'InsuletOmniPod': insuletDriver,
         };
 
 
@@ -564,10 +563,10 @@ function constructUI() {
     var searchOnce = function() {
         search(serialDevices, serialConfigs, function(err, results) {
             if (err) {
-                console.log("Fail");
+                console.log('Fail');
                 console.log(err);
             } else {
-                console.log("Success");
+                console.log('Success');
                 console.log(results);
             }
         });
@@ -578,7 +577,7 @@ function constructUI() {
     var searchRepeatedly = function() {
         searching = setInterval(function () {
             if (processing) {
-                console.log("skipping");
+                console.log('skipping');
                 return;
             }
             processing = true;
@@ -599,11 +598,11 @@ function constructUI() {
         var files = evt.target.files;
         // can't ever be more than one in this array since it's not a multiple
         var i = 0;
-        if (files[i].name.slice(-4) == ".ibf") {
+        if (files[i].name.slice(-4) == '.ibf') {
             var reader = new FileReader();
 
             reader.onerror = function(evt) {
-                console.log("Reader error!");
+                console.log('Reader error!');
                 console.log(evt);
             };
 
@@ -612,17 +611,17 @@ function constructUI() {
                 return function(e) {
                     console.log(e);
                     var cfg = {
-                        "InsuletOmniPod": {
+                        'InsuletOmniPod': {
                             filename: theFile.name,
                             filedata: e.srcElement.result
                         }
                     };
                     search(blockDevices, cfg, function(err, results) {
                         if (err) {
-                            console.log("Fail");
+                            console.log('Fail');
                             console.log(err);
                         } else {
-                            console.log("Success");
+                            console.log('Success');
                             console.log(results);
                         }
                     });
@@ -633,12 +632,13 @@ function constructUI() {
         }
     };
 
-    $("#filechooser").change(handleFileSelect);
+    $('#filechooser').change(handleFileSelect);
 
-    $("#testButton1").click(searchOnce);
-    $("#testButton2").click(searchRepeatedly);
-    // $("#testButton3").click(cancelSearch);
-    $("#testButton3").click(testPack);
+    $('#testButton1').click(searchOnce);
+    $('#testButton2').click(searchRepeatedly);
+    $('#testButton3').click(cancelSearch);
+    // $('#testButton3').click(util.test);
+
 
 }
 
