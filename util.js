@@ -114,6 +114,7 @@ utils = function() {
         var nameindex = 0;
         var pat = /([0-9]*)([a-zA-Z.])/g;
         var a;
+        var offset = 0;
         while ((a = pat.exec(format)) !== null) {
             var fmt = {};
             var count = 1;
@@ -125,6 +126,8 @@ utils = function() {
             // maximum length
             if (f === 'z' || f === 'Z') {
                 fmt.len = count;
+                fmt.offset = offset;
+                offset += fmt.len;
                 fmt.get = fields[f].get;
                 fmt.put = fields[f].put;
                 if (names[nameindex]) {
@@ -137,6 +140,8 @@ utils = function() {
             else if (fields[f]) {
                 for (var j=0; j<count; ++j) {
                     fmt.len = fields[f].len;
+                    fmt.offset = offset;
+                    offset += fmt.len;
                     fmt.get = fields[f].get;
                     fmt.put = fields[f].put;
                     if (names[nameindex]) {
@@ -148,6 +153,8 @@ utils = function() {
                 }
             } else {
                 fmt.len = count;
+                fmt.offset = offset;
+                offset += fmt.len;
                 fmt.get = extractNothing;
                 fmt.put = storeNothing;
                 fmt.name = null;
@@ -220,6 +227,7 @@ utils = function() {
             ctr += fmts[i].len;
         }
         result.unpack_length = ctr;
+        // result.formats = fmts;
         return result;
     };
 
@@ -231,6 +239,8 @@ utils = function() {
     };
 
     var test = function() {
+        var l = structlen('b6.Si');
+        console.log(l);
         var p = parseformat('2ibsi4.b32z', 'abcd');
         console.log(p);
         var buf = new Uint8Array(32);
@@ -275,7 +285,7 @@ utils = function() {
         unpack: unpack,
         structlen: structlen,
         copyBytes: copyBytes,
-        // test: test
+        test: test
     };
 };
 
