@@ -177,14 +177,14 @@ utils = function() {
     var pack = function(buf, offset, format) {
         var fmts = parseformat(format);
 
-        var ctr = 0;
         for (var i=0; i < fmts.length; ++i) {
-            fmts[i].put(arguments[i+3], buf, offset + ctr, fmts[i].len);
-            ctr += fmts[i].len;
+            fmts[i].put(arguments[i+3], buf, offset + fmts[i].offset, fmts[i].len);
         }
-        return ctr;
+        // inefficient but probably doesn't ever matter
+        return structlen(format);
     };
 
+    // This is if you prefer to build things with a chaining api
     var createUnpacker = function() {
         return {
             format: '',
@@ -198,7 +198,6 @@ utils = function() {
             }
         };
     };
-
 
 
     // buf is an indexable array of bytes
@@ -218,15 +217,12 @@ utils = function() {
 
         var fmts = parseformat(format, names);
 
-        var ctr = 0;
         for (var i=0; i < fmts.length; ++i) {
-            var value = fmts[i].get(buf, offset + ctr, fmts[i].len);
+            var value = fmts[i].get(buf, offset + fmts[i].offset, fmts[i].len);
             if (fmts[i].name != null) {
                 result[fmts[i].name] = value;
             }
-            ctr += fmts[i].len;
         }
-        result.unpack_length = ctr;
         // result.formats = fmts;
         return result;
     };
