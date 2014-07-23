@@ -157,14 +157,21 @@ var serialDevice = {
 
 function statusManager(config) {
     var progress = function(msg, pctg) {
-        console.log('Progress: %s -- %d', msg, pctg);
+        // console.log('Progress: %s -- %d', msg, pctg);
+        $('#progressbar').show();
+        $('#progressbar').progressbar('option', 'value', pctg);
+        $('.progress-label').text(msg);
+    };
+
+    var hideProgressBar = function() {
+        $('#progressbar').hide();
     };
 
     var cfg = config;
-    if (config.progress) {
-        progress = config.progress;
+    if (cfg.progress) {
+        progress = cfg.progress;
     }
-    var statuses = config.steps;
+    var statuses = cfg.steps;
 
     var setStatus = function(stage, pct) {
         var msg = statuses[stage].name;
@@ -174,6 +181,7 @@ function statusManager(config) {
     };
 
     return {
+        hideProgressBar: hideProgressBar,
         statf: function(stage) {
             return setStatus.bind(this, stage);
         }
@@ -256,9 +264,9 @@ function driverManager(driverObjects, config) {
 
         process: function (driver, cb) {
             var drvr = drivers[driver];
-            console.log(driver);
-            console.log(drivers);
-            console.log(drvr);
+            // console.log(driver);
+            // console.log(drivers);
+            // console.log(drvr);
             async.waterfall([
                     drvr.setup.bind(drvr, stat.statf(0)),
                     drvr.connect.bind(drvr, stat.statf(1)),
@@ -268,7 +276,10 @@ function driverManager(driverObjects, config) {
                     drvr.uploadData.bind(drvr, stat.statf(5)),
                     drvr.disconnect.bind(drvr, stat.statf(6)),
                     drvr.cleanup.bind(drvr, stat.statf(7))
-                ], cb);
+                ], function(err, result) {
+                    setTimeout(stat.hideProgressBar, 1000);
+                    cb(err, result);   
+                });
         }
     };
 }
@@ -528,7 +539,7 @@ function constructUI() {
     var serialDevices = {
             // 'AsanteSNAP': asanteDriver,
             'Test': testDriver,
-            'AnotherTest': testDriver
+            // 'AnotherTest': testDriver
         };
 
     var serialConfigs = {
@@ -609,7 +620,7 @@ function constructUI() {
             // closure to bind the filename
             reader.onloadend = (function (theFile) {
                 return function(e) {
-                    console.log(e);
+                    // console.log(e);
                     var cfg = {
                         'InsuletOmniPod': {
                             filename: theFile.name,
@@ -639,7 +650,11 @@ function constructUI() {
     $('#testButton3').click(cancelSearch);
     // $('#testButton3').click(util.test);
 
-
+    // jquery stuff
+    $('#progressbar').progressbar({
+      value: false
+    });
+    $('#progressbar').hide();
 }
 
 $(constructUI);

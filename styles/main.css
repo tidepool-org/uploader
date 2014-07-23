@@ -76,3 +76,13 @@ textarea {
   top: 14px;
   width: 80px;
 }
+
+.showWhenConnected div {
+/*  float: inline;
+  width: 300px;
+  height: 30px;
+*/}
+
+#progressbar .ui-progressbar-value {
+  background-color: #abc;
+}

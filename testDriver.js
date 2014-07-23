@@ -14,7 +14,7 @@ testDriver = function(config) {
                     cb(null, null);
                 }
                 // and we may take a while to respond
-            }, Math.random() * 10000);
+            }, Math.random() * 6000);
         },
 
         // this function starts the chain, so it has to create but not accept
@@ -48,13 +48,16 @@ testDriver = function(config) {
                 progress(100);
                 data.processData = true;
                 cb(null, data);
-            }, Math.random() * 10000);
+            }, Math.random() * 2000);
         },
 
         uploadData: function (progress, data, cb) {
-            progress(100);
-            data.uploadData = true;
-            cb(null, data);
+            progress(40);
+            setTimeout(function() {
+                progress(100);
+                data.uploadData = true;
+                cb(null, data);
+            }, Math.random() * 2000);
         },
 
         disconnect: function (progress, data, cb) {
