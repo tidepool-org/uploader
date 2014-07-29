@@ -83,6 +83,8 @@ var tidepoolServer = {
     }
 };
 
+var jellyfish = jellyfishClient({tidepoolServer: tidepoolServer});
+
 var serialDevice = {
     connected: false,
     connection: null,
@@ -463,60 +465,6 @@ function constructUI() {
 
     var deviceInfo = null;
     var prevTimestamp = null;
-    var postJellyfish = function (egvpage, callback) {
-        console.log('poster');
-        console.log(deviceInfo);
-        var datapt = {
-          'type': 'cbg',
-          'units': 'mg/dL',
-          'value': 0,
-          'time': '',
-          'deviceTime': '',
-          'deviceId': deviceInfo.ProductName + '/12345',
-          'source': 'device'
-        };
-
-        var localtime = function(t) {
-            var s = t.toISOString();
-            return s.substring(0, s.length - 1);
-        };
-        var data = [];
-        var recCount = 0;
-        for (var i = egvpage.header.nrecs - 1; i>=0; --i) {
-            datapt.value = egvpage.data[i].glucose;
-            datapt.time = egvpage.data[i].displayTime.toISOString();
-            datapt.deviceTime = localtime(egvpage.data[i].displayTime);
-            if (datapt.value < 15) {    // it's a 'special' (error) value
-                console.log('Skipping datapoint with special bg.');
-                console.log(datapt);
-                continue;
-            }
-	    if (prevTimestamp == null || datapt.time !== prevTimestamp) {
-              data.push($.extend({}, datapt));
-              prevTimestamp = datapt.time;
-            }
-            recCount++;
-        }
-        console.log(data);
-        var happy = function(resp, status, jqxhr) {
-            console.log('Jellyfish post succeeded.');
-            console.log(status);
-            console.log(resp);
-            callback(null, recCount);
-        };
-        var sad = function(jqxhr, status, err) {
-            if (jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == 'duplicate') {
-                callback('STOP', jqxhr.responseJSON.index);
-            } else {
-                console.log('Jellyfish post failed.');
-                console.log(status);
-                console.log(err);
-                callback(err, 0);
-            }
-        };
-        tidepoolServer.postToJellyfish(data, happy, sad);
-    };
-
     var test1 = function() {
         var get = function(url, happycb, sadcb) {
             $.ajax({
@@ -624,13 +572,16 @@ function constructUI() {
                     var cfg = {
                         'InsuletOmniPod': {
                             filename: theFile.name,
-                            filedata: e.srcElement.result
+                            filedata: e.srcElement.result,
+                            tz_offset_minutes: -480,
+                            jellyfish: jellyfish
                         }
                     };
                     search(blockDevices, cfg, function(err, results) {
                         if (err) {
                             console.log('Fail');
                             console.log(err);
+                            console.log(results);
                         } else {
                             console.log('Success');
                             console.log(results);

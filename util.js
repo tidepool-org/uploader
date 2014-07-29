@@ -1,7 +1,35 @@
-// Implements something like the rudiments of the Python struct class;
-// you can give it a format string and it will attempt to parse a stream
+// Inspired by the Python struct class but not an attempt to duplicate it.
+//
+// You can give it a format string and it will attempt to parse a stream
 // of bytes or into numbers of different sizes, or format a stream of bytes
-// from a set of values, corresponding to the format.
+// from a set of values, corresponding to the format string.
+// Usage:
+// format strings define the layout of a stream of values in an array, assumed
+// to be an array of byte values; the array must be indexable.
+// Format strings consist of fields; a field is a numeric size followed by a 
+// non-numeric character indicating the type. Whitespace between fields is ignored.
+// The size parameter has 2 meanings -- for numeric values, it's the number of repetitions of
+// this field. For strings, it's the storage length of the string.
+// The legal type characters are:
+// b -- a 1-byte unsigned value
+// s -- a 2-byte unsigned short in little-endian format (0x01 0x00 is returned as 1, not 256)
+// S -- a 2-byte unsigned short in big-endian format (0x01 0x00 is returned as 256, not 1)
+// i -- a 4-byte unsigned integer in little-endian format
+// I -- a 4-byte unsigned integer in big-endian format
+// n -- a 4-byte signed integer in little-endian format
+// N -- a 4-byte signed integer in big-endian format
+// z -- a zero-terminated string of maximum length controlled by the size parameter.
+// Z -- a string of bytes with the length controlled by the size parameter.
+// . -- the appropriate number of bytes is ignored (used for padding)
+//
+// To put bytes into a structure, use pack as follows:
+// len = pack(buf, offset, format, value...)
+// for example:
+// pack(buf, 0, "bbsi", 1, 2, 3, 4) would yield: 01 02 03 00 04 00 00 00 and return 8.
+//
+// To pull data back out, give unpack the format string and a list of parameter names.
+// unpack(buf, 0, "bbsi", ["a", "b", "c", "d"]) will give you { a: 1, b: 2, c: 3, d: 4 }
+
 
 utils = function() {
     var extractString = function(bytes, start, len) {
@@ -112,7 +140,7 @@ utils = function() {
         if (names == null)
             names = [];
         var nameindex = 0;
-        var pat = /([0-9]*)([a-zA-Z.])/g;
+        var pat = / *([0-9]*)([a-zA-Z.]) */g;
         var a;
         var offset = 0;
         while ((a = pat.exec(format)) !== null) {
