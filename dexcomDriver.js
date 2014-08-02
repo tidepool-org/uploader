@@ -358,7 +358,7 @@ dexcomDriver = function(config) {
         });
     };
 
-    var downloadCBGData = function(progress, callback) {
+    var downloadEGVPages = function(progress, callback) {
         var cmd = readDataPageRange(RECORD_TYPES.EGV_DATA);
         dexcomCommandResponse(cmd, function(err, pagerange) {
             if (err) {
@@ -371,7 +371,7 @@ dexcomDriver = function(config) {
             for (var pg = range.hi; pg >= range.lo; --pg) {
                 pages.push(pg);
             }
-            // pages = pages.slice(0, 3);      // FOR DEBUGGING!
+            pages = pages.slice(0, 3);      // FOR DEBUGGING!
             var npages = 0;
             var fetch_and_progress = function(data, callback) {
                 progress(npages++ * 100.0/pages.length);
@@ -387,6 +387,20 @@ dexcomDriver = function(config) {
             });
 
         });
+    };
+
+    var processEGVPages = function(pagedata) {
+        var readings = [];
+        for (var i=0; i<pagedata.length; ++i) {
+            var page = pagedata[i].parsed_payload;
+            for (var j=0; j<page.data.length; ++j) {
+                var reading = _.pick(page.data[j], "displaySeconds", "displayTime", "glucose",
+                    "systemSeconds", "systemTime", "trend", "trendText");
+                reading.pagenum = page.header.pagenum;
+                readings.push(reading);
+            }
+        }
+        return readings;
     };
 
 /*
@@ -457,14 +471,16 @@ dexcomDriver = function(config) {
 
         fetchData: function (progress, data, cb) {
             progress(0);
-            downloadCBGData(progress, function (err, result) {
-                data.cbg_data = result;
+            downloadEGVPages(progress, function (err, result) {
+                data.egv_data = result;
                 progress(100);
                 cb(err, data);
             });
         },
 
         processData: function (progress, data, cb) {
+            progress(0);
+            data.cbg_data = processEGVPages(data.egv_data);
             progress(100);
             data.processData = true;
             cb(null, data);
