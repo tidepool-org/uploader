@@ -232,10 +232,10 @@ function driverManager(driverObjects, config) {
     var stat = statusManager({progress: null, steps: [
         { name: 'setting up', min: 0, max: 5 },
         { name: 'connecting', min: 5, max: 10 },
-        { name: 'getting configuration data', min: 10, max: 25 },
-        { name: 'fetching data', min: 25, max: 40 },
-        { name: 'processing data', min: 40, max: 50 },
-        { name: 'uploading data', min: 50, max: 90 },
+        { name: 'getting configuration data', min: 10, max: 20 },
+        { name: 'fetching data', min: 20, max: 50 },
+        { name: 'processing data', min: 50, max: 60 },
+        { name: 'uploading data', min: 60, max: 90 },
         { name: 'disconnecting', min: 90, max: 95 },
         { name: 'cleaning up', min: 95, max: 100 }
     ]});
@@ -266,8 +266,8 @@ function driverManager(driverObjects, config) {
 
         process: function (driver, cb) {
             var drvr = drivers[driver];
-            // console.log(driver);
-            // console.log(drivers);
+            console.log(driver);
+            console.log(drivers);
             // console.log(drvr);
             async.waterfall([
                     drvr.setup.bind(drvr, stat.statf(0)),
@@ -368,24 +368,23 @@ function constructUI() {
         loggedIn(false);
     });
 
-    var processOneDevice = function(devname, deviceArray) {
+    var foundDevice = function(devConfig, deviceArray) {
         for (var d=0; d<deviceArray.length; ++d) {
             var dev = deviceArray[d];
-            connectLog(devname);
-            connectLog(dev.device);
-            connectLog(dev.vendorId);
-            connectLog(dev.productId);
+            connectLog("Discovered " + devConfig.deviceName);
+            console.log(devConfig);
+            searchOnce();
         }
     };
 
-    var getUSBDevices = function() {
+    var scanUSBDevices = function() {
         var manifest = chrome.runtime.getManifest();
         for (var p = 0; p < manifest.permissions.length; ++p) {
             var perm = manifest.permissions[p];
             if (perm.usbDevices) {
                 for (var d = 0; d < perm.usbDevices.length; ++d) {
-                    console.log(perm.usbDevices[d]);
-                    var f = processOneDevice.bind(this, perm.usbDevices[d].deviceName);
+                    // console.log(perm.usbDevices[d]);
+                    var f = foundDevice.bind(this, perm.usbDevices[d]);
                     chrome.usb.getDevices({
                         vendorId: perm.usbDevices[d].vendorId,
                         productId: perm.usbDevices[d].productId
@@ -403,6 +402,8 @@ function constructUI() {
             type: info.type
         };
         console.log(storageDeviceInfo[info.id]);
+        // whenever someone inserts a new device, try and run it
+        scanUSBDevices();
     });
 
     chrome.system.storage.onDetached.addListener(function (id){
@@ -432,8 +433,6 @@ function constructUI() {
         });
     };
 
-    // $('#testButton').click(findAsante);
-    // $('#testButton1').click(getUSBDevices);
     var deviceComms = serialDevice;
     var asanteDevice = asanteDriver({deviceComms: deviceComms});
 
@@ -486,12 +485,16 @@ function constructUI() {
 
     var serialDevices = {
             // 'AsanteSNAP': asanteDriver,
-            'Test': testDriver,
+            'Dexcom G4 CGM': dexcomDriver,
+            // 'Test': testDriver,
             // 'AnotherTest': testDriver
         };
 
     var serialConfigs = {
         'AsanteSNAP': {
+            deviceComms: deviceComms
+        },
+        'Dexcom G4 CGM': {
             deviceComms: deviceComms
         }
     };
@@ -505,6 +508,7 @@ function constructUI() {
         var dm = driverManager(driverObjects, driverConfigs);
         dm.detect(function (err, found) {
             if (err) {
+                console.log("search returned error:", err);
                 cb(err, found);
             } else {
                 var devices = [];
@@ -596,9 +600,11 @@ function constructUI() {
 
     $('#filechooser').change(handleFileSelect);
 
-    $('#testButton1').click(searchOnce);
+    // $('#testButton1').click(searchOnce);
     $('#testButton2').click(searchRepeatedly);
     $('#testButton3').click(cancelSearch);
+    // $('#testButton').click(findAsante);
+    $('#testButton1').click(scanUSBDevices);
     // $('#testButton3').click(util.test);
 
     // jquery stuff
@@ -610,5 +616,6 @@ function constructUI() {
 
 $(constructUI);
 
+// Uploader needs a timezone selector
 
 

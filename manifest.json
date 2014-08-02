@@ -22,6 +22,8 @@
     "usbDevices": [
       {
         "deviceName": "Dexcom G4 CGM",
+        "driver": "dexcomDriver",
+        "mode": "serial",
         "vendorId": 8867,
         "productId": 71
       },
@@ -32,12 +34,16 @@
       },
       {
         "deviceName": "Asante SNAP w/FTDI cable",
+        "driver": "asanteDriver",
+        "mode": "serial",
         "vendorId": 1027, 
         "productId": 24577
       },
       {
         "deviceName": "Insulet OmniPod",
-        "vendorId": 7734, 
+        "driver": "insuletDriver",
+        "mode": "block",
+        "vendorId": 7734,
         "productId": 2
       },
       {

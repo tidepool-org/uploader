@@ -159,13 +159,18 @@ jellyfishClient = function(config) {
     };
 
     // we break up the posts because jellyfish has a 1MB upload limit at one time
-    var post = function (data, callback) {
+    var post = function (data, progress, callback) {
         var blocks = [];
-        var BLOCKSIZE = 50;
+        var BLOCKSIZE = 25;
         for (var i=0; i<data.length; i+=BLOCKSIZE) {
             blocks.push(data.slice(i, i+BLOCKSIZE));
         }
-        async.mapSeries(blocks, postOne, callback);
+        var nblocks = 0;
+        var post_and_progress = function(data, callback) {
+            progress(nblocks++ * 100.0/blocks.length);
+            return postOne(data, callback);
+        };
+        async.mapSeries(blocks, post_and_progress, callback);
     };
 
 
