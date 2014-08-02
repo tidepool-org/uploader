@@ -28,10 +28,12 @@
 // pack(buf, 0, "bbsi", 1, 2, 3, 4) would yield: 01 02 03 00 04 00 00 00 and return 8.
 //
 // To pull data back out, give unpack the format string and a list of parameter names.
-// unpack(buf, 0, "bbsi", ["a", "b", "c", "d"]) will give you { a: 1, b: 2, c: 3, d: 4 }
+// unpack(buf, 0, "2bsi", ["a", "b", "c", "d"]) will give you { a: 1, b: 2, c: 3, d: 4 }
+// unpack can pack into an existing object if you pass it as the last argument. Otherwise,
+// it will create one.
 
 
-utils = function() {
+structTools = function() {
     var extractString = function(bytes, start, len) {
         if (!len) {
             len = bytes.length;

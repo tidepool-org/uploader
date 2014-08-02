@@ -1,7 +1,7 @@
 // buildUI.js
 // this constructs the UI in jQuery
 
-util = utils();
+struct = structTools();
 
 timeutils = function() {
     var SEC_TO_MSEC = 1000;

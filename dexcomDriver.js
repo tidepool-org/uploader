@@ -83,11 +83,11 @@ dexcomDriver = function(config) {
         var datalen = payloadLength + 6;
         var buf = new ArrayBuffer(datalen);
         var bytes = new Uint8Array(buf);
-        var ctr = util.pack(bytes, 0, "bsb", SYNC_BYTE,
+        var ctr = struct.pack(bytes, 0, "bsb", SYNC_BYTE,
             datalen, command);
-        ctr += util.copyBytes(bytes, ctr, payload, payloadLength);
+        ctr += struct.copyBytes(bytes, ctr, payload, payloadLength);
         var crc = crcCalculator.calcDexcomCRC(bytes, ctr);
-        util.pack(bytes, ctr, "s", crc);
+        struct.pack(bytes, ctr, "s", crc);
         return buf;
     };
 
@@ -114,7 +114,7 @@ dexcomDriver = function(config) {
                 [rectype.value]
             ),
             parser: function(result) {
-                return util.unpack(result.payload, 0, "ii", ["lo", "hi"]);
+                return struct.unpack(result.payload, 0, "ii", ["lo", "hi"]);
                 }
             };
     };
@@ -123,13 +123,13 @@ dexcomDriver = function(config) {
     var readDataPages = function(rectype, startPage, numPages) {
         var parser = function(result) {
             var format = "iibbiiiibb";
-            var header = util.unpack(result.payload, 0, format, [
+            var header = struct.unpack(result.payload, 0, format, [
                     "index", "nrecs", "rectype", "revision", 
                     "pagenum", "r1", "r2", "r3", "j1", "j2"
                 ]);
             return {
                 header: header,
-                data: parse_records(header, result.payload.subarray(util.structlen(format)))
+                data: parse_records(header, result.payload.subarray(struct.structlen(format)))
             };
         };
 
@@ -138,8 +138,8 @@ dexcomDriver = function(config) {
             var ctr = 0;
             for (var i = 0; i<header.nrecs; ++i) {
                 var format = "iisbs";
-                var flen = util.structlen(format);
-                var rec = util.unpack(data, ctr, format, [
+                var flen = struct.structlen(format);
+                var rec = struct.unpack(data, ctr, format, [
                     "systemSeconds", "displaySeconds", "glucose", "trend", "crc"   
                 ]);
                 rec.glucose &= 0x3FF;
@@ -154,10 +154,10 @@ dexcomDriver = function(config) {
             return all;
         };
 
-        var struct = "bib";
-        var len = util.structlen(struct);
+        var format = "bib";
+        var len = struct.structlen(format);
         var payload = new Uint8Array(len);
-        util.pack(payload, 0, struct, rectype.value, startPage, numPages);
+        struct.pack(payload, 0, format, rectype.value, startPage, numPages);
 
         return {
             packet: buildPacket(
@@ -201,7 +201,7 @@ dexcomDriver = function(config) {
         }
 
         var plen = bytes.length;
-        var packet_len = util.extractShort(bytes, 1);
+        var packet_len = struct.extractShort(bytes, 1);
         // minimum packet len is 6
         if (packet_len > plen) {
             return packet;  // we're not done yet
@@ -209,7 +209,7 @@ dexcomDriver = function(config) {
 
         // we now have enough length for a complete packet, so calc the CRC 
         packet.packet_len = packet_len;
-        packet.crc = util.extractShort(bytes, packet_len - 2);
+        packet.crc = struct.extractShort(bytes, packet_len - 2);
         var crc = crcCalculator.calcDexcomCRC(bytes, packet_len - 2);
         if (crc != packet.crc) {
             // if the crc is bad, we should discard the whole packet
@@ -264,7 +264,7 @@ dexcomDriver = function(config) {
         var data = null;
         if (len) {
             data = parseXML(
-                util.extractString(packet.payload, 0, len));
+                struct.extractString(packet.payload, 0, len));
         }
         return data;
     };
@@ -328,6 +328,7 @@ dexcomDriver = function(config) {
             }
         };
 
+        console.log("writing");
         serialDevice.writeSerial(commandpacket.packet, function() {
             console.log("->");
             waitloop();
