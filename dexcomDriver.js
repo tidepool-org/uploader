@@ -1,4 +1,5 @@
 dexcomDriver = function(config) {
+    var cfg = _.clone(config);
     var serialDevice = config.deviceComms;
 
     var SYNC_BYTE = 0x01;
@@ -48,7 +49,14 @@ dexcomDriver = function(config) {
         RATEOUTOFRANGE: { value: 9, name: "Rate Out Of Range" }
     };
 
-    var BASE_DATE = new Date(2009, 0, 1).valueOf();
+    var BASE_DATE_DEVICE = cfg.timeutils.buildMsec({ year: 2009, month: 1, day: 1, 
+        hours: 0, minutes: 0, seconds: 0 }, null);
+    var BASE_DATE_UTC = cfg.timeutils.buildMsec({ year: 2009, month: 1, day: 1, 
+        hours: 0, minutes: 0, seconds: 0 }, cfg.tz_offset_minutes);
+    console.log("offset=" + cfg.tz_offset_minutes + " Device=" + BASE_DATE_DEVICE + " UTC=" + BASE_DATE_UTC);
+    console.log(new Date(BASE_DATE_DEVICE));
+    console.log(new Date(BASE_DATE_UTC));
+
 
     var getCmdName = function(idx) {
         for (var i in CMDS) {
@@ -145,8 +153,11 @@ dexcomDriver = function(config) {
                 rec.glucose &= 0x3FF;
                 rec.trend &= 0xF;
                 rec.trendText = getTrendName(rec.trend);
-                rec.systemTime = new Date(BASE_DATE + 1000*rec.systemSeconds);
-                rec.displayTime = new Date(BASE_DATE + 1000*rec.displaySeconds);
+                rec.systemTimeMsec = BASE_DATE_DEVICE + 1000*rec.systemSeconds;
+                rec.displayTimeMsec = BASE_DATE_DEVICE + 1000*rec.displaySeconds;
+                rec.displayTime = cfg.timeutils.mSecToISOString(rec.displayTimeMsec);
+                rec.displayUtcMsec = BASE_DATE_UTC + 1000*rec.displaySeconds;
+                rec.displayUtc = cfg.timeutils.mSecToISOString(rec.displayUtcMsec, cfg.tz_offset_minutes);
                 rec.data = data.subarray(ctr, ctr + flen);
                 ctr += flen;
                 all.push(rec);
@@ -395,8 +406,9 @@ dexcomDriver = function(config) {
         for (var i=0; i<pagedata.length; ++i) {
             var page = pagedata[i].parsed_payload;
             for (var j=0; j<page.data.length; ++j) {
-                var reading = _.pick(page.data[j], "displaySeconds", "displayTime", "glucose",
-                    "systemSeconds", "systemTime", "trend", "trendText");
+                var reading = _.pick(page.data[j], 
+                    "displaySeconds", "displayTime", "displayUtc", "systemSeconds", 
+                    "glucose", "trend", "trendText");
                 reading.pagenum = page.header.pagenum;
                 readings.push(reading);
             }

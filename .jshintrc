@@ -5,7 +5,7 @@
   "browser": true,
   "esnext": true,
   "eqnull": true,
-  "globals": { "_": false, "$": false, "async": false, "console": false, "chrome": false, "util": false },
+  "globals": { "_": false, "$": false, "async": false, "console": false, "chrome": false, "struct": false },
   "globalstrict": true,
   "indent": 2,
   "laxcomma": true,
