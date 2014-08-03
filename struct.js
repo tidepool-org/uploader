@@ -18,6 +18,8 @@
 // I -- a 4-byte unsigned integer in big-endian format
 // n -- a 4-byte signed integer in little-endian format
 // N -- a 4-byte signed integer in big-endian format
+// h -- a 2-byte signed integer in little-endian format
+// H -- a 2-byte signed integer in big-endian format
 // z -- a zero-terminated string of maximum length controlled by the size parameter.
 // Z -- a string of bytes with the length controlled by the size parameter.
 // . -- the appropriate number of bytes is ignored (used for padding)
@@ -71,6 +73,13 @@ structTools = function() {
     var extractShort = function(b, st) {
         return ((b[st+1] << 8) + b[st]);
     };
+    var extractSignedShort = function(b, st) {
+        var sign = 1;
+        if (b[st+1] & 0x80) {
+            sign = -1;
+        }
+        return sign * (((b[st+1] & 0x7F) << 8) + b[st]);
+    };
     var extractByte = function(b, st) {
         return b[st];
     };
@@ -87,6 +96,13 @@ structTools = function() {
     // get a big-endian short
     var extractBEShort = function(b, st) {
         return ((b[st] << 8) + b[st+1]);
+    };
+    var extractSignedBEShort = function(b, st) {
+        var sign = 1;
+        if (b[st] & 0x80) {
+            sign = -1;
+        }
+        return sign * (((b[st] & 0x7F) << 8) + b[st+1]);
     };
     var extractNothing = function() {
         return 0;
@@ -129,10 +145,12 @@ structTools = function() {
         'i': { len: 4, put: storeInt, get: extractInt },
         'n': { len: 4, put: storeInt, get: extractSignedInt },
         's': { len: 2, put: storeShort, get: extractShort },
+        'h': { len: 2, put: storeShort, get: extractSignedShort },
         'b': { len: 1, put: storeByte, get: extractByte },
         'I': { len: 4, put: storeBEInt, get: extractBEInt },
         'N': { len: 4, put: storeBEInt, get: extractSignedBEInt },
         'S': { len: 2, put: storeBEShort, get: extractBEShort },
+        'H': { len: 2, put: storeBEShort, get: extractSignedBEShort },
         'z': { len: 0, put: storeString, get: extractZString },
         'Z': { len: 0, put: storeString, get: extractString },
     };
