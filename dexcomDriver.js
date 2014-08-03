@@ -128,7 +128,7 @@ dexcomDriver = function(config) {
     };
 
 
-    var readDataPages = function(rectype, startPage, numPages) {
+    var readEGVDataPages = function(rectype, startPage, numPages) {
         var parser = function(result) {
             var format = "iibbiiiibb";
             var header = struct.unpack(result.payload, 0, format, [
@@ -145,12 +145,18 @@ dexcomDriver = function(config) {
             var all = [];
             var ctr = 0;
             for (var i = 0; i<header.nrecs; ++i) {
-                var format = "iisbs";
+                var format = "iihbs";
                 var flen = struct.structlen(format);
                 var rec = struct.unpack(data, ctr, format, [
                     "systemSeconds", "displaySeconds", "glucose", "trend", "crc"   
                 ]);
-                rec.glucose &= 0x3FF;
+                // rec.glucose &= 0x3FF;
+                if (rec.glucose < 0) {  // some glucose records have a negative value; these
+                                        // invariably have a time identical to the next record,
+                                        // so we presume that they are superceded by
+                                        // the other record (probably a calibration)
+                    continue;
+                }
                 rec.trend &= 0xF;
                 rec.trendText = getTrendName(rec.trend);
                 rec.systemTimeMsec = BASE_DATE_DEVICE + 1000*rec.systemSeconds;
@@ -177,6 +183,34 @@ dexcomDriver = function(config) {
             parser: parser
         };
     };
+
+    var readManufacturingDataPages = function(rectype, startPage, numPages) {
+        var parser = function(result) {
+            var format = "iibbi21.";
+            var hlen = struct.structlen(format);
+            var xlen = result.payload.length - hlen;
+            var allformat = format + xlen + "z";
+            var data = struct.unpack(result.payload, 0, allformat, [
+                    "index", "nrecs", "rectype", "revision", 
+                    "pagenum", "xml"
+                ]);
+            data.mfgdata = parseXML(data.xml);
+            return data;
+        };
+
+        var format = "bib";
+        var len = struct.structlen(format);
+        var payload = new Uint8Array(len);
+        struct.pack(payload, 0, format, rectype.value, startPage, numPages);
+
+        return {
+            packet: buildPacket(
+                CMDS.READ_DATA_PAGES.value, len, payload
+            ),
+            parser: parser
+        };
+    };
+
 
 
     var readDataPageHeader = function() {
@@ -249,8 +283,8 @@ dexcomDriver = function(config) {
         if (m) {
             result.tag = m[1];
         }
-        var gattrpat = /([A-Za-z]+)='([^']+)'/g;
-        var attrpat = /([A-Za-z]+)='([^']+)'/;
+        var gattrpat = /([A-Za-z]+)=["']([^"']+)["']/g;
+        var attrpat = /([A-Za-z]+)=["']([^"']+)["']/;
         m = s.match(gattrpat);
         for (var r in m) {
             var attr = m[r].match(attrpat);
@@ -312,7 +346,6 @@ dexcomDriver = function(config) {
     // callback gets a result packet with parsed payload
     var dexcomCommandResponse = function(commandpacket, callback) {
         var processResult = function(result) {
-            console.log(result);
             if (result.command != CMDS.ACK.value) {
                 console.log("Bad result %d (%s) from data packet", 
                     result.command, getCmdName(result.command));
@@ -334,25 +367,42 @@ dexcomDriver = function(config) {
 
         var waitloop = function() {
             if (!readDexcomPacket(processResult)) {
-                console.log(".");
                 setTimeout(waitloop, 100);
             }
         };
 
-        console.log("writing");
         serialDevice.writeSerial(commandpacket.packet, function() {
-            console.log("->");
+            // console.log("->");
             waitloop();
         });
     };
 
     var fetchOneEGVPage = function(pagenum, callback) {
-        var cmd = readDataPages(
+        var cmd = readEGVDataPages(
             RECORD_TYPES.EGV_DATA, pagenum, 1);
         dexcomCommandResponse(cmd, function(err, page) {
-            console.log("page");
-            console.log(page.parsed_payload);
+            // console.log(page.parsed_payload);
             callback(err, page);
+        });
+    };
+
+    var fetchManufacturingData = function(pagenum, callback) {
+        var cmd = readDataPageRange(RECORD_TYPES.MANUFACTURING_DATA);
+        // var cmd = readEGVDataPages(
+        //     RECORD_TYPES.MANUFACTURING_DATA, pagenum, 1);
+        dexcomCommandResponse(cmd, function(err, page) {
+            console.log("mfr range");
+            var range = page.parsed_payload;
+            console.log(range);
+            var cmd2 = readManufacturingDataPages(RECORD_TYPES.MANUFACTURING_DATA, 
+                range.lo, range.hi-range.lo+1);
+            dexcomCommandResponse(cmd2, function(err, result) {
+                if (err) {
+                    callback(err, result);
+                } else {
+                    callback(err, result.parsed_payload.mfgdata);
+                }
+            });
         });
     };
 
@@ -383,7 +433,7 @@ dexcomDriver = function(config) {
             for (var pg = range.hi; pg >= range.lo; --pg) {
                 pages.push(pg);
             }
-            pages = pages.slice(0, 3);      // FOR DEBUGGING!
+            // pages = pages.slice(0, 3);      // FOR DEBUGGING!
             var npages = 0;
             var fetch_and_progress = function(data, callback) {
                 progress(npages++ * 100.0/pages.length);
@@ -416,44 +466,27 @@ dexcomDriver = function(config) {
         return readings;
     };
 
-/*
-    var connectDexcom = function() {
-        var cmd = readFirmwareHeader();
-        dexcomCommandResponse(cmd, function(result) {
-            console.log("firmware header");
-            // var deviceInfo = result.parsed_payload.attrs;
-            console.log(result);
-            var cmd2 = readDataPageRange(RECORD_TYPES.EGV_DATA);
-            dexcomCommandResponse(cmd2, function(pagerange) {
-                console.log("page range");
-                var range = pagerange.parsed_payload;
-                console.log(range.hi, range.lo);
-                var pages = [];
-                for (var pg = range.hi; pg >= range.lo; --pg) {
-                    console.log(pg);
-                    pages.push(pg);
-                }
-                console.log(pages);
-                async.mapSeries(pages, fetchOneEGVPage, function(err, results) {
-                    console.log(results);
-                    var sum = 0;
-                    for (var i=0; i<results.length; ++i) {
-                        sum += results[i];
-                    }
-                    var msg = sum + " new records uploaded.";
-                    if (err == 'STOP') {
-                        console.log(msg);
-                    } else if (err) {
-                        console.log("Error: ", err);
-                    } else {
-                        console.log(msg);
-                    }
-                });
-
-            });
+    var prepCBGData = function(progress, data) {
+        cfg.jellyfish.setDeviceInfo( {
+            deviceId: data.firmwareHeader.attrs.ProductName + " " + 
+                data.manufacturing_data.attrs.SerialNumber,
+            source: "device",
+            timezoneOffset: cfg.tz_offset_minutes,
+            units: "mg/dL"      // everything the Dexcom receiver stores is in this unit
         });
+        var dataToPost = [];
+        for (var i=0; i<data.cbg_data.length; ++i) {
+            var cbg = cfg.jellyfish.buildCBG(
+                    data.cbg_data[i].glucose,
+                    data.cbg_data[i].displayUtc,
+                    data.cbg_data[i].displayTime
+                );
+            cbg.trend = data.cbg_data[i].trendText;
+            dataToPost.push(cbg);
+        }
+
+        return dataToPost;
     };
-*/
 
     return {
         // should call the callback with null, obj if the item 
@@ -477,9 +510,12 @@ dexcomDriver = function(config) {
         },
 
         getConfigInfo: function (progress, data, cb) {
-            progress(100);
-            data.getConfigInfo = true;
-            cb(null, data);
+            fetchManufacturingData(0, function(err, result) {
+                data.manufacturing_data = result;
+                progress(100);
+                data.getConfigInfo = true;
+                cb(null, data);
+            });
         },
 
         fetchData: function (progress, data, cb) {
@@ -494,13 +530,37 @@ dexcomDriver = function(config) {
         processData: function (progress, data, cb) {
             progress(0);
             data.cbg_data = processEGVPages(data.egv_data);
+            data.post_records = prepCBGData(progress, data);
+            var ids = {};
+            for (var i=0; i<data.post_records.length; ++i) {
+                var id = data.post_records[i].time + "|" + data.post_records[i].deviceId;
+                if (ids[id]) {
+                    console.log("duplicate! %s @ %d == %d", id, i, ids[id]-1);
+                    console.log(data.post_records[ids[id]-1]);
+                    console.log(data.post_records[i]);
+                } else {
+                    ids[id] = i+1;
+                }
+            }
             progress(100);
             data.processData = true;
             cb(null, data);
         },
 
         uploadData: function (progress, data, cb) {
-            progress(100);
+            progress(0);
+            cfg.jellyfish.post(data.post_records, progress, function(err, result) {
+                if (err) {
+                    console.log(err);
+                    console.log(result);
+                    progress(100);
+                    return cb(err, data);
+                } else {
+                    progress(100);
+                    return cb(null, data);
+                }
+            });
+
             data.uploadData = true;
             cb(null, data);
         },

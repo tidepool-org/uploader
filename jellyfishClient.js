@@ -16,6 +16,17 @@ jellyfishClient = function(config) {
         return bgRec;
     };
 
+    var buildCBG = function (bg, timestamp, devicetime) {
+        var bgRec = _.assign({}, deviceInfo, {
+            type: 'cbg',
+            value: bg,
+            time: timestamp,
+            deviceTime: devicetime
+        });
+
+        return bgRec;
+    };
+
     // this doesn't actually exist yet
     var buildNote = function (note, timestamp, devicetime) {
         var noteRec = _.assign({}, deviceInfo, {
@@ -177,6 +188,7 @@ jellyfishClient = function(config) {
     return {
         setDeviceInfo: setDeviceInfo,
         buildBG: buildBG,
+        buildCBG: buildCBG,
         buildNote: buildNote,
         buildCarb: buildCarb,
         buildWizard: buildWizard,

@@ -201,7 +201,7 @@ var serialDevice = {
     writeSerial: function(bytes, callback) {
         var l = new Uint8Array(bytes).length;
         var sendcheck = function(info) {
-            console.log('Sent %d bytes', info.bytesSent);
+            // console.log('Sent %d bytes', info.bytesSent);
             if (l != info.bytesSent) {
                 console.log('Only ' + info.bytesSent + ' bytes sent out of ' + l);
             }
@@ -552,11 +552,13 @@ function constructUI() {
             deviceComms: deviceComms,
             timeutils: timeutils,
             tz_offset_minutes: -480,
+            jellyfish: jellyfish
         },
         'Dexcom G4 CGM': {
             deviceComms: deviceComms,
             timeutils: timeutils,
             tz_offset_minutes: -480,
+            jellyfish: jellyfish
         }
     };
 
