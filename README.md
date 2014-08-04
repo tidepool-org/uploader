@@ -77,6 +77,7 @@ a useful amount of intelligence about how to communicate in packets and the like
 
 ### Insulet
 * Plug in the device and start the app (in either order)
+* Log in
 * Press the "Choose File" button
 * Navigate to the device (which on the pump I have shows up as "NO NAME")
 * Select the most recent .ibf file on the device (there should be only one)
