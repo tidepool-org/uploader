@@ -542,8 +542,8 @@ function constructUI() {
     };
 
     var serialDevices = {
-            'AsanteSNAP': asanteDriver,
-            // 'Dexcom G4 CGM': dexcomDriver,
+            // 'AsanteSNAP': asanteDriver,
+            'Dexcom G4 CGM': dexcomDriver,
             // 'Test': testDriver,
             // 'AnotherTest': testDriver
         };
@@ -564,7 +564,7 @@ function constructUI() {
     };
 
     var blockDevices = {
-            // 'InsuletOmniPod': insuletDriver
+            'InsuletOmniPod': insuletDriver
         };
 
 
@@ -677,6 +677,7 @@ function constructUI() {
       value: false
     });
     $('#progressbar').hide();
+    connectLog("private build -- Insulet is supported.");
 }
 
 $(constructUI);
