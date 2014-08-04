@@ -577,28 +577,32 @@ asanteDriver = function (config) {
         });
     };
 
-    var asanteListenForBeacon = function(callback) {
+    var listenForBeacon = function(callback) {
         var processResult = function(err, result) {
             if (err) {
                 callback(err, result);
-                return;
+                return true;
             }
             result.parsed_payload = parsePacket(result);
             if (result.valid) {
-                callback(result);
+                callback(null, result);
                 return true;
             }
             return false;
         };
 
-        var waitloop = function() {
-            if (!readAsantePacket(processResult)) {
-                console.log('.');
-                setTimeout(waitloop, 100);
-            }
-        };
+        var abortTimer = setTimeout(function() {
+            clearInterval(listenTimer);
+            console.log("timeout");
+            callback("timeout", null);
+        }, 5000);
 
-        waitloop();
+        var listenTimer = setInterval(function() {
+            if (readAsantePacket(processResult)) {
+                console.log("completed");
+                clearTimeout(abortTimer);
+            }
+        }, 100);
 
     };
 
@@ -706,8 +710,8 @@ asanteDriver = function (config) {
 
     };
 
-    var listenForBeacon = function () {
-        asanteListenForBeacon(function (e, r) {
+    var xxxlistenForBeacon = function () {
+        listenForBeacon(function (e, r) {
             console.log("heard beacon!");
             asanteConnect();
         });
@@ -729,7 +733,18 @@ asanteDriver = function (config) {
         // was detected, with null, null if not detected.
         // call err only if there's something unrecoverable.
         detect: function (obj, cb) {
-            cb(null, obj);
+            console.log('looking for asante');
+            listenForBeacon(function(err, result) {
+                if (err) {
+                    if (err == "timeout") {
+                        cb(null, null);
+                    } else {
+                        cb(err, result);
+                    }
+                } else {
+                    cb(null, obj);
+                }
+            });
         },
 
         setup: function (progress, cb) {
