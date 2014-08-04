@@ -66,6 +66,7 @@ a useful amount of intelligence about how to communicate in packets and the like
 
 ## Known bugs
 * You have to have your serial device plugged in before you run it. That will get fixed soonish.
+* It's not really a bug, but if you try to upload the same Insulet file twice in a row without restarting, it will silently do nothing (because the file chooser hasn't changed since last time so it doesn't know you selected anything). There's no point in doing that anyway as the data was just uploaded.
 
 ## How to use it
 
@@ -76,7 +77,10 @@ a useful amount of intelligence about how to communicate in packets and the like
 * Press the "Upload from Dexcom" button
 
 ### Insulet
-* Not included in this build.
+* Run the app and plug in the device, in either order
+* Press the "Choose file" button
+* Select the .ibf file from the device (there should be only one, but if there's any doubt, use the one with the current date and time). 
+* Press "Open"
 
 ### Asante
 * Doesn't do much in this build.
