@@ -310,6 +310,7 @@ function driverManager(driverObjects, config) {
                     // something went wrong
                     cb(err, result);
                 } else {
+                    console.log("done with the series -- result = ", result);
                     var ret = [];
                     for (var r=0; r<result.length; ++r) {
                         if (result[r]) {
@@ -541,8 +542,8 @@ function constructUI() {
     };
 
     var serialDevices = {
-            // 'AsanteSNAP': asanteDriver,
-            'Dexcom G4 CGM': dexcomDriver,
+            'AsanteSNAP': asanteDriver,
+            // 'Dexcom G4 CGM': dexcomDriver,
             // 'Test': testDriver,
             // 'AnotherTest': testDriver
         };
@@ -664,12 +665,12 @@ function constructUI() {
 
     $('#filechooser').change(handleFileSelect);
 
-    // $('#testButton1').click(searchOnce);
     $('#testButton2').click(searchRepeatedly);
-    $('#testButton3').click(cancelSearch);
+    // $('#testButton3').click(cancelSearch);
     // $('#testButton').click(findAsante);
     $('#testButton1').click(scanUSBDevices);
-    // $('#testButton3').click(util.test);
+    $('#testButton3').click(searchOnce);
+  // $('#testButton3').click(util.test);
 
     // jquery stuff
     $('#progressbar').progressbar({
