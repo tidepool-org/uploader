@@ -552,19 +552,19 @@ function constructUI() {
         'AsanteSNAP': {
             deviceComms: deviceComms,
             timeutils: timeutils,
-            tz_offset_minutes: -480,
+            tz_offset_minutes: parseInt($('#timezone').val()),
             jellyfish: jellyfish
         },
         'Dexcom G4 CGM': {
             deviceComms: deviceComms,
             timeutils: timeutils,
-            tz_offset_minutes: -480,
+            tz_offset_minutes: parseInt($('#timezone').val()),
             jellyfish: jellyfish
         }
     };
 
     var blockDevices = {
-            'InsuletOmniPod': insuletDriver
+            // 'InsuletOmniPod': insuletDriver
         };
 
 
@@ -642,7 +642,7 @@ function constructUI() {
                             filename: theFile.name,
                             filedata: e.srcElement.result,
                             timeutils: timeutils,
-                            tz_offset_minutes: -480,
+                            tz_offset_minutes: parseInt($('#timezone').val()),
                             jellyfish: jellyfish
                         }
                     };

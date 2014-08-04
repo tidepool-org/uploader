@@ -13,7 +13,7 @@
     <script src="struct.js" type="text/javascript"></script>
     <script src="jellyfishClient.js" type="text/javascript"></script>
     <script src="testDriver.js" type="text/javascript"></script>
-    <script src="insuletDriver.js" type="text/javascript"></script>
+    <!-- <script src="insuletDriver.js" type="text/javascript"></script> -->
     <script src="asanteDriver.js" type="text/javascript"></script>
     <script src="dexcomDriver.js" type="text/javascript"></script>
     <script src="index.js" type="text/javascript"></script>
@@ -64,6 +64,18 @@
         <p>
             <label for="progressbar">Progress:</label>
             <div id="progressbar"><div class="progress-label"></div></div>
+        </p>
+        <p>
+            <label for="timezone">Data Time Zone:</label>
+            <select id="timezone">
+                <option value="60">Copenhagen</option>
+                <option value="0">London</option>
+                <option value="720">New Zealand</option>
+                <option value="-480" selected="true">USA Pacific</option>
+                <option value="-420">USA Mountain</option>
+                <option value="-360">USA Central</option>
+                <option value="-300">USA Eastern</option>
+            </select>
         </p>
         <!--
         <p>
