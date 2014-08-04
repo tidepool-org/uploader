@@ -23,7 +23,7 @@ This is experimental code and in no way intended to be used for therapy!
 * It can enumerate the USB devices it knows about
   * Dexcom G4
   * Asante SNAP
-  * Insulet Omnipod (this is not included until we get approval from Insulet)
+  * Insulet Omnipod
   * An Arduino test board
   * A couple of other USB things just used for testing
 
@@ -44,8 +44,8 @@ a useful amount of intelligence about how to communicate in packets and the like
 ### Has code to talk to an Animas SNAP pump
 * But right now, that code is not yet integrated to do uploads
 
-### Does not have code in this repository to talk to an Insulet pump
-* But that is working in the lab to a first-order approximation (it doesn't do everything yet, but it handles scheduled basals, boluses, settings, and smbg readings).
+### Can read a data file from an Insulet Omnipod pump
+* This is to a first-order approximation (it doesn't do everything yet, but it handles scheduled basals, boluses, settings, and smbg readings).
 
 ## What it's missing
 
@@ -66,7 +66,6 @@ a useful amount of intelligence about how to communicate in packets and the like
 
 ## Known bugs
 * You have to have your serial device plugged in before you run it. That will get fixed soonish.
-* It's not really a bug, but if you try to upload the same Insulet file twice in a row without restarting, it will silently do nothing (because the file chooser hasn't changed since last time so it doesn't know you selected anything). There's no point in doing that anyway as the data was just uploaded.
 
 ## How to use it
 
@@ -77,9 +76,10 @@ a useful amount of intelligence about how to communicate in packets and the like
 * Press the "Upload from Dexcom" button
 
 ### Insulet
-* Run the app and plug in the device, in either order
-* Press the "Choose file" button
-* Select the .ibf file from the device (there should be only one, but if there's any doubt, use the one with the current date and time). 
+* Plug in the device and start the app (in either order)
+* Press the "Choose File" button
+* Navigate to the device (which on the pump I have shows up as "NO NAME")
+* Select the most recent .ibf file on the device (there should be only one)
 * Press "Open"
 
 ### Asante
