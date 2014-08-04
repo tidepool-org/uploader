@@ -1,6 +1,10 @@
-var dexcomDriver = {
-    SYNC_BYTE: 0x01,
-    CMDS: {
+dexcomDriver = function(config) {
+    var cfg = _.clone(config);
+    var serialDevice = config.deviceComms;
+
+    var SYNC_BYTE = 0x01;
+
+    var CMDS = {
         NULL: { value: 0, name: "NULL" },
         ACK: { value: 1, name: "ACK" },
         NAK: { value: 2, name: "NAK" },
@@ -13,8 +17,9 @@ var dexcomDriver = {
         READ_DATA_PAGE_RANGE: { value: 16, name: "Read Data Page Range" },
         READ_DATA_PAGES: { value: 17, name: "Read Data Pages" },
         READ_DATA_PAGE_HEADER: { value: 18, name: "Read Data Page Header" }
-    },
-    RECORD_TYPES: {
+    };
+
+    var RECORD_TYPES = {
         MANUFACTURING_DATA: { value: 0, name: "MANUFACTURING_DATA" },
         FIRMWARE_PARAMETER_DATA: { value: 1, name: "FIRMWARE_PARAMETER_DATA" },
         PC_SOFTWARE_PARAMETER: { value: 2, name: "PC_SOFTWARE_PARAMETER" },
@@ -29,8 +34,9 @@ var dexcomDriver = {
         USER_EVENT_DATA: { value: 11, name: "USER_EVENT_DATA" },
         USER_SETTING_DATA: { value: 12, name: "USER_SETTING_DATA" },
         MAX_VALUE: { value: 13, name: "MAX_VALUE" }
-    },
-    TRENDS: {
+    };
+
+    var TRENDS = {
         NONE: { value: 0, name: "None" },
         DOUBLEUP: { value: 1, name: "DoubleUp" },
         SINGLEUP: { value: 2, name: "SingleUp" },
@@ -41,42 +47,38 @@ var dexcomDriver = {
         DOUBLEDOWN: { value: 7, name: "DoubleDown" },
         NOTCOMPUTABLE: { value: 8, name: "Not Computable" },
         RATEOUTOFRANGE: { value: 9, name: "Rate Out Of Range" }
-    },
-    BASE_DATE: new Date(2009, 0, 1).valueOf(),
+    };
 
-    getCmdName: function(idx) {
-        for (var i in dexcomDriver.CMDS) {
-            if (dexcomDriver.CMDS[i].value == idx) {
-                return dexcomDriver.CMDS[i].name;
+    var BASE_DATE_DEVICE = cfg.timeutils.buildMsec({ year: 2009, month: 1, day: 1, 
+        hours: 0, minutes: 0, seconds: 0 }, null);
+    var BASE_DATE_UTC = cfg.timeutils.buildMsec({ year: 2009, month: 1, day: 1, 
+        hours: 0, minutes: 0, seconds: 0 }, cfg.tz_offset_minutes);
+    console.log("offset=" + cfg.tz_offset_minutes + " Device=" + BASE_DATE_DEVICE + " UTC=" + BASE_DATE_UTC);
+    console.log(new Date(BASE_DATE_DEVICE));
+    console.log(new Date(BASE_DATE_UTC));
+
+
+    var getCmdName = function(idx) {
+        for (var i in CMDS) {
+            if (CMDS[i].value == idx) {
+                return CMDS[i].name;
             }
         }
         return "UNKNOWN COMMAND!";
-    },
+    };
 
-    getTrendName: function(idx) {
-        for (var i in dexcomDriver.TRENDS) {
-            if (dexcomDriver.TRENDS[i].value == idx) {
-                return dexcomDriver.TRENDS[i].name;
+
+    var getTrendName = function(idx) {
+        for (var i in TRENDS) {
+            if (TRENDS[i].value == idx) {
+                return TRENDS[i].name;
             }
         }
         return "UNKNOWN TREND!";
-    },
+    };
 
-    /*********************************************************************
-     * Function:    calcCRC()
-     * Description: Compute the Zmodem CRC of a given array of bytes, which has
-     *              been tested to be compatible with the C++ code that we
-     *              were given by dexcom.
-     * Notes:       The CRC table is well-known and dates back at least to the 
-     *              1980s where it was used in the Zmodem protocol. However, 
-     *              in Zmodem and many other implementations, the INITIAL_REMAINDER
-     *              was 0, not 0xFFFF. Consequently, be careful if you use
-     *              any other implementation of CRC.
-     * Inputs:      dataRec - pointer to ArrayBuffer to have crc performed.
-     *              Does not include the CRC field.
-     *              size - Number of bytes in dataRec.
-     * Returns:     The CRC of the buffer.
-     *********************************************************************/
+    var firmwareHeader = null;
+
     // builds a command in an ArrayBuffer
     // The first byte is always 0x01 (SYNC), 
     // the second and third bytes are a little-endian payload length.
@@ -85,97 +87,141 @@ var dexcomDriver = {
     // up to that point.
     // payload is any indexable array-like object that returns Numbers
 
-    buildPacket: function(command, payloadLength, payload) {
+    var buildPacket = function(command, payloadLength, payload) {
         var datalen = payloadLength + 6;
         var buf = new ArrayBuffer(datalen);
         var bytes = new Uint8Array(buf);
-        var ctr = util.pack(bytes, 0, "bsb", dexcomDriver.SYNC_BYTE,
+        var ctr = struct.pack(bytes, 0, "bsb", SYNC_BYTE,
             datalen, command);
-        ctr += util.copyBytes(bytes, ctr, payload, payloadLength);
+        ctr += struct.copyBytes(bytes, ctr, payload, payloadLength);
         var crc = crcCalculator.calcDexcomCRC(bytes, ctr);
-        util.pack(bytes, ctr, "s", crc);
+        struct.pack(bytes, ctr, "s", crc);
         return buf;
-    },
+    };
 
-    readFirmwareHeader: function() {
+
+    var readFirmwareHeader = function() {
         return {
-            packet: dexcomDriver.buildPacket(
-                dexcomDriver.CMDS.READ_FIRMWARE_HEADER.value, 0, null
+            packet: buildPacket(
+                CMDS.READ_FIRMWARE_HEADER.value, 0, null
             ),
             parser: function(packet) {
-                data = dexcomDriver.parseXMLPayload(packet);
-                dexcomDriver.firmwareHeader = data;
+                var data = parseXMLPayload(packet);
+                firmwareHeader = data;
                 return data;
             }
         };
-    },
+    };
 
-    readDataPageRange: function(rectype) {
+
+    var readDataPageRange = function(rectype) {
         return {
-            packet: dexcomDriver.buildPacket(
-                dexcomDriver.CMDS.READ_DATA_PAGE_RANGE.value, 
+            packet: buildPacket(
+                CMDS.READ_DATA_PAGE_RANGE.value, 
                 1,
                 [rectype.value]
             ),
             parser: function(result) {
-                return util.unpack(result.payload, 0, "II", ["lo", "hi"]);
+                return struct.unpack(result.payload, 0, "ii", ["lo", "hi"]);
                 }
             };
-    },
+    };
 
-    readDataPages: function(rectype, startPage, numPages) {
+
+    var readEGVDataPages = function(rectype, startPage, numPages) {
         var parser = function(result) {
-            var header = util.unpack(result.payload, 0, "IIbbIIIIbb", [
+            var format = "iibbiiiibb";
+            var header = struct.unpack(result.payload, 0, format, [
                     "index", "nrecs", "rectype", "revision", 
                     "pagenum", "r1", "r2", "r3", "j1", "j2"
                 ]);
             return {
                 header: header,
-                // data: result.payload.subarray(header.unpack_length)
-                data: parse_records(header, result.payload.subarray(header.unpack_length))
+                data: parse_records(header, result.payload.subarray(struct.structlen(format)))
             };
         };
 
         var parse_records = function(header, data) {
-            all = [];
+            var all = [];
             var ctr = 0;
             for (var i = 0; i<header.nrecs; ++i) {
-                var rec = util.unpack(data, ctr, "IIsbs", [
+                var format = "iihbs";
+                var flen = struct.structlen(format);
+                var rec = struct.unpack(data, ctr, format, [
                     "systemSeconds", "displaySeconds", "glucose", "trend", "crc"   
                 ]);
-                rec.glucose &= 0x3FF;
+                // rec.glucose &= 0x3FF;
+                if (rec.glucose < 0) {  // some glucose records have a negative value; these
+                                        // invariably have a time identical to the next record,
+                                        // so we presume that they are superceded by
+                                        // the other record (probably a calibration)
+                    continue;
+                }
                 rec.trend &= 0xF;
-                rec.trendText = dexcomDriver.getTrendName(rec.trend);
-                rec.systemTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.systemSeconds);
-                rec.displayTime = new Date(dexcomDriver.BASE_DATE + 1000*rec.displaySeconds);
-                rec.data = data.subarray(ctr, ctr + rec.unpack_length);
-                ctr += rec.unpack_length;
+                rec.trendText = getTrendName(rec.trend);
+                rec.systemTimeMsec = BASE_DATE_DEVICE + 1000*rec.systemSeconds;
+                rec.displayTimeMsec = BASE_DATE_DEVICE + 1000*rec.displaySeconds;
+                rec.displayTime = cfg.timeutils.mSecToISOString(rec.displayTimeMsec);
+                rec.displayUtcMsec = BASE_DATE_UTC + 1000*rec.displaySeconds;
+                rec.displayUtc = cfg.timeutils.mSecToISOString(rec.displayUtcMsec, cfg.tz_offset_minutes);
+                rec.data = data.subarray(ctr, ctr + flen);
+                ctr += flen;
                 all.push(rec);
             }
             return all;
         };
 
-        var struct = "bIb";
-        var len = util.structlen(struct);
+        var format = "bib";
+        var len = struct.structlen(format);
         var payload = new Uint8Array(len);
-        util.pack(payload, 0, struct, rectype.value, startPage, numPages);
+        struct.pack(payload, 0, format, rectype.value, startPage, numPages);
 
         return {
-            packet: dexcomDriver.buildPacket(
-                dexcomDriver.CMDS.READ_DATA_PAGES.value, len, payload
+            packet: buildPacket(
+                CMDS.READ_DATA_PAGES.value, len, payload
             ),
             parser: parser
         };
-    },
+    };
 
-    readDataPageHeader: function() {
+    var readManufacturingDataPages = function(rectype, startPage, numPages) {
+        var parser = function(result) {
+            var format = "iibbi21.";
+            var hlen = struct.structlen(format);
+            var xlen = result.payload.length - hlen;
+            var allformat = format + xlen + "z";
+            var data = struct.unpack(result.payload, 0, allformat, [
+                    "index", "nrecs", "rectype", "revision", 
+                    "pagenum", "xml"
+                ]);
+            data.mfgdata = parseXML(data.xml);
+            return data;
+        };
+
+        var format = "bib";
+        var len = struct.structlen(format);
+        var payload = new Uint8Array(len);
+        struct.pack(payload, 0, format, rectype.value, startPage, numPages);
+
         return {
-            packet: dexcomDriver.buildPacket(
-                dexcomDriver.CMDS.READ_DATA_PAGE_HEADER.value, 0, null
+            packet: buildPacket(
+                CMDS.READ_DATA_PAGES.value, len, payload
+            ),
+            parser: parser
+        };
+    };
+
+
+
+    var readDataPageHeader = function() {
+        return {
+            packet: buildPacket(
+                CMDS.READ_DATA_PAGE_HEADER.value, 0, null
             ),
             parser: null
         };
-    },
+    };
+
 
 
     // accepts a stream of bytes and tries to find a dexcom packet
@@ -184,9 +230,10 @@ var dexcomDriver = {
     // if packet_len is nonzero, that much should be deleted from the stream
     // if valid is false and packet_len is nonzero, the previous packet 
     // should be NAKed.
-    extractPacket: function(bytestream) {
+    var extractPacket = function(bytestream) {
         var bytes = new Uint8Array(bytestream);
         var packet = { 
+            bytes: bytes,
             valid: false, 
             packet_len: 0,
             command: 0,
@@ -194,20 +241,20 @@ var dexcomDriver = {
             crc: 0
         };
 
-        if (bytes[0] != dexcomDriver.SYNC_BYTE) {
+        if (bytes[0] != SYNC_BYTE) {
             return packet;
         }
 
-        plen = bytes.length;
-        packet_len = util.extractShort(bytes, 1);
+        var plen = bytes.length;
+        var packet_len = struct.extractShort(bytes, 1);
         // minimum packet len is 6
-        if (packet_len < plen) {
+        if (packet_len > plen) {
             return packet;  // we're not done yet
         }
 
         // we now have enough length for a complete packet, so calc the CRC 
         packet.packet_len = packet_len;
-        packet.crc = util.extractShort(bytes, packet_len - 2);
+        packet.crc = struct.extractShort(bytes, packet_len - 2);
         var crc = crcCalculator.calcDexcomCRC(bytes, packet_len - 2);
         if (crc != packet.crc) {
             // if the crc is bad, we should discard the whole packet
@@ -224,19 +271,20 @@ var dexcomDriver = {
 
         packet.valid = true;
         return packet;
-    },
+    };
+
 
     // Takes an xml-formatted string and returns an object
-    parseXML: function(s) {
+    var parseXML = function(s) {
         console.log(s);
-        result = {tag:'', attrs:{}};
+        var result = {tag:"", attrs:{}};
         var tagpat = /<([A-Za-z]+)/;
         var m = s.match(tagpat);
         if (m) {
             result.tag = m[1];
         }
-        var gattrpat = /([A-Za-z]+)='([^']+)'/g;
-        var attrpat = /([A-Za-z]+)='([^']+)'/;
+        var gattrpat = /([A-Za-z]+)=["']([^"']+)["']/g;
+        var attrpat = /([A-Za-z]+)=["']([^"']+)["']/;
         m = s.match(gattrpat);
         for (var r in m) {
             var attr = m[r].match(attrpat);
@@ -246,9 +294,10 @@ var dexcomDriver = {
             result.attrs[attr[1]] = attr[2];
         }
         return result;
-    },
+    };
 
-    parseXMLPayload: function(packet) {
+
+    var parseXMLPayload = function(packet) {
         if (!packet.valid) {
             return {};
         }
@@ -259,9 +308,273 @@ var dexcomDriver = {
         var len = packet.packet_len - 6;
         var data = null;
         if (len) {
-            data = dexcomDriver.parseXML(
-                util.extractString(packet.payload, 0, len));
+            data = parseXML(
+                struct.extractString(packet.payload, 0, len));
         }
         return data;
-    }
+    };
+
+    // When you call this, it looks to see if a complete Dexcom packet has
+    // arrived and it calls the callback with it and strips it from the buffer. 
+    // It returns true if a packet was found, and false if not.
+    var readDexcomPacket = function(packetcallback) {
+        // for efficiency reasons, we're not going to bother to ask the driver
+        // to decode things that can't possibly be a packet
+        // first, discard bytes that can't start a packet
+        var discardCount = 0;
+        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != SYNC_BYTE) {
+            ++discardCount;
+        }
+        if (discardCount) {
+            serialDevice.discardBytes(discardCount);
+        }
+
+        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
+            return false;       // not enough there yet
+        }
+
+        // there's enough there to try, anyway
+        var packet = extractPacket(serialDevice.buffer);
+        if (packet.packet_len !== 0) {
+            // remove the now-processed packet
+            serialDevice.discardBytes(packet.packet_len);
+        }
+        packetcallback(packet);
+        return true;
+    };
+
+    // callback gets a result packet with parsed payload
+    var dexcomCommandResponse = function(commandpacket, callback) {
+        var processResult = function(result) {
+            if (result.command != CMDS.ACK.value) {
+                console.log("Bad result %d (%s) from data packet", 
+                    result.command, getCmdName(result.command));
+                console.log("Command packet was:");
+                var bytes = new Uint8Array(commandpacket.packet);
+                console.log(bytes);
+                console.log("Result was:");
+                console.log(result);
+                callback("Bad result " + result.command + " (" + 
+                    getCmdName(result.command) + ") from data packet", result);
+            } else {
+                // only attempt to parse the payload if it worked
+                if (result.payload) {
+                    result.parsed_payload = commandpacket.parser(result);
+                }
+                callback(null, result);
+            }
+        };
+
+        var waitloop = function() {
+            if (!readDexcomPacket(processResult)) {
+                setTimeout(waitloop, 100);
+            }
+        };
+
+        serialDevice.writeSerial(commandpacket.packet, function() {
+            // console.log("->");
+            waitloop();
+        });
+    };
+
+    var fetchOneEGVPage = function(pagenum, callback) {
+        var cmd = readEGVDataPages(
+            RECORD_TYPES.EGV_DATA, pagenum, 1);
+        dexcomCommandResponse(cmd, function(err, page) {
+            // console.log(page.parsed_payload);
+            callback(err, page);
+        });
+    };
+
+    var fetchManufacturingData = function(pagenum, callback) {
+        var cmd = readDataPageRange(RECORD_TYPES.MANUFACTURING_DATA);
+        // var cmd = readEGVDataPages(
+        //     RECORD_TYPES.MANUFACTURING_DATA, pagenum, 1);
+        dexcomCommandResponse(cmd, function(err, page) {
+            console.log("mfr range");
+            var range = page.parsed_payload;
+            console.log(range);
+            var cmd2 = readManufacturingDataPages(RECORD_TYPES.MANUFACTURING_DATA, 
+                range.lo, range.hi-range.lo+1);
+            dexcomCommandResponse(cmd2, function(err, result) {
+                if (err) {
+                    callback(err, result);
+                } else {
+                    callback(err, result.parsed_payload.mfgdata);
+                }
+            });
+        });
+    };
+
+    var detectDexcom = function(obj, cb) {
+        var cmd = readFirmwareHeader();
+        dexcomCommandResponse(cmd, function(err, result) {
+            if (err) {
+                console.log("Failure trying to talk to dexcom.");
+                console.log(err);
+                console.log(result);
+                cb(null, null);
+            } else {
+                cb(null, obj);
+            }
+        });
+    };
+
+    var downloadEGVPages = function(progress, callback) {
+        var cmd = readDataPageRange(RECORD_TYPES.EGV_DATA);
+        dexcomCommandResponse(cmd, function(err, pagerange) {
+            if (err) {
+                return callback(err, pagerange);
+            }
+            console.log("page range");
+            var range = pagerange.parsed_payload;
+            console.log(range);
+            var pages = [];
+            for (var pg = range.hi; pg >= range.lo; --pg) {
+                pages.push(pg);
+            }
+            // pages = pages.slice(0, 3);      // FOR DEBUGGING!
+            var npages = 0;
+            var fetch_and_progress = function(data, callback) {
+                progress(npages++ * 100.0/pages.length);
+                return fetchOneEGVPage(data, callback);
+            };
+            async.mapSeries(pages, fetch_and_progress, function(err, results) {
+                if (err) {
+                    console.log("error in dexcomCommandResponse");
+                    console.log(err);
+                }
+                console.log(results);
+                callback(err, results);
+            });
+
+        });
+    };
+
+    var processEGVPages = function(pagedata) {
+        var readings = [];
+        for (var i=0; i<pagedata.length; ++i) {
+            var page = pagedata[i].parsed_payload;
+            for (var j=0; j<page.data.length; ++j) {
+                var reading = _.pick(page.data[j], 
+                    "displaySeconds", "displayTime", "displayUtc", "systemSeconds", 
+                    "glucose", "trend", "trendText");
+                reading.pagenum = page.header.pagenum;
+                readings.push(reading);
+            }
+        }
+        return readings;
+    };
+
+    var prepCBGData = function(progress, data) {
+        cfg.jellyfish.setDeviceInfo( {
+            deviceId: data.firmwareHeader.attrs.ProductName + " " + 
+                data.manufacturing_data.attrs.SerialNumber,
+            source: "device",
+            timezoneOffset: cfg.tz_offset_minutes,
+            units: "mg/dL"      // everything the Dexcom receiver stores is in this unit
+        });
+        var dataToPost = [];
+        for (var i=0; i<data.cbg_data.length; ++i) {
+            var cbg = cfg.jellyfish.buildCBG(
+                    data.cbg_data[i].glucose,
+                    data.cbg_data[i].displayUtc,
+                    data.cbg_data[i].displayTime
+                );
+            cbg.trend = data.cbg_data[i].trendText;
+            dataToPost.push(cbg);
+        }
+
+        return dataToPost;
+    };
+
+    return {
+        // should call the callback with null, obj if the item 
+        // was detected, with null, null if not detected.
+        // call err only if there's something unrecoverable.
+        detect: function (obj, cb) {
+            detectDexcom(obj, cb);
+        },
+
+        // this function starts the chain, so it has to create but not accept
+        // the result (data) object; it's then passed down the rest of the chain
+        setup: function (progress, cb) {
+            progress(100);
+            cb(null, { firmwareHeader: firmwareHeader });
+        },
+
+        connect: function (progress, data, cb) {
+            progress(100);
+            data.connect = true;
+            cb(null, data);
+        },
+
+        getConfigInfo: function (progress, data, cb) {
+            fetchManufacturingData(0, function(err, result) {
+                data.manufacturing_data = result;
+                progress(100);
+                data.getConfigInfo = true;
+                cb(null, data);
+            });
+        },
+
+        fetchData: function (progress, data, cb) {
+            progress(0);
+            downloadEGVPages(progress, function (err, result) {
+                data.egv_data = result;
+                progress(100);
+                cb(err, data);
+            });
+        },
+
+        processData: function (progress, data, cb) {
+            progress(0);
+            data.cbg_data = processEGVPages(data.egv_data);
+            data.post_records = prepCBGData(progress, data);
+            var ids = {};
+            for (var i=0; i<data.post_records.length; ++i) {
+                var id = data.post_records[i].time + "|" + data.post_records[i].deviceId;
+                if (ids[id]) {
+                    console.log("duplicate! %s @ %d == %d", id, i, ids[id]-1);
+                    console.log(data.post_records[ids[id]-1]);
+                    console.log(data.post_records[i]);
+                } else {
+                    ids[id] = i+1;
+                }
+            }
+            progress(100);
+            data.processData = true;
+            cb(null, data);
+        },
+
+        uploadData: function (progress, data, cb) {
+            progress(0);
+            cfg.jellyfish.post(data.post_records, progress, function(err, result) {
+                if (err) {
+                    console.log(err);
+                    console.log(result);
+                    progress(100);
+                    return cb(err, data);
+                } else {
+                    progress(100);
+                    return cb(null, data);
+                }
+            });
+
+            data.uploadData = true;
+            cb(null, data);
+        },
+
+        disconnect: function (progress, data, cb) {
+            progress(100);
+            data.disconnect = true;
+            cb(null, data);
+        },
+
+        cleanup: function (progress, data, cb) {
+            progress(100);
+            data.cleanup = true;
+            cb(null, data);
+        }
+    };
 };

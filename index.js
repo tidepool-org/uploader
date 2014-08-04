@@ -1,17 +1,76 @@
 // buildUI.js
 // this constructs the UI in jQuery
 
+struct = structTools();
+
+timeutils = function() {
+    var SEC_TO_MSEC = 1000;
+    var MIN_TO_MSEC = 60 * SEC_TO_MSEC;
+    var MIN30_TO_MSEC = 30 * MIN_TO_MSEC;
+
+    var buildMsec = function(o, tz_offset_minutes) {
+        var t = _.pick(o, ['year', 'month', 'day', 'hours', 'minutes', 'seconds']);
+        var d2 = function(x) {
+            return ('x00' + x).slice(-2);
+        };
+        // create s because we can then fool Javascript into ignoring local time zone.
+        var s = t.year + '-' + d2(t.month) + '-' + d2(t.day) + 'T' + 
+            d2(t.hours) + ':' + d2(t.minutes) + ':' + d2(t.seconds) + 'Z';
+        var d;
+        if (tz_offset_minutes) {
+            // offset for times is the value you see in timestamps (-0800 for PST is -480 minutes)
+            // which is what you add to get your local time from zulu time. 
+            // to get to zulu time we need to go the other way -- subtract, not add.
+            d = Date.parse(s) - tz_offset_minutes * MIN_TO_MSEC;
+        } else {
+            d = Date.parse(s);
+        }
+        return d;
+    };
+
+    var mSecToISOString = function(ts, tz_offset_minutes) {
+        var dt = new Date(ts).toISOString();
+        if (tz_offset_minutes != null) {
+            return dt;
+        } else {
+            return dt.slice(0, -5);  // trim off the .000Z from the end
+        }        
+    };
+
+    // constructs a UTC timestamp from the canonically-named fields in o as well
+    // as the time zone offset. If tz_offset_minutes is null (not 0) then the resulting
+    // time stamp will NOT include a time zone indicator
+    var buildTimestamp = function(o, tz_offset_minutes) {
+        var d = buildMsec(o, tz_offset_minutes);
+        if (d) {
+            return mSecToISOString(d, tz_offset_minutes);
+        } else {
+            return null;
+        }
+    };
+
+    return {
+        SEC_TO_MSEC: SEC_TO_MSEC,
+        MIN_TO_MSEC: MIN_TO_MSEC,
+        MIN30_TO_MSEC: MIN30_TO_MSEC,
+        buildMsec: buildMsec,
+        mSecToISOString: mSecToISOString,
+        buildTimestamp: buildTimestamp
+    };
+
+}();
+
 var make_base_auth = function (username, password) {
   var tok = username + ':' + password;
   var hash = btoa(tok);
-  return "Basic " + hash;
+  return 'Basic ' + hash;
 };
 
 var tidepoolHosts = {
-    local: { host: "http://localhost:8009", jellyfish: "http://localhost:9122" },
-    devel: { host: "https://devel-api.tidepool.io", jellyfish: "https://devel-uploads.tidepool.io" },
-    staging: { host: "https://staging-api.tidepool.io", jellyfish: "https://staging-uploads.tidepool.io" },
-    prod: { host: "https://api.tidepool.io", jellyfish: "https://uploads.tidepool.io" }
+    local: { host: 'http://localhost:8009', jellyfish: 'http://localhost:9122' },
+    devel: { host: 'https://devel-api.tidepool.io', jellyfish: 'https://devel-uploads.tidepool.io' },
+    staging: { host: 'https://staging-api.tidepool.io', jellyfish: 'https://staging-uploads.tidepool.io' },
+    prod: { host: 'https://api.tidepool.io', jellyfish: 'https://uploads.tidepool.io' }
 };
 
 var tidepoolServerData = {
@@ -58,11 +117,11 @@ var tidepoolServer = {
         });
     },
     login: function(username, password, happycb, sadcb) {
-        var url = tidepoolServerData.host + "/auth/login";
+        var url = tidepoolServerData.host + '/auth/login';
         jqxhr = $.ajax({
             type: 'POST',
             url: url,
-            headers: { "Authorization": make_base_auth(username, password) }, 
+            headers: { 'Authorization': make_base_auth(username, password) }, 
         }).success(function(data, status, jqxhr) {
             tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
             tidepoolServerData.userdata = data;
@@ -72,21 +131,23 @@ var tidepoolServer = {
         });
     },
     getProfile: function(happycb, sadcb) {
-        var url = tidepoolServerData.host + "/metadata/" + tidepoolServerData.userdata.userid + "/profile";
+        var url = tidepoolServerData.host + '/metadata/' + tidepoolServerData.userdata.userid + '/profile';
         this.get(url, happycb, sadcb);
     },
     postToJellyfish: function(data, happycb, sadcb) {
-        var url = tidepoolServerData.jellyfish + "/data";
+        var url = tidepoolServerData.jellyfish + '/data';
         this.post(url, data, happycb, sadcb);
     }
 };
+
+var jellyfish = jellyfishClient({tidepoolServer: tidepoolServer});
 
 var serialDevice = {
     connected: false,
     connection: null,
     port: null,
     buffer: [],
-    portprefix: "/dev/cu.usbmodem",
+    portprefix: '/dev/cu.usb',
     setup: function(portprefix) {
         if (portprefix) {
             serialDevice.portprefix = portprefix;
@@ -97,14 +158,14 @@ var serialDevice = {
             var connected = function(conn) {
                 serialDevice.connection = conn;
                 serialDevice.connected = true;
-                console.log("connected to " + serialDevice.port.path);
+                console.log('connected to ' + serialDevice.port.path);
                 connectedCB();
             };
             for (var i=0; i<ports.length; i++) {
                 console.log(ports[i].path);
                 if (ports[i].path.slice(0, serialDevice.portprefix.length) == serialDevice.portprefix) {
                     serialDevice.port = ports[i];
-                    chrome.serial.connect(serialDevice.port.path, { bitrate: 115200 }, connected);
+                    chrome.serial.connect(serialDevice.port.path, { bitrate: 9600 }, connected);
                 }
             }
         });
@@ -120,62 +181,6 @@ var serialDevice = {
     },
     discardBytes: function(discardCount) {
         serialDevice.buffer = serialDevice.buffer.slice(discardCount);
-    },
-    // When you call this, it looks to see if a complete Asante packet has
-    // arrived and it calls the callback with it and strips it from the buffer. 
-    // It returns true if a packet was found, and false if not.
-    readAsantePacket: function(callback) {
-        // for efficiency reasons, we're not going to bother to ask the driver
-        // to decode things that can't possibly be a packet
-        // first, discard bytes that can't start a packet
-        var discardCount = 0;
-        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != asanteDriver.SYNC_BYTE) {
-            ++discardCount;
-        }
-        if (discardCount) {
-            serialDevice.discardBytes(discardCount);
-        }
-
-        if (serialDevice.buffer.length < 6) { // all complete packets must be this long
-            return false;       // not enough there yet
-        }
-
-        // there's enough there to try, anyway
-        var packet = asanteDriver.extractPacket(serialDevice.buffer);
-        if (packet.packet_len !== 0) {
-            // remove the now-processed packet
-            serialDevice.discardBytes(packet.packet_len);
-        }
-        callback(packet);
-        return true;
-    },
-    // When you call this, it looks to see if a complete Asante packet has
-    // arrived and it calls the callback with it and strips it from the buffer. 
-    // It returns true if a packet was found, and false if not.
-    readDexcomPacket: function(callback) {
-        // for efficiency reasons, we're not going to bother to ask the driver
-        // to decode things that can't possibly be a packet
-        // first, discard bytes that can't start a packet
-        var discardCount = 0;
-        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != dexcomDriver.SYNC_BYTE) {
-            ++discardCount;
-        }
-        if (discardCount) {
-            serialDevice.discardBytes(discardCount);
-        }
-
-        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
-            return false;       // not enough there yet
-        }
-
-        // there's enough there to try, anyway
-        var packet = dexcomDriver.extractPacket(serialDevice.buffer);
-        if (packet.packet_len !== 0) {
-            // remove the now-processed packet
-            serialDevice.discardBytes(packet.packet_len);
-        }
-        callback(packet);
-        return true;
     },
     readSerial: function(bytes, timeout, callback) {
         var packet;
@@ -196,11 +201,12 @@ var serialDevice = {
     writeSerial: function(bytes, callback) {
         var l = new Uint8Array(bytes).length;
         var sendcheck = function(info) {
+            // console.log('Sent %d bytes', info.bytesSent);
             if (l != info.bytesSent) {
-                console.log("Only " + info.bytesSent + " bytes sent out of " + l);
+                console.log('Only ' + info.bytesSent + ' bytes sent out of ' + l);
             }
             else if (info.error) {
-                console.log("Serial send returned " + info.error);
+                console.log('Serial send returned ' + info.error);
             }
             callback(info);
         };
@@ -208,19 +214,147 @@ var serialDevice = {
     }
 };
 
+function statusManager(config) {
+    var progress = function(msg, pctg) {
+        // console.log('Progress: %s -- %d', msg, pctg);
+        $('#progressbar').show();
+        $('#progressbar').progressbar('option', 'value', pctg);
+        $('.progress-label').text(msg);
+    };
 
+    var hideProgressBar = function() {
+        $('#progressbar').hide();
+    };
+
+    var cfg = config;
+    if (cfg.progress) {
+        progress = cfg.progress;
+    }
+    var statuses = cfg.steps;
+
+    var setStatus = function(stage, pct) {
+        var msg = statuses[stage].name;
+        var range = statuses[stage].max - statuses[stage].min;
+        var displayPctg = statuses[stage].min + Math.floor(range * pct / 100.0);
+        progress(msg, displayPctg);
+    };
+
+    return {
+        hideProgressBar: hideProgressBar,
+        statf: function(stage) {
+            return setStatus.bind(this, stage);
+        }
+    };
+}
+
+/* Here's what we want to do:
+    call init() on every driver
+    do forever:
+        call detect() on every driver in a loop or when notified by an insertion
+        when a device is detected:
+            setup
+            connect
+            getConfigInfo
+            fetchData
+            processData
+            uploadData
+            disconnect
+            cleanup
+*/
+
+function driverManager(driverObjects, config) {
+    var cfg = config;
+    var drivers = {};
+    var required = [
+            'detect',
+            'setup',
+            'connect',
+            'getConfigInfo',
+            'fetchData',
+            'processData',
+            'uploadData',
+            'disconnect',
+            'cleanup',
+        ];
+
+    for (var d in driverObjects) {
+        drivers[d] = driverObjects[d](config[d]);
+        for (var i=0; i<required.length; ++i) {
+            if (typeof(drivers[d][required[i]]) != 'function') {
+                console.log('!!!! Driver %s must implement %s', d, required[i]);
+            }
+        }
+    }
+
+    var stat = statusManager({progress: null, steps: [
+        { name: 'setting up', min: 0, max: 5 },
+        { name: 'connecting', min: 5, max: 10 },
+        { name: 'getting configuration data', min: 10, max: 20 },
+        { name: 'fetching data', min: 20, max: 50 },
+        { name: 'processing data', min: 50, max: 60 },
+        { name: 'uploading data', min: 60, max: 90 },
+        { name: 'disconnecting', min: 90, max: 95 },
+        { name: 'cleaning up', min: 95, max: 100 }
+    ]});
+
+    return {
+        // iterates the driver list and calls detect; returns the list 
+        // of driver keys for the ones that called the callback
+        detect: function (cb) {
+            var detectfuncs = [];
+            for (var d in drivers) {
+                detectfuncs.push(drivers[d].detect.bind(drivers[d], d));
+            }
+            async.series(detectfuncs, function(err, result) {
+                if (err) {
+                    // something went wrong
+                    cb(err, result);
+                } else {
+                    console.log("done with the series -- result = ", result);
+                    var ret = [];
+                    for (var r=0; r<result.length; ++r) {
+                        if (result[r]) {
+                            ret.push(result[r]);
+                        }
+                    }
+                    cb(null, ret);
+                }
+            });
+        },
+
+        process: function (driver, cb) {
+            var drvr = drivers[driver];
+            console.log(driver);
+            console.log(drivers);
+            // console.log(drvr);
+            async.waterfall([
+                    drvr.setup.bind(drvr, stat.statf(0)),
+                    drvr.connect.bind(drvr, stat.statf(1)),
+                    drvr.getConfigInfo.bind(drvr, stat.statf(2)),
+                    drvr.fetchData.bind(drvr, stat.statf(3)),
+                    drvr.processData.bind(drvr, stat.statf(4)),
+                    drvr.uploadData.bind(drvr, stat.statf(5)),
+                    drvr.disconnect.bind(drvr, stat.statf(6)),
+                    drvr.cleanup.bind(drvr, stat.statf(7))
+                ], function(err, result) {
+                    setTimeout(stat.hideProgressBar, 1000);
+                    cb(err, result);   
+                });
+        }
+    };
+}
 
 function constructUI() {
     //$('body').append('This is a test.');
 
     var loggedIn = function (isLoggedIn) {
         if (isLoggedIn) {
-            $(".showWhenNotLoggedIn").fadeOut(400, function() {
-                $(".showWhenLoggedIn").fadeIn();
+            $('.showWhenNotLoggedIn').fadeOut(400, function() {
+                $('.showWhenLoggedIn').fadeIn();
             });
         } else {
-            $(".showWhenLoggedIn").fadeOut(400, function() {
-                $(".showWhenNotLoggedIn").fadeIn();
+            $('.showWhenLoggedIn').fadeOut(400, function() {
+                $('.showWhenNotLoggedIn').fadeIn();
             });
         }
     };
@@ -229,12 +363,12 @@ function constructUI() {
 
     var connected = function (isConnected) {
         if (isConnected) {
-            $(".showWhenNotConnected").fadeOut(400, function() {
-                $(".showWhenConnected").fadeIn();
+            $('.showWhenNotConnected').fadeOut(400, function() {
+                $('.showWhenConnected').fadeIn();
             });
         } else {
-            $(".showWhenConnected").fadeOut(400, function() {
-                $(".showWhenNotConnected").fadeIn();
+            $('.showWhenConnected').fadeOut(400, function() {
+                $('.showWhenNotConnected').fadeIn();
             });
         }
     };
@@ -246,11 +380,11 @@ function constructUI() {
         if (s[s.length-1] !== '\n') {
             s += '\n';
         }
-        var all = $("#connectionLog").val();
-        $("#connectionLog").val(all + s);
+        var all = $('#connectionLog').val();
+        $('#connectionLog').val(all + s);
     };
 
-    $("#loginButton").click(function() {
+    $('#loginButton').click(function() {
         var username = $('#username').val();
         var password = $('#password').val();
         var serverIndex = $('#serverURL').val();
@@ -266,50 +400,49 @@ function constructUI() {
         };
 
         var failLogin = function(jqxhr, status, error) {
-            connectLog("Login FAILED!", status, error);
+            connectLog('Login FAILED!', status, error);
             loggedIn(false);
         };
 
         var goodProfile = function(data, status, jqxhr) {
             connectLog(status);
             connectLog(data.toString());
-            $(".loginname").text(data.fullName);
+            $('.loginname').text(data.fullName);
         };
 
         var failProfile = function(jqxhr, status, error) {
-            connectLog("FAILED!", status, error);
+            connectLog('FAILED!', status, error);
         };
 
         var getProfile = function() {
-            connectLog("Fetching profile.");
+            connectLog('Fetching profile.');
             tidepoolServer.getProfile(goodProfile, failProfile);
         };
 
         tidepoolServer.login(username, password, goodLogin, failLogin);
     });
 
-    $("#logoutButton").click(function() {
+    $('#logoutButton').click(function() {
         loggedIn(false);
     });
 
-    var processOneDevice = function(devname, deviceArray) {
+    var foundDevice = function(devConfig, deviceArray) {
         for (var d=0; d<deviceArray.length; ++d) {
-            dev = deviceArray[d];
-            connectLog(devname);
-            connectLog(dev.device);
-            connectLog(dev.vendorId);
-            connectLog(dev.productId);
+            var dev = deviceArray[d];
+            connectLog("Discovered " + devConfig.deviceName);
+            console.log(devConfig);
+            searchOnce();
         }
     };
 
-    var getUSBDevices = function() {
-        manifest = chrome.runtime.getManifest();
+    var scanUSBDevices = function() {
+        var manifest = chrome.runtime.getManifest();
         for (var p = 0; p < manifest.permissions.length; ++p) {
             var perm = manifest.permissions[p];
             if (perm.usbDevices) {
-                for (d = 0; d < perm.usbDevices.length; ++d) {
-                    console.log(perm.usbDevices[d]);
-                    var f = processOneDevice.bind(this, perm.usbDevices[d].deviceName);
+                for (var d = 0; d < perm.usbDevices.length; ++d) {
+                    // console.log(perm.usbDevices[d]);
+                    var f = foundDevice.bind(this, perm.usbDevices[d]);
                     chrome.usb.getDevices({
                         vendorId: perm.usbDevices[d].vendorId,
                         productId: perm.usbDevices[d].productId
@@ -319,75 +452,38 @@ function constructUI() {
         }
     };
 
-    var receiveAsante = function(info) {
-        console.log(info);
-        if (info.resultCode == 0) {
-            console.log("Success");
-            // info.data is an ArrayBuffer
-            packet = new Uint8Array(info.data);
-            console.log(packet);
-        }
-    };
-
-    var handleAsante = function(handleArray) {
-        // handleArray should have just one entry
-        console.log(handleArray);
-        var h = handleArray[0];
-        // the bulk input number is 0x81, the output is 0x82
-        var trinput = {
-            direction: "in",
-            endpoint: 0x81,
-            length: 200,
-            data: null
-        };
-
-        chrome.usb.bulkTransfer(h, trinput, receiveAsante);
-    };
-
-    var findAsante = function() {
-        manifest = chrome.runtime.getManifest();
-        for (var p = 0; p < manifest.permissions.length; ++p) {
-            var perm = manifest.permissions[p];
-            if (perm.usbDevices) {
-                for (d = 0; d < perm.usbDevices.length; ++d) {
-                    if (perm.usbDevices[d].deviceName == 'Asante SNAP') {
-                        chrome.usb.findDevices({
-                            vendorId: perm.usbDevices[d].vendorId,
-                            productId: perm.usbDevices[d].productId
-                        }, handleAsante);
-                    }
-                }
-            }
-        }
-    };
-
     chrome.system.storage.onAttached.addListener(function (info){
-        connectLog("attached: " + info.name);
+        connectLog('attached: ' + info.name);
         storageDeviceInfo[info.id] = {
             id: info.id,
             name: info.name,
             type: info.type
         };
+        console.log(storageDeviceInfo[info.id]);
+        // whenever someone inserts a new device, try and run it
+        scanUSBDevices();
     });
 
     chrome.system.storage.onDetached.addListener(function (id){
-        connectLog("detached: " + storageDeviceInfo[id].name);
+        connectLog('detached: ' + storageDeviceInfo[id].name);
         delete(storageDeviceInfo[id]);
     });
 
     var openFile = function() {
-        console.log("OpenFile");
+        console.log('OpenFile');
         chrome.fileSystem.chooseEntry({type: 'openFile'}, function(readOnlyEntry) {
             console.log(readOnlyEntry);
             readOnlyEntry.file(function(file) {
+                console.log(file);
                 var reader = new FileReader();
 
                 reader.onerror = function() {
-                    connectLog("Error reading file!");
+                    connectLog('Error reading file!');
                 };
                 reader.onloadend = function(e) {
                     // e.target.result contains the contents of the file
                     // console.log(e.target.result);
+                    console.log(e.target.result);
                 };
 
                 reader.readAsText(file);
@@ -395,21 +491,21 @@ function constructUI() {
         });
     };
 
-    // $("#testButton").click(findAsante);
-    // $("#testButton1").click(getUSBDevices);
     var deviceComms = serialDevice;
-    deviceComms.connect(function() {connectLog("connected");});
+    var asanteDevice = asanteDriver({deviceComms: deviceComms});
+
+    deviceComms.connect(function() {connectLog('connected');});
     var testSerial = function() {
         var buf = new ArrayBuffer(1);
         var bytes = new Uint8Array(buf);
         bytes[0] = 97;
-        deviceComms.writeSerial(buf, function() {connectLog("'a' sent");});
+        deviceComms.writeSerial(buf, function() {connectLog('"a" sent');});
     };
 
     var getSerial = function(timeout) {
         deviceComms.readSerial(200, timeout, function(packet) {
-            connectLog("received " + packet.length + " bytes");
-            var s = "";
+            connectLog('received ' + packet.length + ' bytes');
+            var s = '';
             for (var c in packet) {
                 s += String.fromCharCode(packet[c]);
             }
@@ -424,193 +520,167 @@ function constructUI() {
         }, 1000);
     };
 
-    // callback gets a result packet with parsed payload
-    var dexcomCommandResponse = function(commandpacket, callback) {
-        var processResult = function(result) {
-            console.log(result);
-            if (result.command != 1) {
-                console.log("Bad result %d from data packet", 
-                    result.command, dexcomDriver.getCmdName(result.command));
-                console.log("Command packet was:");
-                bytes = new Uint8Array(commandpacket.packet);
-                console.log(bytes);
-                console.log("Result was:");
-                console.log(result);
-            } else {
-                // only attempt to parse the payload if it worked
-                if (result.payload) {
-                    result.parsed_payload = commandpacket.parser(result);
-                }
-            }
-            callback(result);
-        };
-
-        var waitloop = function() {
-            if (!deviceComms.readDexcomPacket(processResult)) {
-                console.log('.');
-                setTimeout(waitloop, 100);
-            }
-        };
-
-        deviceComms.writeSerial(commandpacket.packet, function() {
-            console.log("->");
-            waitloop();
-        });
-    };
-
     var deviceInfo = null;
-    var counter=0;
     var prevTimestamp = null;
-    var postJellyfish = function (egvpage, callback) {
-        console.log("poster");
-        console.log(deviceInfo);
-        var datapt = {
-          "type": "cbg",
-          "units": "mg/dL",
-          "value": 0,
-          "time": "",
-          "deviceTime": "",
-          "deviceId": deviceInfo.ProductName + "/12345",
-          "source": "device"
-        };
-
-        var localtime = function(t) {
-            var s = t.toISOString();
-            return s.substring(0, s.length - 1);
-        };
-        var data = [];
-        var recCount = 0;
-        for (var i = egvpage.header.nrecs - 1; i>=0; --i) {
-            datapt.value = egvpage.data[i].glucose;
-            datapt.time = egvpage.data[i].displayTime.toISOString();
-            datapt.deviceTime = localtime(egvpage.data[i].displayTime);
-            if (datapt.value < 15) {    // it's a "special" (error) value
-                console.log("Skipping datapoint with special bg.");
-                console.log(datapt);
-                continue;
-            }
-	    if (prevTimestamp == null || datapt.time !== prevTimestamp) {
-              data.push($.extend({}, datapt));
-              prevTimestamp = datapt.time;
-            }
-            recCount++;
-        }
-        console.log(data);
-        var happy = function(resp, status, jqxhr) {
-            console.log("Jellyfish post succeeded.");
-            console.log(status);
-            console.log(resp);
-            callback(null, recCount);
-        };
-        var sad = function(jqxhr, status, err) {
-            if (jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == "duplicate") {
-                callback("STOP", jqxhr.responseJSON.index);
-            } else {
-                console.log("Jellyfish post failed.");
-                console.log(status);
-                console.log(err);
-                callback(err, 0);
-            }
-        };
-        tidepoolServer.postToJellyfish(data, happy, sad);
-    };
-
-    var fetchOneEGVPage = function(pagenum, callback) {
-        var cmd = dexcomDriver.readDataPages(
-            dexcomDriver.RECORD_TYPES.EGV_DATA, pagenum, 1);
-        dexcomCommandResponse(cmd, function(page) {
-            console.log("page");
-            console.log(page.parsed_payload);
-            postJellyfish(page.parsed_payload, callback);
-        });
-    };
-
-    var connectDexcom = function() {
-        var cmd = dexcomDriver.readFirmwareHeader();
-        dexcomCommandResponse(cmd, function(result) {
-            console.log("firmware header");
-            deviceInfo = result.parsed_payload.attrs;
-            console.log(result);
-            var cmd2 = dexcomDriver.readDataPageRange(dexcomDriver.RECORD_TYPES.EGV_DATA);
-            dexcomCommandResponse(cmd2, function(pagerange) {
-                console.log("page range");
-                var range = pagerange.parsed_payload;
-                console.log(range);
-                var pages = [];
-                var lastpage = $("#lastpage").val();
-                for (var pg = range.hi-lastpage; pg >= range.lo; --pg) {
-                    pages.push(pg);
-                }
-                async.mapSeries(pages, fetchOneEGVPage, function(err, results) {
-                    console.log(results);
-                    var sum = 0;
-                    for (var i=0; i<results.length; ++i) {
-                        sum += results[i];
-                    }
-                    var msg = sum + " new records uploaded.";
-                    if (err == 'STOP') {
-                        console.log(msg);
-                    } else if (err) {
-                        console.log("Error: ", err);
-                    } else {
-                        console.log(msg);
-                    }
-                });
-
+    var test1 = function() {
+        var get = function(url, happycb, sadcb) {
+            $.ajax({
+                type: 'GET',
+                url: url
+            }).success(function(data, status, jqxhr) {
+                // happycb(data, status, jqxhr);
+                console.log('success!');
+                console.log(data);
+            }).error(function(jqxhr, status, err) {
+                // sadcb(jqxhr, status, err);
+                console.log('FAIL');
             });
+        };
+
+        var url = 'http://localhost:8888/foo.txt';
+        get(url);
+    };
+
+    var serialDevices = {
+            'AsanteSNAP': asanteDriver,
+            // 'Dexcom G4 CGM': dexcomDriver,
+            // 'Test': testDriver,
+            // 'AnotherTest': testDriver
+        };
+
+    var serialConfigs = {
+        'AsanteSNAP': {
+            deviceComms: deviceComms,
+            timeutils: timeutils,
+            tz_offset_minutes: -480,
+            jellyfish: jellyfish
+        },
+        'Dexcom G4 CGM': {
+            deviceComms: deviceComms,
+            timeutils: timeutils,
+            tz_offset_minutes: -480,
+            jellyfish: jellyfish
+        }
+    };
+
+    var blockDevices = {
+            'InsuletOmniPod': insuletDriver
+        };
+
+
+    var search = function(driverObjects, driverConfigs, cb) {
+        var dm = driverManager(driverObjects, driverConfigs);
+        dm.detect(function (err, found) {
+            if (err) {
+                console.log("search returned error:", err);
+                cb(err, found);
+            } else {
+                var devices = [];
+                // we might have found several devices, so make a binding
+                // for the process functor for each, then run them in series.
+                for (var f=0; f < found.length; ++f) {
+                    devices.push(dm.process.bind(dm, found[f]));
+                }
+                async.series(devices, cb);
+            }
+        });
+
+    };
+
+    var searchOnce = function() {
+        search(serialDevices, serialConfigs, function(err, results) {
+            if (err) {
+                console.log('Fail');
+                console.log(err);
+            } else {
+                console.log('Success');
+                console.log(results);
+            }
         });
     };
 
-    var testPack = function() {
-        buf = new Uint8Array(30);
-        len = util.pack(buf, 0, "IIbsIb", 254, 65534, 55, 1023, 256, 7);
-        console.log(buf);
-        result = util.unpack(buf, 0, "IIbsIb", ['a', 'b', 'c', 'd', 'e', 'f']);
-        console.log(result);
-        buf[0] = 0xff;
-        buf[1] = 0xff;
-        buf[2] = 0xff;
-        buf[3] = 0xff;
-        result = util.unpack(buf, 0, "I", ['x']);
-        console.log(result);
+    var searching = null;
+    var processing = false;
+    var searchRepeatedly = function() {
+        searching = setInterval(function () {
+            if (processing) {
+                console.log('skipping');
+                return;
+            }
+            processing = true;
+            search(serialDevices, serialConfigs, function(err, results) {
+                processing = false;
+            });
+        }, 5000);
     };
 
-    // $("#testButton").click(testSerial);
-
-    var testJellyfish = function() {
-        var datapt = {
-          "type": "cbg",
-          "units": "mg/dL",
-          "value": 0,
-          "time": "",
-          "deviceTime": "",
-          "deviceId": "KentTest123",
-          "source": "device"
-        };
-
-        var data = [];
-        var starttime = new Date(2014, 1, 23, 6);
-        var increment = 10 * 60 * 1000;  // 10 minutes
-        var duration = 30 * 60 * 60 * 1000; // 30 hours
-        var EDT_offset = -4 * 60 * 60 * 1000; // 4 hours
-        var startbg = 150;
-        for (var dt = 0; dt < duration; dt += increment) {
-            datapt.value = (startbg + 105 * Math.sin(dt/(10 * increment)));
-            var t = starttime.valueOf() + dt;
-            datapt.time = new Date(t).toISOString();
-            var devtime = new Date(t + EDT_offset).toISOString();
-            datapt.deviceTime = devtime.substring(0, devtime.length-1);
-            data.push($.extend({}, datapt));
+    var cancelSearch = function() {
+        if (searching) {
+            clearInterval(searching);
+            searching = null;
         }
-        console.log(data);
-        postJellyfish(data);
     };
 
-    // $("#testButton1").click(testJellyfish);
-    $("#testButton2").click(connectDexcom);
-    // $("#testButton3").click(testPack);
+    var handleFileSelect = function (evt) {
+        var files = evt.target.files;
+        // can't ever be more than one in this array since it's not a multiple
+        var i = 0;
+        if (files[i].name.slice(-4) == '.ibf') {
+            var reader = new FileReader();
 
+            reader.onerror = function(evt) {
+                console.log('Reader error!');
+                console.log(evt);
+            };
+
+            // closure to bind the filename
+            reader.onloadend = (function (theFile) {
+                return function(e) {
+                    // console.log(e);
+                    var cfg = {
+                        'InsuletOmniPod': {
+                            filename: theFile.name,
+                            filedata: e.srcElement.result,
+                            timeutils: timeutils,
+                            tz_offset_minutes: -480,
+                            jellyfish: jellyfish
+                        }
+                    };
+                    search(blockDevices, cfg, function(err, results) {
+                        if (err) {
+                            console.log('Fail');
+                            console.log(err);
+                            console.log(results);
+                        } else {
+                            console.log('Success');
+                            console.log(results);
+                        }
+                    });
+                };
+            })(files[i]);
+
+            reader.readAsArrayBuffer(files[i]);
+        }
+    };
+
+    $('#filechooser').change(handleFileSelect);
+
+    $('#testButton2').click(searchRepeatedly);
+    // $('#testButton3').click(cancelSearch);
+    // $('#testButton').click(findAsante);
+    $('#testButton1').click(scanUSBDevices);
+    $('#testButton3').click(searchOnce);
+  // $('#testButton3').click(util.test);
+
+    // jquery stuff
+    $('#progressbar').progressbar({
+      value: false
+    });
+    $('#progressbar').hide();
 }
 
 $(constructUI);
+
+// Uploader needs a timezone selector
+
 
