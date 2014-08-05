@@ -189,7 +189,8 @@ jellyfishClient = function(config) {
         tidepoolServer.postToJellyfish(data, happy, sad);
     };
 
-    // we break up the posts because jellyfish has a 1MB upload limit at one time
+    // we break up the posts because early jellyfish has a 1MB upload limit at one time
+    // we're upping that limit
     var post = function (data, progress, callback) {
         var blocks = [];
         var BLOCKSIZE = 100;

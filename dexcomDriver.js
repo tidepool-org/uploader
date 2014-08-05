@@ -476,6 +476,10 @@ dexcomDriver = function(config) {
         });
         var dataToPost = [];
         for (var i=0; i<data.cbg_data.length; ++i) {
+            if (data.cbg_data[i].glucose < 39) {
+                // special values are not posted for now
+                continue;
+            }
             var cbg = cfg.jellyfish.buildCBG(
                     data.cbg_data[i].glucose,
                     data.cbg_data[i].displayUtc,
