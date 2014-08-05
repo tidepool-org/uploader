@@ -560,9 +560,6 @@ dexcomDriver = function(config) {
                     return cb(null, data);
                 }
             });
-
-            data.uploadData = true;
-            cb(null, data);
         },
 
         disconnect: function (progress, data, cb) {

@@ -400,7 +400,9 @@ function constructUI() {
         };
 
         var failLogin = function(jqxhr, status, error) {
-            connectLog('Login FAILED!', status, error);
+            console.log('Login failed.');
+            connectLog('Login failed.'); //, status, error); don't display status -- it includes password!
+            $('.loginstatus').text('Login failed');
             loggedIn(false);
         };
 
@@ -579,6 +581,7 @@ function constructUI() {
                 // we might have found several devices, so make a binding
                 // for the process functor for each, then run them in series.
                 for (var f=0; f < found.length; ++f) {
+                    connectLog('Found ' + found[f]);
                     devices.push(dm.process.bind(dm, found[f]));
                 }
                 async.series(devices, cb);
@@ -590,9 +593,11 @@ function constructUI() {
     var searchOnce = function() {
         search(serialDevices, serialConfigs, function(err, results) {
             if (err) {
+                connectLog('Some sort of error occurred (see console).');
                 console.log('Fail');
                 console.log(err);
             } else {
+                connectLog('The upload succeeded.');
                 console.log('Success');
                 console.log(results);
             }
@@ -648,10 +653,12 @@ function constructUI() {
                     };
                     search(blockDevices, cfg, function(err, results) {
                         if (err) {
+                            connectLog('Some sort of error occurred (see console).');
                             console.log('Fail');
                             console.log(err);
                             console.log(results);
                         } else {
+                            connectLog('Data was successfully uploaded.');
                             console.log('Success');
                             console.log(results);
                         }
@@ -665,11 +672,12 @@ function constructUI() {
 
     $('#filechooser').change(handleFileSelect);
 
-    $('#testButton2').click(searchRepeatedly);
+    // $('#testButton2').click(searchRepeatedly);
     // $('#testButton3').click(cancelSearch);
     // $('#testButton').click(findAsante);
     $('#testButton1').click(scanUSBDevices);
-    $('#testButton3').click(searchOnce);
+    // $('#testButton2').click(scanUSBDevices);
+    // $('#testButton3').click(searchOnce);
   // $('#testButton3').click(util.test);
 
     // jquery stuff

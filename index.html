@@ -22,7 +22,7 @@
     <img id="logo" src="tidepoolLogoWhite_256.png">
     <form class="showWhenNotLoggedIn">
         <div class="loginStatus">
-            <p id="loggedout"><span>Not logged in.</span></p>
+            <p id="loggedout"><span class="loginstatus">Not logged in.</span></p>
         </div>
         <p>
             <label for="username">Email:</label>
@@ -32,7 +32,7 @@
         <p>
             <label for="password">Password:</label>
             <!-- <input type=password id="password" value="bbb"> -->
-            <input type=password id="password">
+            <input type=password id="password" placeholder="password">
         </p>
         <p>
             <label for="serverURL">Server:</label>
@@ -86,13 +86,13 @@
         </p>
         -->
         <p>
-            <label for="filechooser">File List:</label>
+            <label for="filechooser">Insulet File:</label>
             <input id="filechooser" type="file">
         </p>
         <p>
-            <input id="testButton1" type=button name="test1" value="Scan USB Devices">
-            <input id="testButton2" type=button name="test2" value="Upload from Dexcom">
-            <input id="testButton3" type=button name="test3" value="Search for a serial device">
+            <input id="testButton1" type=button name="test1" value="Upload from Dexcom">
+            <!-- <input id="testButton2" type=button name="test2" value="Scan USB Devices"> -->
+            <!-- <input id="testButton3" type=button name="test3" value="Search for a serial device"> -->
         </p>
     </form>
 </body>
