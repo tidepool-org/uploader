@@ -61,6 +61,10 @@ jellyfishClient = function(config) {
             deviceTime: devicetime
         });
 
+        if (bgInput === null) {
+            delete carbRec.bgInput;
+        }
+
         return carbRec;
     };
 
@@ -124,6 +128,9 @@ jellyfishClient = function(config) {
         if (previous != null) {
             basalRec.previous = previous;
         }
+        if (basalRec.duration < 0) {
+            console.log(basalRec);
+        }
         return basalRec;
     };
 
@@ -155,6 +162,19 @@ jellyfishClient = function(config) {
             callback(null, recCount);
         };
         var sad = function(jqxhr, status, err) {
+            if (jqxhr.status == 413 && data.length > 1) { // request entity too big
+                // but we can split the request and try again
+                var l = Math.floor(data.length/2);
+                var d1 = data.slice(0, l);
+                var d2 = data.slice(l);
+                async.mapSeries([d1, d2], postOne, function(err, result) {
+                    if (err) {
+                        return callback(err, 0);
+                    }
+                    return callback(null, result[0] + result[1]);
+                });
+                return;
+            }
             if (jqxhr.responseJSON && jqxhr.responseJSON.errorCode && jqxhr.responseJSON.errorCode == 'duplicate') {
                 console.log(jqxhr.responseJSON);
                 callback('duplicate', jqxhr.responseJSON.index);
@@ -172,7 +192,7 @@ jellyfishClient = function(config) {
     // we break up the posts because jellyfish has a 1MB upload limit at one time
     var post = function (data, progress, callback) {
         var blocks = [];
-        var BLOCKSIZE = 25;
+        var BLOCKSIZE = 100;
         for (var i=0; i<data.length; i+=BLOCKSIZE) {
             blocks.push(data.slice(i, i+BLOCKSIZE));
         }
