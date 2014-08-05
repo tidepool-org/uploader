@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Device Uploader",
   "short_name": "Uploader",
-  "version": "0.3",
+  "version": "0.4",
   "minimum_chrome_version": "32",
   "icons": {
     "16": "T_icon_dark_16.png",

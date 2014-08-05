@@ -67,6 +67,13 @@ a useful amount of intelligence about how to communicate in packets and the like
 ## Known bugs
 * You have to have your serial device plugged in before you run it. That will get fixed soonish.
 
+## Data-handling issues for Insulet
+* It doesn't deal with time changes on the device, so if it was set back in time, data may overlap and conflicting readings (at the same device time) will be skipped.
+* It doesn't do temp basals
+* It doesn't handle suspend and resume
+* Durations of scheduled basals are not sent up; the backend calculates them when it can, but it may not always work.
+* Bad readings are handled by being ignored rather than reported.
+
 ## How to use it
 
 ### Dexcom
