@@ -552,10 +552,17 @@ asanteDriver = function (config) {
         }
     };
 
+    var inReader = 0;
     // When you call this, it looks to see if a complete Asante packet has
     // arrived and it calls the callback with it and strips it from the buffer. 
     // It returns true if a packet was found, and false if not.
     var readAsantePacket = function(callback) {
+        ++inReader;
+        if (inReader > 1) { 
+            --inReader;
+            console.log("race!");
+            return false; 
+        }
         // for efficiency reasons, we're not going to bother to ask the driver
         // to decode things that can't possibly be a packet
         // first, discard bytes that can't start a packet
@@ -569,6 +576,7 @@ asanteDriver = function (config) {
 
         if (cfg.deviceComms.buffer.length < 6) { // all complete packets must be this long
             // console.log("packet not long enough (%d)", cfg.deviceComms.buffer.length);
+            --inReader;
             return false;       // not enough there yet
         }
 
@@ -581,6 +589,7 @@ asanteDriver = function (config) {
         if (packet.valid) {
             callback(null, packet);
         }
+        --inReader;
         return true;
     };
 
@@ -619,8 +628,10 @@ asanteDriver = function (config) {
                 // console.log("got response");
                 clearInterval(listenTimer);
                 clearTimeout(abortTimer);
+            } else {
+                console.log('L');
             }
-        }, 100);
+        }, 200);
     };
 
     var listenForPacket = function(timeout, callback) {
@@ -670,7 +681,7 @@ asanteDriver = function (config) {
                     // console.log(result);
                     // request next record
                     var next = nextRecord();
-                    if (retval.length >= 30) {
+                    if (retval.length >= 3000) {    // 3000 is bigger than any log's capacity
                         next = stopSending();
                         console.log("cutting it short for debugging!");                        
                     }
@@ -861,11 +872,25 @@ asanteDriver = function (config) {
         callback(null, "XXX");
     };
 
+    var _enabled = false;
+
     return {
+        enable: function() {
+            _enabled = true;
+        },
+
+        disable: function() {
+            _enabled = false;
+        },
+
         // should call the callback with null, obj if the item 
         // was detected, with null, null if not detected.
         // call err only if there's something unrecoverable.
         detect: function (obj, cb) {
+            if (_enabled === false) {
+                console.log("Asante driver is disabled!");
+                return cb(null, null);
+            };
             console.log("looking for asante", obj);
             listenForPacket(5000, function(err, result) {
                 console.log("beacon return");

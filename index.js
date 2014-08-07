@@ -262,10 +262,11 @@ function statusManager(config) {
             cleanup
 */
 
-function driverManager(driverObjects, config) {
-    var cfg = config;
+function driverManager(driverObjects, configs, enabledDevices) {
     var drivers = {};
     var required = [
+            'enable',
+            'disable',
             'detect',
             'setup',
             'connect',
@@ -278,12 +279,19 @@ function driverManager(driverObjects, config) {
         ];
 
     for (var d in driverObjects) {
-        drivers[d] = driverObjects[d](config[d]);
+        drivers[d] = driverObjects[d](configs[d]);
         for (var i=0; i<required.length; ++i) {
             if (typeof(drivers[d][required[i]]) != 'function') {
                 console.log('!!!! Driver %s must implement %s', d, required[i]);
             }
         }
+        drivers[d].disable();
+    }
+
+    console.log(drivers);
+    console.log(enabledDevices);
+    for (d in enabledDevices) {
+        drivers[enabledDevices[d]].enable();
     }
 
     var stat = statusManager({progress: null, steps: [
@@ -301,6 +309,7 @@ function driverManager(driverObjects, config) {
         // iterates the driver list and calls detect; returns the list 
         // of driver keys for the ones that called the callback
         detect: function (cb) {
+            console.log('detecting');
             var detectfuncs = [];
             for (var d in drivers) {
                 detectfuncs.push(drivers[d].detect.bind(drivers[d], d));
@@ -431,12 +440,14 @@ function constructUI() {
         loggedIn(false);
     });
 
-    var foundDevice = function(devConfig, deviceArray) {
-        for (var d=0; d<deviceArray.length; ++d) {
-            var dev = deviceArray[d];
-            connectLog("Discovered " + devConfig.deviceName);
+    var foundDevice = function(devConfig, devicesFound) {
+        // theoretically we could have multiple devices of the same type plugged in,
+        // but we kind of ignore that now. This will fail if you do that.
+        for (var d=0; d<devicesFound.length; ++d) {
+            var dev = devicesFound[d];
+            connectLog('Discovered ' + devConfig.deviceName);
             console.log(devConfig);
-            searchOnce();
+            searchOnce([devConfig.driverId]);
         }
     };
 
@@ -548,7 +559,7 @@ function constructUI() {
 
     var serialDevices = {
             'AsanteSNAP': asanteDriver,
-            // 'Dexcom G4 CGM': dexcomDriver,
+            'DexcomG4': dexcomDriver,
             // 'Test': testDriver,
             // 'AnotherTest': testDriver
         };
@@ -560,7 +571,7 @@ function constructUI() {
             tz_offset_minutes: parseInt($('#timezone').val()),
             jellyfish: jellyfish
         },
-        'Dexcom G4 CGM': {
+        'DexcomG4': {
             deviceComms: deviceComms,
             timeutils: timeutils,
             tz_offset_minutes: parseInt($('#timezone').val()),
@@ -573,9 +584,10 @@ function constructUI() {
         };
 
 
-    var search = function(driverObjects, driverConfigs, cb) {
-        var dm = driverManager(driverObjects, driverConfigs);
+    var search = function(driverObjects, driverConfigs, enabledDevices, cb) {
+        var dm = driverManager(driverObjects, driverConfigs, enabledDevices);
         dm.detect(function (err, found) {
+            console.log('calling dm.detect');
             if (err) {
                 console.log("search returned error:", err);
                 cb(err, found);
@@ -594,8 +606,8 @@ function constructUI() {
 
     };
 
-    var searchOnce = function() {
-        search(serialDevices, serialConfigs, function(err, results) {
+    var searchOnce = function(enabledDevices) {
+        search(serialDevices, serialConfigs, enabledDevices, function(err, results) {
             if (err) {
                 connectLog('Some sort of error occurred (see console).');
                 console.log('Fail');
@@ -678,10 +690,8 @@ function constructUI() {
 
     // $('#testButton2').click(searchRepeatedly);
     // $('#testButton3').click(cancelSearch);
-    // $('#testButton').click(findAsante);
     $('#testButton1').click(scanUSBDevices);
     // $('#testButton2').click(scanUSBDevices);
-    // $('#testButton3').click(searchOnce);
   // $('#testButton3').click(util.test);
 
     // jquery stuff

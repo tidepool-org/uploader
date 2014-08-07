@@ -493,11 +493,25 @@ dexcomDriver = function(config) {
         return dataToPost;
     };
 
+    var _enabled = false;
+
     return {
+        enable: function() {
+            _enabled = true;
+        },
+
+        disable: function() {
+            _enabled = false;
+        },
+
         // should call the callback with null, obj if the item 
         // was detected, with null, null if not detected.
         // call err only if there's something unrecoverable.
         detect: function (obj, cb) {
+            if (_enabled === false) {
+                console.log("Dexcom driver is disabled!");
+                return cb(null, null);
+            };
             detectDexcom(obj, cb);
         },
 
