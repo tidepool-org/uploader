@@ -308,6 +308,9 @@ function driverManager(driverObjects, config) {
             async.series(detectfuncs, function(err, result) {
                 if (err) {
                     // something went wrong
+                    console.log('driver fail.');
+                    console.log(err);
+                    console.log(result);
                     cb(err, result);
                 } else {
                     console.log("done with the series -- result = ", result);
@@ -544,8 +547,8 @@ function constructUI() {
     };
 
     var serialDevices = {
-            // 'AsanteSNAP': asanteDriver,
-            'Dexcom G4 CGM': dexcomDriver,
+            'AsanteSNAP': asanteDriver,
+            // 'Dexcom G4 CGM': dexcomDriver,
             // 'Test': testDriver,
             // 'AnotherTest': testDriver
         };
@@ -578,6 +581,7 @@ function constructUI() {
                 cb(err, found);
             } else {
                 var devices = [];
+                console.log("Devices found: ", devices);
                 // we might have found several devices, so make a binding
                 // for the process functor for each, then run them in series.
                 for (var f=0; f < found.length; ++f) {

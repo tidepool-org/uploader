@@ -407,6 +407,7 @@ dexcomDriver = function(config) {
     };
 
     var detectDexcom = function(obj, cb) {
+        console.log("looking for dexcom");
         var cmd = readFirmwareHeader();
         dexcomCommandResponse(cmd, function(err, result) {
             if (err) {

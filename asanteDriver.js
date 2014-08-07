@@ -49,6 +49,15 @@ asanteDriver = function (config) {
         STOP: { value: 2, name: "STOP"},
     };
 
+    var BOLUS_TYPE = {
+        NOW: { value: 0, name: "NOW"},
+        TIMED: { value: 1, name: "TIMED"},
+        COMBO: { value: 2, name: "COMBO"},
+    };
+
+    var CLICKS_TO_UNITS = 0.05; // number of units in a "click" of the pump
+    var BG_CONVERSION = 0.10; // values in the pump are 10x what the actual BG number is
+
     var _getName = function(list, idx) {
         for (var i in list) {
             if (list[i].value == idx) {
@@ -77,10 +86,13 @@ asanteDriver = function (config) {
     var _asanteBaseTime = new Date(2008, 0, 1, 0, 0, 0).valueOf();
 
     var convertRTCTime = function(t) {
-        if (timeRecords[0]) {
+        if (_timeState.timeRecords.length > 1) {
+            console.log("WARNING -- there are more than 1 time records - timestamps may be wrong.");
+        }
+        if (_timeState.timeRecords[0]) {
             var time = t + 
-                timeRecords[0].UserSetTime - 
-                timeRecords[0].RtcAtSetTime;
+                _timeState.timeRecords[0].UserSetTime - 
+                _timeState.timeRecords[0].RtcAtSetTime;
             return time;
         }
         return t;
@@ -88,8 +100,25 @@ asanteDriver = function (config) {
 
     var humanReadableTime = function(t) {
 
-        time = _asanteBaseTime + t * 1000;
+        var time = _asanteBaseTime + t * cfg.timeutils.SEC_TO_MSEC;
         return new Date(time).toUTCString();
+
+    };
+
+    var getDeviceTime = function(t) {
+
+        var atime = _asanteBaseTime + t * cfg.timeutils.SEC_TO_MSEC;
+        var time = convertRTCTime(atime);
+        return new Date(time).toISOString().slice(0, -5);   // trim off the .000z
+
+    };
+
+    var getUTCTime = function(t) {
+
+        var atime = _asanteBaseTime + t * cfg.timeutils.SEC_TO_MSEC - 
+            cfg.tz_offset_minutes * cfg.timeutils.MIN_TO_MSEC;
+        var time = convertRTCTime(atime);
+        return new Date(time).toISOString();
 
     };
 
@@ -106,12 +135,12 @@ asanteDriver = function (config) {
     var buildPacket = function(descriptor, payloadLength, payload) {
         var buf = new ArrayBuffer(payloadLength + 6);
         var bytes = new Uint8Array(buf);
-        var ctr = util.pack(bytes, 0, "bbs", SYNC_BYTE,
+        var ctr = struct.pack(bytes, 0, "bbs", SYNC_BYTE,
             descriptor, payloadLength);
-        ctr += util.copyBytes(bytes, ctr, payload, payloadLength);
+        ctr += struct.copyBytes(bytes, ctr, payload, payloadLength);
         var crc = crcCalculator.calcAsanteCRC(bytes, ctr);
-        util.pack(bytes, ctr, "s", crc);
-        console.log(bytes);
+        struct.pack(bytes, ctr, "s", crc);
+        // console.log(bytes);
         return buf;
     }; 
 
@@ -188,9 +217,23 @@ asanteDriver = function (config) {
         };
     };
 
+    var stopSending = function() {
+        return {
+            packet: stop_pkt(),
+            parser: parsePacket
+        };
+    };
+
     var setBaudRate = function() {
         return {
             packet: setBaudRate_pkt(9600),
+            parser: parsePacket
+        };
+    };
+
+    var disconnect = function() {
+        return {
+            packet: disconnect_pkt(9600),
             parser: parsePacket
         };
     };
@@ -214,13 +257,13 @@ asanteDriver = function (config) {
             packet_len: 0
         };
 
-        plen = bytes.length;        // this is how many bytes we've been handed
+        var plen = bytes.length;        // this is how many bytes we've been handed
         if (plen < 6) {             // if we don't have at least 6 bytes, don't bother
             return packet;
         }
 
         // we know we have at least enough to check the packet header, so do that
-        util.unpack(bytes, 0, "bbs", ["sync", "descriptor", "payload_len"], packet);
+        struct.unpack(bytes, 0, "bbs", ["sync", "descriptor", "payload_len"], packet);
 
         // if the first byte isn't our sync byte, then just discard that 
         // one byte and let our caller try again.
@@ -236,7 +279,7 @@ asanteDriver = function (config) {
         packet.packet_len = need_len;
 
         // we now have enough length for a complete packet, so calc the CRC 
-        packet.crc = util.extractShort(bytes, packet.packet_len - 2);
+        packet.crc = struct.extractShort(bytes, packet.packet_len - 2);
         var crc = crcCalculator.calcAsanteCRC(bytes, packet.packet_len - 2);
         if (crc != packet.crc) {
             // if the crc is bad, we should discard the whole packet
@@ -260,15 +303,15 @@ asanteDriver = function (config) {
             switch (packet.descriptor) {
                 case DESCRIPTORS.DEVICE_RESPONSE.value:
                     packet.pumpinfo = {
-                        model: util.extractString(packet.payload, 0, 4),
-                        serialNumber: util.extractString(packet.payload, 5, 11),
+                        model: struct.extractString(packet.payload, 0, 4),
+                        serialNumber: struct.extractString(packet.payload, 5, 11),
                         // asante docs say that pumpRecordVersion is a 2-character
                         // ascii string, and the example in the documentation says '60', 
                         // but the pump I have returns the two characters 0x00 and 0x45, 
                         // which is either the decimal value 17664, a null and the letter E,
                         // or a bug in either the documentation or this version of the pump.
                         // for now, I'm going to treat it as a short.
-                        pumpRecordVersion: util.extractShort(packet.payload, 17, 2)
+                        pumpRecordVersion: struct.extractShort(packet.payload, 17, 2)
                     };
                     break;
                 case DESCRIPTORS.DISCONNECT_ACK.value:
@@ -321,7 +364,7 @@ asanteDriver = function (config) {
     var unpackDataRecord = function(rec) {
         switch (rec.rectype) {
             case PUMP_DATA_RECORDS.LOG_BOLUS.value:
-                util.unpack(rec.data, 0, "siissssibbbbbb", [
+                struct.unpack(rec.data, 0, "siissssibbbbbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -339,7 +382,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_SMART.value:
-                util.unpack(rec.data, 0, "siisssisssssssbb", [
+                struct.unpack(rec.data, 0, "s2i3sn7s2b", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -359,7 +402,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL.value:
-                util.unpack(rec.data, 0, "siibb", [
+                struct.unpack(rec.data, 0, "siibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -368,7 +411,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL_CONFIG.value:
-                util.unpack(rec.data, 0, "siibb", [
+                struct.unpack(rec.data, 0, "siibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -378,7 +421,7 @@ asanteDriver = function (config) {
                     // some conditional code goes here based on EventType
                 break;
             case PUMP_DATA_RECORDS.LOG_ALARM_ALERT.value:
-                util.unpack(rec.data, 0, "siibssbb", [
+                struct.unpack(rec.data, 0, "siibssbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -390,7 +433,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PRIME.value:
-                util.unpack(rec.data, 0, "siissbb", [
+                struct.unpack(rec.data, 0, "siissbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -401,7 +444,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PUMP.value:
-                util.unpack(rec.data, 0, "siiiisbb", [
+                struct.unpack(rec.data, 0, "siiiisbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -413,7 +456,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_MISSED_BASAL.value:
-                util.unpack(rec.data, 0, "siiisbb", [
+                struct.unpack(rec.data, 0, "siiisbb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -424,7 +467,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_EDIT.value:
-                util.unpack(rec.data, 0, "siiiibb", [
+                struct.unpack(rec.data, 0, "siiiibb", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -434,7 +477,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value:
-                util.unpack(rec.data, 0, "siis", [
+                struct.unpack(rec.data, 0, "siis", [
                     "crc",
                     "RtcAtSetTime",
                     "UserSetTime",
@@ -451,7 +494,7 @@ asanteDriver = function (config) {
                 });
                 break;
             case PUMP_DATA_RECORDS.LOG_USER_SETTINGS.value:
-                up = util.createUnpacker().
+                var up = struct.createUnpacker().
                     add("ssbbb", ["record", "crc", "SmartBolusEnable",
                         "SmartBolusInitialized", "BGUnitsType"]);
                 var i;
@@ -496,7 +539,7 @@ asanteDriver = function (config) {
         for (var p = 0; p < manifest.permissions.length; ++p) {
             var perm = manifest.permissions[p];
             if (perm.usbDevices) {
-                for (d = 0; d < perm.usbDevices.length; ++d) {
+                for (var d = 0; d < perm.usbDevices.length; ++d) {
                     var prefix = 'Asante SNAP';
                     if (perm.usbDevices[d].deviceName.slice(0, prefix.length) === prefix) {
                         chrome.usb.findDevices({
@@ -559,25 +602,28 @@ asanteDriver = function (config) {
             }
         };
 
-        var waitloop = function(count) {
-            if (count > 10) {
-                processResult("TIMEOUT", null);
-            }
-            if (!readAsantePacket(processResult)) {
-                console.log('-');
-                setTimeout(waitloop(count + 1), 100);
-            }
-        };
+        var abortTimer = setTimeout(function() {
+            clearInterval(listenTimer);
+            console.log("TIMEOUT");
+            callback("TIMEOUT", null);
+        }, 5000);
 
         var p = new Uint8Array(commandpacket.packet);
         console.log(p);
         cfg.deviceComms.writeSerial(commandpacket.packet, function() {
-            console.log("->");
-            waitloop(0);
+            // console.log("->");
         });
+
+        var listenTimer = setInterval(function() {
+            if (readAsantePacket(processResult)) {
+                // console.log("got response");
+                clearInterval(listenTimer);
+                clearTimeout(abortTimer);
+            }
+        }, 100);
     };
 
-    var listenForBeacon = function(callback) {
+    var listenForPacket = function(timeout, callback) {
         var processResult = function(err, result) {
             if (err) {
                 callback(err, result);
@@ -593,13 +639,14 @@ asanteDriver = function (config) {
 
         var abortTimer = setTimeout(function() {
             clearInterval(listenTimer);
-            console.log("timeout");
-            callback("timeout", null);
-        }, 5000);
+            console.log("TIMEOUT");
+            callback("TIMEOUT", null);
+        }, timeout);
 
         var listenTimer = setInterval(function() {
             if (readAsantePacket(processResult)) {
-                console.log("completed");
+                clearInterval(listenTimer);
+                console.log("heard beacon");
                 clearTimeout(abortTimer);
             }
         }, 100);
@@ -613,21 +660,27 @@ asanteDriver = function (config) {
         console.log("requesting recordtypes %s", getDataRecordName(recordtype));
         function iterate(err, result) {
             if (err) {
+                console.log("error in iterate");
                 callback(err, result);
             }
             if (result.valid) {
                 if (result.descriptor == DESCRIPTORS.RESPONSE_RECORD.value) {
                     // process record
-                    retval.push(result);
+                    retval.push(result.datarecord);
                     // console.log(result);
                     // request next record
-                    next = nextRecord();
+                    var next = nextRecord();
+                    if (retval.length >= 30) {
+                        next = stopSending();
+                        console.log("cutting it short for debugging!");                        
+                    }
                     asanteCommandResponse(next, iterate);
                 } else if (result.descriptor == DESCRIPTORS.EOF.value) {
                     console.log("Got EOF!");
                     callback(null, retval);
                 } else if (result.descriptor == DESCRIPTORS.BEACON.value) {
                     // just try resending the command
+                    console.log("Resending missed command " + cmd);
                     asanteCommandResponse(cmd, iterate);
                 } else {
                     console.log("BAD RESULT");
@@ -640,7 +693,6 @@ asanteDriver = function (config) {
         asanteCommandResponse(cmd, iterate);
     };
 
-    // callback is called when EOF happens with all records retrieved
     var asanteGetHeader = function(callback) {
         var cmd = queryDevice();
         console.log("requesting header");
@@ -655,15 +707,14 @@ asanteDriver = function (config) {
                 }
             }
             if (result.valid) {
-                if (result.descriptor == DESCRIPTORS.DEVICE_RESPONSE.value) {
+                if (result.descriptor === DESCRIPTORS.DEVICE_RESPONSE.value) {
                     console.log("asante header");
-                    deviceInfo = result.pumpinfo;
-                    console.log(null, result);
+                    var deviceInfo = result.pumpinfo;
+                    console.log(result);
                     callback(null, deviceInfo);
-                } else if (result.descriptor == DESCRIPTORS.BEACON.value) {
-                    // just try resending the command after a half-second pause
-                    console.log("retrying");
-                    asanteCommandResponse(cmd, iterate);
+                } else if (result.descriptor === DESCRIPTORS.BEACON.value) {
+                    // we may have gotten a beacon in passing, so try for a second packet
+                    listenForPacket(2000, iterate);
                 } else {
                     console.log("BAD RESULT");
                     console.log(result);
@@ -675,46 +726,49 @@ asanteDriver = function (config) {
         asanteCommandResponse(cmd, iterate);
     };
 
-    var _progress = 0;
-    var logProg = function(cb) {
-        console.log("Progress = %d", _progress);
-        _progress++;
-        cb(null, _progress);
-    };
+    var asanteFetch = function(progress, callback) {
+        var doCB = function (err, result) {
+            console.log("asanteFetch");
+            console.log(err);
+            console.log(result);
+            callback(err, result);
+        };
 
-    var asanteConnect = function() {
-        var cmd = queryDevice();
-        async.series([
-            logProg,
-            asanteGetHeader,
-            logProg,
-            asanteDownloadRecords.bind(null, 
-                PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value),
-            logProg,
-            asanteDownloadRecords.bind(null, 
-                PUMP_DATA_RECORDS.LOG_BOLUS.value),
-            logProg,
-            asanteDownloadRecords.bind(null, 
-                PUMP_DATA_RECORDS.LOG_BASAL.value),
-            logProg
-            ],
-            function(err, results) {
-                if (err) {
-                    console.log("ERROR!");
+        var getRecords = function (rectype, progressLevel) {
+            return function(callback) {
+                console.log("in serial event ", rectype, progressLevel);
+                asanteDownloadRecords(rectype, function(err, result) {
+                    console.log("fetch progress + " + progressLevel);
                     console.log(err);
+                    console.log(result);
+                    progress(progressLevel);
+                    callback(err, result);
+                });
+            };
+        };
+
+        async.series([
+            getRecords(PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value, 30),
+            getRecords(PUMP_DATA_RECORDS.LOG_BOLUS.value, 50),
+            getRecords(PUMP_DATA_RECORDS.LOG_SMART.value, 70),
+            getRecords(PUMP_DATA_RECORDS.LOG_BASAL.value, 90)
+            ],
+            function (err, result) {
+                console.log("asanteFetch");
+                if (err) {
+                    console.log(err);
+                    callback(err, result);
                 } else {
-                    console.log("SUCCESS!");
-                    console.log(results);
+                    var retval = {
+                        timeManager: result[0],
+                        bolusRecords: result[1],
+                        smartRecords: result[2],
+                        basalRecords: result[3]
+                    };
+                    callback(null, retval);
                 }
             });
 
-    };
-
-    var xxxlistenForBeacon = function () {
-        listenForBeacon(function (e, r) {
-            console.log("heard beacon!");
-            asanteConnect();
-        });
     };
 
     var asanteSetBaudRate = function() {
@@ -728,66 +782,223 @@ asanteDriver = function (config) {
         });
     };
 
+    var asanteDisconnect = function(callback) {
+        return callback(null, "not disconnected");
+        // asanteCommandResponse(disconnect(), function(err, result) {
+        //     if (err) {
+        //         console.log("Error disconnecting.");
+        //     } else {
+        //         console.log("Disconnected.");
+        //     }
+        //     callback(err, result);
+        // });
+    };
+
+    // note -- this puts a bolus record hash into data
+    var asanteBuildBolusRecords = function(data) {
+        var postrecords = [];
+        data.bolusIndexHash = {};
+        for (var i=0; i<data.bolusRecords.length; ++i) {
+            var b = data.bolusRecords[i];
+            b.unitsDelivered = b.ClicksDelivered * CLICKS_TO_UNITS;
+            b.deviceTime = getDeviceTime(b.DateTime);
+            b.UTCTime = getUTCTime(b.DateTime);
+            b.duration_msec = b.duration15MinUnits * 15 * cfg.timeutils.MIN_TO_MSEC;
+
+            var rec;
+            if (b.Type === BOLUS_TYPE.NOW.value) {
+                b.textType = BOLUS_TYPE.NOW.name;
+                rec = cfg.jellyfish.buildNormalBolus(b.unitsDelivered, b.UTCTime, b.deviceTime);
+            } else if (b.Type === BOLUS_TYPE.TIMED.value) {
+                b.textType = BOLUS_TYPE.TIMED.name;
+                rec = cfg.jellyfish.buildSquareBolus(b.unitsDelivered, b.duration_msec, 
+                    b.UTCTime, b.deviceTime);
+            } else if (b.Type === BOLUS_TYPE.COMBO.value) {
+                b.textType = BOLUS_TYPE.COMBO.name;
+                // this is to calculate the split for extended boluses in case it didn't all
+                // get delivered
+                var normalRequested = b.NowClicksRequested * CLICKS_TO_UNITS;
+                var extendedRequested = b.TimedClicksRequested * CLICKS_TO_UNITS;
+                b.normalUnits = Math.min(b.unitsDelivered, normalRequested);
+                b.extendedUnits = b.unitsDelivered - b.normalUnits;
+                rec = cfg.jellyfish.buildDualBolus(b.normalUnits, b.extendedUnits, b.duration_msec, 
+                    b.UTCTime, b.deviceTime);
+            }
+            data.bolusIndexHash[b.BolusID] = rec[0];
+            postrecords.push(rec);
+        }
+        // flatten only the top layer
+        postrecords = _.flatten(postrecords, true);
+        return postrecords;
+    };
+
+    var asanteBuildWizardRecords = function(data) {
+        var postrecords = [];
+        for (var i=0; i<data.smartRecords.length; ++i) {
+            var wz = data.smartRecords[i];
+            wz.unitsCalculated = wz.TotalInsulin * CLICKS_TO_UNITS;
+            wz.bg = wz.CurrentBG * BG_CONVERSION;
+            wz.deviceTime = getDeviceTime(wz.DateTime);
+            wz.UTCTime = getUTCTime(wz.DateTime);
+            wz.carbInput = wz.FoodCarbs;
+            var refBolus = data.bolusIndexHash[wz.BolusID] || null;
+
+            var rec = cfg.jellyfish.buildWizard(
+                wz.unitsCalculated,
+                wz.bg,
+                refBolus,
+                wz,
+                wz.UTCTime,
+                wz.deviceTime
+                );
+
+            postrecords.push(rec);
+        }
+        return postrecords;
+    };
+
+    var asanteXXX = function(callback) {
+        callback(null, "XXX");
+    };
+
     return {
         // should call the callback with null, obj if the item 
         // was detected, with null, null if not detected.
         // call err only if there's something unrecoverable.
         detect: function (obj, cb) {
-            console.log('looking for asante');
-            listenForBeacon(function(err, result) {
+            console.log("looking for asante", obj);
+            listenForPacket(5000, function(err, result) {
+                console.log("beacon return");
                 if (err) {
-                    if (err == "timeout") {
+                    if (err == "TIMEOUT") {
                         cb(null, null);
                     } else {
                         cb(err, result);
                     }
                 } else {
+                    console.log("found beacon");
                     cb(null, obj);
                 }
             });
         },
 
         setup: function (progress, cb) {
+            console.log("in setup");
             progress(100);
-            cb(null, "setup");
+            var data = {stage: "setup"};
+            cb(null, data);
         },
 
-        connect: function (progress, cb) {
+        connect: function (progress, data, cb) {
+            console.log("in connect");
             progress(100);
-            cb(null, "connect");
+            data.stage = "connect";
+            cb(null, data);
         },
 
-        getConfigInfo: function (progress, cb) {
-            progress(100);
-            cb(null, "getConfigInfo");
-        },
-
-        fetchData: function (progress, cb) {
-            progress(100);
-            cb(null, "fetchData");
-        },
-
-        processData: function (progress, cb) {
-            progress(40);
-            setTimeout(function() {
+        getConfigInfo: function (progress, data, cb) {
+            console.log("in getConfigInfo");
+            progress(0);
+            asanteGetHeader(function(err, result) {
+                data.stage = "getConfigInfo";
                 progress(100);
-                cb(null, "processData");
-            }, Math.random() * 10000);
+                data.pumpHeader = result;
+                if (err) {
+                    return cb(err, data);
+                } else {
+                    cfg.jellyfish.setDeviceInfo( {
+                        deviceId: "Asante " + result.model + " " + result.serialNumber,
+                        source: "device",
+                        timezoneOffset: cfg.tz_offset_minutes,
+                        units: "mg/dL"      // everything we report is in this unit
+                    });
+                    
+                    return cb(null, data);
+                }
+            });
         },
 
-        uploadData: function (progress, cb) {
-            progress(100);
-            cb(null, "uploadData");
+        fetchData: function (progress, data, cb) {
+            console.log("in fetchData");
+            progress(0);
+            asanteFetch(progress, function(err, result) {
+                console.log("fetchData callback");
+                progress(100);
+                data.stage = "fetchData";
+                data = _.assign(data, result);
+                if (err) {
+                    return cb(err, data);
+                } else {
+                    cb(null, data);
+                }
+            });
         },
 
-        disconnect: function (progress, cb) {
-            progress(100);
-            cb(null, "disconnect");
+        processData: function (progress, data, cb) {
+            console.log("in processData");
+            progress(0);
+            asanteXXX(function(err, result) {
+                progress(100);
+                data.stage = "processData";
+                data.processData = result;
+                if (err) {
+                    return cb(err, data);
+                } else {
+                    cb(null, data);
+                }
+            });
         },
 
-        cleanup: function (progress, cb) {
-            progress(100);
-            cb(null, "cleanup");
+        uploadData: function (progress, data, cb) {
+            console.log("in uploadData");
+            data.stage = "uploadData";
+            progress(0);
+            data.upload_records = asanteBuildBolusRecords(data);
+            var wizards = asanteBuildWizardRecords(data);
+            data.upload_records = data.upload_records.concat(wizards);
+            console.log(data.upload_records);
+
+            cfg.jellyfish.post(data.upload_records, progress, function(err, results) {
+                if (err) {
+                    console.log(err);
+                    console.log(results);
+                    progress(100);
+                    return cb(err, data);
+                } else {
+                    progress(100);
+                    return cb(null, data);
+                }
+            });
+        },
+
+        disconnect: function (progress, data, cb) {
+            console.log("in disconnect");
+            progress(0);
+            asanteDisconnect(function(err, result) {
+                progress(100);
+                data.stage = "disconnect";
+                data.disconnect = result;
+                if (err) {
+                    return cb(err, data);
+                } else {
+                    cb(null, data);
+                }
+            });
+        },
+
+        cleanup: function (progress, data, cb) {
+            console.log("in cleanup");
+            progress(0);
+            asanteXXX(function(err, result) {
+                progress(100);
+                data.stage = "cleanup";
+                data.cleanup = result;
+                if (err) {
+                    return cb(err, data);
+                } else {
+                    cb(null, data);
+                }
+            });
         }
     };
 };
