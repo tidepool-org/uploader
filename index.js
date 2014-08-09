@@ -245,6 +245,10 @@ var serialDevice = function(config) {
         packetHandler = handler;
     };
 
+    var clearPacketHandler = function() {
+        packetHandler = null;
+    };
+
     var hasAvailablePacket = function() {
         return packetBuffer.length > 0;
     };
@@ -276,6 +280,7 @@ var serialDevice = function(config) {
         readSerial: readSerial,
         writeSerial: writeSerial,
         setPacketHandler: setPacketHandler,
+        clearPacketHandler: clearPacketHandler,
         hasAvailablePacket: hasAvailablePacket,
         peekPacket: peekPacket,
         nextPacket: nextPacket,

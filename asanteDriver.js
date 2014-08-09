@@ -526,72 +526,6 @@ asanteDriver = function (config) {
         }
     };
 
-    var handleAsante = function(handleArray) {
-        // unless there are multiple serial cables plugged in, handleArray should 
-        // have just one entry; for now just use the first one.
-        console.log(handleArray);
-        var h = handleArray[0];
-    };
-
-    var findAsante = function() {
-        var manifest = chrome.runtime.getManifest();
-        for (var p = 0; p < manifest.permissions.length; ++p) {
-            var perm = manifest.permissions[p];
-            if (perm.usbDevices) {
-                for (var d = 0; d < perm.usbDevices.length; ++d) {
-                    var prefix = 'Asante SNAP';
-                    if (perm.usbDevices[d].deviceName.slice(0, prefix.length) === prefix) {
-                        chrome.usb.findDevices({
-                            vendorId: perm.usbDevices[d].vendorId,
-                            productId: perm.usbDevices[d].productId
-                        }, handleAsante);
-                    }
-                }
-            }
-        }
-    };
-
-    var inReader = 0;
-    // When you call this, it looks to see if a complete Asante packet has
-    // arrived and it calls the callback with it and strips it from the buffer. 
-    // It returns true if a packet was found, and false if not.
-    var readAsantePacket = function(callback) {
-        ++inReader;
-        if (inReader > 1) { 
-            --inReader;
-            console.log("race!");
-            return false; 
-        }
-        // for efficiency reasons, we're not going to bother to ask the driver
-        // to decode things that can't possibly be a packet
-        // first, discard bytes that can't start a packet
-        var discardCount = 0;
-        while (cfg.deviceComms.buffer.length > 0 && cfg.deviceComms.buffer[0] != SYNC_BYTE) {
-            ++discardCount;
-        }
-        if (discardCount) {
-            cfg.deviceComms.discardBytes(discardCount);
-        }
-
-        if (cfg.deviceComms.buffer.length < 6) { // all complete packets must be this long
-            // console.log("packet not long enough (%d)", cfg.deviceComms.buffer.length);
-            --inReader;
-            return false;       // not enough there yet
-        }
-
-        // there's enough there to try, anyway
-        var packet = extractPacket(cfg.deviceComms.buffer);
-        if (packet.packet_len !== 0) {
-            // remove the now-processed packet
-            cfg.deviceComms.discardBytes(packet.packet_len);
-        }
-        if (packet.valid) {
-            callback(null, packet);
-        }
-        --inReader;
-        return true;
-    };
-
     var asantePacketHandler = function(buffer) {
         // first, discard bytes that can't start a packet
         var discardCount = 0;
@@ -603,8 +537,6 @@ asanteDriver = function (config) {
         }
 
         if (buffer.len() < 6) { // all complete packets must be at least this long
-            // console.log("packet not long enough (%d)", cfg.deviceComms.buffer.length);
-            --inReader;
             return null;       // not enough there yet
         }
 
@@ -614,6 +546,7 @@ asanteDriver = function (config) {
             // remove the now-processed packet
             buffer.discard(packet.packet_len);
         }
+
         if (packet.valid) {
             return packet;
         } else {
@@ -998,6 +931,7 @@ asanteDriver = function (config) {
         cleanup: function (progress, data, cb) {
             console.log("in cleanup");
             progress(0);
+            cfg.deviceComms.clearPacketHandler();
             asanteXXX(function(err, result) {
                 progress(100);
                 data.stage = "cleanup";

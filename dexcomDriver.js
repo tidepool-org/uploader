@@ -230,8 +230,7 @@ dexcomDriver = function(config) {
     // if packet_len is nonzero, that much should be deleted from the stream
     // if valid is false and packet_len is nonzero, the previous packet 
     // should be NAKed.
-    var extractPacket = function(bytestream) {
-        var bytes = new Uint8Array(bytestream);
+    var extractPacket = function(bytes) {
         var packet = { 
             bytes: bytes,
             valid: false, 
@@ -317,63 +316,73 @@ dexcomDriver = function(config) {
     // When you call this, it looks to see if a complete Dexcom packet has
     // arrived and it calls the callback with it and strips it from the buffer. 
     // It returns true if a packet was found, and false if not.
-    var readDexcomPacket = function(packetcallback) {
+    var dexcomPacketHandler = function(buffer) {
         // for efficiency reasons, we're not going to bother to ask the driver
         // to decode things that can't possibly be a packet
         // first, discard bytes that can't start a packet
         var discardCount = 0;
-        while (serialDevice.buffer.length > 0 && serialDevice.buffer[0] != SYNC_BYTE) {
+        while (buffer.len() > 0 && buffer.get(0) != SYNC_BYTE) {
             ++discardCount;
         }
         if (discardCount) {
-            serialDevice.discardBytes(discardCount);
+            buffer.discard(discardCount);
         }
 
-        if (serialDevice.buffer.length < 6) { // all complete packets must be at least this long
+        if (buffer.len() < 6) { // all complete packets must be at least this long
             return false;       // not enough there yet
         }
 
         // there's enough there to try, anyway
-        var packet = extractPacket(serialDevice.buffer);
+        var packet = extractPacket(buffer.bytes());
         if (packet.packet_len !== 0) {
             // remove the now-processed packet
-            serialDevice.discardBytes(packet.packet_len);
+            buffer.discard(packet.packet_len);
         }
-        packetcallback(packet);
-        return true;
+
+        if (packet.valid) {
+            return packet;
+        } else {
+            return null;
+        }
     };
 
-    // callback gets a result packet with parsed payload
-    var dexcomCommandResponse = function(commandpacket, callback) {
-        var processResult = function(result) {
-            if (result.command != CMDS.ACK.value) {
-                console.log("Bad result %d (%s) from data packet", 
-                    result.command, getCmdName(result.command));
-                console.log("Command packet was:");
-                var bytes = new Uint8Array(commandpacket.packet);
-                console.log(bytes);
-                console.log("Result was:");
-                console.log(result);
-                callback("Bad result " + result.command + " (" + 
-                    getCmdName(result.command) + ") from data packet", result);
-            } else {
-                // only attempt to parse the payload if it worked
-                if (result.payload) {
-                    result.parsed_payload = commandpacket.parser(result);
+    var listenForPacket = function (timeout, commandpacket, callback) {
+        var abortTimer = setTimeout(function() {
+            clearInterval(listenTimer);
+            console.log("TIMEOUT");
+            callback("TIMEOUT", null);
+        }, timeout);
+
+        var listenTimer = setInterval(function() {
+            if (serialDevice.hasAvailablePacket()) {
+                var pkt = serialDevice.nextPacket();
+                // we always call the callback if we get a packet back,
+                // so just cancel the timers if we do
+                clearTimeout(abortTimer);
+                clearInterval(listenTimer);
+                if (pkt.command != CMDS.ACK.value) {
+                    console.log("Bad result %d (%s) from data packet", 
+                        pkt.command, getCmdName(pkt.command));
+                    callback("Bad result " + pkt.command + " (" + 
+                        getCmdName(pkt.command) + ") from data packet", pkt);
+                } else {
+                    // only attempt to parse the payload if it worked
+                    if (pkt.payload) {
+                        pkt.parsed_payload = commandpacket.parser(pkt);
+                    }
+                    callback(null, pkt);
                 }
-                callback(null, result);
             }
-        };
+        }, 20);     // spin on this one quickly
+    };
 
-        var waitloop = function() {
-            if (!readDexcomPacket(processResult)) {
-                setTimeout(waitloop, 100);
-            }
-        };
-
+    var dexcomCommandResponse = function(commandpacket, callback) {
+        var p = new Uint8Array(commandpacket.packet);
+        console.log(p);
         serialDevice.writeSerial(commandpacket.packet, function() {
-            // console.log("->");
-            waitloop();
+            // once we've sent the command, start listening for a response
+            // but if we don't get one in 1 second give up
+            listenForPacket(1000, commandpacket, callback);
         });
     };
 
@@ -511,7 +520,8 @@ dexcomDriver = function(config) {
             if (_enabled === false) {
                 console.log("Dexcom driver is disabled!");
                 return cb(null, null);
-            };
+            }
+            cfg.deviceComms.setPacketHandler(dexcomPacketHandler);
             detectDexcom(obj, cb);
         },
 
@@ -588,6 +598,7 @@ dexcomDriver = function(config) {
         },
 
         cleanup: function (progress, data, cb) {
+            cfg.deviceComms.clearPacketHandler();
             progress(100);
             data.cleanup = true;
             cb(null, data);
