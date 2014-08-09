@@ -142,63 +142,87 @@ var tidepoolServer = {
 
 var jellyfish = jellyfishClient({tidepoolServer: tidepoolServer});
 
-var serialDevice = {
-    connected: false,
-    connection: null,
-    port: null,
-    buffer: [],
-    portprefix: '/dev/cu.usb',
-    setup: function(portprefix) {
-        if (portprefix) {
-            serialDevice.portprefix = portprefix;
+var serialDevice = function(config) {
+    var connected = false;
+    var connection = null;
+    var port = null;
+    var buffer = [];
+    var packetBuffer = [];
+    var portprefix = config.portprefix || '/dev/cu.usb';
+    var bitrate = config.bitrate || 9600;
+    var packetHandler = null;
+
+    var bufobj = {
+        // get(x) -- returns char at x
+        get : function(n) {return buffer[n]; },
+        // len() -- returns length
+        len : function() { return buffer.length; },
+        // discard(n) -- deletes n chars at start of buffer
+        discard : function(n) { discardBytes(n); },
+        // bytes() -- returns entire buffer as a Uint8Array
+        bytes : function() { 
+            return new Uint8Array(buffer); 
         }
-    },
-    connect: function(connectedCB) {
+    };
+
+
+    var connect = function(connectedCB) {
         chrome.serial.getDevices(function(ports) {
-            var connected = function(conn) {
-                serialDevice.connection = conn;
-                serialDevice.connected = true;
-                console.log('connected to ' + serialDevice.port.path);
+            var fconnected = function(conn) {
+                connection = conn;
+                connected = true;
+                console.log('connected to ' + port.path);
                 connectedCB();
             };
             for (var i=0; i<ports.length; i++) {
                 console.log(ports[i].path);
-                if (ports[i].path.slice(0, serialDevice.portprefix.length) == serialDevice.portprefix) {
-                    serialDevice.port = ports[i];
-                    chrome.serial.connect(serialDevice.port.path, { bitrate: 9600 }, connected);
+                if (ports[i].path.slice(0, portprefix.length) == portprefix) {
+                    port = ports[i];
+                    chrome.serial.connect(port.path, { bitrate: bitrate }, fconnected);
                 }
             }
         });
 
         chrome.serial.onReceive.addListener(function(info) {
-            if (serialDevice.connected && info.connectionId == serialDevice.connection.connectionId && info.data) {
+            if (connected && info.connectionId == connection.connectionId && info.data) {
                 var bufView=new Uint8Array(info.data);
                 for (var i=0; i<bufView.byteLength; i++) {
-                    serialDevice.buffer.push(bufView[i]);
+                    buffer.push(bufView[i]);
+                }
+                // we got some bytes, let's see if they make one or more packets
+                if (packetHandler) {
+                    var pkt = packetHandler(bufobj);
+                    while (pkt) {
+                        packetBuffer.push(pkt);
+                        pkt = packetHandler(bufobj);
+                    }
                 }
             }
         });
-    },
-    discardBytes: function(discardCount) {
-        serialDevice.buffer = serialDevice.buffer.slice(discardCount);
-    },
-    readSerial: function(bytes, timeout, callback) {
+    };
+
+    var discardBytes = function(discardCount) {
+        buffer = buffer.slice(discardCount);
+    };
+
+    var readSerial = function(bytes, timeout, callback) {
         var packet;
-        if (serialDevice.buffer.length >= bytes) {
-            packet = serialDevice.buffer.slice(0,bytes);
-            serialDevice.buffer = serialDevice.buffer.slice(0 - bytes);
+        if (buffer.length >= bytes) {
+            packet = buffer.slice(0,bytes);
+            buffer = buffer.slice(0 - bytes);
             callback(packet);
         } else if (timeout === 0) {
-            packet = serialDevice.buffer;
-            serialDevice.buffer = [];
+            packet = buffer;
+            buffer = [];
             callback(packet);
         } else {
             setTimeout(function() {
-                serialDevice.readSerial(bytes, 0, callback);
+                readSerial(bytes, 0, callback);
             }, timeout);
         }
-    },
-    writeSerial: function(bytes, callback) {
+    };
+
+    var writeSerial = function(bytes, callback) {
         var l = new Uint8Array(bytes).length;
         var sendcheck = function(info) {
             // console.log('Sent %d bytes', info.bytesSent);
@@ -210,8 +234,54 @@ var serialDevice = {
             }
             callback(info);
         };
-        chrome.serial.send(serialDevice.connection.connectionId, bytes, sendcheck);
-    }
+        chrome.serial.send(connection.connectionId, bytes, sendcheck);
+    };
+
+    // a handler should be a function that takes a parameter of a buffer
+    // and tries to extract a packet from it; if it finds one, it should delete
+    // the characters that make up the packet from the buffer, and return the
+    // packet.
+    var setPacketHandler = function(handler) {
+        packetHandler = handler;
+    };
+
+    var hasAvailablePacket = function() {
+        return packetBuffer.length > 0;
+    };
+
+    var peekPacket = function() {
+        if (hasAvailablePacket()) {
+            return packetBuffer[0];
+        } else {
+            return null;
+        }
+    };
+
+    var nextPacket = function() {
+        if (hasAvailablePacket()) {
+            return packetBuffer.shift();
+        } else {
+            return null;
+        }
+    };
+
+    var flush = function() {
+        packetBuffer = [];
+    };
+
+    return {
+        buffer: buffer, // get rid of this public member
+        connect: connect,
+        discardBytes: discardBytes,
+        readSerial: readSerial,
+        writeSerial: writeSerial,
+        setPacketHandler: setPacketHandler,
+        hasAvailablePacket: hasAvailablePacket,
+        peekPacket: peekPacket,
+        nextPacket: nextPacket,
+        flush: flush
+    };
+
 };
 
 function statusManager(config) {
@@ -507,7 +577,7 @@ function constructUI() {
         });
     };
 
-    var deviceComms = serialDevice;
+    var deviceComms = serialDevice({});
     var asanteDevice = asanteDriver({deviceComms: deviceComms});
 
     deviceComms.connect(function() {connectLog('connected');});

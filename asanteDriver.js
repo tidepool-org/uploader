@@ -245,8 +245,7 @@ asanteDriver = function (config) {
     // if packet_len is nonzero, that much should be deleted from the stream
     // if valid is false and packet_len is nonzero, the previous packet 
     // should be NAKed.
-    var extractPacket = function(bytestream) {
-        var bytes = new Uint8Array(bytestream);
+    var extractPacket = function(bytes) {
         var packet = { 
             valid: false, 
             sync: 0,
@@ -593,61 +592,36 @@ asanteDriver = function (config) {
         return true;
     };
 
-    // callback gets a result packet modified by parsing the payload
-    var asanteCommandResponse = function(commandpacket, callback) {
-        var processResult = function(err, result) {
-            if (err) {
-                callback(err, result);
-                return;
-            }
-            // console.log(result);
-            if (result.payload) {
-                commandpacket.parser(result);
-            }
-            if (result.valid) {
-                callback(null, result);
-            } else {
-                callback("Response from pump didn't parse properly!", result);
-            }
-        };
+    var asantePacketHandler = function(buffer) {
+        // first, discard bytes that can't start a packet
+        var discardCount = 0;
+        while (buffer.len() > 0 && buffer.get(0) != SYNC_BYTE) {
+            ++discardCount;
+        }
+        if (discardCount) {
+            buffer.discard(discardCount);
+        }
 
-        var abortTimer = setTimeout(function() {
-            clearInterval(listenTimer);
-            console.log("TIMEOUT");
-            callback("TIMEOUT", null);
-        }, 5000);
+        if (buffer.len() < 6) { // all complete packets must be at least this long
+            // console.log("packet not long enough (%d)", cfg.deviceComms.buffer.length);
+            --inReader;
+            return null;       // not enough there yet
+        }
 
-        var p = new Uint8Array(commandpacket.packet);
-        console.log(p);
-        cfg.deviceComms.writeSerial(commandpacket.packet, function() {
-            // console.log("->");
-        });
-
-        var listenTimer = setInterval(function() {
-            if (readAsantePacket(processResult)) {
-                // console.log("got response");
-                clearInterval(listenTimer);
-                clearTimeout(abortTimer);
-            } else {
-                console.log('L');
-            }
-        }, 200);
+        // there's enough there to try, anyway
+        var packet = extractPacket(buffer.bytes());
+        if (packet.packet_len !== 0) {
+            // remove the now-processed packet
+            buffer.discard(packet.packet_len);
+        }
+        if (packet.valid) {
+            return packet;
+        } else {
+            return null;
+        }
     };
 
-    var listenForPacket = function(timeout, callback) {
-        var processResult = function(err, result) {
-            if (err) {
-                callback(err, result);
-                return true;
-            }
-            result.parsed_payload = parsePacket(result);
-            if (result.valid) {
-                callback(null, result);
-                return true;
-            }
-            return false;
-        };
-
+    var listenForPacket = function (timeout, ignoreBeacons, callback) {
         var abortTimer = setTimeout(function() {
             clearInterval(listenTimer);
             console.log("TIMEOUT");
@@ -655,13 +629,33 @@ asanteDriver = function (config) {
         }, timeout);
 
         var listenTimer = setInterval(function() {
-            if (readAsantePacket(processResult)) {
-                clearInterval(listenTimer);
-                console.log("heard beacon");
-                clearTimeout(abortTimer);
+            if (cfg.deviceComms.hasAvailablePacket()) {
+                var pkt = cfg.deviceComms.nextPacket();
+                // if we sent a command, ignore all beacons (they may have been
+                // left in the buffer before we started). 
+                if (pkt.valid && (!ignoreBeacons || 
+                        pkt.descriptor !== DESCRIPTORS.BEACON.value)) {
+                    clearTimeout(abortTimer);
+                    clearInterval(listenTimer);
+                    parsePacket(pkt);
+                    callback(null, pkt);
+                }
             }
-        }, 100);
+        }, 20);     // spin on this one quickly
+    };
 
+    var asanteCommandResponse = function(commandpacket, callback) {
+        var p = new Uint8Array(commandpacket.packet);
+        console.log(p);
+        cfg.deviceComms.writeSerial(commandpacket.packet, function() {
+            // once we've sent the command, start listening for a response
+            // but if we don't get one in 1 second give up
+            listenForPacket(1000, true, callback);
+        });
+    };
+
+    var listenForBeacon = function(callback) {
+        listenForPacket(6000, false, callback);
     };
 
     // callback is called when EOF happens with all records retrieved
@@ -689,10 +683,6 @@ asanteDriver = function (config) {
                 } else if (result.descriptor == DESCRIPTORS.EOF.value) {
                     console.log("Got EOF!");
                     callback(null, retval);
-                } else if (result.descriptor == DESCRIPTORS.BEACON.value) {
-                    // just try resending the command
-                    console.log("Resending missed command " + cmd);
-                    asanteCommandResponse(cmd, iterate);
                 } else {
                     console.log("BAD RESULT");
                     console.log(result);
@@ -723,9 +713,6 @@ asanteDriver = function (config) {
                     var deviceInfo = result.pumpinfo;
                     console.log(result);
                     callback(null, deviceInfo);
-                } else if (result.descriptor === DESCRIPTORS.BEACON.value) {
-                    // we may have gotten a beacon in passing, so try for a second packet
-                    listenForPacket(2000, iterate);
                 } else {
                     console.log("BAD RESULT");
                     console.log(result);
@@ -738,13 +725,6 @@ asanteDriver = function (config) {
     };
 
     var asanteFetch = function(progress, callback) {
-        var doCB = function (err, result) {
-            console.log("asanteFetch");
-            console.log(err);
-            console.log(result);
-            callback(err, result);
-        };
-
         var getRecords = function (rectype, progressLevel) {
             return function(callback) {
                 console.log("in serial event ", rectype, progressLevel);
@@ -890,12 +870,15 @@ asanteDriver = function (config) {
             if (_enabled === false) {
                 console.log("Asante driver is disabled!");
                 return cb(null, null);
-            };
+            }
             console.log("looking for asante", obj);
-            listenForPacket(5000, function(err, result) {
-                console.log("beacon return");
+            cfg.deviceComms.setPacketHandler(asantePacketHandler);
+
+            cfg.deviceComms.flush();
+            listenForBeacon(function(err, result) {
                 if (err) {
                     if (err == "TIMEOUT") {
+                        console.log("beacon timeout");
                         cb(null, null);
                     } else {
                         cb(err, result);
@@ -905,6 +888,7 @@ asanteDriver = function (config) {
                     cb(null, obj);
                 }
             });
+            cfg.deviceComms.flush();
         },
 
         setup: function (progress, cb) {
