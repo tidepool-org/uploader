@@ -55,8 +55,13 @@ asanteDriver = function (config) {
         COMBO: { value: 2, name: "COMBO"},
     };
 
-    var CLICKS_TO_UNITS = 0.05; // number of units in a "click" of the pump
-    var BG_CONVERSION = 0.10; // values in the pump are 10x what the actual BG number is
+    var clicksToUnits = function(clicks) {
+        return clicks / 20.0;
+    };
+
+    var convertBg = function(asanteReading) {
+        return asanteReading / 10.0;
+    };   
 
     var _getName = function(list, idx) {
         for (var i in list) {
@@ -363,7 +368,7 @@ asanteDriver = function (config) {
     var unpackDataRecord = function(rec) {
         switch (rec.rectype) {
             case PUMP_DATA_RECORDS.LOG_BOLUS.value:
-                struct.unpack(rec.data, 0, "siissssibbbbbb", [
+                struct.unpack(rec.data, 0, "s2i4si5b.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -376,8 +381,7 @@ asanteDriver = function (config) {
                     "CompletionCode",
                     "duration15MinUnits",
                     "SmartBolus",
-                    "SmartTotalOverride",
-                    "Pad"
+                    "SmartTotalOverride"
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_SMART.value:
@@ -401,26 +405,24 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL.value:
-                struct.unpack(rec.data, 0, "siibb", [
+                struct.unpack(rec.data, 0, "s2ib.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
-                    "ClicksDelivered",
-                    "Pad"
+                    "ClicksDelivered"
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL_CONFIG.value:
-                struct.unpack(rec.data, 0, "siibb", [
+                struct.unpack(rec.data, 0, "s2ib.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
-                    "EventType",
-                    "Pad1"
+                    "EventType"
                     ], rec);
                     // some conditional code goes here based on EventType
                 break;
             case PUMP_DATA_RECORDS.LOG_ALARM_ALERT.value:
-                struct.unpack(rec.data, 0, "siibssbb", [
+                struct.unpack(rec.data, 0, "s2ib2s2b", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -432,7 +434,7 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PRIME.value:
-                struct.unpack(rec.data, 0, "siissbb", [
+                struct.unpack(rec.data, 0, "s2i2s2b", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
@@ -443,40 +445,37 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_PUMP.value:
-                struct.unpack(rec.data, 0, "siiiisbb", [
+                struct.unpack(rec.data, 0, "s4isb.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
                     "pbSerNumCm",
                     "pbSerNumRtc",
                     "InsulinVolume",
-                    "ConnectionType",
-                    "Pad"
+                    "ConnectionType"
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_MISSED_BASAL.value:
-                struct.unpack(rec.data, 0, "siiisbb", [
+                struct.unpack(rec.data, 0, "s3isb.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
                     "StartOfSuspension",
                     "ClicksMissed",
-                    "ReasonForStopping",
-                    "Pad"
+                    "ReasonForStopping"
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_EDIT.value:
-                struct.unpack(rec.data, 0, "siiiibb", [
+                struct.unpack(rec.data, 0, "s4ib.", [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
                     "UserSetTime",
-                    "Flags",
-                    "Pad"
+                    "Flags"
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value:
-                struct.unpack(rec.data, 0, "siis", [
+                struct.unpack(rec.data, 0, "s2is", [
                     "crc",
                     "RtcAtSetTime",
                     "UserSetTime",
@@ -494,23 +493,31 @@ asanteDriver = function (config) {
                 break;
             case PUMP_DATA_RECORDS.LOG_USER_SETTINGS.value:
                 var up = struct.createUnpacker().
-                    add("ssbbb", ["record", "crc", "SmartBolusEnable",
+                    add("4s", ["crc", "SmartBolusEnable",
                         "SmartBolusInitialized", "BGUnitsType"]);
                 var i;
-                for (i=0; i<7; i++) {
-                    up.add("ss", ["FoodProfileStartTime_" + i,
-                        "FoodProfileCarbRatio_" + i]);
+                var j;
+                for (i=0; i<8; i++) {
+                    up.add("2s", [
+                        ["FoodProfile", i, "StartTime_minutes"],
+                        ["FoodProfile", i, "CarbRatio"]
+                    ]);
                 }
                 for (i=0; i<3; i++) {
-                    up.add("ss", ["BGProfileStartTime_" + i,
-                        "BGProfileBGRatio_" + i]);
+                    up.add("2s", [
+                        ["BGProfile", i, "StartTime_minutes"],
+                        ["BGProfile", i, "BGRatio"]
+                    ]);
                 }
                 for (i=0; i<3; i++) {
-                    up.add("ss", ["TargetBGStartTime_" + i,
-                        "TargetBGMinBG_" + i,
-                        "TargetBGMaxBG_" + i]);
+                    up.add("3s", [
+                        ["TargetBG", i, "StartTime_minutes"],
+                        ["TargetBG", i, "MinBG"],
+                        ["TargetBG", i, "MaxBG"]
+                    ]);
                 }
-                up.add("bbbbbbbsb", [
+                up.add("10s", [
+                    "InsulinAction",
                     "IOBMode",
                     "BolusButtonSelect",
                     "ComboBolusEnable",
@@ -520,6 +527,44 @@ asanteDriver = function (config) {
                     "AudioBolusStepSize",
                     "BolusLimit",
                     "ActiveProfile"
+                    ]);
+                for (i=0; i<4; i++) {
+                    up.add("8z2s", [
+                        ["BasalProfile", i, "Name"],
+                        ["BasalProfile", i, "StartTime_minutes"],
+                        ["BasalProfile", i, "Total24Hour"],
+                    ]);
+                    for (j=0; j<10; j++) {
+                        up.add("2s", [
+                            ["BasalProfile", i, "Segment", j, "StartTime_minutes"],
+                            ["BasalProfile", i, "Segment", j, "Amount"]
+                        ]);
+                    }
+                }
+                up.add("8s", [
+                    "BasalLimit", "TimeFormat", 
+                    "BGReminderEnable", "BGReminderTime",
+                    "LowInsulinEnable", "LowInsulinLevel",
+                    "NotificationTiming", "DeliveryLimit"
+                    ]);
+                for (i=0; i<5; i++) {
+                    up.add("shs12z18.", [
+                        ["DailyAlert", i, "Enable"],
+                        ["DailyAlert", i, "Time_minutes"],
+                        ["DailyAlert", i, "Frequency"],
+                        ["DailyAlert", i, "Text"]
+                    ]);
+                }
+                up.add("11s30z30z30z", [
+                        "AutoOffEnable", "AutoOffDuration_minutes",
+                        "PumpReminderEnable", "PumpReminderHours",
+                        "TargetBGMin", "TargetBGMax",
+                        "BeepVolume", "ButtonGuardEnable",
+                        "SplashScreenEnable", "FlashlightEnable",
+                        "ScreenTimeout",
+                        ["SplashScreenText", 0],
+                        ["SplashScreenText", 1],
+                        ["SplashScreenText", 2]
                     ]);
                 up.go(rec.data, 0, rec);
                 break;
@@ -672,10 +717,11 @@ asanteDriver = function (config) {
         };
 
         async.series([
-            getRecords(PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value, 30),
-            getRecords(PUMP_DATA_RECORDS.LOG_BOLUS.value, 50),
-            getRecords(PUMP_DATA_RECORDS.LOG_SMART.value, 70),
-            getRecords(PUMP_DATA_RECORDS.LOG_BASAL.value, 90)
+            getRecords(PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value, 20),
+            getRecords(PUMP_DATA_RECORDS.LOG_BOLUS.value, 40),
+            getRecords(PUMP_DATA_RECORDS.LOG_SMART.value, 60),
+            getRecords(PUMP_DATA_RECORDS.LOG_BASAL.value, 80),
+            getRecords(PUMP_DATA_RECORDS.LOG_USER_SETTINGS.value, 95)
             ],
             function (err, result) {
                 console.log("asanteFetch");
@@ -724,7 +770,7 @@ asanteDriver = function (config) {
         data.bolusIndexHash = {};
         for (var i=0; i<data.bolusRecords.length; ++i) {
             var b = data.bolusRecords[i];
-            b.unitsDelivered = b.ClicksDelivered * CLICKS_TO_UNITS;
+            b.unitsDelivered = clicksToUnits(b.ClicksDelivered);
             b.deviceTime = getDeviceTime(b.DateTime);
             b.UTCTime = getUTCTime(b.DateTime);
             b.duration_msec = b.duration15MinUnits * 15 * cfg.timeutils.MIN_TO_MSEC;
@@ -741,8 +787,8 @@ asanteDriver = function (config) {
                 b.textType = BOLUS_TYPE.COMBO.name;
                 // this is to calculate the split for extended boluses in case it didn't all
                 // get delivered
-                var normalRequested = b.NowClicksRequested * CLICKS_TO_UNITS;
-                var extendedRequested = b.TimedClicksRequested * CLICKS_TO_UNITS;
+                var normalRequested = clicksToUnits(b.NowClicksRequested);
+                var extendedRequested = clicksToUnits(b.TimedClicksRequested);
                 b.normalUnits = Math.min(b.unitsDelivered, normalRequested);
                 b.extendedUnits = b.unitsDelivered - b.normalUnits;
                 rec = cfg.jellyfish.buildDualBolus(b.normalUnits, b.extendedUnits, b.duration_msec, 
@@ -760,8 +806,8 @@ asanteDriver = function (config) {
         var postrecords = [];
         for (var i=0; i<data.smartRecords.length; ++i) {
             var wz = data.smartRecords[i];
-            wz.unitsCalculated = wz.TotalInsulin * CLICKS_TO_UNITS;
-            wz.bg = wz.CurrentBG * BG_CONVERSION;
+            wz.unitsCalculated = clicksToUnits(wz.TotalInsulin);
+            wz.bg = convertBg(wz.CurrentBG);
             wz.deviceTime = getDeviceTime(wz.DateTime);
             wz.UTCTime = getUTCTime(wz.DateTime);
             wz.carbInput = wz.FoodCarbs;
@@ -774,6 +820,32 @@ asanteDriver = function (config) {
                 wz,
                 wz.UTCTime,
                 wz.deviceTime
+                );
+
+            postrecords.push(rec);
+        }
+        return postrecords;
+    };
+
+    asanteBuildBasalRecords = function(data) {
+        // THIS DOESN'T WORK -- it's a copy of above and not edited yet
+        var postrecords = [];
+        for (var i=0; i<data.basalRecords.length; ++i) {
+            var basal = data.basalRecords[i];
+            basal.unitsCalculated = clicksToUnits(basal.TotalInsulin);
+            basal.bg = convertBg(basal.CurrentBG);
+            basal.deviceTime = getDeviceTime(basal.DateTime);
+            basal.UTCTime = getUTCTime(basal.DateTime);
+            basal.carbInput = basal.FoodCarbs;
+            var refBolus = data.bolusIndexHash[basal.BolusID] || null;
+
+            var rec = cfg.jellyfish.buildWizard(
+                basal.unitsCalculated,
+                basal.bg,
+                refBolus,
+                basal,
+                basal.UTCTime,
+                basal.deviceTime
                 );
 
             postrecords.push(rec);
