@@ -74,11 +74,13 @@ structTools = function() {
         return ((b[st+1] << 8) + b[st]);
     };
     var extractSignedShort = function(b, st) {
-        var sign = 1;
-        if (b[st+1] & 0x80) {
-            sign = -1;
+        var s = extractShort(b, st);
+        if (s & 0x8000) {
+            // it's a negative number, so do a bitwise negation to get
+            // the positive equivalent, and then flip the sign.
+            s = -((~s & 0xffff) + 1);
         }
-        return sign * (((b[st+1] & 0x7F) << 8) + b[st]);
+        return s;
     };
     var extractByte = function(b, st) {
         return b[st];
@@ -98,11 +100,13 @@ structTools = function() {
         return ((b[st] << 8) + b[st+1]);
     };
     var extractSignedBEShort = function(b, st) {
-        var sign = 1;
-        if (b[st] & 0x80) {
-            sign = -1;
+        var s = extractBEShort(b, st);
+        if (s & 0x8000) {
+            // it's a negative number, so do a bitwise negation to get
+            // the positive equivalent, and then flip the sign.
+            s = -((~s & 0xffff) + 1);
         }
-        return sign * (((b[st] & 0x7F) << 8) + b[st+1]);
+        return s;
     };
     var extractNothing = function() {
         return 0;
@@ -240,6 +244,7 @@ structTools = function() {
             add: function(fmts, nms) {
                 this.format += fmts;
                 this.names = this.names.concat(nms);
+                return this;
             },
             go: function(buf, offset, o) {
                 return unpack(buf, offset, this.format, this.names, o);
@@ -267,8 +272,22 @@ structTools = function() {
 
         for (var i=0; i < fmts.length; ++i) {
             var value = fmts[i].get(buf, offset + fmts[i].offset, fmts[i].len);
-            if (fmts[i].name != null) {
-                result[fmts[i].name] = value;
+            var name = fmts[i].name;
+            if (name != null) {
+                if (typeof(name) == "string") {
+                    result[name] = value;
+                } else {
+                    // if not a string it will be an array of keys we should nest
+                    // so ["a", "b", 1] does result[a][b][1]=value
+                    var v = result;
+                    for (var j=0; j<name.length-1; ++j) {
+                        if (!v[name[j]]) {
+                            v[name[j]] = [];
+                        }
+                        v = v[name[j]];
+                    }
+                    v[name[j]] = value;
+                }
             }
         }
         // result.formats = fmts;
