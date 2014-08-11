@@ -43,6 +43,22 @@ asanteDriver = function (config) {
         REQUEST_NEXT: { value: 0x90, name: "RequestNext"},
     };
 
+    var EVENT_TYPES = {
+        PROFILE_EVENT: { value: 0, name: "PROFILE_EVENT"},
+        TEMP_BASAL: { value: 1, name: "TEMP_BASAL"},
+        PUMP_STOPPED: { value: 2, name: "PUMP_STOPPED"},
+    };
+
+    var COMPLETION_CODES = {
+        DELIVERY_IN_PROGRESS: { value: 0, name: "DELIVERY_IN_PROGRESS"},
+        NORMAL_COMPLETION: { value: 1, name: "NORMAL_COMPLETION"},
+        STOPPED_ALARM: { value: 2, name: "STOPPED_ALARM"},
+        USER_STOPPED: { value: 3, name: "USER_STOPPED"},
+        PUMP_BODY_DISCONNECTED: { value: 4, name: "PUMP_BODY_DISCONNECTED"},
+        SYSTEM_RESET: { value: 5, name: "SYSTEM_RESET"},
+        LOW_BATTERY: { value: 6, name: "LOW_BATTERY"},
+    };
+
     var REPLY = {
         NAK: { value: 0, name: "ACK"},
         ACK: { value: 1, name: "NAK"},
@@ -55,13 +71,34 @@ asanteDriver = function (config) {
         COMBO: { value: 2, name: "COMBO"},
     };
 
-    var clicksToUnits = function(clicks) {
+    var cvtClicksToUnits = function(clicks) {
         return clicks / 20.0;
     };
 
-    var convertBg = function(asanteReading) {
+    var cvtBg = function(asanteReading) {
         return asanteReading / 10.0;
     };   
+
+    // not yet sure if this is correct -- need to confirm
+    var cvtSensitivity = function(asanteReading) {
+        return asanteReading / 10.0;
+    };   
+
+    var cvtCarbRatio = function(asanteReading) {
+        return asanteReading / 10.0;
+    };
+
+    var cvtMinToMsec = function(minutes) {
+         return minutes * cfg.timeutils.MIN_TO_MSEC;
+    };
+
+    var cvtSecToMsec = function(seconds) {
+         return seconds * cfg.timeutils.SEC_TO_MSEC;
+    };
+
+    var cvtHrsToMsec = function(hours) {
+         return hours * 60 * cfg.timeutils.MIN_TO_MSEC;
+    };
 
     var _getName = function(list, idx) {
         for (var i in list) {
@@ -90,7 +127,7 @@ asanteDriver = function (config) {
 
     var _asanteBaseTime = new Date(2008, 0, 1, 0, 0, 0).valueOf();
 
-    var convertRTCTime = function(t) {
+    var cvtRTCTime = function(t) {
         if (_timeState.timeRecords.length > 1) {
             console.log("WARNING -- there are more than 1 time records - timestamps may be wrong.");
         }
@@ -113,7 +150,7 @@ asanteDriver = function (config) {
     var getDeviceTime = function(t) {
 
         var atime = _asanteBaseTime + t * cfg.timeutils.SEC_TO_MSEC;
-        var time = convertRTCTime(atime);
+        var time = cvtRTCTime(atime);
         return new Date(time).toISOString().slice(0, -5);   // trim off the .000z
 
     };
@@ -122,7 +159,7 @@ asanteDriver = function (config) {
 
         var atime = _asanteBaseTime + t * cfg.timeutils.SEC_TO_MSEC - 
             cfg.tz_offset_minutes * cfg.timeutils.MIN_TO_MSEC;
-        var time = convertRTCTime(atime);
+        var time = cvtRTCTime(atime);
         return new Date(time).toISOString();
 
     };
@@ -413,13 +450,47 @@ asanteDriver = function (config) {
                     ], rec);
                 break;
             case PUMP_DATA_RECORDS.LOG_BASAL_CONFIG.value:
-                struct.unpack(rec.data, 0, "s2ib.", [
+                var hdr = "s2ib.";
+                var sz = struct.structlen(hdr);
+                struct.unpack(rec.data, 0, hdr, [
                     "crc",
                     "DateTime",
                     "SeqNmbr",
                     "EventType"
                     ], rec);
-                    // some conditional code goes here based on EventType
+                    rec.deviceTime = getDeviceTime(rec.DateTime);
+                    rec.UTCTime = getUTCTime(rec.DateTime);
+                    switch (rec.EventType) {
+                        case EVENT_TYPES.PROFILE_EVENT.value:
+                            struct.unpack(rec.data, sz, "2sb8zb", [
+                                "ActiveProfile",
+                                "Total24Hour",
+                                "ProfileEvent",
+                                "Name",
+                                "ProfileNumber"
+                                ], rec);
+                            break;
+                        case EVENT_TYPES.TEMP_BASAL.value:
+                            struct.unpack(rec.data, sz, "3sb", [
+                                "Percentage",
+                                "DurationProgrammed_minutes",
+                                "DurationFinal",
+                                "CompletionCode",
+                                ], rec);
+                            rec.data.Completion_text = _getName(COMPLETION_CODES, 
+                                rec.data.CompletionCode);
+                            break;
+                        case EVENT_TYPES.PUMP_STOPPED.value:
+                            struct.unpack(rec.data, sz, "ib", [
+                                "RestartTime",
+                                "Cause",
+                                ], rec);
+                            break;
+                        default:
+                            console.log("Unknown event type!");
+                            console.log(rec);
+                            break;
+                    }
                 break;
             case PUMP_DATA_RECORDS.LOG_ALARM_ALERT.value:
                 struct.unpack(rec.data, 0, "s2ib2s2b", [
@@ -492,25 +563,25 @@ asanteDriver = function (config) {
                 });
                 break;
             case PUMP_DATA_RECORDS.LOG_USER_SETTINGS.value:
+                var i;
+                var j;
                 var up = struct.createUnpacker().
                     add("4s", ["crc", "SmartBolusEnable",
                         "SmartBolusInitialized", "BGUnitsType"]);
-                var i;
-                var j;
                 for (i=0; i<8; i++) {
-                    up.add("2s", [
+                    up.add("hs", [
                         ["FoodProfile", i, "StartTime_minutes"],
                         ["FoodProfile", i, "CarbRatio"]
                     ]);
                 }
                 for (i=0; i<3; i++) {
-                    up.add("2s", [
+                    up.add("hs", [
                         ["BGProfile", i, "StartTime_minutes"],
                         ["BGProfile", i, "BGRatio"]
                     ]);
                 }
                 for (i=0; i<3; i++) {
-                    up.add("3s", [
+                    up.add("h2s", [
                         ["TargetBG", i, "StartTime_minutes"],
                         ["TargetBG", i, "MinBG"],
                         ["TargetBG", i, "MaxBG"]
@@ -529,13 +600,13 @@ asanteDriver = function (config) {
                     "ActiveProfile"
                     ]);
                 for (i=0; i<4; i++) {
-                    up.add("8z2s", [
+                    up.add("8zhs", [
                         ["BasalProfile", i, "Name"],
-                        ["BasalProfile", i, "StartTime_minutes"],
+                        ["BasalProfile", i, "SegmentCount"],
                         ["BasalProfile", i, "Total24Hour"],
                     ]);
                     for (j=0; j<10; j++) {
-                        up.add("2s", [
+                        up.add("hs", [
                             ["BasalProfile", i, "Segment", j, "StartTime_minutes"],
                             ["BasalProfile", i, "Segment", j, "Amount"]
                         ]);
@@ -653,7 +724,7 @@ asanteDriver = function (config) {
                     // console.log(result);
                     // request next record
                     var next = nextRecord();
-                    if (retval.length >= 3000) {    // 3000 is bigger than any log's capacity
+                    if (retval.length >= 30) {    // 3000 is bigger than any log's capacity
                         next = stopSending();
                         console.log("cutting it short for debugging!");                        
                     }
@@ -707,9 +778,6 @@ asanteDriver = function (config) {
             return function(callback) {
                 console.log("in serial event ", rectype, progressLevel);
                 asanteDownloadRecords(rectype, function(err, result) {
-                    console.log("fetch progress + " + progressLevel);
-                    console.log(err);
-                    console.log(result);
                     progress(progressLevel);
                     callback(err, result);
                 });
@@ -717,7 +785,8 @@ asanteDriver = function (config) {
         };
 
         async.series([
-            getRecords(PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value, 20),
+            getRecords(PUMP_DATA_RECORDS.LOG_TIME_MANAGER_DATA.value, 10),
+            getRecords(PUMP_DATA_RECORDS.LOG_BASAL_CONFIG.value, 20),
             getRecords(PUMP_DATA_RECORDS.LOG_BOLUS.value, 40),
             getRecords(PUMP_DATA_RECORDS.LOG_SMART.value, 60),
             getRecords(PUMP_DATA_RECORDS.LOG_BASAL.value, 80),
@@ -731,10 +800,13 @@ asanteDriver = function (config) {
                 } else {
                     var retval = {
                         timeManager: result[0],
-                        bolusRecords: result[1],
-                        smartRecords: result[2],
-                        basalRecords: result[3]
+                        basalConfig: result[1],
+                        bolusRecords: result[2],
+                        smartRecords: result[3],
+                        basalRecords: result[4],
+                        settings: result[5][0],
                     };
+                    console.log(retval);
                     callback(null, retval);
                 }
             });
@@ -764,13 +836,51 @@ asanteDriver = function (config) {
         // });
     };
 
+    var asantePostprocess = function(data) {
+        // decorate the settings with converted information
+        function fixValues(obj, conversions) {
+            for (var i=0; i<obj.length; ++i) {
+                for (var c=0; c<conversions.length; ++c) {
+                    obj[i][conversions[c].to] =
+                        conversions[c].func(obj[i][conversions[c].from]);
+                }
+            }
+        }
+
+        var s = data.settings;
+        fixValues(s.BGProfile, [
+            { from: "BGRatio", to: "insulinSensitivity", func: cvtSensitivity },
+            { from: "StartTime_minutes", to: "startTime_msec", func: cvtMinToMsec }
+        ]);
+        fixValues(s.FoodProfile, [
+            { from: "CarbRatio", to: "carbRatio_gramsperunit", func: cvtCarbRatio },
+            { from: "StartTime_minutes", to: "startTime_msec", func: cvtMinToMsec }
+        ]);
+        fixValues(s.BasalProfile, [
+            { from: "Total24Hour", to: "Total24Hour_units", func: cvtClicksToUnits }
+        ]);
+        fixValues(s.TargetBG, [
+            { from: "MaxBG", to: "MaxBG_mgdl", func: cvtBg },
+            { from: "MinBG", to: "MinBG_mgdl", func: cvtBg },
+            { from: "StartTime_minutes", to: "startTime_msec", func: cvtMinToMsec }
+        ]);
+        for (var i=0; i<s.BasalProfile.length; ++i) {
+            fixValues(s.BasalProfile[i].Segment, [
+                { from: "Amount", to: "Amount_units", func: cvtClicksToUnits },
+                { from: "StartTime_minutes", to: "startTime_msec", func: cvtMinToMsec }
+            ]);
+        }
+        s.TargetBGMax_mgdl = cvtBg(s.TargetBGMax);
+        s.TargetBGMin_mgdl = cvtBg(s.TargetBGMin);
+    };
+
     // note -- this puts a bolus record hash into data
     var asanteBuildBolusRecords = function(data) {
         var postrecords = [];
         data.bolusIndexHash = {};
         for (var i=0; i<data.bolusRecords.length; ++i) {
             var b = data.bolusRecords[i];
-            b.unitsDelivered = clicksToUnits(b.ClicksDelivered);
+            b.unitsDelivered = cvtClicksToUnits(b.ClicksDelivered);
             b.deviceTime = getDeviceTime(b.DateTime);
             b.UTCTime = getUTCTime(b.DateTime);
             b.duration_msec = b.duration15MinUnits * 15 * cfg.timeutils.MIN_TO_MSEC;
@@ -787,8 +897,8 @@ asanteDriver = function (config) {
                 b.textType = BOLUS_TYPE.COMBO.name;
                 // this is to calculate the split for extended boluses in case it didn't all
                 // get delivered
-                var normalRequested = clicksToUnits(b.NowClicksRequested);
-                var extendedRequested = clicksToUnits(b.TimedClicksRequested);
+                var normalRequested = cvtClicksToUnits(b.NowClicksRequested);
+                var extendedRequested = cvtClicksToUnits(b.TimedClicksRequested);
                 b.normalUnits = Math.min(b.unitsDelivered, normalRequested);
                 b.extendedUnits = b.unitsDelivered - b.normalUnits;
                 rec = cfg.jellyfish.buildDualBolus(b.normalUnits, b.extendedUnits, b.duration_msec, 
@@ -806,8 +916,8 @@ asanteDriver = function (config) {
         var postrecords = [];
         for (var i=0; i<data.smartRecords.length; ++i) {
             var wz = data.smartRecords[i];
-            wz.unitsCalculated = clicksToUnits(wz.TotalInsulin);
-            wz.bg = convertBg(wz.CurrentBG);
+            wz.unitsCalculated = cvtClicksToUnits(wz.TotalInsulin);
+            wz.bg = cvtBg(wz.CurrentBG);
             wz.deviceTime = getDeviceTime(wz.DateTime);
             wz.UTCTime = getUTCTime(wz.DateTime);
             wz.carbInput = wz.FoodCarbs;
@@ -827,13 +937,67 @@ asanteDriver = function (config) {
         return postrecords;
     };
 
-    asanteBuildBasalRecords = function(data) {
+    var asanteBuildSettingsRecord = function(data) {
+        var bgunits = ["mg/dL", "mmol/L"][data.settings.BGUnitsType];
+        var s = data.settings;
+        var i;
+        var basalsked = {};
+        for (i=0; i<s.BasalProfile.length; ++i) {
+            var sked = [];
+            for (var j=0; j<s.BasalProfile[i].SegmentCount; ++j) {
+                sked.push({ rate: s.BasalProfile[i].Segment[j].Amount_units, 
+                    start: s.BasalProfile[i].Segment[j].startTime_msec });
+            }
+            basalsked[s.BasalProfile[i].Name] = sked;
+        }
+        var carbsked = [];
+        for (i=0; i<s.FoodProfile.length; ++i) {
+            if (s.FoodProfile[i].StartTime_minutes !== -1) {
+                carbsked.push({ amount: s.FoodProfile[i].carbRatio_gramsperunit, 
+                    start: s.FoodProfile[i].startTime_msec });
+            }
+        }
+        var insulinsked = [];
+        for (i=0; i<s.BGProfile.length; ++i) {
+            if (s.BGProfile[i].StartTime_minutes !== -1) {
+                insulinsked.push({ amount: s.BGProfile[i].insulinSensitivity, 
+                    start: s.BGProfile[i].startTime_msec });
+            }
+        }
+        var targetsked = [];
+        for (i=0; i<s.TargetBG.length; ++i) {
+            if (s.TargetBG[i].StartTime_minutes !== -1) {
+                targetsked.push({ 
+                    low: s.TargetBG[i].MinBG_mgdl, 
+                    high: s.TargetBG[i].MaxBG_mgdl, 
+                    start: s.TargetBG[i].startTime_msec 
+                });
+            }
+        }
+
+        var lastconfigidx = data.basalConfig.length - 1;
+        var postsettings = cfg.jellyfish.buildSettings(
+            s.BasalProfile[s.ActiveProfile].Name, 
+            { carb: "grams", bg: bgunits },
+            basalsked, 
+            carbsked, 
+            insulinsked, 
+            targetsked,
+            // this seems to be the best guess for a reasonable time
+            data.basalConfig[lastconfigidx].UTCTime,
+            data.basalConfig[lastconfigidx].deviceTime
+        );
+
+        return postsettings;
+    };
+
+    var asanteBuildBasalRecords = function(data) {
         // THIS DOESN'T WORK -- it's a copy of above and not edited yet
         var postrecords = [];
         for (var i=0; i<data.basalRecords.length; ++i) {
             var basal = data.basalRecords[i];
-            basal.unitsCalculated = clicksToUnits(basal.TotalInsulin);
-            basal.bg = convertBg(basal.CurrentBG);
+            basal.unitsCalculated = cvtClicksToUnits(basal.TotalInsulin);
+            basal.bg = cvtBg(basal.CurrentBG);
             basal.deviceTime = getDeviceTime(basal.DateTime);
             basal.UTCTime = getUTCTime(basal.DateTime);
             basal.carbInput = basal.FoodCarbs;
@@ -951,16 +1115,14 @@ asanteDriver = function (config) {
         processData: function (progress, data, cb) {
             console.log("in processData");
             progress(0);
-            asanteXXX(function(err, result) {
-                progress(100);
-                data.stage = "processData";
-                data.processData = result;
-                if (err) {
-                    return cb(err, data);
-                } else {
-                    cb(null, data);
-                }
-            });
+            var err = asantePostprocess(data);
+            progress(100);
+            data.stage = "processData";
+            if (err) {
+                return cb(err, data);
+            } else {
+                cb(null, data);
+            }
         },
 
         uploadData: function (progress, data, cb) {
@@ -970,6 +1132,8 @@ asanteDriver = function (config) {
             data.upload_records = asanteBuildBolusRecords(data);
             var wizards = asanteBuildWizardRecords(data);
             data.upload_records = data.upload_records.concat(wizards);
+            var settings = asanteBuildSettingsRecord(data);
+            data.upload_records.push(settings);
             console.log(data.upload_records);
 
             cfg.jellyfish.post(data.upload_records, progress, function(err, results) {
