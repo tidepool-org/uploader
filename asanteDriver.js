@@ -695,7 +695,7 @@ asanteDriver = function (config) {
 
     var asanteCommandResponse = function(commandpacket, callback) {
         var p = new Uint8Array(commandpacket.packet);
-        console.log(p);
+        // console.log(p);
         cfg.deviceComms.writeSerial(commandpacket.packet, function() {
             // once we've sent the command, start listening for a response
             // but if we don't get one in 1 second give up
@@ -724,7 +724,7 @@ asanteDriver = function (config) {
                     // console.log(result);
                     // request next record
                     var next = nextRecord();
-                    if (retval.length >= 30) {    // 3000 is bigger than any log's capacity
+                    if (retval.length >= 3000) {    // 3000 is bigger than any log's capacity
                         next = stopSending();
                         console.log("cutting it short for debugging!");                        
                     }
@@ -776,7 +776,6 @@ asanteDriver = function (config) {
     var asanteFetch = function(progress, callback) {
         var getRecords = function (rectype, progressLevel) {
             return function(callback) {
-                console.log("in serial event ", rectype, progressLevel);
                 asanteDownloadRecords(rectype, function(err, result) {
                     progress(progressLevel);
                     callback(err, result);
@@ -872,6 +871,12 @@ asanteDriver = function (config) {
         }
         s.TargetBGMax_mgdl = cvtBg(s.TargetBGMax);
         s.TargetBGMin_mgdl = cvtBg(s.TargetBGMin);
+
+        fixValues(data.basalRecords, [
+            { from: "ClicksDelivered", to: "Delivered_units", func: cvtClicksToUnits },
+            { from: "DateTime", to: "UTCTime", func: getUTCTime },
+            { from: "DateTime", to: "deviceTime", func: getDeviceTime }
+        ]);
     };
 
     // note -- this puts a bolus record hash into data
@@ -888,27 +893,38 @@ asanteDriver = function (config) {
             var rec;
             if (b.Type === BOLUS_TYPE.NOW.value) {
                 b.textType = BOLUS_TYPE.NOW.name;
-                rec = cfg.jellyfish.buildNormalBolus(b.unitsDelivered, b.UTCTime, b.deviceTime);
+                rec = cfg.jellyfish.makeNormalBolus()
+                    .with_normal(b.unitsDelivered)
+                    .with_time(b.UTCTime)
+                    .with_devicetime(b.devicetime)
+                    .done();
             } else if (b.Type === BOLUS_TYPE.TIMED.value) {
                 b.textType = BOLUS_TYPE.TIMED.name;
-                rec = cfg.jellyfish.buildSquareBolus(b.unitsDelivered, b.duration_msec, 
-                    b.UTCTime, b.deviceTime);
+                rec = cfg.jellyfish.makeSquareBolus()
+                    .with_extended(b.unitsDelivered)
+                    .with_duration(b.duration_msec)
+                    .with_time(b.UTCTime)
+                    .with_devicetime(b.devicetime)
+                    .done();
             } else if (b.Type === BOLUS_TYPE.COMBO.value) {
                 b.textType = BOLUS_TYPE.COMBO.name;
                 // this is to calculate the split for extended boluses in case it didn't all
                 // get delivered
                 var normalRequested = cvtClicksToUnits(b.NowClicksRequested);
-                var extendedRequested = cvtClicksToUnits(b.TimedClicksRequested);
+                // var extendedRequested = cvtClicksToUnits(b.TimedClicksRequested);
                 b.normalUnits = Math.min(b.unitsDelivered, normalRequested);
                 b.extendedUnits = b.unitsDelivered - b.normalUnits;
-                rec = cfg.jellyfish.buildDualBolus(b.normalUnits, b.extendedUnits, b.duration_msec, 
-                    b.UTCTime, b.deviceTime);
+                rec = cfg.jellyfish.makeDualBolus()
+                    .with_normal(b.normalUnits)
+                    .with_extended(b.extendedUnits)
+                    .with_duration(b.duration_msec)
+                    .with_time(b.UTCTime)
+                    .with_devicetime(b.devicetime)
+                    .done();
             }
-            data.bolusIndexHash[b.BolusID] = rec[0];
+            data.bolusIndexHash[b.BolusID] = rec;
             postrecords.push(rec);
         }
-        // flatten only the top layer
-        postrecords = _.flatten(postrecords, true);
         return postrecords;
     };
 
@@ -916,21 +932,27 @@ asanteDriver = function (config) {
         var postrecords = [];
         for (var i=0; i<data.smartRecords.length; ++i) {
             var wz = data.smartRecords[i];
-            wz.unitsCalculated = cvtClicksToUnits(wz.TotalInsulin);
+            wz.totalCalculated_units = cvtClicksToUnits(wz.TotalInsulin);
+            wz.recommended_carb_units = cvtClicksToUnits(wz.GrossCarbInsulin);
+            wz.recommended_correction_units = cvtClicksToUnits(wz.GrossBGInsulin);
+            wz.IOB_units = cvtClicksToUnits(wz.IOB);
             wz.bg = cvtBg(wz.CurrentBG);
             wz.deviceTime = getDeviceTime(wz.DateTime);
             wz.UTCTime = getUTCTime(wz.DateTime);
             wz.carbInput = wz.FoodCarbs;
             var refBolus = data.bolusIndexHash[wz.BolusID] || null;
 
-            var rec = cfg.jellyfish.buildWizard(
-                wz.unitsCalculated,
-                wz.bg,
-                refBolus,
-                wz,
-                wz.UTCTime,
-                wz.deviceTime
-                );
+            var rec = cfg.jellyfish.makeWizard()
+                .with_recommended({carb: wz.recommended_carb_units,
+                    correction: wz.recommended_correction_units })
+                .with_bgInput(wz.CurrentBG)
+                .with_carbInput(wz.FoodCarbs)
+                .with_insulinOnBoard(wz.IOB_units)
+                .with_time(wz.UTCTime)
+                .with_devicetime(wz.devicetime)
+                .with_bolus(refBolus)
+                .with_payload(wz)
+                .done();
 
             postrecords.push(rec);
         }
@@ -941,33 +963,41 @@ asanteDriver = function (config) {
         var bgunits = ["mg/dL", "mmol/L"][data.settings.BGUnitsType];
         var s = data.settings;
         var i;
-        var basalsked = {};
+
+        var rec = cfg.jellyfish.makeSettings()
+            .with_activeSchedule(s.BasalProfile[s.ActiveProfile].Name)
+            .with_units({ carb: "grams", bg: bgunits });
+
         for (i=0; i<s.BasalProfile.length; ++i) {
-            var sked = [];
             for (var j=0; j<s.BasalProfile[i].SegmentCount; ++j) {
-                sked.push({ rate: s.BasalProfile[i].Segment[j].Amount_units, 
-                    start: s.BasalProfile[i].Segment[j].startTime_msec });
+                rec.add_basalScheduleItem(s.BasalProfile[i].Name, { 
+                    rate: s.BasalProfile[i].Segment[j].Amount_units,
+                    start: s.BasalProfile[i].Segment[j].startTime_msec
+                });
             }
-            basalsked[s.BasalProfile[i].Name] = sked;
         }
-        var carbsked = [];
+
         for (i=0; i<s.FoodProfile.length; ++i) {
             if (s.FoodProfile[i].StartTime_minutes !== -1) {
-                carbsked.push({ amount: s.FoodProfile[i].carbRatio_gramsperunit, 
-                    start: s.FoodProfile[i].startTime_msec });
+                rec.add_carbRatioItem({ 
+                    amount: s.FoodProfile[i].carbRatio_gramsperunit, 
+                    start: s.FoodProfile[i].startTime_msec
+                });
             }
         }
-        var insulinsked = [];
+
         for (i=0; i<s.BGProfile.length; ++i) {
             if (s.BGProfile[i].StartTime_minutes !== -1) {
-                insulinsked.push({ amount: s.BGProfile[i].insulinSensitivity, 
-                    start: s.BGProfile[i].startTime_msec });
+                rec.add_insulinSensitivityItem({
+                    amount: s.BGProfile[i].insulinSensitivity, 
+                    start: s.BGProfile[i].startTime_msec 
+                });
             }
         }
-        var targetsked = [];
+
         for (i=0; i<s.TargetBG.length; ++i) {
             if (s.TargetBG[i].StartTime_minutes !== -1) {
-                targetsked.push({ 
+                rec.add_bgTargetItem({ 
                     low: s.TargetBG[i].MinBG_mgdl, 
                     high: s.TargetBG[i].MaxBG_mgdl, 
                     start: s.TargetBG[i].startTime_msec 
@@ -975,20 +1005,12 @@ asanteDriver = function (config) {
             }
         }
 
+        // this seems to be the best guess for a reasonable time for now
         var lastconfigidx = data.basalConfig.length - 1;
-        var postsettings = cfg.jellyfish.buildSettings(
-            s.BasalProfile[s.ActiveProfile].Name, 
-            { carb: "grams", bg: bgunits },
-            basalsked, 
-            carbsked, 
-            insulinsked, 
-            targetsked,
-            // this seems to be the best guess for a reasonable time
-            data.basalConfig[lastconfigidx].UTCTime,
-            data.basalConfig[lastconfigidx].deviceTime
-        );
+        rec.with_time(data.basalConfig[lastconfigidx].UTCTime);
+        rec.with_devicetime(data.basalConfig[lastconfigidx].deviceTime);
 
-        return postsettings;
+        return rec.done();
     };
 
     var asanteBuildBasalRecords = function(data) {
@@ -1084,7 +1106,7 @@ asanteDriver = function (config) {
                 if (err) {
                     return cb(err, data);
                 } else {
-                    cfg.jellyfish.setDeviceInfo( {
+                    cfg.jellyfish.setDefaults( {
                         deviceId: "Asante " + result.model + " " + result.serialNumber,
                         source: "device",
                         timezoneOffset: cfg.tz_offset_minutes,
