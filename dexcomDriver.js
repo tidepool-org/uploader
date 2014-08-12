@@ -377,8 +377,8 @@ dexcomDriver = function(config) {
     };
 
     var dexcomCommandResponse = function(commandpacket, callback) {
-        var p = new Uint8Array(commandpacket.packet);
-        console.log(p);
+        // var p = new Uint8Array(commandpacket.packet);
+        // console.log(p);
         serialDevice.writeSerial(commandpacket.packet, function() {
             // once we've sent the command, start listening for a response
             // but if we don't get one in 1 second give up
@@ -477,7 +477,7 @@ dexcomDriver = function(config) {
     };
 
     var prepCBGData = function(progress, data) {
-        cfg.jellyfish.setDeviceInfo( {
+        cfg.jellyfish.setDefaults( {
             deviceId: data.firmwareHeader.attrs.ProductName + " " + 
                 data.manufacturing_data.attrs.SerialNumber,
             source: "device",
@@ -490,12 +490,12 @@ dexcomDriver = function(config) {
                 // special values are not posted for now
                 continue;
             }
-            var cbg = cfg.jellyfish.buildCBG(
-                    data.cbg_data[i].glucose,
-                    data.cbg_data[i].displayUtc,
-                    data.cbg_data[i].displayTime
-                );
-            cbg.trend = data.cbg_data[i].trendText;
+            var cbg = cfg.jellyfish.makeCBG()
+                .with_value(data.cbg_data[i].glucose)
+                .with_time(data.cbg_data[i].displayUtc)
+                .with_devicetime(data.cbg_data[i].displayTime)
+                .set("trend", data.cbg_data[i].trendText)
+                .done();
             dataToPost.push(cbg);
         }
 
