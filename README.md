@@ -58,6 +58,8 @@ a useful amount of intelligence about how to communicate in packets and the like
 ## How to set it up
 
 1. Clone this repository from github.
+1. Run `npm install`
+1. Run `./node_modules/.bin/webpack --progress -d`
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line). 
 1. Click "Load Unpacked Extension". 
 1. Choose the directory you checked out above and click OK.
