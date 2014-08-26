@@ -1,158 +1,178 @@
 jellyfishClient = function(config) {
     var tidepoolServer = config.tidepoolServer;
     var deviceInfo = null;
-    var setDeviceInfo = function(info) {
+    var REQUIRED = '**REQUIRED**';
+    var OPTIONAL = '**OPTIONAL**';
+
+    function setDefaults(info) {
         deviceInfo = _.pick(info, 'deviceId', 'source', 'timezoneOffset', 'units');
-    };
+        deviceInfo.time = REQUIRED;
+        deviceInfo.devicetime = REQUIRED;
+    }
 
-    var buildBG = function (bg, timestamp, devicetime) {
-        var bgRec = _.assign({}, deviceInfo, {
-            type: 'smbg',
-            value: bg,
-            time: timestamp,
-            deviceTime: devicetime
+    function _createObject() {
+        return {
+            // use set to specify extra values that aren't in the template for
+            // the data type
+            set: function set(k, v) {
+                if (v == null && this[k]) {
+                    delete this[k];
+                } else {
+                    this[k] = v; 
+                }
+                return this; 
+            },
+
+            // checks the object, removes unused optional fields,
+            // and returns a copy of the object with all functions removed.
+            done: function() {
+                var valid = _.reduce(this, function(result, value, key) {
+                    if (value === REQUIRED) {
+                        result.push(key);
+                    }
+                    return result;
+                }, []);
+                if (valid.length !== 0) {
+                    console.log('Some arguments to ' + this.type + ' (' +
+                        valid.join(',') + ') were not specified!');
+                }
+
+                return _.pick(this, function(value, key) {
+                    return !(_.isFunction(value) || value === OPTIONAL);
+                });
+            },
+
+            _bindProps: function() {
+                _.forIn(this, function(value, key, obj) {
+                    if (!_.isFunction(value)) {
+                        obj['with_' + key] = obj.set.bind(obj, key);
+                    }
+                });
+            }
+
+        };
+    }
+
+    function _makeWithValue(typename) {
+        var rec = _.assign(_createObject(), deviceInfo, {
+            type: typename,
+            value: REQUIRED
         });
+        rec._bindProps();
+        return rec;
+    }
 
-        return bgRec;
-    };
+    function makeSMBG() {
+        return _makeWithValue('smbg');
+    }
 
-    var buildCBG = function (bg, timestamp, devicetime) {
-        var bgRec = _.assign({}, deviceInfo, {
-            type: 'cbg',
-            value: bg,
-            time: timestamp,
-            deviceTime: devicetime
-        });
+    function makeCBG() {
+        return _makeWithValue('cbg');
+    }
 
-        return bgRec;
-    };
+    function makeNote() {
+        return _makeWithValue('note');
+    }
 
-    // this doesn't actually exist yet
-    var buildNote = function (note, timestamp, devicetime) {
-        var noteRec = _.assign({}, deviceInfo, {
-            type: 'note',
-            value: note,
-            time: timestamp,
-            deviceTime: devicetime
-        });
-
-        return noteRec;
-    };
-
-    var buildCarb = function (carbs, timestamp, devicetime) {
-        var carbRec = _.assign({}, deviceInfo, {
+    function makeFood() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'food',
-            carbs: carbs,
-            time: timestamp,
-            deviceTime: devicetime
+            carbs: REQUIRED
         });
+        rec._bindProps();
+        return rec;
+    }
 
-        return carbRec;
-    };
-
-    var buildWizard = function (recommended, bgInput, bolus, payload, timestamp, devicetime) {
-        var carbRec = _.assign({}, deviceInfo, {
+    function makeWizard() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'wizard',
-            recommended: recommended,
-            bgInput: bgInput,
-            bolus: bolus,
-            payload: payload,
-            time: timestamp,
-            deviceTime: devicetime
+            recommended: {
+                carb: 0,
+                correction: 0
+            },
+            bgInput: OPTIONAL,
+            carbInput: OPTIONAL,
+            insulinOnBoard: OPTIONAL,
+            insulinCarbRatio: OPTIONAL,
+            insulinSensitivity: OPTIONAL,
+            bgTarget: OPTIONAL,
+            bolus: OPTIONAL,
+            payload: OPTIONAL
         });
+        rec._bindProps();
+        return rec;
+    }
 
-        if (bgInput === null) {
-            delete carbRec.bgInput;
-        }
-
-        return carbRec;
-    };
-
-    var buildNormalBolus = function (units, timestamp, devicetime) {
-        var bolusRec = _.assign({}, deviceInfo, {
+    function makeNormalBolus() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'bolus',
             subType: 'normal',
-            normal: units,
-            time: timestamp,
-            deviceTime: devicetime
+            normal: REQUIRED
         });
-        return [bolusRec];
-        // var completionRec = _.clone(bolusRec);
-        // completionRec.previous = _.clone(bolusRec);
-        // return [bolusRec, completionRec];
-    };
+        rec._bindProps();
+        return rec;
+    }
 
-    var buildSquareBolus = function (units, duration, timestamp, devicetime) {
-        var bolusRec = _.assign({}, deviceInfo, {
+    function makeSquareBolus() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'bolus',
             subType: 'square',
-            extended: units,
-            duration: duration,
-            time: timestamp,
-            deviceTime: devicetime
+            extended: REQUIRED,
+            duration: REQUIRED
         });
-        return [bolusRec];
-        // var completionRec = _.clone(bolusRec);
-        // completionRec.previous = _.clone(bolusRec);
-        // return [bolusRec, completionRec];
-    };
+        rec._bindProps();
+        return rec;
+    }
 
-    var buildDualBolus = function (normalunits, extendedunits, duration, timestamp, devicetime) {
-        var bolusRec = _.assign({}, deviceInfo, {
+    function makeDualBolus() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'bolus',
             subType: 'dual/square',
-            normal: normalunits,
-            extended: extendedunits,
-            duration: duration,
-            time: timestamp,
-            deviceTime: devicetime
+            normal: REQUIRED,
+            extended: REQUIRED,
+            duration: REQUIRED
         });
-        return [bolusRec];
-        // var normalCompletionRec = _.omit(bolusRec, 'extended', 'duration');
-        // normalCompletionRec.previous = _.clone(bolusRec);
-        // var extendedCompletionRec = _.omit(bolusRec, 'normal');
-        // extendedCompletionRec.previous = _.clone(bolusRec);
-        // return [bolusRec, normalCompletionRec, extendedCompletionRec];
-    };
+        rec._bindProps();
+        return rec;
+    }
 
-    var buildScheduledBasal = function(scheduleName, rate, duration_msec, previous, timestamp, devicetime) {
-        var basalRec = _.assign({}, deviceInfo,  {
+    function makeScheduledBasal() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'basal',
             deliveryType: 'scheduled',
-            scheduleName: scheduleName,
-            rate: rate,
-            duration: duration_msec,
-            time: timestamp,
-            deviceTime: devicetime
+            scheduleName: REQUIRED,
+            rate: REQUIRED,
+            duration: REQUIRED,
+            previous: OPTIONAL
         });
-        if (previous != null) {
-            basalRec.previous = previous;
-        }
-        if (basalRec.duration < 0) {
-            console.log(basalRec);
-        }
-        return basalRec;
-    };
+        rec._bindProps();
+        return rec;
+    }
 
-    var buildSettings = function(activeScheduleName, units, schedules, carbRatio, 
-            insulinSensitivity, bgTarget, timestamp, devicetime) {
-
-        var settingsRec = _.assign({}, deviceInfo,  {
+    function makeSettings() {
+        var rec = _.assign(_createObject(), deviceInfo, {
             type: 'settings',
-            activeSchedule: activeScheduleName,
-            units: units,
-            basalSchedules: schedules,
-            carbRatio: carbRatio,
-            insulinSensitivity: insulinSensitivity,
-            bgTarget: bgTarget,
-            time: timestamp,
-            deviceTime: devicetime
+            activeSchedule: REQUIRED,
+            units: REQUIRED,
+            basalSchedules: {},
+            carbRatio: [],
+            insulinSensitivity: [],
+            bgTarget: [],
         });
-        return settingsRec;
-    };
+        rec._bindProps();
+        rec.add_basalScheduleItem = function(key, item) {
+            if (!rec.basalSchedules[key]) {
+                rec.basalSchedules[key] = [];
+            }
+            rec.basalSchedules[key].push(item);
+        };
+        rec.add_carbRatioItem = function(item) { rec.carbRatio.push(item); };
+        rec.add_insulinSensitivityItem = function(item) { rec.insulinSensitivity.push(item); };
+        rec.add_bgTargetItem = function(item) { rec.bgTarget.push(item); };
+        return rec;
+    }
 
-
-    var postOne = function (data, callback) {
+    function postOne(data, callback) {
         // console.log('poster');
         var recCount = data.length;
         var happy = function(resp, status, jqxhr) {
@@ -182,16 +202,16 @@ jellyfishClient = function(config) {
                 console.log('Jellyfish post failed.');
                 console.log(status);
                 console.log(err);
-                console.log(jqxhr);
-                callback(err, 0);
+                console.log(jqxhr.responseJSON);
+                callback(jqxhr.responseJSON, 0);
             }
         };
         tidepoolServer.postToJellyfish(data, happy, sad);
-    };
+    }
 
     // we break up the posts because early jellyfish has a 1MB upload limit at one time
     // we're upping that limit
-    var post = function (data, progress, callback) {
+    function post(data, progress, callback) {
         var blocks = [];
         var BLOCKSIZE = 100;
         for (var i=0; i<data.length; i+=BLOCKSIZE) {
@@ -203,21 +223,21 @@ jellyfishClient = function(config) {
             return postOne(data, callback);
         };
         async.mapSeries(blocks, post_and_progress, callback);
-    };
+    }
 
 
     return {
-        setDeviceInfo: setDeviceInfo,
-        buildBG: buildBG,
-        buildCBG: buildCBG,
-        buildNote: buildNote,
-        buildCarb: buildCarb,
-        buildWizard: buildWizard,
-        buildDualBolus: buildDualBolus,
-        buildSquareBolus: buildSquareBolus,
-        buildNormalBolus: buildNormalBolus,
-        buildScheduledBasal: buildScheduledBasal,
-        buildSettings: buildSettings,
+        setDefaults: setDefaults,
+        makeSMBG: makeSMBG,
+        makeCBG: makeCBG,
+        makeNote: makeNote,
+        makeFood: makeFood,
+        makeWizard: makeWizard,
+        makeScheduledBasal: makeScheduledBasal,
+        makeNormalBolus: makeNormalBolus,
+        makeSquareBolus: makeSquareBolus,
+        makeDualBolus: makeDualBolus,
+        makeSettings: makeSettings,
         post: post
     };
 };
