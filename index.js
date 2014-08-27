@@ -321,9 +321,9 @@ function constructUI() {
     }
   };
 
-  var insuletDriver = require('./lib/insuletDriver.js');
+  // var insuletDriver = require('./lib/insuletDriver.js');
   var blockDevices = {
-    'InsuletOmniPod': insuletDriver
+    // 'InsuletOmniPod': insuletDriver
   };
 
 
@@ -441,7 +441,7 @@ function constructUI() {
                                   value: false
                                 });
   $('#progressbar').hide();
-  connectLog("private build -- Insulet is supported.");
+  // connectLog("private build -- Insulet is supported.");
 }
 
 $(constructUI);

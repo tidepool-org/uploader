@@ -23,7 +23,6 @@ This is experimental code and in no way intended to be used for therapy!
 * It can enumerate the USB devices it knows about
   * Dexcom G4
   * Asante SNAP
-  * Insulet Omnipod
   * An Arduino test board
   * A couple of other USB things just used for testing
 
@@ -43,9 +42,6 @@ a useful amount of intelligence about how to communicate in packets and the like
 
 ### Has code to talk to an Animas SNAP pump
 * But right now, that code is not yet integrated to do uploads
-
-### Can read a data file from an Insulet Omnipod pump
-* This is to a first-order approximation (it doesn't do everything yet, but it handles scheduled basals, boluses, settings, and smbg readings).
 
 ## What it's missing
 
@@ -69,13 +65,6 @@ a useful amount of intelligence about how to communicate in packets and the like
 ## Known bugs
 * You have to have your serial device plugged in before you run it. That will get fixed soonish.
 
-## Data-handling issues for Insulet
-* It doesn't deal with time changes on the device, so if it was set back in time, data may overlap and conflicting readings (at the same device time) will be skipped.
-* It doesn't do temp basals
-* It doesn't handle suspend and resume
-* Durations of scheduled basals are not sent up; the backend calculates them when it can, but it may not always work.
-* Bad readings are handled by being ignored rather than reported.
-
 ## How to use it
 
 ### Dexcom
@@ -83,14 +72,6 @@ a useful amount of intelligence about how to communicate in packets and the like
 * Run the app
 * Log in
 * Press the "Upload from Dexcom" button
-
-### Insulet
-* Plug in the device and start the app (in either order)
-* Log in
-* Press the "Choose File" button
-* Navigate to the device (which on the pump I have shows up as "NO NAME")
-* Select the most recent .ibf file on the device (there should be only one)
-* Press "Open"
 
 ### Asante
 * Doesn't do much in this build.
