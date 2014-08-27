@@ -1,3 +1,7 @@
+bundle.js
+bundle.js.map
+lib/insuletDriver.js
+
 lib-cov
 *.seed
 *.log
