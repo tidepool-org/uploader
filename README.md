@@ -1,6 +1,8 @@
 # Tidepool Uploader
 
-These notes were updated on Monday, August 4, 2014. 
+These notes were updated on Thursday, October 2, 2014. 
+
+_This code is currently out of date. We are waiting for approval from one manufacturer so that the private work we've been doing can be made public. Please check back in a few days for updates._
 
 This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud. 
 
@@ -41,7 +43,7 @@ a useful amount of intelligence about how to communicate in packets and the like
 * Has a collection of tools for managing Dexcom communications
 * Is not yet finished
 
-### Has code to talk to an Animas SNAP pump
+### Has code to talk to an Asante SNAP pump
 * It can do scheduled basals, boluses of all types, wizards, and some of the settings
 * It does not yet do temp basals, or properly understand basal schedules, and there are probably many edge cases it doesn't do right.
 
