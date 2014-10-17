@@ -1,0 +1,26 @@
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+.realFileUpload {
+    display: none;    
+}
+
+.icon {
+    width: 6em;
+    height: 6em;
+}
+
+.lightnotes {
+    font-size: smaller;
+    color: #909090;
+}

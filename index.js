@@ -1,15 +1,37 @@
 // buildUI.js
 // this constructs the UI in jQuery
 
+/*
+ * == BSD2 LICENSE ==
+ * Copyright (c) 2014, Tidepool Project
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the associated License, which is identical to the BSD 2-Clause
+ * License as published by the Open Source Initiative at opensource.org.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the License for more details.
+ * 
+ * You should have received a copy of the License along with this program; if
+ * not, you can obtain one from Tidepool Project at tidepool.org.
+ * == BSD2 LICENSE ==
+ */
+
 var $ = require('jquery');
 window.jQuery = $;
 var async = require('async');
 var timeutils = require('./lib/timeutils.js');
 var util = require('util');
+var _ = require('lodash');
 
-require('./jquery-ui-1.11.0.custom/jquery-ui.css');
-require('./styles/main.css');
-require('./jquery-ui-1.11.0.custom/jquery-ui.js');
+require('./js/bootstrap.js');
+require('./css/bootstrap.css');
+require('./css/bootstrap-theme.css');
+require('./styles/custom.css');
+
+// these are the settings that are stored in local storage
+var settings = {};
 
 var make_base_auth = function (username, password) {
   var tok = username + ':' + password;
@@ -18,10 +40,26 @@ var make_base_auth = function (username, password) {
 };
 
 var tidepoolHosts = {
-  local: { host: 'http://localhost:8009', jellyfish: 'http://localhost:9122' },
-  devel: { host: 'https://devel-api.tidepool.io', jellyfish: 'https://devel-uploads.tidepool.io' },
-  staging: { host: 'https://staging-api.tidepool.io', jellyfish: 'https://staging-uploads.tidepool.io' },
-  prod: { host: 'https://api.tidepool.io', jellyfish: 'https://uploads.tidepool.io' }
+  local: { 
+    host: 'http://localhost:8009', 
+    jellyfish: 'http://localhost:9122',
+    blip: 'http://localhost:3000'
+  },
+  devel: { 
+    host: 'https://devel-api.tidepool.io', 
+    jellyfish: 'https://devel-uploads.tidepool.io',
+    blip: 'https://blip-devel.tidepool.io'
+  },
+  staging: { 
+    host: 'https://staging-api.tidepool.io', 
+    jellyfish: 'https://staging-uploads.tidepool.io',
+    blip: 'https://blip-staging.tidepool.io'
+  },
+  prod: { 
+    host: 'https://api.tidepool.io', 
+    jellyfish: 'https://uploads.tidepool.io',
+    blip: 'https://blip-ucsf-pilot.tidepool.io'
+  }
 };
 
 var tidepoolServerData = {
@@ -36,11 +74,11 @@ var storageDeviceInfo = {};
 
 var tidepoolServer = {
   get: function (url, happycb, sadcb) {
-    var jqxhr = $.ajax({
-                         type: 'GET',
-                         url: url,
-                         headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
-                       }).success(function (data, status, jqxhr) {
+    $.ajax({
+      type: 'GET',
+      url: url,
+      headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
+    }).success(function (data, status, jqxhr) {
       var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
       if (tok && tok != tidepoolServerData.usertoken) {
         tidepoolServerData.usertoken = tok;
@@ -51,13 +89,13 @@ var tidepoolServer = {
     });
   },
   post: function (url, data, happycb, sadcb) {
-    var jqxhr = $.ajax({
-                         type: 'POST',
-                         url: url,
-                         contentType: 'application/json',
-                         data: JSON.stringify(data),
-                         headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
-                       }).success(function (data, status, jqxhr) {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
+    }).success(function (data, status, jqxhr) {
       var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
       if (tok && tok != tidepoolServerData.usertoken) {
         tidepoolServerData.usertoken = tok;
@@ -69,11 +107,11 @@ var tidepoolServer = {
   },
   login: function (username, password, happycb, sadcb) {
     var url = tidepoolServerData.host + '/auth/login';
-    jqxhr = $.ajax({
-                     type: 'POST',
-                     url: url,
-                     headers: { 'Authorization': make_base_auth(username, password) },
-                   }).success(function (data, status, jqxhr) {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      headers: { 'Authorization': make_base_auth(username, password) }
+    }).success(function (data, status, jqxhr) {
       tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
       tidepoolServerData.userdata = data;
       happycb(data, status, jqxhr);
@@ -85,6 +123,10 @@ var tidepoolServer = {
     var url = tidepoolServerData.host + '/metadata/' + tidepoolServerData.userdata.userid + '/profile';
     this.get(url, happycb, sadcb);
   },
+  getUploadAccounts: function (happycb, sadcb) {
+    var url = tidepoolServerData.host + '/access/groups/' + tidepoolServerData.userdata.userid;
+    this.get(url, happycb, sadcb);
+  },
   postToJellyfish: function (data, happycb, sadcb) {
     var url = tidepoolServerData.jellyfish + '/data';
     this.post(url, data, happycb, sadcb);
@@ -92,27 +134,27 @@ var tidepoolServer = {
 };
 
 var jellyfish = require('./lib/jellyfishClient.js')({tidepoolServer: tidepoolServer});
+var builder = require('./lib/objectBuilder.js')();
 var serialDevice = require('./lib/serialDevice.js');
 var driverManager = require('./lib/driverManager.js');
 
 function constructUI() {
   //$('body').append('This is a test.');
 
-  var loggedIn = function (isLoggedIn) {
-    if (isLoggedIn) {
-      $('.showWhenNotLoggedIn').fadeOut(400, function () {
-        $('.showWhenLoggedIn').fadeIn();
-      });
-    } else {
-      $('.showWhenLoggedIn').fadeOut(400, function () {
-        $('.showWhenNotLoggedIn').fadeIn();
-      });
-    }
-  };
+  var currentUIState = '.state_login';
+  $('.state_login').hide();
+  $('.state_upload').hide();
+  $('.state_settings').hide();
+  function setUIState(newstate) {
+    $(currentUIState).fadeOut(400, function () {
+      $(newstate).fadeIn();
+      currentUIState = newstate;
+    });
+  }
 
-  loggedIn(false);
+  setUIState('.state_login');
 
-  var connected = function (isConnected) {
+  function connected (isConnected) {
     if (isConnected) {
       $('.showWhenNotConnected').fadeOut(400, function () {
         $('.showWhenConnected').fadeIn();
@@ -122,90 +164,206 @@ function constructUI() {
         $('.showWhenNotConnected').fadeIn();
       });
     }
-  };
+  }
 
   connected(true);
 
   // displays text on the connect log
-  var connectLog = function (s) {
+  function connectLog (s) {
     if (s[s.length - 1] !== '\n') {
       s += '\n';
     }
-    var all = $('#connectionLog').val();
-    $('#connectionLog').val(all + s);
-  };
+    // var all = $('#connectionLog').val();
+    // $('#connectionLog').val(all + s);
+    console.log(s);
+  }
 
   $('#loginButton').click(function () {
     var username = $('#username').val();
     var password = $('#password').val();
     var serverIndex = $('#serverURL').val();
-    console.log(username, password, serverIndex);
+    var myuserid = null;
+    var myfullname = null;
+    // console.log(username, password, serverIndex);
     tidepoolServerData.host = tidepoolHosts[serverIndex].host;
     tidepoolServerData.jellyfish = tidepoolHosts[serverIndex].jellyfish;
 
-    var goodLogin = function (data, status, jqxhr) {
-      console.log(data);
-      connectLog(status);
-      getProfile();
-      loggedIn(true);
-    };
-
-    var failLogin = function (jqxhr, status, error) {
-      console.log('Login failed.');
-      connectLog('Login failed.'); //, status, error); don't display status -- it includes password!
-      $('.loginstatus').text('Login failed');
-      loggedIn(false);
-    };
-
-    var goodProfile = function (data, status, jqxhr) {
+    function goodUpload (data, status, jqxhr) {
       connectLog(status);
       connectLog(util.format('%j', data));
-      $('.loginname').text(data.fullName);
-    };
+      var otherusers = _.omit(data, myuserid);
+      $('#uploadOptions')
+      .append($('<option></option>')
+        .attr('value', '0')
+        .text(myfullname));
+      if (otherusers != {}) {
+        var otherids = _.keys(otherusers);
+        _.each(otherids, function(otherid) {
+          $('#uploadOptions')
+          .append($('<option></option>')
+            .attr('value', '0')
+            .text('User ' + otherid));
+        });
+      }
+    }
 
-    var failProfile = function (jqxhr, status, error) {
-      connectLog('FAILED!', status, error);
-    };
+    function failUpload (jqxhr, status, error) {
+      connectLog('FAILED getting upload info!', status, error);
+    }
 
-    var getProfile = function () {
+    function getUploadAccounts () {
+      connectLog('Fetching upload info.');
+      tidepoolServer.getUploadAccounts(goodUpload, failUpload);
+    }
+
+    function goodProfile (data, status, jqxhr) {
+      connectLog(status);
+      connectLog(util.format('%j', data));
+      myfullname = data.fullName;
+      $('.loginname').text(myfullname);
+      getUploadAccounts();
+    }
+
+    function failProfile (jqxhr, status, error) {
+      connectLog('FAILED fetching profile!', status, error);
+    }
+
+    function getProfile () {
       connectLog('Fetching profile.');
       tidepoolServer.getProfile(goodProfile, failProfile);
-    };
+    }
+
+    function goodLogin (data, status, jqxhr) {
+      console.log(data);
+      // if the user wanted their data saved, save it now that we proved they can log in
+      if ($('#rememberme').prop('checked')) {
+        var f = window.localSave;
+        var obj = {
+          tidepool: {
+            username: username,
+            password: password,
+            remember_me: true,
+          },
+          defaultServer: $('serverURL').val()
+        };
+        f(obj);
+      } else {
+        // if remember me is NOT checked, make sure that we don't have any saved data
+        window.localSave({
+          tidepool: {
+            username: '', 
+            password: '', 
+            remember_me: false
+          },
+          defaultServer: $('serverURL').val()
+        });
+      }
+      myuserid = data.userid;
+      connectLog(status);
+      getProfile();
+      setUIState('.state_upload');
+    }
+
+    function failLogin (jqxhr, status, error) {
+      console.log('Login failed.');
+      connectLog('Login failed.'); // don't display status -- it includes password!
+      $('.loginstatus').text('Login failed');
+      setUIState('.state_login');
+    }
 
     tidepoolServer.login(username, password, goodLogin, failLogin);
   });
 
   $('#logoutButton').click(function () {
-    loggedIn(false);
+    setUIState('.state_login');
   });
 
-  var foundDevice = function (devConfig, devicesFound) {
-    // theoretically we could have multiple devices of the same type plugged in,
-    // but we kind of ignore that now. This will fail if you do that.
-    for (var d = 0; d < devicesFound.length; ++d) {
-      var dev = devicesFound[d];
-      connectLog('Discovered ' + devConfig.deviceName);
-      console.log(devConfig);
-      searchOnce([devConfig.driverId]);
-    }
-  };
+  $('#settingsButton').click(function () {
+    setUIState('.state_settings');
+  });
 
-  var scanUSBDevices = function () {
+
+// have a list of previously active devices
+// get a list of possible devices
+// generate a list of currently active devices
+// diff the lists
+// remove active from possible
+// check active devices and remove any not found
+// check remaining possible and add them to actives if found
+
+  var activeDeviceIDs = [];
+  var forceDeviceIDs = [];
+
+  function getDeviceManifest(dev) {
     var manifest = chrome.runtime.getManifest();
-    for (var p = 0; p < manifest.permissions.length; ++p) {
-      var perm = manifest.permissions[p];
-      if (perm.usbDevices) {
-        for (var d = 0; d < perm.usbDevices.length; ++d) {
-          // console.log(perm.usbDevices[d]);
-          var f = foundDevice.bind(this, perm.usbDevices[d]);
-          chrome.usb.getDevices({
-                                  vendorId: perm.usbDevices[d].vendorId,
-                                  productId: perm.usbDevices[d].productId
-                                }, f);
+    for (var i=0; i<manifest.permissions.length; ++i) {
+      if (manifest.permissions[i].usbDevices) {
+        if (dev == null) {
+          return manifest.permissions[i].usbDevices;
+        } else {
+          return manifest.permissions[i].usbDevices[dev];
         }
       }
     }
-  };
+    return null;
+  }
+
+  function scanUSBDevices () {
+    // first, find the part of the manifest that talks about the devices
+    // The manifest isn't very flexible about letting us define a section
+    // for our own use, so we use the permissions block
+
+    var alldevs = getDeviceManifest();
+    var devices = {};
+    _.each(alldevs, function(d) {
+      devices[d.driverId] = d;
+    });
+
+    // this is the list of devices we could possibly plug in
+    var possibleDeviceIDs = _.keys(devices);
+
+    // build a list of the devices that are actually plugged in
+    var foundDevices = forceDeviceIDs.slice();
+    function foundDevice(id, chromeDevicesFound) {
+      if (chromeDevicesFound.length > 0) {
+        foundDevices.push(id);
+      }
+    }
+    _.each(possibleDeviceIDs, function(id) {
+      var f = foundDevice.bind(null, id);
+      chrome.usb.getDevices({
+        vendorId: devices[id].vendorId,
+        productId: devices[id].productId
+      }, f);
+    });
+
+    // give the getDevices call time to work
+    setTimeout(function() {
+      // console.log('activeDeviceIDs: ', activeDeviceIDs);
+      // removes is the list of devices that were unplugged
+
+      // there could be dups in foundDevices; that's ok, just eliminate them
+      foundDevices = _.unique(foundDevices);
+
+      var removes = _.difference(activeDeviceIDs, foundDevices);
+      _.each(removes, function(v) {
+        $('.' + v).hide();
+      });
+
+      // newdevices is the list of devices that were added
+      var newdevices = _.difference(foundDevices, activeDeviceIDs);
+      _.each(newdevices, function(v) {
+        $('.' + v).show();
+      });
+
+      // now we can update the list of current devices
+      activeDeviceIDs = foundDevices;
+    }, 1000);
+  }
+
+  setInterval(scanUSBDevices, 5000);
+
+  // $('#getDevices').click(scanUSBDevices);  
 
   chrome.system.storage.onAttached.addListener(function (info) {
     connectLog('attached: ' + info.name);
@@ -224,167 +382,65 @@ function constructUI() {
     delete(storageDeviceInfo[id]);
   });
 
-  var openFile = function () {
-    console.log('OpenFile');
-    chrome.fileSystem.chooseEntry({type: 'openFile'}, function (readOnlyEntry) {
-      console.log(readOnlyEntry);
-      readOnlyEntry.file(function (file) {
-        console.log(file);
-        var reader = new FileReader();
-
-        reader.onerror = function () {
-          connectLog('Error reading file!');
-        };
-        reader.onloadend = function (e) {
-          // e.target.result contains the contents of the file
-          // console.log(e.target.result);
-          console.log(e.target.result);
-        };
-
-        reader.readAsText(file);
-      });
-    });
-  };
-
   var asanteDriver = require('./lib/asanteDriver.js');
   var dexcomDriver = require('./lib/dexcomDriver.js');
-
-  var deviceComms = serialDevice({});
-  var asanteDevice = asanteDriver({deviceComms: deviceComms});
-
-  deviceComms.connect(function () {connectLog('connected');});
-  var testSerial = function () {
-    var buf = new ArrayBuffer(1);
-    var bytes = new Uint8Array(buf);
-    bytes[0] = 97;
-    deviceComms.writeSerial(buf, function () {connectLog('"a" sent');});
-  };
-
-  var getSerial = function (timeout) {
-    deviceComms.readSerial(200, timeout, function (packet) {
-      connectLog('received ' + packet.length + ' bytes');
-      var s = '';
-      for (var c in packet) {
-        s += String.fromCharCode(packet[c]);
-      }
-      connectLog(s);
-    });
-  };
-
-  var watchSerial = function () {
-    setTimeout(function () {
-      getSerial(0);
-      setTimeout(watchSerial, 1000);
-    }, 1000);
-  };
-
-  var deviceInfo = null;
-  var prevTimestamp = null;
-  var test1 = function () {
-    var get = function (url, happycb, sadcb) {
-      $.ajax({
-               type: 'GET',
-               url: url
-             }).success(function (data, status, jqxhr) {
-        // happycb(data, status, jqxhr);
-        console.log('success!');
-        console.log(data);
-      }).error(function (jqxhr, status, err) {
-        // sadcb(jqxhr, status, err);
-        console.log('FAIL');
-      });
-    };
-
-    var url = 'http://localhost:8888/foo.txt';
-    get(url);
-  };
 
   var serialDevices = {
     'AsanteSNAP': asanteDriver,
     'DexcomG4': dexcomDriver,
-    // 'Test': testDriver,
-    // 'AnotherTest': testDriver
   };
 
   var serialConfigs = {
     'AsanteSNAP': {
-      deviceComms: deviceComms,
+      deviceComms: serialDevice(),
       timeutils: timeutils,
-      tz_offset_minutes: parseInt($('#timezone').val()),
-      jellyfish: jellyfish
+      timezone: $('#timezone').val(),
+      jellyfish: jellyfish,
+      builder: builder,
+      progress_bar: '.AsanteSNAP .progress-bar',
+      status_text: '.AsanteSNAP .status'
     },
     'DexcomG4': {
-      deviceComms: deviceComms,
+      deviceComms: serialDevice(),
       timeutils: timeutils,
-      tz_offset_minutes: parseInt($('#timezone').val()),
-      jellyfish: jellyfish
+      timezone: $('#timezone').val(),
+      jellyfish: jellyfish,
+      builder: builder,
+      progress_bar: '.DexcomG4 .progress-bar',
+      status_text: '.DexcomG4 .status'
     }
   };
 
-  // var insuletDriver = require('./lib/insuletDriver.js');
+  var insuletDriver = require('./lib/insuletDriver.js');
   var blockDevices = {
-    // 'InsuletOmniPod': insuletDriver
+    'InsuletOmniPod': insuletDriver
   };
 
-
-  var search = function (driverObjects, driverConfigs, enabledDevices, cb) {
-    var dm = driverManager(driverObjects, driverConfigs, enabledDevices);
-    dm.detect(function (err, found) {
-      if (err) {
-        console.log("search returned error:", err);
-        cb(err, found);
-      } else {
-        var devices = [];
-        console.log("Devices found: ", devices);
-        // we might have found several devices, so make a binding
-        // for the process functor for each, then run them in series.
-        for (var f = 0; f < found.length; ++f) {
-          connectLog('Found ' + found[f]);
-          devices.push(dm.process.bind(dm, found[f]));
-        }
-        async.series(devices, cb);
-      }
-    });
-
+  var uploaders = {
+    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js')(jellyfish))
   };
 
-  var searchOnce = function (enabledDevices) {
-    search(serialDevices, serialConfigs, enabledDevices, function (err, results) {
-      if (err) {
-        connectLog('Some sort of error occurred (see console).');
-        console.log('Fail');
-        console.log(err);
-      } else {
-        connectLog('The upload succeeded.');
-        console.log('Success');
-        console.log(results);
-      }
-    });
-  };
-
-  var searching = null;
-  var processing = false;
-  var searchRepeatedly = function () {
-    searching = setInterval(function () {
-      if (processing) {
-        console.log('skipping');
-        return;
-      }
-      processing = true;
-      search(serialDevices, serialConfigs, function (err, results) {
-        processing = false;
-      });
-    }, 5000);
-  };
-
-  var cancelSearch = function () {
-    if (searching) {
-      clearInterval(searching);
-      searching = null;
+  function doUploads(driverNames, driverObjects, driverConfigs, cb) {
+    var dm = driverManager(driverObjects, driverConfigs);
+    var devices = [];
+    for (var idx = 0; idx < driverNames.length; ++idx) {
+      devices.push(dm.process.bind(dm, driverNames[idx]));
     }
-  };
+    async.series(devices, cb);
+  }
 
-  var handleFileSelect = function (evt) {
+  function uploadSerial() {
+    var allSerial = _.keys(serialDevices);
+    var uploads = _.intersection(allSerial, activeDeviceIDs);
+    console.log('Uploading for ', uploads);
+    doUploads(uploads, serialDevices, serialConfigs, function (err, results) {
+      console.log('uploads complete!');
+      console.log(err);
+      console.log(results);
+    });
+  }
+
+  function handleFileSelect (evt) {
     var files = evt.target.files;
     // can't ever be more than one in this array since it's not a multiple
     var i = 0;
@@ -405,11 +461,15 @@ function constructUI() {
               filename: theFile.name,
               filedata: e.srcElement.result,
               timeutils: timeutils,
-              tz_offset_minutes: parseInt($('#timezone').val()),
-              jellyfish: jellyfish
+              timezone: $('#timezone').val(),
+              jellyfish: jellyfish,
+              builder: builder,
+              progress_bar: '.InsuletOmniPod .progress-bar',
+              status_text: '.InsuletOmniPod .status'
+
             }
           };
-          search(blockDevices, cfg, function (err, results) {
+          doUploads(['InsuletOmniPod'], blockDevices, cfg, function (err, results) {
             if (err) {
               connectLog('Some sort of error occurred (see console).');
               console.log('Fail');
@@ -426,26 +486,154 @@ function constructUI() {
 
       reader.readAsArrayBuffer(files[i]);
     }
-  };
+  }
 
-  $('#filechooser').change(handleFileSelect);
+  $('#signup').click(function () {
+    var serverIndex = $('#serverURL').val();
+    window.open(tidepoolHosts[serverIndex].blip);
+  });
+  $('#realUploadButton').change(handleFileSelect);
 
-  // $('#testButton2').click(searchRepeatedly);
-  // $('#testButton3').click(cancelSearch);
-  $('#testButton1').click(scanUSBDevices);
-  // $('#testButton2').click(scanUSBDevices);
-  // $('#testButton3').click(util.test);
+  $('#buttonUpload').click(uploadSerial);
 
-  // jquery stuff
-  $('#progressbar').progressbar({
-                                  value: false
-                                });
-  $('#progressbar').hide();
-  // connectLog("private build -- Insulet is supported.");
+  function handleCarelinkFileSelect(evt) {
+    console.log('Carelink file selected', evt);
+    var file = evt.target.files[0];
+
+    // can't ever be more than one in this array since it's not a multiple
+    var reader = new FileReader();
+
+    reader.onerror = function (evt) {
+      console.log('Reader error!');
+      console.log(evt);
+    };
+
+    reader.onloadend = function (e) {
+      // console.log(e);
+      var cfg = {
+        'Carelink': {
+          filename: file.name,
+          fileData: reader.result,
+          timezone: $('#timezone').val()
+        }
+      };
+      doUploads(['Carelink'], uploaders, cfg, function (err, results) {
+        if (err) {
+          connectLog('Some sort of error occurred (see console).');
+          console.log('Fail');
+          console.log(err);
+          console.log(results);
+        } else {
+          connectLog('Data was successfully uploaded.');
+          console.log('Success');
+          console.log(results);
+        }
+      });
+    };
+
+    reader.readAsText(file);
+  }
+
+  $('#carelinkFileChooser').change(handleCarelinkFileSelect);
+
+  $('#carelinkButton').click(function(evt){
+    console.log('Asked to upload to carelink!');
+
+    var cfg = {
+      'Carelink': {
+        username: $('#carelinkUsername').val(),
+        password: $('#carelinkPassword').val(),
+        timezone: $('#timezone').val()
+      }
+    };
+    console.log('cfg: ', cfg);
+    doUploads(['Carelink'], uploaders, cfg, function(err, results){
+      if (err != null) {
+        connectLog('Error when pulling data');
+        console.log(err);
+        console.log(results);
+      } else {
+        connectLog('Data successfully uploaded.');
+        console.log(results);
+      }
+    });
+  });
+
+  // make sure we don't see the progress bar until we need it
+  $('#progress_bar').hide();
+  // and make our pretty file button click the ugly one that we've hidden
+  $('#omnipodFileButton').click(function () {
+    $('#realUploadButton').click();
+  });
+  connectLog('private build -- Insulet is supported.');
+
+  $('.DexcomG4').hide();
+  $('.AsanteSNAP').hide();
+  $('.InsuletOmniPod').hide();
+
+  $('#saveSettingsButton').click(function () {
+    var ckboxes = [
+      'DexcomG4',
+      'AsanteSNAP',
+      'InsuletOmniPod'
+    ];
+
+    var pattern = $('#dexcomPortPattern').val();
+    serialConfigs.DexcomG4.deviceComms.setPattern(pattern);
+    window.localSave({ dexcomPortPattern: pattern });
+
+    pattern = $('#asantePortPattern').val();
+    serialConfigs.AsanteSNAP.deviceComms.setPattern(pattern);
+    window.localSave({ asantePortPattern: pattern });
+
+    forceDeviceIDs = [];
+    _.each(ckboxes, function(box) {
+      if ($('#show' + box).prop('checked')) {
+        forceDeviceIDs.push(box);
+      }
+    });
+    window.localSave({ forceDeviceIDs : forceDeviceIDs });
+    console.log('forceDeviceIDs', forceDeviceIDs);
+    setUIState('.state_upload');
+    scanUSBDevices();
+  });
+
+  window.addEventListener('load', function () {
+    console.log('load was called');
+    window.localLoad(null, function(newsettings) {
+      settings = newsettings;
+      if (settings.tidepool.remember_me === true) {
+        $('#username').val(settings.tidepool.username);
+        $('#password').val(settings.tidepool.password);
+        $('#rememberme').prop('checked', true);
+      }
+      if (settings.defaultServer) {
+        $('#serverURL').val(settings.defaultServer);
+      }
+      if (settings.timezone) {
+        $('#timezone').val(settings.timezone);
+      }
+      if (settings.dexcomPortPattern) {
+        $('#dexcomPortPattern').val(settings.dexcomPortPattern);
+        serialConfigs.DexcomG4.deviceComms.setPattern(settings.dexcomPortPattern);
+      }
+      if (settings.asantePortPattern) {
+        $('#asantePortPattern').val(settings.asantePortPattern);
+        serialConfigs.AsanteSNAP.deviceComms.setPattern(settings.asantePortPattern);
+      }
+      if (settings.forceDeviceIDs) {
+        _.each(settings.forceDeviceIDs, function(box) {
+          $('#show' + box).prop('checked', true);
+          forceDeviceIDs = settings.forceDeviceIDs;
+        });
+      }
+      console.log(settings);
+    });
+  }, false);
+
 }
 
 $(constructUI);
-
 // Uploader needs a timezone selector
 
 

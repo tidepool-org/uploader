@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Device Uploader",
   "short_name": "Uploader",
-  "version": "0.5",
+  "version": "0.7",
   "minimum_chrome_version": "32",
   "icons": {
     "16": "T_icon_dark_16.png",
@@ -16,53 +16,43 @@
     "https://*.tidepool.io/",
     "fileSystem",
     "system.storage",
+    "storage",
     "serial",
     "usb",
-  {
-    "usbDevices": [
-      {
-        "deviceName": "Dexcom G4 CGM",
-        "driverId": "DexcomG4",
-        "mode": "serial",
-        "vendorId": 8867,
-        "productId": 71
-      },
-      {
-        "deviceName": "Asante SNAP w/Asante cable",
-        "vendorId": 1027, 
-        "productId": 32568
-      },
-      {
-        "deviceName": "Asante SNAP w/FTDI cable",
-        "driverId": "AsanteSNAP",
-        "mode": "serial",
-        "vendorId": 1027, 
-        "productId": 24577
-      },
-      {
-        "deviceName": "Insulet OmniPod",
-        "driverId": "InsuletOmniPod",
-        "mode": "block",
-        "vendorId": 7734,
-        "productId": 2
-      },
-      {
-        "deviceName": "Kindle PaperWhite",
-        "vendorId": 6473, 
-        "productId": 4
-      },
-      {
-        "deviceName": "Garmin 500",
-        "vendorId": 2334, 
-        "productId": 9228
-      },
-      {
-        "deviceName": "Arduino Esplora",
-        "vendorId": 9025, 
-        "productId": 32828
-      }
-    ]
-  }
+    {
+      "usbDevices": [
+        {
+          "deviceName": "Dexcom G4 CGM",
+          "driverId": "DexcomG4",
+          "mode": "serial",
+          "serialPortPat": "/dev/cu\\.usbmodem[A-Za-z0-9]+",
+          "vendorId": 8867,
+          "productId": 71
+        },
+        {
+          "deviceName": "Asante SNAP w/Asante cable",
+          "driverId": "AsanteSNAPNeedDriver",
+          "mode": "not supported",
+          "vendorId": 1027, 
+          "productId": 32568
+        },
+        {
+          "deviceName": "Asante SNAP w/FTDI cable",
+          "driverId": "AsanteSNAP",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "serial",
+          "vendorId": 1027, 
+          "productId": 24577
+        },
+        {
+          "deviceName": "Insulet OmniPod",
+          "driverId": "InsuletOmniPod",
+          "mode": "block",
+          "vendorId": 7734,
+          "productId": 2
+        }
+      ]
+    }
   ],
   "app": {
     "background": {
