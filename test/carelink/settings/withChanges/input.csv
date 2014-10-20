@@ -70,8 +70,8 @@ Index,Date,Time,Timestamp,New Device Time,BG Reading (mg/dL),Linked BG Meter ID,
 9070,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBasalProfile,"PATTERN_DATUM=12498293550, PROFILE_INDEX=7, RATE=1.1, START_TIME=54000000",12498293558,53021863,27,Paradigm Revel - 723
 9071,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBasalProfile,"PATTERN_DATUM=12498293550, PROFILE_INDEX=8, RATE=1.05, START_TIME=61200000",12498293559,53021863,28,Paradigm Revel - 723
 9072,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBasalProfilePattern,"PATTERN_NAME=pattern b, NUM_PROFILES=0",12498293560,53021863,29,Paradigm Revel - 723
-9094,3/15/14,22:21:19,3/15/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBolusWizardBGUnits,UNITS=mg dl,12498293582,53021863,49,Paradigm Revel - 723
-9094,3/15/14,22:21:19,3/15/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBolusWizardCarbUnits,UNITS=grams,12498293583,53021863,50,Paradigm Revel - 723
+9094,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBolusWizardBGUnits,UNITS=mg dl,12498293582,53021863,49,Paradigm Revel - 723
+9094,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBolusWizardCarbUnits,UNITS=grams,12498293583,53021863,50,Paradigm Revel - 723
 9100,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBolusWizardSetupStatus,"IS_SETUP_COMPLETE=true, IS_BOLUS_WIZARD_ENABLED=true, IS_CARB_UNITS_COMPLETE=true, IS_CARB_RATIOS_COMPLETE=true, IS_BG_UNITS_COMPLETE=true, IS_INSULIN_SENSITIVITIES_COMPLETE=true, IS_BG_TARGETS_COMPLETE=true",12498293586,53021863,55,Paradigm Revel - 723
 9101,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBGTargetRangePattern,"ORIGINAL_UNITS=mg dl, SIZE=3",12498293587,53021863,56,Paradigm Revel - 723
 9102,3/14/14,22:21:19,3/14/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentBGTargetRange,"PATTERN_DATUM=12498293587, INDEX=0, AMOUNT_LOW=100, AMOUNT_HIGH=120, START_TIME=0",12498293588,53021863,57,Paradigm Revel - 723
