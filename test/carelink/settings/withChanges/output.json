@@ -15,9 +15,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-13T10:04:00.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "deviceId": "Paradigm Revel - 723",
@@ -45,9 +43,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-13T21:51:05.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "activeSchedule": "standard",
@@ -75,9 +71,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-14T11:01:27.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "activeSchedule": "standard",
@@ -107,9 +101,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-14T11:02:02.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "activeSchedule": "standard",
@@ -147,10 +139,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-14T11:03:59.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL",
-      "carb": "grams"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "activeSchedule": "standard",
@@ -202,10 +191,7 @@
     "timezoneOffset": -600,
     "time": "2014-03-14T11:08:07.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL",
-      "carb": "grams"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
     "activeSchedule": "pattern a",
@@ -257,9 +243,6 @@
     "timezoneOffset": -600,
     "time": "2014-03-14T21:51:05.000Z",
     "type": "settings",
-    "units": {
-      "bg": "mg/dL",
-      "carb": "grams"
-    }
+    "units": { "bg": "mg/dL", "carb": "grams" }
   }
 ]
