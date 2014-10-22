@@ -39,7 +39,7 @@ a useful amount of intelligence about how to communicate in packets and the like
 * It can interpret that data well enough to post it to Tidepool as CGM records
 * Has a collection of tools for managing Dexcom communications
 
-### Has code to talk to an Animas SNAP pump
+### Has code to talk to an Asante SNAP pump
 * It works most of the time with one device, but completely fails to negotiate a connection on another. There is probably something significant wrong with the way the connection protocol is set up. 
 
 ### Can read a data file from an Insulet Omnipod pump
