@@ -282,6 +282,14 @@ function constructUI() {
     setUIState('.state_settings');
   });
 
+  // $('#testButton').click(function () {
+  //   console.log('testing!');
+  //   serialConfigs.OneTouchMini.deviceComms = require('./lib/dummyOneTouchSerial.js')();
+  //   var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js')(serialConfigs.OneTouchMini);
+  //   console.log(oneTouchMiniDriver);
+  //   oneTouchMiniDriver.testDriver();
+  // });
+
 
 // have a list of previously active devices
 // get a list of possible devices
@@ -322,29 +330,37 @@ function constructUI() {
     // this is the list of devices we could possibly plug in
     var possibleDeviceIDs = _.keys(devices);
 
-    // build a list of the devices that are actually plugged in
-    var foundDevices = forceDeviceIDs.slice();
-    function foundDevice(id, chromeDevicesFound) {
-      if (chromeDevicesFound.length > 0) {
-        foundDevices.push(id);
+    // now iterate through all the devices and see which ones are plugged in
+    async.mapSeries(possibleDeviceIDs, function(id, cb) {
+      // this gets called for each possible device
+      function foundDevice(id, chromeDevicesFound) {
+        if (chromeDevicesFound.length > 0) {
+          if (devices[id].mode == 'FTDI') {
+            detectFTDIDevice(id, function(err, result) {
+              if (err) {
+                console.log(id, ' not detected');
+                cb(null, null);
+              } else {
+                console.log(result);
+                cb(null, id);
+              }
+            });
+          } else {
+            cb(null, id);
+          }
+        } else {
+          cb(null, null);
+        }
       }
-    }
-    _.each(possibleDeviceIDs, function(id) {
       var f = foundDevice.bind(null, id);
       chrome.usb.getDevices({
         vendorId: devices[id].vendorId,
         productId: devices[id].productId
       }, f);
-    });
-
-    // give the getDevices call time to work
-    setTimeout(function() {
-      // console.log('activeDeviceIDs: ', activeDeviceIDs);
-      // removes is the list of devices that were unplugged
-
-      // there could be dups in foundDevices; that's ok, just eliminate them
-      foundDevices = _.unique(foundDevices);
-
+    }, function(err, result) {
+      // once we've walked all the devices, we add the ones we need to force and then
+      // figure out what's changed.
+      var foundDevices = _.union(_.compact(result), forceDeviceIDs);
       var removes = _.difference(activeDeviceIDs, foundDevices);
       _.each(removes, function(v) {
         $('.' + v).hide();
@@ -358,10 +374,11 @@ function constructUI() {
 
       // now we can update the list of current devices
       activeDeviceIDs = foundDevices;
-    }, 1000);
+      setTimeout(scanUSBDevices, 5000);
+    });
   }
 
-  setInterval(scanUSBDevices, 5000);
+  setTimeout(scanUSBDevices, 5000);
 
   // $('#getDevices').click(scanUSBDevices);  
 
@@ -384,10 +401,12 @@ function constructUI() {
 
   var asanteDriver = require('./lib/asanteDriver.js');
   var dexcomDriver = require('./lib/dexcomDriver.js');
+  var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js')
 
   var serialDevices = {
     'AsanteSNAP': asanteDriver,
     'DexcomG4': dexcomDriver,
+    'OneTouchMini': oneTouchMiniDriver
   };
 
   var serialConfigs = {
@@ -408,7 +427,16 @@ function constructUI() {
       builder: builder,
       progress_bar: '.DexcomG4 .progress-bar',
       status_text: '.DexcomG4 .status'
-    }
+    },
+    'OneTouchMini': {
+      deviceComms: serialDevice(),
+      timeutils: timeutils,
+      timezone: $('#timezone').val(),
+      jellyfish: jellyfish,
+      builder: builder,
+      progress_bar: '.OneTouchMini .progress-bar',
+      status_text: '.OneTouchMini .status'
+    },
   };
 
   var insuletDriver = require('./lib/insuletDriver.js');
@@ -420,6 +448,13 @@ function constructUI() {
     'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js')(jellyfish))
   };
 
+  function detectFTDIDevice(deviceID, cb) {
+    var drivers = {};
+    drivers[deviceID] = serialDevices[deviceID];
+    var dm = driverManager(drivers, serialConfigs);
+    dm.detect(deviceID, cb);
+  }
+
   function doUploads(driverNames, driverObjects, driverConfigs, cb) {
     var dm = driverManager(driverObjects, driverConfigs);
     var devices = [];
@@ -430,13 +465,33 @@ function constructUI() {
   }
 
   function uploadSerial() {
-    var allSerial = _.keys(serialDevices);
-    var uploads = _.intersection(allSerial, activeDeviceIDs);
-    console.log('Uploading for ', uploads);
-    doUploads(uploads, serialDevices, serialConfigs, function (err, results) {
+    console.log('Uploading for ', activeDeviceIDs);
+    doUploads(activeDeviceIDs, serialDevices, serialConfigs, function (err, results) {
       console.log('uploads complete!');
       console.log(err);
       console.log(results);
+    });
+  }
+
+  function uploadSerialOLD() {
+    var allSerial = _.keys(serialDevices);
+    var dm = driverManager(serialDevices, serialConfigs);
+    var existingSerial = async.filterSeries(allSerial, function(item, cb) {
+      dm.detect(function(err, result) {
+        if (err != null) {
+          cb(false);
+        } else {
+          console.log('found ' + result.id);
+          cb(true);
+        }
+      }, function(err, cb) {
+        console.log('Uploading for ', existingSerial);
+        doUploads(existingSerial, serialDevices, serialConfigs, function (err, results) {
+          console.log('uploads complete!');
+          console.log(err);
+          console.log(results);
+        });
+      });
     });
   }
 
@@ -575,7 +630,8 @@ function constructUI() {
     var ckboxes = [
       'DexcomG4',
       'AsanteSNAP',
-      'InsuletOmniPod'
+      'InsuletOmniPod',
+      'OneTouchMini'
     ];
 
     var pattern = $('#dexcomPortPattern').val();

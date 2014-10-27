@@ -40,7 +40,15 @@
           "deviceName": "Asante SNAP w/FTDI cable",
           "driverId": "AsanteSNAP",
           "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
-          "mode": "serial",
+          "mode": "FTDI",
+          "vendorId": 1027, 
+          "productId": 24577
+        },
+        {
+          "deviceName": "OneTouch Mini w/FTDI cable",
+          "driverId": "OneTouchMini",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "FTDI",
           "vendorId": 1027, 
           "productId": 24577
         },
