@@ -167,6 +167,45 @@ describe('pwdSimulator.js', function(){
           simulator.settings(settings);
         });
 
+        describe('with duration', function(){
+          it('passes through a scheduled that agrees with the schedule without annotation', function(){
+            var val = {
+              time: "2014-09-25T06:00:00.000Z",
+              deviceTime: "2014-09-25T06:00:00",
+              duration: 21600000,
+              scheduleName: 'billy',
+              rate: 1.1
+            };
+
+            simulator.scheduledBasal(val);
+            expect(getBasals()).deep.equals(
+              [
+                _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
+              ]);
+          });
+
+          it.skip('IS THIS DESIRED BEHAVIOR?? resets duration to 0 and annotates a scheduled that doesn\'t match schedule', function(){
+            var val = {
+              time: "2014-09-25T06:00:00.000Z",
+              deviceTime: "2014-09-25T06:00:00",
+              duration: 21600000,
+              scheduleName: 'billy',
+              rate: 1.0
+            };
+
+            simulator.scheduledBasal(val);
+            expect(getBasals()).deep.equals(
+              [
+                _.defaults({
+                  type: 'basal',
+                  deliveryType: 'scheduled',
+                  duration: 0,
+                  annotations: [{code: 'basal/off-schedule-rate'}]
+                }, val)
+              ]);
+          });
+        });
+
         describe('no duration', function(){
           it('attaches a duration according to the schedule', function(){
             var val = {
@@ -518,6 +557,88 @@ describe('pwdSimulator.js', function(){
             }
           ]);
       });
+    });
+
+    describe('adjusts scheduleds when settings change', function(){
+      var settings = {
+        time: "2014-09-25T00:00:00.000Z",
+        deviceTime: "2014-09-25T00:00:00",
+        deliveryType: 'scheduled',
+        activeSchedule: 'billy',
+        units: { bg: 'mg/dL' },
+        basalSchedules: {
+          billy: [
+            { start: 0, rate: 1.0 },
+            { start: 3600000, rate: 2.0 },
+            { start: 7200000, rate: 2.1 },
+            { start: 10800000, rate: 2.2 },
+            { start: 14400000, rate: 2.3 },
+            { start: 18000000, rate: 2.4 },
+            { start: 21600000, rate: 1.1 },
+            { start: 43200000, rate: 1.2 },
+            { start: 64800000, rate: 1.3 }
+          ]
+        },
+        bgTarget: [],
+        insulinSensitivity: [],
+        carbRatio: []
+      };
+      var basal = {
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
+        scheduleName: 'billy',
+        rate: 1.0
+      };
+      var newSettings = {
+        time: "2014-09-25T00:30:00.000Z",
+        deviceTime: "2014-09-25T00:30:00",
+        deliveryType: 'scheduled',
+        activeSchedule: 'billy',
+        units: { bg: 'mg/dL' },
+        basalSchedules: {
+          billy: [
+            { start: 0, rate: 1.5 },
+            { start: 3600000, rate: 2.0 },
+            { start: 7200000, rate: 2.1 },
+            { start: 10800000, rate: 2.2 },
+            { start: 14400000, rate: 2.3 },
+            { start: 18000000, rate: 2.4 },
+            { start: 21600000, rate: 1.1 },
+            { start: 43200000, rate: 1.2 },
+            { start: 64800000, rate: 1.3 }
+          ]
+        },
+        bgTarget: [],
+        insulinSensitivity: [],
+        carbRatio: []
+      };
+      var nextScheduled = {
+        time: '2014-09-25T00:30:05.000Z',
+        deviceTime: '2014-09-25T00:30:05',
+        scheduleName: 'billy',
+        rate: 1.5
+      };
+
+      it('adjusts duration of first scheduled and recognizes match between second and new settings', function(){
+        simulator.settings(settings);
+        simulator.scheduledBasal(basal);
+        simulator.settings(newSettings);
+        simulator.scheduledBasal(nextScheduled);
+
+        expect(getBasals()).deep.equals(
+          attachPrev(
+            [
+              _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 1800000}),
+              {
+                type: 'basal', deliveryType: 'scheduled', duration: 1795000,
+                time: '2014-09-25T00:30:05.000Z', deviceTime: '2014-09-25T00:30:05',
+                rate: 1.5, scheduleName: 'billy'
+              }
+            ]
+          )
+        );
+      });
+
     });
   });
 });
