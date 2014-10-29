@@ -12,7 +12,6 @@
     "lodash": "2.4.1",
     "jquery": "2.1.1",
     "json-loader": "0.5.1",
-    "moment-timezone": "0.2.2",
     "style-loader": "0.7.0",
     "sundial": "0.2.0",
     "url-loader": "0.5.5",
