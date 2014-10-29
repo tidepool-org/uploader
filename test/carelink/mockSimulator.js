@@ -32,6 +32,7 @@ module.exports = {
       cbg: appendToEvents('cbg'),
       scheduledBasal: appendToEvents('basal'),
       settings: appendToEvents('settings'),
+      tempBasal: appendToEvents('basal'),
       getEvents: function(){
         return events;
       }
