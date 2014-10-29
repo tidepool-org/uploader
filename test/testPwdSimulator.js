@@ -184,7 +184,23 @@ describe('pwdSimulator.js', function(){
               ]);
           });
 
-          it.skip('IS THIS DESIRED BEHAVIOR?? resets duration to 0 and annotates a scheduled that doesn\'t match schedule', function(){
+          it('passes through a scheduled that starts mid-schedule and agrees with schedule without annotation', function(){
+            var val = {
+              time: "2014-09-25T06:01:00.000Z",
+              deviceTime: "2014-09-25T06:01:00",
+              duration: 21540000,
+              scheduleName: 'billy',
+              rate: 1.1
+            };
+
+            simulator.scheduledBasal(val);
+            expect(getBasals()).deep.equals(
+              [
+                _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
+              ]);
+          });
+
+          it('annotates a scheduled that doesn\'t match schedule but doesn\'t change a provided duration', function(){
             var val = {
               time: "2014-09-25T06:00:00.000Z",
               deviceTime: "2014-09-25T06:00:00",
@@ -199,7 +215,7 @@ describe('pwdSimulator.js', function(){
                 _.defaults({
                   type: 'basal',
                   deliveryType: 'scheduled',
-                  duration: 0,
+                  duration: 21600000,
                   annotations: [{code: 'basal/off-schedule-rate'}]
                 }, val)
               ]);
@@ -559,7 +575,7 @@ describe('pwdSimulator.js', function(){
       });
     });
 
-    describe('adjusts scheduleds when settings change', function(){
+    describe('tracks scheduleds when settings change', function(){
       var settings = {
         time: "2014-09-25T00:00:00.000Z",
         deviceTime: "2014-09-25T00:00:00",
@@ -619,7 +635,7 @@ describe('pwdSimulator.js', function(){
         rate: 1.5
       };
 
-      it('adjusts duration of first scheduled and recognizes match between second and new settings', function(){
+      it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
         simulator.settings(settings);
         simulator.scheduledBasal(basal);
         simulator.settings(newSettings);
@@ -628,7 +644,7 @@ describe('pwdSimulator.js', function(){
         expect(getBasals()).deep.equals(
           attachPrev(
             [
-              _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 1800000}),
+              _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000}),
               {
                 type: 'basal', deliveryType: 'scheduled', duration: 1795000,
                 time: '2014-09-25T00:30:05.000Z', deviceTime: '2014-09-25T00:30:05',
