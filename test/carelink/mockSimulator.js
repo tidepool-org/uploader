@@ -28,10 +28,13 @@ module.exports = {
     }
 
     return {
-      smbg: appendToEvents('smbg'),
       cbg: appendToEvents('cbg'),
+      deviceMeta: appendToEvents('deviceMeta'),
+      resume: appendToEvents('resume'),
       scheduledBasal: appendToEvents('basal'),
       settings: appendToEvents('settings'),
+      suspend: appendToEvents('suspend'),
+      smbg: appendToEvents('smbg'),
       tempBasal: appendToEvents('basal'),
       getEvents: function(){
         return events;
