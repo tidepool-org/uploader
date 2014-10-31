@@ -7,7 +7,7 @@
     "source": "carelink",
     "timezoneOffset": -600,
     "time": "2014-03-13T10:00:00.000Z",
-    "type": "basal",
+    "type": "basal-scheduled",
     "rate": 0.8
   },
   {
@@ -19,7 +19,7 @@
     "source": "carelink",
     "timezoneOffset": -600,
     "time": "2014-03-13T10:28:56.000Z",
-    "type": "basal"
+    "type": "basal-temp"
   },
   {
     "deliveryType": "scheduled",
@@ -29,7 +29,7 @@
     "source": "carelink",
     "timezoneOffset": -600,
     "time": "2014-03-13T10:29:03.000Z",
-    "type": "basal",
+    "type": "basal-scheduled",
     "rate": 0.8
   }
 ]

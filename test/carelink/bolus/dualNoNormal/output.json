@@ -1,0 +1,34 @@
+[
+  {
+    "recommended": {
+      "carb": 4.9,
+      "correction": 0.2
+    },
+    "bgInput": 137,
+    "units": "mg/dL",
+    "carbInput": 64,
+    "insulinOnBoard": 0,
+    "insulinCarbRatio": 13,
+    "insulinSensitivity": 45,
+    "bgTarget": { "high": 125,  "low": 106 },
+    "deviceId": "Paradigm Revel - 723",
+    "deviceTime": "2014-03-13T23:35:10",
+    "payload": {},
+    "source": "carelink",
+    "timezoneOffset": -600,
+    "time": "2014-03-14T09:35:10.000Z",
+    "type": "wizard",
+    "bolus": {
+      "deviceId": "Paradigm Revel - 723",
+      "deviceTime": "2014-03-13T23:37:34",
+      "extended": 1.7,
+      "expectedExtended": 2.3,
+      "duration": 2660869,
+      "expectedDuration": 3600000,
+      "subType": "square",
+      "timezoneOffset": -600,
+      "time": "2014-03-14T09:37:34.000Z",
+      "type": "bolus"
+    }
+  }
+]

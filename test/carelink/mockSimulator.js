@@ -28,14 +28,19 @@ module.exports = {
     }
 
     return {
+      basalScheduled: appendToEvents('basal-scheduled'),
+      basalTemp: appendToEvents('basal-temp'),
+      bolus: appendToEvents('bolus'),
+      bolusDual: appendToEvents('bolus-dual'),
+      bolusNormal: appendToEvents('bolus-normal'),
+      bolusSquare: appendToEvents('bolus-square'),
       cbg: appendToEvents('cbg'),
       deviceMeta: appendToEvents('deviceMeta'),
       resume: appendToEvents('resume'),
-      scheduledBasal: appendToEvents('basal'),
       settings: appendToEvents('settings'),
       suspend: appendToEvents('suspend'),
       smbg: appendToEvents('smbg'),
-      tempBasal: appendToEvents('basal'),
+      wizard: appendToEvents('wizard'),
       getEvents: function(){
         return events;
       }
