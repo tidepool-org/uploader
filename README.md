@@ -1,10 +1,10 @@
 # Tidepool Uploader
 
-These notes were updated on Thursday, October 16, 2014. 
+These notes were updated on Monday, November 3, 2014. 
 
 This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud. 
 
-WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. THE CODE IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.
+WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. IT IS IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.
 
 ## About:
 
@@ -20,13 +20,13 @@ WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPL
 
 ### Has code to manage various USB devices
 * It can enumerate the USB devices it knows about. So far, they are:
-  * Dexcom G4
-  * Asante SNAP
-  * Insulet Omnipod
+  * Dexcom G4 CGM
+  * Asante SNAP insulin pump
+  * Insulet Omnipod insulin pump
+  * There is working code for a OneTouch Mini blood glucose meter, but that code is currently disabled in manifest.json because it needs to share a cable with the Asante pump and that sharing isn't working well. We're probably going to move to a configuration-based model instead of device detection.
 
 ### Can manage serial communications
-* Knows how to talk to serial devices using the Chrome serial API and has
-a useful amount of intelligence about how to communicate in packets and the like. It turns out that the Asante and Dexcom serial protocols are relatively similar if you squint a bit.
+* Knows how to talk to serial devices using the Chrome serial API and has a useful amount of intelligence about how to communicate in packets and the like. It turns out that serial protocols from several manufacturers are relatively similar if you squint a bit.
 * Can enumerate serial ports and make a reasonable guess as to which one belongs to which device based on the port name on a Mac. Probably needs further work on Windows, but at least the port patterns are found in settings so you can override them.
 * Has some utilities for building and disassembling byte-oriented packets of data and calculating CRCs.
 
@@ -40,7 +40,7 @@ a useful amount of intelligence about how to communicate in packets and the like
 * Has a collection of tools for managing Dexcom communications
 
 ### Has code to talk to an Asante SNAP pump
-* It works most of the time with one device, but completely fails to negotiate a connection on another. There is probably something significant wrong with the way the connection protocol is set up. 
+* We hope that this now works reliably if there is no other serial device using the same cable. We still need to resolve that issue.
 
 ### Can read a data file from an Insulet Omnipod pump
 * This is to a first-order approximation (it doesn't do everything yet, but it handles scheduled basals, boluses, settings, and smbg readings).

@@ -107,15 +107,18 @@ var tidepoolServer = {
   },
   login: function (username, password, happycb, sadcb) {
     var url = tidepoolServerData.host + '/auth/login';
+    console.log('in login');
     $.ajax({
       type: 'POST',
       url: url,
       headers: { 'Authorization': make_base_auth(username, password) }
     }).success(function (data, status, jqxhr) {
+      console.log('success from login');
       tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
       tidepoolServerData.userdata = data;
       happycb(data, status, jqxhr);
     }).error(function (jqxhr, status, err) {
+      console.log('error from login');
       sadcb(jqxhr, status, err);
     });
   },
@@ -140,6 +143,25 @@ var driverManager = require('./lib/driverManager.js');
 
 function constructUI() {
   //$('body').append('This is a test.');
+
+  var doingUpload = false;
+  var doingScan = false;
+  var showUploadButton = true;
+  var showRescanButton = false;
+
+
+  function updateButtons() {
+    if (showUploadButton) {
+      $('#buttonUpload').show();
+    } else {
+      $('#buttonUpload').hide();
+    }
+    if (showRescanButton) {
+      $('#buttonRescan').show();
+    } else {
+      $('#buttonRescan').hide();
+    }
+  }
 
   var currentUIState = '.state_login';
   $('.state_login').hide();
@@ -321,6 +343,14 @@ function constructUI() {
     // The manifest isn't very flexible about letting us define a section
     // for our own use, so we use the permissions block
 
+    if (doingUpload) {
+      // they hit the upload button so don't start a scan
+      return;
+    }
+
+    doingScan = true;
+    $('#buttonUpload').attr('disabled', 'disabled');
+
     var alldevs = getDeviceManifest();
     var devices = {};
     _.each(alldevs, function(d) {
@@ -334,8 +364,12 @@ function constructUI() {
     async.mapSeries(possibleDeviceIDs, function(id, cb) {
       // this gets called for each possible device
       function foundDevice(id, chromeDevicesFound) {
+        if (!_.contains(['block', 'serial', 'FTDI'], devices[id].mode)) {
+          return cb(null, null);
+        }
         if (chromeDevicesFound.length > 0) {
-          if (devices[id].mode == 'FTDI') {
+          if (devices[id].mode === 'FTDI') {
+            console.log('looking for ' + id);
             detectFTDIDevice(id, function(err, result) {
               if (err) {
                 console.log(id, ' not detected');
@@ -345,8 +379,12 @@ function constructUI() {
                 cb(null, id);
               }
             });
-          } else {
+          } else if (devices[id].mode === 'block') {
             cb(null, id);
+          } else if (devices[id].mode === 'serial') {
+            cb(null, id);
+          } else {
+            cb(null, null);
           }
         } else {
           cb(null, null);
@@ -374,34 +412,42 @@ function constructUI() {
 
       // now we can update the list of current devices
       activeDeviceIDs = foundDevices;
-      setTimeout(scanUSBDevices, 5000);
+      $('#buttonUpload').removeAttr('disabled');
+      doingScan = false;
+
+      if (showUploadButton) {
+        setTimeout(scanUSBDevices, 10000);
+      }
     });
   }
 
-  setTimeout(scanUSBDevices, 5000);
+  function startScanning() {
+    showUploadButton = true;
+    showRescanButton = false;
+    updateButtons();
+    setTimeout(scanUSBDevices, 5000);
+  }
 
-  // $('#getDevices').click(scanUSBDevices);  
+  // chrome.system.storage.onAttached.addListener(function (info) {
+  //   connectLog('attached: ' + info.name);
+  //   storageDeviceInfo[info.id] = {
+  //     id: info.id,
+  //     name: info.name,
+  //     type: info.type
+  //   };
+  //   console.log(storageDeviceInfo[info.id]);
+  //   // whenever someone inserts a new device, try and run it
+  //   //scanUSBDevices();
+  // });
 
-  chrome.system.storage.onAttached.addListener(function (info) {
-    connectLog('attached: ' + info.name);
-    storageDeviceInfo[info.id] = {
-      id: info.id,
-      name: info.name,
-      type: info.type
-    };
-    console.log(storageDeviceInfo[info.id]);
-    // whenever someone inserts a new device, try and run it
-    scanUSBDevices();
-  });
-
-  chrome.system.storage.onDetached.addListener(function (id) {
-    connectLog('detached: ' + storageDeviceInfo[id].name);
-    delete(storageDeviceInfo[id]);
-  });
+  // chrome.system.storage.onDetached.addListener(function (id) {
+  //   connectLog('detached: ' + storageDeviceInfo[id].name);
+  //   delete(storageDeviceInfo[id]);
+  // });
 
   var asanteDriver = require('./lib/asanteDriver.js');
   var dexcomDriver = require('./lib/dexcomDriver.js');
-  var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js')
+  var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js');
 
   var serialDevices = {
     'AsanteSNAP': asanteDriver,
@@ -465,11 +511,19 @@ function constructUI() {
   }
 
   function uploadSerial() {
+    doingUpload = true;
+    showUploadButton = false;
+    updateButtons();
     console.log('Uploading for ', activeDeviceIDs);
     doUploads(activeDeviceIDs, serialDevices, serialConfigs, function (err, results) {
       console.log('uploads complete!');
       console.log(err);
       console.log(results);
+      setTimeout(function() {
+        doingUpload = false;
+        showRescanButton = true;
+        updateButtons();
+      }, 1000);
     });
   }
 
@@ -550,6 +604,7 @@ function constructUI() {
   $('#realUploadButton').change(handleFileSelect);
 
   $('#buttonUpload').click(uploadSerial);
+  $('#buttonRescan').click(startScanning);
 
   function handleCarelinkFileSelect(evt) {
     console.log('Carelink file selected', evt);
@@ -625,6 +680,9 @@ function constructUI() {
   $('.DexcomG4').hide();
   $('.AsanteSNAP').hide();
   $('.InsuletOmniPod').hide();
+  $('.OneTouchMini').hide();
+  updateButtons();
+  startScanning();
 
   $('#saveSettingsButton').click(function () {
     var ckboxes = [
