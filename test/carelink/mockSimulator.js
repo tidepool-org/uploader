@@ -17,33 +17,31 @@
 
 var _ = require('lodash');
 
-module.exports = {
-  make: function(defaults) {
-    var events = [];
+exports.make = function(defaults) {
+  var events = [];
 
-    function appendToEvents(type) {
-      return function() {
-        events.push(_.assign.apply(_.assign, [{type: type}, defaults].concat(Array.prototype.slice.call(arguments, 0))));
-      }
+  function appendToEvents(type) {
+    return function() {
+      events.push(_.assign.apply(_.assign, [{type: type}, defaults].concat(Array.prototype.slice.call(arguments, 0))));
     }
-
-    return {
-      basalScheduled: appendToEvents('basal-scheduled'),
-      basalTemp: appendToEvents('basal-temp'),
-      bolus: appendToEvents('bolus'),
-      bolusDual: appendToEvents('bolus-dual'),
-      bolusNormal: appendToEvents('bolus-normal'),
-      bolusSquare: appendToEvents('bolus-square'),
-      cbg: appendToEvents('cbg'),
-      deviceMeta: appendToEvents('deviceMeta'),
-      resume: appendToEvents('resume'),
-      settings: appendToEvents('settings'),
-      suspend: appendToEvents('suspend'),
-      smbg: appendToEvents('smbg'),
-      wizard: appendToEvents('wizard'),
-      getEvents: function(){
-        return events;
-      }
-    };
   }
+
+  return {
+    basalScheduled: appendToEvents('basal-scheduled'),
+    basalTemp: appendToEvents('basal-temp'),
+    bolus: appendToEvents('bolus'),
+    bolusDual: appendToEvents('bolus-dual'),
+    bolusNormal: appendToEvents('bolus-normal'),
+    bolusSquare: appendToEvents('bolus-square'),
+    cbg: appendToEvents('cbg'),
+    deviceMeta: appendToEvents('deviceMeta'),
+    resume: appendToEvents('resume'),
+    settings: appendToEvents('settings'),
+    suspend: appendToEvents('suspend'),
+    smbg: appendToEvents('smbg'),
+    wizard: appendToEvents('wizard'),
+    getEvents: function(){
+      return events;
+    }
+  };
 };

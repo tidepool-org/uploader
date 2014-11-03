@@ -38,7 +38,7 @@ describe('pwdSimulator.js', function(){
   var simulator = null;
 
   beforeEach(function(){
-    simulator = pwdSimulator();
+    simulator = pwdSimulator.make();
   });
 
   function getBasals(){
