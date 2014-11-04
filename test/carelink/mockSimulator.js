@@ -17,7 +17,11 @@
 
 var _ = require('lodash');
 
-exports.make = function(defaults) {
+exports.make = function(config) {
+  if (config == null) {
+    config = {};
+  }
+  var defaults = config.defaults;
   var events = [];
 
   function appendToEvents(type) {

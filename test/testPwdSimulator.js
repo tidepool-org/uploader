@@ -701,5 +701,122 @@ describe('pwdSimulator.js', function(){
       });
 
     });
+
+    describe('generates scheduleds when autoGen set to true', function(){
+      beforeEach(function(){
+        simulator = pwdSimulator.make({autoGenScheduleds: true});
+      });
+
+      it('empty schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {},
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([]);
+      });
+
+      it('with empty schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: []
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([]);
+      });
+
+      it('with empty schedule and basal in the bucket', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: []
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        var basal = { type: 'basal', deliveryType: 'scheduled', time: '2014-09-25T00:00:00.000Z',
+          scheduleName: 'billy', rate: 0, duration: 86400000 };
+        simulator.basalScheduled(basal);
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([basal]);
+      });
+
+      it('with schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T00:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.0,
+          duration: 21600000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals(
+          attachPrev(
+            [
+              expectedBasal,
+              _.assign({}, expectedBasal, {time: '2014-09-25T06:00:00.000Z', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T12:00:00.000Z', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T18:00:00.000Z', rate: 1.3}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T00:00:00.000Z', rate: 1.0}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T06:00:00.000Z', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T12:00:00.000Z', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T18:00:00.000Z', rate: 1.3})
+            ]
+          )
+        );
+      });
+    });
   });
 });
