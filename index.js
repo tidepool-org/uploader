@@ -266,7 +266,7 @@ function constructUI() {
             password: password,
             remember_me: true,
           },
-          defaultServer: $('serverURL').val()
+          defaultServer: $('#serverURL').val()
         };
         f(obj);
       } else {
@@ -277,7 +277,7 @@ function constructUI() {
             password: '', 
             remember_me: false
           },
-          defaultServer: $('serverURL').val()
+          defaultServer: $('#serverURL').val()
         });
       }
       myuserid = data.userid;
