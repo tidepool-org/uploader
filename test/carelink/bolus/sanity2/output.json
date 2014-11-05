@@ -1,31 +1,32 @@
 [
   {
     "recommended": {
-      "carb": 3.9,
-      "correction": -0.2
+      "carb": 8.9,
+      "correction": 0
     },
-    "bgInput": 63,
+    "bgInput": 0,
     "units": "mg/dL",
-    "carbInput": 47,
+    "carbInput": 120,
     "insulinOnBoard": 0,
-    "insulinCarbRatio": 15,
-    "insulinSensitivity": 70,
+    "insulinCarbRatio": 11,
+    "insulinSensitivity": 50,
     "bgTarget": { "high": 100,  "low": 100 },
     "deviceId": "Paradigm Revel - 723",
-    "deviceTime": "2013-03-14T18:12:42",
+    "deviceTime": "2014-03-14T12:45:19",
     "payload": {},
     "source": "carelink",
     "timezoneOffset": -600,
-    "time": "2013-03-15T04:12:42.000Z",
+    "time": "2014-03-14T22:45:19.000Z",
     "type": "wizard",
     "bolus": {
       "deviceId": "Paradigm Revel - 723",
-      "deviceTime": "2013-03-14T18:12:41",
-      "extended": 3.7,
+      "deviceTime": "2014-03-14T12:45:20",
+      "normal": 3.4,
+      "extended": 5.5,
       "duration": 1800000,
-      "subType": "square",
+      "subType": "dual/square",
       "timezoneOffset": -600,
-      "time": "2013-03-15T04:12:41.000Z",
+      "time": "2014-03-14T22:45:20.000Z",
       "type": "bolus"
     }
   }

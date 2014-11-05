@@ -32,7 +32,8 @@
       "normal": 2,
       "subType": "normal",
       "time": "2014-03-14T23:05:40.000Z",
-      "timezoneOffset": -600
+      "timezoneOffset": -600,
+      "type": "bolus"
     },
     "carbInput": 0,
     "deviceId": "Paradigm Revel - 723",

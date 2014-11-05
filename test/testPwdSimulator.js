@@ -817,6 +817,76 @@ describe('pwdSimulator.js', function(){
           )
         );
       });
+
+      it('with schedule at 7am', function(){
+        var settings = {
+          time: "2014-09-25T07:00:00.000Z",
+          deviceTime: "2014-09-25T07:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T07:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.1,
+          duration: 18000000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals([expectedBasal]);
+      });
+
+      it('with schedule at 8pm', function(){
+        var settings = {
+          time: "2014-09-25T20:00:00.000Z",
+          deviceTime: "2014-09-25T20:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T20:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.3,
+          duration: 14400000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals([expectedBasal]);
+      });
     });
   });
 });

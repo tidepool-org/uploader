@@ -25,7 +25,8 @@
       "duration": 1800000,
       "subType": "square",
       "timezoneOffset": -600,
-      "time": "2013-03-15T04:12:41.000Z"
+      "time": "2013-03-15T04:12:41.000Z",
+      "type": "bolus"
     }
   }
 ]

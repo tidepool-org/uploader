@@ -417,7 +417,7 @@ function constructUI() {
   };
 
   var uploaders = {
-    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'))
+    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish)
   };
 
   function doUploads(driverNames, driverObjects, driverConfigs, cb) {
