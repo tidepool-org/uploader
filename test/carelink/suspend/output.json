@@ -6,7 +6,7 @@
     "source": "carelink",
     "type": "suspend",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-52825853"
   },
   {
     "time": "2014-03-14T20:08:19.000Z",
@@ -15,7 +15,7 @@
     "source": "carelink",
     "type": "suspend",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-52850875"
   },
   {
     "time": "2014-03-14T20:11:06.000Z",
@@ -24,7 +24,7 @@
     "source": "carelink",
     "type": "resume",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-52861049"
   },
   {
     "time": "2014-03-15T01:40:47.000Z",
@@ -33,7 +33,7 @@
     "source": "carelink",
     "type": "suspend",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-53118738"
   },
   {
     "time": "2014-03-15T01:42:38.000Z",
@@ -42,7 +42,7 @@
     "source": "carelink",
     "type": "suspend",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-53021863"
   },
   {
     "time": "2014-03-15T01:42:52.000Z",
@@ -51,7 +51,7 @@
     "source": "carelink",
     "type": "resume",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-53021863"
   },
   {
     "time": "2014-03-15T01:51:39.000Z",
@@ -60,6 +60,6 @@
     "source": "carelink",
     "type": "resume",
     "reason": "manual",
-    "deviceId": "Paradigm Revel - 723"
+    "deviceId": "Paradigm Revel - 723-=-53136995"
   }
 ]

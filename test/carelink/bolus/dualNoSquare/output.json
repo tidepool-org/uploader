@@ -11,7 +11,7 @@
     "insulinCarbRatio": 13,
     "insulinSensitivity": 45,
     "bgTarget": { "high": 125,  "low": 106 },
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T23:35:10",
     "payload": {},
     "source": "carelink",
@@ -19,7 +19,7 @@
     "time": "2014-03-14T09:35:10.000Z",
     "type": "wizard",
     "bolus": {
-      "deviceId": "Paradigm Revel - 723",
+      "deviceId": "Paradigm Revel - 723-=-53021863",
       "deviceTime": "2014-03-13T23:35:12",
       "normal": 3.6,
       "subType": "normal",

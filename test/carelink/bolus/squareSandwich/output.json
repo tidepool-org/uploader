@@ -1,6 +1,6 @@
 [
   {
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-1234475",
     "deviceTime": "2014-03-14T12:45:40",
     "source": "carelink",
     "duration": 3600000,
@@ -11,7 +11,7 @@
     "type": "bolus"
   },
   {
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-1234475",
     "deviceTime": "2014-03-14T13:05:31",
     "source": "carelink",
     "time": "2014-03-14T23:05:31.000Z",
@@ -27,7 +27,7 @@
       "low": 100
     },
     "bolus": {
-      "deviceId": "Paradigm Revel - 723",
+      "deviceId": "Paradigm Revel - 723-=-1234475",
       "deviceTime": "2014-03-14T13:05:40",
       "normal": 2,
       "subType": "normal",
@@ -36,7 +36,7 @@
       "type": "bolus"
     },
     "carbInput": 0,
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-1234475",
     "deviceTime": "2014-03-14T13:05:40",
     "insulinCarbRatio": 10,
     "insulinOnBoard": 10.1,
