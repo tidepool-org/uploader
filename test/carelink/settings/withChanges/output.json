@@ -8,7 +8,7 @@
     },
     "bgTarget": [],
     "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T00:04:00",
     "insulinSensitivity": [],
     "source": "carelink",
@@ -18,7 +18,7 @@
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T00:04:00",
     "source": "carelink",
     "timezoneOffset": -600,
@@ -36,7 +36,7 @@
     },
     "bgTarget": [],
     "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T11:51:05",
     "insulinSensitivity": [],
     "source": "carelink",
@@ -64,7 +64,7 @@
     },
     "bgTarget": [],
     "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-14T01:01:27",
     "insulinSensitivity": [],
     "source": "carelink",
@@ -94,7 +94,7 @@
     },
     "bgTarget": [],
     "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-14T01:02:02",
     "insulinSensitivity": [],
     "source": "carelink",
@@ -132,7 +132,7 @@
     },
     "bgTarget": [],
     "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-14T01:03:59",
     "insulinSensitivity": [],
     "source": "carelink",
@@ -180,7 +180,7 @@
       { "amount": 10, "start": 61200000 },
       { "amount": 12, "start": 81000000 }
     ],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-14T01:08:07",
     "insulinSensitivity": [
       { "amount": 65, "start": 0 },
@@ -232,7 +232,7 @@
       { "amount": 10, "start": 61200000 },
       { "amount": 12, "start": 81000000 }
     ],
-    "deviceId": "Paradigm Revel - 723",
+    "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-14T11:51:05",
     "insulinSensitivity": [
       { "amount": 65, "start": 0 },

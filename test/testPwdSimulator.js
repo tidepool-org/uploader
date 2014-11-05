@@ -38,7 +38,7 @@ describe('pwdSimulator.js', function(){
   var simulator = null;
 
   beforeEach(function(){
-    simulator = pwdSimulator();
+    simulator = pwdSimulator.make();
   });
 
   function getBasals(){
@@ -71,6 +71,51 @@ describe('pwdSimulator.js', function(){
     });
   });
 
+  describe('bolus', function(){
+    describe('dual', function(){
+      it('works', function(){
+        var val = {
+          time: "2014-09-25T01:00:00.000Z",
+          deviceTime: "2014-09-25T01:00:00",
+          normal: 1.3,
+          extended: 1.4,
+          duration: 60000
+        };
+
+        simulator.bolusDual(val);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "dual/square"}, val)]);
+      });
+    });
+
+    describe('normal', function(){
+      it('works', function(){
+        var val = {
+          time: "2014-09-25T01:00:00.000Z",
+          deviceTime: "2014-09-25T01:00:00",
+          normal: 1.3
+        };
+
+        simulator.bolusNormal(val);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "normal"}, val)]);
+      });
+    });
+
+    describe('square', function(){
+      it('works', function(){
+        var val = {
+          time: "2014-09-25T01:00:00.000Z",
+          deviceTime: "2014-09-25T01:00:00",
+          extended: 1.4,
+          duration: 60000
+        };
+
+        simulator.bolusSquare(val);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "square"}, val)]);
+      });
+    });
+  });
+
+
   describe('basal', function(){
     describe('scheduled', function(){
       describe('withoutSettings', function(){
@@ -83,7 +128,7 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.scheduledBasal(val);
+          simulator.basalScheduled(val);
           expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'scheduled'}, val)]);
         });
 
@@ -110,9 +155,9 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.scheduledBasal(initialBasal);
-          simulator.scheduledBasal(secondBasal);
-          simulator.scheduledBasal(thirdBasal);
+          simulator.basalScheduled(initialBasal);
+          simulator.basalScheduled(secondBasal);
+          simulator.basalScheduled(thirdBasal);
           expect(simulator.getEvents()).deep.equals(
             attachPrev([
               _.assign({type: "basal", deliveryType: 'scheduled'}, initialBasal),
@@ -131,7 +176,7 @@ describe('pwdSimulator.js', function(){
             rate: 1.3
           };
 
-          simulator.scheduledBasal(val);
+          simulator.basalScheduled(val);
           expect(simulator.getEvents()).deep.equals(
             [
               _.assign(
@@ -177,7 +222,7 @@ describe('pwdSimulator.js', function(){
               rate: 1.1
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
@@ -193,7 +238,7 @@ describe('pwdSimulator.js', function(){
               rate: 1.1
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
@@ -209,7 +254,7 @@ describe('pwdSimulator.js', function(){
               rate: 1.0
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.defaults({
@@ -231,7 +276,7 @@ describe('pwdSimulator.js', function(){
               rate: 1.0
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: "basal", deliveryType: 'scheduled', duration: 18000000}, val)
@@ -246,7 +291,7 @@ describe('pwdSimulator.js', function(){
               rate: 1.1
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign(
@@ -292,7 +337,7 @@ describe('pwdSimulator.js', function(){
               timezoneOffset: -240
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
@@ -309,7 +354,7 @@ describe('pwdSimulator.js', function(){
               timezoneOffset: -240
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: 'basal', deliveryType: 'scheduled'}, val)
@@ -326,7 +371,7 @@ describe('pwdSimulator.js', function(){
               timezoneOffset: -240
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.defaults({
@@ -349,7 +394,7 @@ describe('pwdSimulator.js', function(){
               timezoneOffset: -240
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign({type: 'basal', deliveryType: 'scheduled', duration: 18000000}, val)
@@ -365,7 +410,7 @@ describe('pwdSimulator.js', function(){
               timezoneOffset: -240
             };
 
-            simulator.scheduledBasal(val);
+            simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
                 _.assign(
@@ -390,7 +435,7 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'temp'}, val)]);
         });
 
@@ -403,7 +448,7 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'temp'}, val)]);
         });
       });
@@ -435,7 +480,7 @@ describe('pwdSimulator.js', function(){
 
         beforeEach(function(){
           simulator.settings(settings);
-          simulator.scheduledBasal(basal);
+          simulator.basalScheduled(basal);
         });
 
         function getTempBasals(){
@@ -450,7 +495,7 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
             [_.assign({}, {type: "basal", deliveryType: 'temp', suppressed: basalEvent, previous: basalEvent}, val)]
           );
@@ -464,7 +509,7 @@ describe('pwdSimulator.js', function(){
             duration: 3600000
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
             [_.assign(
               {type: "basal", deliveryType: 'temp', rate: 0.6, suppressed: basalEvent, previous: basalEvent},
@@ -503,7 +548,7 @@ describe('pwdSimulator.js', function(){
 
         beforeEach(function(){
           simulator.settings(settings);
-          simulator.scheduledBasal(basal);
+          simulator.basalScheduled(basal);
         });
 
         function getTempBasals(){
@@ -519,7 +564,7 @@ describe('pwdSimulator.js', function(){
             timezoneOffset: -240
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
             [_.assign({}, {type: 'basal', deliveryType: 'temp', suppressed: basalEvent, previous: basalEvent}, val)]
           );
@@ -534,7 +579,7 @@ describe('pwdSimulator.js', function(){
             timezoneOffset: -240
           };
 
-          simulator.tempBasal(val);
+          simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
             [_.assign(
               {type: 'basal', deliveryType: 'temp', rate: 0.6, suppressed: basalEvent, previous: basalEvent},
@@ -612,8 +657,8 @@ describe('pwdSimulator.js', function(){
 
       it('fills in for changes in schedule when another scheduled appears', function(){
         simulator.settings(settings);
-        simulator.scheduledBasal(basal);
-        simulator.tempBasal(temp);
+        simulator.basalScheduled(basal);
+        simulator.basalTemp(temp);
 
         var val = {
           time: '2014-09-25T02:30:00.000Z',
@@ -622,7 +667,7 @@ describe('pwdSimulator.js', function(){
           rate: 2.1
         };
 
-        simulator.scheduledBasal(val);
+        simulator.basalScheduled(val);
 
         expect(getBasals()).deep.equals(
           attachPrev(
@@ -664,8 +709,8 @@ describe('pwdSimulator.js', function(){
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
            simulator.settings(settings);
-           simulator.scheduledBasal(basal);
-           simulator.tempBasal(_.assign({}, temp, { duration: 900000 })); // 15 minutes
+           simulator.basalScheduled(basal);
+           simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
            simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual' });
            expect(getBasals()).deep.equals(
@@ -748,8 +793,8 @@ describe('pwdSimulator.js', function(){
          });
 
       it('throws away a scheduled when it is done and there are no known settings', function(){
-        simulator.scheduledBasal(basal);
-        simulator.tempBasal(temp);
+        simulator.basalScheduled(basal);
+        simulator.basalTemp(temp);
 
         expect(getBasals()).deep.equals(
           [
@@ -826,9 +871,9 @@ describe('pwdSimulator.js', function(){
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
         simulator.settings(settings);
-        simulator.scheduledBasal(basal);
+        simulator.basalScheduled(basal);
         simulator.settings(newSettings);
-        simulator.scheduledBasal(nextScheduled);
+        simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
           attachPrev(
@@ -844,6 +889,193 @@ describe('pwdSimulator.js', function(){
         );
       });
 
+    });
+
+    describe('generates scheduleds when autoGen set to true', function(){
+      beforeEach(function(){
+        simulator = pwdSimulator.make({autoGenScheduleds: true});
+      });
+
+      it('empty schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {},
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([]);
+      });
+
+      it('with empty schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: []
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([]);
+      });
+
+      it('with empty schedule and basal in the bucket', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: []
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        var basal = { type: 'basal', deliveryType: 'scheduled', time: '2014-09-25T00:00:00.000Z',
+          scheduleName: 'billy', rate: 0, duration: 86400000 };
+        simulator.basalScheduled(basal);
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        expect(getBasals()).deep.equals([basal]);
+      });
+
+      it('with schedule', function(){
+        var settings = {
+          time: "2014-09-25T00:00:00.000Z",
+          deviceTime: "2014-09-25T00:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T00:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.0,
+          duration: 21600000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals(
+          attachPrev(
+            [
+              expectedBasal,
+              _.assign({}, expectedBasal, {time: '2014-09-25T06:00:00.000Z', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T12:00:00.000Z', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T18:00:00.000Z', rate: 1.3}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T00:00:00.000Z', rate: 1.0}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T06:00:00.000Z', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T12:00:00.000Z', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T18:00:00.000Z', rate: 1.3})
+            ]
+          )
+        );
+      });
+
+      it('with schedule at 7am', function(){
+        var settings = {
+          time: "2014-09-25T07:00:00.000Z",
+          deviceTime: "2014-09-25T07:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T07:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.1,
+          duration: 18000000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals([expectedBasal]);
+      });
+
+      it('with schedule at 8pm', function(){
+        var settings = {
+          time: "2014-09-25T20:00:00.000Z",
+          deviceTime: "2014-09-25T20:00:00",
+          deliveryType: 'scheduled',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: []
+        };
+
+        simulator.settings(settings);
+
+        var expectedBasal = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          time: '2014-09-25T20:00:00.000Z',
+          scheduleName: 'billy',
+          rate: 1.3,
+          duration: 14400000,
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        };
+
+        expect(getBasals()).deep.equals([expectedBasal]);
+      });
     });
   });
 
@@ -890,8 +1122,8 @@ describe('pwdSimulator.js', function(){
 
       it('fills in for changes in schedule when another scheduled appears', function(){
         simulator.settings(settings);
-        simulator.scheduledBasal(basal);
-        simulator.tempBasal(temp);
+        simulator.basalScheduled(basal);
+        simulator.basalTemp(temp);
 
         var val = {
           time: '2014-09-25T06:30:00.000Z',
@@ -901,7 +1133,7 @@ describe('pwdSimulator.js', function(){
           timezoneOffset: -240
         };
 
-        simulator.scheduledBasal(val);
+        simulator.basalScheduled(val);
 
         expect(getBasals()).deep.equals(
           attachPrev(
@@ -947,8 +1179,8 @@ describe('pwdSimulator.js', function(){
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
            simulator.settings(settings);
-           simulator.scheduledBasal(basal);
-           simulator.tempBasal(_.assign({}, temp, { duration: 900000 })); // 15 minutes
+           simulator.basalScheduled(basal);
+           simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
            simulator.suspend({ time: '2014-09-25T04:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
               reason: 'manual', timezoneOffset: -240 });
@@ -1046,8 +1278,8 @@ describe('pwdSimulator.js', function(){
          });
 
       it('throws away a scheduled when it is done and there are no known settings', function(){
-        simulator.scheduledBasal(basal);
-        simulator.tempBasal(temp);
+        simulator.basalScheduled(basal);
+        simulator.basalTemp(temp);
 
         expect(getBasals()).deep.equals(
           [
@@ -1129,9 +1361,9 @@ describe('pwdSimulator.js', function(){
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
         simulator.settings(settings);
-        simulator.scheduledBasal(basal);
+        simulator.basalScheduled(basal);
         simulator.settings(newSettings);
-        simulator.scheduledBasal(nextScheduled);
+        simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
           attachPrev(

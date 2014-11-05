@@ -251,8 +251,8 @@ function constructUI() {
         // if remember me is NOT checked, make sure that we don't have any saved data
         window.localSave({
           tidepool: {
-            username: '', 
-            password: '', 
+            username: '',
+            password: '',
             remember_me: false
           },
           defaultServer: $('serverURL').val()
@@ -417,7 +417,7 @@ function constructUI() {
   };
 
   var uploaders = {
-    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js')(jellyfish))
+    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish)
   };
 
   function doUploads(driverNames, driverObjects, driverConfigs, cb) {
