@@ -1,10 +1,25 @@
 # Tidepool Uploader
 
-These notes were updated on Monday, November 3, 2014. 
+These notes were updated on Sunday, November 9, 2014. 
 
 This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud. 
 
-WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. IT IS IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.
+WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. IT IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.
+
+## Current to-do list:
+
+This is roughly in priority order:
+* Use the pwdSimulator for Asante and Omnipod
+* Genericize UI -- use a template to support different devices, and bind all the elements (* The progress bar percentage should be stepped every N entries read from the device (especially with Asante) because it can take a long time to finish a section.
+* Call displaySelectedDevices after save button clicked in settings so you don't have to wait for the scan routine.
+such as uploadButtons) by their device name. 
+* Dexcom detect needs to actually do a detect (and return serial number) -- right now it's just a dummy.
+* Remove excess code that's no longer in use
+* Clean up the code in index.js
+* Save the serial port info for the port names found for a given device so we don't have to pattern match once we've found it (or include a helper in the settings page)
+* Settings page is ugugugly
+* Remove auto-scan
+* Save device info (last download, serial number, etc) in local storage and yell if it doesn't agree the next time.
 
 ## About:
 
