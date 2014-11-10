@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Device Uploader",
   "short_name": "Uploader",
-  "version": "0.75",
+  "version": "0.80",
   "minimum_chrome_version": "38",
   "icons": {
     "16": "T_icon_dark_16.png",
@@ -48,7 +48,7 @@
           "deviceName": "OneTouch Mini w/FTDI cable",
           "driverId": "OneTouchMini",
           "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
-          "mode": "not supported",
+          "mode": "FTDI",
           "vendorId": 1027, 
           "productId": 24577
         },
