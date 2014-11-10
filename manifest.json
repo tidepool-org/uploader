@@ -2,8 +2,8 @@
   "manifest_version": 2,
   "name": "Tidepool Device Uploader",
   "short_name": "Uploader",
-  "version": "0.7",
-  "minimum_chrome_version": "32",
+  "version": "0.80",
+  "minimum_chrome_version": "38",
   "icons": {
     "16": "T_icon_dark_16.png",
     "32": "T_icon_dark_32.png",
@@ -40,7 +40,15 @@
           "deviceName": "Asante SNAP w/FTDI cable",
           "driverId": "AsanteSNAP",
           "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
-          "mode": "serial",
+          "mode": "FTDI",
+          "vendorId": 1027, 
+          "productId": 24577
+        },
+        {
+          "deviceName": "OneTouch Mini w/FTDI cable",
+          "driverId": "OneTouchMini",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "FTDI",
           "vendorId": 1027, 
           "productId": 24577
         },

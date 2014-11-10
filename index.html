@@ -109,7 +109,11 @@
           </div>
         </div>
         <div class="col-xs-4">
-          <div class="row row-centered status lightnotes">&nbsp;</div>
+          <div class="row">
+            <div class="col-xs-6 status lightnotes"> </div>
+            <button id="dexcomUploadButton" type="button" class="btn btn-default col-xs-6">Upload</button>            
+          </div>
+          <div class="row">&nbsp;</div>
           <div class="row">
             <div class="progress">
               <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
@@ -133,7 +137,39 @@
           </div>
         </div>
         <div class="col-xs-4">
-          <div class="row row-centered status lightnotes">&nbsp;</div>
+          <div class="row">
+            <div class="col-xs-6 status lightnotes"> </div>
+            <button id="asanteUploadButton" type="button" class="btn btn-default col-xs-6">Upload</button>            
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                0%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- OneTouch Mini -->
+      <div class="form-group OneTouchMini">
+        <div class="col-xs-offset-2 col-xs-4">
+          <div class="row">
+            <b>My OneTouch Mini</b>
+          </div>
+          <div class="row">
+            OneTouch Mini serial #<span class="serialNumber">12345678</span>
+          </div>
+          <div class="row">
+            Last upload: <span class="lastUpload">Unknown</span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="row">
+            <div class="col-xs-6 status lightnotes"> </div>
+            <button id="onetouchminiUploadButton" type="button" class="btn btn-default col-xs-6">Upload</button>            
+          </div>
+          <div class="row">&nbsp;</div>
           <div class="row">
             <div class="progress">
               <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
@@ -163,7 +199,40 @@
             </div>
             <button id="omnipodFileButton" type="button" class="btn btn-default col-xs-6">Choose file</button>            
             <div class="realFileUpload">
-                <input type="file" class="upload" id="realUploadButton" />
+                <input type="file" class="upload" id="omnipodUploadButton" />
+            </div>
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                0%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CareLink -->
+      <div class="form-group CareLink">
+        <div class="col-xs-offset-2 col-xs-4">
+          <div class="row">
+            <b>My CareLink account</b>
+          </div>
+          <div class="row">
+            Care Link Account <span class="serialNumber">ACCT</span>
+          </div>
+          <div class="row">
+            Last upload: <span class="lastUpload">Unknown</span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="row">
+            <div class="col-xs-6 status lightnotes">
+              Choose the .csv file from your CareLink download.
+            </div>
+            <button id="carelinkFileButton" type="button" class="btn btn-default col-xs-6">Choose file</button>            
+            <div class="realFileUpload">
+                <input type="file" class="upload" id="carelinkUploadButton" />
             </div>
           </div>
           <div class="row">&nbsp;</div>
@@ -178,26 +247,19 @@
       </div>
 
 
-      <div class="form-group">
-        <button id="buttonUpload" type="button" class="btn btn-primary col-xs-offset-4 col-xs-4">Upload</button>
-      </div>
-
 <!--       <div class="form-group">
-        <button id="getDevices" type="button" class="btn btn-primary col-xs-offset-4 col-xs-4">Look for Devices</button>
-      </div>
- -->
-      <p>
+        <div class="row">
+          <button id="buttonUpload" type="button" class="btn btn-primary col-xs-offset-4 col-xs-4">Upload</button>
+        </div>
+        <div class="row">
+          <button id="buttonRescan" type="button" class="btn btn-default col-xs-offset-4 col-xs-4">Rescan</button>
+        </div>
+      </div> -->
+
+<!--       <p>
         <label for="carelinkFileChooser">Carelink CSV File:</label>
         <input id="carelinkFileChooser" type="file">
-      </p>
-
-      <p>
-        <label for="carelinkUsername">Carelink Username:</label>
-        <input id="carelinkUsername" type="text">
-        <label for="carelinkPassword">Carelink Password:</label>
-        <input id="carelinkPassword" type="password">
-        <input id="carelinkButton" type=button name="carelink" value="Pull">
-      </p>
+      </p> -->
 
     </form>
     <div class="row">
@@ -212,44 +274,93 @@
   </div>
   <!-- This is the settings page -->
   <div class="container-fluid state_settings">
+    <div class="row">
+      <div class="checkbox col-xs-offset-2 col-xs-8">
+        <label>
+          <input type="checkbox" id="showDexcomG4"> I have a Dexcom G4
+        </label>
+      </div>
+    </div>
     <form class="form-horizontal" role="form">
       <div class="form-group">
-        <div class="col-xs-offset-3 col-xs-6 col-centered">
-          <label for="dexcomPortPattern">Dexcom Port Pattern:</label>
-          <input type="text" class="form-control" id="dexcomPortPattern">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-xs-offset-3 col-xs-6 col-centered">
-          <label for="asantePortPattern">Asante Port Pattern:</label>
-          <input type="text" class="form-control" id="asantePortPattern">
+        <div>
+          <label class="col-xs-offset-3 col-xs-3" for="dexcomPortPattern">Dexcom Port Pattern:</label>
+          <div class="col-xs-4">
+            <input type="text" class="form-control" id="dexcomPortPattern">
+          </div>
         </div>
       </div>
     </form>
     <div class="row">
-      <div class="checkbox col-xs-offset-3 col-xs-6">
+      <div class="checkbox col-xs-offset-2 col-xs-8">
         <label>
-          <input type="checkbox" id="showDexcomG4"> Always show Dexcom G4
+          <input type="checkbox" id="showAsanteSNAP"> I have an Asante SNAP
         </label>
       </div>
     </div>
     <div class="row">
-      <div class="checkbox col-xs-offset-3 col-xs-6">
+      <div class="checkbox col-xs-offset-2 col-xs-8">
         <label>
-          <input type="checkbox" id="showAsanteSNAP"> Always show Asante SNAP
+          <input type="checkbox" id="showOneTouchMini"> I have a OneTouch Mini
+        </label>
+      </div>
+    </div>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <div>
+          <label class="col-xs-offset-3 col-xs-3" for="FTDIPortPattern">Serial Cable Port Pattern:</label>
+          <div class="col-xs-4">
+            <input type="text" class="form-control" id="FTDIPortPattern">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="checkbox col-xs-offset-2 col-xs-8">
+        <label>
+          <input type="checkbox" id="showInsuletOmniPod"> I have an Insulet OmniPod
         </label>
       </div>
     </div>
     <div class="row">
-      <div class="checkbox col-xs-offset-3 col-xs-6">
+      <div class="checkbox col-xs-offset-2 col-xs-8">
         <label>
-          <input type="checkbox" id="showInsuletOmniPod"> Always show Insulet OmniPod
+          <input type="checkbox" id="showCareLink"> I have a CareLink account
         </label>
       </div>
     </div>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <div>
+          <label  class="col-xs-offset-3 col-xs-3" for="carelinkUsername">Carelink Username:</label>
+          <div class="col-xs-4">
+            <input type="text" class="form-control" id="carelinkUsername">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div>
+          <label  class="col-xs-offset-3 col-xs-3" for="carelinkPassword">Carelink Password:</label>
+          <div class="col-xs-4">
+            <input type="text" class="form-control" id="carelinkPassword">
+          </div>
+        </div>
+      </div>
+    </form>
     <div class="row">
-      <button id="saveSettingsButton" type="button" class="btn btn-primary col-xs-offset-6 col-xs-3">Save Settings</button>
+      <p>
+        <button id="carelinkButton" type="button" name="carelink"class="btn btn-default col-xs-offset-6 col-xs-4">Fetch CareLink data</button>
+      </p>
     </div>
+    <div class="row">
+    <p></p>
+    </div>
+    <div class="row">
+      <button id="saveSettingsButton" type="button" class="btn btn-primary col-xs-offset-7 col-xs-3">Save Settings</button>
+    </div>
+<!--     <div class="row">
+      <button id="testButton" type="button" class="btn btn-default col-xs-offset-6 col-xs-3">Test</button>
+    </div> -->
   </div>
 </body>
 </html>

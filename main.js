@@ -41,7 +41,7 @@ var defaultStorage = {
   defaultServer: 'local',
   timezone: 'America/Los_Angeles',
   dexcomPortPattern: '/dev/cu.usbmodem.+',
-  asantePortPattern: '/dev/cu.usbserial.+',
+  FTDIPortPattern: '/dev/cu.usbserial.+',
   forceDeviceIDs: []
 };
 
@@ -52,7 +52,7 @@ function localSave(object) {
   if (object == null) {
     throw new Error('Save called with null object!');
   }
-  // chrome.storage.local.remove('pw');
+  chrome.storage.local.remove('asantePortPattern');
   // chrome.storage.local.remove('user');
   // chrome.storage.local.remove('dexcomPortPrefix');
   chrome.storage.local.set(object);

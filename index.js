@@ -107,15 +107,18 @@ var tidepoolServer = {
   },
   login: function (username, password, happycb, sadcb) {
     var url = tidepoolServerData.host + '/auth/login';
+    console.log('in login');
     $.ajax({
       type: 'POST',
       url: url,
       headers: { 'Authorization': make_base_auth(username, password) }
     }).success(function (data, status, jqxhr) {
+      console.log('success from login');
       tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
       tidepoolServerData.userdata = data;
       happycb(data, status, jqxhr);
     }).error(function (jqxhr, status, err) {
+      console.log('error from login');
       sadcb(jqxhr, status, err);
     });
   },
@@ -140,6 +143,25 @@ var driverManager = require('./lib/driverManager.js');
 
 function constructUI() {
   //$('body').append('This is a test.');
+
+  var doingUpload = false;
+  var doingScan = false;
+  var showUploadButton = true;
+  var showRescanButton = false;
+
+
+  function updateButtons() {
+    if (showUploadButton) {
+      $('#buttonUpload').show();
+    } else {
+      $('#buttonUpload').hide();
+    }
+    if (showRescanButton) {
+      $('#buttonRescan').show();
+    } else {
+      $('#buttonRescan').hide();
+    }
+  }
 
   var currentUIState = '.state_login';
   $('.state_login').hide();
@@ -244,7 +266,7 @@ function constructUI() {
             password: password,
             remember_me: true,
           },
-          defaultServer: $('serverURL').val()
+          defaultServer: $('#serverURL').val()
         };
         f(obj);
       } else {
@@ -255,7 +277,7 @@ function constructUI() {
             password: '',
             remember_me: false
           },
-          defaultServer: $('serverURL').val()
+          defaultServer: $('#serverURL').val()
         });
       }
       myuserid = data.userid;
@@ -281,6 +303,14 @@ function constructUI() {
   $('#settingsButton').click(function () {
     setUIState('.state_settings');
   });
+
+  // $('#testButton').click(function () {
+  //   console.log('testing!');
+  //   serialConfigs.OneTouchMini.deviceComms = require('./lib/dummyOneTouchSerial.js')();
+  //   var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js')(serialConfigs.OneTouchMini);
+  //   console.log(oneTouchMiniDriver);
+  //   oneTouchMiniDriver.testDriver();
+  // });
 
 
 // have a list of previously active devices
@@ -308,10 +338,35 @@ function constructUI() {
     return null;
   }
 
+  function displaySelectedDevices() {
+    var removes = _.difference(activeDeviceIDs, forceDeviceIDs);
+    _.each(removes, function(v) {
+      $('.' + v).hide();
+    });
+
+    // newdevices is the list of devices that were added
+    var newdevices = _.difference(forceDeviceIDs, activeDeviceIDs);
+    _.each(newdevices, function(v) {
+      $('.' + v).show();
+    });
+
+    // now we can update the list of current devices
+    activeDeviceIDs = forceDeviceIDs;
+    setTimeout(displaySelectedDevices, 10000);
+  }
+
   function scanUSBDevices () {
     // first, find the part of the manifest that talks about the devices
     // The manifest isn't very flexible about letting us define a section
     // for our own use, so we use the permissions block
+
+    if (doingUpload) {
+      // they hit the upload button so don't start a scan
+      return;
+    }
+
+    doingScan = true;
+    $('#buttonUpload').attr('disabled', 'disabled');
 
     var alldevs = getDeviceManifest();
     var devices = {};
@@ -322,29 +377,45 @@ function constructUI() {
     // this is the list of devices we could possibly plug in
     var possibleDeviceIDs = _.keys(devices);
 
-    // build a list of the devices that are actually plugged in
-    var foundDevices = forceDeviceIDs.slice();
-    function foundDevice(id, chromeDevicesFound) {
-      if (chromeDevicesFound.length > 0) {
-        foundDevices.push(id);
+    // now iterate through all the devices and see which ones are plugged in
+    async.mapSeries(possibleDeviceIDs, function(id, cb) {
+      // this gets called for each possible device
+      function foundDevice(id, chromeDevicesFound) {
+        if (!_.contains(['block', 'serial', 'FTDI'], devices[id].mode)) {
+          return cb(null, null);
+        }
+        if (chromeDevicesFound.length > 0) {
+          if (devices[id].mode === 'FTDI') {
+            console.log('looking for ' + id);
+            detectFTDIDevice(id, function(err, result) {
+              if (err) {
+                console.log(id, ' not detected');
+                cb(null, null);
+              } else {
+                console.log(result);
+                cb(null, id);
+              }
+            });
+          } else if (devices[id].mode === 'block') {
+            cb(null, id);
+          } else if (devices[id].mode === 'serial') {
+            cb(null, id);
+          } else {
+            cb(null, null);
+          }
+        } else {
+          cb(null, null);
+        }
       }
-    }
-    _.each(possibleDeviceIDs, function(id) {
       var f = foundDevice.bind(null, id);
       chrome.usb.getDevices({
         vendorId: devices[id].vendorId,
         productId: devices[id].productId
       }, f);
-    });
-
-    // give the getDevices call time to work
-    setTimeout(function() {
-      // console.log('activeDeviceIDs: ', activeDeviceIDs);
-      // removes is the list of devices that were unplugged
-
-      // there could be dups in foundDevices; that's ok, just eliminate them
-      foundDevices = _.unique(foundDevices);
-
+    }, function(err, result) {
+      // once we've walked all the devices, we add the ones we need to force and then
+      // figure out what's changed.
+      var foundDevices = _.union(_.compact(result), forceDeviceIDs);
       var removes = _.difference(activeDeviceIDs, foundDevices);
       _.each(removes, function(v) {
         $('.' + v).hide();
@@ -358,36 +429,47 @@ function constructUI() {
 
       // now we can update the list of current devices
       activeDeviceIDs = foundDevices;
-    }, 1000);
+      $('#buttonUpload').removeAttr('disabled');
+      doingScan = false;
+
+      if (showUploadButton) {
+        setTimeout(scanUSBDevices, 10000);
+      }
+    });
   }
 
-  setInterval(scanUSBDevices, 5000);
+  function startScanning() {
+    showUploadButton = true;
+    showRescanButton = false;
+    updateButtons();
+    setTimeout(displaySelectedDevices, 5000);
+  }
 
-  // $('#getDevices').click(scanUSBDevices);  
+  // chrome.system.storage.onAttached.addListener(function (info) {
+  //   connectLog('attached: ' + info.name);
+  //   storageDeviceInfo[info.id] = {
+  //     id: info.id,
+  //     name: info.name,
+  //     type: info.type
+  //   };
+  //   console.log(storageDeviceInfo[info.id]);
+  //   // whenever someone inserts a new device, try and run it
+  //   //scanUSBDevices();
+  // });
 
-  chrome.system.storage.onAttached.addListener(function (info) {
-    connectLog('attached: ' + info.name);
-    storageDeviceInfo[info.id] = {
-      id: info.id,
-      name: info.name,
-      type: info.type
-    };
-    console.log(storageDeviceInfo[info.id]);
-    // whenever someone inserts a new device, try and run it
-    scanUSBDevices();
-  });
-
-  chrome.system.storage.onDetached.addListener(function (id) {
-    connectLog('detached: ' + storageDeviceInfo[id].name);
-    delete(storageDeviceInfo[id]);
-  });
+  // chrome.system.storage.onDetached.addListener(function (id) {
+  //   connectLog('detached: ' + storageDeviceInfo[id].name);
+  //   delete(storageDeviceInfo[id]);
+  // });
 
   var asanteDriver = require('./lib/asanteDriver.js');
   var dexcomDriver = require('./lib/dexcomDriver.js');
+  var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js');
 
   var serialDevices = {
     'AsanteSNAP': asanteDriver,
     'DexcomG4': dexcomDriver,
+    'OneTouchMini': oneTouchMiniDriver
   };
 
   var serialConfigs = {
@@ -408,7 +490,16 @@ function constructUI() {
       builder: builder,
       progress_bar: '.DexcomG4 .progress-bar',
       status_text: '.DexcomG4 .status'
-    }
+    },
+    'OneTouchMini': {
+      deviceComms: serialDevice(),
+      timeutils: timeutils,
+      timezone: $('#timezone').val(),
+      jellyfish: jellyfish,
+      builder: builder,
+      progress_bar: '.OneTouchMini .progress-bar',
+      status_text: '.OneTouchMini .status'
+    },
   };
 
   var insuletDriver = require('./lib/insuletDriver.js');
@@ -420,6 +511,13 @@ function constructUI() {
     'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish)
   };
 
+  function detectFTDIDevice(deviceID, cb) {
+    var drivers = {};
+    drivers[deviceID] = serialDevices[deviceID];
+    var dm = driverManager(drivers, serialConfigs);
+    dm.detect(deviceID, cb);
+  }
+
   function doUploads(driverNames, driverObjects, driverConfigs, cb) {
     var dm = driverManager(driverObjects, driverConfigs);
     var devices = [];
@@ -429,14 +527,64 @@ function constructUI() {
     async.series(devices, cb);
   }
 
-  function uploadSerial() {
-    var allSerial = _.keys(serialDevices);
-    var uploads = _.intersection(allSerial, activeDeviceIDs);
-    console.log('Uploading for ', uploads);
-    doUploads(uploads, serialDevices, serialConfigs, function (err, results) {
+  function uploadOneSerial(device) {
+    doingUpload = true;
+    updateButtons();
+    detectFTDIDevice(device, function(err, result) {
+      if (err) {
+        console.log(device, ' not detected');
+      } else {
+        $('.' + device + ' .serialNumber').text(result.serialNumber);
+        doUploads([device], serialDevices, serialConfigs, function(err, results) {
+          console.log(device + ' upload complete!');
+          console.log(err);
+          console.log(results);
+          setTimeout(function() {
+            doingUpload = false;
+            showRescanButton = true;
+            updateButtons();
+          }, 1000);      
+        });
+      }
+    });
+  }
+
+  function uploadSerialOLD2() {
+    doingUpload = true;
+    showUploadButton = false;
+    updateButtons();
+    console.log('Uploading for ', activeDeviceIDs);
+    doUploads(activeDeviceIDs, serialDevices, serialConfigs, function (err, results) {
       console.log('uploads complete!');
       console.log(err);
       console.log(results);
+      setTimeout(function() {
+        doingUpload = false;
+        showRescanButton = true;
+        updateButtons();
+      }, 1000);
+    });
+  }
+
+  function uploadSerialOLD1() {
+    var allSerial = _.keys(serialDevices);
+    var dm = driverManager(serialDevices, serialConfigs);
+    var existingSerial = async.filterSeries(allSerial, function(item, cb) {
+      dm.detect(function(err, result) {
+        if (err != null) {
+          cb(false);
+        } else {
+          console.log('found ' + result.id);
+          cb(true);
+        }
+      }, function(err, cb) {
+        console.log('Uploading for ', existingSerial);
+        doUploads(existingSerial, serialDevices, serialConfigs, function (err, results) {
+          console.log('uploads complete!');
+          console.log(err);
+          console.log(results);
+        });
+      });
     });
   }
 
@@ -492,9 +640,16 @@ function constructUI() {
     var serverIndex = $('#serverURL').val();
     window.open(tidepoolHosts[serverIndex].blip);
   });
-  $('#realUploadButton').change(handleFileSelect);
 
-  $('#buttonUpload').click(uploadSerial);
+  // this deals with the omnipod
+  $('#omnipodUploadButton').change(handleFileSelect);
+
+  // these are the 3 serial devices
+  $('#dexcomUploadButton').click(uploadOneSerial.bind(null, 'DexcomG4'));
+  $('#asanteUploadButton').click(uploadOneSerial.bind(null, 'AsanteSNAP'));
+  $('#onetouchminiUploadButton').click(uploadOneSerial.bind(null, 'OneTouchMini'));
+  // $('#buttonUpload').click(uploadSerial);
+  // $('#buttonRescan').click(startScanning);
 
   function handleCarelinkFileSelect(evt) {
     console.log('Carelink file selected', evt);
@@ -561,30 +716,40 @@ function constructUI() {
 
   // make sure we don't see the progress bar until we need it
   $('#progress_bar').hide();
-  // and make our pretty file button click the ugly one that we've hidden
+  // and make our pretty file buttons click the ugly ones that we've hidden
   $('#omnipodFileButton').click(function () {
-    $('#realUploadButton').click();
+    $('#omnipodUploadButton').click();
+  });
+  $('#carelinkFileButton').click(function () {
+    $('#carelinkUploadButton').click();
   });
   connectLog('private build -- Insulet is supported.');
 
   $('.DexcomG4').hide();
   $('.AsanteSNAP').hide();
   $('.InsuletOmniPod').hide();
+  $('.OneTouchMini').hide();
+  $('.CareLink').hide();
+  updateButtons();
+  startScanning();
 
   $('#saveSettingsButton').click(function () {
     var ckboxes = [
       'DexcomG4',
       'AsanteSNAP',
-      'InsuletOmniPod'
+      'InsuletOmniPod',
+      'OneTouchMini',
+      'CareLink'
     ];
 
     var pattern = $('#dexcomPortPattern').val();
     serialConfigs.DexcomG4.deviceComms.setPattern(pattern);
     window.localSave({ dexcomPortPattern: pattern });
 
-    pattern = $('#asantePortPattern').val();
+    pattern = $('#FTDIPortPattern').val();
     serialConfigs.AsanteSNAP.deviceComms.setPattern(pattern);
-    window.localSave({ asantePortPattern: pattern });
+    serialConfigs.OneTouchMini.deviceComms.setPattern(pattern);
+    window.localSave({ FTDIPortPattern: pattern });
 
     forceDeviceIDs = [];
     _.each(ckboxes, function(box) {
@@ -617,9 +782,10 @@ function constructUI() {
         $('#dexcomPortPattern').val(settings.dexcomPortPattern);
         serialConfigs.DexcomG4.deviceComms.setPattern(settings.dexcomPortPattern);
       }
-      if (settings.asantePortPattern) {
-        $('#asantePortPattern').val(settings.asantePortPattern);
-        serialConfigs.AsanteSNAP.deviceComms.setPattern(settings.asantePortPattern);
+      if (settings.FTDIPortPattern) {
+        $('#FTDIPortPattern').val(settings.FTDIPortPattern);
+        serialConfigs.AsanteSNAP.deviceComms.setPattern(settings.FTDIPortPattern);
+        serialConfigs.OneTouchMini.deviceComms.setPattern(settings.FTDIPortPattern);
       }
       if (settings.forceDeviceIDs) {
         _.each(settings.forceDeviceIDs, function(box) {
