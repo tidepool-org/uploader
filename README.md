@@ -9,17 +9,26 @@ WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPL
 ## Current to-do list:
 
 This is roughly in priority order:
-* Use the pwdSimulator for Asante and Omnipod
+* Use platform-client (jhbate)
+* Convert to use Sundial instead of timeutils.js. (jhbate?)
+* Dexcom detect needs to actually do a detect (and return serial number) -- right now it's just a dummy.
+* Validate Dexcom against the Dexcom spec and write some test code for it (kentquirk with some help from jebeck) 
+* Upload other events for Dexcom if supported (kentquirk)
+* Figure out how to submit to Chrome app store (nicolashery)
+* Use the pwdSimulator for Asante and Omnipod (kentquirk)
 * Genericize UI -- use a template to support different devices, and bind all the elements (* The progress bar percentage should be stepped every N entries read from the device (especially with Asante) because it can take a long time to finish a section.
+* Add more BGMs
+* Better model for settings page
 * Call displaySelectedDevices after save button clicked in settings so you don't have to wait for the scan routine.
 such as uploadButtons) by their device name. 
-* Dexcom detect needs to actually do a detect (and return serial number) -- right now it's just a dummy.
 * Remove excess code that's no longer in use
 * Clean up the code in index.js
 * Save the serial port info for the port names found for a given device so we don't have to pattern match once we've found it (or include a helper in the settings page)
 * Settings page is ugugugly
 * Remove auto-scan
 * Save device info (last download, serial number, etc) in local storage and yell if it doesn't agree the next time.
+* Make logging capable of being useful for a deployed app.
+* Record errors to highwater.
 
 ## About:
 
