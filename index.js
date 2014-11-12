@@ -504,6 +504,8 @@ function constructUI() {
 
       reader.onerror = function (evt) {
         console.log('Reader error!');
+        //send it to the platform
+        api.errors.log(evt, 'InsuletOmniPod reader error!', {});
         console.log(evt);
       };
 
@@ -527,6 +529,7 @@ function constructUI() {
           doUploads(['InsuletOmniPod'], blockDevices, cfg, function (err, results) {
             if (err) {
               connectLog('Some sort of error occurred (see console).');
+              api.errors.log(err, 'InsuletOmniPod some sort of error occurred (see console).', {});
               console.log('Fail');
               console.log(err);
               console.log(results);
@@ -567,6 +570,7 @@ function constructUI() {
 
     reader.onerror = function (evt) {
       console.log('Reader error!');
+      api.errors.log(evt, 'Carelink file reader error!', {});
       console.log(evt);
     };
 
@@ -582,6 +586,7 @@ function constructUI() {
       doUploads(['Carelink'], uploaders, cfg, function (err, results) {
         if (err) {
           connectLog('Some sort of error occurred (see console).');
+          api.errors.log(err, 'Carelink: some sort of error occurred (see console).', {});
           console.log('Fail');
           console.log(err);
           console.log(results);
@@ -612,6 +617,7 @@ function constructUI() {
     doUploads(['Carelink'], uploaders, cfg, function(err, results){
       if (err != null) {
         connectLog('Error when pulling data');
+        api.errors.log(err, 'Carelink: error when pulling data.', {});
         console.log(err);
         console.log(results);
       } else {
