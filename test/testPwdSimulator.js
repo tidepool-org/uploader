@@ -50,7 +50,8 @@ describe('pwdSimulator.js', function(){
       var val = {
         time: "2014-09-25T01:00:00.000Z",
         deviceTime: "2014-09-25T01:00:00",
-        value: 123
+        value: 123,
+        timezoneOffset: 0
       };
 
       simulator.cbg(val);
@@ -63,7 +64,8 @@ describe('pwdSimulator.js', function(){
       var val = {
         time: "2014-09-25T01:00:00.000Z",
         deviceTime: "2014-09-25T01:00:00",
-        value: 1.3
+        value: 1.3,
+        timezoneOffset: 0
       };
 
       simulator.smbg(val);
@@ -79,7 +81,8 @@ describe('pwdSimulator.js', function(){
           deviceTime: "2014-09-25T01:00:00",
           normal: 1.3,
           extended: 1.4,
-          duration: 60000
+          duration: 60000,
+          timezoneOffset: 0
         };
 
         simulator.bolusDual(val);
@@ -92,7 +95,8 @@ describe('pwdSimulator.js', function(){
         var val = {
           time: "2014-09-25T01:00:00.000Z",
           deviceTime: "2014-09-25T01:00:00",
-          normal: 1.3
+          normal: 1.3,
+          timezoneOffset: 0
         };
 
         simulator.bolusNormal(val);
@@ -106,7 +110,8 @@ describe('pwdSimulator.js', function(){
           time: "2014-09-25T01:00:00.000Z",
           deviceTime: "2014-09-25T01:00:00",
           extended: 1.4,
-          duration: 60000
+          duration: 60000,
+          timezoneOffset: 0
         };
 
         simulator.bolusSquare(val);
@@ -125,7 +130,8 @@ describe('pwdSimulator.js', function(){
             deviceTime: "2014-09-25T01:00:00",
             scheduleName: 'billy',
             rate: 1.3,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalScheduled(val);
@@ -138,21 +144,24 @@ describe('pwdSimulator.js', function(){
             deviceTime: "2014-09-25T01:00:00",
             scheduleName: 'billy',
             rate: 1.3,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
           var secondBasal = {
             time: "2014-09-25T02:00:00.000Z",
             deviceTime: "2014-09-25T02:00:00",
             scheduleName: 'billy',
             rate: 1.4,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
           var thirdBasal = {
             time: "2014-09-25T03:00:00.000Z",
             deviceTime: "2014-09-25T03:00:00",
             scheduleName: 'billy',
             rate: 1.5,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalScheduled(initialBasal);
@@ -173,7 +182,8 @@ describe('pwdSimulator.js', function(){
             time: "2014-09-25T01:00:00.000Z",
             deviceTime: "2014-09-25T01:00:00",
             scheduleName: 'billy',
-            rate: 1.3
+            rate: 1.3,
+            timezoneOffset: 0
           };
 
           simulator.basalScheduled(val);
@@ -205,7 +215,8 @@ describe('pwdSimulator.js', function(){
               { start: 43200000, rate: 1.2 },
               { start: 64800000, rate: 1.3 }
             ]
-          }
+          },
+          timezoneOffset: 0
         };
 
         beforeEach(function(){
@@ -219,7 +230,8 @@ describe('pwdSimulator.js', function(){
               deviceTime: "2014-09-25T06:00:00",
               duration: 21600000,
               scheduleName: 'billy',
-              rate: 1.1
+              rate: 1.1,
+              timezoneOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -235,7 +247,8 @@ describe('pwdSimulator.js', function(){
               deviceTime: "2014-09-25T06:01:00",
               duration: 21540000,
               scheduleName: 'billy',
-              rate: 1.1
+              rate: 1.1,
+              timezoneOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -251,7 +264,8 @@ describe('pwdSimulator.js', function(){
               deviceTime: "2014-09-25T06:00:00",
               duration: 21600000,
               scheduleName: 'billy',
-              rate: 1.0
+              rate: 1.0,
+              timezoneOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -273,7 +287,8 @@ describe('pwdSimulator.js', function(){
               time: "2014-09-25T01:00:00.000Z",
               deviceTime: "2014-09-25T01:00:00",
               scheduleName: 'billy',
-              rate: 1.0
+              rate: 1.0,
+              timezoneOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -288,7 +303,8 @@ describe('pwdSimulator.js', function(){
               time: "2014-09-25T01:00:00.000Z",
               deviceTime: "2014-09-25T01:00:00",
               scheduleName: 'billy',
-              rate: 1.1
+              rate: 1.1,
+              timezoneOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -432,7 +448,8 @@ describe('pwdSimulator.js', function(){
             time: "2014-09-25T01:31:57.000Z",
             deviceTime: "2014-09-25T01:31:57",
             rate: 1.3,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -445,7 +462,8 @@ describe('pwdSimulator.js', function(){
             deviceTime: "2014-09-25T01:31:57",
             scheduleName: 'billy',
             percent: 0.7,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -467,13 +485,15 @@ describe('pwdSimulator.js', function(){
               { start: 43200000, rate: 2.2 },
               { start: 64800000, rate: 2.3 }
             ]
-          }
+          },
+          timezoneOffset: 0
         };
         var basal = {
           time: "2014-09-25T01:00:00.000Z",
           deviceTime: "2014-09-25T01:00:00",
           scheduleName: 'billy',
-          rate: 2.0
+          rate: 2.0,
+          timezoneOffset: 0
         };
         var basalEvent = _.assign({}, {type: "basal", deliveryType: 'scheduled', duration: 18000000}, basal);
 
@@ -492,7 +512,8 @@ describe('pwdSimulator.js', function(){
             time: "2014-09-25T01:31:57.000Z",
             deviceTime: "2014-09-25T01:31:57",
             rate: 0.5,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -506,7 +527,8 @@ describe('pwdSimulator.js', function(){
             time: "2014-09-25T01:31:57.000Z",
             deviceTime: "2014-09-25T01:31:57",
             percent: 0.3,
-            duration: 3600000
+            duration: 3600000,
+            timezoneOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -609,7 +631,8 @@ describe('pwdSimulator.js', function(){
         },
         bgTarget: [],
         insulinSensitivity: [],
-        carbRatio: []
+        carbRatio: [],
+        timezoneOffset: 0
       };
 
       simulator.settings(val);
@@ -640,19 +663,22 @@ describe('pwdSimulator.js', function(){
         },
         bgTarget: [],
         insulinSensitivity: [],
-        carbRatio: []
+        carbRatio: [],
+        timezoneOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
-        rate: 1.0
+        rate: 1.0,
+        timezoneOffset: 0
       };
       var temp = {
         time: '2014-09-25T00:30:00.000Z',
         deviceTime: '2014-09-25T00:30:00',
         percent: 0.1,
-        duration: 7200000
+        duration: 7200000,
+        timezoneOffset: 0
       };
 
       it('fills in for changes in schedule when another scheduled appears', function(){
@@ -664,7 +690,8 @@ describe('pwdSimulator.js', function(){
           time: '2014-09-25T02:30:00.000Z',
           deviceTime: '2014-09-25T02:30:00',
           scheduleName: 'billy',
-          rate: 2.1
+          rate: 2.1,
+          timezoneOffset: 0
         };
 
         simulator.basalScheduled(val);
@@ -676,32 +703,35 @@ describe('pwdSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 7200000,
                 time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                timezoneOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                  time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                  time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.2, duration: 5400000,
                 time: '2014-09-25T01:00:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                timezoneOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                  time: '2014-09-25T01:00:00.000Z',
+                  time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
                   annotations: [{ code: 'basal/fabricated-from-schedule' }]
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 2.1 * 0.1, duration: 1800000,
                 time: '2014-09-25T02:00:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                timezoneOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.1, duration: 3600000,
-                  time: '2014-09-25T02:00:00.000Z',
+                  time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0,
                   annotations: [{ code: 'basal/fabricated-from-schedule' }]
                 }
               },
               _.assign({}, val,
                        { type: 'basal', time: '2014-09-25T02:30:00.000Z', deviceTime: '2014-09-25T02:30:00',
-                         deliveryType: 'scheduled', duration: 1800000 }
+                         deliveryType: 'scheduled', duration: 1800000, timezoneOffset: 0 }
               )
             ]));
       });
@@ -712,7 +742,7 @@ describe('pwdSimulator.js', function(){
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
-           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual' });
+           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual', timezoneOffset: 0 });
            expect(getBasals()).deep.equals(
              attachPrev(
                [
@@ -720,27 +750,29 @@ describe('pwdSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend',
                    time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
-                     time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                     time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
                      }
                    }
                  }
                ])
            );
 
-           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: 'manual' });
+           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: 'manual', timezoneOffset: 0 });
 
            expect(getBasals()).deep.equals(
              attachPrev(
@@ -749,43 +781,47 @@ describe('pwdSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1800000,
                    time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
-                     time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
+                     time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00",  timezoneOffset: 0
                      }
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1500000,
                    time: '2014-09-25T00:45:00.000Z', deviceTime: '2014-09-25T00:40:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00"
+                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 600000,
                    time: '2014-09-25T01:00:00.000Z', deviceTime: '2014-09-25T00:40:00',
+                   timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                     time: '2014-09-25T01:00:00.000Z',
+                     time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
                      annotations: [{ code: 'basal/fabricated-from-schedule' }]
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3000000,
-                   time: '2014-09-25T01:10:00.000Z',
+                   time: '2014-09-25T01:10:00.000Z', timezoneOffset: 0,
                    annotations: [{ code: 'basal/fabricated-from-schedule' }]
                  }
                ])
@@ -803,7 +839,7 @@ describe('pwdSimulator.js', function(){
             ),
             {
               type: 'basal', deliveryType: 'temp', percent: 0.1, duration: 7200000,
-              time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00'
+              time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0
             }
           ]);
       });
@@ -831,13 +867,15 @@ describe('pwdSimulator.js', function(){
         },
         bgTarget: [],
         insulinSensitivity: [],
-        carbRatio: []
+        carbRatio: [],
+        timezoneOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
-        rate: 1.0
+        rate: 1.0,
+        timezoneOffset: 0
       };
       var newSettings = {
         time: "2014-09-25T00:30:00.000Z",
@@ -860,13 +898,15 @@ describe('pwdSimulator.js', function(){
         },
         bgTarget: [],
         insulinSensitivity: [],
-        carbRatio: []
+        carbRatio: [],
+        timezoneOffset: 0
       };
       var nextScheduled = {
         time: '2014-09-25T00:30:05.000Z',
         deviceTime: '2014-09-25T00:30:05',
         scheduleName: 'billy',
-        rate: 1.5
+        rate: 1.5,
+        timezoneOffset: 0
       };
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
@@ -882,7 +922,7 @@ describe('pwdSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'scheduled', duration: 1795000,
                 time: '2014-09-25T00:30:05.000Z', deviceTime: '2014-09-25T00:30:05',
-                rate: 1.5, scheduleName: 'billy'
+                rate: 1.5, scheduleName: 'billy', timezoneOffset: 0
               }
             ]
           )
@@ -906,7 +946,8 @@ describe('pwdSimulator.js', function(){
           basalSchedules: {},
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
 
@@ -927,7 +968,8 @@ describe('pwdSimulator.js', function(){
           },
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
         simulator.settings(settings);
@@ -947,11 +989,12 @@ describe('pwdSimulator.js', function(){
           },
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
         var basal = { type: 'basal', deliveryType: 'scheduled', time: '2014-09-25T00:00:00.000Z',
-          scheduleName: 'billy', rate: 0, duration: 86400000 };
+          scheduleName: 'billy', rate: 0, duration: 86400000, timezoneOffset: 0 };
         simulator.basalScheduled(basal);
         simulator.settings(settings);
         simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
@@ -975,7 +1018,8 @@ describe('pwdSimulator.js', function(){
           },
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
         simulator.settings(settings);
@@ -988,7 +1032,8 @@ describe('pwdSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.0,
           duration: 21600000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}]
+          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          timezoneOffset: 0
         };
 
         expect(getBasals()).deep.equals(
@@ -1024,7 +1069,8 @@ describe('pwdSimulator.js', function(){
           },
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
         simulator.settings(settings);
@@ -1036,7 +1082,8 @@ describe('pwdSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.1,
           duration: 18000000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}]
+          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          timezoneOffset: 0
         };
 
         expect(getBasals()).deep.equals([expectedBasal]);
@@ -1059,7 +1106,8 @@ describe('pwdSimulator.js', function(){
           },
           bgTarget: [],
           insulinSensitivity: [],
-          carbRatio: []
+          carbRatio: [],
+          timezoneOffset: 0
         };
 
         simulator.settings(settings);
@@ -1071,7 +1119,8 @@ describe('pwdSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.3,
           duration: 14400000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}]
+          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          timezoneOffset: 0
         };
 
         expect(getBasals()).deep.equals([expectedBasal]);
