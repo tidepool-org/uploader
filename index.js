@@ -113,91 +113,93 @@ function constructUI() {
 
     //init api based on the environment then get going
     api.init(api.serverData,function(){
+      api.user.login({ username: username, password:password}, goodLogin, failLogin);
       function goodUpload (data, status) {
-      connectLog(status);
-      connectLog(util.format('%j', data));
-      var otherusers = _.omit(data, myuserid);
-      $('#uploadOptions')
-      .append($('<option></option>')
-        .attr('value', '0')
-        .text(myfullname));
-      if (otherusers != {}) {
-        var otherids = _.keys(otherusers);
-        _.each(otherids, function(otherid) {
-          $('#uploadOptions')
-          .append($('<option></option>')
-            .attr('value', '0')
-            .text('User ' + otherid));
-        });
+        connectLog(status);
+        connectLog(util.format('%j', data));
+        var otherusers = _.omit(data, myuserid);
+        $('#uploadOptions')
+        .append($('<option></option>')
+          .attr('value', '0')
+          .text(myfullname));
+        if (otherusers != {}) {
+          var otherids = _.keys(otherusers);
+          _.each(otherids, function(otherid) {
+            $('#uploadOptions')
+            .append($('<option></option>')
+              .attr('value', '0')
+              .text('User ' + otherid));
+          });
+        }
       }
-    }
 
-    function failUpload (error, status) {
-      connectLog('FAILED getting upload info!', status, error);
-    }
-
-    function getUploadAccounts () {
-      connectLog('Fetching upload info.');
-      api.upload.accounts(goodUpload, failUpload);
-    }
-
-    function goodProfile (data, status) {
-      connectLog(status);
-      connectLog(util.format('%j', data));
-      myfullname = data.fullName;
-      $('.loginname').text(myfullname);
-      getUploadAccounts();
-    }
-
-    function failProfile (error, status) {
-      connectLog('FAILED fetching profile!', status, error);
-    }
-
-    function getProfile () {
-      connectLog('Fetching profile.');
-      api.user.profile(goodProfile, failProfile);
-    }
-
-    function goodLogin (data, status) {
-      console.log(data);
-      // if the user wanted their data saved, save it now that we proved they can log in
-      if ($('#rememberme').prop('checked')) {
-        var f = window.localSave;
-        var obj = {
-          tidepool: {
-            username: username,
-            password: password,
-            remember_me: true,
-          },
-          defaultServer: $('#serverURL').val()
-        };
-        f(obj);
-      } else {
-        // if remember me is NOT checked, make sure that we don't have any saved data
-        window.localSave({
-          tidepool: {
-            username: '',
-            password: '',
-            remember_me: false
-          },
-          defaultServer: $('#serverURL').val()
-        });
+      function failUpload (error, status) {
+        connectLog('FAILED getting upload info!', status, error);
       }
-      myuserid = data.userid;
-      connectLog(status);
-      getProfile();
-      setUIState('.state_upload');
-    }
 
-    function failLogin (error, status) {
-      console.log('Login failed.');
-      connectLog('Login failed.');
-      $('.loginstatus').text('Login failed');
-      setUIState('.state_login');
-    }
+      function getUploadAccounts () {
+        connectLog('Fetching upload info.');
+        api.upload.accounts(goodUpload, failUpload);
+      }
 
-    api.user.login({ username: username, password:password}, goodLogin, failLogin);
+      function goodProfile (data, status) {
+        connectLog(status);
+        connectLog(util.format('%j', data));
+        myfullname = data.fullName;
+        $('.loginname').text(myfullname);
+        getUploadAccounts();
+      }
+
+      function failProfile (error, status) {
+        connectLog('FAILED fetching profile!', status, error);
+      }
+
+      function getProfile () {
+        connectLog('Fetching profile.');
+        api.user.profile(goodProfile, failProfile);
+      }
+
+      function goodLogin (data, status) {
+        console.log(data);
+        // if the user wanted their data saved, save it now that we proved they can log in
+        if ($('#rememberme').prop('checked')) {
+          var f = window.localSave;
+          var obj = {
+            tidepool: {
+              username: username,
+              password: password,
+              remember_me: true,
+            },
+            defaultServer: $('#serverURL').val()
+          };
+          f(obj);
+        } else {
+          // if remember me is NOT checked, make sure that we don't have any saved data
+          window.localSave({
+            tidepool: {
+              username: '',
+              password: '',
+              remember_me: false
+            },
+            defaultServer: $('#serverURL').val()
+          });
+        }
+        myuserid = data.userid;
+        connectLog(status);
+        getProfile();
+        setUIState('.state_upload');
+      }
+
+      function failLogin (error, status) {
+        console.log('Login failed.');
+        connectLog('Login failed.');
+        $('.loginstatus').text('Login failed');
+        setUIState('.state_login');
+      }
+
     });
+
+    
 
   });
 
