@@ -10,17 +10,13 @@ pids
 logs
 results
 config
+build
+dist
+dist.zip
 
 npm-debug.log
 node_modules
 bower_components
-
-bundle.js*
-*.min.*
-68ed1dac06bf0409c18ae7bc62889170.woff
-7ad17c6085dee9a33787bac28fb23d46.eot
-e49d52e74b7689a0727def99da31f3eb.ttf
-32941d6330044744c02493835b799e90.svg
 
 .DS_Store
 .idea
