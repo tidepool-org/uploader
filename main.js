@@ -32,6 +32,8 @@
 // these are the 'global' values we always want to be available
 // you can also save/restore other values (and should, for device details)
 
+var store = require('./lib/core/storage.js')();
+
 var defaultStorage = {
   tidepool: {
     username: '',
@@ -52,18 +54,20 @@ function localSave(object) {
   if (object == null) {
     throw new Error('Save called with null object!');
   }
-  chrome.storage.local.remove('asantePortPattern');
+  store.removeItem('asantePortPattern');
   // chrome.storage.local.remove('user');
   // chrome.storage.local.remove('dexcomPortPrefix');
-  chrome.storage.local.set(object);
+  
+  //hmm not so sure
+  store.setItem('asantePortPattern',object);
 }
 
 function localLoad(object, cb) {
   console.log('calling local load!');
   if (object == null) {
-    chrome.storage.local.get(defaultStorage, cb);
+    return cb(store.getItem(defaultStorage));
   } else {
-    chrome.storage.local.get(object, cb);
+    return cb(store.getItem(object));
   }
 }
 
