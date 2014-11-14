@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/tidepool-org/chrome-uploader.png)](https://travis-ci.org/tidepool-org/chrome-uploader)
 
-These notes were updated on Sunday, November 9, 2014. 
+These notes were updated on Sunday, November 9, 2014.
 
-This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud. 
+This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud.
 
 WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. IT IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.
 
@@ -14,7 +14,7 @@ This is roughly in priority order:
 * Use platform-client (jhbate)
 * Convert to use Sundial instead of timeutils.js. (jhbate?)
 * Dexcom detect needs to actually do a detect (and return serial number) -- right now it's just a dummy.
-* Validate Dexcom against the Dexcom spec and write some test code for it (kentquirk with some help from jebeck) 
+* Validate Dexcom against the Dexcom spec and write some test code for it (kentquirk with some help from jebeck)
 * Upload other events for Dexcom if supported (kentquirk)
 * Figure out how to submit to Chrome app store (nicolashery)
 * Use the pwdSimulator for Asante and Omnipod (kentquirk)
@@ -22,7 +22,7 @@ This is roughly in priority order:
 * Add more BGMs
 * Better model for settings page
 * Call displaySelectedDevices after save button clicked in settings so you don't have to wait for the scan routine.
-such as uploadButtons) by their device name. 
+such as uploadButtons) by their device name.
 * Remove excess code that's no longer in use
 * Clean up the code in index.js
 * Save the serial port info for the port names found for a given device so we don't have to pattern match once we've found it (or include a helper in the settings page)
@@ -40,7 +40,7 @@ such as uploadButtons) by their device name.
 
 ### Can talk to the Tidepool Platform
 * Displays a UI for you to enter your username and password
-* Will log you in to your account on the Tidepool platform (and has a selector for local/dev/staging/prod -- this will go away someday or move to the settings). 
+* Will log you in to your account on the Tidepool platform (and has a selector for local/dev/staging/prod -- this will go away someday or move to the settings).
 * Gets a token after login allowing uploads
 * Can upload data to the platform
 
@@ -57,7 +57,7 @@ such as uploadButtons) by their device name.
 * Has some utilities for building and disassembling byte-oriented packets of data and calculating CRCs.
 
 ### Can handle selection and upload of a data file from a block mode device
-* It can detect insertion of a block mode device, but you must press "Choose File" to bring up the file selection dialog (this is a security measure imposed by Chrome). 
+* It can detect insertion of a block mode device, but you must press "Choose File" to bring up the file selection dialog (this is a security measure imposed by Chrome).
 * So far, the Insulet OmniPod is the only block mode device supported.
 
 ### Is starting to know how to talk to a Dexcom G4
@@ -85,9 +85,9 @@ such as uploadButtons) by their device name.
 
 1. Clone this repository.
 1. Run `npm install`
-1. Run `./node_modules/.bin/webpack --progress -d`
-1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line). 
-1. Click "Load Unpacked Extension". 
+1. Run `npm start` (will bundle files, and watch for changes)
+1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
+1. Click "Load Unpacked Extension".
 1. Choose the directory you checked out above and click OK.
 1. To run it, you can choose "Launch" from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.
 1. If you're developing, you may find that the only way it runs properly is to hit "Reload" after each change to the source. You will definitely need to reload any time you change the manifest.
@@ -111,3 +111,8 @@ such as uploadButtons) by their device name.
 
 
 Note that Blip doesn't like it much if you don't have at least 24 hours worth of data, although it will work with only CGM data.
+
+## Publishing
+
+1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
+1. Build `dist.zip` file with `npm run build`

@@ -1,10 +1,16 @@
 {
-  "name": "uploader-private",
-  "version": "0.0.0",
+  "name": "tidepool-uploader",
+  "version": "0.80.0",
   "description": "Tidepool Project Universal Uploader",
+  "private": true,
   "main": "main.js",
   "author": "Kent Quirk",
   "license": "BSD2",
+  "scripts": {
+    "start": "webpack -d --progress --colors --watch",
+    "build-bundle": "webpack -p --progress --colors --output-path dist/build",
+    "build": "./build.sh"
+  },
   "dependencies": {
     "async": "0.9.0",
     "babyparse": "0.2.1",
@@ -21,6 +27,7 @@
   },
   "devDependencies": {
     "mocha": "1.21.4",
-    "salinity": "0.0.5"
+    "salinity": "0.0.5",
+    "webpack": "1.3.7"
   }
 }

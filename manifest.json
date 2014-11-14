@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Device Uploader",
   "short_name": "Uploader",
-  "version": "0.80",
+  "version": "0.80.0",
   "minimum_chrome_version": "38",
   "icons": {
     "16": "T_icon_dark_16.png",
@@ -33,7 +33,7 @@
           "deviceName": "Asante SNAP w/Asante cable",
           "driverId": "AsanteSNAPNeedDriver",
           "mode": "not supported",
-          "vendorId": 1027, 
+          "vendorId": 1027,
           "productId": 32568
         },
         {
@@ -41,7 +41,7 @@
           "driverId": "AsanteSNAP",
           "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
           "mode": "FTDI",
-          "vendorId": 1027, 
+          "vendorId": 1027,
           "productId": 24577
         },
         {
@@ -49,7 +49,7 @@
           "driverId": "OneTouchMini",
           "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
           "mode": "FTDI",
-          "vendorId": 1027, 
+          "vendorId": 1027,
           "productId": 24577
         },
         {
