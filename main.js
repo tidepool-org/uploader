@@ -48,7 +48,7 @@ var defaultStorage = {
 };
 
 
-function localSave(object) {
+function localSave(key, object) {
   console.log('calling local save!');
   console.log(object);
   if (object == null) {
@@ -57,9 +57,9 @@ function localSave(object) {
   store.removeItem('asantePortPattern');
   // chrome.storage.local.remove('user');
   // chrome.storage.local.remove('dexcomPortPrefix');
-  
+
   //hmm not so sure
-  store.setItem('asantePortPattern',object);
+  store.setItem('',object);
 }
 
 function localLoad(object, cb) {

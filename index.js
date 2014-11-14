@@ -198,9 +198,6 @@ function constructUI() {
       }
 
     });
-
-    
-
   });
 
   $('#logoutButton').click(function () {
