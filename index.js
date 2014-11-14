@@ -25,6 +25,8 @@ var timeutils = require('./lib/timeutils.js');
 var util = require('util');
 var _ = require('lodash');
 
+var api = require('./lib/core/api.js');
+
 require('./js/bootstrap.js');
 require('./css/bootstrap.css');
 require('./css/bootstrap-theme.css');
@@ -32,111 +34,9 @@ require('./styles/custom.css');
 
 // these are the settings that are stored in local storage
 var settings = {};
-
-var make_base_auth = function (username, password) {
-  var tok = username + ':' + password;
-  var hash = btoa(tok);
-  return 'Basic ' + hash;
-};
-
-var tidepoolHosts = {
-  local: { 
-    host: 'http://localhost:8009', 
-    jellyfish: 'http://localhost:9122',
-    blip: 'http://localhost:3000'
-  },
-  devel: { 
-    host: 'https://devel-api.tidepool.io', 
-    jellyfish: 'https://devel-uploads.tidepool.io',
-    blip: 'https://blip-devel.tidepool.io'
-  },
-  staging: { 
-    host: 'https://staging-api.tidepool.io', 
-    jellyfish: 'https://staging-uploads.tidepool.io',
-    blip: 'https://blip-staging.tidepool.io'
-  },
-  prod: { 
-    host: 'https://api.tidepool.io', 
-    jellyfish: 'https://uploads.tidepool.io',
-    blip: 'https://blip-ucsf-pilot.tidepool.io'
-  }
-};
-
-var tidepoolServerData = {
-  host: '',
-  jellyfish: '',
-  usertoken: '',
-  userdata: null,
-  isLoggedIn: false
-};
-
 var storageDeviceInfo = {};
 
-var tidepoolServer = {
-  get: function (url, happycb, sadcb) {
-    $.ajax({
-      type: 'GET',
-      url: url,
-      headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
-    }).success(function (data, status, jqxhr) {
-      var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
-      if (tok && tok != tidepoolServerData.usertoken) {
-        tidepoolServerData.usertoken = tok;
-      }
-      happycb(data, status, jqxhr);
-    }).error(function (jqxhr, status, err) {
-      sadcb(jqxhr, status, err);
-    });
-  },
-  post: function (url, data, happycb, sadcb) {
-    $.ajax({
-      type: 'POST',
-      url: url,
-      contentType: 'application/json',
-      data: JSON.stringify(data),
-      headers: { 'x-tidepool-session-token': tidepoolServerData.usertoken }
-    }).success(function (data, status, jqxhr) {
-      var tok = jqxhr.getResponseHeader('x-tidepool-session-token');
-      if (tok && tok != tidepoolServerData.usertoken) {
-        tidepoolServerData.usertoken = tok;
-      }
-      happycb(data, status, jqxhr);
-    }).error(function (jqxhr, status, err) {
-      sadcb(jqxhr, status, err);
-    });
-  },
-  login: function (username, password, happycb, sadcb) {
-    var url = tidepoolServerData.host + '/auth/login';
-    console.log('in login');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      headers: { 'Authorization': make_base_auth(username, password) }
-    }).success(function (data, status, jqxhr) {
-      console.log('success from login');
-      tidepoolServerData.usertoken = jqxhr.getResponseHeader('x-tidepool-session-token');
-      tidepoolServerData.userdata = data;
-      happycb(data, status, jqxhr);
-    }).error(function (jqxhr, status, err) {
-      console.log('error from login');
-      sadcb(jqxhr, status, err);
-    });
-  },
-  getProfile: function (happycb, sadcb) {
-    var url = tidepoolServerData.host + '/metadata/' + tidepoolServerData.userdata.userid + '/profile';
-    this.get(url, happycb, sadcb);
-  },
-  getUploadAccounts: function (happycb, sadcb) {
-    var url = tidepoolServerData.host + '/access/groups/' + tidepoolServerData.userdata.userid;
-    this.get(url, happycb, sadcb);
-  },
-  postToJellyfish: function (data, happycb, sadcb) {
-    var url = tidepoolServerData.jellyfish + '/data';
-    this.post(url, data, happycb, sadcb);
-  }
-};
-
-var jellyfish = require('./lib/jellyfishClient.js')({tidepoolServer: tidepoolServer});
+var jellyfish = require('./lib/jellyfishClient.js')({tidepoolServer: api});
 var builder = require('./lib/objectBuilder.js')();
 var serialDevice = require('./lib/serialDevice.js');
 var driverManager = require('./lib/driverManager.js');
@@ -207,93 +107,100 @@ function constructUI() {
     var myuserid = null;
     var myfullname = null;
     // console.log(username, password, serverIndex);
-    tidepoolServerData.host = tidepoolHosts[serverIndex].host;
-    tidepoolServerData.jellyfish = tidepoolHosts[serverIndex].jellyfish;
 
-    function goodUpload (data, status, jqxhr) {
-      connectLog(status);
-      connectLog(util.format('%j', data));
-      var otherusers = _.omit(data, myuserid);
-      $('#uploadOptions')
-      .append($('<option></option>')
-        .attr('value', '0')
-        .text(myfullname));
-      if (otherusers != {}) {
-        var otherids = _.keys(otherusers);
-        _.each(otherids, function(otherid) {
-          $('#uploadOptions')
-          .append($('<option></option>')
-            .attr('value', '0')
-            .text('User ' + otherid));
-        });
+    api.serverData.host = api.hosts[serverIndex].host;
+    api.serverData.jellyfish = api.hosts[serverIndex].jellyfish;
+
+    //init api based on the environment then get going
+    api.init(api.serverData,function(){
+      api.user.login({ username: username, password:password}, goodLogin, failLogin);
+      function goodUpload (data, status) {
+        connectLog(status);
+        connectLog(util.format('%j', data));
+        var otherusers = _.omit(data, myuserid);
+        $('#uploadOptions')
+        .append($('<option></option>')
+          .attr('value', '0')
+          .text(myfullname));
+        if (otherusers != {}) {
+          var otherids = _.keys(otherusers);
+          _.each(otherids, function(otherid) {
+            $('#uploadOptions')
+            .append($('<option></option>')
+              .attr('value', '0')
+              .text('User ' + otherid));
+          });
+        }
       }
-    }
 
-    function failUpload (jqxhr, status, error) {
-      connectLog('FAILED getting upload info!', status, error);
-    }
-
-    function getUploadAccounts () {
-      connectLog('Fetching upload info.');
-      tidepoolServer.getUploadAccounts(goodUpload, failUpload);
-    }
-
-    function goodProfile (data, status, jqxhr) {
-      connectLog(status);
-      connectLog(util.format('%j', data));
-      myfullname = data.fullName;
-      $('.loginname').text(myfullname);
-      getUploadAccounts();
-    }
-
-    function failProfile (jqxhr, status, error) {
-      connectLog('FAILED fetching profile!', status, error);
-    }
-
-    function getProfile () {
-      connectLog('Fetching profile.');
-      tidepoolServer.getProfile(goodProfile, failProfile);
-    }
-
-    function goodLogin (data, status, jqxhr) {
-      console.log(data);
-      // if the user wanted their data saved, save it now that we proved they can log in
-      if ($('#rememberme').prop('checked')) {
-        var f = window.localSave;
-        var obj = {
-          tidepool: {
-            username: username,
-            password: password,
-            remember_me: true,
-          },
-          defaultServer: $('#serverURL').val()
-        };
-        f(obj);
-      } else {
-        // if remember me is NOT checked, make sure that we don't have any saved data
-        window.localSave({
-          tidepool: {
-            username: '',
-            password: '',
-            remember_me: false
-          },
-          defaultServer: $('#serverURL').val()
-        });
+      function failUpload (error, status) {
+        connectLog('FAILED getting upload info!', status, error);
       }
-      myuserid = data.userid;
-      connectLog(status);
-      getProfile();
-      setUIState('.state_upload');
-    }
 
-    function failLogin (jqxhr, status, error) {
-      console.log('Login failed.');
-      connectLog('Login failed.'); // don't display status -- it includes password!
-      $('.loginstatus').text('Login failed');
-      setUIState('.state_login');
-    }
+      function getUploadAccounts () {
+        connectLog('Fetching upload info.');
+        api.upload.accounts(goodUpload, failUpload);
+      }
 
-    tidepoolServer.login(username, password, goodLogin, failLogin);
+      function goodProfile (data, status) {
+        connectLog(status);
+        connectLog(util.format('%j', data));
+        myfullname = data.fullName;
+        $('.loginname').text(myfullname);
+        getUploadAccounts();
+      }
+
+      function failProfile (error, status) {
+        connectLog('FAILED fetching profile!', status, error);
+      }
+
+      function getProfile () {
+        connectLog('Fetching profile.');
+        api.user.profile(goodProfile, failProfile);
+      }
+
+      function goodLogin (data, status) {
+        console.log(data);
+        // if the user wanted their data saved, save it now that we proved they can log in
+        if ($('#rememberme').prop('checked')) {
+          var f = window.localSave;
+          var obj = {
+            tidepool: {
+              username: username,
+              password: password,
+              remember_me: true,
+            },
+            defaultServer: $('#serverURL').val()
+          };
+          f(obj);
+        } else {
+          // if remember me is NOT checked, make sure that we don't have any saved data
+          window.localSave({
+            tidepool: {
+              username: '',
+              password: '',
+              remember_me: false
+            },
+            defaultServer: $('#serverURL').val()
+          });
+        }
+        myuserid = data.userid;
+        connectLog(status);
+        getProfile();
+        setUIState('.state_upload');
+      }
+
+      function failLogin (error, status) {
+        console.log('Login failed.');
+        connectLog('Login failed.');
+        $('.loginstatus').text('Login failed');
+        setUIState('.state_login');
+      }
+
+    });
+
+    
+
   });
 
   $('#logoutButton').click(function () {
@@ -597,6 +504,8 @@ function constructUI() {
 
       reader.onerror = function (evt) {
         console.log('Reader error!');
+        //send it to the platform
+        api.errors.log(evt, 'InsuletOmniPod reader error!', {});
         console.log(evt);
       };
 
@@ -620,6 +529,7 @@ function constructUI() {
           doUploads(['InsuletOmniPod'], blockDevices, cfg, function (err, results) {
             if (err) {
               connectLog('Some sort of error occurred (see console).');
+              api.errors.log(err, 'InsuletOmniPod some sort of error occurred (see console).', {});
               console.log('Fail');
               console.log(err);
               console.log(results);
@@ -660,6 +570,7 @@ function constructUI() {
 
     reader.onerror = function (evt) {
       console.log('Reader error!');
+      api.errors.log(evt, 'Carelink file reader error!', {});
       console.log(evt);
     };
 
@@ -675,6 +586,7 @@ function constructUI() {
       doUploads(['Carelink'], uploaders, cfg, function (err, results) {
         if (err) {
           connectLog('Some sort of error occurred (see console).');
+          api.errors.log(err, 'Carelink: some sort of error occurred (see console).', {});
           console.log('Fail');
           console.log(err);
           console.log(results);
@@ -705,6 +617,7 @@ function constructUI() {
     doUploads(['Carelink'], uploaders, cfg, function(err, results){
       if (err != null) {
         connectLog('Error when pulling data');
+        api.errors.log(err, 'Carelink: error when pulling data.', {});
         console.log(err);
         console.log(results);
       } else {

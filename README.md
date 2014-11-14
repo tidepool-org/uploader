@@ -1,5 +1,7 @@
 # Tidepool Uploader
 
+[![Build Status](https://travis-ci.org/tidepool-org/chrome-uploader.png)](https://travis-ci.org/tidepool-org/chrome-uploader)
+
 These notes were updated on Sunday, November 9, 2014.
 
 This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud.
