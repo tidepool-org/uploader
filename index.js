@@ -18,6 +18,8 @@
  * == BSD2 LICENSE ==
  */
 
+/* global chrome */
+
 var $ = require('jquery');
 window.jQuery = $;
 var async = require('async');

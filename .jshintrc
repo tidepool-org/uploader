@@ -5,15 +5,15 @@
   "browser": true,
   "esnext": true,
   "eqnull": true,
-  "globals": { "_": false, "$": false, "async": false, "console": false, "chrome": false, "struct": false },
   "globalstrict": true,
   "indent": 2,
   "laxcomma": true,
+  "loopfunc": true,
   "node": true,
   "quotmark": true,
   "smarttabs": false,
   "strict": false,
+  "sub": true,
   "trailing": true,
-  "undef": true,
-  "unused": "vars"
+  "undef": true
 }

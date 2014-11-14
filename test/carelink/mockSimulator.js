@@ -27,7 +27,7 @@ exports.make = function(config) {
   function appendToEvents(type) {
     return function() {
       events.push(_.assign.apply(_.assign, [{type: type}, defaults].concat(Array.prototype.slice.call(arguments, 0))));
-    }
+    };
   }
 
   return {

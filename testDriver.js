@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-testDriver = function(config) {
+var testDriver = function(config) {
     var cfg = config;
 
     return {
