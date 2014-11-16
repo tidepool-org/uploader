@@ -47,8 +47,6 @@ var defaultStorage = {
 
 
 function localSave(store, key, object) {
-  console.log('calling local save!');
-  console.log(object);
   if (object == null || object == '') {
     throw new Error('Save called with null object!');
   }
@@ -57,15 +55,13 @@ function localSave(store, key, object) {
   // chrome.storage.local.remove('dexcomPortPrefix');
 
   //hmm not so sure
-  store.setItem('',object);
+  store.setItem(key,object);
 }
 
 function localLoad(store, object, cb) {
-  console.log('calling local load!');
   if (object == null || object == '') {
     return cb(store.getItem(defaultStorage));
   } else {
-    console.log('getting ... '+object);
     return cb(store.getItem(object));
   }
 }
