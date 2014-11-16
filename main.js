@@ -32,8 +32,6 @@
 // these are the 'global' values we always want to be available
 // you can also save/restore other values (and should, for device details)
 
-var store = require('./lib/core/storage.js')();
-
 var defaultStorage = {
   tidepool: {
     username: '',
@@ -48,10 +46,10 @@ var defaultStorage = {
 };
 
 
-function localSave(key, object) {
+function localSave(store, key, object) {
   console.log('calling local save!');
   console.log(object);
-  if (object == null) {
+  if (object == null || object == '') {
     throw new Error('Save called with null object!');
   }
   store.removeItem('asantePortPattern');
@@ -62,11 +60,12 @@ function localSave(key, object) {
   store.setItem('',object);
 }
 
-function localLoad(object, cb) {
+function localLoad(store, object, cb) {
   console.log('calling local load!');
-  if (object == null) {
+  if (object == null || object == '') {
     return cb(store.getItem(defaultStorage));
   } else {
+    console.log('getting ... '+object);
     return cb(store.getItem(object));
   }
 }
