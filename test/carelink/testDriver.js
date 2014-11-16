@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+/* global describe, it */
+
 var async = require('async');
 var fs = require('fs');
 var expect = require('salinity').expect;

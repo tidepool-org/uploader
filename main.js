@@ -22,6 +22,8 @@
  * == BSD2 LICENSE ==
  */
 
+/* global chrome */
+
 
 // things to store:
 // username/pw, remember me checkbox for: tidepool
