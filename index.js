@@ -550,7 +550,7 @@ function constructUI() {
 
   $('#signup').click(function () {
     var serverIndex = $('#serverURL').val();
-    window.open(tidepoolHosts[serverIndex].blip);
+    window.open(api.hosts[serverIndex].blip);
   });
 
   // this deals with the omnipod
