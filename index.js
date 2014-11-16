@@ -679,31 +679,33 @@ function constructUI() {
     console.log('load was called');
     window.localLoad(store, '', function(newsettings) {
       settings = newsettings;
-      if (settings.tidepool.remember_me === true) {
-        $('#username').val(settings.tidepool.username);
-        $('#password').val(settings.tidepool.password);
-        $('#rememberme').prop('checked', true);
-      }
-      if (settings.defaultServer) {
-        $('#serverURL').val(settings.defaultServer);
-      }
-      if (settings.timezone) {
-        $('#timezone').val(settings.timezone);
-      }
-      if (settings.dexcomPortPattern) {
-        $('#dexcomPortPattern').val(settings.dexcomPortPattern);
-        serialConfigs.DexcomG4.deviceComms.setPattern(settings.dexcomPortPattern);
-      }
-      if (settings.FTDIPortPattern) {
-        $('#FTDIPortPattern').val(settings.FTDIPortPattern);
-        serialConfigs.AsanteSNAP.deviceComms.setPattern(settings.FTDIPortPattern);
-        serialConfigs.OneTouchMini.deviceComms.setPattern(settings.FTDIPortPattern);
-      }
-      if (settings.forceDeviceIDs) {
-        _.each(settings.forceDeviceIDs, function(box) {
-          $('#show' + box).prop('checked', true);
-          forceDeviceIDs = settings.forceDeviceIDs;
-        });
+      if(!_.isEmpty(settings)){
+        if (settings.tidepool.remember_me === true) {
+          $('#username').val(settings.tidepool.username);
+          $('#password').val(settings.tidepool.password);
+          $('#rememberme').prop('checked', true);
+        }
+        if (settings.defaultServer) {
+          $('#serverURL').val(settings.defaultServer);
+        }
+        if (settings.timezone) {
+          $('#timezone').val(settings.timezone);
+        }
+        if (settings.dexcomPortPattern) {
+          $('#dexcomPortPattern').val(settings.dexcomPortPattern);
+          serialConfigs.DexcomG4.deviceComms.setPattern(settings.dexcomPortPattern);
+        }
+        if (settings.FTDIPortPattern) {
+          $('#FTDIPortPattern').val(settings.FTDIPortPattern);
+          serialConfigs.AsanteSNAP.deviceComms.setPattern(settings.FTDIPortPattern);
+          serialConfigs.OneTouchMini.deviceComms.setPattern(settings.FTDIPortPattern);
+        }
+        if (settings.forceDeviceIDs) {
+          _.each(settings.forceDeviceIDs, function(box) {
+            $('#show' + box).prop('checked', true);
+            forceDeviceIDs = settings.forceDeviceIDs;
+          });
+        }
       }
       console.log(settings);
     });
