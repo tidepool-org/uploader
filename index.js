@@ -108,7 +108,6 @@ function constructUI() {
   $('#loginButton').click(function () {
     var username = $('#username').val();
     var password = $('#password').val();
-    var serverIndex = $('#serverURL').val();
     var myuserid = null;
     var myfullname = null;
     // console.log(username, password, serverIndex);
@@ -170,8 +169,7 @@ function constructUI() {
               username: username,
               password: password,
               remember_me: true,
-            },
-            defaultServer: $('#serverURL').val()
+            }
           };
           f(store,obj);
         } else {
@@ -181,8 +179,7 @@ function constructUI() {
               username: '',
               password: '',
               remember_me: false
-            },
-            defaultServer: $('#serverURL').val()
+            }
           });
         }
         myuserid = data.userid;
@@ -545,7 +542,6 @@ function constructUI() {
   }
 
   $('#signup').click(function () {
-    var serverIndex = $('#serverURL').val();
     window.open(config.BLIP_URL);
   });
 
@@ -683,9 +679,6 @@ function constructUI() {
           $('#username').val(settings.tidepool.username);
           $('#password').val(settings.tidepool.password);
           $('#rememberme').prop('checked', true);
-        }
-        if (settings.defaultServer) {
-          $('#serverURL').val(settings.defaultServer);
         }
         if (settings.timezone) {
           $('#timezone').val(settings.timezone);
