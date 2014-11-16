@@ -176,10 +176,10 @@ function constructUI() {
             },
             defaultServer: $('#serverURL').val()
           };
-          f(store,null,obj);
+          f(store,obj);
         } else {
           // if remember me is NOT checked, make sure that we don't have any saved data
-          window.localSave(store,null,{
+          window.localSave(store,{
             tidepool: {
               username: '',
               password: '',

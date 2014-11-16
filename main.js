@@ -48,7 +48,7 @@ var defaultStorage = {
 };
 
 
-function localSave(store, key, object) {
+function localSave(store, object) {
   if (object == null || object === '') {
     throw new Error('Save called with null object!');
   }
@@ -57,7 +57,7 @@ function localSave(store, key, object) {
   // chrome.storage.local.remove('dexcomPortPrefix');
 
   //hmm not so sure
-  store.setItem(key,object);
+  store.setItem(null,object);
 }
 
 function localLoad(store, object, cb) {
