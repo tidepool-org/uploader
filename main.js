@@ -8,15 +8,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -48,37 +48,25 @@ var defaultStorage = {
 };
 
 
-function localSave(object) {
-  console.log('calling local save!');
-  console.log(object);
-  if (object == null) {
+function localSave(store, object) {
+  if (object == null || object === '') {
     throw new Error('Save called with null object!');
   }
-  chrome.storage.local.remove('asantePortPattern');
+  store.removeItem('asantePortPattern');
   // chrome.storage.local.remove('user');
   // chrome.storage.local.remove('dexcomPortPrefix');
-  chrome.storage.local.set(object);
+
+  //hmm not so sure
+  store.setItem(null,object);
 }
 
-function localLoad(object, cb) {
-  console.log('calling local load!');
-  if (object == null) {
-    chrome.storage.local.get(defaultStorage, cb);
+function localLoad(store, object, cb) {
+  if (object == null || object === '') {
+    return store.init(defaultStorage,cb);
   } else {
-    chrome.storage.local.get(object, cb);
+    return cb(store.getItem(object));
   }
 }
-
-chrome.runtime.onInstalled.addListener(function() {
-  console.log('onInstall was called');
-  localLoad(null, function(items) {
-    console.log(items);
-    for (var i in items) {
-      defaultStorage[i] = items[i];
-    }
-    console.log(defaultStorage);
-  });
-});
 
 chrome.app.runtime.onLaunched.addListener(function() {
   // Center window on screen.
@@ -97,9 +85,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
       minWidth: 600,
       minHeight: 500
     }
-  }, function(createdWindow) { 
+  }, function(createdWindow) {
     createdWindow.contentWindow.localSave = localSave;
     createdWindow.contentWindow.localLoad = localLoad;
   });
 });
-
