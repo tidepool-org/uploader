@@ -48,24 +48,23 @@ var defaultStorage = {
 };
 
 
-function localSave(object) {
-  console.log('calling local save!');
-  console.log(object);
-  if (object == null) {
+function localSave(store, object) {
+  if (object == null || object === '') {
     throw new Error('Save called with null object!');
   }
-  chrome.storage.local.remove('asantePortPattern');
+  store.removeItem('asantePortPattern');
   // chrome.storage.local.remove('user');
   // chrome.storage.local.remove('dexcomPortPrefix');
-  chrome.storage.local.set(object);
+
+  //hmm not so sure
+  store.setItem(null,object);
 }
 
-function localLoad(object, cb) {
-  console.log('calling local load!');
-  if (object == null) {
-    chrome.storage.local.get(defaultStorage, cb);
+function localLoad(store, object, cb) {
+  if (object == null || object === '') {
+    return store.init(defaultStorage,cb);
   } else {
-    chrome.storage.local.get(object, cb);
+    return cb(store.getItem(object));
   }
 }
 
