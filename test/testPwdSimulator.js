@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+/* global beforeEach, describe, it */
+
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
@@ -48,28 +50,28 @@ describe('pwdSimulator.js', function(){
   describe('cbg', function(){
     it('works', function(){
       var val = {
-        time: "2014-09-25T01:00:00.000Z",
-        deviceTime: "2014-09-25T01:00:00",
+        time: '2014-09-25T01:00:00.000Z',
+        deviceTime: '2014-09-25T01:00:00',
         value: 123,
         timezoneOffset: 0
       };
 
       simulator.cbg(val);
-      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "cbg"}, val)]);
+      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'cbg'}, val)]);
     });
   });
 
   describe('smbg', function(){
     it('works', function(){
       var val = {
-        time: "2014-09-25T01:00:00.000Z",
-        deviceTime: "2014-09-25T01:00:00",
+        time: '2014-09-25T01:00:00.000Z',
+        deviceTime: '2014-09-25T01:00:00',
         value: 1.3,
         timezoneOffset: 0
       };
 
       simulator.smbg(val);
-      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "smbg"}, val)]);
+      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'smbg'}, val)]);
     });
   });
 
@@ -77,8 +79,8 @@ describe('pwdSimulator.js', function(){
     describe('dual', function(){
       it('works', function(){
         var val = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           normal: 1.3,
           extended: 1.4,
           duration: 60000,
@@ -86,36 +88,36 @@ describe('pwdSimulator.js', function(){
         };
 
         simulator.bolusDual(val);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "dual/square"}, val)]);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'bolus', subType: 'dual/square'}, val)]);
       });
     });
 
     describe('normal', function(){
       it('works', function(){
         var val = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           normal: 1.3,
           timezoneOffset: 0
         };
 
         simulator.bolusNormal(val);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "normal"}, val)]);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'bolus', subType: 'normal'}, val)]);
       });
     });
 
     describe('square', function(){
       it('works', function(){
         var val = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           extended: 1.4,
           duration: 60000,
           timezoneOffset: 0
         };
 
         simulator.bolusSquare(val);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "bolus", subType: "square"}, val)]);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'bolus', subType: 'square'}, val)]);
       });
     });
   });
@@ -126,8 +128,8 @@ describe('pwdSimulator.js', function(){
       describe('withoutSettings', function(){
         it('passes through without an annotation', function(){
           var val = {
-            time: "2014-09-25T01:00:00.000Z",
-            deviceTime: "2014-09-25T01:00:00",
+            time: '2014-09-25T01:00:00.000Z',
+            deviceTime: '2014-09-25T01:00:00',
             scheduleName: 'billy',
             rate: 1.3,
             duration: 3600000,
@@ -135,29 +137,29 @@ describe('pwdSimulator.js', function(){
           };
 
           simulator.basalScheduled(val);
-          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'scheduled'}, val)]);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'basal', deliveryType: 'scheduled'}, val)]);
         });
 
         it('attaches a previous when there is an active basal', function(){
           var initialBasal = {
-            time: "2014-09-25T01:00:00.000Z",
-            deviceTime: "2014-09-25T01:00:00",
+            time: '2014-09-25T01:00:00.000Z',
+            deviceTime: '2014-09-25T01:00:00',
             scheduleName: 'billy',
             rate: 1.3,
             duration: 3600000,
             timezoneOffset: 0
           };
           var secondBasal = {
-            time: "2014-09-25T02:00:00.000Z",
-            deviceTime: "2014-09-25T02:00:00",
+            time: '2014-09-25T02:00:00.000Z',
+            deviceTime: '2014-09-25T02:00:00',
             scheduleName: 'billy',
             rate: 1.4,
             duration: 3600000,
             timezoneOffset: 0
           };
           var thirdBasal = {
-            time: "2014-09-25T03:00:00.000Z",
-            deviceTime: "2014-09-25T03:00:00",
+            time: '2014-09-25T03:00:00.000Z',
+            deviceTime: '2014-09-25T03:00:00',
             scheduleName: 'billy',
             rate: 1.5,
             duration: 3600000,
@@ -169,7 +171,7 @@ describe('pwdSimulator.js', function(){
           simulator.basalScheduled(thirdBasal);
           expect(simulator.getEvents()).deep.equals(
             attachPrev([
-              _.assign({type: "basal", deliveryType: 'scheduled'}, initialBasal),
+              _.assign({type: 'basal', deliveryType: 'scheduled'}, initialBasal),
               _.assign({type: 'basal', deliveryType: 'scheduled'}, secondBasal),
               _.assign({type: 'basal', deliveryType: 'scheduled'}, thirdBasal)
             ])
@@ -179,8 +181,8 @@ describe('pwdSimulator.js', function(){
 
         it('if no duration, attaches a 0 duration and annotates', function(){
           var val = {
-            time: "2014-09-25T01:00:00.000Z",
-            deviceTime: "2014-09-25T01:00:00",
+            time: '2014-09-25T01:00:00.000Z',
+            deviceTime: '2014-09-25T01:00:00',
             scheduleName: 'billy',
             rate: 1.3,
             timezoneOffset: 0
@@ -190,7 +192,7 @@ describe('pwdSimulator.js', function(){
           expect(simulator.getEvents()).deep.equals(
             [
               _.assign(
-                { type: "basal",
+                { type: 'basal',
                   duration: 0,
                   deliveryType: 'scheduled',
                   annotations: [{code: 'basal/unknown-duration'}] },
@@ -204,8 +206,8 @@ describe('pwdSimulator.js', function(){
 
       describe('withSettings', function(){
         var settings = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           activeSchedule: 'billy',
           units: { 'bg': 'mg/dL' },
           basalSchedules: {
@@ -226,8 +228,8 @@ describe('pwdSimulator.js', function(){
         describe('with duration', function(){
           it('passes through a scheduled that agrees with the schedule without annotation', function(){
             var val = {
-              time: "2014-09-25T06:00:00.000Z",
-              deviceTime: "2014-09-25T06:00:00",
+              time: '2014-09-25T06:00:00.000Z',
+              deviceTime: '2014-09-25T06:00:00',
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.1,
@@ -243,8 +245,8 @@ describe('pwdSimulator.js', function(){
 
           it('passes through a scheduled that starts mid-schedule and agrees with schedule without annotation', function(){
             var val = {
-              time: "2014-09-25T06:01:00.000Z",
-              deviceTime: "2014-09-25T06:01:00",
+              time: '2014-09-25T06:01:00.000Z',
+              deviceTime: '2014-09-25T06:01:00',
               duration: 21540000,
               scheduleName: 'billy',
               rate: 1.1,
@@ -260,8 +262,8 @@ describe('pwdSimulator.js', function(){
 
           it('annotates a scheduled that doesn\'t match schedule but doesn\'t change a provided duration', function(){
             var val = {
-              time: "2014-09-25T06:00:00.000Z",
-              deviceTime: "2014-09-25T06:00:00",
+              time: '2014-09-25T06:00:00.000Z',
+              deviceTime: '2014-09-25T06:00:00',
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.0,
@@ -284,8 +286,8 @@ describe('pwdSimulator.js', function(){
         describe('no duration', function(){
           it('attaches a duration according to the schedule', function(){
             var val = {
-              time: "2014-09-25T01:00:00.000Z",
-              deviceTime: "2014-09-25T01:00:00",
+              time: '2014-09-25T01:00:00.000Z',
+              deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.0,
               timezoneOffset: 0
@@ -294,14 +296,14 @@ describe('pwdSimulator.js', function(){
             simulator.basalScheduled(val);
             expect(getBasals()).deep.equals(
               [
-                _.assign({type: "basal", deliveryType: 'scheduled', duration: 18000000}, val)
+                _.assign({type: 'basal', deliveryType: 'scheduled', duration: 18000000}, val)
               ]);
           });
 
           it('annotates if basal doesn\'t match schedule', function(){
             var val = {
-              time: "2014-09-25T01:00:00.000Z",
-              deviceTime: "2014-09-25T01:00:00",
+              time: '2014-09-25T01:00:00.000Z',
+              deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.1,
               timezoneOffset: 0
@@ -311,7 +313,7 @@ describe('pwdSimulator.js', function(){
             expect(getBasals()).deep.equals(
               [
                 _.assign(
-                  { type: "basal", deliveryType: 'scheduled', duration: 0 },
+                  { type: 'basal', deliveryType: 'scheduled', duration: 0 },
                   { annotations: [{code: 'basal/off-schedule-rate'}] },
                   val
                 )
@@ -445,21 +447,21 @@ describe('pwdSimulator.js', function(){
       describe('withoutActiveBasal', function(){
         it('passes through with no suppressed', function(){
           var val = {
-            time: "2014-09-25T01:31:57.000Z",
-            deviceTime: "2014-09-25T01:31:57",
+            time: '2014-09-25T01:31:57.000Z',
+            deviceTime: '2014-09-25T01:31:57',
             rate: 1.3,
             duration: 3600000,
             timezoneOffset: 0
           };
 
           simulator.basalTemp(val);
-          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'temp'}, val)]);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'basal', deliveryType: 'temp'}, val)]);
         });
 
         it('percent passes through with no suppressed and no rate', function(){
           var val = {
-            time: "2014-09-25T01:31:57.000Z",
-            deviceTime: "2014-09-25T01:31:57",
+            time: '2014-09-25T01:31:57.000Z',
+            deviceTime: '2014-09-25T01:31:57',
             scheduleName: 'billy',
             percent: 0.7,
             duration: 3600000,
@@ -467,14 +469,14 @@ describe('pwdSimulator.js', function(){
           };
 
           simulator.basalTemp(val);
-          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "basal", deliveryType: 'temp'}, val)]);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'basal', deliveryType: 'temp'}, val)]);
         });
       });
 
       describe('withActiveBasal', function(){
         var settings = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { 'bg': 'mg/dL' },
@@ -489,13 +491,13 @@ describe('pwdSimulator.js', function(){
           timezoneOffset: 0
         };
         var basal = {
-          time: "2014-09-25T01:00:00.000Z",
-          deviceTime: "2014-09-25T01:00:00",
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
           scheduleName: 'billy',
           rate: 2.0,
           timezoneOffset: 0
         };
-        var basalEvent = _.assign({}, {type: "basal", deliveryType: 'scheduled', duration: 18000000}, basal);
+        var basalEvent = _.assign({}, {type: 'basal', deliveryType: 'scheduled', duration: 18000000}, basal);
 
 
         beforeEach(function(){
@@ -509,8 +511,8 @@ describe('pwdSimulator.js', function(){
 
         it('sets up the suppressed and previous', function(){
           var val = {
-            time: "2014-09-25T01:31:57.000Z",
-            deviceTime: "2014-09-25T01:31:57",
+            time: '2014-09-25T01:31:57.000Z',
+            deviceTime: '2014-09-25T01:31:57',
             rate: 0.5,
             duration: 3600000,
             timezoneOffset: 0
@@ -518,14 +520,14 @@ describe('pwdSimulator.js', function(){
 
           simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
-            [_.assign({}, {type: "basal", deliveryType: 'temp', suppressed: basalEvent, previous: basalEvent}, val)]
+            [_.assign({}, {type: 'basal', deliveryType: 'temp', suppressed: basalEvent, previous: basalEvent}, val)]
           );
         });
 
         it('applies the percent to the suppressed', function(){
           var val = {
-            time: "2014-09-25T01:31:57.000Z",
-            deviceTime: "2014-09-25T01:31:57",
+            time: '2014-09-25T01:31:57.000Z',
+            deviceTime: '2014-09-25T01:31:57',
             percent: 0.3,
             duration: 3600000,
             timezoneOffset: 0
@@ -534,7 +536,7 @@ describe('pwdSimulator.js', function(){
           simulator.basalTemp(val);
           expect(getTempBasals()).deep.equals(
             [_.assign(
-              {type: "basal", deliveryType: 'temp', rate: 0.6, suppressed: basalEvent, previous: basalEvent},
+              {type: 'basal', deliveryType: 'temp', rate: 0.6, suppressed: basalEvent, previous: basalEvent},
               val
             )]
           );
@@ -616,8 +618,8 @@ describe('pwdSimulator.js', function(){
   describe('settings', function(){
     it('accepts the settings', function(){
       var val = {
-        time: "2014-09-25T01:00:00.000Z",
-        deviceTime: "2014-09-25T01:00:00",
+        time: '2014-09-25T01:00:00.000Z',
+        deviceTime: '2014-09-25T01:00:00',
         deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { 'bg': 'mg/dL' },
@@ -636,15 +638,15 @@ describe('pwdSimulator.js', function(){
       };
 
       simulator.settings(val);
-      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: "settings"}, val)]);
+      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'settings'}, val)]);
     });
   });
 
   describe('event interplay', function(){
     describe('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
-        time: "2014-09-25T00:00:00.000Z",
-        deviceTime: "2014-09-25T00:00:00",
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
         deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
@@ -706,7 +708,7 @@ describe('pwdSimulator.js', function(){
                 timezoneOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                  time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
+                  time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
                 }
               },
               {
@@ -753,7 +755,7 @@ describe('pwdSimulator.js', function(){
                    timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
                    }
                  },
                  {
@@ -765,7 +767,7 @@ describe('pwdSimulator.js', function(){
                      time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
+                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
                      }
                    }
                  }
@@ -784,7 +786,7 @@ describe('pwdSimulator.js', function(){
                    timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
                    }
                  },
                  {
@@ -796,7 +798,7 @@ describe('pwdSimulator.js', function(){
                      time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00",  timezoneOffset: 0
+                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',  timezoneOffset: 0
                      }
                    }
                  },
@@ -806,7 +808,7 @@ describe('pwdSimulator.js', function(){
                    timezoneOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', "deviceTime": "2014-09-25T00:00:00", timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
                    }
                  },
                  {
@@ -847,8 +849,8 @@ describe('pwdSimulator.js', function(){
 
     describe('tracks scheduleds when settings change', function(){
       var settings = {
-        time: "2014-09-25T00:00:00.000Z",
-        deviceTime: "2014-09-25T00:00:00",
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
         deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
@@ -878,8 +880,8 @@ describe('pwdSimulator.js', function(){
         timezoneOffset: 0
       };
       var newSettings = {
-        time: "2014-09-25T00:30:00.000Z",
-        deviceTime: "2014-09-25T00:30:00",
+        time: '2014-09-25T00:30:00.000Z',
+        deviceTime: '2014-09-25T00:30:00',
         deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
@@ -938,8 +940,8 @@ describe('pwdSimulator.js', function(){
 
       it('empty schedule', function(){
         var settings = {
-          time: "2014-09-25T00:00:00.000Z",
-          deviceTime: "2014-09-25T00:00:00",
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
@@ -958,8 +960,8 @@ describe('pwdSimulator.js', function(){
 
       it('with empty schedule', function(){
         var settings = {
-          time: "2014-09-25T00:00:00.000Z",
-          deviceTime: "2014-09-25T00:00:00",
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
@@ -979,8 +981,8 @@ describe('pwdSimulator.js', function(){
 
       it('with empty schedule and basal in the bucket', function(){
         var settings = {
-          time: "2014-09-25T00:00:00.000Z",
-          deviceTime: "2014-09-25T00:00:00",
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
@@ -1003,8 +1005,8 @@ describe('pwdSimulator.js', function(){
 
       it('with schedule', function(){
         var settings = {
-          time: "2014-09-25T00:00:00.000Z",
-          deviceTime: "2014-09-25T00:00:00",
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
@@ -1054,8 +1056,8 @@ describe('pwdSimulator.js', function(){
 
       it('with schedule at 7am', function(){
         var settings = {
-          time: "2014-09-25T07:00:00.000Z",
-          deviceTime: "2014-09-25T07:00:00",
+          time: '2014-09-25T07:00:00.000Z',
+          deviceTime: '2014-09-25T07:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
@@ -1091,8 +1093,8 @@ describe('pwdSimulator.js', function(){
 
       it('with schedule at 8pm', function(){
         var settings = {
-          time: "2014-09-25T20:00:00.000Z",
-          deviceTime: "2014-09-25T20:00:00",
+          time: '2014-09-25T20:00:00.000Z',
+          deviceTime: '2014-09-25T20:00:00',
           deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },

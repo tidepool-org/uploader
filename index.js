@@ -18,6 +18,8 @@
  * == BSD2 LICENSE ==
  */
 
+/* global chrome */
+
 var $ = require('jquery');
 window.jQuery = $;
 var async = require('async');
@@ -548,7 +550,7 @@ function constructUI() {
 
   $('#signup').click(function () {
     var serverIndex = $('#serverURL').val();
-    window.open(tidepoolHosts[serverIndex].blip);
+    window.open(api.hosts[serverIndex].blip);
   });
 
   // this deals with the omnipod
