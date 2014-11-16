@@ -62,7 +62,7 @@ function localSave(store, key, object) {
 
 function localLoad(store, object, cb) {
   if (object == null || object === '') {
-    return cb(store.getItem(defaultStorage));
+    return store.init(defaultStorage,cb);
   } else {
     return cb(store.getItem(object));
   }
