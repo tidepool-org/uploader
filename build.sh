@@ -7,5 +7,7 @@ cp main.js dist/
 cp index.html dist/
 cp *.png dist/
 cp *.gif dist/
+mkdir -p dist/fonts
+cp fonts/* dist/fonts
 zip -r dist.zip dist
 echo "Build complete: dist.zip"
