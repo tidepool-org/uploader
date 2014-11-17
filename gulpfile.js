@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
+var react = require('gulp-react');
+var merge = require('merge-stream');
 
 var jsFiles = [
   'bin/**/*.js',
@@ -8,8 +10,16 @@ var jsFiles = [
   '*.js'
 ];
 
+var jsxFiles = [
+  'lib/**/*.jsx'
+];
+
 gulp.task('jshint', function() {
-  var stream = gulp.src(jsFiles)
+  var js = gulp.src(jsFiles);
+  var jsx = gulp.src(jsxFiles)
+    .pipe(react());
+
+  var stream = merge(js, jsx)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 
@@ -22,7 +32,7 @@ gulp.task('jshint', function() {
 
 gulp.task('jshint-watch', ['jshint'], function(cb){
   console.log('Watching files for changes...');
-  gulp.watch(jsFiles, ['jshint']);
+  gulp.watch(jsFiles.concat(jsxFiles), ['jshint']);
 });
 
 gulp.task('default', ['jshint']);
