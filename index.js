@@ -28,6 +28,7 @@ var util = require('util');
 var _ = require('lodash');
 
 var api = require('./lib/core/api.js');
+var config = require('./lib/config');
 
 require('./js/bootstrap.js');
 require('./css/bootstrap.css');
@@ -107,16 +108,11 @@ function constructUI() {
   $('#loginButton').click(function () {
     var username = $('#username').val();
     var password = $('#password').val();
-    var serverIndex = $('#serverURL').val();
     var myuserid = null;
     var myfullname = null;
     // console.log(username, password, serverIndex);
 
-    api.serverData.host = api.hosts[serverIndex].host;
-    api.serverData.jellyfish = api.hosts[serverIndex].jellyfish;
-
-    //init api based on the environment then get going
-    api.init(api.serverData,function(){
+    api.init(function(){
       api.user.login({ username: username, password:password}, goodLogin, failLogin);
       function goodUpload (data, status) {
         connectLog(status);
@@ -173,8 +169,7 @@ function constructUI() {
               username: username,
               password: password,
               remember_me: true,
-            },
-            defaultServer: $('#serverURL').val()
+            }
           };
           f(store,obj);
         } else {
@@ -184,8 +179,7 @@ function constructUI() {
               username: '',
               password: '',
               remember_me: false
-            },
-            defaultServer: $('#serverURL').val()
+            }
           });
         }
         myuserid = data.userid;
@@ -548,8 +542,7 @@ function constructUI() {
   }
 
   $('#signup').click(function () {
-    var serverIndex = $('#serverURL').val();
-    window.open(api.hosts[serverIndex].blip);
+    window.open(config.BLIP_URL);
   });
 
   // this deals with the omnipod
@@ -686,9 +679,6 @@ function constructUI() {
           $('#username').val(settings.tidepool.username);
           $('#password').val(settings.tidepool.password);
           $('#rememberme').prop('checked', true);
-        }
-        if (settings.defaultServer) {
-          $('#serverURL').val(settings.defaultServer);
         }
         if (settings.timezone) {
           $('#timezone').val(settings.timezone);

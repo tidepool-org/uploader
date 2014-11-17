@@ -112,6 +112,15 @@ such as uploadButtons) by their device name.
 
 Note that Blip doesn't like it much if you don't have at least 24 hours worth of data, although it will work with only CGM data.
 
+## Config
+
+Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables, for example:
+
+```bash
+$ source config/local.sh
+$ npm start
+```
+
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
