@@ -16,12 +16,11 @@
  */
 
 var React = require('react');
-var App = require('./lib/components/App.jsx');
-var localStore = require('./lib/core/localStore');
-var api = require('./lib/core/api');
 
-window.React = React;
+var LoadingPage = React.createClass({
+  render: function() {
+    return <p>Loading app...</p>;
+  }
+});
 
-window.app = React.render(
-  React.createElement(App), document.body
-);
+module.exports = LoadingPage;

@@ -16,12 +16,21 @@
  */
 
 var React = require('react');
-var App = require('./lib/components/App.jsx');
-var localStore = require('./lib/core/localStore');
-var api = require('./lib/core/api');
+var getIn = require('../core/getIn');
 
-window.React = React;
+var LoggedInAs = React.createClass({
+  propTypes: {
+    user: React.PropTypes.object.isRequired,
+    onLogout: React.PropTypes.func.isRequired
+  },
 
-window.app = React.render(
-  React.createElement(App), document.body
-);
+  render: function() {
+    return <p>Logged in as <strong>{this.getName()}</strong></p>;
+  },
+
+  getName: function() {
+    return getIn(this.props.user, ['profile', 'fullName']);
+  }
+});
+
+module.exports = LoggedInAs;

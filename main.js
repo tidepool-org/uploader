@@ -47,27 +47,6 @@ var defaultStorage = {
   forceDeviceIDs: []
 };
 
-
-function localSave(store, object) {
-  if (object == null || object === '') {
-    throw new Error('Save called with null object!');
-  }
-  store.removeItem('asantePortPattern');
-  // chrome.storage.local.remove('user');
-  // chrome.storage.local.remove('dexcomPortPrefix');
-
-  //hmm not so sure
-  store.setItem(null,object);
-}
-
-function localLoad(store, object, cb) {
-  if (object == null || object === '') {
-    return store.init(defaultStorage,cb);
-  } else {
-    return cb(store.getItem(object));
-  }
-}
-
 chrome.app.runtime.onLaunched.addListener(function() {
   // Center window on screen.
   var screenWidth = screen.availWidth;
@@ -86,7 +65,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
       minHeight: 500
     }
   }, function(createdWindow) {
-    createdWindow.contentWindow.localSave = localSave;
-    createdWindow.contentWindow.localLoad = localLoad;
+    createdWindow.contentWindow.localSave = function() {};
+    createdWindow.contentWindow.localLoad = function() {};
   });
 });
