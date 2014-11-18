@@ -15,6 +15,16 @@
  * == BSD2 LICENSE ==
  */
 
+function stringToBoolean(str, defaultValue) {
+  if (str === 'true') {
+    return true;
+  }
+  if (str === 'false') {
+    return false;
+  }
+  return defaultValue || false;
+}
+
 function stringToArray(str, defaultValue) {
   if (!(str && str.length)) {
     return defaultValue;
@@ -23,8 +33,9 @@ function stringToArray(str, defaultValue) {
 }
 
 module.exports = {
+  DEBUG: stringToBoolean(process.env.DEBUG, true),
   API_URL: process.env.API_URL || 'https://devel-api.tidepool.io',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://devel-uploads.tidepool.io',
   BLIP_URL: process.env.BLIP_URL || 'https://blip-devel.tidepool.io',
-  RESTRICT_DRIVERS: stringToArray(process.env.RESTRICT_DRIVERS, [])
+  RESTRICT_DRIVERS: stringToArray(process.env.RESTRICT_DRIVERS, ['DexcomG4'])
 };

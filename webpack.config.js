@@ -15,7 +15,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      lodash: 'lodash/dist/lodash.js'
+      lodash: 'lodash/dist/lodash.js',
+      bows: path.join(__dirname, 'lib/bows.js')
     }
   }
 };
