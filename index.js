@@ -416,7 +416,7 @@ function constructUI() {
   };
 
   var uploaders = {
-    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish)
+    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish, api)
   };
 
   function detectFTDIDevice(deviceID, cb) {
@@ -562,7 +562,7 @@ function constructUI() {
   // $('#buttonUpload').click(uploadSerial);
   // $('#buttonRescan').click(startScanning);
 
-  function handleCarelinkFileSelect(evt) {
+ /* function handleCarelinkFileSelect(evt) {
     console.log('Carelink file selected', evt);
     var file = evt.target.files[0];
 
@@ -603,7 +603,7 @@ function constructUI() {
   }
 
   $('#carelinkFileChooser').change(handleCarelinkFileSelect);
-
+*/
   $('#carelinkButton').click(function(evt){
     console.log('Asked to upload to carelink!');
 
@@ -634,9 +634,9 @@ function constructUI() {
   $('#omnipodFileButton').click(function () {
     $('#omnipodUploadButton').click();
   });
-  $('#carelinkFileButton').click(function () {
+  /*$('#carelinkFileButton').click(function () {
     $('#carelinkUploadButton').click();
-  });
+  });*/
   connectLog('private build -- Insulet is supported.');
 
   $('.DexcomG4').hide();
