@@ -40,6 +40,7 @@ var App = React.createClass({
     this.appActions = appActions;
     this.localStore = require('../core/localStore');
     this.api = require('../core/api');
+    this.device = require('../core/device');
   },
 
   render: function() {

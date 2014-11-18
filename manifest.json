@@ -18,7 +18,49 @@
     "system.storage",
     "storage",
     "serial",
-    "usb"
+    "usb",
+    {
+      "usbDevices": [
+        {
+          "deviceName": "Dexcom G4 CGM",
+          "driverId": "DexcomG4",
+          "mode": "serial",
+          "serialPortPat": "/dev/cu\\.usbmodem[A-Za-z0-9]+",
+          "vendorId": 8867,
+          "productId": 71
+        },
+        {
+          "deviceName": "Asante SNAP w/Asante cable",
+          "driverId": "AsanteSNAPNeedDriver",
+          "mode": "not supported",
+          "vendorId": 1027,
+          "productId": 32568
+        },
+        {
+          "deviceName": "Asante SNAP w/FTDI cable",
+          "driverId": "AsanteSNAP",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "FTDI",
+          "vendorId": 1027,
+          "productId": 24577
+        },
+        {
+          "deviceName": "OneTouch Mini w/FTDI cable",
+          "driverId": "OneTouchMini",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "FTDI",
+          "vendorId": 1027,
+          "productId": 24577
+        },
+        {
+          "deviceName": "Insulet OmniPod",
+          "driverId": "InsuletOmniPod",
+          "mode": "block",
+          "vendorId": 7734,
+          "productId": 2
+        }
+      ]
+    }
   ],
   "app": {
     "background": {
