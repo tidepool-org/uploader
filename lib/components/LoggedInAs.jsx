@@ -24,12 +24,47 @@ var LoggedInAs = React.createClass({
     onLogout: React.PropTypes.func.isRequired
   },
 
+  getInitialState: function() {
+    return {
+      loggingOut: false
+    };
+  },
+
   render: function() {
-    return <p>Logged in as <strong>{this.getName()}</strong></p>;
+    return (
+      <p>
+        {'Logged in as '}<strong>{this.getName()}</strong>
+        {' - '}
+        {this.renderLogout()}
+      </p>
+    );
+  },
+
+  renderLogout: function() {
+    if (this.state.loggingOut) {
+      return <span>Logging out...</span>;
+    }
+
+    return <a href="" onClick={this.handleLogout}>Logout</a>;
   },
 
   getName: function() {
     return getIn(this.props.user, ['profile', 'fullName']);
+  },
+
+  handleLogout: function(e) {
+    e.preventDefault();
+    this.setState({
+      loggingOut: true
+    });
+    var self = this;
+    this.props.onLogout(function(err) {
+      if (err) {
+        self.setState({
+          loggingOut: false
+        });
+      }
+    });
   }
 });
 
