@@ -17,6 +17,8 @@
 
 var React = require('react');
 
+var config = require('../config');
+
 var LoginPage = React.createClass({
   propTypes: {
     onLogin: React.PropTypes.func.isRequired
@@ -32,13 +34,37 @@ var LoginPage = React.createClass({
   render: function() {
     return (
       <div>
+        {this.renderSignupLink()}
         <form>
           <p><input ref="username" placeholder="username"/></p>
           <p><input ref="password" placeholder="password"/></p>
+          <p>
+            <input type="checkbox" ref="remember" id="remember"/>
+            <label htmlFor="remember">{' Remember me'}</label>
+          </p>
+          {this.renderForgotPasswordLink()}
           <p>{this.renderButton()}</p>
         </form>
         {this.renderError()}
       </div>
+    );
+  },
+
+  renderSignupLink: function() {
+    return (
+      <p>
+        <a href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
+      </p>
+    );
+  },
+
+  renderForgotPasswordLink: function() {
+    return (
+      <p>
+        <a href={config.BLIP_URL + '#/request-password-reset'} target="_blank">
+          {'Forgot your password?'}
+        </a>
+      </p>
     );
   },
 
@@ -65,8 +91,24 @@ var LoginPage = React.createClass({
     e.preventDefault();
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;
+    var remember = this.refs.remember.getDOMNode().checked;
 
-    // TODO
+    this.setState({
+      working: true
+    });
+    var self = this;
+    this.props.onLogin({
+      username: username,
+      password: password
+    }, {remember: remember}, function(err) {
+      if (err) {
+        self.setState({
+          working: false,
+          error: 'Wrong username or password.'
+        });
+        return;
+      }
+    });
   },
 
   renderError: function() {
@@ -74,7 +116,7 @@ var LoginPage = React.createClass({
       return null;
     }
 
-    return <p style={{color: 'red'}}>{this.state.error.message}</p>;
+    return <p style={{color: 'red'}}>{this.state.error}</p>;
   }
 });
 
