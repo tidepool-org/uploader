@@ -150,11 +150,13 @@ var UploadPage = React.createClass({
       return this.handleCarelinkUpload();
     }
 
-    this.setState({
+    var self = this;
+
+    self.setState({
       working: true,
       error: null
     });
-    this.props.onUploadDevice(this.props.upload.driverId, function(err) {
+    self.props.onUploadDevice(this.props.upload.driverId, function(err) {
       if (err) {
         self.setState({
           working: false,
@@ -172,14 +174,16 @@ var UploadPage = React.createClass({
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;
 
-    this.setState({
+    var self = this;
+
+    self.setState({
       working: true,
       error: null
     });
-    this.props.onUploadCarelink({
+    self.props.onUploadCarelink({
       username: username,
       password: password
-    }, function(err) {
+    },{},function(err) {
       if (err) {
         self.setState({
           working: false,
