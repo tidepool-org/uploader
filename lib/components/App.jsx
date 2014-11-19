@@ -77,7 +77,13 @@ var App = React.createClass({
     if (page === 'main') {
       return <MainPage
         devices={this.state.devices}
-        onDetectDevices={this.appActions.detectDevices.bind(this.appActions)}/>;
+        history={this.state.history}
+        onDetectDevices={this.appActions.detectDevices.bind(this.appActions)}
+        onOpenUpload={this.appActions.openUpload.bind(this.appActions)}/>;
+    }
+
+    if (page === 'upload') {
+      return <p>Upload</p>;
     }
 
     return null;

@@ -21,14 +21,17 @@ var Devices = require('./Devices.jsx');
 var MainPage = React.createClass({
   propTypes: {
     devices: React.PropTypes.array.isRequired,
-    onDetectDevices: React.PropTypes.func.isRequired
+    history: React.PropTypes.array.isRequired,
+    onDetectDevices: React.PropTypes.func.isRequired,
+    onOpenUpload: React.PropTypes.func.isRequired
   },
 
   render: function() {
     return (
       <Devices
         devices={this.props.devices}
-        onDetectDevices={this.props.onDetectDevices}/>
+        onDetectDevices={this.props.onDetectDevices}
+        onOpenUpload={this.props.onOpenUpload}/>
     );
   }
 });
