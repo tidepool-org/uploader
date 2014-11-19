@@ -20,7 +20,7 @@
     "jquery": "2.1.1",
     "moment-timezone": "0.2.4",
     "sundial": "1.0.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#6df4d1ebb215232507fc627bd579341f1f7e5d19"
+    "tidepool-platform-client": "tidepool-org/platform-client#a6cbcae341a05465126d88d10d9bc1f7fe228a51"
   },
   "devDependencies": {
     "css-loader": "0.7.1",
