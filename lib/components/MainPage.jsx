@@ -18,6 +18,8 @@
 var React = require('react');
 var Devices = require('./Devices.jsx');
 
+var config = require('../config');
+
 var MainPage = React.createClass({
   propTypes: {
     devices: React.PropTypes.array.isRequired,
@@ -28,11 +30,36 @@ var MainPage = React.createClass({
 
   render: function() {
     return (
-      <Devices
-        devices={this.props.devices}
-        onDetectDevices={this.props.onDetectDevices}
-        onOpenUpload={this.props.onOpenUpload}/>
+      <div>
+        <Devices
+          devices={this.props.devices}
+          onDetectDevices={this.props.onDetectDevices}
+          onOpenUpload={this.props.onOpenUpload}/>
+        {this.renderCarelink()}
+      </div>
     );
+  },
+
+  renderCarelink: function() {
+    if (!this.isCarelinkEnabled()) {
+      return null;
+    }
+    return (
+      <p>
+        <a href="" onClick={this.handleSelectCarelink}>Upload Carelink data</a>
+      </p>
+    );
+  },
+
+  isCarelinkEnabled: function() {
+    return config.CARELINK;
+  },
+
+  handleSelectCarelink: function(e) {
+    e.preventDefault();
+    this.props.onOpenUpload({
+      carelink: true
+    });
   }
 });
 

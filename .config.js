@@ -38,5 +38,7 @@ module.exports = {
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://devel-uploads.tidepool.io',
   BLIP_URL: process.env.BLIP_URL || 'https://blip-devel.tidepool.io',
   RESTRICT_DRIVERS: stringToArray(process.env.RESTRICT_DRIVERS, ['DexcomG4']),
-  DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles'
+  CARELINK: stringToBoolean(process.env.CARELINK, true),
+  DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
+  DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'
 };

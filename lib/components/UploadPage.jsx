@@ -24,6 +24,7 @@ var UploadPage = React.createClass({
     upload: React.PropTypes.object.isRequired,
     progress: React.PropTypes.object,
     onUploadDevice: React.PropTypes.func.isRequired,
+    onUploadCarelink: React.PropTypes.func.isRequired,
     onCloseUpload: React.PropTypes.func.isRequired
   },
 
@@ -38,6 +39,7 @@ var UploadPage = React.createClass({
     return (
       <div>
         {this.renderUploadInfo()}
+        {this.renderCarelinkForm()}
         {this.renderButton()}
         {this.renderProgress()}
         {this.renderSuccess()}
@@ -48,11 +50,31 @@ var UploadPage = React.createClass({
   },
 
   renderUploadInfo: function() {
+    var name;
+    if (this.isCarelinkUpload()) {
+      name = 'Carelink';
+    }
+    else {
+      name = this.getDeviceDisplayName(this.props.upload);
+    }
     return (
       <p>
         {'Upload for '}
-        <strong>{this.getDeviceDisplayName(this.props.upload)}</strong>
+        <strong>{name}</strong>
       </p>
+    );
+  },
+
+  renderCarelinkForm: function() {
+    if (!this.isCarelinkUpload()) {
+      return null;
+    }
+
+    return (
+      <form>
+        <p><input ref="carelinkUsername" placeholder="carelink username"/></p>
+        <p><input ref="carelinkPassword" placeholder="carelink password"/></p>
+      </form>
     );
   },
 
@@ -124,11 +146,40 @@ var UploadPage = React.createClass({
   },
 
   handleUpload: function() {
+    if (this.isCarelinkUpload()) {
+      return this.handleUpload();
+    }
+
     this.setState({
       working: true,
       error: null
     });
     this.props.onUploadDevice(this.props.upload.driverId, function(err) {
+      if (err) {
+        self.setState({
+          working: false,
+          error: 'An error occured while uploading'
+        });
+      }
+
+      self.setState({
+        working: false
+      });
+    });
+  },
+
+  handleCarelinkUpload: function() {
+    var username = this.refs.username.getDOMNode().value;
+    var password = this.refs.password.getDOMNode().value;
+
+    this.setState({
+      working: true,
+      error: null
+    });
+    this.props.onUploadCarelink({
+      username: username,
+      password: password
+    }, function(err) {
       if (err) {
         self.setState({
           working: false,
@@ -149,6 +200,10 @@ var UploadPage = React.createClass({
 
   isUploadSuccessful: function() {
     return Boolean(this.props.upload.success);
+  },
+
+  isCarelinkUpload: function() {
+    return Boolean(this.props.upload.carelink);
   }
 });
 

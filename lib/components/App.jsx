@@ -88,6 +88,7 @@ var App = React.createClass({
         upload={this.state.upload}
         progress={this.state.progress}
         onUploadDevice={this.appActions.uploadDevice.bind(this.appActions)}
+        onUploadCarelink={this.appActions.uploadCarelink.bind(this.appActions)}
         onCloseUpload={this.appActions.closeUpload.bind(this.appActions)}/>;
     }
 
