@@ -149,14 +149,16 @@ var UploadPage = React.createClass({
     if (this.isCarelinkUpload()) {
       return this.handleUpload();
     }
+    var self = this;
+    var options = {};
 
     this.setState({
       working: true,
       error: null
     });
-    this.props.onUploadDevice(this.props.upload.driverId, function(err) {
+    this.props.onUploadDevice(this.props.upload.driverId, options, function(err) {
       if (err) {
-        self.setState({
+        return self.setState({
           working: false,
           error: 'An error occured while uploading'
         });
@@ -169,8 +171,10 @@ var UploadPage = React.createClass({
   },
 
   handleCarelinkUpload: function() {
+    var self = this;
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;
+    var options = {};
 
     this.setState({
       working: true,
@@ -179,9 +183,9 @@ var UploadPage = React.createClass({
     this.props.onUploadCarelink({
       username: username,
       password: password
-    }, function(err) {
+    }, options, function(err) {
       if (err) {
-        self.setState({
+        return self.setState({
           working: false,
           error: 'An error occured while uploading'
         });
