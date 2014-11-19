@@ -9,7 +9,8 @@ lib-cov
 pids
 logs
 results
-config
+config/*
+!config/local.sh
 build
 dist
 dist.zip

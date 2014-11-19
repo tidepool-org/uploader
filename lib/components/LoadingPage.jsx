@@ -15,20 +15,12 @@
  * == BSD2 LICENSE ==
  */
 
-module.exports = function (config) {
-  var progress = config.progress;
-  var steps = config.steps;
+var React = require('react');
 
-  var stepProgress = function(step, stepPercentage) {
-    var stepName = steps[step].name;
-    var range = steps[step].max - steps[step].min;
-    var totalPercentage = steps[step].min + Math.floor(range * stepPercentage / 100.0);
-    progress(stepName, totalPercentage);
-  };
+var LoadingPage = React.createClass({
+  render: function() {
+    return <p>Loading app...</p>;
+  }
+});
 
-  return {
-    progressForStep: function(step) {
-      return stepProgress.bind(this, step);
-    }
-  };
-};
+module.exports = LoadingPage;
