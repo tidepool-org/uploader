@@ -24,6 +24,7 @@ var LoadingPage = require('./LoadingPage.jsx');
 var LoginPage = require('./LoginPage.jsx');
 var LoggedInAs = require('./LoggedInAs.jsx');
 var MainPage = require('./MainPage.jsx');
+var UploadPage = require('./UploadPage.jsx');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -83,7 +84,11 @@ var App = React.createClass({
     }
 
     if (page === 'upload') {
-      return <p>Upload</p>;
+      return <UploadPage
+        upload={this.state.upload}
+        progress={this.state.progress}
+        onUploadDevice={this.appActions.uploadDevice.bind(this.appActions)}
+        onCloseUpload={this.appActions.closeUpload.bind(this.appActions)}/>;
     }
 
     return null;

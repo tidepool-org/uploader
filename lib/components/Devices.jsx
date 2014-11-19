@@ -19,14 +19,7 @@ var _ = require('lodash');
 var React = require('react');
 var repeat = require('../core/repeat');
 var getIn = require('../core/getIn');
-
-var deviceInfo = {
-  'DexcomG4': {
-    getDisplayName: function(device) {
-      return 'Dexcom G4';
-    }
-  }
-};
+var deviceInfo = require('../core/deviceInfo');
 
 var DETECT_DELAY = 200;
 var DETECT_TIMEOUT = 5000;
