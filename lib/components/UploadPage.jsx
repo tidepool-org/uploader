@@ -177,8 +177,6 @@ var UploadPage = React.createClass({
     var password = this.refs.password.getDOMNode().value;
     var options = {};
 
-    var self = this;
-
     self.setState({
       working: true,
       error: null
