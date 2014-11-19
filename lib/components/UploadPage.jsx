@@ -79,7 +79,7 @@ var UploadPage = React.createClass({
   },
 
   renderButton: function() {
-    if (this.state.working) {
+    if (this.state.working || this.isUploadSuccessful()) {
       return null;
     }
 
