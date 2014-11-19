@@ -16,10 +16,20 @@
  */
 
 var React = require('react');
+var Devices = require('./Devices.jsx');
 
 var MainPage = React.createClass({
+  propTypes: {
+    devices: React.PropTypes.array.isRequired,
+    onDetectDevices: React.PropTypes.func.isRequired
+  },
+
   render: function() {
-    return <p>Main page</p>;
+    return (
+      <Devices
+        devices={this.props.devices}
+        onDetectDevices={this.props.onDetectDevices}/>
+    );
   }
 });
 

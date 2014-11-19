@@ -75,7 +75,9 @@ var App = React.createClass({
     }
 
     if (page === 'main') {
-      return <MainPage />;
+      return <MainPage
+        devices={this.state.devices}
+        onDetectDevices={this.appActions.detectDevices.bind(this.appActions)}/>;
     }
 
     return null;
