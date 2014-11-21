@@ -44,6 +44,7 @@ describe('objectBuilder.js', function(){
   var objBuilder = null;
   var REQUIRED = '**REQUIRED**';
   var OPTIONAL = '**OPTIONAL**';
+  var bob;
 
   beforeEach(function(){
     bob = ObjectBuilder();
@@ -59,7 +60,7 @@ describe('objectBuilder.js', function(){
       var dualBolus = bob.makeDualBolus();
 
       expect(dualBolus.deviceId).to.equal(defaults.deviceId);
-      expect(dualBolus.timezoneOffset).to.equal(defaults.timezoneOffset)
+      expect(dualBolus.timezoneOffset).to.equal(defaults.timezoneOffset);
 
     });
   });
@@ -70,7 +71,7 @@ describe('objectBuilder.js', function(){
 
     beforeEach(function(){
       bob = ObjectBuilder();
-       bob.setDefaults(defaults);
+      bob.setDefaults(defaults);
     });
 
     it('works', function(){
@@ -91,22 +92,11 @@ describe('objectBuilder.js', function(){
 
     beforeEach(function(){
       bob = ObjectBuilder();
-       bob.setDefaults(defaults);
+      bob.setDefaults(defaults);
     });
 
     it('works', function(){
       var dualBolus = bob.makeDualBolus();
-      /*
-      time: '**REQUIRED**',
-      deviceTime: '**OPTIONAL**',
-      timezoneOffset: '-420',
-      deviceId: 'makeDualBolus',
-      type: 'bolus',
-      subType: 'dual/square',
-      normal: '**REQUIRED**',
-      extended: '**REQUIRED**',
-      duration: '**REQUIRED**',
-      */
 
       expect(dualBolus.deviceId).to.equal(defaults.deviceId);
       expect(dualBolus.timezoneOffset).to.equal(defaults.timezoneOffset);
@@ -127,24 +117,11 @@ describe('objectBuilder.js', function(){
 
     beforeEach(function(){
       bob = ObjectBuilder();
-       bob.setDefaults(defaults);
+      bob.setDefaults(defaults);
     });
 
     it('works', function(){
       var food = bob.makeFood();
-
-      console.log(food);
-      /*
-      time: '**REQUIRED**',
-      deviceTime: '**OPTIONAL**',
-      timezoneOffset: '-420',
-      deviceId: 'makeDualBolus',
-      type: 'bolus',
-      subType: 'dual/square',
-      normal: '**REQUIRED**',
-      extended: '**REQUIRED**',
-      duration: '**REQUIRED**',
-      */
 
       expect(food.deviceId).to.equal(defaults.deviceId);
       expect(food.timezoneOffset).to.equal(defaults.timezoneOffset);
