@@ -133,4 +133,30 @@ describe('objectBuilder.js', function(){
     });
   });
 
+  describe('makeSuspendBasal', function(){
+
+    var defaults = {deviceId:'makeSuspendBasal',timezoneOffset:'-420'};
+
+    beforeEach(function(){
+      bob = ObjectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    it('works', function(){
+      var suspendBasal = bob.makeSuspendBasal();
+
+      expect(suspendBasal.deviceId).to.equal(defaults.deviceId);
+      expect(suspendBasal.timezoneOffset).to.equal(defaults.timezoneOffset);
+      expect(suspendBasal.deliveryType).to.equal('suspend');
+      expect(suspendBasal.type).to.equal('basal');
+
+      expect(suspendBasal.deviceTime).to.equal(OPTIONAL);
+      expect(suspendBasal.time).to.equal(REQUIRED);
+      expect(suspendBasal.duration).to.equal(OPTIONAL);
+      expect(suspendBasal.suppressed).to.equal(OPTIONAL);
+      expect(suspendBasal.previous).to.equal(OPTIONAL);
+
+    });
+  });
+
 });
