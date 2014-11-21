@@ -274,6 +274,7 @@ describe('objectBuilder.js', function(){
     it('works', function(){
       var square = bob.makeSquareBolus();
 
+
       expect(square.deviceId).to.equal(defaults.deviceId);
       expect(square.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(square.type).to.equal('bolus');
@@ -282,6 +283,109 @@ describe('objectBuilder.js', function(){
       expect(square.time).to.equal(REQUIRED);
       expect(square.extended).to.equal(REQUIRED);
       expect(square.duration).to.equal(REQUIRED);
+
+    });
+  });
+
+  describe('makeTempBasal', function(){
+
+    var defaults = {deviceId:'makeTempBasal',timezoneOffset:'-420'};
+
+    beforeEach(function(){
+      bob = ObjectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    it('works', function(){
+      var temp = bob.makeTempBasal();
+
+      expect(temp.deviceId).to.equal(defaults.deviceId);
+      expect(temp.timezoneOffset).to.equal(defaults.timezoneOffset);
+      expect(temp.type).to.equal('basal');
+      expect(temp.deliveryType).to.equal('temp');
+      expect(temp.deviceTime).to.equal(OPTIONAL);
+      expect(temp.time).to.equal(REQUIRED);
+      expect(temp.rate).to.equal(OPTIONAL);
+      expect(temp.duration).to.equal(REQUIRED);
+      expect(temp.percent).to.equal(OPTIONAL);
+      expect(temp.previous).to.equal(OPTIONAL);
+
+    });
+  });
+
+  describe('makeWizard', function(){
+
+    var defaults = {deviceId:'makeWizard',timezoneOffset:'-420'};
+
+    beforeEach(function(){
+      bob = ObjectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    it('works', function(){
+      var wiz = bob.makeWizard();
+
+      expect(wiz.deviceId).to.equal(defaults.deviceId);
+      expect(wiz.timezoneOffset).to.equal(defaults.timezoneOffset);
+      expect(wiz.type).to.equal('wizard');
+      expect(wiz.deviceTime).to.equal(OPTIONAL);
+      expect(wiz.time).to.equal(REQUIRED);
+      expect(wiz.bgInput).to.equal(OPTIONAL);
+      expect(wiz.insulinOnBoard).to.equal(OPTIONAL);
+      expect(wiz.insulinCarbRatio).to.equal(OPTIONAL);
+      expect(wiz.bgTarget).to.equal(OPTIONAL);
+      expect(wiz.carbInput).to.equal(OPTIONAL);
+      expect(wiz.bolus).to.equal(OPTIONAL);
+      expect(wiz.payload).to.equal(OPTIONAL);
+      expect(wiz.recommended).to.deep.equals({"carb":0,"correction":0});
+
+    });
+  });
+
+  describe('makeDeviceMetaResume', function(){
+
+    var defaults = {deviceId:'makeDeviceMetaResume',timezoneOffset:'-420'};
+
+    beforeEach(function(){
+      bob = ObjectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    it('works', function(){
+      var resumeMeta = bob.makeDeviceMetaResume();
+
+      expect(resumeMeta.deviceId).to.equal(defaults.deviceId);
+      expect(resumeMeta.timezoneOffset).to.equal(defaults.timezoneOffset);
+      expect(resumeMeta.type).to.equal('deviceMeta');
+      expect(resumeMeta.subType).to.equal('status');
+      expect(resumeMeta.deviceTime).to.equal(OPTIONAL);
+      expect(resumeMeta.time).to.equal(REQUIRED);
+      expect(resumeMeta.status).to.equal('resumed');
+      expect(resumeMeta.reason).to.equal(REQUIRED);
+
+    });
+  });
+
+  describe('makeDeviceMetaSuspend', function(){
+
+    var defaults = {deviceId:'makeDeviceMetaSuspend',timezoneOffset:'-420'};
+
+    beforeEach(function(){
+      bob = ObjectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    it('works', function(){
+      var suspendMeta = bob.makeDeviceMetaSuspend();
+
+      expect(suspendMeta.deviceId).to.equal(defaults.deviceId);
+      expect(suspendMeta.timezoneOffset).to.equal(defaults.timezoneOffset);
+      expect(suspendMeta.type).to.equal('deviceMeta');
+      expect(suspendMeta.subType).to.equal('status');
+      expect(suspendMeta.deviceTime).to.equal(OPTIONAL);
+      expect(suspendMeta.time).to.equal(REQUIRED);
+      expect(suspendMeta.status).to.equal('suspended');
+      expect(suspendMeta.reason).to.equal(REQUIRED);
 
     });
   });
