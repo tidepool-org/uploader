@@ -36,7 +36,7 @@ function attachPrev(arr) {
   });
 }
 
-describe('pwdSimulator.js', function(){
+describe.skip('pwdSimulator.js', function(){
   var simulator = null;
 
   beforeEach(function(){
