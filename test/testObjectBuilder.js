@@ -319,7 +319,7 @@ describe('objectBuilder.js', function(){
       expect(wiz.carbInput).to.equal(OPTIONAL);
       expect(wiz.bolus).to.equal(OPTIONAL);
       expect(wiz.payload).to.equal(OPTIONAL);
-      expect(wiz.recommended).to.deep.equals({"carb":0,"correction":0});
+      expect(wiz.recommended).to.deep.equals({'carb':0,'correction':0});
 
     });
   });
