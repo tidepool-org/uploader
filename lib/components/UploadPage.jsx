@@ -72,8 +72,8 @@ var UploadPage = React.createClass({
 
     return (
       <form>
-        <p><input ref="carelinkUsername" placeholder="carelink username"/></p>
-        <p><input ref="carelinkPassword" placeholder="carelink password"/></p>
+        <p><input ref="username" placeholder="carelink username"/></p>
+        <p><input ref="password" placeholder="carelink password"/></p>
       </form>
     );
   },
@@ -147,16 +147,17 @@ var UploadPage = React.createClass({
 
   handleUpload: function() {
     if (this.isCarelinkUpload()) {
-      return this.handleUpload();
+      return this.handleCarelinkUpload();
     }
     var self = this;
     var options = {};
 
-    this.setState({
+    self.setState({
       working: true,
       error: null
     });
-    this.props.onUploadDevice(this.props.upload.driverId, options, function(err) {
+    self.props.onUploadDevice(this.props.upload.driverId, options, function(err) {
+
       if (err) {
         return self.setState({
           working: false,
@@ -176,11 +177,11 @@ var UploadPage = React.createClass({
     var password = this.refs.password.getDOMNode().value;
     var options = {};
 
-    this.setState({
+    self.setState({
       working: true,
       error: null
     });
-    this.props.onUploadCarelink({
+    self.props.onUploadCarelink({
       username: username,
       password: password
     }, options, function(err) {

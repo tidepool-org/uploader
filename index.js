@@ -206,15 +206,6 @@ function constructUI() {
     setUIState('.state_settings');
   });
 
-  // $('#testButton').click(function () {
-  //   console.log('testing!');
-  //   serialConfigs.OneTouchMini.deviceComms = require('./lib/dummyOneTouchSerial.js')();
-  //   var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js')(serialConfigs.OneTouchMini);
-  //   console.log(oneTouchMiniDriver);
-  //   oneTouchMiniDriver.testDriver();
-  // });
-
-
 // have a list of previously active devices
 // get a list of possible devices
 // generate a list of currently active devices
@@ -347,23 +338,6 @@ function constructUI() {
     setTimeout(displaySelectedDevices, 5000);
   }
 
-  // chrome.system.storage.onAttached.addListener(function (info) {
-  //   connectLog('attached: ' + info.name);
-  //   storageDeviceInfo[info.id] = {
-  //     id: info.id,
-  //     name: info.name,
-  //     type: info.type
-  //   };
-  //   console.log(storageDeviceInfo[info.id]);
-  //   // whenever someone inserts a new device, try and run it
-  //   //scanUSBDevices();
-  // });
-
-  // chrome.system.storage.onDetached.addListener(function (id) {
-  //   connectLog('detached: ' + storageDeviceInfo[id].name);
-  //   delete(storageDeviceInfo[id]);
-  // });
-
   var asanteDriver = require('./lib/asanteDriver.js');
   var dexcomDriver = require('./lib/dexcomDriver.js');
   var oneTouchMiniDriver = require('./lib/oneTouchMiniDriver.js');
@@ -410,7 +384,7 @@ function constructUI() {
   };
 
   var uploaders = {
-    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish)
+    'Carelink': require('./lib/carelink/carelinkDriver.js')(require('./lib/simulator/pwdSimulator.js'), jellyfish, api)
   };
 
   function detectFTDIDevice(deviceID, cb) {
@@ -555,48 +529,6 @@ function constructUI() {
   // $('#buttonUpload').click(uploadSerial);
   // $('#buttonRescan').click(startScanning);
 
-  function handleCarelinkFileSelect(evt) {
-    console.log('Carelink file selected', evt);
-    var file = evt.target.files[0];
-
-    // can't ever be more than one in this array since it's not a multiple
-    var reader = new FileReader();
-
-    reader.onerror = function (evt) {
-      console.log('Reader error!');
-      api.errors.log(evt, 'Carelink file reader error!', {});
-      console.log(evt);
-    };
-
-    reader.onloadend = function (e) {
-      // console.log(e);
-      var cfg = {
-        'Carelink': {
-          filename: file.name,
-          fileData: reader.result,
-          timezone: $('#timezone').val()
-        }
-      };
-      doUploads(['Carelink'], uploaders, cfg, function (err, results) {
-        if (err) {
-          connectLog('Some sort of error occurred (see console).');
-          api.errors.log(err, 'Carelink: some sort of error occurred (see console).', {});
-          console.log('Fail');
-          console.log(err);
-          console.log(results);
-        } else {
-          connectLog('Data was successfully uploaded.');
-          console.log('Success');
-          console.log(results);
-        }
-      });
-    };
-
-    reader.readAsText(file);
-  }
-
-  $('#carelinkFileChooser').change(handleCarelinkFileSelect);
-
   $('#carelinkButton').click(function(evt){
     console.log('Asked to upload to carelink!');
 
@@ -627,9 +559,7 @@ function constructUI() {
   $('#omnipodFileButton').click(function () {
     $('#omnipodUploadButton').click();
   });
-  $('#carelinkFileButton').click(function () {
-    $('#carelinkUploadButton').click();
-  });
+
   connectLog('private build -- Insulet is supported.');
 
   $('.DexcomG4').hide();
