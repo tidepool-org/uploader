@@ -22,24 +22,6 @@ var expect = require('salinity').expect;
 
 var ObjectBuilder = require('../lib/objectBuilder.js');
 
-/*
-  makeCBG: makeCBG,
-  makeDeviceMetaResume: makeDeviceMetaResume,
-  makeDeviceMetaSuspend: makeDeviceMetaSuspend,
-  makeDualBolus: makeDualBolus,
-  makeFood: makeFood,
-  makeNormalBolus: makeNormalBolus,
-  makeNote: makeNote,
-  makeScheduledBasal: makeScheduledBasal,
-  makeSettings: makeSettings,
-  makeSMBG: makeSMBG,
-  makeSquareBolus: makeSquareBolus,
-  makeSuspendBasal: makeSuspendBasal,
-  makeTempBasal: makeTempBasal,
-  makeWizard: makeWizard,
-  setDefaults: setDefaults
-*/
-
 describe('objectBuilder.js', function(){
   var objBuilder = null;
   var REQUIRED = '**REQUIRED**';
