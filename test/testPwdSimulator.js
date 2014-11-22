@@ -643,7 +643,7 @@ describe('pwdSimulator.js', function(){
   });
 
   describe('event interplay', function(){
-    describe('fill in scheduled events when a temp is active and time passes', function(){
+    describe.skip('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
@@ -1130,8 +1130,8 @@ describe('pwdSimulator.js', function(){
     });
   });
 
-  describe.skip('event interplay, data with timezoneOffset', function(){
-    describe('fill in scheduled events when a temp is active and time passes', function(){
+  describe('event interplay, data with timezoneOffset', function(){
+    describe.skip('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
