@@ -36,7 +36,7 @@ function attachPrev(arr) {
   });
 }
 
-describe.skip('pwdSimulator.js', function(){
+describe('pwdSimulator.js', function(){
   var simulator = null;
 
   beforeEach(function(){
@@ -1130,7 +1130,7 @@ describe.skip('pwdSimulator.js', function(){
     });
   });
 
-  describe('event interplay, data with timezoneOffset', function(){
+  describe.skip('event interplay, data with timezoneOffset', function(){
     describe('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T04:00:00.000Z',
