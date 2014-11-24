@@ -683,7 +683,7 @@ describe('pwdSimulator.js', function(){
         timezoneOffset: 0
       };
 
-      it.skip('fills in for changes in schedule when another scheduled appears', function(){
+      it('fills in for changes in schedule when another scheduled appears', function(){
         simulator.settings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
@@ -738,7 +738,7 @@ describe('pwdSimulator.js', function(){
             ]));
       });
 
-      it.skip('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
+      it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
            simulator.settings(settings);
            simulator.basalScheduled(basal);
@@ -1131,7 +1131,7 @@ describe('pwdSimulator.js', function(){
   });
 
   describe('event interplay, data with timezoneOffset', function(){
-    describe.skip('fill in scheduled events when a temp is active and time passes', function(){
+    describe('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
