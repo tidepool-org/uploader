@@ -24,6 +24,8 @@ var struct = require('../lib/struct.js');
 
 describe('struct.js', function(){
 
+  var theStruct;
+
   beforeEach(function(){
     theStruct = struct();
   });
