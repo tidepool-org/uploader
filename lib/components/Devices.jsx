@@ -87,7 +87,7 @@ var Devices = React.createClass({
       <span>
         {this.getDeviceDisplayName(device)}
         {' - '}
-        <a href="" onClick={handleClick}>Upload</a>
+        <a href="" onClick={handleClick}>Select</a>
       </span>
     );
   },
