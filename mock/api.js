@@ -30,7 +30,7 @@ var data = {
       patient: {
         birthday: '1987-03-08',
         diagnosisDate: '1994-02-01',
-        about: 'Loves swimming and fishing. Owns a bakery in San Francisco. Favorite color is orange.'
+        about: 'Favorite color is orange.'
       }
     }
   }
@@ -91,6 +91,16 @@ var patch = function(api) {
     setTimeout(function() {
       localStore.removeItem('authToken');
       cb();
+    }, 700);
+  };
+
+  // ----- Upload -----
+
+  api.upload.fetchCarelinkData = function(payload, cb) {
+    api.log('[mock] POST /carelink');
+
+    setTimeout(function() {
+      cb(null, 'Carelink CSV file contents');
     }, 700);
   };
 
