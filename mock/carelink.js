@@ -15,10 +15,15 @@
 * == BSD2 LICENSE ==
 */
 
-var mock = {};
+var patch = function(carelink) {
 
-mock.patchApi = require('./api');
-mock.patchDevice = require('./device');
-mock.patchCarelink = require('./carelink');
+  carelink.init = function(options, cb) {
+    setTimeout(function() {
+      return cb();
+    }, 0);
+  };
 
-module.exports = mock;
+  return carelink;
+};
+
+module.exports = patch;
