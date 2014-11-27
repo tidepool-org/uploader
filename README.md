@@ -121,6 +121,19 @@ $ source config/local.sh
 $ npm start
 ```
 
+## Mock mode
+
+You can run the app in "mock mode": it will use fake data and fake HTTP & device APIs. This is handy for development when focusing on UI design, for example.
+
+To run in mock mode use:
+
+```bash
+$ source config/mock.sh
+$ npm start
+```
+
+The code for the fake APIs and data is located in the `mock/` directory. It is only bundled when working in mock mode (see `webpack.config.js`). In other words, it is not included in the released version of the app.
+
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)

@@ -34,6 +34,7 @@ function stringToArray(str, defaultValue) {
 
 module.exports = {
   DEBUG: stringToBoolean(process.env.DEBUG, true),
+  MOCK: stringToBoolean(process.env.MOCK, false),
   API_URL: process.env.API_URL || 'https://devel-api.tidepool.io',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://devel-uploads.tidepool.io',
   BLIP_URL: process.env.BLIP_URL || 'https://blip-devel.tidepool.io',

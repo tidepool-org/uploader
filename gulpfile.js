@@ -7,6 +7,7 @@ var jsFiles = [
   'bin/**/*.js',
   'lib/**/*.js',
   'test/**/*.js',
+  'mock/**/*.js',
   '*.js'
 ];
 

@@ -17,11 +17,18 @@
 
 var React = require('react');
 var config = require('./lib/config');
+var App = require('./lib/components/App.jsx');
 
 window.React = React;
 window.DEBUG = config.DEBUG;
 
-var App = require('./lib/components/App.jsx');
+if (config.MOCK) {
+  var mock = require('mock');
+  var api = require('./lib/core/api');
+  var device = require('./lib/core/device');
+  mock.patchApi(api);
+  mock.patchDevice(device);
+}
 
 window.app = React.render(
   React.createElement(App), document.body
