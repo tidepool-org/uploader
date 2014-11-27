@@ -16,7 +16,8 @@
 */
 
 var _ = require('lodash');
-var async = require('async');
+
+var processData = require('./processData');
 
 var data = {
   // Connected devices
@@ -59,53 +60,13 @@ var patch = function(device) {
     }, 0);
   };
 
-  var fakeProgress = [
-    {name: 'setup', value: 5},
-    {name: 'connect', value: 10},
-    {name: 'getConfigInfo', value: 20},
-    {name: 'fetchData', value: 24},
-    {name: 'fetchData', value: 32},
-    {name: 'fetchData', value: 44},
-    {name: 'fetchData', value: 50},
-    {name: 'processData', value: 55},
-    {name: 'processData', value: 60},
-    {name: 'uploadData', value: 64},
-    {name: 'uploadData', value: 67},
-    {name: 'uploadData', value: 72},
-    // DEBUG: uncomment to produce upload error
-    // {name: 'uploadData', value: 73, error: {}},
-    {name: 'uploadData', value: 78},
-    {name: 'uploadData', value: 81},
-    {name: 'uploadData', value: 85},
-    {name: 'uploadData', value: 90},
-    {name: 'disconnect', value: 95},
-    {name: 'cleanup', value: 100}
-  ];
-
-  var fakeProcessData = function(progress, cb) {
-    var fns = _.map(fakeProgress, function(step) {
-      return function(cb) {
-        setTimeout(function() {
-          progress(step.name, step.value);
-          if (step.error) {
-            return cb(step.error);
-          }
-          return cb();
-        }, 200);
-      };
-    });
-
-    async.series(fns, cb);
-  };
-
   device.upload = function(driverId, options, cb) {
     var progress = options.progress || _.noop;
 
-    fakeProcessData(progress, function(err) {
+    processData(progress, function(err) {
       if (err) {
         return cb(err);
       }
-
       return cb(null, data.records);
     });
   };
