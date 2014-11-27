@@ -37,7 +37,7 @@ var LoginPage = React.createClass({
         {this.renderSignupLink()}
         <form>
           <p><input ref="username" placeholder="username"/></p>
-          <p><input ref="password" placeholder="password"/></p>
+          <p><input ref="password" type="password" placeholder="password"/></p>
           <p>
             <input type="checkbox" ref="remember" id="remember"/>
             <label htmlFor="remember">{' Remember me'}</label>

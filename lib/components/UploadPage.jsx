@@ -73,7 +73,7 @@ var UploadPage = React.createClass({
     return (
       <form>
         <p><input ref="username" placeholder="carelink username"/></p>
-        <p><input ref="password" placeholder="carelink password"/></p>
+        <p><input ref="password" type="password" placeholder="carelink password"/></p>
       </form>
     );
   },
