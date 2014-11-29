@@ -14,5 +14,13 @@
   "trailing": true,
   "undef": true,
 
-  "quotmark": false
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false
+  },
+  "expr": true
 }

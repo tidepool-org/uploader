@@ -47,11 +47,17 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        {this.renderHeader()}
-        {this.renderPage()}
-        {this.renderAppState()}
+      {this.renderAppState()}
       </div>
     );
+
+    // return (
+    //   <div>
+    //     {this.renderHeader()}
+    //     {this.renderPage()}
+    //     {this.renderAppState()}
+    //   </div>
+    // );
   },
 
   renderHeader: function() {

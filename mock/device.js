@@ -24,12 +24,7 @@ var data = {
   devices: [
     {
       driverId: 'DexcomG4',
-      usbDevice: {
-        // https://developer.chrome.com/apps/usb#type-Device
-        device: 3,
-        vendorId: 8867,
-        productId: 71
-      }
+      usbDevice: 3
     }
   ],
   // Records uploaded from device
