@@ -112,7 +112,7 @@ function constructUI() {
     var myfullname = null;
     // console.log(username, password, serverIndex);
 
-    api.init(function(){
+    api.init(config, function(){
       api.user.login({ username: username, password:password}, goodLogin, failLogin);
       function goodUpload (data, status) {
         connectLog(status);
