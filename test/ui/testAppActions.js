@@ -52,4 +52,121 @@ describe('appActions', function() {
     app.state.FOO = 'bar';
     expect(appActions.app.state.FOO).to.equal('bar');
   });
+
+  describe('detectDevices', function() {
+    var connectedDevices;
+    beforeEach(function() {
+      connectedDevices = [];
+      device.detectAll = function(cb) {
+        return cb(null, connectedDevices);
+      };
+    });
+
+    it('adds a new device upload', function(done) {
+      app.state.uploads = [];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        usb: 3
+      }];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source).to.deep.equal({
+          type: 'device',
+          driverId: 'DexcomG4',
+          usb: 3,
+          connected: true
+        });
+        done();
+      });
+    });
+
+    it('keeps carelink at the end when adding new device', function(done) {
+      app.state.uploads = [
+        {source: {type: 'carelink'}}
+      ];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        usb: 3
+      }];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(2);
+        expect(app.state.uploads[1].source.type).to.equal('carelink');
+        done();
+      });
+    });
+
+    it('marks device upload as disconnected', function(done) {
+      app.state.uploads = [
+        {
+          source: {
+            type: 'device',
+            driverId: 'DexcomG4',
+            usb: 3,
+            connected: true
+          }
+        }
+      ];
+      connectedDevices = [];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.connected).to.be.false;
+        done();
+      });
+    });
+
+    it('marks device upload as connected', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          usb: 3,
+          connected: false
+        }
+      }
+      ];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        usb: 3
+      }];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.connected).to.be.true;
+        done();
+      });
+    });
+
+    it('updates connected device info', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          usb: 3,
+          connected: true
+        }
+      }
+      ];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        usb: 11
+      }];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.usb).to.equal(11);
+        done();
+      });
+    });
+
+  });
 });
