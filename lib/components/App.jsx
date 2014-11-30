@@ -24,6 +24,7 @@ var Loading = require('./Loading.jsx');
 var Login = require('./Login.jsx');
 var LoggedInAs = require('./LoggedInAs.jsx');
 var Scan = require('./Scan.jsx');
+var UploadList = require('./UploadList.jsx');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -78,6 +79,9 @@ var App = React.createClass({
       return (
         <div>
           {this.renderScan()}
+          <UploadList
+            uploads={this.appState.uploadsWithStatus()}
+            onUpload={this.appActions.upload.bind(this.appActions)} />
         </div>
       );
     }
