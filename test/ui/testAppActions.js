@@ -18,14 +18,19 @@
 var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
+var appState = require('../../lib/state/appState');
 
 describe('appActions', function() {
   // Mock all I/O
-  var config, api, jellyfish, device, carelink;
+  var config, now, sundial, api, jellyfish, device, carelink;
   var app;
   var appActions;
   beforeEach(function() {
     config = {};
+    now = '2014-01-31T22:00:00-05:00';
+    sundial = {
+      utcDateString: function() { return now; }
+    };
     api = {};
     jellyfish = {};
     device = {};
@@ -37,9 +42,11 @@ describe('appActions', function() {
         this.state = _.assign(this.state, updates);
       }
     };
+    appState.bindApp(app);
 
     appActions = proxyquire('../../lib/state/appActions', {
       '../config': config,
+      'sundial': sundial,
       '../core/api': api,
       '../jellyfishClient': function() { return jellyfish; },
       '../core/device': device,
@@ -169,4 +176,154 @@ describe('appActions', function() {
     });
 
   });
+
+  describe('uploadDevice', function() {
+
+    it('throws an error if upload index is invalid', function() {
+      app.state.uploads = [];
+
+      expect(appActions.upload.bind(appActions, 0))
+        .to.throw(/index/);
+    });
+
+    it('throws an error if an upload is already in progress', function() {
+      app.state.uploads = [{
+        progress: {}
+      }];
+
+      expect(appActions.upload.bind(appActions, 0))
+        .to.throw(/progress/);
+    });
+
+    it('starts upload with correct progress data', function() {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = _.noop;
+      device.upload = _.noop;
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, _.noop);
+      expect(app.state.uploads[0].progress).to.deep.equal({
+        targetId: '11',
+        start: '2014-01-31T22:00:00-05:00',
+        step: 'start',
+        percentage: 0
+      });
+    });
+
+    it('updates upload with correct progress data', function(done) {
+      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        options.progress('foo', 50);
+        expect(app.state.uploads[0].progress).to.have.property('step', 'foo');
+        expect(app.state.uploads[0].progress).to.have.property('percentage', 50);
+        return cb();
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, done);
+    });
+
+    it('adds correct object to upload history when complete and clears progress', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('cleanup', 100);
+        var records = [{}, {}];
+        return cb(null, records);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.uploads[0].progress).to.be.undefined;
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal({
+          targetId: '11',
+          start: '2014-01-31T22:00:00-05:00',
+          finish: '2014-01-31T22:00:30-05:00',
+          step: 'cleanup',
+          percentage: 100,
+          success: true,
+          count: 2
+        });
+        done();
+      });
+    });
+
+    it('adds correct object to upload history when upload failed', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = 'oops';
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        if (err && err !== 'oops') throw err;
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal({
+          targetId: '11',
+          start: '2014-01-31T22:00:00-05:00',
+          finish: '2014-01-31T22:00:30-05:00',
+          step: 'fetchData',
+          percentage: 50,
+          error: 'oops'
+        });
+        done();
+      });
+    });
+
+    it('adds to upload history most recent first', function(done) {
+      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) { return cb(null, []); };
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        },
+        history: [
+          {targetId: '1'}
+        ]
+      }];
+      app.state.targetId = '2';
+
+      appActions.upload(0, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.uploads[0].history).to.have.length(2);
+        expect(app.state.uploads[0].history[0].targetId).to.equal('2');
+        expect(app.state.uploads[0].history[1].targetId).to.equal('1');
+        done();
+      });
+    });
+
+  });
+
 });
