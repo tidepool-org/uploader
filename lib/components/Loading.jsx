@@ -17,10 +17,10 @@
 
 var React = require('react');
 
-var LoadingPage = React.createClass({
+var Loading = React.createClass({
   render: function() {
     return <p>Loading app...</p>;
   }
 });
 
-module.exports = LoadingPage;
+module.exports = Loading;

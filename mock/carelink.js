@@ -26,6 +26,8 @@ var data = {
 
 var patch = function(carelink) {
 
+  carelink._data = data;
+
   carelink.init = function(options, cb) {
     setTimeout(function() {
       return cb();

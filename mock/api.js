@@ -38,6 +38,8 @@ var data = {
 
 var patch = function(api) {
 
+  api._data = data;
+
   api.init = function(cb) {
     setTimeout(function() {
       if (localStore.getItem('authToken') === AUTH_TOKEN) {

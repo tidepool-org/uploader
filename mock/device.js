@@ -32,9 +32,11 @@ var data = {
 };
 
 // DEBUG: uncomment for no connected devices
-// data.devices = [];
+data.devices = [];
 
 var patch = function(device) {
+
+  device._data = data;
 
   device.init = function(options, cb) {
     setTimeout(function() {
