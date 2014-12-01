@@ -98,12 +98,12 @@ var Upload = React.createClass({
   },
 
   renderSuccess: function() {
-    if (!this.isUploadSuccessfull()) {
+    if (!this.isUploadSuccessful()) {
       return null;
     }
 
     return (
-      <p style={{color: 'green'}}>{'Upload successfull!'}</p>
+      <p style={{color: 'green'}}>{'Upload successful!'}</p>
     );
   },
 
@@ -151,7 +151,7 @@ var Upload = React.createClass({
     return Boolean(this.props.upload.source.type === 'carelink');
   },
 
-  isUploadSuccessfull: function() {
+  isUploadSuccessful: function() {
     if (this.isUploading()) {
       return false;
     }
