@@ -25,6 +25,9 @@ var Login = require('./Login.jsx');
 var LoggedInAs = require('./LoggedInAs.jsx');
 var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
+var ViewDataLink = require('./ViewDataLink.jsx');
+
+var config = require('../config');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -49,7 +52,6 @@ var App = React.createClass({
       <div>
         {this.renderHeader()}
         {this.renderPage()}
-        {this.renderAppState()}
       </div>
     );
   },
@@ -82,6 +84,7 @@ var App = React.createClass({
           <UploadList
             uploads={this.appState.uploadsWithStatus()}
             onUpload={this.appActions.upload.bind(this.appActions)} />
+          {this.renderViewDataLink()}
         </div>
       );
     }
@@ -97,6 +100,15 @@ var App = React.createClass({
     return <Scan
       showInstructions={this.appState.isShowingDeviceInstructions()}
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
+  },
+
+  renderViewDataLink: function() {
+    if (!this.appState.hasSuccessfulUpload()) {
+      return null;
+    }
+
+    return <ViewDataLink
+      href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'} />;
   },
 
   renderAppState: function() {
