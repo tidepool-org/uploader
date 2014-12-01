@@ -137,34 +137,23 @@ var Upload = React.createClass({
   },
 
   isDisconnected: function() {
-    return (
-      this.props.upload.source.type === 'device' &&
-      !Boolean(this.props.upload.source.connected)
-    );
+    return this.props.upload.disconnected;
   },
 
   isUploading: function() {
-    return Boolean(this.props.upload.progress);
+    return this.props.upload.uploading;
   },
 
   isCarelinkUpload: function() {
-    return Boolean(this.props.upload.source.type === 'carelink');
+    return this.props.upload.carelink;
   },
 
   isUploadSuccessful: function() {
-    if (this.isUploading()) {
-      return false;
-    }
-    var history = this.props.upload.history;
-    return history && history.length && history[0].success;
+    return this.props.upload.successful;
   },
 
   isUploadFailed: function() {
-    if (this.isUploading()) {
-      return false;
-    }
-    var history = this.props.upload.history;
-    return history && history.length && history[0].error;
+    return this.props.upload.failed;
   },
 
   handleUpload: function() {
