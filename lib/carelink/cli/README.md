@@ -4,6 +4,11 @@ Uploads raw carelink csv data into the tidepool platform
 
 ### Usage
 
+```
+node csv_loader.js -f /Users/jhbate/Downloads/CareLink-Export-1391151846463.csv  -e local  -u <your_username> -p <your_pw>
+
+```
+
 - --file 		
   - short code -f
   - path to the carelink csv file path
@@ -22,7 +27,3 @@ Uploads raw carelink csv data into the tidepool platform
   - named timezone
   - default is 'America/Los_Angeles'
 
-```
-node csv_loader.js -f /Users/jhbate/Downloads/CareLink-Export-1391151846463.csv  -e local  -u <your_username> -p <your_pw>
-
-```
