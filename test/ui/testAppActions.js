@@ -18,11 +18,12 @@
 var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
+var sinon = require('salinity').sinon;
 var appState = require('../../lib/state/appState');
 
 describe('appActions', function() {
   // Mock all I/O
-  var config, now, sundial, api, jellyfish, device, carelink;
+  var config, now, sundial, localStore, api, jellyfish, device, carelink;
   var app;
   var appActions;
   beforeEach(function() {
@@ -31,6 +32,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
+    localStore = {};
     api = {};
     jellyfish = {};
     device = {};
@@ -47,6 +49,7 @@ describe('appActions', function() {
     appActions = proxyquire('../../lib/state/appActions', {
       '../config': config,
       'sundial': sundial,
+      '../core/localStore': localStore,
       '../core/api': api,
       '../jellyfishClient': function() { return jellyfish; },
       '../core/device': device,
@@ -58,6 +61,178 @@ describe('appActions', function() {
   it('binds to app component', function() {
     app.state.FOO = 'bar';
     expect(appActions.app.state.FOO).to.equal('bar');
+  });
+
+  describe('load', function() {
+    beforeEach(function() {
+      localStore.getInitialState = function() {};
+      localStore.init = function(options, cb) { cb(); };
+      api.init = function(options, cb) { cb(); };
+      device.init = function(options, cb) { cb(); };
+      carelink.init = function(options, cb) { cb(); };
+
+      api.user = {};
+      api.user.account = function(cb) { cb(); };
+      api.user.profile = function(cb) { cb(); };
+    });
+
+    it('initializes all I/O services', function(done) {
+      localStore.getInitialState = function() {};
+      var initialized = {};
+      var mark = function(name, cb) {
+        initialized[name] = true;
+        cb();
+      };
+      localStore.init = function(options, cb) { mark('localStore', cb); };
+      api.init = function(options, cb) { mark('api', cb); };
+      device.init = function(options, cb) { mark('device', cb); };
+      carelink.init = function(options, cb) { mark('carelink', cb); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(initialized.localStore).to.be.true;
+        expect(initialized.api).to.be.true;
+        expect(initialized.device).to.be.true;
+        expect(initialized.carelink).to.be.true;
+        done();
+      });
+    });
+
+    it('goes to login page if no session found', function(done) {
+      api.init = function(options, cb) { cb(); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('login');
+        done();
+      });
+    });
+
+    it('goes to main page if local session found', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('loads logged-in user if local session found', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.user).to.deep.equal({
+          userid: '11',
+          profile: {fullName: 'bob'}
+        });
+        done();
+      });
+    });
+
+    it('sets target user id as logged-in user id', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.targetId).to.equal('11');
+        done();
+      });
+    });
+
+  });
+
+  describe('login', function() {
+    beforeEach(function() {
+      api.user = {};
+      api.user.login = function(credentials, options, cb) { cb(); };
+      api.user.profile = function(cb) { cb(); };
+    });
+
+    it('goes to main page if login successful', function(done) {
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('loads logged-in user if login successful', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '11'}});
+      };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.user).to.deep.equal({
+          userid: '11',
+          profile: {fullName: 'bob'}
+        });
+        done();
+      });
+    });
+
+    it('calls callback with error if login failed', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb({status: 401});
+      };
+
+      appActions.login({}, {}, function(err) {
+        if (err && err.status !== 401) throw err;
+        expect(err.status).to.equal(401);
+        done();
+      });
+    });
+
+    it('sets target user id as logged-in user id', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '11'}});
+      };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.targetId).to.equal('11');
+        done();
+      });
+    });
+
+  });
+
+  describe('logout', function() {
+    beforeEach(function() {
+      api.user = {};
+      api.user.logout = function(cb) { cb(); };
+    });
+
+    it('resets app state', function(done) {
+      app.state = {
+        user: {userid: '11'},
+        targetId: '11',
+        uploads: [1, 2, 3]
+      };
+      appActions.logout(function(err) {
+        if (err) throw err;
+        expect(app.state.user).to.not.exist;
+        expect(app.state.targetId).to.not.exist;
+        expect(app.state.uploads).to.be.empty;
+        done();
+      });
+    });
+
+    it('goes back to login page', function(done) {
+      app.state.page = 'main';
+      appActions.logout(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('login');
+        done();
+      });
+    });
+
   });
 
   describe('detectDevices', function() {
