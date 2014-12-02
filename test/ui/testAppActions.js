@@ -18,7 +18,6 @@
 var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
-var sinon = require('salinity').sinon;
 var appState = require('../../lib/state/appState');
 
 describe('appActions', function() {
