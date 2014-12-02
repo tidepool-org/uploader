@@ -13,7 +13,7 @@ $ source config/local.sh
 ### Usage
 
 ```
-node csv_loader.js -f /Users/jhbate/Downloads/CareLink-Export-1391151846463.csv  -e local  -u <your_username> -p <your_pw>
+node csv_loader.js -f /path/to/CareLink-Export.csv -u <your_username> -p <your_pw>
 
 ```
 
