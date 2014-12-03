@@ -19,7 +19,7 @@ var React = require('react');
 
 var config = require('../config');
 
-var LoginPage = React.createClass({
+var Login = React.createClass({
   propTypes: {
     onLogin: React.PropTypes.func.isRequired
   },
@@ -120,4 +120,4 @@ var LoginPage = React.createClass({
   }
 });
 
-module.exports = LoginPage;
+module.exports = Login;

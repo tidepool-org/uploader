@@ -15,37 +15,20 @@
 * == BSD2 LICENSE ==
 */
 
-var _ = require('lodash');
+var React = require('react');
 
-var processData = require('./processData');
+var ViewDataLink = React.createClass({
+  propTypes: {
+    href: React.PropTypes.string.isRequired
+  },
 
-var data = {
-  // Records uploaded from CareLink file
-  records: _.map(_.range(234), function(i) { return {id: i.toString()}; })
-};
+  render: function() {
+    return (
+      <p>
+        <a href={this.props.href} target="_blank">See the data</a>
+      </p>
+    );
+  }
+});
 
-var patch = function(carelink) {
-
-  carelink._data = data;
-
-  carelink.init = function(options, cb) {
-    setTimeout(function() {
-      return cb();
-    }, 0);
-  };
-
-  carelink.upload = function(rawData, options, cb) {
-    var progress = options.progress || _.noop;
-
-    processData(progress, function(err) {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, data.records);
-    });
-  };
-
-  return carelink;
-};
-
-module.exports = patch;
+module.exports = ViewDataLink;

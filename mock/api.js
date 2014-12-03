@@ -38,7 +38,9 @@ var data = {
 
 var patch = function(api) {
 
-  api.init = function(cb) {
+  api._data = data;
+
+  api.init = function(options, cb) {
     setTimeout(function() {
       if (localStore.getItem('authToken') === AUTH_TOKEN) {
         return cb(null, {token: AUTH_TOKEN});

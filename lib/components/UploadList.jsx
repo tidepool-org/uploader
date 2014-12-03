@@ -16,36 +16,30 @@
 */
 
 var _ = require('lodash');
+var React = require('react');
+var Upload = require('./Upload.jsx');
 
-var processData = require('./processData');
+var UploadList = React.createClass({
+  propTypes: {
+    uploads: React.PropTypes.array.isRequired,
+    onUpload: React.PropTypes.func.isRequired
+  },
 
-var data = {
-  // Records uploaded from CareLink file
-  records: _.map(_.range(234), function(i) { return {id: i.toString()}; })
-};
-
-var patch = function(carelink) {
-
-  carelink._data = data;
-
-  carelink.init = function(options, cb) {
-    setTimeout(function() {
-      return cb();
-    }, 0);
-  };
-
-  carelink.upload = function(rawData, options, cb) {
-    var progress = options.progress || _.noop;
-
-    processData(progress, function(err) {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, data.records);
+  render: function() {
+    var self = this;
+    var nodes = _.map(this.props.uploads, function(upload, index){
+      return (
+        <div key={index}>
+          <Upload
+            upload={upload}
+            onUpload={self.props.onUpload.bind(null, index)} />
+          <hr/>
+        </div>
+      );
     });
-  };
 
-  return carelink;
-};
+    return <div><hr/>{nodes}</div>;
+  }
+});
 
-module.exports = patch;
+module.exports = UploadList;

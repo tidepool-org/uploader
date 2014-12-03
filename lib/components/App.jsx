@@ -20,11 +20,14 @@ var React = require('react');
 var appState = require('../state/appState');
 var appActions = require('../state/appActions');
 
-var LoadingPage = require('./LoadingPage.jsx');
-var LoginPage = require('./LoginPage.jsx');
+var Loading = require('./Loading.jsx');
+var Login = require('./Login.jsx');
 var LoggedInAs = require('./LoggedInAs.jsx');
-var MainPage = require('./MainPage.jsx');
-var UploadPage = require('./UploadPage.jsx');
+var Scan = require('./Scan.jsx');
+var UploadList = require('./UploadList.jsx');
+var ViewDataLink = require('./ViewDataLink.jsx');
+
+var config = require('../config');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -49,7 +52,6 @@ var App = React.createClass({
       <div>
         {this.renderHeader()}
         {this.renderPage()}
-        {this.renderAppState()}
       </div>
     );
   },
@@ -68,31 +70,45 @@ var App = React.createClass({
     var page = this.state.page;
 
     if (page === 'loading') {
-      return <LoadingPage />;
+      return <Loading />;
     }
 
     if (page === 'login') {
-      return <LoginPage onLogin={this.appActions.login.bind(this.appActions)} />;
+      return <Login onLogin={this.appActions.login.bind(this.appActions)} />;
     }
 
     if (page === 'main') {
-      return <MainPage
-        devices={this.state.devices}
-        history={this.state.history}
-        onDetectDevices={this.appActions.detectDevices.bind(this.appActions)}
-        onOpenUpload={this.appActions.openUpload.bind(this.appActions)}/>;
-    }
-
-    if (page === 'upload') {
-      return <UploadPage
-        upload={this.state.upload}
-        progress={this.state.progress}
-        onUploadDevice={this.appActions.uploadDevice.bind(this.appActions)}
-        onUploadCarelink={this.appActions.uploadCarelink.bind(this.appActions)}
-        onCloseUpload={this.appActions.closeUpload.bind(this.appActions)}/>;
+      return (
+        <div>
+          {this.renderScan()}
+          <UploadList
+            uploads={this.appState.uploadsWithFlags()}
+            onUpload={this.appActions.upload.bind(this.appActions)} />
+          {this.renderViewDataLink()}
+        </div>
+      );
     }
 
     return null;
+  },
+
+  renderScan: function() {
+    if (this.appState.hasUploadInProgress()) {
+      return null;
+    }
+
+    return <Scan
+      showInstructions={this.appState.isShowingDeviceInstructions()}
+      onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
+  },
+
+  renderViewDataLink: function() {
+    if (!this.appState.hasSuccessfulUpload()) {
+      return null;
+    }
+
+    return <ViewDataLink
+      href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'} />;
   },
 
   renderAppState: function() {
