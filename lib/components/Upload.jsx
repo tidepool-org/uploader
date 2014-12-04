@@ -69,8 +69,8 @@ var Upload = React.createClass({
 
     return (
       <form>
-        <p><input ref="username" placeholder="carelink username"/></p>
-        <p><input ref="password" type="password" placeholder="carelink password"/></p>
+        <p><input className="form-control" ref="username" placeholder="carelink username"/></p>
+        <p><input className="form-control" ref="password" type="password" placeholder="carelink password"/></p>
       </form>
     );
   },
@@ -82,6 +82,7 @@ var Upload = React.createClass({
     return (
       <p>
         <button
+          className="btn btn-secondary"
           disabled={disabled}
           onClick={this.handleUpload}>{text}</button>
       </p>
