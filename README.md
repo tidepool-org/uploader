@@ -134,6 +134,22 @@ $ npm start
 
 The code for the fake APIs and data is located in the `mock/` directory. It is only bundled when working in mock mode (see `webpack.config.js`). In other words, it is not included in the released version of the app.
 
+## Running in the browser
+
+**IMPORTANT**: This only works in "mock mode".
+
+For certain development tasks, like CSS or JavaScript that doesn't use any of the Chrome App APIs, it might be useful to run the app in the browser (refreshing the browser is slightly faster than reloading a Chrome App). You can do this with:
+
+```bash
+$ source config/mock.sh
+$ npm run web
+```
+In a separate terminal start a server on `http://localhost:8080` with:
+
+```bash
+$ npm run server
+```
+
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
