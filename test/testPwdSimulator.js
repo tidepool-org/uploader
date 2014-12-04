@@ -642,12 +642,40 @@ describe('pwdSimulator.js', function(){
     });
   });
 
+  describe('deviceMeta', function() {
+    var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual', timezoneOffset: 0 };
+    var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: 'manual', timezoneOffset: 0 };
+
+    it('sets up the previous', function(){
+      simulator.suspend(suspend);
+      simulator.resume(resume);
+      var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
+      expect(simulator.getEvents().filter(function(e){ return e.type === 'deviceMeta'; })).deep.equals([
+        expectedSuspend,
+        _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
+        ]);
+    });
+
+    it('creates a basal with `suspend` deliveryType and duration of suspend', function(){
+      simulator.suspend(suspend);
+      simulator.resume(resume);
+      var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
+      expect(getBasals()).deep.equals([{
+        type: 'basal',
+        deliveryType: 'suspend',
+        deviceTime: suspend.deviceTime,
+        time: suspend.time,
+        timezoneOffset: 0,
+        duration: 1800000 
+      }]);
+    });
+  });
+
   describe('event interplay', function(){
     describe('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
@@ -683,7 +711,7 @@ describe('pwdSimulator.js', function(){
         timezoneOffset: 0
       };
 
-      it.skip('fills in for changes in schedule when another scheduled appears', function(){
+      it('fills in for changes in schedule when another scheduled appears', function(){
         simulator.settings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
@@ -738,7 +766,7 @@ describe('pwdSimulator.js', function(){
             ]));
       });
 
-      it.skip('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
+      it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
            simulator.settings(settings);
            simulator.basalScheduled(basal);
@@ -851,7 +879,6 @@ describe('pwdSimulator.js', function(){
       var settings = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
@@ -882,7 +909,6 @@ describe('pwdSimulator.js', function(){
       var newSettings = {
         time: '2014-09-25T00:30:00.000Z',
         deviceTime: '2014-09-25T00:30:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
@@ -942,7 +968,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T00:00:00.000Z',
           deviceTime: '2014-09-25T00:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {},
@@ -962,7 +987,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T00:00:00.000Z',
           deviceTime: '2014-09-25T00:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {
@@ -983,7 +1007,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T00:00:00.000Z',
           deviceTime: '2014-09-25T00:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {
@@ -1007,7 +1030,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T00:00:00.000Z',
           deviceTime: '2014-09-25T00:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {
@@ -1028,8 +1050,8 @@ describe('pwdSimulator.js', function(){
         simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
 
         var expectedBasal = {
-          type: 'basal',
           deliveryType: 'scheduled',
+          type: 'basal',
           time: '2014-09-25T00:00:00.000Z',
           scheduleName: 'billy',
           rate: 1.0,
@@ -1058,7 +1080,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T07:00:00.000Z',
           deviceTime: '2014-09-25T07:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {
@@ -1078,8 +1099,8 @@ describe('pwdSimulator.js', function(){
         simulator.settings(settings);
 
         var expectedBasal = {
-          type: 'basal',
           deliveryType: 'scheduled',
+          type: 'basal',
           time: '2014-09-25T07:00:00.000Z',
           scheduleName: 'billy',
           rate: 1.1,
@@ -1095,7 +1116,6 @@ describe('pwdSimulator.js', function(){
         var settings = {
           time: '2014-09-25T20:00:00.000Z',
           deviceTime: '2014-09-25T20:00:00',
-          deliveryType: 'scheduled',
           activeSchedule: 'billy',
           units: { bg: 'mg/dL' },
           basalSchedules: {
@@ -1131,11 +1151,94 @@ describe('pwdSimulator.js', function(){
   });
 
   describe('event interplay, data with timezoneOffset', function(){
-    describe.skip('fill in scheduled events when a temp is active and time passes', function(){
+    describe('weirdly sequenced scheduled basal before resume', function(){
+      // NB: based on a true story
+      var settings = {
+        time: '2014-03-15T00:00:00.000Z',
+        deviceTime: '2014-03-15T10:00:00',
+        activeSchedule: 'standard',
+        units: { bg: 'mg/dL' },
+        basalSchedules: {
+          standard: [
+            { start: 0, rate: 0.825 }
+          ]
+        },
+        bgTarget: [],
+        insulinSensitivity: [],
+        carbRatio: [],
+        timezoneOffset: -600
+      };
+      var firstBasal = {
+        rate: 0.825,
+        deviceTime: '2014-03-15T16:22:15',
+        time: '2014-03-16T02:22:15.000Z',
+        timezoneOffset: -600,
+        scheduleName: 'standard'
+      };
+      var suspend = {
+        reason: 'manual',
+        timezoneOffset: -600,
+        time: '2014-03-16T02:23:19.000Z',
+        deviceTime: '2014-03-15T16:23:19'
+      };
+      var secondBasal = {
+        rate: 0.825,
+        deviceTime: '2014-03-15T17:18:34',
+        time: '2014-03-16T03:18:34.000Z',
+        timezoneOffset: -600,
+        scheduleName: 'standard'
+      };
+      var resume = {
+        reason: 'manual',
+        timezoneOffset: -600,
+        time: '2014-03-16T03:18:35.000Z',
+        deviceTime: '2014-03-15T17:18:35'
+      };
+
+      it('should add correct previouses to basals and deviceMetas', function(){
+        simulator.settings(settings);
+        simulator.basalScheduled(firstBasal);
+        simulator.suspend(suspend);
+        simulator.basalScheduled(secondBasal);
+        simulator.resume(resume);
+        var firstBasalRes = _.assign({}, firstBasal, {type: 'basal', duration: 27465000, deliveryType: 'scheduled'});
+        var expectedSuspend = _.assign({}, suspend, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var basalSuspend = {
+          deliveryType: 'suspend',
+          // TODO: not sure if we actually expect this to be calculated here rather than in jellyfish
+          duration: 3316000,
+          type: 'basal',
+          timezoneOffset: -600,
+          deviceTime: suspend.deviceTime,
+          time: suspend.time,
+          suppressed: firstBasalRes,
+          previous: firstBasalRes
+        };
+        var secondBasalRes = _.assign({}, secondBasal, {
+          type: 'basal',
+          duration: 24085000,
+          deliveryType: 'scheduled',
+          time: resume.time,
+          deviceTime: resume.deviceTime,
+          previous: _.omit(basalSuspend, 'previous'),
+          annotations: [{code: 'basal/fabricated-from-schedule'}]
+        });
+        expect(simulator.getEvents()).deep.equals(
+          [
+            _.assign({}, settings, {type: 'settings'}),
+            firstBasalRes,
+            expectedSuspend,
+            basalSuspend,
+            secondBasalRes,
+            _.assign({}, resume, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend})
+          ]);
+      });
+    });
+
+    describe('fill in scheduled events when a temp is active and time passes', function(){
       var settings = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
@@ -1350,7 +1453,6 @@ describe('pwdSimulator.js', function(){
       var settings = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
@@ -1381,7 +1483,6 @@ describe('pwdSimulator.js', function(){
       var newSettings = {
         time: '2014-09-25T04:30:00.000Z',
         deviceTime: '2014-09-25T00:30:00',
-        deliveryType: 'scheduled',
         activeSchedule: 'billy',
         units: { bg: 'mg/dL' },
         basalSchedules: {
