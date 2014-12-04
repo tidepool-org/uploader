@@ -36,8 +36,8 @@ var Login = React.createClass({
       <div>
         {this.renderSignupLink()}
         <form>
-          <p><input ref="username" placeholder="username"/></p>
-          <p><input ref="password" type="password" placeholder="password"/></p>
+          <p><input className="form-control" ref="username" placeholder="Email"/></p>
+          <p><input className="form-control" ref="password" placeholder="Password" type="password"/></p>
           <p>
             <input type="checkbox" ref="remember" id="remember"/>
             <label htmlFor="remember">{' Remember me'}</label>
