@@ -29,16 +29,15 @@ var UploadList = React.createClass({
     var self = this;
     var nodes = _.map(this.props.uploads, function(upload, index){
       return (
-        <div key={index}>
+        <div key={index} className="UploadList-item">
           <Upload
             upload={upload}
             onUpload={self.props.onUpload.bind(null, index)} />
-          <hr/>
         </div>
       );
     });
 
-    return <div><hr/>{nodes}</div>;
+    return <div className="UploadList">{nodes}</div>;
   }
 });
 
