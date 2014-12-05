@@ -659,7 +659,6 @@ describe('pwdSimulator.js', function(){
     it('creates a basal with `suspend` deliveryType and duration of suspend', function(){
       simulator.suspend(suspend);
       simulator.resume(resume);
-      var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
       expect(getBasals()).deep.equals([{
         type: 'basal',
         deliveryType: 'suspend',
