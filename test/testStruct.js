@@ -302,7 +302,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(-2);
       expect(result.b).to.equal(258);
     });
-    it('works for z with null term', function(){0x48, 0x65, 0x6c, 0x6c, 0x6f
+    it('works for z with null term', function(){
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -315,7 +315,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '8z', ['s']);
       expect(result.s).to.equal('Hello');
     });
-    it('works for z truncated', function(){0x48, 0x65, 0x6c, 0x6c, 0x6f
+    it('works for z truncated', function(){
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -328,7 +328,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '4z', ['s']);
       expect(result.s).to.equal('Hell');
     });
-    it('works for z truncated with offset', function(){0x48, 0x65, 0x6c, 0x6c, 0x6f
+    it('works for z truncated with offset', function(){
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -341,7 +341,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 1, '4z', ['s']);
       expect(result.s).to.equal('ello');
     });
-    it('works for Z', function(){0x48, 0x65, 0x6c, 0x6c, 0x6f
+    it('works for Z', function(){
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
