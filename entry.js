@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+require('./styles/main.less');
+
 var React = require('react');
 window.React = React;
 var config = require('./lib/config');

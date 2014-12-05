@@ -1,5 +1,4 @@
-/*
-* == BSD2 LICENSE ==
+/**
 * Copyright (c) 2014, Tidepool Project
 *
 * This program is free software; you can redistribute it and/or modify it under
@@ -12,19 +11,20 @@
 *
 * You should have received a copy of the License along with this program; if
 * not, you can obtain one from Tidepool Project at tidepool.org.
-* == BSD2 LICENSE ==
 */
 
-var React = require('react');
+// "Flexbox and border-box all the things"
+// https://github.com/facebook/css-layout#default-values
 
-var ViewDataLink = React.createClass({
-  propTypes: {
-    href: React.PropTypes.string.isRequired
-  },
+.box-flex {
+  box-sizing: border-box;
+  position: relative;
+  border: 0 solid black;
+  margin: 0;
+  padding: 0;
 
-  render: function() {
-    return <a href={this.props.href} target="_blank">See the data</a>;
-  }
-});
-
-module.exports = ViewDataLink;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+}

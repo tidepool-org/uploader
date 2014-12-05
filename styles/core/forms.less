@@ -1,0 +1,57 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+// Form controls
+// ====================================
+
+@form-control-border-size:   2px;
+@form-control-height:        (30px + 2*@form-control-border-size);
+@form-control-border-color:  @purple-light;
+
+.form-control {
+  display: block;
+
+  font-size: @font-size-base;
+  height: @form-control-height;
+  line-height: (@line-height-base - 2*@form-control-border-size);
+  vertical-align: middle;
+
+  padding: 0 15px;
+
+  border: @form-control-border-size solid fade(@form-control-border-color, 50%);
+  border-radius: 0px;
+  background: #fff;
+  color: @text-color;
+
+  &:hover {
+    border-color: @form-control-border-color;
+  }
+
+  &:focus {
+    // Disable default WebKit focus style
+    outline: 0;
+    border-color: @form-control-border-color;
+  }
+
+  &:disabled {
+    border-color: fade(@form-control-border-color, 70%);
+    cursor: not-allowed;
+  }
+
+  textarea& {
+    height: auto;
+    line-height: @line-height-base;
+  }
+}

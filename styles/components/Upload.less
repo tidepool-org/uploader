@@ -1,0 +1,71 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+.Upload {
+  flex-flow: row wrap;
+}
+
+.Upload-left,
+.Upload-right {
+  // Same width, and stretch
+  flex: 1 0px;
+}
+
+.Upload-left {
+  padding-right: 5px;
+}
+.Upload-right {
+  padding-left: 5px;
+}
+
+.Upload-name {
+  font-weight: bold;
+}
+.Upload.is-disconnected .Upload-name {
+  color: @gray-text;
+}
+
+.Upload-detail {
+  color: @gray-text;
+}
+
+.Upload-status {
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.Upload-status--error {
+  color: @red;
+}
+
+.Upload-progress {
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-bottom: 10px;  
+}
+
+.Upload-form {
+  .box-flex();
+}
+
+.Upload-input {
+  margin-bottom: 15px;
+}
+
+.Upload-button {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+}

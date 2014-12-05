@@ -1,5 +1,4 @@
-/*
-* == BSD2 LICENSE ==
+/**
 * Copyright (c) 2014, Tidepool Project
 *
 * This program is free software; you can redistribute it and/or modify it under
@@ -12,19 +11,39 @@
 *
 * You should have received a copy of the License along with this program; if
 * not, you can obtain one from Tidepool Project at tidepool.org.
-* == BSD2 LICENSE ==
 */
 
-var React = require('react');
+.Login-input {
+  margin-bottom: 15px;
+}
 
-var ViewDataLink = React.createClass({
-  propTypes: {
-    href: React.PropTypes.string.isRequired
-  },
+.Login-form {
+  .box-flex();
+}
 
-  render: function() {
-    return <a href={this.props.href} target="_blank">See the data</a>;
+.Login-actions {
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.Login-remember {
+  flex-flow: row wrap;
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 5px;
   }
-});
+}
 
-module.exports = ViewDataLink;
+.Login-forgot {
+  font-size: 11px;
+}
+
+.Login-error {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  color: @red;
+  margin-top: 10px;
+}
