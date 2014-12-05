@@ -13,23 +13,11 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Box model
+// Box model and layout
 // ====================================
 
-// "Flexbox and border-box all the things"
-// https://github.com/facebook/css-layout#default-values
-
 div, span {
-  box-sizing: border-box;
-  position: relative;
-  border: 0 solid black;
-  margin: 0;
-  padding: 0;
-
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex-shrink: 0;
+  .box-flex();
 }
 
 // Body reset

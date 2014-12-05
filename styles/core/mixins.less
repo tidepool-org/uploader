@@ -13,37 +13,18 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.Login-input {
-  margin-bottom: 15px;
-}
+// "Flexbox and border-box all the things"
+// https://github.com/facebook/css-layout#default-values
 
-.Login-form {
-  .box-flex();
-}
+.box-flex {
+  box-sizing: border-box;
+  position: relative;
+  border: 0 solid black;
+  margin: 0;
+  padding: 0;
 
-.Login-actions {
-  flex-flow: row wrap;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-.Login-remember {
-  flex-flow: row wrap;
-  align-items: center;
-
-  & > input[type="checkbox"] {
-    margin: 0;
-    margin-right: 5px;
-  }
-}
-
-.Login-forgot {
-  font-size: 11px;
-}
-
-.Login-error {
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  color: @red;
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
 }

@@ -34,25 +34,27 @@ var Login = React.createClass({
   render: function() {
     return (
       <div className="Login">
-        <div className="Login-input">
-          <input className="form-control" ref="username" placeholder="Email"/>
-        </div>
-        <div className="Login-input">
-          <input className="form-control" ref="password" placeholder="Password" type="password"/>
-        </div>
-        <div className="Login-actions">
-          <div className="Login-actionsLeft">
-            <div className="Login-remember">
-              <input type="checkbox" ref="remember" id="remember"/>
-              <label htmlFor="remember">Remember me</label>
+        <form className="Login-form">
+          <div className="Login-input">
+            <input className="form-control" ref="username" placeholder="Email"/>
+          </div>
+          <div className="Login-input">
+            <input className="form-control" ref="password" placeholder="Password" type="password"/>
+          </div>
+          <div className="Login-actions">
+            <div className="Login-actionsLeft">
+              <div className="Login-remember">
+                <input type="checkbox" ref="remember" id="remember"/>
+                <label htmlFor="remember">Remember me</label>
+              </div>
+              <div className="Login-forgot">{this.renderForgotPasswordLink()}</div>
             </div>
-            <div className="Login-forgot">{this.renderForgotPasswordLink()}</div>
+            <div className="Login-actionsRight">
+              {this.renderButton()}
+            </div>
           </div>
-          <div className="Login-actionsRight">
-            {this.renderButton()}
-          </div>
-        </div>
-        <div className="Login-error">{this.renderError()}</div>
+          <div className="Login-error">{this.renderError()}</div>
+        </form>
       </div>
     );
   },
