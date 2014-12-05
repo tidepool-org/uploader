@@ -43,8 +43,10 @@ var Upload = React.createClass({
         <div className="Upload-right">
           {this.renderStatus()}
           {this.renderProgress()}
-          {this.renderCarelinkForm()}
-          {this.renderButton()}
+          <form className="Upload-form">
+            {this.renderCarelinkInputs()}
+            {this.renderButton()}
+          </form>
         </div>
       </div>
     );
@@ -79,7 +81,7 @@ var Upload = React.createClass({
     );
   },
 
-  renderCarelinkForm: function() {
+  renderCarelinkInputs: function() {
     if (!this.isCarelinkUpload()) {
       return null;
     }
@@ -88,10 +90,10 @@ var Upload = React.createClass({
     }
 
     return (
-      <form className="Upload-form">
+      <div>
         <div className="Upload-input"><input className="form-control" ref="username" placeholder="carelink username"/></div>
         <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password"/></div>
-      </form>
+      </div>
     );
   },
 
