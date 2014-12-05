@@ -35,7 +35,7 @@ var data = {
 };
 
 // DEBUG: uncomment for no connected devices
-data.devices = [];
+// data.devices = [];
 
 var patch = function(device) {
 

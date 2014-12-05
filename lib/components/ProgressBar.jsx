@@ -1,4 +1,5 @@
-/**
+/*
+* == BSD2 LICENSE ==
 * Copyright (c) 2014, Tidepool Project
 *
 * This program is free software; you can redistribute it and/or modify it under
@@ -11,27 +12,24 @@
 *
 * You should have received a copy of the License along with this program; if
 * not, you can obtain one from Tidepool Project at tidepool.org.
+* == BSD2 LICENSE ==
 */
 
-// Core
-// ====================================
+var React = require('react');
 
-@import "core/variables.less";
-@import "core/mixins.less";
-@import "core/fonts.less";
-@import "core/icons.less";
+var ProgressBar = React.createClass({
+  propTypes: {
+    // Percentage is an integer between 0 and 100
+    percentage: React.PropTypes.number.isRequired
+  },
 
-@import "core/scaffolding.less";
-@import "core/forms.less";
-@import "core/buttons.less";
+  render: function() {
+    return (
+      <div className="ProgressBar">
+        {'Progress: ' + this.props.percentage + '%'}
+      </div>
+    );
+  }
+});
 
-// Components
-// ====================================
-
-@import "components/App.less";
-@import "components/Login.less";
-@import "components/LoggedInAs.less";
-@import "components/Scan.less";
-@import "components/UploadList.less";
-@import "components/Upload.less";
-@import "components/ProgressBar.less";
+module.exports = ProgressBar;

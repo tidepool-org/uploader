@@ -22,6 +22,7 @@ var cx = require('react/lib/cx');
 var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
+var ProgressBar = require('./ProgressBar.jsx');
 
 var Upload = React.createClass({
   propTypes: {
@@ -135,11 +136,7 @@ var Upload = React.createClass({
       return null;
     }
 
-    return (
-      <div className="Upload-progress">
-        {'Progress: ' + percentage + '%'}
-      </div>
-    );
+    return <div className="Upload-progress"><ProgressBar percentage={percentage}/></div>;
   },
 
   renderStatus: function() {
