@@ -18,6 +18,8 @@
 var _ = require('lodash');
 var React = require('react');
 var cx = require('react/lib/cx');
+// This is "cheating" a bit, but need an easy way to format for this MVP :)
+var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
 
@@ -158,7 +160,8 @@ var Upload = React.createClass({
     if (!lastUpload) {
       return null;
     }
-    return <div className="Upload-detail">{'Last upload: ' + lastUpload.finish}</div>;
+    var time = moment(lastUpload.finish).calendar();
+    return <div className="Upload-detail">{'Last upload: ' + time}</div>;
   },
 
   getLastUpload: function() {
