@@ -30,7 +30,7 @@ var Upload = React.createClass({
   render: function() {
     var classes = cx({
       'Upload': true,
-      'is-disabled': this.isDisabled()
+      'is-disconnected': this.isDisconnected()
     });
 
     return (
@@ -58,12 +58,11 @@ var Upload = React.createClass({
     else {
       name = this.getDeviceName(this.props.upload);
     }
-    var status;
     if (this.isDisconnected()) {
-      status = ' - (disconnected)';
+      name = name + ' (disconnected)';
     }
     return (
-      <div className="Upload-name"><strong>{name}</strong>{status}</div>
+      <div className="Upload-name">{name}</div>
     );
   },
 

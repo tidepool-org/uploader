@@ -33,6 +33,9 @@
 .Upload-name {
   font-weight: bold;
 }
+.Upload.is-disconnected .Upload-name {
+  color: @gray-text;
+}
 
 .Upload-detail {
   color: @gray-text;
@@ -54,7 +57,7 @@
   margin-bottom: 10px;
 
   // Until we have a proper progress bar
-  background-color: rgb(98, 124, 255);
+  background-color: @blue;
   color: #fff;
 }
 
