@@ -13,19 +13,44 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Core
+// Header
 // ====================================
 
-@import "core/variables.less";
-@import "core/fonts.less";
-@import "core/icons.less";
+.App-header {
+  justify-content: flex-end;
+  flex-flow: row wrap;
 
-@import "core/scaffolding.less";
-@import "core/forms.less";
-@import "core/buttons.less";
+  padding: 0 25px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
 
-// Components
+// Page
 // ====================================
 
-@import "components/App.less";
-@import "components/Login.less";
+.App-page {
+  margin: auto;
+}
+
+.App--loading {
+  // Center loading indicator vertically and horizontally
+  // by stretching its parent
+  position: absolute;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+}
+
+.App--loading .App-header {
+  // This div is empty, "collapse" it
+  // so it doesn't interfere with vertical centering
+  margin: 0;
+}
+
+.App--login .App-page {
+  width: 300px;
+}
+
+.App--main .App-page {
+  width: 530px;
+}

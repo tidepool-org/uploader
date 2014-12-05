@@ -13,19 +13,33 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Core
-// ====================================
+.Login-input {
+  margin-bottom: 15px;
+}
 
-@import "core/variables.less";
-@import "core/fonts.less";
-@import "core/icons.less";
+.Login-actions {
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-top: 5px;
+}
 
-@import "core/scaffolding.less";
-@import "core/forms.less";
-@import "core/buttons.less";
+.Login-remember {
+  flex-flow: row wrap;
+  align-items: center;
 
-// Components
-// ====================================
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 5px;
+  }
+}
 
-@import "components/App.less";
-@import "components/Login.less";
+.Login-forgot {
+  font-size: 11px;
+}
+
+.Login-error {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  color: @red;
+  margin-top: 10px;
+}

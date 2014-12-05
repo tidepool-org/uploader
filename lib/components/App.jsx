@@ -49,16 +49,20 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div>
-        {this.renderHeader()}
-        {this.renderPage()}
+      <div className={'App App--' + this.state.page}>
+        <div className="App-header">{this.renderHeader()}</div>
+        <div className="App-page">{this.renderPage()}</div>
       </div>
     );
   },
 
   renderHeader: function() {
-    if (!this.appState.isLoggedIn()) {
+    if (this.state.page === 'loading') {
       return null;
+    }
+
+    if (!this.appState.isLoggedIn()) {
+      return this.renderSignupLink();
     }
 
     return <LoggedInAs
@@ -90,6 +94,14 @@ var App = React.createClass({
     }
 
     return null;
+  },
+
+  renderSignupLink: function() {
+    return (
+      <div>
+        <a href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
+      </div>
+    );
   },
 
   renderScan: function() {

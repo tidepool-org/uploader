@@ -33,38 +33,35 @@ var Login = React.createClass({
 
   render: function() {
     return (
-      <div>
-        {this.renderSignupLink()}
-        <form>
-          <p><input className="form-control" ref="username" placeholder="Email"/></p>
-          <p><input className="form-control" ref="password" placeholder="Password" type="password"/></p>
-          <p>
-            <input type="checkbox" ref="remember" id="remember"/>
-            <label htmlFor="remember">{' Remember me'}</label>
-          </p>
-          {this.renderForgotPasswordLink()}
-          <p>{this.renderButton()}</p>
-        </form>
-        {this.renderError()}
+      <div className="Login">
+        <div className="Login-input">
+          <input className="form-control" ref="username" placeholder="Email"/>
+        </div>
+        <div className="Login-input">
+          <input className="form-control" ref="password" placeholder="Password" type="password"/>
+        </div>
+        <div className="Login-actions">
+          <div className="Login-actionsLeft">
+            <div className="Login-remember">
+              <input type="checkbox" ref="remember" id="remember"/>
+              <label htmlFor="remember">Remember me</label>
+            </div>
+            <div className="Login-forgot">{this.renderForgotPasswordLink()}</div>
+          </div>
+          <div className="Login-actionsRight">
+            {this.renderButton()}
+          </div>
+        </div>
+        <div className="Login-error">{this.renderError()}</div>
       </div>
-    );
-  },
-
-  renderSignupLink: function() {
-    return (
-      <p>
-        <a href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
-      </p>
     );
   },
 
   renderForgotPasswordLink: function() {
     return (
-      <p>
-        <a href={config.BLIP_URL + '#/request-password-reset'} target="_blank">
-          {'Forgot your password?'}
-        </a>
-      </p>
+      <a href={config.BLIP_URL + '#/request-password-reset'} target="_blank">
+        {'Forgot your password?'}
+      </a>
     );
   },
 
@@ -117,7 +114,7 @@ var Login = React.createClass({
       return null;
     }
 
-    return <p style={{color: 'red'}}>{this.state.error}</p>;
+    return <span>{this.state.error}</span>;
   }
 });
 
