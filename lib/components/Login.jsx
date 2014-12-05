@@ -92,7 +92,8 @@ var Login = React.createClass({
     var remember = this.refs.remember.getDOMNode().checked;
 
     this.setState({
-      working: true
+      working: true,
+      error: null
     });
     var self = this;
     this.props.onLogin({

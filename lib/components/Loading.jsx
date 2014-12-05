@@ -19,7 +19,7 @@ var React = require('react');
 
 var Loading = React.createClass({
   render: function() {
-    return <p>Loading app...</p>;
+    return <div>Loading...</div>;
   }
 });
 

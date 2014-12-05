@@ -51,6 +51,7 @@ var App = React.createClass({
     return (
       <div className={'App App--' + this.state.page}>
         <div className="App-header">{this.renderHeader()}</div>
+        <div className="App-logo"></div>
         <div className="App-page">{this.renderPage()}</div>
       </div>
     );

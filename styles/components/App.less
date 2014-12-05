@@ -23,6 +23,25 @@
   padding: 0 25px;
   margin-top: 30px;
   margin-bottom: 20px;
+
+  // So logo stays put when switching from loading page
+  min-height: @line-height-base;
+}
+
+// Logo
+// ====================================
+
+@App-logoWidth: 116px;
+@App-logoHeight: 110px;
+
+.App-logo {
+  margin: auto;
+  background-image: url(/T_icon_transparent.png);
+  background-repeat: no-repeat;
+  background-size: @App-logoWidth;
+  width: @App-logoWidth;
+  height: @App-logoHeight;
+  margin-bottom: 40px;
 }
 
 // Page
@@ -30,21 +49,6 @@
 
 .App-page {
   margin: auto;
-}
-
-.App--loading {
-  // Center loading indicator vertically and horizontally
-  // by stretching its parent
-  position: absolute;
-  top: 0;
-  width: 100%;
-  bottom: 0;
-}
-
-.App--loading .App-header {
-  // This div is empty, "collapse" it
-  // so it doesn't interfere with vertical centering
-  margin: 0;
 }
 
 .App--login .App-page {
