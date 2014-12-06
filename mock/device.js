@@ -24,7 +24,10 @@ var data = {
   devices: [
     {
       driverId: 'DexcomG4',
-      usbDevice: 3
+      usbDevice: 3,
+      model: 'G4Receiver',
+      serialNumber: 'DM36820627',
+      id: 'G4Receiver DM36820627'
     }
   ],
   // Records uploaded from device

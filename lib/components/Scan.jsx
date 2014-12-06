@@ -52,7 +52,7 @@ var Scan = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <div className="Scan">
         {this.renderInstructions()}
         {this.renderError()}
         {this.renderScan()}
@@ -65,7 +65,11 @@ var Scan = React.createClass({
       return null;
     }
 
-    return <p>Plug in your Dexcom G4 to upload from your device...</p>;
+    return (
+      <div className="Scan-status">
+        {'Connect your device to start uploading data...'}
+      </div>
+    );
   },
 
   renderError: function() {
@@ -73,7 +77,11 @@ var Scan = React.createClass({
       return null;
     }
 
-    return <p style={{color: 'red'}}>An error occured while scanning for devices</p>;
+    return (
+      <div className="Scan-status Scan-status--error">
+        {'An error occured while scanning for devices.'}
+      </div>
+    );
   },
 
   renderScan: function() {
@@ -81,7 +89,13 @@ var Scan = React.createClass({
       return null;
     }
 
-    return <p><button onClick={this.startScanning}>Scan for devices</button></p>;
+    return (
+      <div className="Scan-status">
+        <button className="btn btn-secondary" onClick={this.startScanning}>
+          {'Scan for devices'}
+        </button>
+      </div>
+    );
   },
 
   startScanning: function() {

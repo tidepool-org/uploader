@@ -17,8 +17,12 @@
 
 var _ = require('lodash');
 var React = require('react');
+var cx = require('react/lib/cx');
+// This is "cheating" a bit, but need an easy way to format for this MVP :)
+var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
+var ProgressBar = require('./ProgressBar.jsx');
 
 var Upload = React.createClass({
   propTypes: {
@@ -27,109 +31,160 @@ var Upload = React.createClass({
   },
 
   render: function() {
-    var style = {};
-    if (this.isDisabled()) {
-      style = {color: '#ccc'};
-    }
+    var classes = cx({
+      'Upload': true,
+      'is-disconnected': this.isDisconnected()
+    });
 
     return (
-      <div style={style}>
-        {this.renderInfo()}
-        {this.renderCarelinkForm()}
-        {this.renderButton()}
-        {this.renderProgress()}
-        {this.renderSuccess()}
-        {this.renderError()}
-        {this.renderLastUpload()}
+      <div className={classes}>
+        <div className="Upload-left">
+          {this.renderName()}
+          {this.renderDetail()}
+          {this.renderLastUpload()}
+        </div>
+        <div className="Upload-right">
+          {this.renderStatus()}
+          {this.renderProgress()}
+          <form className="Upload-form">
+            {this.renderCarelinkInputs()}
+            {this.renderButton()}
+          </form>
+        </div>
       </div>
     );
   },
 
-  renderInfo: function() {
+  renderName: function() {
     var name;
     if (this.isCarelinkUpload()) {
-      name = 'Carelink';
+      name = 'Medtronic Device';
     }
     else {
-      name = this.getDeviceDisplayName(this.props.upload);
+      name = this.getDeviceName(this.props.upload);
     }
-    var status;
     if (this.isDisconnected()) {
-      status = ' - (disconnected)';
+      name = name + ' (disconnected)';
     }
     return (
-      <p><strong>{name}</strong>{status}</p>
+      <div className="Upload-name">{name}</div>
     );
   },
 
-  renderCarelinkForm: function() {
+  renderDetail: function() {
+    var detail;
+    if (this.isCarelinkUpload()) {
+      detail = 'CareLink';
+    }
+    else {
+      detail = this.getDeviceDetail(this.props.upload);
+    }
+    return (
+      <div className="Upload-detail">{detail}</div>
+    );
+  },
+
+  renderCarelinkInputs: function() {
     if (!this.isCarelinkUpload()) {
+      return null;
+    }
+    if (this.isUploading()) {
       return null;
     }
 
     return (
-      <form>
-        <p><input ref="username" placeholder="carelink username"/></p>
-        <p><input ref="password" type="password" placeholder="carelink password"/></p>
-      </form>
+      <div>
+        <div className="Upload-input"><input className="form-control" ref="username" placeholder="carelink username"/></div>
+        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password"/></div>
+      </div>
     );
   },
 
   renderButton: function() {
-    var text = this.isUploading() ? 'Uploading...' : 'Upload';
-    var disabled = this.isDisabled() || this.isUploading();
+    if (this.isUploading()) {
+      return null;
+    }
+
+    var text = 'Upload';
+    if (this.isCarelinkUpload()) {
+      text = 'Import';
+    }
+    var disabled = this.isDisabled();
 
     return (
-      <p>
+      <div className="Upload-button">
         <button
+          className="btn btn-secondary"
           disabled={disabled}
           onClick={this.handleUpload}>{text}</button>
-      </p>
+      </div>
     );
   },
 
   renderProgress: function() {
-    if (!this.isUploading()) {
+    var percentage;
+    if (this.isUploading()) {
+      percentage = this.props.upload.progress.percentage;
+    }
+    else {
+      var lastUpload = this.getLastUpload();
+      percentage = lastUpload && lastUpload.percentage;
+    }
+
+    // Can be equal to 0
+    if (percentage == null) {
       return null;
     }
-    return (
-      <p>{'Progress: ' + this.props.upload.progress.percentage + '%'}</p>
-    );
+
+    return <div className="Upload-progress"><ProgressBar percentage={percentage}/></div>;
   },
 
-  renderSuccess: function() {
-    if (!this.isUploadSuccessful()) {
-      return null;
+  renderStatus: function() {
+    if (this.isUploading()) {
+      return <div className="Upload-status Upload-status--uploading">{'Uploading...'}</div>;
     }
-
-    return (
-      <p style={{color: 'green'}}>{'Upload successful!'}</p>
-    );
-  },
-
-  renderError: function() {
-    if (!this.isUploadFailed()) {
-      return null;
+    if (this.isUploadSuccessful()) {
+      return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
     }
-
-    return <p style={{color: 'red'}}>{'An error occured while uploading'}</p>;
+    if (this.isUploadFailed()) {
+      return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
+    }
+    return null;
   },
 
   renderLastUpload: function() {
+    var lastUpload = this.getLastUpload();
+    if (!lastUpload) {
+      return null;
+    }
+    var time = moment(lastUpload.finish).calendar();
+    return <div className="Upload-detail">{'Last upload: ' + time}</div>;
+  },
+
+  getLastUpload: function() {
     var history = this.props.upload.history;
     if (!(history && history.length)) {
       return null;
     }
-    return <p>{'Uploaded on: ' + history[0].finish}</p>;
+    return history[0];
   },
 
-  getDeviceDisplayName: function(upload) {
-    var getDisplayName = getIn(
+  getDeviceName: function(upload) {
+    var getName = getIn(
       deviceInfo,
-      [upload.source.driverId, 'getDisplayName'],
+      [upload.source.driverId, 'getName'],
       function() { return 'Unknown device'; }
     );
-    return getDisplayName(upload.source);
+    return getName(upload.source);
+  },
+
+  getDeviceDetail: function(upload) {
+    var getDetail = getIn(
+      deviceInfo,
+      [upload.source.driverId, 'getDetail'],
+      function() { return ''; }
+    );
+    return getDetail(upload.source);
   },
 
   isDisabled: function() {

@@ -15,30 +15,21 @@
 * == BSD2 LICENSE ==
 */
 
-var _ = require('lodash');
 var React = require('react');
-var Upload = require('./Upload.jsx');
 
-var UploadList = React.createClass({
+var ProgressBar = React.createClass({
   propTypes: {
-    uploads: React.PropTypes.array.isRequired,
-    onUpload: React.PropTypes.func.isRequired
+    // Percentage is an integer between 0 and 100
+    percentage: React.PropTypes.number.isRequired
   },
 
   render: function() {
-    var self = this;
-    var nodes = _.map(this.props.uploads, function(upload, index){
-      return (
-        <div key={index} className="UploadList-item">
-          <Upload
-            upload={upload}
-            onUpload={self.props.onUpload.bind(null, index)} />
-        </div>
-      );
-    });
-
-    return <div className="UploadList">{nodes}</div>;
+    return (
+      <div className="ProgressBar">
+        {'Progress: ' + this.props.percentage + '%'}
+      </div>
+    );
   }
 });
 
-module.exports = UploadList;
+module.exports = ProgressBar;

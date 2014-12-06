@@ -1,5 +1,4 @@
-/*
-* == BSD2 LICENSE ==
+/**
 * Copyright (c) 2014, Tidepool Project
 *
 * This program is free software; you can redistribute it and/or modify it under
@@ -12,19 +11,12 @@
 *
 * You should have received a copy of the License along with this program; if
 * not, you can obtain one from Tidepool Project at tidepool.org.
-* == BSD2 LICENSE ==
 */
 
-var React = require('react');
+.UploadList {
+  padding-top: 20px;
+}
 
-var ViewDataLink = React.createClass({
-  propTypes: {
-    href: React.PropTypes.string.isRequired
-  },
-
-  render: function() {
-    return <a href={this.props.href} target="_blank">See the data</a>;
-  }
-});
-
-module.exports = ViewDataLink;
+.UploadList-item {
+  margin-bottom: 50px;
+}

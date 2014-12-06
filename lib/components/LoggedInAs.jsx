@@ -32,11 +32,11 @@ var LoggedInAs = React.createClass({
 
   render: function() {
     return (
-      <p>
-        {'Logged in as '}<strong>{this.getName()}</strong>
-        {' - '}
+      <div className="LoggedInAs">
+        <span>{this.getName()}</span>
+        <span className="LoggedInAs-separator">·</span>
         {this.renderLogout()}
-      </p>
+      </div>
     );
   },
 
