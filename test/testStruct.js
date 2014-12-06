@@ -134,60 +134,70 @@ describe('struct.js', function(){
     it('works for b', function(){
       var buf = new Uint8Array(5);
       var len = theStruct.pack(buf, 0, '5b', 0x48, 0x65, 0x6c, 0x6c, 0x6f);
+      expect(len).to.equal(5);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('Hello');
     });
     it('works for s', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, '2s', 0x6574, 0x7473);
+      expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
     it('works for S', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, '2S', 0x7465, 0x7374);
+      expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
     it('works for i', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'i', 0x74736574);
+      expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
     it('can handle all the bits', function(){
       var buf = new Uint8Array(16);
       var len = theStruct.pack(buf, 0, '4i', 0x55555555, 0xAAAAAAAA, 0xFFFFFFFF, 0);
+      expect(len).to.equal(16);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u0055\u0055\u0055\u0055\u00AA\u00AA\u00AA\u00AA\u00FF\u00FF\u00FF\u00FF\u0000\u0000\u0000\u0000');
     });
     it('works for z', function(){
       var buf = new Uint8Array(8);
       var len = theStruct.pack(buf, 0, '8z', 'banana');
+      expect(len).to.equal(8);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('banana\u0000\u0000');
     });
     it('works for z even if too long', function(){
       var buf = new Uint8Array(8);
       var len = theStruct.pack(buf, 0, '8z', 'verylongstring');
+      expect(len).to.equal(8);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('verylong');
     });
     it('does big positives properly for h', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'h', 65534);
+      expect(len).to.equal(2);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u0000\u0000');
     });
     it('does negatives properly for h', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'h', -2);
+      expect(len).to.equal(2);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u0000\u0000');
     });
     it('does negatives properly for n', function(){
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'n', -2);
+      expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u00FF\u00FF');
     });
