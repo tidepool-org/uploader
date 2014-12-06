@@ -85,6 +85,7 @@ such as uploadButtons) by their device name.
 
 1. Clone this repository.
 1. Run `npm install`
+1. Set the config for the environment you want to target (see Config section below)
 1. Run `npm start` (will bundle files, and watch for changes)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
