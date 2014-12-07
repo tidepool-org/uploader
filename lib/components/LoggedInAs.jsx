@@ -45,7 +45,7 @@ var LoggedInAs = React.createClass({
       return <span>Logging out...</span>;
     }
 
-    return <a href="" onClick={this.handleLogout}>Logout</a>;
+    return <a className="LoggedInAs-logout" href="" onClick={this.handleLogout}>Logout<i className="icon-logout"></i></a>;
   },
 
   getName: function() {

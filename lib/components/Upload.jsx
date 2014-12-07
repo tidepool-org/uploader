@@ -46,6 +46,7 @@ var Upload = React.createClass({
         <div className="Upload-right">
           {this.renderStatus()}
           {this.renderProgress()}
+          {this.renderHelpText()}
           <form className="Upload-form">
             {this.renderCarelinkInputs()}
             {this.renderButton()}
@@ -83,12 +84,17 @@ var Upload = React.createClass({
       <div className="Upload-detail">{detail}</div>
     );
   },
-
-  renderCarelinkInputs: function() {
-    if (!this.isCarelinkUpload()) {
+  renderHelpText: function() {
+    if (!this.isCarelinkUpload() || this.isUploading()) {
       return null;
     }
-    if (this.isUploading()) {
+
+    return (
+      <div className="Upload-helpText">Enter your Carelink username and password so Tidepool can get your data.</div>
+    );
+  },
+  renderCarelinkInputs: function() {
+    if (!this.isCarelinkUpload() || this.isUploading()) {
       return null;
     }
 
@@ -109,6 +115,7 @@ var Upload = React.createClass({
     if (this.isCarelinkUpload()) {
       text = 'Import';
     }
+
     var disabled = this.isDisabled();
 
     return (
@@ -132,7 +139,7 @@ var Upload = React.createClass({
     }
 
     // Can be equal to 0
-    if (percentage == null) {
+    if (percentage == null || this.isUploadFailed()) {
       return null;
     }
 
@@ -147,6 +154,9 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
     }
     if (this.isUploadFailed()) {
+      if (this.uploadError() && this.uploadError().code) {
+          return <div className="Upload-status Upload-status--error">{this.uploadError().message || 'An error occured while uploading.'}</div>;
+      }
       return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
     }
     return null;
@@ -188,6 +198,15 @@ var Upload = React.createClass({
   },
 
   isDisabled: function() {
+    if (this.isCarelinkUpload()) {
+      var username = this.refs.username && this.refs.username.getDOMNode().value;
+      var password = this.refs.password && this.refs.password.getDOMNode().value;
+
+      if (!username || !password) {
+        return true;
+      }
+    }
+
     return this.props.upload.disabled;
   },
 
@@ -209,6 +228,10 @@ var Upload = React.createClass({
 
   isUploadFailed: function() {
     return this.props.upload.failed;
+  },
+
+  uploadError: function() {
+    return this.props.upload.error;
   },
 
   handleUpload: function() {
