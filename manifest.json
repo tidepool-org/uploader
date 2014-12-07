@@ -12,7 +12,6 @@
     "128": "T_icon_dark_128.png",
     "512": "T_icon_dark_512.png"
   },
-  "homepage_url": "https://blip-pilot.tidepool.io/",
   "permissions": [
     "http://localhost/",
     "https://*.tidepool.io/",
