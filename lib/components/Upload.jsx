@@ -46,7 +46,6 @@ var Upload = React.createClass({
         <div className="Upload-right">
           {this.renderStatus()}
           {this.renderProgress()}
-          {this.renderHelpText()}
           <form className="Upload-form">
             {this.renderCarelinkInputs()}
             {this.renderButton()}
@@ -75,22 +74,13 @@ var Upload = React.createClass({
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'CareLink';
+      detail = 'CareLink Import';
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
     }
     return (
       <div className="Upload-detail">{detail}</div>
-    );
-  },
-  renderHelpText: function() {
-    if (!this.isCarelinkUpload() || this.isUploading()) {
-      return null;
-    }
-
-    return (
-      <div className="Upload-helpText">Enter your Carelink username and password so Tidepool can get your data.</div>
     );
   },
   renderCarelinkInputs: function() {
@@ -100,8 +90,8 @@ var Upload = React.createClass({
 
     return (
       <div>
-        <div className="Upload-input"><input className="form-control" ref="username" placeholder="carelink username"/></div>
-        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password"/></div>
+        <div className="Upload-input"><input className="form-control" ref="username" placeholder="CareLink username"/></div>
+        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="CareLink password"/></div>
       </div>
     );
   },
@@ -148,7 +138,7 @@ var Upload = React.createClass({
 
   renderStatus: function() {
     if (this.isUploading()) {
-      return <div className="Upload-status Upload-status--uploading">{'Uploading...'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
     }
     if (this.isUploadSuccessful()) {
       return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;

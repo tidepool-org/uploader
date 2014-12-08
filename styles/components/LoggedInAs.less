@@ -17,15 +17,16 @@
   flex-flow: row wrap;
 }
 
-.LoggedInAs-separator {
-  margin: 0 5px;
-}
-
 .LoggedInAs-logout {
   width: 70px;
+  padding-left: 10px;
+  text-decoration: none;
+
+  > i {
+    float: left;
+  }
 
   > span {
-    float: left;
     padding-right: 3px;
   }
 
@@ -33,5 +34,6 @@
   &:focus,
   &:active {
     color: @gray-text;
+    text-decoration: none;
   }
 }
