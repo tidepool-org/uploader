@@ -100,7 +100,7 @@ var App = React.createClass({
   renderSignupLink: function() {
     return (
       <div>
-        <a href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
+        <a className="App-singup" href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
       </div>
     );
   },
