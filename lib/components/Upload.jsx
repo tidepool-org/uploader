@@ -98,11 +98,7 @@ var Upload = React.createClass({
     );
   },
   handleChange: function(event) {
-    if(!this.isDisabled()){
-      this.setState({btnDisabled:false});
-    }else{
-      this.setState({btnDisabled:true});
-    }
+    this.setState({btnDisabled : this.isDisabled()});
   },
   renderCarelinkInputs: function() {
     if (!this.isCarelinkUpload() || this.isUploading()) {
