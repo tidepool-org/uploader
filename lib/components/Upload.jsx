@@ -31,7 +31,7 @@ var Upload = React.createClass({
   },
 
   getInitialState: function() {
-    return {btnDisabled: true}
+    return {btnDisabled: true};
   },
 
   render: function() {
