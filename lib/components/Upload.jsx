@@ -193,7 +193,7 @@ var Upload = React.createClass({
       var password = this.refs.password && this.refs.password.getDOMNode().value;
 
       if (!username || !password) {
-        return true;
+        //return true;
       }
     }
 
