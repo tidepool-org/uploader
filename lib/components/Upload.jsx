@@ -30,6 +30,10 @@ var Upload = React.createClass({
     onUpload: React.PropTypes.func.isRequired
   },
 
+  getInitialState: function() {
+    return {btnDisabled: true}
+  },
+
   render: function() {
     var classes = cx({
       'Upload': true,
@@ -93,6 +97,13 @@ var Upload = React.createClass({
       <div className="Upload-helpText">Enter your Carelink username and password so Tidepool can get your data.</div>
     );
   },
+  handleChange: function(event) {
+    if(!this.isDisabled()){
+      this.setState({btnDisabled:false});
+    }else{
+      this.setState({btnDisabled:true});
+    }
+  },
   renderCarelinkInputs: function() {
     if (!this.isCarelinkUpload() || this.isUploading()) {
       return null;
@@ -101,11 +112,10 @@ var Upload = React.createClass({
     return (
       <div>
         <div className="Upload-input"><input className="form-control" ref="username" placeholder="carelink username"/></div>
-        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password"/></div>
+        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password" onChange={this.handleChange}/></div>
       </div>
     );
   },
-
   renderButton: function() {
     if (this.isUploading()) {
       return null;
@@ -116,13 +126,11 @@ var Upload = React.createClass({
       text = 'Import';
     }
 
-    var disabled = this.isDisabled();
-
     return (
       <div className="Upload-button">
         <button
           className="btn btn-secondary"
-          disabled={disabled}
+          disabled={this.state.btnDisabled}
           onClick={this.handleUpload}>{text}</button>
       </div>
     );
@@ -202,12 +210,12 @@ var Upload = React.createClass({
       var username = this.refs.username && this.refs.username.getDOMNode().value;
       var password = this.refs.password && this.refs.password.getDOMNode().value;
 
-      if (!username || !password) {
+      if (_.isEmpty(username) || _.isEmpty(password)) {
         return true;
       }
     }
 
-    return this.props.upload.disabled;
+    return false;
   },
 
   isDisconnected: function() {
