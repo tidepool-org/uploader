@@ -948,6 +948,195 @@ describe('pwdSimulator.js', function(){
 
     });
 
+    describe('on exit from suspend, returs to proper basal rate', function(){
+      var settings = {
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
+        activeSchedule: 'billy',
+        units: { bg: 'mg/dL' },
+        basalSchedules: {
+          billy: [
+            { start: 0, rate: 1.0 },
+            { start: 3600000, rate: 2.0 },
+            { start: 7200000, rate: 2.1 },
+            { start: 10800000, rate: 2.2 },
+            { start: 14400000, rate: 2.3 },
+            { start: 18000000, rate: 2.4 },
+            { start: 21600000, rate: 1.1 },
+            { start: 43200000, rate: 1.2 },
+            { start: 64800000, rate: 1.3 }
+          ]
+        },
+        bgTarget: [],
+        insulinSensitivity: [],
+        carbRatio: [],
+        timezoneOffset: 0
+      };
+      var basal = {
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
+        scheduleName: 'billy',
+        rate: 1.0,
+        timezoneOffset: 0
+      };
+      var suspend = {
+        reason: 'manual',
+        timezoneOffset: 0,
+        time: '2014-09-25T00:05:00.000Z',
+        deviceTime: '2014-09-25T00:05:00'
+      };
+      var resume = {
+        reason: 'manual',
+        timezoneOffset: 0,
+        time: '2014-09-25T00:12:00.000Z',
+        deviceTime: '2014-09-25T00:12:00'
+      };
+      var nextBasal = {
+        time: '2014-09-25T00:12:00.000Z',
+        deviceTime: '2014-09-25T00:12:00',
+        scheduleName: 'billy',
+        rate: 1.0,
+        timezoneOffset: 0
+      };
+      it('should use a provided nextBasal and not create a duplicate', function(){
+        simulator.settings(settings);
+        simulator.basalScheduled(basal);
+        simulator.suspend(suspend);
+        simulator.resume(resume);
+        simulator.basalScheduled(nextBasal);
+
+        var expectedFirstBasal = _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000 });
+        expect(getBasals()).deep.equals(attachPrev(
+          [
+            expectedFirstBasal,
+            {
+              type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedFirstBasal
+            },
+            _.assign({}, nextBasal, {type: 'basal', deliveryType: 'scheduled', duration: 2880000 })
+          ]
+        ));
+      });
+
+      it('should generate an (annotated) nextBasal if not provided', function(){
+        var newBasal = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          scheduleName: 'billy',
+          rate: 2.0,
+          timezoneOffset: 0
+        };
+        simulator.settings(settings);
+        simulator.basalScheduled(basal);
+        simulator.suspend(suspend);
+        simulator.resume(resume);
+        simulator.basalScheduled(newBasal);
+
+        var expectedFirstBasal = _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000 });
+        expect(getBasals()).deep.equals(attachPrev(
+          [
+            expectedFirstBasal,
+            {
+              type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedFirstBasal
+            },
+            _.assign({}, nextBasal, {
+              type: 'basal', deliveryType: 'scheduled', duration: 2880000,
+              annotations: [{code: 'basal/fabricated-from-suppressed'}]
+            }),
+            _.assign({}, newBasal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000 })
+          ]
+        ));
+      });
+    });
+
+    describe('can resume a temp basal after a suspend', function(){
+      var settings = {
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
+        activeSchedule: 'billy',
+        units: { bg: 'mg/dL' },
+        basalSchedules: {
+          billy: [
+            { start: 0, rate: 1.0 },
+            { start: 3600000, rate: 2.0 },
+            { start: 7200000, rate: 2.1 },
+            { start: 10800000, rate: 2.2 },
+            { start: 14400000, rate: 2.3 },
+            { start: 18000000, rate: 2.4 },
+            { start: 21600000, rate: 1.1 },
+            { start: 43200000, rate: 1.2 },
+            { start: 64800000, rate: 1.3 }
+          ]
+        },
+        bgTarget: [],
+        insulinSensitivity: [],
+        carbRatio: [],
+        timezoneOffset: 0
+      };
+      var basal = {
+        time: '2014-09-25T00:00:00.000Z',
+        deviceTime: '2014-09-25T00:00:00',
+        scheduleName: 'billy',
+        rate: 1.0,
+        timezoneOffset: 0
+      };
+      var tempBasal = {
+        time: '2014-09-25T00:02:00.000Z',
+        deviceTime: '2014-09-25T00:02:00',
+        percent: 0.2,
+        timezoneOffset: 0,
+        scheduleName: 'billy',
+        duration: 1800000
+      };
+      var suspend = {
+        reason: 'manual',
+        timezoneOffset: 0,
+        time: '2014-09-25T00:05:00.000Z',
+        deviceTime: '2014-09-25T00:05:00'
+      };
+      var resume = {
+        reason: 'manual',
+        timezoneOffset: 0,
+        time: '2014-09-25T00:12:00.000Z',
+        deviceTime: '2014-09-25T00:12:00'
+      };
+
+      it('generates a temp basal from the suppressed if resume happens within original duration of temp', function(){
+        var newBasal = {
+          time: '2014-09-25T00:32:00.000Z',
+          deviceTime: '2014-09-25T00:32:00',
+          scheduleName: 'billy',
+          rate: 1.0,
+          timezoneOffset: 0
+        };
+        simulator.settings(settings);
+        simulator.basalScheduled(basal);
+        simulator.basalTemp(tempBasal);
+        simulator.suspend(suspend);
+        simulator.resume(resume);
+        simulator.basalScheduled(newBasal);
+
+        var expectedFirstBasal = _.assign({}, basal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000 });
+        var expectedTempBasal = _.assign({}, tempBasal, {type: 'basal', deliveryType: 'temp', rate: 0.2, suppressed: expectedFirstBasal});
+        expect(getBasals()).deep.equals(attachPrev(
+          [
+            expectedFirstBasal,
+            expectedTempBasal,
+            {
+              type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedTempBasal
+            },
+            _.assign({}, expectedTempBasal, {
+              time: '2014-09-25T00:12:00.000Z', deviceTime: '2014-09-25T00:12:00', duration: 1200000,
+              annotations: [{code: 'basal/fabricated-from-suppressed' }]
+            }),
+            _.assign({}, newBasal, {type: 'basal', deliveryType: 'scheduled', duration: 1680000 })
+          ]
+        ));
+      });
+    });
+
     describe('generates scheduleds when autoGen set to true', function(){
       beforeEach(function(){
         simulator = pwdSimulator.make({autoGenScheduleds: true});
