@@ -349,6 +349,32 @@ describe('appActions', function() {
       });
     });
 
+    it('keeps one upload per device driverId', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          serialNumber: 'AA11',
+          usb: 3,
+          connected: true
+        }
+      }
+      ];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        serialNumber: 'BB22',
+        usb: 11
+      }];
+      
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.serialNumber).to.equal('BB22');
+        done();
+      });
+    });
+
   });
 
   describe('uploadDevice', function() {
