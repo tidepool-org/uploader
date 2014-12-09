@@ -71,7 +71,17 @@ describe('appState', function() {
     });
 
     it('returns -1 if no upload in progress', function() {
-      app.state.uploads = [];
+      app.state.uploads = [
+        {}
+      ];
+
+      expect(appState.currentUploadIndex()).to.equal(-1);
+    });
+
+    it('returns -1 if upload is complete', function() {
+      app.state.uploads = [
+        {progress: {finish: '2014-01-31T12:00:00Z'}}
+      ];
 
       expect(appState.currentUploadIndex()).to.equal(-1);
     });
@@ -174,18 +184,32 @@ describe('appState', function() {
     it('adds uploading flag to uploads in progress', function() {
       app.state.uploads = [
         {progress: {}},
+        {progress: {finish: '2014-01-31T12:00:00Z'}},
+        {}
+      ];
+
+      var uploads = appState.uploadsWithFlags();
+      expect(uploads).to.have.length(3);
+      expect(uploads[0].uploading).to.be.ok;
+      expect(uploads[1].uploading).to.not.be.ok;
+      expect(uploads[2].uploading).to.not.be.ok;
+    });
+
+    it('adds completed flag if current instance completed', function() {
+      app.state.uploads = [
+        {progress: {finish: '2014-01-31T12:00:00Z'}},
         {}
       ];
 
       var uploads = appState.uploadsWithFlags();
       expect(uploads).to.have.length(2);
-      expect(uploads[0].uploading).to.be.ok;
-      expect(uploads[1].uploading).to.not.be.ok;
+      expect(uploads[0].completed).to.be.ok;
+      expect(uploads[1].completed).to.not.be.ok;
     });
 
-    it('adds successful flag if one instance successful', function() {
+    it('adds successful flag if current instance successful', function() {
       app.state.uploads = [
-        {history: [{success: true}]},
+        {progress: {finish: '2014-01-31T12:00:00Z', success: true}},
         {}
       ];
 
@@ -195,9 +219,9 @@ describe('appState', function() {
       expect(uploads[1].successful).to.not.be.ok;
     });
 
-    it('adds failed flag if one instance failed', function() {
+    it('adds failed flag if current instance failed', function() {
       app.state.uploads = [
-        {history: [{error: 'oops'}]},
+        {progress: {finish: '2014-01-31T12:00:00Z', error: 'oops'}},
         {}
       ];
 

@@ -366,7 +366,7 @@ describe('appActions', function() {
         serialNumber: 'BB22',
         usb: 11
       }];
-      
+
       appActions.detectDevices(function(err) {
         if (err) throw err;
         expect(app.state.uploads).to.have.length(1);
@@ -435,7 +435,7 @@ describe('appActions', function() {
       appActions.upload(0, {}, done);
     });
 
-    it('adds correct object to upload history when complete and clears progress', function(done) {
+    it('adds correct object to upload history when complete', function(done) {
       now = '2014-01-31T22:00:00-05:00';
       device.detect = function(driverId, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
@@ -454,9 +454,7 @@ describe('appActions', function() {
 
       appActions.upload(0, {}, function(err) {
         if (err) throw err;
-        expect(app.state.uploads[0].progress).to.be.undefined;
-        expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal({
+        var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
@@ -464,7 +462,10 @@ describe('appActions', function() {
           percentage: 100,
           success: true,
           count: 2
-        });
+        };
+        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         done();
       });
     });
@@ -488,15 +489,17 @@ describe('appActions', function() {
 
       appActions.upload(0, {}, function(err) {
         if (err && err !== 'oops') throw err;
-        expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal({
+        var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
           error: 'oops'
-        });
+        };
+        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         done();
       });
     });
@@ -522,6 +525,26 @@ describe('appActions', function() {
         expect(app.state.uploads[0].history[1].targetId).to.equal('1');
         done();
       });
+    });
+
+  });
+
+  describe('reset', function() {
+
+    it('throws an error if upload index is invalid', function() {
+      app.state.uploads = [];
+
+      expect(appActions.reset.bind(appActions, 0))
+        .to.throw(/index/);
+    });
+
+    it('clears upload progress', function() {
+      app.state.uploads = [
+        {progress: {}}
+      ];
+
+      appActions.reset(0);
+      expect(app.state.uploads[0].progress).to.not.exists;
     });
 
   });

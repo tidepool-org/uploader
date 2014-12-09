@@ -88,7 +88,8 @@ var App = React.createClass({
           {this.renderScan()}
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
-            onUpload={this.appActions.upload.bind(this.appActions)} />
+            onUpload={this.appActions.upload.bind(this.appActions)}
+            onReset={this.appActions.reset.bind(this.appActions)} />
           {this.renderViewDataLink()}
         </div>
       );

@@ -27,7 +27,8 @@ var ProgressBar = require('./ProgressBar.jsx');
 var Upload = React.createClass({
   propTypes: {
     upload: React.PropTypes.object.isRequired,
-    onUpload: React.PropTypes.func.isRequired
+    onUpload: React.PropTypes.func.isRequired,
+    onReset: React.PropTypes.func.isRequired
   },
 
   render: function() {
@@ -50,6 +51,7 @@ var Upload = React.createClass({
             {this.renderCarelinkInputs()}
             {this.renderButton()}
           </form>
+          {this.renderReset()}
         </div>
       </div>
     );
@@ -83,8 +85,9 @@ var Upload = React.createClass({
       <div className="Upload-detail">{detail}</div>
     );
   },
+
   renderCarelinkInputs: function() {
-    if (!this.isCarelinkUpload() || this.isUploading()) {
+    if (!this.isCarelinkUpload() || this.isUploading() || this.isUploadCompleted()) {
       return null;
     }
 
@@ -97,7 +100,7 @@ var Upload = React.createClass({
   },
 
   renderButton: function() {
-    if (this.isUploading()) {
+    if (this.isUploading() || this.isUploadCompleted()) {
       return null;
     }
 
@@ -119,17 +122,11 @@ var Upload = React.createClass({
   },
 
   renderProgress: function() {
-    var percentage;
-    if (this.isUploading()) {
-      percentage = this.props.upload.progress.percentage;
-    }
-    else {
-      var lastUpload = this.getLastUpload();
-      percentage = lastUpload && lastUpload.percentage;
-    }
+    var percentage =
+      this.props.upload.progress && this.props.upload.progress.percentage;
 
-    // Can be equal to 0
-    if (percentage == null || this.isUploadFailed()) {
+    // Can be equal to 0, so check for null or undefined
+    if (percentage == null) {
       return null;
     }
 
@@ -159,6 +156,19 @@ var Upload = React.createClass({
     }
     var time = moment(lastUpload.finish).calendar();
     return <div className="Upload-detail">{'Last upload: ' + time}</div>;
+  },
+
+  renderReset: function() {
+    if (!this.isUploadCompleted()) {
+      return null;
+    }
+    return (
+      <div className="Upload-reset">
+      <button
+        className="btn btn-secondary"
+        onClick={this.handleReset}>Start over</button>
+      </div>
+    );
   },
 
   getLastUpload: function() {
@@ -220,6 +230,10 @@ var Upload = React.createClass({
     return this.props.upload.failed;
   },
 
+  isUploadCompleted: function() {
+    return this.props.upload.completed;
+  },
+
   uploadError: function() {
     return this.props.upload.error;
   },
@@ -241,6 +255,10 @@ var Upload = React.createClass({
       password: password
     };
     this.props.onUpload(options);
+  },
+
+  handleReset: function() {
+    this.props.onReset();
   }
 });
 
