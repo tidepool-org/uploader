@@ -144,8 +144,8 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
     }
     if (this.isUploadFailed()) {
-      if (this.uploadError() && this.uploadError().code) {
-          return <div className="Upload-status Upload-status--error">{this.uploadError().message || 'An error occured while uploading.'}</div>;
+      if (this.uploadError() && this.uploadError().error && this.uploadError().error.code) {
+          return <div className="Upload-status Upload-status--error">{this.uploadError().error.message || 'An error occured while uploading.'}</div>;
       }
       return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
     }
