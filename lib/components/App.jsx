@@ -111,6 +111,7 @@ var App = React.createClass({
     }
 
     return <Scan
+      ref="scan"
       showInstructions={this.appState.isShowingDeviceInstructions()}
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
   },
