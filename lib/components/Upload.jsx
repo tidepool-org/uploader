@@ -30,6 +30,12 @@ var Upload = React.createClass({
     onReset: React.PropTypes.func.isRequired
   },
 
+  getInitialState: function() {
+    return {
+      careLinkUploadDisabled: true
+    };
+  },
+
   render: function() {
     return (
       <div className="Upload">
@@ -94,10 +100,21 @@ var Upload = React.createClass({
 
     return (
       <div>
-        <div className="Upload-input"><input className="form-control" ref="username" placeholder="CareLink username"/></div>
-        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="CareLink password"/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="username" placeholder="CareLink username"/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder="CareLink password"/></div>
       </div>
     );
+  },
+
+  onCareLinkInputChange: function() {
+    var username = this.refs.username && this.refs.username.getDOMNode().value;
+    var password = this.refs.password && this.refs.password.getDOMNode().value;
+
+    if (!username || !password) {
+      this.setState({careLinkUploadDisabled: true});
+    } else {
+      this.setState({careLinkUploadDisabled: false});
+    }
   },
 
   renderButton: function() {
@@ -208,12 +225,7 @@ var Upload = React.createClass({
 
   isDisabled: function() {
     if (this.isCarelinkUpload()) {
-      var username = this.refs.username && this.refs.username.getDOMNode().value;
-      var password = this.refs.password && this.refs.password.getDOMNode().value;
-
-      if (!username || !password) {
-        //return true;
-      }
+      return this.state.careLinkUploadDisabled;
     }
 
     return this.props.upload.disabled;
