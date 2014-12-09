@@ -18,17 +18,17 @@
 }
 
 .LoggedInAs-logout {
+  .box-flex();
+  flex-flow: row wrap;
   color: @gray-text;
-  width: 70px;
-  padding-left: 10px;
+  margin-left: 10px;
+}
+
+a.LoggedInAs-logout {
   text-decoration: none;
 
   > i {
-    float: left;
-  }
-
-  > span {
-    padding-right: 3px;
+    margin-right: 1px;
   }
 
   &:hover,
