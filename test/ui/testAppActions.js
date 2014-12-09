@@ -263,7 +263,7 @@ describe('appActions', function() {
       });
     });
 
-    it('keeps carelink at the end when adding new device', function(done) {
+    it('keeps carelink at the beginning when adding new device', function(done) {
       app.state.uploads = [
         {source: {type: 'carelink'}}
       ];
@@ -275,7 +275,7 @@ describe('appActions', function() {
       appActions.detectDevices(function(err) {
         if (err) throw err;
         expect(app.state.uploads).to.have.length(2);
-        expect(app.state.uploads[1].source.type).to.equal('carelink');
+        expect(app.state.uploads[0].source.type).to.equal('carelink');
         done();
       });
     });
