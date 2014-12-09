@@ -301,6 +301,28 @@ describe('appActions', function() {
       });
     });
 
+    it('resets progress for disconnected device', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          usb: 3,
+          connected: true
+        },
+        progress: {}
+      }
+      ];
+      connectedDevices = [];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.progress).to.not.exist;
+        done();
+      });
+    });
+
     it('marks device upload as connected', function(done) {
       app.state.uploads = [
       {

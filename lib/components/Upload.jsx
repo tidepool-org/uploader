@@ -17,7 +17,6 @@
 
 var _ = require('lodash');
 var React = require('react');
-var cx = require('react/lib/cx');
 // This is "cheating" a bit, but need an easy way to format for this MVP :)
 var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
@@ -32,13 +31,8 @@ var Upload = React.createClass({
   },
 
   render: function() {
-    var classes = cx({
-      'Upload': true,
-      'is-disconnected': this.isDisconnected()
-    });
-
     return (
-      <div className={classes}>
+      <div className="Upload">
         <div className="Upload-left">
           {this.renderName()}
           {this.renderDetail()}
@@ -47,10 +41,7 @@ var Upload = React.createClass({
         <div className="Upload-right">
           {this.renderStatus()}
           {this.renderProgress()}
-          <form className="Upload-form">
-            {this.renderCarelinkInputs()}
-            {this.renderButton()}
-          </form>
+          {this.renderActions()}
           {this.renderReset()}
         </div>
       </div>
@@ -64,9 +55,6 @@ var Upload = React.createClass({
     }
     else {
       name = this.getDeviceName(this.props.upload);
-    }
-    if (this.isDisconnected()) {
-      name = name + ' (disconnected)';
     }
     return (
       <div className="Upload-name">{name}</div>
@@ -86,8 +74,21 @@ var Upload = React.createClass({
     );
   },
 
+  renderActions: function() {
+    if (this.isUploading() || this.isUploadCompleted() || this.isDisconnected()) {
+      return null;
+    }
+
+    return (
+      <form className="Upload-form">
+        {this.renderCarelinkInputs()}
+        {this.renderButton()}
+      </form>
+    );
+  },
+
   renderCarelinkInputs: function() {
-    if (!this.isCarelinkUpload() || this.isUploading() || this.isUploadCompleted()) {
+    if (!this.isCarelinkUpload()) {
       return null;
     }
 
@@ -100,10 +101,6 @@ var Upload = React.createClass({
   },
 
   renderButton: function() {
-    if (this.isUploading() || this.isUploadCompleted()) {
-      return null;
-    }
-
     var text = 'Upload';
     if (this.isCarelinkUpload()) {
       text = 'Import';
@@ -134,6 +131,13 @@ var Upload = React.createClass({
   },
 
   renderStatus: function() {
+    if (this.isDisconnected()) {
+      return (
+        <div className="Upload-status Upload-status--disconnected">
+          {'Connect your ' + this.getDeviceName(this.props.upload) + '...'}
+        </div>
+      );
+    }
     if (this.isUploading()) {
       return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
     }
@@ -141,8 +145,9 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
     }
     if (this.isUploadFailed()) {
-      if (this.uploadError() && this.uploadError().error && this.uploadError().error.code) {
-          return <div className="Upload-status Upload-status--error">{this.uploadError().error.message || 'An error occured while uploading.'}</div>;
+      var uploadError = this.getUploadError();
+      if (getIn(uploadError, ['error', 'code']) && getIn(uploadError, ['error', 'message'])) {
+          return <div className="Upload-status Upload-status--error">{uploadError.error.message}</div>;
       }
       return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
     }
@@ -197,6 +202,10 @@ var Upload = React.createClass({
     return getDetail(upload.source);
   },
 
+  getUploadError: function() {
+    return this.props.upload.error;
+  },
+
   isDisabled: function() {
     if (this.isCarelinkUpload()) {
       var username = this.refs.username && this.refs.username.getDOMNode().value;
@@ -234,11 +243,11 @@ var Upload = React.createClass({
     return this.props.upload.completed;
   },
 
-  uploadError: function() {
-    return this.props.upload.error;
-  },
+  handleUpload: function(e) {
+    if (e) {
+      e.preventDefault();
+    }
 
-  handleUpload: function() {
     if (this.isCarelinkUpload()) {
       return this.handleCarelinkUpload();
     }
@@ -257,7 +266,11 @@ var Upload = React.createClass({
     this.props.onUpload(options);
   },
 
-  handleReset: function() {
+  handleReset: function(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    
     this.props.onReset();
   }
 });
