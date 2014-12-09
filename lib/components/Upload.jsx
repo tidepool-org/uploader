@@ -186,9 +186,7 @@ var Upload = React.createClass({
     }
     return (
       <div className="Upload-reset">
-      <button
-        className="btn btn-secondary"
-        onClick={this.handleReset}>Start over</button>
+        <a href="" onClick={this.handleReset}>Start over</a>
       </div>
     );
   },
@@ -282,7 +280,7 @@ var Upload = React.createClass({
     if (e) {
       e.preventDefault();
     }
-    
+
     this.props.onReset();
   }
 });
