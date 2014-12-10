@@ -32,7 +32,7 @@ var Upload = React.createClass({
 
   getInitialState: function() {
     return {
-      careLinkUploadDisabled: true
+      carelinkFormIncomplete: true
     };
   },
 
@@ -111,19 +111,20 @@ var Upload = React.createClass({
     var password = this.refs.password && this.refs.password.getDOMNode().value;
 
     if (!username || !password) {
-      this.setState({careLinkUploadDisabled: true});
+      this.setState({carelinkFormIncomplete: true});
     } else {
-      this.setState({careLinkUploadDisabled: false});
+      this.setState({carelinkFormIncomplete: false});
     }
   },
 
   renderButton: function() {
     var text = 'Upload';
+    var disabled = this.isDisabled();
+
     if (this.isCarelinkUpload()) {
       text = 'Import';
+      disabled = disabled || this.state.carelinkFormIncomplete;
     }
-
-    var disabled = this.isDisabled();
 
     return (
       <div className="Upload-button">
@@ -222,10 +223,6 @@ var Upload = React.createClass({
   },
 
   isDisabled: function() {
-    if (this.isCarelinkUpload()) {
-      return this.state.careLinkUploadDisabled;
-    }
-
     return this.props.upload.disabled;
   },
 
