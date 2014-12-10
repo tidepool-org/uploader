@@ -23,7 +23,7 @@ var ViewDataLink = React.createClass({
   },
 
   render: function() {
-    return <a href={this.props.href} target="_blank">See the data</a>;
+    return <a className="ViewData-button btn btn-primary" href={this.props.href} target="_blank">Go to Blip</a>;
   }
 });
 

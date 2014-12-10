@@ -22,7 +22,8 @@ var Upload = require('./Upload.jsx');
 var UploadList = React.createClass({
   propTypes: {
     uploads: React.PropTypes.array.isRequired,
-    onUpload: React.PropTypes.func.isRequired
+    onUpload: React.PropTypes.func.isRequired,
+    onReset: React.PropTypes.func.isRequired
   },
 
   render: function() {
@@ -32,7 +33,8 @@ var UploadList = React.createClass({
         <div key={index} className="UploadList-item">
           <Upload
             upload={upload}
-            onUpload={self.props.onUpload.bind(null, index)} />
+            onUpload={self.props.onUpload.bind(null, index)}
+            onReset={self.props.onReset.bind(null, index)} />
         </div>
       );
     });

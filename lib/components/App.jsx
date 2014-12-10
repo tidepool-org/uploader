@@ -88,7 +88,8 @@ var App = React.createClass({
           {this.renderScan()}
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
-            onUpload={this.appActions.upload.bind(this.appActions)} />
+            onUpload={this.appActions.upload.bind(this.appActions)}
+            onReset={this.appActions.reset.bind(this.appActions)} />
           {this.renderViewDataLink()}
         </div>
       );
@@ -100,7 +101,7 @@ var App = React.createClass({
   renderSignupLink: function() {
     return (
       <div>
-        <a href={config.BLIP_URL + '#/signup'} target="_blank">Sign up</a>
+        <a className="App-signup" href={config.BLIP_URL + '#/signup'} target="_blank"><i className="icon-add"></i>Sign up</a>
       </div>
     );
   },
@@ -111,6 +112,7 @@ var App = React.createClass({
     }
 
     return <Scan
+      ref="scan"
       showInstructions={this.appState.isShowingDeviceInstructions()}
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
   },

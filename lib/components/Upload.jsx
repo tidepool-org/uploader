@@ -17,7 +17,6 @@
 
 var _ = require('lodash');
 var React = require('react');
-var cx = require('react/lib/cx');
 // This is "cheating" a bit, but need an easy way to format for this MVP :)
 var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
@@ -27,17 +26,19 @@ var ProgressBar = require('./ProgressBar.jsx');
 var Upload = React.createClass({
   propTypes: {
     upload: React.PropTypes.object.isRequired,
-    onUpload: React.PropTypes.func.isRequired
+    onUpload: React.PropTypes.func.isRequired,
+    onReset: React.PropTypes.func.isRequired
+  },
+
+  getInitialState: function() {
+    return {
+      careLinkUploadDisabled: true
+    };
   },
 
   render: function() {
-    var classes = cx({
-      'Upload': true,
-      'is-disconnected': this.isDisconnected()
-    });
-
     return (
-      <div className={classes}>
+      <div className="Upload">
         <div className="Upload-left">
           {this.renderName()}
           {this.renderDetail()}
@@ -46,10 +47,8 @@ var Upload = React.createClass({
         <div className="Upload-right">
           {this.renderStatus()}
           {this.renderProgress()}
-          <form className="Upload-form">
-            {this.renderCarelinkInputs()}
-            {this.renderButton()}
-          </form>
+          {this.renderActions()}
+          {this.renderReset()}
         </div>
       </div>
     );
@@ -63,9 +62,6 @@ var Upload = React.createClass({
     else {
       name = this.getDeviceName(this.props.upload);
     }
-    if (this.isDisconnected()) {
-      name = name + ' (disconnected)';
-    }
     return (
       <div className="Upload-name">{name}</div>
     );
@@ -74,7 +70,7 @@ var Upload = React.createClass({
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'CareLink';
+      detail = 'CareLink Import';
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
@@ -84,31 +80,49 @@ var Upload = React.createClass({
     );
   },
 
-  renderCarelinkInputs: function() {
-    if (!this.isCarelinkUpload()) {
+  renderActions: function() {
+    if (this.isUploading() || this.isUploadCompleted() || this.isDisconnected()) {
       return null;
     }
-    if (this.isUploading()) {
+
+    return (
+      <form className="Upload-form">
+        {this.renderCarelinkInputs()}
+        {this.renderButton()}
+      </form>
+    );
+  },
+
+  renderCarelinkInputs: function() {
+    if (!this.isCarelinkUpload()) {
       return null;
     }
 
     return (
       <div>
-        <div className="Upload-input"><input className="form-control" ref="username" placeholder="carelink username"/></div>
-        <div className="Upload-input"><input className="form-control" ref="password" type="password" placeholder="carelink password"/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="username" placeholder="CareLink username"/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder="CareLink password"/></div>
       </div>
     );
   },
 
-  renderButton: function() {
-    if (this.isUploading()) {
-      return null;
-    }
+  onCareLinkInputChange: function() {
+    var username = this.refs.username && this.refs.username.getDOMNode().value;
+    var password = this.refs.password && this.refs.password.getDOMNode().value;
 
+    if (!username || !password) {
+      this.setState({careLinkUploadDisabled: true});
+    } else {
+      this.setState({careLinkUploadDisabled: false});
+    }
+  },
+
+  renderButton: function() {
     var text = 'Upload';
     if (this.isCarelinkUpload()) {
       text = 'Import';
     }
+
     var disabled = this.isDisabled();
 
     return (
@@ -122,16 +136,10 @@ var Upload = React.createClass({
   },
 
   renderProgress: function() {
-    var percentage;
-    if (this.isUploading()) {
-      percentage = this.props.upload.progress.percentage;
-    }
-    else {
-      var lastUpload = this.getLastUpload();
-      percentage = lastUpload && lastUpload.percentage;
-    }
+    var percentage =
+      this.props.upload.progress && this.props.upload.progress.percentage;
 
-    // Can be equal to 0
+    // Can be equal to 0, so check for null or undefined
     if (percentage == null) {
       return null;
     }
@@ -140,13 +148,24 @@ var Upload = React.createClass({
   },
 
   renderStatus: function() {
+    if (this.isDisconnected()) {
+      return (
+        <div className="Upload-status Upload-status--disconnected">
+          {'Connect your ' + this.getDeviceName(this.props.upload) + '...'}
+        </div>
+      );
+    }
     if (this.isUploading()) {
-      return <div className="Upload-status Upload-status--uploading">{'Uploading...'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
     }
     if (this.isUploadSuccessful()) {
       return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
     }
     if (this.isUploadFailed()) {
+      var uploadError = this.getUploadError();
+      if (getIn(uploadError, ['error', 'code']) && getIn(uploadError, ['error', 'message'])) {
+          return <div className="Upload-status Upload-status--error">{uploadError.error.message}</div>;
+      }
       return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
     }
     return null;
@@ -159,6 +178,17 @@ var Upload = React.createClass({
     }
     var time = moment(lastUpload.finish).calendar();
     return <div className="Upload-detail">{'Last upload: ' + time}</div>;
+  },
+
+  renderReset: function() {
+    if (!this.isUploadCompleted()) {
+      return null;
+    }
+    return (
+      <div className="Upload-reset">
+        <a href="" onClick={this.handleReset}>Start over</a>
+      </div>
+    );
   },
 
   getLastUpload: function() {
@@ -187,7 +217,15 @@ var Upload = React.createClass({
     return getDetail(upload.source);
   },
 
+  getUploadError: function() {
+    return this.props.upload.error;
+  },
+
   isDisabled: function() {
+    if (this.isCarelinkUpload()) {
+      return this.state.careLinkUploadDisabled;
+    }
+
     return this.props.upload.disabled;
   },
 
@@ -211,7 +249,15 @@ var Upload = React.createClass({
     return this.props.upload.failed;
   },
 
-  handleUpload: function() {
+  isUploadCompleted: function() {
+    return this.props.upload.completed;
+  },
+
+  handleUpload: function(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
     if (this.isCarelinkUpload()) {
       return this.handleCarelinkUpload();
     }
@@ -228,6 +274,14 @@ var Upload = React.createClass({
       password: password
     };
     this.props.onUpload(options);
+  },
+
+  handleReset: function(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.onReset();
   }
 });
 

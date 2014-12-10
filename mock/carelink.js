@@ -39,7 +39,7 @@ var patch = function(carelink) {
 
     processData(progress, function(err) {
       if (err) {
-        return cb(err);
+        cb(err);
       }
       return cb(null, data.records);
     });

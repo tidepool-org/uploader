@@ -13,48 +13,23 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.Login-input {
-  margin-bottom: 15px;
-}
+.ViewData-button,
+a.ViewData-button {
+  font-size: @font-size-large;
+  padding: 5px 0px;
+  width: 150px;
+  margin: 10px auto;
 
-.Login-form {
-  .box-flex();
-}
+  background-color: #291647;
+  color: #fff;
 
-.Login-actions {
-  flex-flow: row wrap;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-.Login-remember {
-  flex-flow: row wrap;
-  align-items: center;
-
-  & > input[type="checkbox"] {
-    margin: 0;
-    margin-right: 5px;
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: @purple-light;
   }
-}
 
-.Login-forgot {
-  font-size: 11px;
-
-  a {
-    text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
+  &[disabled] {
+    background-color: fade(@purple-light, 30%);
   }
-}
-
-.Login-error {
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  color: @red;
-  margin-top: 10px;
 }

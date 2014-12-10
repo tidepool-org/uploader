@@ -33,9 +33,6 @@
 .Upload-name {
   font-weight: bold;
 }
-.Upload.is-disconnected .Upload-name {
-  color: @gray-text;
-}
 
 .Upload-detail {
   color: @gray-text;
@@ -43,7 +40,6 @@
 
 .Upload-status {
   flex-flow: row wrap;
-  justify-content: center;
   margin: 5px 0;
 }
 
@@ -52,9 +48,9 @@
 }
 
 .Upload-progress {
-  flex-flow: row wrap;
   justify-content: center;
-  margin-bottom: 10px;  
+  border: 1px solid rgb(213, 213, 213);
+  margin-bottom: 10px;
 }
 
 .Upload-form {
@@ -68,4 +64,24 @@
 .Upload-button {
   flex-flow: row wrap;
   justify-content: flex-end;
+}
+
+.Upload-helpText {
+  padding-bottom: 10px;
+}
+
+.Upload-reset {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+
+  > a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: @blue;
+      text-decoration: none;
+    }
+  }
 }

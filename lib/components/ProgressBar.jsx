@@ -25,9 +25,7 @@ var ProgressBar = React.createClass({
 
   render: function() {
     return (
-      <div className="ProgressBar">
-        {'Progress: ' + this.props.percentage + '%'}
-      </div>
+      <div className="ProgressBar" style={ {width: this.props.percentage + 1 + '%'}} title={'Progress: ' + this.props.percentage + '%'}>&nbsp;</div>
     );
   }
 });

@@ -34,7 +34,6 @@ var LoggedInAs = React.createClass({
     return (
       <div className="LoggedInAs">
         <span>{this.getName()}</span>
-        <span className="LoggedInAs-separator">·</span>
         {this.renderLogout()}
       </div>
     );
@@ -42,10 +41,10 @@ var LoggedInAs = React.createClass({
 
   renderLogout: function() {
     if (this.state.loggingOut) {
-      return <span>Logging out...</span>;
+      return <span className="LoggedInAs-logout">Logging out...</span>;
     }
 
-    return <a href="" onClick={this.handleLogout}>Logout</a>;
+    return <a className="LoggedInAs-logout" href="" onClick={this.handleLogout}><i className="icon-logout"></i>Logout</a>;
   },
 
   getName: function() {
