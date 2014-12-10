@@ -120,27 +120,6 @@ describe('appState', function() {
 
   });
 
-  describe('isShowingDeviceInstructions', function() {
-
-    it('returns true if no device uploads', function() {
-      app.state.uploads = [
-        {source: {type: 'carelink'}}
-      ];
-
-      expect(appState.isShowingDeviceInstructions()).to.be.true;
-    });
-
-    it('returns false if there are device uploads', function() {
-      app.state.uploads = [
-        {source: {type: 'device'}},
-        {source: {type: 'carelink'}}
-      ];
-
-      expect(appState.isShowingDeviceInstructions()).to.not.be.true;
-    });
-
-  });
-
   describe('uploadsWithFlags', function() {
 
     it('adds disabled flag to all uploads not in progress if one is in progress', function() {
