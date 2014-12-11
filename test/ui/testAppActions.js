@@ -32,7 +32,14 @@ describe('appActions', function() {
       utcDateString: function() { return now; }
     };
     localStore = {};
-    api = {};
+    api = {
+      metrics : { track:function(eventName, properties){
+        console.log('track %s %s',eventName,properties)
+      }},
+      errors : { log:function(error, message, properties){
+        console.log('log %s %s',error, message)
+      }}
+    };
     jellyfish = {};
     device = {};
     carelink = {};
