@@ -187,11 +187,19 @@ var Upload = React.createClass({
       return null;
     }
 
-    var text = this.isUploadSuccessful() ? 'Start over' : 'Try again';
+    var text = this.isUploadSuccessful() ? 'OK' : 'Try again';
+    var classes = 'Upload-reset';
+    if (this.isUploadFailed()) {
+      text = 'Try again';
+      classes = classes + ' Upload-reset--error';
+    }
+    else {
+      classes = classes + ' Upload-reset--success';
+    }
 
     return (
-      <div className="Upload-reset">
-      <a href="" onClick={this.handleReset}>{text}</a>
+      <div className={classes}>
+        <a href="" onClick={this.handleReset}>{text}</a>
       </div>
     );
   },

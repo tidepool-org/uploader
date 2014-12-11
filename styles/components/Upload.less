@@ -54,14 +54,19 @@
 }
 
 .Upload-reset > a  {
-  text-decoration: none;
+  &:extend(.btn all);
 
-  &:hover,
-  &:focus,
-  &:active {
-    color: @blue;
-    text-decoration: none;
-  }
+  line-height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Upload-reset--success > a {
+  &:extend(.btn-secondary all);
+}
+
+.Upload-reset--error > a  {
+  &:extend(.btn-primary all);
 }
 
 .Upload-progress {
