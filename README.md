@@ -154,4 +154,4 @@ $ npm run server
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
-1. Build `dist.zip` file with `npm run build`
+1. Build `dist.zip` file with `npm run build` **MAKE SURE YOU'VE SOURCED THE CORRECT CONFIG BEFORE YOU RUN THE BUILD SCRIPT!!!**
