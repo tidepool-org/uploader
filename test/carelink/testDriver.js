@@ -45,6 +45,9 @@ function spiderTests(baseDir) {
               drvr.processData.bind(drvr, noop)
             ],
             function(err, payload) {
+              if(err){
+                console.log(payload);
+              }
               expect(payload.devices['Paradigm Revel - 723'].simulator.getEvents()).deep.equals(output);
               done(err);
             }
