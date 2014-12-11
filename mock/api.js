@@ -103,7 +103,7 @@ var patch = function(api) {
 
     setTimeout(function() {
       cb(null, 'Carelink CSV file contents');
-    }, 700);
+    }, 1400);
   };
 
   return api;

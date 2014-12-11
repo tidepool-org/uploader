@@ -174,6 +174,22 @@ describe('appState', function() {
       expect(uploads[2].uploading).to.not.be.ok;
     });
 
+    it('adds fetchingCarelinkData flag to carelink upload just starting', function() {
+      app.state.uploads = [
+        {source: {type: 'carelink'}, progress: {step: 'start'}},
+        {source: {type: 'device'}, progress: {step: 'start'}},
+        {source: {type: 'carelink'}, progress: {step: 'start', finish: '2014-01-31T12:00:00Z'}},
+        {source: {type: 'carelink'}, progress: {step: 'upload'}}
+      ];
+      
+      var uploads = appState.uploadsWithFlags();
+      expect(uploads).to.have.length(4);
+      expect(uploads[0].fetchingCarelinkData).to.be.ok;
+      expect(uploads[1].fetchingCarelinkData).to.not.be.ok;
+      expect(uploads[2].fetchingCarelinkData).to.not.be.ok;
+      expect(uploads[3].fetchingCarelinkData).to.not.be.ok;
+    });
+
     it('adds completed flag if current instance completed', function() {
       app.state.uploads = [
         {progress: {finish: '2014-01-31T12:00:00Z'}},

@@ -22,6 +22,7 @@ var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
 var ProgressBar = require('./ProgressBar.jsx');
+var LoadingBar = require('./LoadingBar.jsx');
 
 var Upload = React.createClass({
   propTypes: {
@@ -135,8 +136,12 @@ var Upload = React.createClass({
       </div>
     );
   },
-
+  
   renderProgress: function() {
+    if (this.isFetchingCarelinkData()) {
+      return <div className="Upload-progress"><LoadingBar/></div>;
+    }
+
     var percentage =
       this.props.upload.progress && this.props.upload.progress.percentage;
 
@@ -155,6 +160,9 @@ var Upload = React.createClass({
           {'Connect your ' + this.getDeviceName(this.props.upload) + '...'}
         </div>
       );
+    }
+    if (this.isFetchingCarelinkData()) {
+      return <div className="Upload-status Upload-status--uploading">{'Downloading CareLink export...'}</div>;
     }
     if (this.isUploading()) {
       return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
@@ -236,6 +244,10 @@ var Upload = React.createClass({
 
   isCarelinkUpload: function() {
     return this.props.upload.carelink;
+  },
+
+  isFetchingCarelinkData: function() {
+    return this.props.upload.fetchingCarelinkData;
   },
 
   isUploadSuccessful: function() {
