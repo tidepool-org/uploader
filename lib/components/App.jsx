@@ -117,10 +117,6 @@ var App = React.createClass({
   },
 
   renderViewDataLink: function() {
-    if (!this.appState.hasSuccessfulUpload()) {
-      return null;
-    }
-
     return <ViewDataLink
       href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'} />;
   },

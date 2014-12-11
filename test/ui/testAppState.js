@@ -181,7 +181,7 @@ describe('appState', function() {
         {source: {type: 'carelink'}, progress: {step: 'start', finish: '2014-01-31T12:00:00Z'}},
         {source: {type: 'carelink'}, progress: {step: 'upload'}}
       ];
-      
+
       var uploads = appState.uploadsWithFlags();
       expect(uploads).to.have.length(4);
       expect(uploads[0].fetchingCarelinkData).to.be.ok;
@@ -224,26 +224,6 @@ describe('appState', function() {
       expect(uploads).to.have.length(2);
       expect(uploads[0].failed).to.be.ok;
       expect(uploads[1].failed).to.not.be.ok;
-    });
-
-  });
-
-  describe('hasSuccessfulUpload', function() {
-
-    it('returns true if at least one successful upload', function() {
-      app.state.uploads = [
-        {history: [{success: true}]}
-      ];
-
-      expect(appState.hasSuccessfulUpload()).to.be.true;
-    });
-
-    it('returns false if no successful upload', function() {
-      app.state.uploads = [
-        {history: [{error: 'oops'}]}
-      ];
-
-      expect(appState.hasSuccessfulUpload()).to.not.be.true;
     });
 
   });
