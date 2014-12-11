@@ -17,7 +17,8 @@
     "insulinSensitivity": 40,
     "recommended": {
       "carb": 1.7,
-      "correction": 3.3
+      "correction": 3.3,
+      "net": 5
     },
     "payload": {},
     "units": "mg/dL",
@@ -50,7 +51,8 @@
     "insulinSensitivity": 50,
     "recommended": {
       "carb": 5.5,
-      "correction": 0.2
+      "correction": 0.2,
+      "net": 5.7
     },
     "payload": {},
     "units": "mg/dL",
