@@ -20,12 +20,15 @@ var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
 
+
 describe('appActions', function() {
   // Mock all I/O
   var config, now, sundial, localStore, api, jellyfish, device, carelink;
   var app;
   var appActions;
+
   beforeEach(function() {
+
     config = {};
     now = '2014-01-31T22:00:00-05:00';
     sundial = {
@@ -33,13 +36,10 @@ describe('appActions', function() {
     };
     localStore = {};
     api = {
-      metrics : { track:function(eventName, properties){
-        console.log('track %s %s',eventName,properties)
-      }},
-      errors : { log:function(error, message, properties){
-        console.log('log %s %s',error, message)
-      }}
+      metrics:  { track : function(one, two) { expect(one).to.exist; }} ,
+      errors: { log : function(one, two, three) { expect(one).to.exist; expect(two).to.exist; }}
     };
+
     jellyfish = {};
     device = {};
     carelink = {};
