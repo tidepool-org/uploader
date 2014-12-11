@@ -35,10 +35,10 @@ describe('appActions', function() {
       utcDateString: function() { return now; }
     };
     localStore = {};
-    api = {
-      metrics:  { track : function(one, two) { expect(one).to.exist; }} ,
-      errors: { log : function(one, two, three) { expect(one).to.exist; expect(two).to.exist; }}
-    };
+    api = {};
+      //metrics:  { track : function(one, two) { expect(one).to.exist; }} ,
+      //errors: { log : function(one, two, three) { expect(one).to.exist; expect(two).to.exist; }}
+    //};
 
     jellyfish = {};
     device = {};
@@ -153,16 +153,21 @@ describe('appActions', function() {
   });
 
   describe('login', function() {
+    var loginMetricsCall = {};
+
     beforeEach(function() {
       api.user = {};
       api.user.login = function(credentials, options, cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
+      api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
     it('goes to main page if login successful', function(done) {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.page).to.equal('main');
+        expect(loginMetricsCall).to.not.be.empty;
+        expect(loginMetricsCall.one).to.equal('Logged in');
         done();
       });
     });
@@ -210,9 +215,13 @@ describe('appActions', function() {
   });
 
   describe('logout', function() {
+
+    var logoutMetricsCall = {};
+
     beforeEach(function() {
       api.user = {};
       api.user.logout = function(cb) { cb(); };
+       api.metrics = { track : function(one, two) { logoutMetricsCall.one = one; logoutMetricsCall.two = two;  }};
     });
 
     it('resets app state', function(done) {
@@ -227,6 +236,8 @@ describe('appActions', function() {
         expect(app.state.user).to.not.exist;
         expect(app.state.targetId).to.not.exist;
         expect(app.state.uploads).to.not.equal(uploads);
+        expect(logoutMetricsCall).to.not.be.empty;
+        expect(logoutMetricsCall.one).to.equal('Logging out');
         done();
       });
     });
@@ -408,6 +419,13 @@ describe('appActions', function() {
   });
 
   describe('uploadDevice', function() {
+    var uploadDeviceMetricsCall = {};
+    var uploadErrorCall = {};
+
+    beforeEach(function() {
+      api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
+      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadDeviceMetricsCall.two = two; uploadDeviceMetricsCall.three = three; }};
+    });
 
     it('throws an error if upload index is invalid', function() {
       app.state.uploads = [];
@@ -436,7 +454,6 @@ describe('appActions', function() {
           driverId: 'DexcomG4'
         }
       }];
-
       appActions.upload(0, {}, _.noop);
       expect(app.state.uploads[0].progress).to.deep.equal({
         targetId: '11',
@@ -444,6 +461,8 @@ describe('appActions', function() {
         step: 'start',
         percentage: 0
       });
+      expect(uploadDeviceMetricsCall).to.not.be.empty;
+      expect(uploadDeviceMetricsCall.one).to.equal('Upload starting ');
     });
 
     it('updates upload with correct progress data', function(done) {
@@ -530,6 +549,7 @@ describe('appActions', function() {
         expect(app.state.uploads[0].progress).to.deep.equal(instance);
         expect(app.state.uploads[0].history).to.have.length(1);
         expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
+        expect(uploadErrorCall).to.not.be.empty;
         done();
       });
     });
