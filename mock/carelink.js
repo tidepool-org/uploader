@@ -39,7 +39,7 @@ var patch = function(carelink) {
 
     processData(progress, function(err) {
       if (err) {
-        return cb({error: 'badlogin',message: 'Incorrect username or password', code: 403});
+        cb(err);
       }
       return cb(null, data.records);
     });

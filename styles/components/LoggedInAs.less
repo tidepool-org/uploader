@@ -17,21 +17,24 @@
   flex-flow: row wrap;
 }
 
-.LoggedInAs-separator {
-  margin: 0 5px;
+.LoggedInAs-logout {
+  .box-flex();
+  flex-flow: row wrap;
+  color: @gray-text;
+  margin-left: 10px;
 }
 
-.LoggedInAs-logout {
-  width: 70px;
+a.LoggedInAs-logout {
+  text-decoration: none;
 
-  > span {
-    float: left;
-    padding-right: 3px;
+  > i {
+    margin-right: 1px;
   }
 
   &:hover,
   &:focus,
   &:active {
-    color: @gray-text;
+    color: black;
+    text-decoration: none;
   }
 }

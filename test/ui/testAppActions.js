@@ -263,7 +263,7 @@ describe('appActions', function() {
       });
     });
 
-    it('keeps carelink at the end when adding new device', function(done) {
+    it('keeps carelink at the beginning when adding new device', function(done) {
       app.state.uploads = [
         {source: {type: 'carelink'}}
       ];
@@ -275,7 +275,7 @@ describe('appActions', function() {
       appActions.detectDevices(function(err) {
         if (err) throw err;
         expect(app.state.uploads).to.have.length(2);
-        expect(app.state.uploads[1].source.type).to.equal('carelink');
+        expect(app.state.uploads[0].source.type).to.equal('carelink');
         done();
       });
     });
@@ -297,6 +297,28 @@ describe('appActions', function() {
         if (err) throw err;
         expect(app.state.uploads).to.have.length(1);
         expect(app.state.uploads[0].source.connected).to.be.false;
+        done();
+      });
+    });
+
+    it('resets progress for disconnected device', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          usb: 3,
+          connected: true
+        },
+        progress: {}
+      }
+      ];
+      connectedDevices = [];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.progress).to.not.exist;
         done();
       });
     });
@@ -345,6 +367,32 @@ describe('appActions', function() {
         if (err) throw err;
         expect(app.state.uploads).to.have.length(1);
         expect(app.state.uploads[0].source.usb).to.equal(11);
+        done();
+      });
+    });
+
+    it('keeps one upload per device driverId', function(done) {
+      app.state.uploads = [
+      {
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4',
+          serialNumber: 'AA11',
+          usb: 3,
+          connected: true
+        }
+      }
+      ];
+      connectedDevices = [{
+        driverId: 'DexcomG4',
+        serialNumber: 'BB22',
+        usb: 11
+      }];
+
+      appActions.detectDevices(function(err) {
+        if (err) throw err;
+        expect(app.state.uploads).to.have.length(1);
+        expect(app.state.uploads[0].source.serialNumber).to.equal('BB22');
         done();
       });
     });
@@ -409,7 +457,7 @@ describe('appActions', function() {
       appActions.upload(0, {}, done);
     });
 
-    it('adds correct object to upload history when complete and clears progress', function(done) {
+    it('adds correct object to upload history when complete', function(done) {
       now = '2014-01-31T22:00:00-05:00';
       device.detect = function(driverId, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
@@ -428,9 +476,7 @@ describe('appActions', function() {
 
       appActions.upload(0, {}, function(err) {
         if (err) throw err;
-        expect(app.state.uploads[0].progress).to.be.undefined;
-        expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal({
+        var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
@@ -438,7 +484,10 @@ describe('appActions', function() {
           percentage: 100,
           success: true,
           count: 2
-        });
+        };
+        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         done();
       });
     });
@@ -462,15 +511,17 @@ describe('appActions', function() {
 
       appActions.upload(0, {}, function(err) {
         if (err && err !== 'oops') throw err;
-        expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal({
+        var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
           error: 'oops'
-        });
+        };
+        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+        expect(app.state.uploads[0].history).to.have.length(1);
+        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         done();
       });
     });
@@ -496,6 +547,26 @@ describe('appActions', function() {
         expect(app.state.uploads[0].history[1].targetId).to.equal('1');
         done();
       });
+    });
+
+  });
+
+  describe('reset', function() {
+
+    it('throws an error if upload index is invalid', function() {
+      app.state.uploads = [];
+
+      expect(appActions.reset.bind(appActions, 0))
+        .to.throw(/index/);
+    });
+
+    it('clears upload progress', function() {
+      app.state.uploads = [
+        {progress: {}}
+      ];
+
+      appActions.reset(0);
+      expect(app.state.uploads[0].progress).to.not.exists;
     });
 
   });

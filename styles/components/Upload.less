@@ -33,9 +33,6 @@
 .Upload-name {
   font-weight: bold;
 }
-.Upload.is-disconnected .Upload-name {
-  color: @gray-text;
-}
 
 .Upload-detail {
   color: @gray-text;
@@ -52,6 +49,7 @@
 
 .Upload-progress {
   justify-content: center;
+  border: 1px solid rgb(213, 213, 213);
   margin-bottom: 10px;
 }
 
@@ -70,4 +68,20 @@
 
 .Upload-helpText {
   padding-bottom: 10px;
+}
+
+.Upload-reset {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+
+  > a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: @blue;
+      text-decoration: none;
+    }
+  }
 }

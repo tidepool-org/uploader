@@ -28,6 +28,7 @@ a.btn {
   cursor: pointer;
   white-space: nowrap;
   background-image: none;
+  text-decoration: none;
 
   border: @btn-border-size solid transparent;
   border-radius: 3px;
@@ -58,13 +59,13 @@ a.btn {
 // Main action button style
 .btn-primary,
 a.btn-primary {
-  background-color: fade(@blue, 75%);
+  background-color: @blue;
   color: #fff;
 
   &:hover,
   &:focus,
   &:active {
-    background-color: @blue;
+    background-color: fade(@blue, 75%);
   }
 }
 

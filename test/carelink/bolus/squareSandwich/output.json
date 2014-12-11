@@ -44,7 +44,8 @@
     "payload": {},
     "recommended": {
       "carb": 0,
-      "correction": 1.6
+      "correction": 1.6,
+      "net": 0
     },
     "source": "carelink",
     "time": "2014-03-14T23:05:40.000Z",
