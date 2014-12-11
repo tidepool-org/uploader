@@ -58,7 +58,7 @@ var Upload = React.createClass({
   renderName: function() {
     var name;
     if (this.isCarelinkUpload()) {
-      name = 'Medtronic Device';
+      name = 'Medtronic Devices';
     }
     else {
       name = this.getDeviceName(this.props.upload);
@@ -71,7 +71,7 @@ var Upload = React.createClass({
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'CareLink Import';
+      detail = 'Import from CareLink';
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
@@ -136,7 +136,7 @@ var Upload = React.createClass({
       </div>
     );
   },
-  
+
   renderProgress: function() {
     if (this.isFetchingCarelinkData()) {
       return <div className="Upload-progress"><LoadingBar/></div>;
@@ -165,10 +165,10 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--uploading">{'Downloading CareLink export...'}</div>;
     }
     if (this.isUploading()) {
-      return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{'Uploading... ' + this.props.upload.progress.percentage + '%'}</div>;
     }
     if (this.isUploadSuccessful()) {
-      return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
+      return <div className="Upload-status Upload-status--success">{'Done!'}</div>;
     }
     if (this.isUploadFailed()) {
       var uploadError = this.getUploadError();
