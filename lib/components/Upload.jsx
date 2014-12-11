@@ -46,10 +46,12 @@ var Upload = React.createClass({
           {this.renderLastUpload()}
         </div>
         <div className="Upload-right">
-          {this.renderStatus()}
+          <div className="Upload-statusSection">
+            {this.renderStatus()}
+            {this.renderReset()}
+          </div>
           {this.renderProgress()}
           {this.renderActions()}
-          {this.renderReset()}
         </div>
       </div>
     );
@@ -175,9 +177,23 @@ var Upload = React.createClass({
       if (getIn(uploadError, ['error', 'code']) && getIn(uploadError, ['error', 'message'])) {
           return <div className="Upload-status Upload-status--error">{uploadError.error.message}</div>;
       }
-      return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
+      return <div className="Upload-status Upload-status--error">{'The upload didn\'t work.'}</div>;
     }
     return null;
+  },
+
+  renderReset: function() {
+    if (!this.isUploadCompleted()) {
+      return null;
+    }
+
+    var text = this.isUploadSuccessful() ? 'Start over' : 'Try again';
+
+    return (
+      <div className="Upload-reset">
+      <a href="" onClick={this.handleReset}>{text}</a>
+      </div>
+    );
   },
 
   renderLastUpload: function() {
@@ -187,17 +203,6 @@ var Upload = React.createClass({
     }
     var time = moment(lastUpload.finish).calendar();
     return <div className="Upload-detail">{'Last upload: ' + time}</div>;
-  },
-
-  renderReset: function() {
-    if (!this.isUploadCompleted()) {
-      return null;
-    }
-    return (
-      <div className="Upload-reset">
-        <a href="" onClick={this.handleReset}>Start over</a>
-      </div>
-    );
   },
 
   getLastUpload: function() {

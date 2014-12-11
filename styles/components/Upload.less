@@ -38,13 +38,30 @@
   color: @gray-text;
 }
 
-.Upload-status {
-  flex-flow: row wrap;
+.Upload-statusSection {
+  flex-flow: row;
+  justify-content: space-between;
   margin-bottom: 5px;
+}
+
+.Upload-status {
+  flex-flow: row;
+  flex-shrink: 1;
 }
 
 .Upload-status--error {
   color: @red;
+}
+
+.Upload-reset > a  {
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: @blue;
+    text-decoration: none;
+  }
 }
 
 .Upload-progress {
@@ -67,20 +84,4 @@
 
 .Upload-helpText {
   padding-bottom: 10px;
-}
-
-.Upload-reset {
-  flex-flow: row wrap;
-  justify-content: flex-end;
-
-  > a {
-    text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
-  }
 }
