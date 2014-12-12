@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../lib/simulator/pwdSimulator.js');
+var pwdSimulator = require('../lib/simulator/carelinkSimulator.js');
 
 function attachPrev(arr) {
   var prevBasal = null;
@@ -36,7 +36,7 @@ function attachPrev(arr) {
   });
 }
 
-describe('pwdSimulator.js', function(){
+describe('carelinkSimulator.js', function(){
   var simulator = null;
 
   beforeEach(function(){
@@ -1387,6 +1387,7 @@ describe('pwdSimulator.js', function(){
           timezoneOffset: -600,
           deviceTime: suspend.deviceTime,
           time: suspend.time,
+          duration: 3315000,
           suppressed: firstBasalRes,
           previous: firstBasalRes
         };
@@ -1700,6 +1701,102 @@ describe('pwdSimulator.js', function(){
         );
       });
 
+    });
+
+    describe('event interplay, low glucose suspend', function(){
+      describe('user resume', function(){
+        var settings = {
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 3600000, rate: 2.0 },
+              { start: 7200000, rate: 2.1 },
+              { start: 10800000, rate: 2.2 },
+              { start: 14400000, rate: 2.3 },
+              { start: 18000000, rate: 2.4 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: [],
+          timezoneOffset: 0
+        };
+        var basal1 = {
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
+          rate: 1.0,
+          scheduleName: 'billy',
+          duration: 3600000,
+          timezoneOffset: 0
+        };
+        // manual suspend
+        var suspend = {
+          reason: 'manual',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:00.000Z',
+          deviceTime: '2014-09-25T00:05:00'
+        };
+        // alarm_suspend
+        var suspend1 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:00.000Z',
+          deviceTime: '2014-09-25T00:05:00'
+        };
+        // low_suspend_mode_1
+        var suspend2 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:05.000Z',
+          deviceTime: '2014-09-25T00:05:05'
+        };
+        // low_suspend_no_response
+        var suspend3 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:10.000Z',
+          deviceTime: '2014-09-25T00:05:10'
+        };
+        // low_suspend_user_selected
+        var suspend4 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:15.000Z',
+          deviceTime: '2014-09-25T00:05:15'
+        };
+        var basal2 = {
+          time: '2014-09-25T00:05:20.000Z',
+          deviceTime: '2014-09-25T00:05:20',
+          rate: 1.0,
+          scheduleName: 'billy',
+          duration: 3600000,
+          timezoneOffset: 0
+        };
+        var resume = {
+          time: '2014-09-25T00:05:30.000Z',
+          deviceTime: '2014-09-25T00:05:30',
+          reason: 'manual',
+          timezoneOffset: 0
+        };
+
+        it.skip('should resume to the appropriate scheduled basal if no temp was running before the LGS suspend', function(){
+          simulator.settings(settings);
+          simulator.basalScheduled(basal1);
+          simulator.suspend(suspend1);
+          simulator.suspend(suspend2);
+          simulator.suspend(suspend3);
+          simulator.suspend(suspend4);
+          simulator.basalScheduled(basal2);
+          simulator.resume(resume);
+        });
+      });
     });
   });
 });
