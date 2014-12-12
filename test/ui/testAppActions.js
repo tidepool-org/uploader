@@ -209,16 +209,17 @@ describe('appActions', function() {
     });
 
     it('resets app state', function(done) {
+      var uploads = [1, 2, 3];
       app.state = {
         user: {userid: '11'},
         targetId: '11',
-        uploads: [1, 2, 3]
+        uploads: uploads
       };
       appActions.logout(function(err) {
         if (err) throw err;
         expect(app.state.user).to.not.exist;
         expect(app.state.targetId).to.not.exist;
-        expect(app.state.uploads).to.be.empty;
+        expect(app.state.uploads).to.not.equal(uploads);
         done();
       });
     });

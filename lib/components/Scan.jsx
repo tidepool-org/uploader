@@ -25,7 +25,6 @@ var DETECT_TIMEOUT = null; // Scan forever
 
 var Scan = React.createClass({
   propTypes: {
-    showInstructions: React.PropTypes.bool.isRequired,
     onDetectDevices: React.PropTypes.func.isRequired
   },
 
@@ -53,21 +52,8 @@ var Scan = React.createClass({
   render: function() {
     return (
       <div className="Scan">
-        {this.renderInstructions()}
         {this.renderError()}
         {this.renderScan()}
-      </div>
-    );
-  },
-
-  renderInstructions: function() {
-    if (!this.props.showInstructions) {
-      return null;
-    }
-
-    return (
-      <div className="Scan-status">
-        {'Connect your device to start uploading data...'}
       </div>
     );
   },

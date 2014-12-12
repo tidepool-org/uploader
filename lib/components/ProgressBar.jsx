@@ -24,8 +24,12 @@ var ProgressBar = React.createClass({
   },
 
   render: function() {
+    // Minimum fill of 1%
+    var width = this.props.percentage ? this.props.percentage : 1;
     return (
-      <div className="ProgressBar" style={ {width: this.props.percentage + 1 + '%'}} title={'Progress: ' + this.props.percentage + '%'}>&nbsp;</div>
+      <div className="ProgressBar" title={'Progress: ' + this.props.percentage + '%'}>
+        <div className="ProgressBar-fill" style={{width: width + '%'}}>&nbsp;</div>
+      </div>
     );
   }
 });

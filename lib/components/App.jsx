@@ -113,15 +113,10 @@ var App = React.createClass({
 
     return <Scan
       ref="scan"
-      showInstructions={this.appState.isShowingDeviceInstructions()}
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
   },
 
   renderViewDataLink: function() {
-    if (!this.appState.hasSuccessfulUpload()) {
-      return null;
-    }
-
     return <ViewDataLink
       href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'} />;
   },

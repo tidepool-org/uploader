@@ -59,13 +59,19 @@ a.btn {
 // Main action button style
 .btn-primary,
 a.btn-primary {
-  background-color: @blue;
+  background-color: #291647;
   color: #fff;
 
   &:hover,
   &:focus,
   &:active {
-    background-color: fade(@blue, 75%);
+    background-color: @purple-light;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: fade(@purple-light, 30%);
   }
 }
 

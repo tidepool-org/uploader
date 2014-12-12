@@ -22,6 +22,7 @@ var moment = require('sundial/node_modules/moment');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
 var ProgressBar = require('./ProgressBar.jsx');
+var LoadingBar = require('./LoadingBar.jsx');
 
 var Upload = React.createClass({
   propTypes: {
@@ -32,7 +33,7 @@ var Upload = React.createClass({
 
   getInitialState: function() {
     return {
-      careLinkUploadDisabled: true
+      carelinkFormIncomplete: true
     };
   },
 
@@ -45,10 +46,12 @@ var Upload = React.createClass({
           {this.renderLastUpload()}
         </div>
         <div className="Upload-right">
-          {this.renderStatus()}
+          <div className="Upload-statusSection">
+            {this.renderStatus()}
+            {this.renderReset()}
+          </div>
           {this.renderProgress()}
           {this.renderActions()}
-          {this.renderReset()}
         </div>
       </div>
     );
@@ -57,7 +60,7 @@ var Upload = React.createClass({
   renderName: function() {
     var name;
     if (this.isCarelinkUpload()) {
-      name = 'Medtronic Device';
+      name = 'Medtronic Devices';
     }
     else {
       name = this.getDeviceName(this.props.upload);
@@ -70,7 +73,7 @@ var Upload = React.createClass({
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'CareLink Import';
+      detail = 'Import from CareLink';
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
@@ -111,19 +114,20 @@ var Upload = React.createClass({
     var password = this.refs.password && this.refs.password.getDOMNode().value;
 
     if (!username || !password) {
-      this.setState({careLinkUploadDisabled: true});
+      this.setState({carelinkFormIncomplete: true});
     } else {
-      this.setState({careLinkUploadDisabled: false});
+      this.setState({carelinkFormIncomplete: false});
     }
   },
 
   renderButton: function() {
     var text = 'Upload';
+    var disabled = this.isDisabled();
+
     if (this.isCarelinkUpload()) {
       text = 'Import';
+      disabled = disabled || this.state.carelinkFormIncomplete;
     }
-
-    var disabled = this.isDisabled();
 
     return (
       <div className="Upload-button">
@@ -136,6 +140,10 @@ var Upload = React.createClass({
   },
 
   renderProgress: function() {
+    if (this.isFetchingCarelinkData()) {
+      return <div className="Upload-progress"><LoadingBar/></div>;
+    }
+
     var percentage =
       this.props.upload.progress && this.props.upload.progress.percentage;
 
@@ -155,20 +163,45 @@ var Upload = React.createClass({
         </div>
       );
     }
+    if (this.isFetchingCarelinkData()) {
+      return <div className="Upload-status Upload-status--uploading">{'Downloading CareLink export...'}</div>;
+    }
     if (this.isUploading()) {
-      return <div className="Upload-status Upload-status--uploading">{'Uploading ' + this.props.upload.progress.percentage + '%'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{'Uploading... ' + this.props.upload.progress.percentage + '%'}</div>;
     }
     if (this.isUploadSuccessful()) {
-      return <div className="Upload-status Upload-status--success">{'Uploaded!'}</div>;
+      return <div className="Upload-status Upload-status--success">{'Done!'}</div>;
     }
     if (this.isUploadFailed()) {
       var uploadError = this.getUploadError();
       if (getIn(uploadError, ['error', 'code']) && getIn(uploadError, ['error', 'message'])) {
           return <div className="Upload-status Upload-status--error">{uploadError.error.message}</div>;
       }
-      return <div className="Upload-status Upload-status--error">{'An error occured while uploading.'}</div>;
+      return <div className="Upload-status Upload-status--error">{'The upload didn\'t work.'}</div>;
     }
     return null;
+  },
+
+  renderReset: function() {
+    if (!this.isUploadCompleted()) {
+      return null;
+    }
+
+    var text = this.isUploadSuccessful() ? 'OK' : 'Try again';
+    var classes = 'Upload-reset';
+    if (this.isUploadFailed()) {
+      text = 'Try again';
+      classes = classes + ' Upload-reset--error';
+    }
+    else {
+      classes = classes + ' Upload-reset--success';
+    }
+
+    return (
+      <div className={classes}>
+        <a href="" onClick={this.handleReset}>{text}</a>
+      </div>
+    );
   },
 
   renderLastUpload: function() {
@@ -178,17 +211,6 @@ var Upload = React.createClass({
     }
     var time = moment(lastUpload.finish).calendar();
     return <div className="Upload-detail">{'Last upload: ' + time}</div>;
-  },
-
-  renderReset: function() {
-    if (!this.isUploadCompleted()) {
-      return null;
-    }
-    return (
-      <div className="Upload-reset">
-        <a href="" onClick={this.handleReset}>Start over</a>
-      </div>
-    );
   },
 
   getLastUpload: function() {
@@ -222,10 +244,6 @@ var Upload = React.createClass({
   },
 
   isDisabled: function() {
-    if (this.isCarelinkUpload()) {
-      return this.state.careLinkUploadDisabled;
-    }
-
     return this.props.upload.disabled;
   },
 
@@ -239,6 +257,10 @@ var Upload = React.createClass({
 
   isCarelinkUpload: function() {
     return this.props.upload.carelink;
+  },
+
+  isFetchingCarelinkData: function() {
+    return this.props.upload.fetchingCarelinkData;
   },
 
   isUploadSuccessful: function() {

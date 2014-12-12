@@ -79,7 +79,7 @@ var Login = React.createClass({
     return (
       <button
         type="submit"
-        className="btn btn-primary"
+        className="Login-button"
         onClick={this.handleLogin}
         disabled={disabled}>
         {text}

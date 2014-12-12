@@ -120,27 +120,6 @@ describe('appState', function() {
 
   });
 
-  describe('isShowingDeviceInstructions', function() {
-
-    it('returns true if no device uploads', function() {
-      app.state.uploads = [
-        {source: {type: 'carelink'}}
-      ];
-
-      expect(appState.isShowingDeviceInstructions()).to.be.true;
-    });
-
-    it('returns false if there are device uploads', function() {
-      app.state.uploads = [
-        {source: {type: 'device'}},
-        {source: {type: 'carelink'}}
-      ];
-
-      expect(appState.isShowingDeviceInstructions()).to.not.be.true;
-    });
-
-  });
-
   describe('uploadsWithFlags', function() {
 
     it('adds disabled flag to all uploads not in progress if one is in progress', function() {
@@ -195,6 +174,22 @@ describe('appState', function() {
       expect(uploads[2].uploading).to.not.be.ok;
     });
 
+    it('adds fetchingCarelinkData flag to carelink upload just starting', function() {
+      app.state.uploads = [
+        {source: {type: 'carelink'}, progress: {step: 'start'}},
+        {source: {type: 'device'}, progress: {step: 'start'}},
+        {source: {type: 'carelink'}, progress: {step: 'start', finish: '2014-01-31T12:00:00Z'}},
+        {source: {type: 'carelink'}, progress: {step: 'upload'}}
+      ];
+
+      var uploads = appState.uploadsWithFlags();
+      expect(uploads).to.have.length(4);
+      expect(uploads[0].fetchingCarelinkData).to.be.ok;
+      expect(uploads[1].fetchingCarelinkData).to.not.be.ok;
+      expect(uploads[2].fetchingCarelinkData).to.not.be.ok;
+      expect(uploads[3].fetchingCarelinkData).to.not.be.ok;
+    });
+
     it('adds completed flag if current instance completed', function() {
       app.state.uploads = [
         {progress: {finish: '2014-01-31T12:00:00Z'}},
@@ -229,26 +224,6 @@ describe('appState', function() {
       expect(uploads).to.have.length(2);
       expect(uploads[0].failed).to.be.ok;
       expect(uploads[1].failed).to.not.be.ok;
-    });
-
-  });
-
-  describe('hasSuccessfulUpload', function() {
-
-    it('returns true if at least one successful upload', function() {
-      app.state.uploads = [
-        {history: [{success: true}]}
-      ];
-
-      expect(appState.hasSuccessfulUpload()).to.be.true;
-    });
-
-    it('returns false if no successful upload', function() {
-      app.state.uploads = [
-        {history: [{error: 'oops'}]}
-      ];
-
-      expect(appState.hasSuccessfulUpload()).to.not.be.true;
     });
 
   });
