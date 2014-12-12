@@ -1,4 +1,5 @@
-/**
+/*
+* == BSD2 LICENSE ==
 * Copyright (c) 2014, Tidepool Project
 *
 * This program is free software; you can redistribute it and/or modify it under
@@ -11,12 +12,19 @@
 *
 * You should have received a copy of the License along with this program; if
 * not, you can obtain one from Tidepool Project at tidepool.org.
+* == BSD2 LICENSE ==
 */
 
-.ViewData-button,
-a.ViewData-button {
-  font-size: @font-size-large;
-  padding: 5px 0px;
-  width: 150px;
-  margin: 10px auto;
-}
+var React = require('react');
+
+var LoadingBar = React.createClass({
+  render: function() {
+    return (
+      <div className="LoadingBar">
+        <div className="LoadingBar-fill">&nbsp;</div>
+      </div>
+    );
+  }
+});
+
+module.exports = LoadingBar;

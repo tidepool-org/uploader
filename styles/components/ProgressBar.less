@@ -14,7 +14,12 @@
 */
 
 .ProgressBar {
-  background-color: @blue;
+  border: 1px solid @gray-border;
   color: #fff;
   width: 100%;
+}
+
+.ProgressBar-fill {
+  background-color: @blue;
+  transition: width 200ms;
 }

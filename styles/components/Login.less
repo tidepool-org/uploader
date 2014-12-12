@@ -37,6 +37,19 @@
   }
 }
 
+.Login-button {
+  &:extend(.btn all);
+  
+  background-color: @blue;
+  color: #fff;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: fade(@blue, 75%);
+  }
+}
+
 .Login-forgot {
   font-size: 11px;
 

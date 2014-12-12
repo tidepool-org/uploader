@@ -38,18 +38,41 @@
   color: @gray-text;
 }
 
+.Upload-statusSection {
+  flex-flow: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
 .Upload-status {
-  flex-flow: row wrap;
-  margin: 5px 0;
+  flex-flow: row;
+  flex-shrink: 1;
+  // Reset button height
+  min-height: 24px;
 }
 
 .Upload-status--error {
   color: @red;
 }
 
+.Upload-reset > a  {
+  &:extend(.btn all);
+
+  line-height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Upload-reset--success > a {
+  &:extend(.btn-secondary all);
+}
+
+.Upload-reset--error > a  {
+  &:extend(.btn-primary all);
+}
+
 .Upload-progress {
   justify-content: center;
-  border: 1px solid rgb(213, 213, 213);
   margin-bottom: 10px;
 }
 
@@ -68,20 +91,4 @@
 
 .Upload-helpText {
   padding-bottom: 10px;
-}
-
-.Upload-reset {
-  flex-flow: row wrap;
-  justify-content: flex-end;
-
-  > a {
-    text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
-  }
 }
