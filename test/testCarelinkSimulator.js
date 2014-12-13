@@ -216,6 +216,9 @@ describe('carelinkSimulator.js', function(){
               { start: 21600000, rate: 1.1 },
               { start: 43200000, rate: 1.2 },
               { start: 64800000, rate: 1.3 }
+            ],
+            'bob': [
+              { start: 0, rate: 0.0}
             ]
           },
           timezoneOffset: 0
@@ -280,6 +283,44 @@ describe('carelinkSimulator.js', function(){
                   annotations: [{code: 'basal/off-schedule-rate'}]
                 }, val)
               ]);
+          });
+
+          it('annotates a scheduled that doesn\'t match schedule but pushes basal clock forward according to given schedule if matches one in settings', function(){
+            var basal1 = {
+              time: '2014-09-25T06:00:00.000Z',
+              deviceTime: '2014-09-25T06:00:00',
+              duration: 64800000,
+              scheduleName: 'bob',
+              rate: 0.0,
+              timezoneOffset: 0
+            };
+            var basal2 = {
+              time: '2014-09-27T00:00:00.000Z',
+              deviceTime: '2014-09-27T00:00:00',
+              duration: 864e5,
+              scheduleName: 'bob',
+              rate: 0.0,
+              timezoneOffset: 0
+            };
+
+            var annotation = [{code: 'basal/off-schedule-rate'}];
+
+            simulator.basalScheduled(basal1);
+            simulator.basalScheduled(basal2);
+
+            expect(getBasals()).deep.equals(
+              attachPrev(
+                [
+                  _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled', annotations: annotation}),
+                  {
+                    time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0,
+                    duration: 864e5, scheduleName: 'bob', rate: 0.0, type: 'basal', deliveryType: 'scheduled',
+                    annotations: [{code: 'basal/fabricated-from-schedule'}]
+                  },
+                  _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled', annotations: annotation})
+                ]
+                )
+              );
           });
         });
 
@@ -1736,12 +1777,12 @@ describe('carelinkSimulator.js', function(){
           duration: 3600000,
           timezoneOffset: 0
         };
-        // manual suspend
-        var suspend = {
-          reason: 'manual',
-          timezoneOffset: 0,
-          time: '2014-09-25T00:05:00.000Z',
-          deviceTime: '2014-09-25T00:05:00'
+        var temp = {
+          time: '2014-09-25T00:02:00.000Z',
+          deviceTime: '2014-09-25T00:02:00',
+          percent: 0.5,
+          duration: 1800000,
+          timezoneOffset: 0
         };
         // alarm_suspend
         var suspend1 = {
@@ -1779,14 +1820,34 @@ describe('carelinkSimulator.js', function(){
           duration: 3600000,
           timezoneOffset: 0
         };
-        var resume = {
+        var resume1 = {
+          time: '2014-09-25T00:05:20.000Z',
+          deviceTime: '2014-09-25T00:05:20',
+          reason: 'user_restart_basal',
+          timezoneOffset: 0
+        };
+        var resume2 = {
           time: '2014-09-25T00:05:30.000Z',
           deviceTime: '2014-09-25T00:05:30',
           reason: 'manual',
           timezoneOffset: 0
         };
+        var basal3 = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          rate: 2.0,
+          scheduleName: 'billy',
+          duration: 3600000,
+          timezoneOffset: 0
+        };
+        var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
+        var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var suspendBasal = {
+          type: 'basal', deliveryType: 'suspend', time: expectedSuspend.time, deviceTime: expectedSuspend.deviceTime,
+          suppressed: firstBasal, duration: 20000, timezoneOffset: 0
+        };
 
-        it.skip('should resume to the appropriate scheduled basal if no temp was running before the LGS suspend', function(){
+        it('should resume to the appropriate scheduled basal if no temp was running before the LGS suspend', function(){
           simulator.settings(settings);
           simulator.basalScheduled(basal1);
           simulator.suspend(suspend1);
@@ -1794,7 +1855,124 @@ describe('carelinkSimulator.js', function(){
           simulator.suspend(suspend3);
           simulator.suspend(suspend4);
           simulator.basalScheduled(basal2);
-          simulator.resume(resume);
+          simulator.lgsResume(resume1);
+          simulator.resume(resume2);
+          simulator.basalScheduled(basal3);
+
+          var fillInBasal = {
+            type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
+            previous: suspendBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}], duration: 3280000,
+            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
+          };
+
+          expect(simulator.getEvents()).deep.equals(
+            attachPrev(
+              [
+                _.assign({}, settings, {type: 'settings'}),
+                firstBasal,
+                expectedSuspend,
+                suspendBasal,
+                _.assign({}, resume1, {
+                  type: 'deviceMeta', subType: 'status',
+                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                }),
+                fillInBasal,
+                _.assign({}, basal3, {type: 'basal', deliveryType: 'scheduled'})
+              ]
+              )
+            );
+        });
+
+        it('should resume to a temp if the temp would still be running', function(){
+          var backToScheduled = _.assign({}, basal1, {
+            time: '2014-09-25T00:32:00.000Z', deviceTime: '2014-09-25T00:32:00'
+          });
+          simulator.settings(settings);
+          simulator.basalScheduled(basal1);
+          simulator.basalTemp(temp);
+          simulator.suspend(suspend1);
+          simulator.suspend(suspend2);
+          simulator.suspend(suspend3);
+          simulator.suspend(suspend4);
+          simulator.lgsResume(resume1);
+          simulator.resume(resume2);
+          simulator.basalScheduled(backToScheduled);
+          simulator.basalScheduled(basal3);
+
+          var tempBasal = _.assign({}, temp, {type: 'basal', deliveryType: 'temp', rate: 0.5, suppressed: firstBasal});
+          var fillInBasal = _.assign({}, temp, {
+            type: 'basal', deliveryType: 'temp', time: resume1.time, deviceTime: resume1.deviceTime,
+            timezoneOffset: 0, suppressed: firstBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}],
+            rate: 0.5, duration: 1600000
+          });
+
+          expect(simulator.getEvents()).deep.equals(
+            attachPrev(
+              [
+                _.assign({}, settings, {type: 'settings'}),
+                firstBasal,
+                tempBasal,
+                expectedSuspend,
+                _.assign({}, suspendBasal, {suppressed: tempBasal}),
+                _.assign({}, resume1, {
+                  type: 'deviceMeta', subType: 'status',
+                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                }),
+                fillInBasal,
+                _.assign({}, backToScheduled, {type: 'basal', deliveryType: 'scheduled', duration: 1680000}),
+                _.assign({}, basal3, {type: 'basal', deliveryType: 'scheduled'})
+              ]
+              )
+            );
+        });
+
+        it('should not resume to a temp if the temp would not still be running', function() {
+          var thisTemp = _.assign({}, temp, {duration: 190000});
+          simulator.settings(settings);
+          simulator.basalScheduled(basal1);
+          simulator.basalTemp(thisTemp);
+          simulator.suspend(suspend1);
+          simulator.suspend(suspend2);
+          simulator.suspend(suspend3);
+          simulator.suspend(suspend4);
+          simulator.lgsResume(resume1);
+          simulator.resume(resume2);
+          simulator.basalScheduled(basal3);
+
+          var tempBasal = _.assign({}, thisTemp, {type: 'basal', deliveryType: 'temp', rate: 0.5, suppressed: firstBasal});
+          var secondSuspendBasal = {
+            time: '2014-09-25T00:05:10.000Z', type: 'basal', deliveryType: 'suspend',
+            suppressed: firstBasal, duration: 10000, timezoneOffset: 0
+          };
+
+          var fillInBasal = {
+            type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
+            previous: secondSuspendBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}], duration: 3280000,
+            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
+          };
+
+          expect(simulator.getEvents()).deep.equals(
+            attachPrev(
+              [
+                _.assign({}, settings, {type: 'settings'}),
+                firstBasal,
+                tempBasal,
+                expectedSuspend,
+                _.assign({}, suspendBasal, {suppressed: tempBasal}),
+                secondSuspendBasal,
+                _.assign({}, resume1, {
+                  type: 'deviceMeta', subType: 'status',
+                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                }),
+                fillInBasal,
+                _.assign({}, basal3, {type: 'basal', deliveryType: 'scheduled'})
+              ]
+              )
+            );
+        });
+
+        it.skip('should not resume to a temp even if the temp would still be running if temp is automatic', function() {
+
         });
       });
     });
