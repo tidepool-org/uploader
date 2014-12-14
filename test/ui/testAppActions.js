@@ -252,10 +252,8 @@ describe('appActions', function() {
 
   describe('detectDevices', function() {
     var connectedDevices;
-    var detectDevicesMetricsCall = {};
 
     beforeEach(function() {
-      api.metrics = { track : function(one, two) { detectDevicesMetricsCall.one = one; detectDevicesMetricsCall.two = two;  }};
       connectedDevices = [];
       device.detectAll = function(cb) {
         return cb(null, connectedDevices);
@@ -279,8 +277,6 @@ describe('appActions', function() {
           usb: 3,
           connected: true
         });
-        expect(detectDevicesMetricsCall).to.not.be.empty;
-        expect(detectDevicesMetricsCall.one).to.equal(appActions.trackedState.FOUND_DEVICES);
         done();
       });
     });
