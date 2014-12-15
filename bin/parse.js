@@ -19,7 +19,7 @@ var async = require('async');
 var fs = require('fs');
 var path = require('path');
 
-var carelinkDriver = require('../lib/carelink/carelinkDriver.js')(require('../lib/simulator/carelinkSimulator.js'));
+var carelinkDriver = require('../lib/carelink/carelinkDriver.js')(require('../lib/carelink/carelinkSimulator.js'));
 
 function noop() {}
 
