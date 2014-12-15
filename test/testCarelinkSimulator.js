@@ -2133,10 +2133,26 @@ describe('carelinkSimulator.js', function(){
 
           var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
 
-          var suspendBasal = {
+          var suspendBasal1 = {
             time: '2014-09-25T00:05:00.000Z', deviceTime: '2014-09-25T00:05:00', type: 'basal', deliveryType: 'suspend',
             timezoneOffset: 0, suppressed: tempBasal, previous: tempBasal, duration: 7200000
           };
+          var suspendBasal2 = {
+            time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 3900000,
+            timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.0, suppressed: {
+              time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
+              timezoneOffset: 0, rate: 2.0, annotations: [{code: 'basal/fabricated-from-schedule'}], duration: 3600000
+            }}), previous: _.omit(suspendBasal1, 'previous')
+          };
+          var suspendBasal3 = {
+            time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 300000,
+            timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.05, suppressed: {
+              time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
+              timezoneOffset: 0, rate: 2.1, annotations: [{code: 'basal/fabricated-from-schedule'}], duration: 3600000
+            }}), previous: _.omit(suspendBasal2, 'previous')
+          };
+
+          console.log(JSON.stringify(getBasals()));
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
@@ -2145,7 +2161,9 @@ describe('carelinkSimulator.js', function(){
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
-                suspendBasal,
+                suspendBasal1,
+                suspendBasal2,
+                suspendBasal3,
                 _.assign({}, resume, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}),
                 _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled'})
               ]
