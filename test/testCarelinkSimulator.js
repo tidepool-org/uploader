@@ -322,6 +322,85 @@ describe('carelinkSimulator.js', function(){
                 )
               );
           });
+
+          it('skips over a scheduled that has an out-of-sequence uploadSeqNum', function(){
+            // NB: based on a true story
+            // TODO: remove when we are boostrapping to 100% UTC timestamps before processing
+            // that should eliminate all out-of-sequence scheduled basals
+            var basal1 = {
+              time: '2014-09-25T06:00:00.000Z',
+              deviceTime: '2014-09-25T06:00:00',
+              duration: 21600000,
+              scheduleName: 'billy',
+              rate: 1.1,
+              timezoneOffset: 0,
+              uploadSeqNum: 100
+            };
+            var basal2 = {
+              time: '2014-09-25T07:00:00.000Z',
+              deviceTime: '2014-09-25T07:00:00',
+              duration: 61200000,
+              scheduleName: 'bob',
+              rate: 0.0,
+              timezoneOffset: 0,
+              uploadSeqNum: 101
+            };
+            var basal3 = {
+              time: '2014-09-27T00:00:00.000Z',
+              deviceTime: '2014-09-27T00:00:00',
+              duration: 864e5,
+              scheduleName: 'bob',
+              rate: 0.0,
+              timezoneOffset: 0,
+              uploadSeqNum: 99
+            };
+
+            var annotation = [{code: 'basal/off-schedule-rate'}];
+            var fabricated = [{code: 'basal/fabricated-from-schedule'}];
+
+            simulator.basalScheduled(basal1);
+            simulator.basalScheduled(basal2);
+            simulator.basalScheduled(basal3);
+
+            expect(getBasals()).deep.equals(
+              attachPrev(
+                [
+                  _.assign({}, _.omit(basal1, 'uploadSeqNum'), {type: 'basal', deliveryType: 'scheduled'}),
+                  {
+                    time: '2014-09-25T12:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.2,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  {
+                    time: '2014-09-25T18:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.3,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  {
+                    time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  {
+                    time: '2014-09-26T06:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.1,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  {
+                    time: '2014-09-26T12:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.2,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  {
+                    time: '2014-09-26T18:00:00.000Z', timezoneOffset: 0, type: 'basal',
+                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.3,
+                    duration: 21600000, annotations: fabricated
+                  },
+                  _.assign({}, _.omit(basal3, 'uploadSeqNum'), {type: 'basal', deliveryType: 'scheduled', annotations: annotation})
+                ]
+                )
+              );
+          });
         });
 
         describe('no duration', function(){
@@ -1970,9 +2049,108 @@ describe('carelinkSimulator.js', function(){
               )
             );
         });
+      });
 
-        it.skip('should not resume to a temp even if the temp would still be running if temp is automatic', function() {
+      describe('automatic resume', function() {
+        var settings = {
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
+          activeSchedule: 'billy',
+          units: { bg: 'mg/dL' },
+          basalSchedules: {
+            billy: [
+              { start: 0, rate: 1.0 },
+              { start: 3600000, rate: 2.0 },
+              { start: 7200000, rate: 2.1 },
+              { start: 10800000, rate: 2.2 },
+              { start: 14400000, rate: 2.3 },
+              { start: 18000000, rate: 2.4 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ]
+          },
+          bgTarget: [],
+          insulinSensitivity: [],
+          carbRatio: [],
+          timezoneOffset: 0
+        };
+        var basal1 = {
+          time: '2014-09-25T00:00:00.000Z',
+          deviceTime: '2014-09-25T00:00:00',
+          rate: 1.0,
+          scheduleName: 'billy',
+          duration: 3600000,
+          timezoneOffset: 0
+        };
+        var temp = {
+          time: '2014-09-25T00:02:00.000Z',
+          deviceTime: '2014-09-25T00:02:00',
+          percent: 0.5,
+          duration: 864e5,
+          timezoneOffset: 0
+        };
+        // alarm_suspend
+        var suspend1 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:00.000Z',
+          deviceTime: '2014-09-25T00:05:00'
+        };
+        // low_suspend_no_response
+        var suspend2 = {
+          reason: 'low_glucose',
+          timezoneOffset: 0,
+          time: '2014-09-25T00:05:10.000Z',
+          deviceTime: '2014-09-25T00:05:10'
+        };
+        // auto_resume_reduced
+        var resume = {
+          time: '2014-09-25T02:05:00.000Z',
+          deviceTime: '2014-09-25T02:05:00',
+          reason: 'automatic',
+          timezoneOffset: 0
+        };
+        var basal2 = {
+          time: '2014-09-25T02:05:00.000Z',
+          deviceTime: '2014-09-25T02:05:00',
+          rate: 2.1,
+          scheduleName: 'billy',
+          duration: 3300000,
+          timezoneOffset: 0
+        };
+        it('should not resume to a temp when `auto_resume_reduced` even if the temp would still be running', function() {
+          simulator.settings(settings);
+          simulator.basalScheduled(basal1);
+          simulator.basalTemp(temp);
+          simulator.suspend(suspend1);
+          simulator.suspend(suspend2);
+          simulator.lgsAutoResume(resume);
+          simulator.basalScheduled(basal2);
 
+          var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
+          var tempBasal = _.assign({}, temp, {type: 'basal', deliveryType: 'temp', suppressed: firstBasal, rate: 0.5});
+
+          var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+
+          var suspendBasal = {
+            time: '2014-09-25T00:05:00.000Z', deviceTime: '2014-09-25T00:05:00', type: 'basal', deliveryType: 'suspend',
+            timezoneOffset: 0, suppressed: tempBasal, previous: tempBasal, duration: 7200000
+          };
+
+          expect(simulator.getEvents()).deep.equals(
+            attachPrev(
+              [
+                _.assign({}, settings, {type: 'settings'}),
+                firstBasal,
+                tempBasal,
+                expectedSuspend,
+                suspendBasal,
+                _.assign({}, resume, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}),
+                _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled'})
+              ]
+              )
+            );
         });
       });
     });
