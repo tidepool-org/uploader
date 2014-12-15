@@ -280,7 +280,7 @@ describe('carelinkSimulator.js', function(){
                   type: 'basal',
                   deliveryType: 'scheduled',
                   duration: 21600000,
-                  annotations: [{code: 'basal/off-schedule-rate'}]
+                  annotations: [{code: 'carelink/basal/off-schedule-rate'}]
                 }, val)
               ]);
           });
@@ -303,7 +303,7 @@ describe('carelinkSimulator.js', function(){
               timezoneOffset: 0
             };
 
-            var annotation = [{code: 'basal/off-schedule-rate'}];
+            var annotation = [{code: 'carelink/basal/off-schedule-rate'}];
 
             simulator.basalScheduled(basal1);
             simulator.basalScheduled(basal2);
@@ -315,7 +315,7 @@ describe('carelinkSimulator.js', function(){
                   {
                     time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0,
                     duration: 864e5, scheduleName: 'bob', rate: 0.0, type: 'basal', deliveryType: 'scheduled',
-                    annotations: [{code: 'basal/fabricated-from-schedule'}]
+                    annotations: [{code: 'carelink/basal/fabricated-from-schedule'}]
                   },
                   _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled', annotations: annotation})
                 ]
@@ -355,8 +355,8 @@ describe('carelinkSimulator.js', function(){
               uploadSeqNum: 99
             };
 
-            var annotation = [{code: 'basal/off-schedule-rate'}];
-            var fabricated = [{code: 'basal/fabricated-from-schedule'}];
+            var annotation = [{code: 'carelink/basal/off-schedule-rate'}];
+            var fabricated = [{code: 'carelink/basal/fabricated-from-schedule'}];
 
             simulator.basalScheduled(basal1);
             simulator.basalScheduled(basal2);
@@ -434,7 +434,7 @@ describe('carelinkSimulator.js', function(){
               [
                 _.assign(
                   { type: 'basal', deliveryType: 'scheduled', duration: 0 },
-                  { annotations: [{code: 'basal/off-schedule-rate'}] },
+                  { annotations: [{code: 'carelink/basal/off-schedule-rate'}] },
                   val
                 )
               ]
@@ -516,7 +516,7 @@ describe('carelinkSimulator.js', function(){
                   type: 'basal',
                   deliveryType: 'scheduled',
                   duration: 21600000,
-                  annotations: [{code: 'basal/off-schedule-rate'}]
+                  annotations: [{code: 'carelink/basal/off-schedule-rate'}]
                 }, val)
               ]);
           });
@@ -553,7 +553,7 @@ describe('carelinkSimulator.js', function(){
               [
                 _.assign(
                   { type: 'basal', deliveryType: 'scheduled', duration: 0 },
-                  { annotations: [{code: 'basal/off-schedule-rate'}] },
+                  { annotations: [{code: 'carelink/basal/off-schedule-rate'}] },
                   val
                 )
               ]
@@ -864,7 +864,7 @@ describe('carelinkSimulator.js', function(){
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
                   time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
-                  annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                  annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               {
@@ -873,7 +873,7 @@ describe('carelinkSimulator.js', function(){
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.1, duration: 3600000,
                   time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0,
-                  annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                  annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               _.assign({}, val,
@@ -960,7 +960,7 @@ describe('carelinkSimulator.js', function(){
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
                      time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
-                     annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                     annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                    }
                  }
                ])
@@ -1162,7 +1162,7 @@ describe('carelinkSimulator.js', function(){
             },
             _.assign({}, nextBasal, {
               type: 'basal', deliveryType: 'scheduled', duration: 2880000,
-              annotations: [{code: 'basal/fabricated-from-suppressed'}]
+              annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}]
             }),
             _.assign({}, newBasal, {type: 'basal', deliveryType: 'scheduled', duration: 3600000 })
           ]
@@ -1249,7 +1249,7 @@ describe('carelinkSimulator.js', function(){
             },
             _.assign({}, expectedTempBasal, {
               time: '2014-09-25T00:12:00.000Z', deviceTime: '2014-09-25T00:12:00', duration: 1200000,
-              annotations: [{code: 'basal/fabricated-from-suppressed' }]
+              annotations: [{code: 'carelink/basal/fabricated-from-suppressed' }]
             }),
             _.assign({}, newBasal, {type: 'basal', deliveryType: 'scheduled', duration: 1680000 })
           ]
@@ -1354,7 +1354,7 @@ describe('carelinkSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.0,
           duration: 21600000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
           timezoneOffset: 0
         };
 
@@ -1403,7 +1403,7 @@ describe('carelinkSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.1,
           duration: 18000000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
           timezoneOffset: 0
         };
 
@@ -1439,7 +1439,7 @@ describe('carelinkSimulator.js', function(){
           scheduleName: 'billy',
           rate: 1.3,
           duration: 14400000,
-          annotations: [{code: 'basal/fabricated-from-schedule'}],
+          annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
           timezoneOffset: 0
         };
 
@@ -1606,7 +1606,7 @@ describe('carelinkSimulator.js', function(){
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
                   time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240,
-                  annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                  annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               {
@@ -1615,7 +1615,7 @@ describe('carelinkSimulator.js', function(){
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.1, duration: 3600000,
                   time: '2014-09-25T06:00:00.000Z', timezoneOffset: -240,
-                  annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                  annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               _.assign({}, val,
@@ -1714,7 +1714,7 @@ describe('carelinkSimulator.js', function(){
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
                      time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240,
-                     annotations: [{ code: 'basal/fabricated-from-schedule' }]
+                     annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                    }
                  }
                ])
@@ -1940,7 +1940,7 @@ describe('carelinkSimulator.js', function(){
 
           var fillInBasal = {
             type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
-            previous: suspendBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}], duration: 3280000,
+            previous: suspendBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}], duration: 3280000,
             rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
           };
 
@@ -1981,7 +1981,7 @@ describe('carelinkSimulator.js', function(){
           var tempBasal = _.assign({}, temp, {type: 'basal', deliveryType: 'temp', rate: 0.5, suppressed: firstBasal});
           var fillInBasal = _.assign({}, temp, {
             type: 'basal', deliveryType: 'temp', time: resume1.time, deviceTime: resume1.deviceTime,
-            timezoneOffset: 0, suppressed: firstBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}],
+            timezoneOffset: 0, suppressed: firstBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}],
             rate: 0.5, duration: 1600000
           });
 
@@ -2026,7 +2026,7 @@ describe('carelinkSimulator.js', function(){
 
           var fillInBasal = {
             type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
-            previous: secondSuspendBasal, annotations: [{code: 'basal/fabricated-from-suppressed'}], duration: 3280000,
+            previous: secondSuspendBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}], duration: 3280000,
             rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
           };
 
@@ -2141,18 +2141,16 @@ describe('carelinkSimulator.js', function(){
             time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 3900000,
             timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.0, suppressed: {
               time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
-              timezoneOffset: 0, rate: 2.0, annotations: [{code: 'basal/fabricated-from-schedule'}], duration: 3600000
+              timezoneOffset: 0, rate: 2.0, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
             }}), previous: _.omit(suspendBasal1, 'previous')
           };
           var suspendBasal3 = {
             time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 300000,
             timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.05, suppressed: {
               time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
-              timezoneOffset: 0, rate: 2.1, annotations: [{code: 'basal/fabricated-from-schedule'}], duration: 3600000
+              timezoneOffset: 0, rate: 2.1, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
             }}), previous: _.omit(suspendBasal2, 'previous')
           };
-
-          console.log(JSON.stringify(getBasals()));
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
