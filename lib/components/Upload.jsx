@@ -73,13 +73,13 @@ var Upload = React.createClass({
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'Import from CareLink';
+      detail = 'Import from CareLink.<br>We will not store your credentials.';
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
     }
     return (
-      <div className="Upload-detail">{detail}</div>
+      <div className="Upload-detail" dangerouslySetInnerHTML={{__html: detail}}></div>
     );
   },
 

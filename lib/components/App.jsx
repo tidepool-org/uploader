@@ -53,6 +53,7 @@ var App = React.createClass({
         <div className="App-header">{this.renderHeader()}</div>
         <div className="App-logo"></div>
         <div className="App-page">{this.renderPage()}</div>
+        <div className="App-footer">{this.renderFooter()}</div>
       </div>
     );
   },
@@ -96,6 +97,17 @@ var App = React.createClass({
     }
 
     return null;
+  },
+
+  renderFooter: function() {
+    return(
+      <div>
+        <div className="mailto">
+          <a href="mailto:support@tidepool.org?Subject=Feedback on Blip" target="mailto">Send us feedback</a>
+        </div>
+        <div className="App-footer-version">{'v'+config.version}</div>
+      </div>
+    );
   },
 
   renderSignupLink: function() {
