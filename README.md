@@ -85,6 +85,7 @@ such as uploadButtons) by their device name.
 
 1. Clone this repository.
 1. Run `npm install`
+1. Set the config for the environment you want to target (see Config section below)
 1. Run `npm start` (will bundle files, and watch for changes)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
@@ -153,4 +154,4 @@ $ npm run server
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
-1. Build `dist.zip` file with `npm run build`
+1. Build `dist.zip` file with `npm run build` **MAKE SURE YOU'VE SOURCED THE CORRECT CONFIG BEFORE YOU RUN THE BUILD SCRIPT!!!**

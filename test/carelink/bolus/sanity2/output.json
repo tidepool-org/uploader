@@ -2,7 +2,8 @@
   {
     "recommended": {
       "carb": 8.9,
-      "correction": 0
+      "correction": 0,
+      "net": 8.9
     },
     "bgInput": 0,
     "units": "mg/dL",

@@ -139,19 +139,6 @@ describe('objectBuilder.js', function(){
       expect(suspendBasal.previous).to.equal(OPTIONAL);
 
     });
-
-    it('can use with_deviceId', function(){
-
-      var updatedDeviceId = '123';
-
-      var suspendBasal =
-        bob.makeSuspendBasal()
-        .with_deviceId(updatedDeviceId);
-
-      expect(suspendBasal.deviceId).to.equal(updatedDeviceId);
-
-    });
-
   });
 
   describe('makeNormalBolus', function(){
