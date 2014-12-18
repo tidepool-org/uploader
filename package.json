@@ -23,7 +23,7 @@
     "moment-timezone": "0.2.4",
     "react": "0.12.0",
     "sundial": "1.0.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#df12e1fcf5b035fb04aefcfbdd1afd583b780993"
+    "tidepool-platform-client": "0.13.0"
   },
   "devDependencies": {
     "css-loader": "0.7.1",
