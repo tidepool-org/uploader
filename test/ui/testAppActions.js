@@ -211,6 +211,22 @@ describe('appActions', function() {
 
   });
 
+  describe('viewData', function() {
+
+    var viewDataMetricsCall = {};
+
+    beforeEach(function() {
+      api.metrics = { track : function(one, two) { viewDataMetricsCall.one = one; viewDataMetricsCall.two = two;  }};
+    });
+
+    it('logs metric', function(done) {
+      appActions.viewData();
+      expect(viewDataMetricsCall).to.not.be.empty;
+      expect(viewDataMetricsCall.one).to.equal(appActions.trackedState.SEE_IN_BLIP);
+      done();
+    });
+  });
+
   describe('logout', function() {
 
     var logoutMetricsCall = {};
@@ -423,7 +439,7 @@ describe('appActions', function() {
 
     beforeEach(function() {
       api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
-      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadDeviceMetricsCall.two = two; uploadDeviceMetricsCall.three = three; }};
+      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
     });
 
     it('throws an error if upload index is invalid', function() {
@@ -461,7 +477,7 @@ describe('appActions', function() {
         percentage: 0
       });
       expect(uploadDeviceMetricsCall).to.not.be.empty;
-      expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_STARTED);
+      expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_STARTED+' DexcomG4');
     });
 
     it('updates upload with correct progress data', function(done) {
@@ -515,7 +531,7 @@ describe('appActions', function() {
         expect(app.state.uploads[0].history).to.have.length(1);
         expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         expect(uploadDeviceMetricsCall).to.not.be.empty;
-        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_SUCCESS);
+        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_SUCCESS+' DexcomG4');
         done();
       });
     });
@@ -552,8 +568,8 @@ describe('appActions', function() {
         expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         expect(uploadErrorCall).to.not.be.empty;
         expect(uploadDeviceMetricsCall).to.not.be.empty;
-        expect(uploadErrorCall.one).to.equal(appActions.trackedState.UPLOAD_FAILED);
-        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_FAILED);
+        expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
+        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
         done();
       });
     });
