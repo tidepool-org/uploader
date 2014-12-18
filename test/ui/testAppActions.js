@@ -220,11 +220,10 @@ describe('appActions', function() {
     });
 
     it('logs metric', function(done) {
-      appActions.viewData(function() {
-        expect(viewDataMetricsCall).to.not.be.empty;
-        expect(viewDataMetricsCall.one).to.equal(appActions.trackedState.SEE_IN_BLIP);
-        done();
-      });
+      appActions.viewData();
+      expect(viewDataMetricsCall).to.not.be.empty;
+      expect(viewDataMetricsCall.one).to.equal(appActions.trackedState.SEE_IN_BLIP);
+      done();
     });
   });
 
