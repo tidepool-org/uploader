@@ -54,5 +54,31 @@ describe('common', function() {
       };
       expect(common.isSuspectedNewDevice(allButEmptyObj)).to.be.true;
     });
+
+    it('should not return true on a settings object with more than just units', function() {
+      var notEmptyObj = {
+        'activeSchedule': 'foo',
+        'basalSchedules': {
+            'pattern a': [],
+            'pattern b': [],
+            'standard': []
+        },
+        'bgTarget': [{low: 80, high: 120, start: 0}],
+        'carbRatio': [],
+        'deviceId': 'Test',
+        'deviceTime': '2014-01-01T00:00:00',
+        'id': 'abcdef',
+        'insulinSensitivity': [],
+        'source': 'carelink',
+        'time': '2014-01-01T00:00:00.000Z',
+        'timezoneOffset': 0,
+        'type': 'settings',
+        'units': {
+            'bg': 'mg/dL',
+            'carb': 'grams'
+        }
+      };
+      expect(common.isSuspectedNewDevice(notEmptyObj)).to.be.false;
+    });
   });
 });
