@@ -1,8 +1,11 @@
 Data Range,11/14/14 07:41:00,to,12/4/14 22:34:41
 Index,Date,Time,Timestamp,New Device Time,BG Reading (mg/dL),Linked BG Meter ID,Temp Basal Amount (U/h),Temp Basal Type,Temp Basal Duration (hh:mm:ss),Bolus Type,Bolus Volume Selected (U),Bolus Volume Delivered (U),Programmed Bolus Duration (hh:mm:ss),Prime Type,Prime Volume Delivered (U),Suspend,Rewind,BWZ Estimate (U),BWZ Target High BG (mg/dL),BWZ Target Low BG (mg/dL),BWZ Carb Ratio (grams),BWZ Insulin Sensitivity (mg/dL),BWZ Carb Input (grams),BWZ BG Input (mg/dL),BWZ Correction Estimate (U),BWZ Food Estimate (U),BWZ Active Insulin (U),Alarm,Sensor Calibration BG (mg/dL),Sensor Glucose (mg/dL),ISIG Value,Daily Insulin Total (U),Raw-Type,Raw-Values,Raw-ID,Raw-Upload ID,Raw-Seq Num,Raw-Device Type
-ChangeBasalProfilePattern,"PATTERN_NAME=pattern b, NUM_PROFILES=1, ACTION_REQUESTOR=pump",14181659832,53616203,102,Paradigm Revel - 723
-1322,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeActiveBasalProfilePattern,"PATTERN_NAME=pattern b, OLD_PATTERN_NAME=standard, ACTION_REQUESTOR=pump",14181659834,53616203,104,Paradigm Revel - 723
-1323,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeBasalProfile,"PATTERN_DATUM=14181659832, PROFILE_INDEX=0, RATE=0.1, START_TIME=0",14181659833,53616203,103,Paradigm Revel - 723
+1325,11/24/14,11:09:57,11/24/14 11:09:57,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BasalProfileStart,"PATTERN_NAME=standard, PROFILE_INDEX=4, RATE=0.8, START_TIME=28800000, ACTION_REQUESTOR=pump",14181659836,53616203,106,Paradigm Revel - 723
+1326,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeActiveBasalProfilePattern,"PATTERN_NAME=pattern b, OLD_PATTERN_NAME=standard, ACTION_REQUESTOR=pump",14181659834,53616203,104,Paradigm Revel - 723
+1327,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeBasalProfile,"PATTERN_DATUM=14181659832, PROFILE_INDEX=0, RATE=0.1, START_TIME=0",14181659833,53616203,103,Paradigm Revel - 723
+1328,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeBasalProfilePattern,"PATTERN_NAME=pattern b, NUM_PROFILES=1, ACTION_REQUESTOR=pump",14181659832,53616203,102,Paradigm Revel - 723
+1437,11/25/14,17:53:45,11/25/14 17:53:45,,,,,,,,,,,,,,,,,,,,,,,,,,97,,,,CalBGForPH,"AMOUNT=97, ACTION_REQUESTOR=paradigm link or b key",14213455647,53626057,123,Paradigm Revel - 723
+1439,11/26/14,10:44:23,11/26/14 10:44:23,,,,,,,,,,,,,,,,,,,,,,,,,,96,,,,CalBGForPH,"AMOUNT=96, ACTION_REQUESTOR=paradigm link or b key",14213455644,53626057,120,Paradigm Revel - 723
 1459,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=14213455586, INDEX=0, AMOUNT=50, START_TIME=0",14213455587,53626057,64,Paradigm Revel - 723
 1460,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=14213455586, INDEX=1, AMOUNT=60, START_TIME=43200000",14213455588,53626057,65,Paradigm Revel - 723
 1461,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=14213455586, INDEX=2, AMOUNT=40, START_TIME=64800000",14213455589,53626057,66,Paradigm Revel - 723
@@ -197,5 +200,3 @@ ChangeBasalProfilePattern,"PATTERN_NAME=pattern b, NUM_PROFILES=1, ACTION_REQUES
 1657,12/4/14,22:34:41,12/4/14 22:34:41,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentSensorAlarmSnoozeTime,TIME=1800000,14221078715,53628246,76,Paradigm Revel - 723
 1658,12/4/14,22:34:41,12/4/14 22:34:41,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentSensorHighGlucoseSnoozeTime,TIME=3600000,14221078716,53628246,77,Paradigm Revel - 723
 1659,12/4/14,22:34:41,12/4/14 22:34:41,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentSensorLowGlucoseSnoozeTime,TIME=1200000,14221078717,53628246,78,Paradigm Revel - 723
-
-
