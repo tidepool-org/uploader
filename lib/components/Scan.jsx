@@ -91,7 +91,7 @@ var Scan = React.createClass({
     });
 
     this.stopScanning = repeat(
-      this.detectDevices, DETECT_DELAY, DETECT_TIMEOUT, this.handleScanEnd
+      this.props.onDetectDevices, DETECT_DELAY, DETECT_TIMEOUT, this.handleScanEnd
     );
   },
 
@@ -99,16 +99,6 @@ var Scan = React.createClass({
     this.setState({
       scanning: false,
       error: err
-    });
-  },
-
-  detectDevices: function() {
-    var self = this;
-    this.props.onDetectDevices(function(err) {
-      if (err) {
-        self.stopScanning();
-        self.handleScanEnd(err);
-      }
     });
   }
 });
