@@ -106,6 +106,18 @@ var patch = function(api) {
     }, 1400);
   };
 
+  // ----- Metrics -----
+
+  api.metrics.track = function(eventName, properties) {
+    api.log('[mock] GET /metrics/' + window.encodeURIComponent(eventName));
+  };
+
+  // ----- Errors -----
+  
+  api.errors.log = function(error, message, properties) {
+    api.log('[mock] POST /errors');
+  };
+
   return api;
 };
 

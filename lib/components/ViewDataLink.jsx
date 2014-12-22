@@ -19,11 +19,12 @@ var React = require('react');
 
 var ViewDataLink = React.createClass({
   propTypes: {
-    href: React.PropTypes.string.isRequired
+    href: React.PropTypes.string.isRequired,
+    onViewClicked: React.PropTypes.func.isRequired
   },
 
   render: function() {
-    return <a className="ViewData-button btn btn-primary" href={this.props.href} target="_blank">Go to Blip</a>;
+    return <a className="ViewData-button btn btn-primary" href={this.props.href} target="_blank" onClick={this.props.onViewClicked}>Go to Blip</a>;
   }
 });
 
