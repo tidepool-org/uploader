@@ -99,9 +99,8 @@ var patch = function(api) {
   api.user.getUploadGroups = function(cb) {
     api.log('GET /access/groups/' + data.user.userid);
 
-
     //todo: set this object in data and check its format
-    setTimeout(function() {
+    /*setTimeout(function() {
       var users = {
         '3123412': {
           view: {}
@@ -120,8 +119,8 @@ var patch = function(api) {
       cb(null, {
         '12341234': {root: {}, up}
       });
-    }, 700);
-
+    }, 700);*/
+    cb();
   }
   // ----- Upload -----
 
