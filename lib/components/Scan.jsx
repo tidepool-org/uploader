@@ -20,7 +20,7 @@ var React = require('react');
 var bows = require('../bows');
 var repeat = require('../core/repeat');
 
-var DETECT_DELAY = 500; // Scan every X milliseconds
+var DETECT_DELAY = 120000; // Scan every X milliseconds
 var DETECT_TIMEOUT = null; // Scan forever
 
 var Scan = React.createClass({
