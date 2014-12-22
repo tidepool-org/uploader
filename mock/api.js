@@ -96,6 +96,33 @@ var patch = function(api) {
     }, 700);
   };
 
+  api.user.getUploadGroups = function(cb) {
+    api.log('GET /access/groups/' + data.user.userid);
+
+
+    //todo: set this object in data and check its format
+    setTimeout(function() {
+      var users = {
+        '3123412': {
+          view: {}
+        },
+        '2341234': {
+          upload: {},
+          view: {}
+        }
+      };
+
+      users[data.user.userid] = {
+        root: {},
+        upload: {}
+      };
+
+      cb(null, {
+        '12341234': {root: {}, up}
+      });
+    }, 700);
+
+  }
   // ----- Upload -----
 
   api.upload.fetchCarelinkData = function(payload, cb) {
@@ -113,7 +140,7 @@ var patch = function(api) {
   };
 
   // ----- Errors -----
-  
+
   api.errors.log = function(error, message, properties) {
     api.log('[mock] POST /errors');
   };
