@@ -88,8 +88,8 @@ var App = React.createClass({
       return (
         <div>
           <UploadSettings
-            uploadGroups: ,
-            onGroupChange: {this.appActions.changeGroup.bind(this.appActions)} />
+            uploadGroups= {this.state.uploadGroups},
+            onGroupChange= {this.appActions.changeGroup.bind(this.appActions)} />
           {this.renderScan()}
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
