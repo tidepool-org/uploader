@@ -44,11 +44,6 @@ var Scan = React.createClass({
     setTimeout(this.startScanning, 1000);
   },
 
-  componentWillUnmount: function() {
-    this.log('Stop scanning for devices');
-    //this.stopScanning();
-  },
-
   render: function() {
     return (
       <div className="Scan">
@@ -74,7 +69,6 @@ var Scan = React.createClass({
     if (this.state.scanning) {
       return null;
     }
-
     return (
       <div className="Scan-status">
         <button className="btn btn-secondary" onClick={this.startScanning}>
