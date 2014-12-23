@@ -41,7 +41,7 @@ var Scan = React.createClass({
 
   componentDidMount: function() {
     this.log('Start scanning for devices...');
-    this.startScanning();
+    setTimeout(this.startScanning, 1000);
   },
 
   componentWillUnmount: function() {
