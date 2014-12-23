@@ -38,7 +38,7 @@ function spiderTests(baseDir) {
 
           async.waterfall(
             [
-              drvr.setup.bind(drvr, noop),
+              drvr.setup.bind(drvr, {}, noop),
               drvr.connect.bind(drvr, noop),
               drvr.getConfigInfo.bind(drvr, noop),
               drvr.fetchData.bind(drvr, noop),
@@ -64,7 +64,7 @@ function spiderTests(baseDir) {
 
           async.waterfall(
             [
-              drvr.setup.bind(drvr, noop),
+              drvr.setup.bind(drvr, {}, noop),
               drvr.connect.bind(drvr, noop),
               drvr.getConfigInfo.bind(drvr, noop),
               drvr.fetchData.bind(drvr, noop),
