@@ -27,8 +27,11 @@ describe('appState', function() {
     config = {};
     app = {
       state: {},
-      setState: function(updates) {
+      setState: function(updates, cb) {
         this.state = _.assign(this.state, updates);
+        if (cb) {
+          cb();
+        }
       }
     };
 
