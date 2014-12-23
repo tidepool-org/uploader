@@ -43,8 +43,11 @@ describe('appActions', function() {
 
     app = {
       state: {},
-      setState: function(updates) {
+      setState: function(updates, cb) {
         this.state = _.assign(this.state, updates);
+        if (cb) {
+          cb();
+        }
       }
     };
     appState.bindApp(app);
