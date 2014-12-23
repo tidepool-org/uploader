@@ -46,7 +46,7 @@ var Scan = React.createClass({
 
   componentWillUnmount: function() {
     this.log('Stop scanning for devices');
-    this.stopScanning();
+    //this.stopScanning();
   },
 
   render: function() {
