@@ -54,7 +54,7 @@ function spiderTests(baseDir) {
           );
         });
       })(baseDir);
-    } else if (files[i] === 'failing.csv') {
+    } else if (files[i] === 'old.csv') {
       (function (path) {
         it(path, function (done) {
           var input = fs.readFileSync(path + '/old.csv', {encoding: 'utf8'});
