@@ -60,7 +60,7 @@ var Scan = React.createClass({
 
     return (
       <div className="Scan-status Scan-status--error">
-        {'An error occured while scanning for devices.'}
+        {'An error occurred while scanning for devices.'}
       </div>
     );
   },
