@@ -47,7 +47,7 @@ var patch = function(device) {
     }, 0);
   };
 
-  device.detect = function(driverId, cb) {
+  device.detect = function(driverId, options, cb) {
     setTimeout(function() {
       var d = _.find(data.devices, {driverId: driverId});
       return cb(null, d);
