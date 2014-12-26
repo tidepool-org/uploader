@@ -86,7 +86,6 @@ var App = React.createClass({
     if (page === 'main') {
       return (
         <div>
-          {this.renderScan()}
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
