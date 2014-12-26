@@ -52,7 +52,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
   var screenWidth = screen.availWidth;
   var screenHeight = screen.availHeight;
   var width = 650;
-  var height = 660;
+  var height = 680;
 
   chrome.app.window.create('index.html', {
     id: 'tidepoolUniversalUploader',
