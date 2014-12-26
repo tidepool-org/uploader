@@ -52,7 +52,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
   var screenWidth = screen.availWidth;
   var screenHeight = screen.availHeight;
   var width = 650;
-  var height = 600;
+  var height = 680;
 
   chrome.app.window.create('index.html', {
     id: 'tidepoolUniversalUploader',
@@ -61,8 +61,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
       height: height,
       left: Math.round((screenWidth-width)/2),
       top: Math.round((screenHeight-height)/2),
-      minWidth: 600,
-      minHeight: 500
+      minWidth: width,
+      minHeight: height
     }
   }, function(createdWindow) {
     createdWindow.contentWindow.localSave = function() {};
