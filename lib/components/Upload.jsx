@@ -140,6 +140,10 @@ var Upload = React.createClass({
   },
 
   renderProgress: function() {
+    if (this.isUploadFailed()) {
+      return <div className="Upload-progress"></div>;
+    }
+
     if (this.isFetchingCarelinkData()) {
       return <div className="Upload-progress"><LoadingBar/></div>;
     }
@@ -174,9 +178,15 @@ var Upload = React.createClass({
     }
     if (this.isUploadFailed()) {
       var uploadError = this.getUploadError();
+
       if (getIn(uploadError, ['error', 'code']) && getIn(uploadError, ['error', 'message'])) {
           return <div className="Upload-status Upload-status--error">{uploadError.error.message}</div>;
       }
+
+      if (uploadError.code && uploadError.code === 404) {
+        return <div className="Upload-status Upload-status--error">{uploadError.message}</div>;
+      }
+
       return <div className="Upload-status Upload-status--error">{'The upload didn\'t work.'}</div>;
     }
     return null;
