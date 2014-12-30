@@ -54,13 +54,13 @@ function spiderTests(baseDir) {
           );
         });
       })(baseDir);
-    } else if (files[i] === 'failing.csv') {
+    } else if (files[i] === 'old.csv') {
       (function (path) {
-        it.skip(path, function (done) {
-          var input = fs.readFileSync(path + '/failing.csv', {encoding: 'utf8'});
+        it(path, function (done) {
+          var input = fs.readFileSync(path + '/old.csv', {encoding: 'utf8'});
           var output = JSON.parse(fs.readFileSync(path + '/output.json'));
 
-          var drvr = carelinkDriver({ filename: '/failing.csv', fileData: input, timezone: 'Pacific/Honolulu' });
+          var drvr = carelinkDriver({ filename: '/old.csv', fileData: input, timezone: 'Pacific/Honolulu' });
 
           async.waterfall(
             [
@@ -74,7 +74,7 @@ function spiderTests(baseDir) {
               if(err){
                 console.log(payload);
               }
-              expect(payload.devices['Paradigm Revel - 723'].simulator.getEvents()).deep.equals(output);
+              expect(payload.devices['Paradigm 722'].simulator.getEvents()).deep.equals(output);
               done(err);
             }
           );
