@@ -1,23 +1,5 @@
 [
   {
-    "activeSchedule": "pattern a",
-    "basalSchedules": {
-      "pattern a": [],
-      "pattern b": [],
-      "standard": []
-    },
-    "bgTarget": [],
-    "carbRatio": [],
-    "deviceId": "Paradigm Revel - 723-=-53021863",
-    "deviceTime": "2014-03-13T00:04:00",
-    "insulinSensitivity": [],
-    "source": "carelink",
-    "timezoneOffset": -600,
-    "time": "2014-03-13T10:04:00.000Z",
-    "type": "settings",
-    "units": { "bg": "mg/dL", "carb": "grams" }
-  },
-  {
     "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T00:04:00",
     "source": "carelink",
@@ -28,7 +10,7 @@
     "value": 120
   },
   {
-    "activeSchedule": "standard",
+    "activeSchedule": "pattern a",
     "basalSchedules": {
       "pattern a": [],
       "pattern b": [],
