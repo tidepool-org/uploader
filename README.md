@@ -85,6 +85,7 @@ such as uploadButtons) by their device name.
 
 1. Clone this repository.
 1. Run `npm install`
+1. Set the config for the environment you want to target (see Config section below)
 1. Run `npm start` (will bundle files, and watch for changes)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
@@ -121,7 +122,36 @@ $ source config/local.sh
 $ npm start
 ```
 
+## Mock mode
+
+You can run the app in "mock mode": it will use fake data and fake HTTP & device APIs. This is handy for development when focusing on UI design, for example.
+
+To run in mock mode use:
+
+```bash
+$ source config/mock.sh
+$ npm start
+```
+
+The code for the fake APIs and data is located in the `mock/` directory. It is only bundled when working in mock mode (see `webpack.config.js`). In other words, it is not included in the released version of the app.
+
+## Running in the browser
+
+**IMPORTANT**: This only works in "mock mode".
+
+For certain development tasks, like CSS or JavaScript that doesn't use any of the Chrome App APIs, it might be useful to run the app in the browser (refreshing the browser is slightly faster than reloading a Chrome App). You can do this with:
+
+```bash
+$ source config/mock.sh
+$ npm run web
+```
+In a separate terminal start a server on `http://localhost:8080` with:
+
+```bash
+$ npm run server
+```
+
 ## Publishing
 
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
-1. Build `dist.zip` file with `npm run build`
+1. Build `dist.zip` file with `npm run build` **MAKE SURE YOU'VE SOURCED THE CORRECT CONFIG BEFORE YOU RUN THE BUILD SCRIPT!!!**

@@ -38,14 +38,43 @@ function spiderTests(baseDir) {
 
           async.waterfall(
             [
-              drvr.setup.bind(drvr, noop),
+              drvr.setup.bind(drvr, {}, noop),
               drvr.connect.bind(drvr, noop),
               drvr.getConfigInfo.bind(drvr, noop),
               drvr.fetchData.bind(drvr, noop),
               drvr.processData.bind(drvr, noop)
             ],
             function(err, payload) {
+              if(err){
+                console.log(payload);
+              }
               expect(payload.devices['Paradigm Revel - 723'].simulator.getEvents()).deep.equals(output);
+              done(err);
+            }
+          );
+        });
+      })(baseDir);
+    } else if (files[i] === 'old.csv') {
+      (function (path) {
+        it(path, function (done) {
+          var input = fs.readFileSync(path + '/old.csv', {encoding: 'utf8'});
+          var output = JSON.parse(fs.readFileSync(path + '/output.json'));
+
+          var drvr = carelinkDriver({ filename: '/old.csv', fileData: input, timezone: 'Pacific/Honolulu' });
+
+          async.waterfall(
+            [
+              drvr.setup.bind(drvr, {}, noop),
+              drvr.connect.bind(drvr, noop),
+              drvr.getConfigInfo.bind(drvr, noop),
+              drvr.fetchData.bind(drvr, noop),
+              drvr.processData.bind(drvr, noop)
+            ],
+            function(err, payload) {
+              if(err){
+                console.log(payload);
+              }
+              expect(payload.devices['Paradigm 722'].simulator.getEvents()).deep.equals(output);
               done(err);
             }
           );

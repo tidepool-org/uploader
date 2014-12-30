@@ -1,0 +1,73 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+.Login-input {
+  margin-bottom: 15px;
+}
+
+.Login-form {
+  .box-flex();
+}
+
+.Login-actions {
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.Login-remember {
+  flex-flow: row wrap;
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 5px;
+  }
+}
+
+.Login-button {
+  &:extend(.btn all);
+  
+  background-color: @blue;
+  color: #fff;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: fade(@blue, 75%);
+  }
+}
+
+.Login-forgot {
+  font-size: 11px;
+
+  a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: @blue;
+      text-decoration: none;
+    }
+  }
+}
+
+.Login-error {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  color: @red;
+  margin-top: 10px;
+}

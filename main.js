@@ -47,33 +47,12 @@ var defaultStorage = {
   forceDeviceIDs: []
 };
 
-
-function localSave(store, object) {
-  if (object == null || object === '') {
-    throw new Error('Save called with null object!');
-  }
-  store.removeItem('asantePortPattern');
-  // chrome.storage.local.remove('user');
-  // chrome.storage.local.remove('dexcomPortPrefix');
-
-  //hmm not so sure
-  store.setItem(null,object);
-}
-
-function localLoad(store, object, cb) {
-  if (object == null || object === '') {
-    return store.init(defaultStorage,cb);
-  } else {
-    return cb(store.getItem(object));
-  }
-}
-
 chrome.app.runtime.onLaunched.addListener(function() {
   // Center window on screen.
   var screenWidth = screen.availWidth;
   var screenHeight = screen.availHeight;
   var width = 650;
-  var height = 600;
+  var height = 680;
 
   chrome.app.window.create('index.html', {
     id: 'tidepoolUniversalUploader',
@@ -82,11 +61,11 @@ chrome.app.runtime.onLaunched.addListener(function() {
       height: height,
       left: Math.round((screenWidth-width)/2),
       top: Math.round((screenHeight-height)/2),
-      minWidth: 600,
-      minHeight: 500
+      minWidth: width,
+      minHeight: height
     }
   }, function(createdWindow) {
-    createdWindow.contentWindow.localSave = localSave;
-    createdWindow.contentWindow.localLoad = localLoad;
+    createdWindow.contentWindow.localSave = function() {};
+    createdWindow.contentWindow.localLoad = function() {};
   });
 });

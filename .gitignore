@@ -10,11 +10,16 @@ pids
 logs
 results
 config/*
+!config/mock.sh
 !config/local.sh
 build
 dist
 dist.zip
 
+test/carelink/overlaps/test-account.csv
+test/carelink/testRemoveOverlapsFullTestFile.js
+
+tmp
 npm-debug.log
 node_modules
 bower_components

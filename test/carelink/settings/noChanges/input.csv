@@ -40,5 +40,3 @@ Index,Date,Time,Timestamp,New Device Time,BG Reading (mg/dL),Linked BG Meter ID,
 9112,3/15/14,22:21:19,3/15/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=12498293597, INDEX=0, AMOUNT=65, START_TIME=0",12498293598,53021863,67,Paradigm Revel - 723
 9113,3/15/14,22:21:19,3/15/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=12498293597, INDEX=1, AMOUNT=45, START_TIME=18000000",12498293599,53021863,68,Paradigm Revel - 723
 9114,3/15/14,22:21:19,3/15/14 22:21:19,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM=12498293597, INDEX=2, AMOUNT=65, START_TIME=82800000",12498293600,53021863,69,Paradigm Revel - 723
-
-
