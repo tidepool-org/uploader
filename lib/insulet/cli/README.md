@@ -13,13 +13,13 @@ $ source config/local.sh
 ### Usage
 
 ```
-node insulet_cli.js -f /path/to/<your_insulet_file> -u <your_username> -p <your_pw>
+node ibf_loader.js -f /path/to/Insulet-file.ibf -u <your_username> -p <your_pw>
 
 ```
 
 - --file 		
   - short code -f
-  - path to the Insulet file
+  - path to the insulet ibf file path
 - --username 	
   - short code -u 
   - username who that data is being loaded for
