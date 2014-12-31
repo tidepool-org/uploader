@@ -54,6 +54,14 @@
           "productId": 24577
         },
         {
+          "deviceName": "Precision Xtra",
+          "driverId": "AbbottPrecisionXtra",
+          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13344
+        },
+        {
           "deviceName": "Insulet OmniPod",
           "driverId": "InsuletOmniPod",
           "mode": "block",
