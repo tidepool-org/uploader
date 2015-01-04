@@ -382,6 +382,17 @@ describe('struct.js', function(){
       expect(result.i).to.equal(-6);
     });
   });
+  describe('test of packString', function(){
+    it('works', function(){
+      var s = 'ABC';
+      var buf = theStruct.packString(s);
+      console.log(buf);
+      expect(buf.byteLength).to.equal(3);
+      expect(buf[0]).to.equal(65);
+      expect(buf[1]).to.equal(66);
+      expect(buf[2]).to.equal(67);
+    })
+  });
   describe('general test of unpack builder', function(){
     it('works', function(){
       var buf = new Uint8Array(32);
