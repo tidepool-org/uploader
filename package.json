@@ -8,11 +8,11 @@
   "license": "BSD2",
   "scripts": {
     "test": "mocha test",
-    "start": "./scripts/config.sh && webpack -d --progress --colors --watch",
-    "build": "./scripts/build.sh",
+    "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
+    "build": "bash ./scripts/build.sh",
     "jshint": "gulp jshint",
     "jshint-watch": "gulp jshint-watch",
-    "web": "./scripts/config.sh && webpack --watch --devtool eval-source-map --cache --colors --progress",
+    "web": "bash ./scripts/config.sh && webpack --watch --devtool eval-source-map --cache --colors --progress",
     "server": "http-server"
   },
   "dependencies": {
