@@ -383,10 +383,9 @@ describe('struct.js', function(){
     });
   });
   describe('test of packString', function(){
-    it('works', function(){
+    it('basically works', function(){
       var s = 'ABC';
       var buf = theStruct.packString(s);
-      console.log(buf);
       expect(buf.byteLength).to.equal(3);
       expect(buf[0]).to.equal(65);
       expect(buf[1]).to.equal(66);
