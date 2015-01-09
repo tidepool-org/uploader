@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.97.0",
+  "version": "0.97.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "async": "0.9.0",
+    "common": "0.2.5",
     "babyparse": "0.2.1",
     "commander": "2.5.0",
     "lodash": "2.4.1",

@@ -26,6 +26,7 @@ var LoggedInAs = require('./LoggedInAs.jsx');
 var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
+var UploadSettings = require('./UploadSettings.jsx');
 
 var config = require('../config');
 
@@ -86,6 +87,9 @@ var App = React.createClass({
     if (page === 'main') {
       return (
         <div>
+          <UploadSettings
+            user={this.state.user}
+            onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
