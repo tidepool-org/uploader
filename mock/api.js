@@ -100,30 +100,30 @@ var patch = function(api) {
     api.log('GET /access/groups/' + data.user.userid);
 
     //todo: set this object in data and check its format
-    /*setTimeout(function() {
-      var users = {
-        '3123412': {
-          view: {}
-        },
-        '2341234': {
-          upload: {},
-          view: {}
+    setTimeout(function() {
+      var users = [
+        data.user
+        ,{
+          userid: 3123412,
+          profile: {fullName: 'Peter Petersen'},
+          permissions: {
+            view: {}
+          }
+        },{
+          userid: 2341234,
+          profile: {fullName: 'Peter Petersen'},
+          permissions: {
+            upload: {},
+            view: {}
+          }
         }
-      };
+      ];
 
-      users[data.user.userid] = {
-        root: {},
-        upload: {}
-      };
+      cb(null, users);
+    }, 0);
+  };
 
-      cb(null, {
-        '12341234': {root: {}, up}
-      });
-    }, 700);*/
-    cb();
-  }
   // ----- Upload -----
-
   api.upload.fetchCarelinkData = function(payload, cb) {
     api.log('[mock] POST /carelink');
 

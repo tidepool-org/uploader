@@ -20,25 +20,36 @@ var React = require('react');
 
 var UploadSettings = React.createClass({
   propTypes: {
-    uploadGroups: React.PropTypes.array.isRequired,
+    user: React.PropTypes.object.isRequired,
     onGroupChange: React.PropTypes.func.isRequired
   },
 
   render: function() {
-    var options = _.map(this.props.uploadGroups, function(group, index){
+    var options = _.map(this.props.user.uploadGroups, function(group, index){
       return (
-        //todo: check props
-        <option onChange={this.props.onGroupChange} value={group.userid}>{group.fullname}</option>
+        //onChange={this.props.onGroupChange}
+        <option value={group.userid}>{group.profile.fullName}</option>
       );
     });
-    
+
+    if (!this.props.user.uploadGroups.length) {
+      return null;
+    }
+
+    // Dont show section you can only upload for yourself
+    if (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid) {
+      return null;
+    }
+
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
-          <label>{"Upload data for"}</label>
-          <select>
-            {options}
-          </select>
+          <div className="UploadSettings-left UploadSettings-uploadGroup--label">{"Upload data for"}</div>
+          <div className="UploadSettings-right UploadSettings-uploadGroup--list">
+            <select>
+              {options}
+            </select>
+          </div>
         </div>
       </div>
     );
