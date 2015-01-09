@@ -20,7 +20,7 @@ var React = require('react');
 var bows = require('../bows');
 var repeat = require('../core/repeat');
 
-var DETECT_DELAY = 500; // Scan every X milliseconds
+var DETECT_DELAY = 120000; // Scan every X milliseconds
 var DETECT_TIMEOUT = null; // Scan forever
 
 var Scan = React.createClass({
@@ -41,12 +41,7 @@ var Scan = React.createClass({
 
   componentDidMount: function() {
     this.log('Start scanning for devices...');
-    this.startScanning();
-  },
-
-  componentWillUnmount: function() {
-    this.log('Stop scanning for devices');
-    this.stopScanning();
+    setTimeout(this.startScanning, 1000);
   },
 
   render: function() {
@@ -65,7 +60,7 @@ var Scan = React.createClass({
 
     return (
       <div className="Scan-status Scan-status--error">
-        {'An error occured while scanning for devices.'}
+        {'An error occurred while scanning for devices.'}
       </div>
     );
   },
@@ -74,7 +69,6 @@ var Scan = React.createClass({
     if (this.state.scanning) {
       return null;
     }
-
     return (
       <div className="Scan-status">
         <button className="btn btn-secondary" onClick={this.startScanning}>

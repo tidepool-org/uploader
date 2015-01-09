@@ -481,7 +481,7 @@ describe('appActions', function() {
     });
 
     it('updates upload with correct progress data', function(done) {
-      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         options.progress('foo', 50);
         expect(app.state.uploads[0].progress).to.have.property('step', 'foo');
@@ -501,7 +501,7 @@ describe('appActions', function() {
 
     it('adds correct object to upload history when complete', function(done) {
       now = '2014-01-31T22:00:00-05:00';
-      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('cleanup', 100);
@@ -538,7 +538,7 @@ describe('appActions', function() {
 
     it('adds correct object to upload history when upload failed', function(done) {
       now = '2014-01-31T22:00:00-05:00';
-      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
@@ -575,7 +575,7 @@ describe('appActions', function() {
     });
 
     it('adds to upload history most recent first', function(done) {
-      device.detect = function(driverId, cb) { return cb(null, {}); };
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) { return cb(null, []); };
       app.state.uploads = [{
         source: {
