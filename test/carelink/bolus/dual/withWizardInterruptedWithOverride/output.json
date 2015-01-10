@@ -25,7 +25,7 @@
         "bolus": {
             "type": "bolus",
             "deviceTime": "2014-11-15T10:47:17",
-            "time": "2014-11-15T20:47:17.000Z",
+            "time": "2014-11-15T20:47:16.000Z",
             "timezoneOffset": -600,
             "deviceId": "Paradigm Revel - 723-=-53602018",
             "subType": "dual/square",
