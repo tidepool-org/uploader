@@ -47,7 +47,30 @@ var defaultStorage = {
   forceDeviceIDs: []
 };
 
-chrome.app.runtime.onLaunched.addListener(function() {
+chrome.app.runtime.onLaunched.addListener(function(launchData) {
+  // launchData.url, if it exists, contains the link clicked on by
+  // the user in blip. We could use it for login if we wanted to.
+  console.log('launchData: ', launchData);
+  var token = null;
+  if (launchData.id && launchData.id === 'open_uploader') {
+    var pat = /^[^?]+\?(.*)/;
+    var query = launchData.url.match(pat)[1];
+    if (query) {
+      var parms = query.split('&');
+      for (var p=0; p<parms.length; ++p) {
+        var s = parms[p].split('=');
+        console.log(s);
+        if (s[0] === 'token') {
+          token = s[1];
+          break;
+        }
+      }
+    }
+    if (token) {
+      console.log('got a token ', token);
+      // now save the token where we can use it
+    }
+  }
   // Center window on screen.
   var screenWidth = screen.availWidth;
   var screenHeight = screen.availHeight;
@@ -65,6 +88,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
       minHeight: height
     }
   }, function(createdWindow) {
+    createdWindow.show();
     createdWindow.contentWindow.localSave = function() {};
     createdWindow.contentWindow.localLoad = function() {};
   });

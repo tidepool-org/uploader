@@ -12,6 +12,14 @@
     "128": "T_icon_dark_128.png",
     "512": "T_icon_dark_512.png"
   },
+  "url_handlers": {
+    "open_uploader": {
+      "matches": [
+        "http://tidepool.org/uploader*=*"
+      ],
+      "title": "Open the Tidepool Uploader"
+    }
+  },
   "permissions": [
     "http://localhost/",
     "https://*.tidepool.io/",
