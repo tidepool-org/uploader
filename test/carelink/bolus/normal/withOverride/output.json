@@ -31,5 +31,15 @@
             "subType": "normal",
             "normal": 2
         }
+    },
+    {
+        "type": "bolus",
+        "source": "carelink",
+        "deviceTime": "2014-11-14T13:00:11",
+        "time": "2014-11-14T23:00:11.000Z",
+        "timezoneOffset": -600,
+        "deviceId": "Paradigm Revel - 723-=-53602018",
+        "subType": "normal",
+        "normal": 2
     }
 ]

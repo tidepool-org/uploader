@@ -41,5 +41,15 @@
         "deviceId": "Paradigm Revel - 723-=-53587804",
         "value": 190,
         "units": "mg/dL"
+    },
+    {
+        "type": "bolus",
+        "source": "carelink",
+        "deviceTime": "2014-11-14T15:07:23",
+        "time": "2014-11-15T01:07:23.000Z",
+        "timezoneOffset": -600,
+        "deviceId": "Paradigm Revel - 723-=-53587804",
+        "subType": "normal",
+        "normal": 1
     }
 ]
