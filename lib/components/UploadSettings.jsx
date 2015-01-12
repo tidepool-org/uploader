@@ -24,22 +24,23 @@ var UploadSettings = React.createClass({
     onGroupChange: React.PropTypes.func.isRequired
   },
 
+  // Can I only upload for myself
+  onlyMe: function(){
+    return (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid)
+  },
+
   render: function() {
+    //do we want to render??
+    if (_.isEmpty(this.props.user.uploadGroups) || this.onlyMe()) {
+      return null;
+    }
+
     var options = _.map(this.props.user.uploadGroups, function(group, index){
       return (
         //onChange={this.props.onGroupChange}
         <option value={group.userid}>{group.profile.fullName}</option>
       );
     });
-
-    if (!this.props.user.uploadGroups.length) {
-      return null;
-    }
-
-    // Dont show section you can only upload for yourself
-    if (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid) {
-      return null;
-    }
 
     return (
       <div className="UploadSettings">
