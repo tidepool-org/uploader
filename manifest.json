@@ -12,6 +12,14 @@
     "128": "T_icon_dark_128.png",
     "512": "T_icon_dark_512.png"
   },
+  "url_handlers": {
+    "open_uploader": {
+      "matches": [
+        "http://tidepool.org/uploader*=*"
+      ],
+      "title": "Open the Tidepool Uploader"
+    }
+  },
   "permissions": [
     "http://localhost/",
     "https://*.tidepool.io/",
@@ -26,7 +34,6 @@
           "deviceName": "Dexcom G4 CGM",
           "driverId": "DexcomG4",
           "mode": "serial",
-          "serialPortPat": "/dev/cu\\.usbmodem[A-Za-z0-9]+",
           "vendorId": 8867,
           "productId": 71
         },
@@ -40,7 +47,6 @@
         {
           "deviceName": "Asante SNAP w/FTDI cable",
           "driverId": "AsanteSNAP",
-          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577
@@ -48,10 +54,17 @@
         {
           "deviceName": "OneTouch Mini w/FTDI cable",
           "driverId": "OneTouchMini",
-          "serialPortPat": "/dev/cu\\.usbserial-[A-Za-z0-9]+",
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577
+        },
+        {
+          "deviceName": "Precision Xtra",
+          "driverId": "AbbottFreeStyle",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13344
         },
         {
           "deviceName": "Insulet OmniPod",

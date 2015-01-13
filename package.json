@@ -8,11 +8,11 @@
   "license": "BSD2",
   "scripts": {
     "test": "mocha test",
-    "start": "./scripts/config.sh && webpack -d --progress --colors --watch",
-    "build": "./scripts/build.sh",
+    "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
+    "build": "bash ./scripts/build.sh",
     "jshint": "gulp jshint",
     "jshint-watch": "gulp jshint-watch",
-    "web": "./scripts/config.sh && webpack --watch --devtool eval-source-map --cache --colors --progress",
+    "web": "bash ./scripts/config.sh && webpack --watch --devtool eval-source-map --cache --colors --progress",
     "server": "http-server"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
     "lodash": "2.4.1",
     "moment-timezone": "0.2.4",
     "react": "0.12.0",
-    "sundial": "1.0.0",
+    "sundial": "1.0.1",
     "tidepool-platform-client": "0.14.0"
   },
   "devDependencies": {
