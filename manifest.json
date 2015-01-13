@@ -15,7 +15,8 @@
   "url_handlers": {
     "open_uploader": {
       "matches": [
-        "http://tidepool.org/uploader*=*"
+        "http://tidepool.org/uploader*=*",
+        "https://tidepool.org/uploader*=*"
       ],
       "title": "Open the Tidepool Uploader"
     }
