@@ -129,7 +129,7 @@ var App = React.createClass({
 
   renderViewDataLink: function() {
     return <ViewDataLink
-      href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'}
+      href={this.appActions.app.api.makeBlipUrl('/#/patients/' + this.state.targetId + '/data')}
       onViewClicked={this.appActions.viewData.bind(this.appActions)} />;
   },
 
