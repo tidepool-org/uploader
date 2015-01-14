@@ -21,7 +21,9 @@ var React = require('react');
 var UploadSettings = React.createClass({
   propTypes: {
     user: React.PropTypes.object.isRequired,
-    onGroupChange: React.PropTypes.func.isRequired
+    onGroupChange: React.PropTypes.func.isRequired,
+    targetId: React.PropTypes.string,
+    isUploadInProgress: React.PropTypes.bool
   },
 
   // Can I only upload for myself
@@ -34,22 +36,46 @@ var UploadSettings = React.createClass({
     if (_.isEmpty(this.props.user.uploadGroups) || this.onlyMe()) {
       return null;
     }
-
+    var self = this;
+    var defaultGroup = this.props.user.uploadGroups[0];
     var options = _.map(this.props.user.uploadGroups, function(group, index){
+      if (self.props.targetId && self.props.targetId === group.userid) {
+        defaultGroup = group;
+
+        return (
+          <option selected value={group.userid}>{group.profile.fullName}</option>
+        );
+      }
+
       return (
-        //onChange={this.props.onGroupChange}
         <option value={group.userid}>{group.profile.fullName}</option>
       );
     });
+
+    var disabled = this.props.isUploadInProgress ? 'disabled': '';
+
+    var select = function() {
+      if (self.props.isUploadInProgress) {
+        return (
+          <select disabled onChange={self.props.onGroupChange} value={defaultGroup.userid} ref='uploadGroupSelect'>
+            {options}
+          </select>
+        );
+      }
+
+      return (
+        <select onChange={self.props.onGroupChange} value={defaultGroup.userid} ref='uploadGroupSelect'>
+          {options}
+        </select>
+      );
+    }();
 
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
           <div className="UploadSettings-left UploadSettings-uploadGroup--label">{"Upload data for"}</div>
           <div className="UploadSettings-right UploadSettings-uploadGroup--list">
-            <select>
-              {options}
-            </select>
+            {select}
           </div>
         </div>
       </div>
