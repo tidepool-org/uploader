@@ -89,6 +89,8 @@ var App = React.createClass({
         <div>
           <UploadSettings
             user={this.state.user}
+            targetId={this.state.targetId}
+            isUploadInProgress={this.appState.hasUploadInProgress()}
             onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
