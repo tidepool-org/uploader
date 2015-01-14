@@ -28,7 +28,7 @@ var UploadSettings = React.createClass({
 
   // Can I only upload for myself
   onlyMe: function(){
-    return (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid)
+    return (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid);
   },
 
   render: function() {
