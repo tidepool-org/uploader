@@ -112,7 +112,7 @@ var App = React.createClass({
   renderSignupLink: function() {
     return (
       <div>
-        <a className="App-signup" href={config.BLIP_URL + '#/signup'} target="_blank"><i className="icon-add"></i>Sign up</a>
+        <a className="App-signup" href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank"><i className="icon-add"></i>Sign up</a>
       </div>
     );
   },
