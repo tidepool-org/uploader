@@ -22,7 +22,7 @@
     "lodash": "2.4.1",
     "moment-timezone": "0.2.4",
     "react": "0.12.0",
-    "sundial": "1.0.1",
+    "sundial": "1.1.1",
     "tidepool-platform-client": "0.15.0"
   },
   "devDependencies": {
