@@ -63,7 +63,7 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].deviceTime = sundial.parseAndApplyTimezone(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
+      payload.theData[i].deviceTime = sundial.parseFromFormat(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602018', '53602076']);
@@ -82,7 +82,7 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].deviceTime = sundial.parseAndApplyTimezone(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
+      payload.theData[i].deviceTime = sundial.parseFromFormat(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602076']);
