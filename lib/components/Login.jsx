@@ -61,7 +61,7 @@ var Login = React.createClass({
 
   renderForgotPasswordLink: function() {
     return (
-      <a href={config.BLIP_URL + '#/request-password-reset'} target="_blank">
+      <a href={window.app.api.makeBlipUrl('#/request-password-reset')} target="_blank">
         {'Forgot your password?'}
       </a>
     );

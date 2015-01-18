@@ -77,6 +77,7 @@ describe('appActions', function() {
       api.user = {};
       api.user.account = function(cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
+      api.setHosts = function() {};
     });
 
     it('initializes all I/O services', function(done) {
