@@ -3,8 +3,10 @@ var _ = require('lodash');
 
 if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL) &&
      process.env.MOCK != 'true') {
-  throw new Error('You have not set up an environment. Please see config/local.sh.');
+  console.log('Using the default environment, which is now production.');
 } else {
+  console.log('***** NOT using the default environment *****');
+  console.log('The default right-click server menu may be incorrect.');
   console.log('API_URL =', process.env.API_URL);
   console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
   console.log('BLIP_URL =', process.env.BLIP_URL);
