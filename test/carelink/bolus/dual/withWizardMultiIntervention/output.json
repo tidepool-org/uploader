@@ -1,7 +1,6 @@
 [
     {
         "type": "wizard",
-        "source": "carelink",
         "deviceTime": "2014-11-19T09:33:44",
         "time": "2014-11-19T19:33:44.000Z",
         "timezoneOffset": -600,
@@ -35,7 +34,6 @@
     },
     {
         "type": "bolus",
-        "source": "carelink",
         "deviceTime": "2014-11-19T09:33:45",
         "time": "2014-11-19T19:33:45.000Z",
         "timezoneOffset": -600,
@@ -50,7 +48,6 @@
     },
     {
         "type": "cbg",
-        "source": "carelink",
         "deviceTime": "2014-11-19T09:35:00",
         "time": "2014-11-19T19:35:00.000Z",
         "timezoneOffset": -600,
@@ -60,7 +57,6 @@
     },
     {
         "type": "bolus",
-        "source": "carelink",
         "deviceTime": "2014-11-19T09:36:27",
         "time": "2014-11-19T19:36:27.000Z",
         "timezoneOffset": -600,

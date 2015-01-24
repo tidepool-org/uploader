@@ -1,7 +1,6 @@
 [
     {
         "type": "settings",
-        "source": "carelink",
         "deviceTime": "2014-11-24T11:09:57",
         "time": "2014-11-24T21:09:57.000Z",
         "timezoneOffset": -600,
@@ -131,7 +130,6 @@
     },
     {
         "type": "basal-scheduled",
-        "source": "carelink",
         "deviceTime": "2014-11-24T11:09:57",
         "time": "2014-11-24T21:09:57.000Z",
         "timezoneOffset": -600,
@@ -143,7 +141,6 @@
     },
     {
         "type": "settings",
-        "source": "carelink",
         "deviceTime": "2014-11-24T11:12:26",
         "time": "2014-11-24T21:12:26.000Z",
         "timezoneOffset": -600,
@@ -278,7 +275,6 @@
     },
     {
         "type": "smbg",
-        "source": "carelink",
         "deviceTime": "2014-11-25T17:53:45",
         "time": "2014-11-26T03:53:45.000Z",
         "timezoneOffset": -600,
@@ -288,7 +284,6 @@
     },
     {
         "type": "smbg",
-        "source": "carelink",
         "deviceTime": "2014-11-26T10:44:23",
         "time": "2014-11-26T20:44:23.000Z",
         "timezoneOffset": -600,
