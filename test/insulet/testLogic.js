@@ -46,9 +46,14 @@ describe('objectBuildingLogic', function() {
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
-    it('should subtract correction IOB from bolus when total IOB is >= suggested correction', function() {
+    it('should subtract leftover suggestion from bolus when correction IOB is >= suggested correction', function() {
       var details = _.assign({}, wizDetails, {corr_units_iob: 2.5});
-      expect(logic.calculateNetRecommendation(details)).to.equal(2.5);
+      expect(logic.calculateNetRecommendation(details)).to.equal(4.5);
+    });
+
+    it('should subtract total IOB from bolus if meal IOB is < suggested correction', function() {
+      var details = _.assign({}, wizDetails, {meal_units_iob: 0.5});
+      expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
     it('should never recommended a net negative bolus', function() {
