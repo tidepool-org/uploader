@@ -56,6 +56,11 @@ describe('objectBuildingLogic', function() {
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
+    it('should add a negative correction to the total if present', function() {
+      var details = _.assign({}, wizDetails, {current_bg: 50, corr_units_suggested: -1.0});
+      expect(logic.calculateNetRecommendation(details)).to.equal(2.5);
+    });
+
     it('should never recommended a net negative bolus', function() {
       var details = _.assign({}, wizDetails, {meal_units_iob: 1.0, carb_bolus_units_suggested: 0.0});
       expect(logic.calculateNetRecommendation(details)).to.equal(0.0);
