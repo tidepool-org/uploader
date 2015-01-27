@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -50,6 +50,16 @@ describe('struct.js', function(){
       expect(theStruct).itself.to.respondTo('extractShort');
     });
   });
+  describe('extractFloat', function(){
+    it('exists', function(){
+      expect(theStruct).itself.to.respondTo('extractFloat');
+    });
+  });
+  describe('extractBEFloat', function(){
+    it('exists', function(){
+      expect(theStruct).itself.to.respondTo('extractBEFloat');
+    });
+  });
   describe('extractByte', function(){
     it('exists', function(){
       expect(theStruct).itself.to.respondTo('extractByte');
@@ -68,6 +78,16 @@ describe('struct.js', function(){
   describe('storeBEShort', function(){
     it('exists', function(){
       expect(theStruct).itself.to.respondTo('storeBEShort');
+    });
+  });
+  describe('storeFloat', function(){
+    it('exists', function(){
+      expect(theStruct).itself.to.respondTo('storeFloat');
+    });
+  });
+  describe('storeBEFloat', function(){
+    it('exists', function(){
+      expect(theStruct).itself.to.respondTo('storeBEFloat');
     });
   });
   describe('storeByte', function(){
@@ -117,14 +137,16 @@ describe('struct.js', function(){
 // H -- a 2-byte signed integer in big-endian format
 // z -- a zero-terminated string of maximum length controlled by the size parameter.
 // Z -- a string of bytes with the length controlled by the size parameter.
+// f -- a 4-byte float in little-endian format
+// F -- a 4-byte float in big-endian format
 // . -- the appropriate number of bytes is ignored (used for padding)
   describe('structlen and format parsing', function(){
     it('work properly', function(){
       expect(theStruct.structlen('b6.Si')).to.equal(13);
-      expect(theStruct.structlen('bsSiInNhH.')).to.equal(26);
+      expect(theStruct.structlen('bsSiInNhHfF.')).to.equal(34);
       expect(theStruct.structlen('4b2s1I48.')).to.equal(60);
       expect(theStruct.structlen('4b 2s 1I 48.')).to.equal(60);
-      expect(theStruct.structlen('4bF')).to.equal(5); // F isn't currently used
+      expect(theStruct.structlen('4bK')).to.equal(5); // K isn't currently used
       expect(theStruct.structlen('8z')).to.equal(8);
       expect(theStruct.structlen('4Z')).to.equal(4);
       expect(theStruct.structlen('Z')).to.equal(1);
@@ -200,6 +222,20 @@ describe('struct.js', function(){
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u00FF\u00FF');
+    });
+    it('works for f', function(){
+      var buf = new Uint8Array(4);
+      var len = theStruct.pack(buf, 0, 'f', -1.5);
+      expect(len).to.equal(4);
+      var s = String.fromCharCode.apply(null, buf);
+      expect(s).to.equal('\u0000\u0000\u00C0\u00BF');
+    });
+    it('works for F', function(){
+      var buf = new Uint8Array(4);
+      var len = theStruct.pack(buf, 0, 'F', -2.5);
+      expect(len).to.equal(4);
+      var s = String.fromCharCode.apply(null, buf);
+      expect(s).to.equal('\u00C0\u0020\u0000\u0000');
     });
   });
   describe('unpack', function(){
@@ -364,6 +400,34 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '8Z', ['s']);
       expect(result.s).to.equal('Hello\u0000\u0001\u0002');
     });
+    it('works for f', function() {
+      var buf = new Uint8Array(8);
+      buf[0] = 0x00;
+      buf[1] = 0x00;
+      buf[2] = 0xD0;
+      buf[3] = 0x3F;
+      buf[4] = 0x00;
+      buf[5] = 0x00;
+      buf[6] = 0xA0;
+      buf[7] = 0x3F;
+      var result = theStruct.unpack(buf, 0, 'ff', ['a', 'b']);
+      expect(result.a).to.equal(1.625);
+      expect(result.b).to.equal(1.25);
+    });
+    it('works for F', function() {
+      var buf = new Uint8Array(8);
+      buf[0] = 0x3F;
+      buf[1] = 0xD0;
+      buf[2] = 0x00;
+      buf[3] = 0x00;
+      buf[4] = 0x3F;
+      buf[5] = 0xA0;
+      buf[6] = 0x00;
+      buf[7] = 0x00;
+      var result = theStruct.unpack(buf, 0, 'FF', ['a', 'b']);
+      expect(result.a).to.equal(1.625);
+      expect(result.b).to.equal(1.25);
+    });
   });
   describe('general test of pack/unpack', function(){
     it('works', function(){
@@ -380,6 +444,16 @@ describe('struct.js', function(){
       expect(result.g).to.equal(65538);
       expect(result.h).to.equal(-5);
       expect(result.i).to.equal(-6);
+    });
+  });
+  describe('test of packString', function(){
+    it('basically works', function(){
+      var s = 'ABC';
+      var buf = theStruct.packString(s);
+      expect(buf.byteLength).to.equal(3);
+      expect(buf[0]).to.equal(65);
+      expect(buf[1]).to.equal(66);
+      expect(buf[2]).to.equal(67);
     });
   });
   describe('general test of unpack builder', function(){

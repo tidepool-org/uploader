@@ -116,7 +116,7 @@ var App = React.createClass({
   renderSignupLink: function() {
     return (
       <div>
-        <a className="App-signup" href={config.BLIP_URL + '#/signup'} target="_blank"><i className="icon-add"></i>Sign up</a>
+        <a className="App-signup" href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank"><i className="icon-add"></i>Sign up</a>
       </div>
     );
   },
@@ -133,7 +133,7 @@ var App = React.createClass({
 
   renderViewDataLink: function() {
     return <ViewDataLink
-      href={config.BLIP_URL + '/#/patients/' + this.state.targetId + '/data'}
+      href={this.appActions.app.api.makeBlipUrl('/#/patients/' + this.state.targetId + '/data')}
       onViewClicked={this.appActions.viewData.bind(this.appActions)} />;
   },
 

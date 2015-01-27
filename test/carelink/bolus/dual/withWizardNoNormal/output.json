@@ -32,5 +32,16 @@
             "extended": 5,
             "duration": 1800000
         }
+    },
+    {
+        "type": "bolus",
+        "source": "carelink",
+        "deviceTime": "2014-11-16T20:33:50",
+        "time": "2014-11-17T06:33:50.000Z",
+        "timezoneOffset": -600,
+        "deviceId": "Paradigm Revel - 723-=-53602076",
+        "subType": "square",
+        "extended": 5,
+        "duration": 1800000
     }
 ]

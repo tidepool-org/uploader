@@ -40,6 +40,23 @@
         }
     },
     {
+        "type": "bolus",
+        "source": "carelink",
+        "deviceTime": "2014-09-18T18:59:38",
+        "time": "2014-09-19T04:59:38.000Z",
+        "timezoneOffset": -600,
+        "deviceId": "Paradigm Revel - 723-=-63557844",
+        "subType": "dual/square",
+        "extended": 1.05,
+        "duration": 1800000,
+        "normal": 1,
+        "annotations": [
+            {
+                "code": "carelink/wizard/long-search"
+            }
+        ]
+    },
+    {
         "type": "basal-scheduled",
         "source": "carelink",
         "deviceTime": "2014-09-18T19:00:00",
