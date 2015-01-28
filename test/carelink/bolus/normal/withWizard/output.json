@@ -1,7 +1,6 @@
 [
     {
         "type": "wizard",
-        "source": "carelink",
         "deviceTime": "2014-11-14T08:55:54",
         "time": "2014-11-14T18:55:54.000Z",
         "timezoneOffset": -600,
@@ -34,7 +33,6 @@
     },
     {
         "type": "bolus",
-        "source": "carelink",
         "deviceTime": "2014-11-14T08:55:54",
         "time": "2014-11-14T18:55:54.000Z",
         "timezoneOffset": -600,

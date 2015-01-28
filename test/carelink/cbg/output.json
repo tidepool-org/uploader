@@ -1,7 +1,6 @@
 [
   {
     "type": "cbg",
-    "source": "carelink",
     "time": "2014-03-13T10:04:00.000Z",
     "deviceTime": "2014-03-13T00:04:00",
     "timezoneOffset": -600,
