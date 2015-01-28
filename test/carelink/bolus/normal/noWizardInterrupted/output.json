@@ -1,7 +1,6 @@
 [
     {
         "type": "bolus",
-        "source": "carelink",
         "deviceTime": "2014-11-14T12:25:21",
         "time": "2014-11-14T22:25:21.000Z",
         "timezoneOffset": -600,
