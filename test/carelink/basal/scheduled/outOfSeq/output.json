@@ -1,6 +1,7 @@
 [
     {
         "type": "basal-scheduled",
+        "source": "carelink",
         "deviceTime": "2014-11-24T11:09:57",
         "time": "2014-11-24T21:09:57.000Z",
         "timezoneOffset": -600,
@@ -12,6 +13,7 @@
     },
     {
         "type": "basal-scheduled",
+        "source": "carelink",
         "deviceTime": "2014-11-24T11:12:27",
         "time": "2014-11-24T21:12:27.000Z",
         "timezoneOffset": -600,
@@ -23,6 +25,7 @@
     },
     {
         "type": "basal-scheduled",
+        "source": "carelink",
         "deviceTime": "2014-11-24T12:00:00",
         "time": "2014-11-24T22:00:00.000Z",
         "timezoneOffset": -600,
