@@ -45,6 +45,7 @@
       { "amount": 45, "start": 18000000 },
       { "amount": 65, "start": 82800000 }
     ],
+    "source": "carelink",
     "timezoneOffset": -600,
     "time": "2014-03-13T10:00:00.000Z",
     "type": "settings",
@@ -58,6 +59,7 @@
     "deviceId": "Paradigm Revel - 723-=-53021863",
     "deviceTime": "2014-03-13T00:00:00",
     "scheduleName": "standard",
+    "source": "carelink",
     "timezoneOffset": -600,
     "time": "2014-03-13T10:00:00.000Z",
     "type": "basal-scheduled",

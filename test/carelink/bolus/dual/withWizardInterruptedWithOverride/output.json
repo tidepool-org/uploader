@@ -1,6 +1,7 @@
 [
     {
         "type": "wizard",
+        "source": "carelink",
         "deviceTime": "2014-11-15T10:47:16",
         "time": "2014-11-15T20:47:16.000Z",
         "timezoneOffset": -600,
@@ -37,6 +38,7 @@
     },
     {
         "type": "bolus",
+        "source": "carelink",
         "deviceTime": "2014-11-15T10:47:17",
         "time": "2014-11-15T20:47:17.000Z",
         "timezoneOffset": -600,
@@ -50,6 +52,7 @@
     },
     {
         "type": "suspend",
+        "source": "carelink",
         "deviceTime": "2014-11-15T11:31:40",
         "time": "2014-11-15T21:31:40.000Z",
         "timezoneOffset": -600,
@@ -58,6 +61,7 @@
     },
     {
         "type": "basal-scheduled",
+        "source": "carelink",
         "deviceTime": "2014-11-15T11:41:36",
         "time": "2014-11-15T21:41:36.000Z",
         "timezoneOffset": -600,
@@ -69,6 +73,7 @@
     },
     {
         "type": "resume",
+        "source": "carelink",
         "deviceTime": "2014-11-15T11:41:37",
         "time": "2014-11-15T21:41:37.000Z",
         "timezoneOffset": -600,
@@ -77,6 +82,7 @@
     },
     {
         "type": "basal-scheduled",
+        "source": "carelink",
         "deviceTime": "2014-11-15T12:00:00",
         "time": "2014-11-15T22:00:00.000Z",
         "timezoneOffset": -600,
