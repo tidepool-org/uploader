@@ -52,8 +52,9 @@ describe('carelinkSimulator.js', function(){
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
-        value: 123,
-        timezoneOffset: 0
+        value: 6.8274200289860065,
+        timezoneOffset: 0,
+        units: 'mg/dL'
       };
 
       simulator.cbg(val);
@@ -66,8 +67,9 @@ describe('carelinkSimulator.js', function(){
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
-        value: 1.3,
-        timezoneOffset: 0
+        value: 6.8274200289860065,
+        timezoneOffset: 0,
+        units: 'mg/dL'
       };
 
       simulator.smbg(val);
