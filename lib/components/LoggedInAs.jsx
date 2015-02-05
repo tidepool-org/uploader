@@ -34,7 +34,7 @@ var LoggedInAs = React.createClass({
     return (
       <div className="LoggedInAs">
         <span>{this.getName()}</span>
-        {this.renderLogout()}
+        <i className="Menu-arrow-down icon-arrow-down"></i>
       </div>
     );
   },

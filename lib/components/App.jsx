@@ -52,7 +52,6 @@ var App = React.createClass({
     return (
       <div className={'App App--' + this.state.page}>
         <div className="App-header">{this.renderHeader()}</div>
-        <div className="App-logo"></div>
         <div className="App-page">{this.renderPage()}</div>
         <div className="App-footer">{this.renderFooter()}</div>
       </div>
@@ -69,8 +68,8 @@ var App = React.createClass({
     }
 
     return <LoggedInAs
-      user={this.state.user}
-      onLogout={this.appActions.logout.bind(this.appActions)} />;
+        user={this.state.user}
+        onLogout={this.appActions.logout.bind(this.appActions)} />;
   },
 
   renderPage: function() {
@@ -118,8 +117,9 @@ var App = React.createClass({
 
   renderSignupLink: function() {
     return (
-      <div>
-        <a className="App-signup" href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank"><i className="icon-add"></i>Sign up</a>
+      <div className="App-signup">
+        <a  href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank">
+          <i className="icon-add"> Sign up</i></a>
       </div>
     );
   },
