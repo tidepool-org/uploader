@@ -58,6 +58,13 @@ describe('insuletSimulator.js', function() {
         type: 'bolus',
         subType: 'normal'
       };
+      var term = {
+        time: '2014-09-25T01:00:05.000Z',
+        type: 'termination',
+        subType: 'bolus',
+        missedInsulin: 2.7,
+        durationLeft: 0
+      };
 
       it('passes through', function(){
         simulator.bolus(val);
@@ -65,17 +72,16 @@ describe('insuletSimulator.js', function() {
       });
 
       it('is amended with an expectedNormal when followed by a bolus termination event', function(){
-        var term = {
-          time: '2014-09-25T01:00:05.000Z',
-          type: 'termination',
-          subType: 'bolus',
-          missedInsulin: 2.7,
-          durationLeft: 0
-        };
-
         simulator.bolus(val);
         simulator.bolusTermination(term);
         expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0})]);
+      });
+
+      it('is amended with an expectedNormal when followed by a bolus termination even when it has zero volume', function() {
+        var zeroBolus = _.assign({}, val, {normal: 0.0});
+        simulator.bolus(zeroBolus);
+        simulator.bolusTermination(term);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, zeroBolus, {expectedNormal: 2.7})]);
       });
     });
 
