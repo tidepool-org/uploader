@@ -95,6 +95,11 @@ describe('struct.js', function(){
       expect(theStruct).itself.to.respondTo('storeByte');
     });
   });
+  describe('extractBytes', function(){
+    it('exists', function(){
+      expect(theStruct).itself.to.respondTo('extractBytes');
+    });
+  });
   describe('storeString', function(){
     it('exists', function(){
       expect(theStruct).itself.to.respondTo('storeString');
@@ -149,6 +154,7 @@ describe('struct.js', function(){
       expect(theStruct.structlen('4bK')).to.equal(5); // K isn't currently used
       expect(theStruct.structlen('8z')).to.equal(8);
       expect(theStruct.structlen('4Z')).to.equal(4);
+      expect(theStruct.structlen('4B')).to.equal(4);
       expect(theStruct.structlen('Z')).to.equal(1);
     });
   });
@@ -250,6 +256,18 @@ describe('struct.js', function(){
       expect(result.b).to.equal(0x55);
       expect(result.c).to.equal(0xAA);
       expect(result.d).to.equal(1);
+    });
+    it('works for B', function(){
+      var buf = new Uint8Array(4);
+      buf[0] = 0xff;
+      buf[1] = 0x55;
+      buf[2] = 0xaa;
+      buf[3] = 0x01;
+      var result = theStruct.unpack(buf, 0, '4B', ['a']);
+      expect(result.a[0]).to.equal(255);
+      expect(result.a[1]).to.equal(0x55);
+      expect(result.a[2]).to.equal(0xAA);
+      expect(result.a[3]).to.equal(1);
     });
     it('ignores .', function(){
       var buf = new Uint8Array(4);
