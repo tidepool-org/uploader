@@ -329,7 +329,7 @@ describe('insuletSimulator.js', function() {
 
       it('a resume passes through', function() {
         simulator.resume(resume);
-        expect(simulator.getEvents()).deep.equals([resume]);
+        expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
       it('a resume includes a previous when preceded by a suspend', function() {
