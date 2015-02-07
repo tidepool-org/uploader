@@ -40,3 +40,71 @@ a.LoggedInAs-logout {
     text-decoration: none;
   }
 }
+
+.Menu-arrow-down {
+  font-size: 5px;
+  padding-left: 5px;
+}
+
+.Menu-dropdown {
+  border: 1px solid @gray-light;
+  cursor: default;
+  position: absolute;
+  background: white;
+  right: -18px;
+  z-index: 100;
+  width: 180px;
+  top: 45px;
+
+  > ul {
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+
+    > li {
+      padding: 10px 0;
+    }
+
+    > li:last-child {
+      padding-top: 0px;
+      padding-bottom: 10px;
+    }
+  }
+
+  i {
+    float: left;
+    padding-right: 6px;
+  }
+
+  a {
+    margin-left: 0;
+  }
+}
+
+.Menu-dropdown:after,
+.Menu-dropdown:before {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  display: inline-block;
+  border: solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #eee;
+  border-left: 8px solid transparent;
+  border-bottom-color: white;
+  content: '';
+  height: 0;
+  width: 0;
+}
+
+.Menu-dropdown:before {
+  top: -16px;
+  border-color: rgba(230,230,229,0);
+  border-bottom-color: @gray-light;
+  border-width: 8px;
+  margin-left: -8px;
+}
+
+.Menu-dropdown-hide {
+  display: none;
+}

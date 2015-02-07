@@ -17,6 +17,7 @@
 
 var React = require('react');
 var getIn = require('../core/getIn');
+var cx = require('react/lib/cx');
 
 var LoggedInAs = React.createClass({
   propTypes: {
@@ -26,15 +27,29 @@ var LoggedInAs = React.createClass({
 
   getInitialState: function() {
     return {
-      loggingOut: false
+      loggingOut: false,
+      showDropdown: false
     };
   },
 
   render: function() {
+    var dropdownClasses = cx({
+      'Menu-dropdown': true,
+      'Menu-dropdown-hide': !this.state.showDropdown
+    });
+
     return (
-      <div className="LoggedInAs">
-        <span>{this.getName()}</span>
-        <i className="Menu-arrow-down icon-arrow-down"></i>
+      <div>
+        <div className="LoggedInAs" onClick={this.toggleDropdown}>
+          <span>{this.getName()}</span>
+          <i className="Menu-arrow-down icon-arrow-down"></i>
+        </div>
+        <div className={dropdownClasses} onClick={this.stopPropagation}>
+          <ul>
+            <li><i className="icon-edit"></i>Choose Devices</li>
+            <li>{this.renderLogout()}</li>
+          </ul>
+        </div>
       </div>
     );
   },
@@ -64,7 +79,26 @@ var LoggedInAs = React.createClass({
         });
       }
     });
-  }
+  },
+
+  toggleDropdown: function(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    this.setState({showDropdown: !this.state.showDropdown});
+  },
+
+  stopPropagation: function(e) {
+    e.stopPropagation();
+  },
+
+  hideDropdown: function()  {
+    if (this.state.showDropdown) {
+      this.setState({showDropdown: false});
+    }
+  },
 });
 
 module.exports = LoggedInAs;
