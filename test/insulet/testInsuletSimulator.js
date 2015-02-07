@@ -72,7 +72,7 @@ describe('insuletSimulator.js', function() {
       });
 
       it('is amended with an expectedNormal when followed by a bolus termination event', function(){
-        simulator.bolus(val);
+        simulator.bolus(_.cloneDeep(val));
         simulator.bolusTermination(term);
         expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0})]);
       });
@@ -82,6 +82,13 @@ describe('insuletSimulator.js', function() {
         simulator.bolus(zeroBolus);
         simulator.bolusTermination(term);
         expect(simulator.getEvents()).deep.equals([_.assign({}, zeroBolus, {expectedNormal: 2.7})]);
+      });
+
+      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
+        var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
+        simulator.bolus(val);
+        simulator.bolus(zeroBolus);
+        expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
