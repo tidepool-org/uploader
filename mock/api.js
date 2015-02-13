@@ -96,8 +96,34 @@ var patch = function(api) {
     }, 700);
   };
 
-  // ----- Upload -----
+  api.user.getUploadGroups = function(cb) {
+    api.log('GET /access/groups/' + data.user.userid);
 
+    //todo: set this object in data and check its format
+    setTimeout(function() {
+      var users = [
+        data.user
+        ,{
+          userid: 3123412,
+          profile: {fullName: 'Peter Petersen'},
+          permissions: {
+            view: {}
+          }
+        },{
+          userid: 2341234,
+          profile: {fullName: 'Peter Petersen'},
+          permissions: {
+            upload: {},
+            view: {}
+          }
+        }
+      ];
+
+      cb(null, users);
+    }, 0);
+  };
+
+  // ----- Upload -----
   api.upload.fetchCarelinkData = function(payload, cb) {
     api.log('[mock] POST /carelink');
 
@@ -113,7 +139,7 @@ var patch = function(api) {
   };
 
   // ----- Errors -----
-  
+
   api.errors.log = function(error, message, properties) {
     api.log('[mock] POST /errors');
   };
