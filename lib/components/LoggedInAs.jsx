@@ -20,7 +20,9 @@ var getIn = require('../core/getIn');
 
 var LoggedInAs = React.createClass({
   propTypes: {
+    dropMenu: React.PropTypes.bool.isRequired,
     user: React.PropTypes.object.isRequired,
+    onClicked: React.PropTypes.func.isRequired,
     onLogout: React.PropTypes.func.isRequired
   },
 
@@ -31,10 +33,25 @@ var LoggedInAs = React.createClass({
   },
 
   render: function() {
+    var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
+
     return (
-      <div className="LoggedInAs">
-        <span>{this.getName()}</span>
-        {this.renderLogout()}
+      <div>
+        <div className="LoggedInAs" onClick={this.props.onClicked}>
+          <span>{this.getName()}</span>
+        </div>
+        {dropMenu}
+      </div>
+    );
+  },
+
+  renderDropMenu: function() {
+    return (
+      <div>
+        <ul>
+          <li>Choose Devices</li>
+          <li>{this.renderLogout()}</li>
+        </ul>
       </div>
     );
   },

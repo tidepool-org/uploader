@@ -50,7 +50,7 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div className={'App App--' + this.state.page}>
+      <div className={'App App--' + this.state.page} onClick={this.appActions.hideDropMenu.bind(this.appActions)}>
         <div className="App-header">{this.renderHeader()}</div>
         <div className="App-logo"></div>
         <div className="App-page">{this.renderPage()}</div>
@@ -69,6 +69,8 @@ var App = React.createClass({
     }
 
     return <LoggedInAs
+      onClicked={this.appActions.toggleDropMenu.bind(this.appActions)}
+      dropMenu={this.state.dropMenu}
       user={this.state.user}
       onLogout={this.appActions.logout.bind(this.appActions)} />;
   },

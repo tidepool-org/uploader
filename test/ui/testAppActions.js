@@ -626,4 +626,38 @@ describe('appActions', function() {
 
   });
 
+  describe('changeGroup', function() {
+
+    it('updates user id for uploading', function() {
+      app.state.targetId = 'foo';
+      appActions.changeGroup({target: {value: 'bar'}});
+      expect(app.state.targetId).to.equal('bar');
+    });
+
+  });
+
+  describe('hideDropMenu', function() {
+
+    it('sets the boolean for the dropdown menu to false, always', function() {
+      app.state.dropMenu = true;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+    });
+
+  });
+
+  describe('toggleDropMenu', function() {
+
+    it('toggles the boolean for the dropdown menu', function() {
+      app.state.dropMenu = true;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.true;
+    });
+
+  });
+
 });
