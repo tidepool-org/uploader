@@ -28,12 +28,15 @@ var Upload = React.createClass({
   propTypes: {
     upload: React.PropTypes.object.isRequired,
     onUpload: React.PropTypes.func.isRequired,
-    onReset: React.PropTypes.func.isRequired
+    onReset: React.PropTypes.func.isRequired,
+    readFile: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
     return {
-      carelinkFormIncomplete: true
+      carelinkFormIncomplete: true,
+      blockModeFileNotChosen: true,
+      blockModeFileError: null
     };
   },
 
@@ -91,9 +94,42 @@ var Upload = React.createClass({
     return (
       <form className="Upload-form">
         {this.renderCarelinkInputs()}
+        {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
     );
+  },
+
+  renderBlockModeInput: function() {
+    if (!this.isBlockModeDevice()) {
+      return null;
+    }
+
+    return (
+      <div>
+        <input ref="file" type="file" onChange={this.onBlockModeInputChange}/>
+        {this.renderBlockModeInputError()}
+      </div>
+    );
+  },
+
+  renderBlockModeInputError: function() {
+    if (_.isEmpty(this.state.blockModeFileError)) {
+      return null;
+    }
+
+    return (
+      <div className="Upload-status Upload-status--error">{this.state.blockModeFileError}</div>
+    );
+  },
+
+  onBlockModeInputChange: function(e) {
+    var file = e.target.files[0];
+    var fileResult = this.props.readFile(file, this.props.upload.source.extension);
+    this.setState({
+      blockModeFileNotChosen: fileResult === true ? false : true,
+      blockModeFileError: fileResult instanceof Error ? fileResult.message : null
+    });
   },
 
   renderCarelinkInputs: function() {
@@ -127,6 +163,9 @@ var Upload = React.createClass({
     if (this.isCarelinkUpload()) {
       text = 'Import';
       disabled = disabled || this.state.carelinkFormIncomplete;
+    }
+    if (this.isBlockModeDevice()) {
+      disabled = disabled || this.state.blockModeFileNotChosen;
     }
 
     return (
@@ -265,6 +304,10 @@ var Upload = React.createClass({
     return this.props.upload.uploading;
   },
 
+  isBlockModeDevice: function() {
+    return this.props.upload.source.type === 'block';
+  },
+
   isCarelinkUpload: function() {
     return this.props.upload.carelink;
   },
@@ -293,6 +336,9 @@ var Upload = React.createClass({
     if (this.isCarelinkUpload()) {
       return this.handleCarelinkUpload();
     }
+    else if (this.isBlockModeDevice()) {
+      return this.handleBlockModeUpload();
+    }
 
     var options = {};
     this.props.onUpload(options);
@@ -304,6 +350,14 @@ var Upload = React.createClass({
     var options = {
       username: username,
       password: password
+    };
+    this.props.onUpload(options);
+  },
+
+  handleBlockModeUpload: function() {
+    var options = {
+      filename: this.props.upload.file.name,
+      filedata: this.props.upload.file.data
     };
     this.props.onUpload(options);
   },

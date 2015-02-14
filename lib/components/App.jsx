@@ -95,7 +95,8 @@ var App = React.createClass({
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
-            onReset={this.appActions.reset.bind(this.appActions)} />
+            onReset={this.appActions.reset.bind(this.appActions)}
+            readFile={this.appActions.readFile.bind(this.appActions)} />
           {this.renderViewDataLink()}
         </div>
       );

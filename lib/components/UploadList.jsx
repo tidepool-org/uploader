@@ -34,7 +34,8 @@ var UploadList = React.createClass({
           <Upload
             upload={upload}
             onUpload={self.props.onUpload.bind(null, index)}
-            onReset={self.props.onReset.bind(null, index)} />
+            onReset={self.props.onReset.bind(null, index)}
+            readFile={self.props.readFile.bind(null, index)} />
         </div>
       );
     });
