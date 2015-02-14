@@ -39,7 +39,7 @@ module.exports = {
   API_URL: process.env.API_URL || 'https://api.tidepool.io',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.io',
   BLIP_URL: process.env.BLIP_URL || 'https://blip-ucsf-pilot.tidepool.io',
-  RESTRICT_DRIVERS: stringToArray(process.env.RESTRICT_DRIVERS, ['DexcomG4', 'OneTouchMini', 'AbbottFreeStyle']),
+  RESTRICT_DRIVERS: stringToArray(process.env.RESTRICT_DRIVERS, ['DexcomG4', 'OneTouchMini', 'AbbottFreeStyle', 'InsuletOmniPod']),
   CARELINK: stringToBoolean(process.env.CARELINK, true),
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
   DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'
