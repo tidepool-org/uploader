@@ -288,7 +288,7 @@ describe('insuletSimulator.js', function() {
           type: 'deviceMeta',
           subType: 'status',
           status: 'suspended',
-          reason: 'manual'
+          reason: {suspended: 'manual'}
         };
 
         var withStatus = _.assign({}, val, {status: suspend});
@@ -311,14 +311,14 @@ describe('insuletSimulator.js', function() {
         type: 'deviceMeta',
         subType: 'status',
         status: 'suspended',
-        reason: 'automatic'
+        reason: {suspended: 'automatic'}
       };
       var resume = builder.makeDeviceMetaResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
         .with_timezoneOffset(0)
         .with_status('resumed')
-        .with_reason('manual');
+        .with_reason({resumed: 'manual'});
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
@@ -347,7 +347,7 @@ describe('insuletSimulator.js', function() {
           type: 'deviceMeta',
           subType: 'status',
           status: 'suspended',
-          reason: 'automatic'
+          reason: {suspended: 'automatic'}
         };
         simulator.suspend(suspend);
         simulator.suspend(suspend2);
@@ -633,14 +633,14 @@ describe('insuletSimulator.js', function() {
       .with_deviceTime('2014-09-25T01:50:00')
       .with_timezoneOffset(0)
       .with_status('suspended')
-      .with_reason('manual')
+      .with_reason({suspended: 'manual'})
       .done();
     var resume = builder.makeDeviceMetaResume()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
       .with_timezoneOffset(0)
       .with_status('resumed')
-      .with_reason('manual');
+      .with_reason({resumed: 'manual'});
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
