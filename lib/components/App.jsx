@@ -50,7 +50,7 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div className={'App App--' + this.state.page} onClick={this.hideMenuDropdown}>
+      <div className={'App App--' + this.state.page} onClick={this.appActions.hideDropMenu.bind(this.appActions)}>
         <div className="App-header">{this.renderHeader()}</div>
         <div className="App-page">{this.renderPage()}</div>
         <div className="App-footer">{this.renderFooter()}</div>
@@ -68,8 +68,10 @@ var App = React.createClass({
     }
 
     return <LoggedInAs
-        user={this.state.user}
-        onLogout={this.appActions.logout.bind(this.appActions)} ref="dropdownMenu" />;
+      onClicked={this.appActions.toggleDropMenu.bind(this.appActions)}
+      dropMenu={this.state.dropMenu}
+      user={this.state.user}
+      onLogout={this.appActions.logout.bind(this.appActions)} />;
   },
 
   renderPage: function() {
@@ -147,14 +149,6 @@ var App = React.createClass({
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </div>
     );
-  },
-
-  hideMenuDropdown: function() {
-    var dropdownMenu = this.refs.dropdownMenu;
-
-    if (dropdownMenu) {
-      dropdownMenu.hideDropdown();
-    }
   }
 });
 

@@ -17,39 +17,45 @@
 
 var React = require('react');
 var getIn = require('../core/getIn');
-var cx = require('react/lib/cx');
 
 var LoggedInAs = React.createClass({
   propTypes: {
+    dropMenu: React.PropTypes.bool.isRequired,
     user: React.PropTypes.object.isRequired,
+    onClicked: React.PropTypes.func.isRequired,
     onLogout: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
     return {
-      loggingOut: false,
-      showDropdown: false
+      loggingOut: false
     };
   },
 
   render: function() {
-    var dropdownClasses = cx({
-      'Menu-dropdown': true,
-      'Menu-dropdown-hide': !this.state.showDropdown
-    });
+    var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
 
     return (
       <div>
-        <div className="LoggedInAs" onClick={this.toggleDropdown}>
+        <div className="LoggedInAs" onClick={this.props.onClicked}>
           <span>{this.getName()}</span>
           <i className="Menu-arrow-down icon-arrow-down"></i>
         </div>
-        <div className={dropdownClasses} onClick={this.stopPropagation}>
-          <ul>
-            <li><i className="icon-edit"></i>Choose Devices</li>
-            <li>{this.renderLogout()}</li>
-          </ul>
-        </div>
+        {dropMenu}
+      </div>
+    );
+  },
+
+  renderDropMenu: function() {
+    function stopPropagation(e) {
+      e.stopPropagation();
+    }
+    return (
+      <div className="Menu-dropdown" onClick={stopPropagation}>
+        <ul>
+          <li><i className="icon-edit"></i>Choose Devices</li>
+          <li>{this.renderLogout()}</li>
+        </ul>
       </div>
     );
   },
@@ -79,26 +85,7 @@ var LoggedInAs = React.createClass({
         });
       }
     });
-  },
-
-  toggleDropdown: function(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    this.setState({showDropdown: !this.state.showDropdown});
-  },
-
-  stopPropagation: function(e) {
-    e.stopPropagation();
-  },
-
-  hideDropdown: function()  {
-    if (this.state.showDropdown) {
-      this.setState({showDropdown: false});
-    }
-  },
+  }
 });
 
 module.exports = LoggedInAs;
