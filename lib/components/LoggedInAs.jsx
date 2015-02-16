@@ -23,6 +23,7 @@ var LoggedInAs = React.createClass({
     dropMenu: React.PropTypes.bool.isRequired,
     user: React.PropTypes.object.isRequired,
     onClicked: React.PropTypes.func.isRequired,
+    onChooseDevices: React.PropTypes.func.isRequired,
     onLogout: React.PropTypes.func.isRequired
   },
 
@@ -53,23 +54,32 @@ var LoggedInAs = React.createClass({
     return (
       <div className="Menu-dropdown" onClick={stopPropagation}>
         <ul>
-          <li><i className="icon-edit"></i>Choose Devices</li>
+          <li>{this.renderChooseDevices()}</li>
           <li>{this.renderLogout()}</li>
         </ul>
       </div>
     );
   },
 
+  renderChooseDevices: function() {
+    return <a className="LoggedInAs-link" href="" onClick={this.handleChooseDevices}><i className="icon-edit"></i>Choose Devices</a>;
+  },
+
   renderLogout: function() {
     if (this.state.loggingOut) {
-      return <span className="LoggedInAs-logout">Logging out...</span>;
+      return <span className="LoggedInAs-link">Logging out...</span>;
     }
 
-    return <a className="LoggedInAs-logout" href="" onClick={this.handleLogout}><i className="icon-logout"></i>Logout</a>;
+    return <a className="LoggedInAs-link" href="" onClick={this.handleLogout}><i className="icon-logout"></i>Logout</a>;
   },
 
   getName: function() {
     return getIn(this.props.user, ['profile', 'fullName']);
+  },
+
+  handleChooseDevices: function(e) {
+    e.preventDefault();
+    this.props.onChooseDevices();
   },
 
   handleLogout: function(e) {

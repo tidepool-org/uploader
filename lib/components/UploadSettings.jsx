@@ -20,6 +20,7 @@ var React = require('react');
 
 var UploadSettings = React.createClass({
   propTypes: {
+    page: React.PropTypes.string.isRequired,
     user: React.PropTypes.object.isRequired,
     onGroupChange: React.PropTypes.func.isRequired,
     targetId: React.PropTypes.string,
@@ -55,7 +56,9 @@ var UploadSettings = React.createClass({
       );
     });
 
-    var disabled = this.props.isUploadInProgress ? 'disabled': '';
+    var disabled = this.props.isUploadInProgress ? 'disabled' : '';
+
+    var text = this.props.page === 'main' ? 'Upload data for' : 'Choose devices for';
 
     var select = function() {
       if (self.props.isUploadInProgress) {
@@ -76,8 +79,8 @@ var UploadSettings = React.createClass({
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
-          <div className="UploadSettings-left UploadSettings-uploadGroup--label">{"Upload data for"}</div>
-          <div className="UploadSettings-right UploadSettings-uploadGroup--list">
+          <div className="UploadSettings-uploadGroup--label">{text}</div>
+          <div className={'UploadSettings-uploadGroup--list UploadSettings--' + this.props.page}>
             {select}
           </div>
         </div>

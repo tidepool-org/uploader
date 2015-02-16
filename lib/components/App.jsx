@@ -27,6 +27,7 @@ var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
 var UploadSettings = require('./UploadSettings.jsx');
+var DeviceSelection = require('./DeviceSelection.jsx');
 
 var config = require('../config');
 
@@ -68,9 +69,10 @@ var App = React.createClass({
     }
 
     return <LoggedInAs
-      onClicked={this.appActions.toggleDropMenu.bind(this.appActions)}
       dropMenu={this.state.dropMenu}
       user={this.state.user}
+      onClicked={this.appActions.toggleDropMenu.bind(this.appActions)}
+      onChooseDevices={this.appActions.chooseDevices.bind(this.appActions)}
       onLogout={this.appActions.logout.bind(this.appActions)} />;
   },
 
@@ -85,14 +87,24 @@ var App = React.createClass({
       return <Login onLogin={this.appActions.login.bind(this.appActions)} />;
     }
 
+    if (page === 'settings') {
+      return (
+        <div>
+          {this.renderUploadSettings()}
+          <DeviceSelection
+            uploads={this.state.uploads}
+            targetId={this.state.targetId}
+            targetDevices={this.state.targetDevices}
+            onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
+            onDone={this.appActions.storeTargetDevices.bind(this.appActions)} />
+        </div>
+      );
+    }
+
     if (page === 'main') {
       return (
         <div>
-          <UploadSettings
-            user={this.state.user}
-            targetId={this.state.targetId}
-            isUploadInProgress={this.appState.hasUploadInProgress()}
-            onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+          {this.renderUploadSettings()}
           <UploadList
             uploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
@@ -134,6 +146,17 @@ var App = React.createClass({
     return <Scan
       ref="scan"
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
+  },
+
+  renderUploadSettings: function() {
+    return (
+      <UploadSettings
+        page={this.state.page}
+        user={this.state.user}
+        targetId={this.state.targetId}
+        isUploadInProgress={this.appState.hasUploadInProgress()}
+        onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+    );
   },
 
   renderViewDataLink: function() {
