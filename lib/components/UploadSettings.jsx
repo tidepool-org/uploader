@@ -37,18 +37,12 @@ var UploadSettings = React.createClass({
       return null;
     }
     var self = this;
-    var defaultGroup = this.props.user;
-    var sortedGroups = [];
-    // make sure logged-in user is always at the top of the dropdown
-    for (var i = 0; i < this.props.user.uploadGroups.length; ++i) {
-      var group = this.props.user.uploadGroups[i];
-      if (group.userid === this.props.user.userid) {
-        sortedGroups.unshift(group);
-      }
-      else {
-        sortedGroups.push(group);
-      }
-    }
+
+    // sort users alpha by full name
+    var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
+      return group.profile.fullName;
+    });
+
     var options = _.map(sortedGroups, function(group) {
       return (
         <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
@@ -60,14 +54,14 @@ var UploadSettings = React.createClass({
     var select = function() {
       if (self.props.isUploadInProgress) {
         return (
-          <select disabled onChange={self.props.onGroupChange} value={defaultGroup.userid} ref='uploadGroupSelect'>
+          <select disabled onChange={self.props.onGroupChange} value={self.props.targetId} ref='uploadGroupSelect'>
             {options}
           </select>
         );
       }
 
       return (
-        <select onChange={self.props.onGroupChange} defaultValue={defaultGroup.userid} ref='uploadGroupSelect'>
+        <select onChange={self.props.onGroupChange} defaultValue={self.props.targetId} ref='uploadGroupSelect'>
           {options}
         </select>
       );
