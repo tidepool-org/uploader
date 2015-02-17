@@ -22,17 +22,22 @@ var Upload = require('./Upload.jsx');
 var UploadList = React.createClass({
   propTypes: {
     uploads: React.PropTypes.array.isRequired,
+    targetedUploads: React.PropTypes.array.isRequired,
     onUpload: React.PropTypes.func.isRequired,
-    onReset: React.PropTypes.func.isRequired
+    onReset: React.PropTypes.func.isRequired,
+    readFile: React.PropTypes.func.isRequired
   },
 
   render: function() {
     var self = this;
-    var nodes = _.map(this.props.uploads, function(upload, index){
+    var nodes = _.map(this.props.targetedUploads, function(target){
+      var index = _.findIndex(self.props.uploads, function(upload) {
+        return upload.key === target.key;
+      });
       return (
         <div key={index} className="UploadList-item">
           <Upload
-            upload={upload}
+            upload={target}
             onUpload={self.props.onUpload.bind(null, index)}
             onReset={self.props.onReset.bind(null, index)}
             readFile={self.props.readFile.bind(null, index)} />
