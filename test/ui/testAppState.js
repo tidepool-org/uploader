@@ -122,10 +122,14 @@ describe('appState', function() {
 
   describe('uploadsWithFlags', function() {
 
+    beforeEach(function() {
+      app.state.targetDevices = ['foo', 'bar', 'balderdash', 'Kiwi'];
+    });
+
     it('adds disabled flag to all uploads not in progress if one is in progress', function() {
       app.state.uploads = [
-        {},
-        {progress: {}}
+        {key: 'foo'},
+        {key: 'bar', progress: {}}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -136,8 +140,8 @@ describe('appState', function() {
 
     it('adds disabled and disconnected flags to disconnected devices', function() {
       app.state.uploads = [
-        {source: {type: 'device', connected: false}},
-        {source: {type: 'device', connected: true}, progress: {}}
+        {key: 'foo', source: {type: 'device', connected: false}},
+        {key: 'bar', source: {type: 'device', connected: true}, progress: {}}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -150,8 +154,8 @@ describe('appState', function() {
 
     it('adds carelink flag to carelink uploads', function() {
       app.state.uploads = [
-        {source: {type: 'carelink'}},
-        {source: {type: 'device'}}
+        {key: 'foo', source: {type: 'carelink'}},
+        {key: 'bar', source: {type: 'device'}}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -162,9 +166,9 @@ describe('appState', function() {
 
     it('adds uploading flag to uploads in progress', function() {
       app.state.uploads = [
-        {progress: {}},
-        {progress: {finish: '2014-01-31T12:00:00Z'}},
-        {}
+        {key: 'foo', progress: {}},
+        {key: 'bar', progress: {finish: '2014-01-31T12:00:00Z'}},
+        {key: 'balderdash'}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -176,10 +180,10 @@ describe('appState', function() {
 
     it('adds fetchingCarelinkData flag to carelink upload just starting', function() {
       app.state.uploads = [
-        {source: {type: 'carelink'}, progress: {step: 'start'}},
-        {source: {type: 'device'}, progress: {step: 'start'}},
-        {source: {type: 'carelink'}, progress: {step: 'start', finish: '2014-01-31T12:00:00Z'}},
-        {source: {type: 'carelink'}, progress: {step: 'upload'}}
+        {key: 'foo', source: {type: 'carelink'}, progress: {step: 'start'}},
+        {key: 'bar', source: {type: 'device'}, progress: {step: 'start'}},
+        {key: 'balderdash', source: {type: 'carelink'}, progress: {step: 'start', finish: '2014-01-31T12:00:00Z'}},
+        {key: 'Kiwi', source: {type: 'carelink'}, progress: {step: 'upload'}}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -192,8 +196,8 @@ describe('appState', function() {
 
     it('adds completed flag if current instance completed', function() {
       app.state.uploads = [
-        {progress: {finish: '2014-01-31T12:00:00Z'}},
-        {}
+        {key: 'foo', progress: {finish: '2014-01-31T12:00:00Z'}},
+        {key: 'bar'}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -204,8 +208,8 @@ describe('appState', function() {
 
     it('adds successful flag if current instance successful', function() {
       app.state.uploads = [
-        {progress: {finish: '2014-01-31T12:00:00Z', success: true}},
-        {}
+        {key: 'foo', progress: {finish: '2014-01-31T12:00:00Z', success: true}},
+        {key: 'bar'}
       ];
 
       var uploads = appState.uploadsWithFlags();
@@ -216,8 +220,8 @@ describe('appState', function() {
 
     it('adds failed flag if current instance failed', function() {
       app.state.uploads = [
-        {progress: {finish: '2014-01-31T12:00:00Z', error: 'oops'}},
-        {}
+        {key: 'foo', progress: {finish: '2014-01-31T12:00:00Z', error: 'oops'}},
+        {key: 'bar'}
       ];
 
       var uploads = appState.uploadsWithFlags();

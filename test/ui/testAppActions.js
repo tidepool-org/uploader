@@ -34,7 +34,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = {};
+    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}});
     api = {};
 
     jellyfish = {};
@@ -68,8 +68,6 @@ describe('appActions', function() {
 
   describe('load', function() {
     beforeEach(function() {
-      localStore.getInitialState = function() {};
-      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
       device.init = function(options, cb) { cb(); };
       carelink.init = function(options, cb) { cb(); };
@@ -82,7 +80,6 @@ describe('appActions', function() {
     });
 
     it('initializes all I/O services', function(done) {
-      localStore.getInitialState = function() {};
       var initialized = {};
       var mark = function(name, cb) {
         initialized[name] = true;
@@ -104,6 +101,8 @@ describe('appActions', function() {
     });
 
     it('goes to login page if no session found', function(done) {
+      localStore.getInitialState = function() {};
+      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
 
       appActions.load(function(err) {
@@ -113,8 +112,11 @@ describe('appActions', function() {
       });
     });
 
-    it('goes to main page if local session found', function(done) {
+    it('goes to main page if local session found and targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -164,17 +166,16 @@ describe('appActions', function() {
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
-    it('goes to main page if login successful', function(done) {
+    it('goes to settings page if login successful and targeted devices not fetched from localStore', function() {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
-        expect(app.state.page).to.equal('main');
+        expect(app.state.page).to.equal('settings');
         expect(loginMetricsCall).to.not.be.empty;
         expect(loginMetricsCall.one).to.equal(appActions.trackedState.LOGIN_SUCCESS);
-        done();
       });
     });
 
-    it('loads logged-in user if login successful', function(done) {
+    it('loads logged-in user if login successful', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
@@ -188,7 +189,6 @@ describe('appActions', function() {
           profile: {fullName: 'bob'},
           uploadGroups: [ { userid: '11' } ]
         });
-        done();
       });
     });
 
@@ -204,7 +204,7 @@ describe('appActions', function() {
       });
     });
 
-    it('sets target user id as logged-in user id', function(done) {
+    it('sets target user id as logged-in user id', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
@@ -212,7 +212,6 @@ describe('appActions', function() {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.targetId).to.equal('11');
-        done();
       });
     });
 
