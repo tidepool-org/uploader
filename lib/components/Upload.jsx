@@ -158,7 +158,7 @@ var Upload = React.createClass({
     return (
       <div className="Upload-button">
         <button
-          className="btn btn-secondary"
+          className="btn btn-primary"
           disabled={disabled}
           onClick={this.handleUpload}>{text}</button>
       </div>
