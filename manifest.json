@@ -81,8 +81,8 @@
           "driverId": "OneTouchUltra2",
           "bitrate": 9600,
           "mode": "FTDI",
-          "vendorId": 9999,
-          "productId": 88888
+          "vendorId": 0403,
+          "productId": 6001
         },
       ]
     }
