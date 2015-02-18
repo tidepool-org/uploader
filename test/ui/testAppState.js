@@ -126,6 +126,16 @@ describe('appState', function() {
       app.state.targetDevices = ['foo', 'bar', 'balderdash', 'Kiwi'];
     });
 
+    it('only includes uploads with keys that are in the current user\'s targeted uploads', function() {
+      app.state.uploads = [
+        {key: 'foo'},
+        {key: 'me'}
+      ];
+
+      var uploads = appState.uploadsWithFlags();
+      expect(uploads).to.have.length(1);
+    });
+
     it('adds disabled flag to all uploads not in progress if one is in progress', function() {
       app.state.uploads = [
         {key: 'foo'},

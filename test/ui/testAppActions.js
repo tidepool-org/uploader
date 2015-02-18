@@ -125,6 +125,19 @@ describe('appActions', function() {
       });
     });
 
+    it('goes to settings page if local session found and no targeted devices fetched from localStore', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('settings');
+        done();
+      });
+    });
+
     it('loads logged-in user if local session found', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
@@ -166,16 +179,49 @@ describe('appActions', function() {
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
-    it('goes to settings page if login successful and targeted devices not fetched from localStore', function() {
+    it('goes to settings page by default', function(done) {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.page).to.equal('settings');
         expect(loginMetricsCall).to.not.be.empty;
         expect(loginMetricsCall.one).to.equal(appActions.trackedState.LOGIN_SUCCESS);
+        done();
       });
     });
 
-    it('loads logged-in user if login successful', function() {
+    it('goes to main page if login successful and targeted devices fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '11'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('goes to settings page if login successful and targeted devices not fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '12'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('settings');
+        done();
+      });
+    });
+
+    it('loads logged-in user if login successful', function(done) {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
@@ -189,6 +235,7 @@ describe('appActions', function() {
           profile: {fullName: 'bob'},
           uploadGroups: [ { userid: '11' } ]
         });
+        done();
       });
     });
 
@@ -204,7 +251,7 @@ describe('appActions', function() {
       });
     });
 
-    it('sets target user id as logged-in user id', function() {
+    it('sets target user id as logged-in user id', function(done) {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
@@ -212,6 +259,7 @@ describe('appActions', function() {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.targetId).to.equal('11');
+        done();
       });
     });
 
@@ -437,6 +485,75 @@ describe('appActions', function() {
       });
     });
 
+  });
+
+  describe('chooseDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        dropMenu: true,
+        page: 'main'
+      };
+    });
+
+    it('redirects to settings page and clears dropMenu', function() {
+      appActions.chooseDevices();
+      expect(app.state.dropMenu).to.be.false;
+      expect(app.state.page).to.equal('settings');
+    });
+  });
+
+  describe('addOrRemoveTargetDevice', function() {
+    beforeEach(function() {
+      app.state = {
+        targetDevices: []
+      };
+    });
+
+    it('adds the device if the event target is checked', function() {
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: true}});
+      expect(app.state.targetDevices).to.deep.equal(['foo']);
+    });
+
+    it('removes the device if the event target is not checked', function() {
+      app.state.targetDevices = ['foo', 'Kiwi'];
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: false}});
+      appActions.addOrRemoveTargetDevice({target: {value: 'bar', checked: false}});
+      expect(app.state.targetDevices).to.deep.equal(['Kiwi']);
+    });
+  });
+
+  describe('storeTargetDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        page: 'settings',
+        targetDevices: ['foo', 'bar']
+      };
+    });
+
+    it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
+      appActions.storeTargetDevices('11');
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+    });
+
+    it('also redirects to main page', function() {
+      expect(app.state.page).to.equal('settings');
+      appActions.storeTargetDevices('11');
+      expect(app.state.page).to.equal('main');
+    });
+  });
+
+  describe('readFile', function() {
+    beforeEach(function() {
+      app.state = {
+        uploads: [{key: 'foo'}]
+      };
+    });
+
+    it('should return an error if the filename doesn\'t end in the specified extension', function() {
+      var err = appActions.readFile(0, {name: 'foo.bar'}, '.txt');
+      expect(err.message).to.equal('Please choose a file ending in .txt');
+    });
   });
 
   describe('uploadDevice', function() {
