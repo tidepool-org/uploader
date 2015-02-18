@@ -106,6 +106,7 @@ var App = React.createClass({
         <div>
           {this.renderUploadSettings()}
           <UploadList
+            targetId={this.state.targetId}
             uploads={this.state.uploads}
             targetedUploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
