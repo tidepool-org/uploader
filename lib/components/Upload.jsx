@@ -35,8 +35,7 @@ var Upload = React.createClass({
   getInitialState: function() {
     return {
       carelinkFormIncomplete: true,
-      blockModeFileNotChosen: true,
-      blockModeFileError: null
+      blockModeFileNotChosen: true
     };
   },
 
@@ -106,20 +105,9 @@ var Upload = React.createClass({
     }
 
     return (
-      <div>
-        <input ref="file" type="file" onChange={this.onBlockModeInputChange}/>
-        {this.renderBlockModeInputError()}
+      <div className="Upload-inputWrapper">
+        <input className="Upload-fileinput" ref="file" type="file" onChange={this.onBlockModeInputChange}/>
       </div>
-    );
-  },
-
-  renderBlockModeInputError: function() {
-    if (_.isEmpty(this.state.blockModeFileError)) {
-      return null;
-    }
-
-    return (
-      <div className="Upload-status Upload-status--error">{this.state.blockModeFileError}</div>
     );
   },
 
@@ -127,8 +115,7 @@ var Upload = React.createClass({
     var file = e.target.files[0];
     var fileResult = this.props.readFile(file, this.props.upload.source.extension);
     this.setState({
-      blockModeFileNotChosen: fileResult === true ? false : true,
-      blockModeFileError: fileResult instanceof Error ? fileResult.message : null
+      blockModeFileNotChosen: fileResult === true ? false : true
     });
   },
 
@@ -228,6 +215,10 @@ var Upload = React.createClass({
 
       return <div className="Upload-status Upload-status--error">{'The upload didn\'t work.'}</div>;
     }
+    if (this.isBlockModeFileChosen()) {
+      return <div className="Upload-status Upload-status--uploading">{this.props.upload.file.name}</div>;
+    }
+
     return null;
   },
 
@@ -308,6 +299,17 @@ var Upload = React.createClass({
     return this.props.upload.source.type === 'block';
   },
 
+  isBlockModeFileChosen: function() {
+    if (this.state.blockModeFileNotChosen) {
+      return false;
+    }
+    else {
+      if (this.props.upload.source.type === 'block') {
+        return this.props.upload.file && !_.isEmpty(this.props.upload.file.name);
+      }
+    }
+  },
+
   isCarelinkUpload: function() {
     return this.props.upload.carelink;
   },
@@ -360,6 +362,9 @@ var Upload = React.createClass({
       filedata: this.props.upload.file.data
     };
     this.props.onUpload(options);
+    this.setState({
+      blockModeFileNotChosen: true
+    });
   },
 
   handleReset: function(e) {
