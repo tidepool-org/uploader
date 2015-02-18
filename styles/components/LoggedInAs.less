@@ -13,10 +13,21 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+.interactive {
+  &:hover,
+  &:focus,
+  &:active {
+    color: @gray-text;
+    text-decoration: none;
+  }
+};
+
 .LoggedInAs {
   flex-flow: row wrap;
   justify-content: flex-end;
   margin-top: 20px;
+
+  .interactive;
 }
 
 .LoggedInAs-logout {
@@ -33,12 +44,7 @@ a.LoggedInAs-link {
     margin-right: 1px;
   }
 
-  &:hover,
-  &:focus,
-  &:active {
-    color: @gray-text;
-    text-decoration: none;
-  }
+  .interactive;
 }
 
 .Menu-arrow-down {
