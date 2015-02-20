@@ -37,18 +37,15 @@ var UploadSettings = React.createClass({
       return null;
     }
     var self = this;
-    var defaultGroup = this.props.user.uploadGroups[0];
-    var options = _.map(this.props.user.uploadGroups, function(group, index){
-      if (self.props.targetId && self.props.targetId === group.userid) {
-        defaultGroup = group;
 
-        return (
-          <option selected value={group.userid}>{group.profile.fullName}</option>
-        );
-      }
+    // sort users alpha by full name
+    var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
+      return group.profile.fullName;
+    });
 
+    var options = _.map(sortedGroups, function(group) {
       return (
-        <option value={group.userid}>{group.profile.fullName}</option>
+        <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
       );
     });
 
@@ -57,14 +54,14 @@ var UploadSettings = React.createClass({
     var select = function() {
       if (self.props.isUploadInProgress) {
         return (
-          <select disabled onChange={self.props.onGroupChange} value={defaultGroup.userid} ref='uploadGroupSelect'>
+          <select disabled onChange={self.props.onGroupChange} value={self.props.targetId} ref='uploadGroupSelect'>
             {options}
           </select>
         );
       }
 
       return (
-        <select onChange={self.props.onGroupChange} value={defaultGroup.userid} ref='uploadGroupSelect'>
+        <select onChange={self.props.onGroupChange} defaultValue={self.props.targetId} ref='uploadGroupSelect'>
           {options}
         </select>
       );

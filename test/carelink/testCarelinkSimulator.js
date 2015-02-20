@@ -765,8 +765,8 @@ describe('carelinkSimulator.js', function(){
   });
 
   describe('deviceMeta', function() {
-    var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual', timezoneOffset: 0 };
-    var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: 'manual', timezoneOffset: 0 };
+    var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
+    var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
 
     it('sets up the previous', function(){
       simulator.suspend(suspend);
@@ -891,7 +891,7 @@ describe('carelinkSimulator.js', function(){
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
-           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: 'manual', timezoneOffset: 0 });
+           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 });
            expect(getBasals()).deep.equals(
              attachPrev(
                [
@@ -920,7 +920,7 @@ describe('carelinkSimulator.js', function(){
                ])
            );
 
-           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: 'manual', timezoneOffset: 0 });
+           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 });
 
            expect(getBasals()).deep.equals(
              attachPrev(
@@ -1102,13 +1102,13 @@ describe('carelinkSimulator.js', function(){
         timezoneOffset: 0
       };
       var suspend = {
-        reason: 'manual',
+        reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:05:00.000Z',
         deviceTime: '2014-09-25T00:05:00'
       };
       var resume = {
-        reason: 'manual',
+        reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:12:00.000Z',
         deviceTime: '2014-09-25T00:12:00'
@@ -1212,13 +1212,13 @@ describe('carelinkSimulator.js', function(){
         duration: 1800000
       };
       var suspend = {
-        reason: 'manual',
+        reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:05:00.000Z',
         deviceTime: '2014-09-25T00:05:00'
       };
       var resume = {
-        reason: 'manual',
+        reason: {'resumed': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:12:00.000Z',
         deviceTime: '2014-09-25T00:12:00'
@@ -1476,7 +1476,7 @@ describe('carelinkSimulator.js', function(){
         scheduleName: 'standard'
       };
       var suspend = {
-        reason: 'manual',
+        reason: {'suspended': 'manual'},
         timezoneOffset: -600,
         time: '2014-03-16T02:23:19.000Z',
         deviceTime: '2014-03-15T16:23:19'
@@ -1489,7 +1489,7 @@ describe('carelinkSimulator.js', function(){
         scheduleName: 'standard'
       };
       var resume = {
-        reason: 'manual',
+        reason: {'resumed': 'manual'},
         timezoneOffset: -600,
         time: '2014-03-16T03:18:35.000Z',
         deviceTime: '2014-03-15T17:18:35'
@@ -1634,7 +1634,7 @@ describe('carelinkSimulator.js', function(){
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
            simulator.suspend({ time: '2014-09-25T04:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
-              reason: 'manual', timezoneOffset: -240 });
+              reason: {'suspended': 'manual'}, timezoneOffset: -240 });
            expect(getBasals()).deep.equals(
              attachPrev(
                [
@@ -1668,7 +1668,7 @@ describe('carelinkSimulator.js', function(){
            );
 
            simulator.resume({ time: '2014-09-25T05:10:00.000Z', deviceTime: '2014-09-25T01:10:00',
-            reason: 'manual', timezoneOffset: -240 });
+            reason: {'resumed': 'manual'}, timezoneOffset: -240 });
 
            expect(getBasals()).deep.equals(
              attachPrev(
@@ -1867,28 +1867,32 @@ describe('carelinkSimulator.js', function(){
         };
         // alarm_suspend
         var suspend1 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:00.000Z',
           deviceTime: '2014-09-25T00:05:00'
         };
         // low_suspend_mode_1
         var suspend2 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:05.000Z',
           deviceTime: '2014-09-25T00:05:05'
         };
         // low_suspend_no_response
         var suspend3 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:10.000Z',
           deviceTime: '2014-09-25T00:05:10'
         };
         // low_suspend_user_selected
         var suspend4 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:15.000Z',
           deviceTime: '2014-09-25T00:05:15'
@@ -1904,13 +1908,14 @@ describe('carelinkSimulator.js', function(){
         var resume1 = {
           time: '2014-09-25T00:05:20.000Z',
           deviceTime: '2014-09-25T00:05:20',
-          reason: 'user_restart_basal',
+          reason: {resumed: 'manual'},
+          payload: {cause: 'user_restart_basal'},
           timezoneOffset: 0
         };
         var resume2 = {
           time: '2014-09-25T00:05:30.000Z',
           deviceTime: '2014-09-25T00:05:30',
-          reason: 'manual',
+          reason: {resumed: 'manual'},
           timezoneOffset: 0
         };
         var basal3 = {
@@ -1955,7 +1960,7 @@ describe('carelinkSimulator.js', function(){
                 suspendBasal,
                 _.assign({}, resume1, {
                   type: 'deviceMeta', subType: 'status',
-                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                  status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
                 _.assign({}, basal3, {type: 'basal', deliveryType: 'scheduled'})
@@ -1997,7 +2002,7 @@ describe('carelinkSimulator.js', function(){
                 _.assign({}, suspendBasal, {suppressed: tempBasal}),
                 _.assign({}, resume1, {
                   type: 'deviceMeta', subType: 'status',
-                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                  status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
                 _.assign({}, backToScheduled, {type: 'basal', deliveryType: 'scheduled', duration: 1680000}),
@@ -2043,7 +2048,7 @@ describe('carelinkSimulator.js', function(){
                 secondSuspendBasal,
                 _.assign({}, resume1, {
                   type: 'deviceMeta', subType: 'status',
-                  status: 'resumed', previous: expectedSuspend, reason: 'manual'
+                  status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
                 _.assign({}, basal3, {type: 'basal', deliveryType: 'scheduled'})
@@ -2094,14 +2099,16 @@ describe('carelinkSimulator.js', function(){
         };
         // alarm_suspend
         var suspend1 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:00.000Z',
           deviceTime: '2014-09-25T00:05:00'
         };
         // low_suspend_no_response
         var suspend2 = {
-          reason: 'low_glucose',
+          reason: {suspended: 'automatic'},
+          payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:10.000Z',
           deviceTime: '2014-09-25T00:05:10'
@@ -2110,7 +2117,8 @@ describe('carelinkSimulator.js', function(){
         var resume = {
           time: '2014-09-25T02:05:00.000Z',
           deviceTime: '2014-09-25T02:05:00',
-          reason: 'automatic',
+          reason: {resumed: 'automatic'},
+          payload: {cause: 'auto_resume_reduced', user_intervention: 'ignored'},
           timezoneOffset: 0
         };
         var basal2 = {
