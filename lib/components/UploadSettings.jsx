@@ -26,15 +26,11 @@ var UploadSettings = React.createClass({
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
-
-  // Can I only upload for myself
-  onlyMe: function(){
-    return (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid);
-  },
-
   render: function() {
-    //do we want to render??
-    if (_.isEmpty(this.props.user.uploadGroups) || this.onlyMe()) {
+    // we're already doing a check to see if we want to render in App.jsx
+    // but this is an extra measure of protection against trying to render
+    // when we don't have the groups to do so
+    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
       return null;
     }
     var self = this;

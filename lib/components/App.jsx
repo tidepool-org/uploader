@@ -49,6 +49,11 @@ var App = React.createClass({
     this.device = require('../core/device');
   },
 
+  onlyMe: function() {
+    var self = this;
+    return (!_.isEmpty(self.state.user.uploadGroups) && this.state.user.uploadGroups.length === 1);
+  },
+
   render: function() {
     return (
       <div className={'App App--' + this.state.page} onClick={this.appActions.hideDropMenu.bind(this.appActions)}>
@@ -87,16 +92,19 @@ var App = React.createClass({
       return <Login onLogin={this.appActions.login.bind(this.appActions)} />;
     }
 
+    var uploadSettings = this.onlyMe() ? null : this.renderUploadSettings();
+
     if (page === 'settings') {
       return (
         <div>
-          {this.renderUploadSettings()}
+          {uploadSettings}
           <DeviceSelection
             uploads={this.state.uploads}
             targetId={this.state.targetId}
             targetDevices={this.state.targetDevices}
             onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
-            onDone={this.appActions.storeTargetDevices.bind(this.appActions)} />
+            onDone={this.appActions.storeTargetDevices.bind(this.appActions)}
+            groupsDropdown={!this.onlyMe()} />
         </div>
       );
     }
@@ -104,14 +112,15 @@ var App = React.createClass({
     if (page === 'main') {
       return (
         <div>
-          {this.renderUploadSettings()}
+          {uploadSettings}
           <UploadList
             targetId={this.state.targetId}
             uploads={this.state.uploads}
             targetedUploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
             onReset={this.appActions.reset.bind(this.appActions)}
-            readFile={this.appActions.readFile.bind(this.appActions)} />
+            readFile={this.appActions.readFile.bind(this.appActions)}
+            groupsDropdown={!this.onlyMe()} />
           {this.renderViewDataLink()}
         </div>
       );

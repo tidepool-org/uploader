@@ -17,6 +17,7 @@
 
 var _ = require('lodash');
 var React = require('react');
+var cx = require('react/lib/cx');
 var Upload = require('./Upload.jsx');
 
 var UploadList = React.createClass({
@@ -25,11 +26,18 @@ var UploadList = React.createClass({
     targetedUploads: React.PropTypes.array.isRequired,
     onUpload: React.PropTypes.func.isRequired,
     onReset: React.PropTypes.func.isRequired,
-    readFile: React.PropTypes.func.isRequired
+    readFile: React.PropTypes.func.isRequired,
+    groupsDropdown: React.PropTypes.bool.isRequired
   },
 
   render: function() {
     var self = this;
+    var uploadListClasses = cx({
+      UploadList: true,
+      'UploadList--onlyme': !this.props.groupsDropdown,
+      'UploadList--groups': this.props.groupsDropdown
+    });
+
     var nodes = _.map(this.props.targetedUploads, function(target){
       var index = _.findIndex(self.props.uploads, function(upload) {
         return upload.key === target.key;
@@ -45,7 +53,7 @@ var UploadList = React.createClass({
       );
     });
 
-    return <div className="UploadList">{nodes}</div>;
+    return <div className={uploadListClasses}>{nodes}</div>;
   }
 });
 
