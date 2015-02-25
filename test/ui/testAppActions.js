@@ -34,7 +34,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = {};
+    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}});
     api = {};
 
     jellyfish = {};
@@ -68,8 +68,6 @@ describe('appActions', function() {
 
   describe('load', function() {
     beforeEach(function() {
-      localStore.getInitialState = function() {};
-      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
       device.init = function(options, cb) { cb(); };
       carelink.init = function(options, cb) { cb(); };
@@ -82,7 +80,6 @@ describe('appActions', function() {
     });
 
     it('initializes all I/O services', function(done) {
-      localStore.getInitialState = function() {};
       var initialized = {};
       var mark = function(name, cb) {
         initialized[name] = true;
@@ -104,6 +101,8 @@ describe('appActions', function() {
     });
 
     it('goes to login page if no session found', function(done) {
+      localStore.getInitialState = function() {};
+      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
 
       appActions.load(function(err) {
@@ -113,12 +112,28 @@ describe('appActions', function() {
       });
     });
 
-    it('goes to main page if local session found', function(done) {
+    it('goes to main page if local session found and targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
         expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('goes to settings page if local session found and no targeted devices fetched from localStore', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('settings');
         done();
       });
     });
@@ -164,12 +179,44 @@ describe('appActions', function() {
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
-    it('goes to main page if login successful', function(done) {
+    it('goes to settings page by default', function(done) {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
-        expect(app.state.page).to.equal('main');
+        expect(app.state.page).to.equal('settings');
         expect(loginMetricsCall).to.not.be.empty;
         expect(loginMetricsCall.one).to.equal(appActions.trackedState.LOGIN_SUCCESS);
+        done();
+      });
+    });
+
+    it('goes to main page if login successful and targeted devices fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '11'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('goes to settings page if login successful and targeted devices not fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '12'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('settings');
         done();
       });
     });
@@ -440,6 +487,76 @@ describe('appActions', function() {
 
   });
 
+  describe('chooseDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        dropMenu: true,
+        page: 'main'
+      };
+    });
+
+    it('redirects to settings page and clears dropMenu', function() {
+      appActions.chooseDevices();
+      expect(app.state.dropMenu).to.be.false;
+      expect(app.state.page).to.equal('settings');
+    });
+  });
+
+  describe('addOrRemoveTargetDevice', function() {
+    beforeEach(function() {
+      app.state = {
+        targetDevices: []
+      };
+    });
+
+    it('adds the device if the event target is checked', function() {
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: true}});
+      expect(app.state.targetDevices).to.deep.equal(['foo']);
+    });
+
+    it('removes the device if the event target is not checked', function() {
+      app.state.targetDevices = ['foo', 'Kiwi'];
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: false}});
+      appActions.addOrRemoveTargetDevice({target: {value: 'bar', checked: false}});
+      expect(app.state.targetDevices).to.deep.equal(['Kiwi']);
+    });
+  });
+
+  describe('storeTargetDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        page: 'settings',
+        targetDevices: ['foo', 'bar']
+      };
+    });
+
+    it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
+      appActions.storeTargetDevices('11');
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+    });
+
+    it('also redirects to main page', function() {
+      expect(app.state.page).to.equal('settings');
+      appActions.storeTargetDevices('11');
+      expect(app.state.page).to.equal('main');
+    });
+  });
+
+  describe('readFile', function() {
+    beforeEach(function() {
+      app.state = {
+        uploads: [{key: 'foo'}]
+      };
+    });
+
+    it('should return an error if the filename doesn\'t end in the specified extension', function() {
+      var err = appActions.readFile(0, '11', {name: 'foo.bar'}, '.txt');
+      expect(err.message).to.equal('Please choose a file ending in .txt');
+      expect(err.code).to.equal(404);
+    });
+  });
+
   describe('uploadDevice', function() {
     var uploadDeviceMetricsCall = {};
     var uploadErrorCall = {};
@@ -622,6 +739,40 @@ describe('appActions', function() {
 
       appActions.reset(0);
       expect(app.state.uploads[0].progress).to.not.exists;
+    });
+
+  });
+
+  describe('changeGroup', function() {
+
+    it('updates user id for uploading', function() {
+      app.state.targetId = 'foo';
+      appActions.changeGroup({target: {value: 'bar'}});
+      expect(app.state.targetId).to.equal('bar');
+    });
+
+  });
+
+  describe('hideDropMenu', function() {
+
+    it('sets the boolean for the dropdown menu to false, always', function() {
+      app.state.dropMenu = true;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+    });
+
+  });
+
+  describe('toggleDropMenu', function() {
+
+    it('toggles the boolean for the dropdown menu', function() {
+      app.state.dropMenu = true;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.true;
     });
 
   });

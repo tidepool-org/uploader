@@ -90,6 +90,43 @@
   justify-content: flex-end;
 }
 
+input[type=file] {
+  &:focus {
+    // Disable default WebKit focus style
+    outline: 0;
+    border-color: @form-control-border-color;
+  }
+}
+
+.Upload-inputWrapper {
+  width: 116px;
+  position: relative;
+  left: 111px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+// hide Chrome-default filepicker button
+.Upload-fileinput::-webkit-file-upload-button {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+// replace with a button consistent with rest of app
+.Upload-fileinput::before {
+  visibility: visible;
+  content: 'Choose file';
+  .btn;
+  .btn-secondary;
+}
+
+.Upload-fileinput:hover::before,
+.Upload-fileinput:focus::before,
+.Upload-fileinput:active::before {
+  border-color: @purple-light;
+}
+
 .Upload-helpText {
   padding-bottom: 10px;
 }
