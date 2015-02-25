@@ -31,7 +31,9 @@
         "time": "2014-11-17T02:17:50.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "reason": "manual"
+        "reason": {
+            "suspended": "manual"
+        }
     },
     {
         "type": "resume",
@@ -40,6 +42,8 @@
         "time": "2014-11-17T02:28:43.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "reason": "manual"
+        "reason": {
+            "resumed": "manual"
+        }
     }
 ]
