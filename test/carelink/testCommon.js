@@ -27,6 +27,7 @@ describe('common', function() {
   describe('isSuspectedNewDevice', function() {
     it('should be a function', function() {
       expect(common.isSuspectedNewDevice).to.exist;
+      expect(typeof common.isSuspectedNewDevice).to.equal('function');
     });
 
     it('should return true on a settings object with only units', function() {
@@ -77,6 +78,37 @@ describe('common', function() {
         }
       };
       expect(common.isSuspectedNewDevice(notEmptyObj)).to.be.false;
+    });
+  });
+
+  describe('isMgDL', function() {
+    it('should be a function', function() {
+      expect(common.isMgDL).to.exist;
+      expect(typeof common.isMgDL).to.equal('function');
+    });
+
+    it('should return true on `mg/dL`', function() {
+      expect(common.isMgDL('mg/dL')).to.be.true;
+    });
+
+    it('should return false on `mmol/L`', function() {
+      expect(common.isMgDL('mmol/L')).to.be.false;
+    });
+
+    it('should throw an error on `foo`', function() {
+      var fn = function() { common.isMgDL('foo'); };
+      expect(fn).to.throw(Error);
+    });
+  });
+
+  describe('convertBackToMmol', function() {
+    it('should be a function', function() {
+      expect(common.convertBackToMmol).to.exist;
+      expect(typeof common.convertBackToMmol).to.equal('function');
+    });
+
+    it('should return a floating-point number with one significant digit', function() {
+      expect(String(common.convertBackToMmol(99.08))).to.equal('5.5');
     });
   });
 });
