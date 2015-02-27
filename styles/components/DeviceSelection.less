@@ -1,0 +1,43 @@
+.DeviceSelection {
+  min-height: 300px;
+  justify-content: center;
+}
+
+.DeviceSelection-headline {
+  width: 250px;
+  margin: 20px auto 20px auto;
+}
+
+@form-height: 240px;
+
+.DeviceSelection-form {
+  .box-flex();
+  margin: 0px auto 20px auto;
+  .scroll();
+}
+
+.DeviceSelection-form--onlyme {
+  max-height: @form-height + @groups-dropdown-height;
+}
+
+.DeviceSelection-form--groups {
+  max-height: @form-height;
+}
+
+.Device-checkbox {
+  flex-flow: row wrap;
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 5px;
+  }
+
+  margin-left: 15px;
+  margin-bottom: 30px;
+}
+
+.DeviceSelection-button {
+  width: 150px;
+  margin: 0px auto 5px auto;
+}

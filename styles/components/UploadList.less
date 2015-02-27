@@ -13,8 +13,19 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@base-height: 305px;
+
 .UploadList {
   padding-top: 20px;
+  .scroll();
+}
+
+.UploadList--onlyme {
+  max-height: @base-height + @groups-dropdown-height;
+}
+
+.UploadList--groups {
+  max-height: @base-height;
 }
 
 .UploadList-item {
