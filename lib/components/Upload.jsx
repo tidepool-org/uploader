@@ -158,7 +158,7 @@ var Upload = React.createClass({
     return (
       <div className="Upload-button">
         <button
-          className="btn btn-secondary"
+          className="btn btn-primary"
           disabled={disabled}
           onClick={this.handleUpload}>{text}</button>
       </div>
@@ -216,7 +216,7 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--error">{'The upload didn\'t work.'}</div>;
     }
     if (this.isBlockModeFileChosen()) {
-      return <div className="Upload-status Upload-status--uploading">{this.props.upload.file.name}</div>;
+      return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
     }
 
     return null;
