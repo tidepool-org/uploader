@@ -45,7 +45,12 @@ exports.make = function(config) {
     smbg: appendToEvents('smbg'),
     wizard: appendToEvents('wizard'),
     getEvents: function(){
-      return events;
+      return _.map(events, function(event) {
+        if (event.type === 'wizard') {
+          event.bolus = _.omit(event.bolus, 'jaebPayload');
+        }
+        return _.omit(event, 'jaebPayload');
+      });
     }
   };
 };
