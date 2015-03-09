@@ -777,4 +777,39 @@ describe('appActions', function() {
 
   });
 
+  describe('_handleUploadError', function(){
+
+    var uploadDeviceMetricsCall = {};
+    var uploadErrorCall = {};
+
+    beforeEach(function() {
+      api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
+      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
+    });
+
+    it('will attach the UTC time to the error message', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = new Error('Opps, we got an error');
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        expect(err.message).to.contain('UTC time: ' +now);
+        done();
+      });
+    });
+
+  });
+
 });
