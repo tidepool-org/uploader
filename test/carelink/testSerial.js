@@ -26,13 +26,13 @@ describe('getDeviceInfo', function() {
   var fakeRows = [
     ['The cure for anything is salt water:', 'sweat', 'tears', 'or the sea'],
     ['Isak', 'Dinesen'],
-    ['Meter:', 'OneTouch Mini', '#12345'],
-    ['Pump:', 'MiniMed 530G - 551', '#6789A'],
+    ['Meter:', 'OneTouch Mini', '#12345', ''],
+    ['Pump:', 'MiniMed 530G - 551', '#6789A', 'Time Changes: 2'],
     ['Baroness', 'Karen', 'von', 'Blixen-Finecke']
   ];
 
   var multiplePumps = _.cloneDeep(fakeRows);
-  multiplePumps.splice(4, 0, ['Pump:', 'Paradigm Revel - 523', 'foobar']);
+  multiplePumps.splice(4, 0, ['Pump:', 'Paradigm Revel - 523', 'foobar', '']);
 
   it('should return an object', function() {
     expect(getDeviceInfo([], /foo/)).to.be.an('object');
@@ -91,6 +91,35 @@ describe('getDeviceInfo', function() {
     it('should return true when multiple devices of a particular type present', function() {
       var pumps = getDeviceInfo(multiplePumps, /Pump/);
       expect(pumps.hasMultiple()).to.be.true;
+    });
+  });
+
+  describe('getNumTimeChangesPerSN', function() {
+    it('should return an array giving number of time changes per SN', function() {
+      var pumps = getDeviceInfo(fakeRows, /Pump/);
+      expect(pumps.getNumTimeChangesPerSN()).to.be.an('array');
+      expect(pumps.getNumTimeChangesPerSN()).deep.equals([{
+        deviceSerialNumber: '6789A',
+        numTimeChanges: 2
+      }]);
+    });
+
+    it('should return an empty array if no time changes', function() {
+      var meters = getDeviceInfo(fakeRows, /Meter/);
+      expect(meters.getNumTimeChangesPerSN()).to.be.an('array');
+      expect(meters.getNumTimeChangesPerSN()).deep.equals([]);
+    });
+  });
+
+  describe('hasTimeChanges', function() {
+    it('should return true if there are time changes in one or more devices within a category (pumps or meters)', function() {
+      var pumps = getDeviceInfo(fakeRows, /Pump/);
+      expect(pumps.hasTimeChanges()).to.be.true;
+    });
+
+    it('should return false if there are time changes in one or more devices within a category (pumps or meters)', function() {
+      var meters = getDeviceInfo(fakeRows, /Meter/);
+      expect(meters.hasTimeChanges()).to.be.false;
     });
   });
 });
