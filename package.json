@@ -35,7 +35,7 @@
     "jshint-stylish": "1.0.1",
     "json-loader": "0.5.1",
     "jsx-loader": "0.12.1",
-    "less": "1.7.5",
+    "less": "2.4.0",
     "less-loader": "0.7.7",
     "merge-stream": "0.1.7",
     "mocha": "1.21.4",
