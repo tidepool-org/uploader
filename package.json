@@ -37,7 +37,7 @@
     "jsx-loader": "0.12.1",
     "less": "1.7.5",
     "less-loader": "0.7.7",
-    "merge-stream": "0.1.6",
+    "merge-stream": "0.1.7",
     "mocha": "1.21.4",
     "proxyquire": "1.1.0",
     "salinity": "0.0.5",
