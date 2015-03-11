@@ -29,7 +29,7 @@
   "devDependencies": {
     "css-loader": "0.7.1",
     "gulp": "3.8.10",
-    "gulp-jshint": "1.9.0",
+    "gulp-jshint": "1.9.2",
     "gulp-react": "2.0.0",
     "http-server": "0.7.3",
     "jshint-stylish": "1.0.0",
