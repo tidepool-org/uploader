@@ -552,7 +552,7 @@ describe('appActions', function() {
 
     it('should return an error if the filename doesn\'t end in the specified extension', function() {
       var err = appActions.readFile(0, '11', {name: 'foo.bar'}, '.txt');
-      expect(err.message).to.equal('Please choose a file ending in .txt');
+      expect(err.message).to.equal(appActions.errorText.E_WRONG_FILE_EXT+'.txt');
       expect(err.code).to.equal(404);
     });
   });
