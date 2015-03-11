@@ -38,7 +38,7 @@
     "less": "2.4.0",
     "less-loader": "2.1.0",
     "merge-stream": "0.1.7",
-    "mocha": "1.21.4",
+    "mocha": "2.2.1",
     "proxyquire": "1.1.0",
     "salinity": "0.0.7",
     "style-loader": "0.8.3",
