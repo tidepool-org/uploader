@@ -570,7 +570,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('throws an error if an upload is already in progress', function() {
@@ -579,7 +579,7 @@ describe('appActions', function() {
       }];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/progress/);
+        .to.throw(appActions.errorText.E_UPLOAD_IN_PROGRESS);
     });
 
     it('starts upload with correct progress data', function() {
@@ -729,7 +729,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.reset.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('clears upload progress', function() {
