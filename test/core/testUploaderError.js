@@ -23,28 +23,34 @@ var UploaderError = require('../../lib/core/uploaderError.js');
 
 describe('UploaderError', function(){
 
-  var errToTest = new UploaderError('Yay',{ Code: 'E_TEST' , Message: 'Test', Step: 'Loading' });
+  var errToTest = new UploaderError('Oh noes',{ Code: 'E_TEST' , Message: 'Test', Step: 'Loading' });
 
   it('message', function(){
-    expect(errToTest.message).to.include(UploaderError.STAGE);
-    expect(errToTest.message).to.include(UploaderError.UTC_TIME);
-    expect(errToTest.message).to.include('Yay');
+    expect(errToTest.message).to.equal('Oh noes');
+  });
+  it('debug', function(){
+    expect(errToTest.debug).to.include(UploaderError.CODE);
+    expect(errToTest.debug).to.include('E_TEST');
+    expect(errToTest.debug).to.include(UploaderError.UTC_TIME);
+    expect(errToTest.debug).to.include('Oh noes');
+    expect(errToTest.debug).to.include(UploaderError.STEP);
+    expect(errToTest.debug).to.include('Loading');
   });
   it('name', function(){
     expect(errToTest.name).to.equal('UploaderError');
   });
-  it('code', function(){
-    expect(errToTest.code).to.equal('E_TEST');
-  });
-  it('step', function(){
-    expect(errToTest.step).to.equal('Loading');
-  });
   it('originalError when none passed', function(){
-    expect(errToTest.originalError).to.be.empty;
+    expect(errToTest.originalError).to.deep.equal({ 'originalError' : {}});
   });
-  it('originalError when none passed', function(){
+  it('originalError when passed', function(){
     var errorToWarp = new Error('error to wrap');
-    var err = new UploaderError('Yay',{ Code: 'E_TEST' , Message: 'Test', Step: 'Loading' },errorToWarp);
-    expect(err.originalError).to.deep.equal(errorToWarp);
+    var err = new UploaderError('Something bad happened',{ Code: 'E_TEST_OTHER' , Message: 'Test', Step: 'Loading' },errorToWarp);
+    expect(err.originalError).to.deep.equal({'originalError':errorToWarp});
+  });
+  it('step is set from originalError', function(){
+    var errorToWarp = new Error('error to wrap w step');
+    errorToWarp.step = 'carelink_parsefile';
+    var err = new UploaderError('Something bad happened',{ Code: 'E_TEST_OTHER' , Message: 'Test' },errorToWarp);
+    expect(err.debug).to.include(errorToWarp.step);
   });
 });
