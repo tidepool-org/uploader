@@ -681,7 +681,7 @@ describe('appActions', function() {
         }
       }];
 
-      appActions.upload(0, {}, function(err) {
+      appActions.upload(0, {}, function() {
 
         function checkInstance(actual, expected){
           expect(actual.targetId).to.equal(expected.targetId);
@@ -702,8 +702,8 @@ describe('appActions', function() {
         };
 
         expect(app.state.uploads[0].history).to.have.length(1);
-        checkInstance(app.state.uploads[0].progress,instance)
-        checkInstance(app.state.uploads[0].history[0],instance)
+        checkInstance(app.state.uploads[0].progress,instance);
+        checkInstance(app.state.uploads[0].history[0],instance);
         expect(uploadErrorCall).to.not.be.empty;
         expect(uploadDeviceMetricsCall).to.not.be.empty;
         expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
