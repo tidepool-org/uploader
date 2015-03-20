@@ -688,7 +688,6 @@ describe('appActions', function() {
           expect(actual.start).to.equal(expected.start);
           expect(actual.percentage).to.equal(expected.percentage);
           expect(actual.error.name).to.equal('UploaderError');
-          expect(actual.error.message).to.equal(uploadError.message);
           expect(actual.error.originalError).to.not.be.empty;
         }
 
