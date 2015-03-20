@@ -111,4 +111,25 @@ describe('common', function() {
       expect(String(common.convertBackToMmol(99.08))).to.equal('5.5');
     });
   });
+
+  describe('isValidLocalTimestamp', function() {
+    it('should be a function', function() {
+      expect(common.isValidLocalTimestamp).to.exist;
+      expect(typeof common.isValidLocalTimestamp).to.equal('function');
+    });
+
+    it('should return true when local timestamp is not in DST no man\'s land', function() {
+      var deviceTime = '2015-01-01T00:00:00';
+      var utcTime = '2015-01-01T05:00:00.000Z';
+      var prescribedOffset = -300;
+      expect(common.isValidLocalTimestamp(deviceTime, utcTime, prescribedOffset)).to.be.true;
+    });
+
+    it('should return false when local timestamp is in DST no man\'s land', function() {
+      var deviceTime = '2015-03-08T02:05:00';
+      var utcTime = '2015-03-08T07:05:00.000Z';
+      var prescribedOffset = -240;
+      expect(common.isValidLocalTimestamp(deviceTime, utcTime, prescribedOffset)).to.be.false;
+    });
+  });
 });
