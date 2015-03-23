@@ -27,6 +27,7 @@ describe('common', function() {
   describe('isSuspectedNewDevice', function() {
     it('should be a function', function() {
       expect(common.isSuspectedNewDevice).to.exist;
+      expect(typeof common.isSuspectedNewDevice).to.equal('function');
     });
 
     it('should return true on a settings object with only units', function() {
@@ -77,6 +78,58 @@ describe('common', function() {
         }
       };
       expect(common.isSuspectedNewDevice(notEmptyObj)).to.be.false;
+    });
+  });
+
+  describe('isMgDL', function() {
+    it('should be a function', function() {
+      expect(common.isMgDL).to.exist;
+      expect(typeof common.isMgDL).to.equal('function');
+    });
+
+    it('should return true on `mg/dL`', function() {
+      expect(common.isMgDL('mg/dL')).to.be.true;
+    });
+
+    it('should return false on `mmol/L`', function() {
+      expect(common.isMgDL('mmol/L')).to.be.false;
+    });
+
+    it('should throw an error on `foo`', function() {
+      var fn = function() { common.isMgDL('foo'); };
+      expect(fn).to.throw(Error);
+    });
+  });
+
+  describe('convertBackToMmol', function() {
+    it('should be a function', function() {
+      expect(common.convertBackToMmol).to.exist;
+      expect(typeof common.convertBackToMmol).to.equal('function');
+    });
+
+    it('should return a floating-point number with one significant digit', function() {
+      expect(String(common.convertBackToMmol(99.08))).to.equal('5.5');
+    });
+  });
+
+  describe('isValidLocalTimestamp', function() {
+    it('should be a function', function() {
+      expect(common.isValidLocalTimestamp).to.exist;
+      expect(typeof common.isValidLocalTimestamp).to.equal('function');
+    });
+
+    it('should return true when local timestamp is not in DST no man\'s land', function() {
+      var deviceTime = '2015-01-01T00:00:00';
+      var utcTime = '2015-01-01T05:00:00.000Z';
+      var prescribedOffset = -300;
+      expect(common.isValidLocalTimestamp(deviceTime, utcTime, prescribedOffset)).to.be.true;
+    });
+
+    it('should return false when local timestamp is in DST no man\'s land', function() {
+      var deviceTime = '2015-03-08T02:05:00';
+      var utcTime = '2015-03-08T07:05:00.000Z';
+      var prescribedOffset = -240;
+      expect(common.isValidLocalTimestamp(deviceTime, utcTime, prescribedOffset)).to.be.false;
     });
   });
 });

@@ -19,6 +19,7 @@ var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
+var UploaderError = require('../../lib/core/uploaderError');
 
 
 describe('appActions', function() {
@@ -34,7 +35,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = {};
+    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}});
     api = {};
 
     jellyfish = {};
@@ -68,8 +69,6 @@ describe('appActions', function() {
 
   describe('load', function() {
     beforeEach(function() {
-      localStore.getInitialState = function() {};
-      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
       device.init = function(options, cb) { cb(); };
       carelink.init = function(options, cb) { cb(); };
@@ -82,7 +81,6 @@ describe('appActions', function() {
     });
 
     it('initializes all I/O services', function(done) {
-      localStore.getInitialState = function() {};
       var initialized = {};
       var mark = function(name, cb) {
         initialized[name] = true;
@@ -104,6 +102,8 @@ describe('appActions', function() {
     });
 
     it('goes to login page if no session found', function(done) {
+      localStore.getInitialState = function() {};
+      localStore.init = function(options, cb) { cb(); };
       api.init = function(options, cb) { cb(); };
 
       appActions.load(function(err) {
@@ -113,12 +113,28 @@ describe('appActions', function() {
       });
     });
 
-    it('goes to main page if local session found', function(done) {
+    it('goes to main page if local session found and targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
         expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('goes to settings page if local session found and no targeted devices fetched from localStore', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.page).to.equal('settings');
         done();
       });
     });
@@ -164,12 +180,44 @@ describe('appActions', function() {
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
-    it('goes to main page if login successful', function(done) {
+    it('goes to settings page by default', function(done) {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
-        expect(app.state.page).to.equal('main');
+        expect(app.state.page).to.equal('settings');
         expect(loginMetricsCall).to.not.be.empty;
         expect(loginMetricsCall.one).to.equal(appActions.trackedState.LOGIN_SUCCESS);
+        done();
+      });
+    });
+
+    it('goes to main page if login successful and targeted devices fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '11'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('main');
+        done();
+      });
+    });
+
+    it('goes to settings page if login successful and targeted devices not fetched from localStore', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '12'}});
+      };
+      api.user.account = function(cb) { cb(null, {userid: '12'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+
+        expect(app.state.page).to.equal('settings');
         done();
       });
     });
@@ -193,13 +241,16 @@ describe('appActions', function() {
     });
 
     it('calls callback with error if login failed', function(done) {
+
+      var loginError = {message: 'login failed', step: 'platform_login'};
+
       api.user.login = function(credentials, options, cb) {
-        cb({status: 401});
+        cb(loginError);
       };
 
       appActions.login({}, {}, function(err) {
-        if (err && err.status !== 401) throw err;
-        expect(err.status).to.equal(401);
+        expect(err.message).to.contain(loginError.message);
+        expect(err.originalError).to.deep.equal({originalError:loginError});
         done();
       });
     });
@@ -440,6 +491,75 @@ describe('appActions', function() {
 
   });
 
+  describe('chooseDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        dropMenu: true,
+        page: 'main'
+      };
+    });
+
+    it('redirects to settings page and clears dropMenu', function() {
+      appActions.chooseDevices();
+      expect(app.state.dropMenu).to.be.false;
+      expect(app.state.page).to.equal('settings');
+    });
+  });
+
+  describe('addOrRemoveTargetDevice', function() {
+    beforeEach(function() {
+      app.state = {
+        targetDevices: []
+      };
+    });
+
+    it('adds the device if the event target is checked', function() {
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: true}});
+      expect(app.state.targetDevices).to.deep.equal(['foo']);
+    });
+
+    it('removes the device if the event target is not checked', function() {
+      app.state.targetDevices = ['foo', 'Kiwi'];
+      appActions.addOrRemoveTargetDevice({target: {value: 'foo', checked: false}});
+      appActions.addOrRemoveTargetDevice({target: {value: 'bar', checked: false}});
+      expect(app.state.targetDevices).to.deep.equal(['Kiwi']);
+    });
+  });
+
+  describe('storeTargetDevices', function() {
+    beforeEach(function() {
+      app.state = {
+        page: 'settings',
+        targetDevices: ['foo', 'bar']
+      };
+    });
+
+    it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
+      appActions.storeTargetDevices('11');
+      expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+    });
+
+    it('also redirects to main page', function() {
+      expect(app.state.page).to.equal('settings');
+      appActions.storeTargetDevices('11');
+      expect(app.state.page).to.equal('main');
+    });
+  });
+
+  describe('readFile', function() {
+    beforeEach(function() {
+      app.state = {
+        uploads: [{key: 'foo'}]
+      };
+    });
+
+    it('should return an error if the filename doesn\'t end in the specified extension', function() {
+      var err = appActions.readFile(0, '11', {name: 'foo.bar'}, '.txt');
+      expect(err.message).to.equal(appActions.errorText.E_WRONG_FILE_EXT+'.txt');
+    });
+  });
+
   describe('uploadDevice', function() {
     var uploadDeviceMetricsCall = {};
     var uploadErrorCall = {};
@@ -453,7 +573,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('throws an error if an upload is already in progress', function() {
@@ -462,7 +582,7 @@ describe('appActions', function() {
       }];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/progress/);
+        .to.throw(appActions.errorText.E_UPLOAD_IN_PROGRESS);
     });
 
     it('starts upload with correct progress data', function() {
@@ -545,12 +665,13 @@ describe('appActions', function() {
 
     it('adds correct object to upload history when upload failed', function(done) {
       now = '2014-01-31T22:00:00-05:00';
+      var uploadError = new Error('oops');
+      uploadError.step = 'fetching_carelink';
       device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
-        var err = 'oops';
-        return cb(err);
+        return cb(uploadError);
       };
       app.state.targetId = '11';
       app.state.uploads = [{
@@ -560,19 +681,28 @@ describe('appActions', function() {
         }
       }];
 
-      appActions.upload(0, {}, function(err) {
-        if (err && err !== 'oops') throw err;
+      appActions.upload(0, {}, function() {
+
+        function checkInstance(actual, expected){
+          expect(actual.targetId).to.equal(expected.targetId);
+          expect(actual.start).to.equal(expected.start);
+          expect(actual.percentage).to.equal(expected.percentage);
+          expect(actual.error.name).to.equal('UploaderError');
+          expect(actual.error.originalError).to.not.be.empty;
+        }
+
         var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: 'oops'
+          error: new UploaderError('opps',appActions.errorStage.STAGE_UPLOAD ,uploadError)
         };
-        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+
         expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
+        checkInstance(app.state.uploads[0].progress,instance);
+        checkInstance(app.state.uploads[0].history[0],instance);
         expect(uploadErrorCall).to.not.be.empty;
         expect(uploadDeviceMetricsCall).to.not.be.empty;
         expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
@@ -612,7 +742,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.reset.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('clears upload progress', function() {
@@ -622,6 +752,75 @@ describe('appActions', function() {
 
       appActions.reset(0);
       expect(app.state.uploads[0].progress).to.not.exists;
+    });
+
+  });
+
+  describe('changeGroup', function() {
+
+    it('updates user id for uploading', function() {
+      app.state.targetId = 'foo';
+      appActions.changeGroup({target: {value: 'bar'}});
+      expect(app.state.targetId).to.equal('bar');
+    });
+
+  });
+
+  describe('hideDropMenu', function() {
+
+    it('sets the boolean for the dropdown menu to false, always', function() {
+      app.state.dropMenu = true;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.hideDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+    });
+
+  });
+
+  describe('toggleDropMenu', function() {
+
+    it('toggles the boolean for the dropdown menu', function() {
+      app.state.dropMenu = true;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.false;
+      appActions.toggleDropMenu();
+      expect(app.state.dropMenu).to.be.true;
+    });
+
+  });
+
+  describe('_handleUploadError', function(){
+
+    var uploadDeviceMetricsCall = {};
+    var uploadErrorCall = {};
+
+    beforeEach(function() {
+      api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
+      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
+    });
+
+    it('will attach the UTC time to the error message', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = new Error('Opps, we got an error');
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        expect(err.debug).to.contain('UTC Time: ');
+        done();
+      });
     });
 
   });

@@ -80,6 +80,9 @@
         "time": "2014-11-15T21:41:37.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53602018",
+        "payload": {
+            "code": "normal_pumping"
+        },
         "reason": {
             "resumed": "manual"
         }

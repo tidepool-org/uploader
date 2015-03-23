@@ -27,6 +27,9 @@
         "timezoneOffset": -600,
         "source": "carelink",
         "type": "resume",
+        "payload": {
+            "code": "normal_pumping"
+        },
         "reason": {
             "resumed": "manual"
         },
@@ -60,6 +63,9 @@
         "timezoneOffset": -600,
         "source": "carelink",
         "type": "resume",
+        "payload": {
+            "code": "normal_pumping"
+        },
         "reason": {
             "resumed": "manual"
         },
@@ -71,6 +77,9 @@
         "timezoneOffset": -600,
         "source": "carelink",
         "type": "resume",
+        "payload": {
+            "code": "normal_pumping"
+        },
         "reason": {
             "resumed": "manual"
         },

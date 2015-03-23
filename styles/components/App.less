@@ -17,31 +17,10 @@
 // ====================================
 
 .App-header {
-  justify-content: flex-end;
-  flex-flow: row wrap;
-
   padding: 0 25px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  background: url(/T_icon_transparent.png) center center / 100px 100px no-repeat;
 
-  // So logo stays put when switching from loading page
-  min-height: @line-height-base;
-}
-
-// Logo
-// ====================================
-
-@App-logoWidth: 100px;
-@App-logoHeight: 100px;
-
-.App-logo {
-  margin: auto;
-  background-image: url(/T_icon_transparent.png);
-  background-repeat: no-repeat;
-  background-size: @App-logoWidth;
-  width: @App-logoWidth;
-  height: @App-logoHeight;
-  margin-bottom: 10px;
+  min-height: 150px;
 }
 
 // Page
@@ -51,6 +30,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
+  height: 470px;
 }
 
 .App--login .App-page {
@@ -59,36 +39,45 @@
 
 @App-mainPageBorder: 1px;
 
-.App--main .App-page {
+.App--main .App-page, .App--settings .App-page {
   width: 550px;
   background-color: rgba(255, 255, 255, 0.75);
   border: @App-mainPageBorder solid @gray-border;
   border-radius: 2px;
-  padding: 15px (30px - @App-mainPageBorder);
+  padding: 15px (30px - @App-mainPageBorder) 25px;
   margin-bottom: 10px;
 }
 
 .App-signup {
-  text-decoration: none;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 20px;
 
-  > i {
-    padding-right: 3px;
-    float: left;
+  a {
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: @gray-text;
+      text-decoration: none;
+    }
   }
 
-  &:hover,
-  &:focus,
-  &:active {
-    color: @gray-text;
-    text-decoration: none;
+  i {
+    font-style: normal;
   }
 }
 
 .App-footer {
-  align-items: center;
+  margin-top: 20px;
+  background: url(/tidepool_logo_transparent.png) 50px 5px no-repeat;
+  display: flex;
+  align-items: flex-end;
 
   > div {
-    align-items: center;
+    text-align: center;
+    width: 230px;
   }
 
   a {

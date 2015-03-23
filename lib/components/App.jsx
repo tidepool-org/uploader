@@ -27,6 +27,7 @@ var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
 var UploadSettings = require('./UploadSettings.jsx');
+var DeviceSelection = require('./DeviceSelection.jsx');
 
 var config = require('../config');
 
@@ -48,11 +49,15 @@ var App = React.createClass({
     this.device = require('../core/device');
   },
 
+  onlyMe: function() {
+    var self = this;
+    return (!_.isEmpty(self.state.user.uploadGroups) && this.state.user.uploadGroups.length === 1);
+  },
+
   render: function() {
     return (
-      <div className={'App App--' + this.state.page}>
+      <div className={'App App--' + this.state.page} onClick={this.appActions.hideDropMenu.bind(this.appActions)}>
         <div className="App-header">{this.renderHeader()}</div>
-        <div className="App-logo"></div>
         <div className="App-page">{this.renderPage()}</div>
         <div className="App-footer">{this.renderFooter()}</div>
       </div>
@@ -69,7 +74,10 @@ var App = React.createClass({
     }
 
     return <LoggedInAs
+      dropMenu={this.state.dropMenu}
       user={this.state.user}
+      onClicked={this.appActions.toggleDropMenu.bind(this.appActions)}
+      onChooseDevices={this.appActions.chooseDevices.bind(this.appActions)}
       onLogout={this.appActions.logout.bind(this.appActions)} />;
   },
 
@@ -84,18 +92,35 @@ var App = React.createClass({
       return <Login onLogin={this.appActions.login.bind(this.appActions)} />;
     }
 
+    var uploadSettings = this.onlyMe() ? null : this.renderUploadSettings();
+
+    if (page === 'settings') {
+      return (
+        <div>
+          {uploadSettings}
+          <DeviceSelection
+            uploads={this.state.uploads}
+            targetId={this.state.targetId}
+            targetDevices={this.state.targetDevices}
+            onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
+            onDone={this.appActions.storeTargetDevices.bind(this.appActions)}
+            groupsDropdown={!this.onlyMe()} />
+        </div>
+      );
+    }
+
     if (page === 'main') {
       return (
         <div>
-          <UploadSettings
-            user={this.state.user}
-            targetId={this.state.targetId}
-            isUploadInProgress={this.appState.hasUploadInProgress()}
-            onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+          {uploadSettings}
           <UploadList
-            uploads={this.appState.uploadsWithFlags()}
+            targetId={this.state.targetId}
+            uploads={this.state.uploads}
+            targetedUploads={this.appState.uploadsWithFlags()}
             onUpload={this.appActions.upload.bind(this.appActions)}
-            onReset={this.appActions.reset.bind(this.appActions)} />
+            onReset={this.appActions.reset.bind(this.appActions)}
+            readFile={this.appActions.readFile.bind(this.appActions)}
+            groupsDropdown={!this.onlyMe()} />
           {this.renderViewDataLink()}
         </div>
       );
@@ -117,8 +142,9 @@ var App = React.createClass({
 
   renderSignupLink: function() {
     return (
-      <div>
-        <a className="App-signup" href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank"><i className="icon-add"></i>Sign up</a>
+      <div className="App-signup">
+        <a  href={this.appActions.app.api.makeBlipUrl('#/signup')} target="_blank">
+          <i className="icon-add"> Sign up</i></a>
       </div>
     );
   },
@@ -131,6 +157,17 @@ var App = React.createClass({
     return <Scan
       ref="scan"
       onDetectDevices={this.appActions.detectDevices.bind(this.appActions)} />;
+  },
+
+  renderUploadSettings: function() {
+    return (
+      <UploadSettings
+        page={this.state.page}
+        user={this.state.user}
+        targetId={this.state.targetId}
+        isUploadInProgress={this.appState.hasUploadInProgress()}
+        onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+    );
   },
 
   renderViewDataLink: function() {

@@ -20,7 +20,10 @@ var getIn = require('../core/getIn');
 
 var LoggedInAs = React.createClass({
   propTypes: {
+    dropMenu: React.PropTypes.bool.isRequired,
     user: React.PropTypes.object.isRequired,
+    onClicked: React.PropTypes.func.isRequired,
+    onChooseDevices: React.PropTypes.func.isRequired,
     onLogout: React.PropTypes.func.isRequired
   },
 
@@ -31,24 +34,52 @@ var LoggedInAs = React.createClass({
   },
 
   render: function() {
+    var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
+
     return (
-      <div className="LoggedInAs">
-        <span>{this.getName()}</span>
-        {this.renderLogout()}
+      <div>
+        <div className="LoggedInAs" onClick={this.props.onClicked}>
+          <span>{this.getName()}</span>
+          <i className="Menu-arrow-down icon-arrow-down"></i>
+        </div>
+        {dropMenu}
       </div>
     );
   },
 
+  renderDropMenu: function() {
+    function stopPropagation(e) {
+      e.stopPropagation();
+    }
+    return (
+      <div className="Menu-dropdown" onClick={stopPropagation}>
+        <ul>
+          <li>{this.renderChooseDevices()}</li>
+          <li>{this.renderLogout()}</li>
+        </ul>
+      </div>
+    );
+  },
+
+  renderChooseDevices: function() {
+    return <a className="LoggedInAs-link" href="" onClick={this.handleChooseDevices}><i className="icon-edit"></i>Choose Devices</a>;
+  },
+
   renderLogout: function() {
     if (this.state.loggingOut) {
-      return <span className="LoggedInAs-logout">Logging out...</span>;
+      return <span className="LoggedInAs-link">Logging out...</span>;
     }
 
-    return <a className="LoggedInAs-logout" href="" onClick={this.handleLogout}><i className="icon-logout"></i>Logout</a>;
+    return <a className="LoggedInAs-link" href="" onClick={this.handleLogout}><i className="icon-logout"></i>Logout</a>;
   },
 
   getName: function() {
     return getIn(this.props.user, ['profile', 'fullName']);
+  },
+
+  handleChooseDevices: function(e) {
+    e.preventDefault();
+    this.props.onChooseDevices();
   },
 
   handleLogout: function(e) {

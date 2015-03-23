@@ -20,36 +20,43 @@ var React = require('react');
 
 var UploadSettings = React.createClass({
   propTypes: {
+    page: React.PropTypes.string.isRequired,
     user: React.PropTypes.object.isRequired,
     onGroupChange: React.PropTypes.func.isRequired,
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
-
-  // Can I only upload for myself
-  onlyMe: function(){
-    return (this.props.user.uploadGroups.length == 1 && this.props.user.uploadGroups[0].userid == this.props.user.userid);
-  },
-
   render: function() {
-    //do we want to render??
-    if (_.isEmpty(this.props.user.uploadGroups) || this.onlyMe()) {
+    // we're already doing a check to see if we want to render in App.jsx
+    // but this is an extra measure of protection against trying to render
+    // when we don't have the groups to do so
+    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
       return null;
     }
     var self = this;
 
     // sort users alpha by full name
     var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
+      if(group.profile.patient.isOtherPerson){
+        return group.profile.patient.fullName;
+      }
       return group.profile.fullName;
     });
 
     var options = _.map(sortedGroups, function(group) {
+      if(group.profile.patient.isOtherPerson){
+        return (
+          <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
+        );
+      }
       return (
         <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
       );
     });
 
-    var disabled = this.props.isUploadInProgress ? 'disabled': '';
+    var disabled = this.props.isUploadInProgress ? 'disabled' : '';
+
+    var text = this.props.page === 'main' ? 'Upload data for' : 'Choose devices for';
 
     var select = function() {
       if (self.props.isUploadInProgress) {
@@ -70,8 +77,8 @@ var UploadSettings = React.createClass({
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
-          <div className="UploadSettings-left UploadSettings-uploadGroup--label">{"Upload data for"}</div>
-          <div className="UploadSettings-right UploadSettings-uploadGroup--list">
+          <div className="UploadSettings-uploadGroup--label">{text}</div>
+          <div className={'UploadSettings-uploadGroup--list UploadSettings--' + this.props.page}>
             {select}
           </div>
         </div>
