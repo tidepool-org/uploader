@@ -37,10 +37,18 @@ var UploadSettings = React.createClass({
 
     // sort users alpha by full name
     var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
+      if(group.profile.patient.isOtherPerson){
+        return group.profile.patient.fullName;
+      }
       return group.profile.fullName;
     });
 
     var options = _.map(sortedGroups, function(group) {
+      if(group.profile.patient.isOtherPerson){
+        return (
+          <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
+        );
+      }
       return (
         <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
       );

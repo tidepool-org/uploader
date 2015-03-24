@@ -19,6 +19,7 @@ var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
+var UploaderError = require('../../lib/core/uploaderError');
 
 
 describe('appActions', function() {
@@ -240,13 +241,16 @@ describe('appActions', function() {
     });
 
     it('calls callback with error if login failed', function(done) {
+
+      var loginError = {message: 'login failed', step: 'platform_login'};
+
       api.user.login = function(credentials, options, cb) {
-        cb({status: 401});
+        cb(loginError);
       };
 
       appActions.login({}, {}, function(err) {
-        if (err && err.status !== 401) throw err;
-        expect(err.status).to.equal(401);
+        expect(err.message).to.contain(loginError.message);
+        expect(err.originalError).to.deep.equal({originalError:loginError});
         done();
       });
     });
@@ -552,8 +556,7 @@ describe('appActions', function() {
 
     it('should return an error if the filename doesn\'t end in the specified extension', function() {
       var err = appActions.readFile(0, '11', {name: 'foo.bar'}, '.txt');
-      expect(err.message).to.equal('Please choose a file ending in .txt');
-      expect(err.code).to.equal(404);
+      expect(err.message).to.equal(appActions.errorText.E_WRONG_FILE_EXT+'.txt');
     });
   });
 
@@ -570,7 +573,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('throws an error if an upload is already in progress', function() {
@@ -579,7 +582,7 @@ describe('appActions', function() {
       }];
 
       expect(appActions.upload.bind(appActions, 0))
-        .to.throw(/progress/);
+        .to.throw(appActions.errorText.E_UPLOAD_IN_PROGRESS);
     });
 
     it('starts upload with correct progress data', function() {
@@ -662,12 +665,13 @@ describe('appActions', function() {
 
     it('adds correct object to upload history when upload failed', function(done) {
       now = '2014-01-31T22:00:00-05:00';
+      var uploadError = new Error('oops');
+      uploadError.step = 'fetching_carelink';
       device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
-        var err = 'oops';
-        return cb(err);
+        return cb(uploadError);
       };
       app.state.targetId = '11';
       app.state.uploads = [{
@@ -677,19 +681,28 @@ describe('appActions', function() {
         }
       }];
 
-      appActions.upload(0, {}, function(err) {
-        if (err && err !== 'oops') throw err;
+      appActions.upload(0, {}, function() {
+
+        function checkInstance(actual, expected){
+          expect(actual.targetId).to.equal(expected.targetId);
+          expect(actual.start).to.equal(expected.start);
+          expect(actual.percentage).to.equal(expected.percentage);
+          expect(actual.error.name).to.equal('UploaderError');
+          expect(actual.error.originalError).to.not.be.empty;
+        }
+
         var instance = {
           targetId: '11',
           start: '2014-01-31T22:00:00-05:00',
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: 'oops'
+          error: new UploaderError('opps',appActions.errorStage.STAGE_UPLOAD ,uploadError)
         };
-        expect(app.state.uploads[0].progress).to.deep.equal(instance);
+
         expect(app.state.uploads[0].history).to.have.length(1);
-        expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
+        checkInstance(app.state.uploads[0].progress,instance);
+        checkInstance(app.state.uploads[0].history[0],instance);
         expect(uploadErrorCall).to.not.be.empty;
         expect(uploadDeviceMetricsCall).to.not.be.empty;
         expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
@@ -729,7 +742,7 @@ describe('appActions', function() {
       app.state.uploads = [];
 
       expect(appActions.reset.bind(appActions, 0))
-        .to.throw(/index/);
+        .to.throw(appActions.errorText.E_INVAILD_UPLOAD_INDEX);
     });
 
     it('clears upload progress', function() {
@@ -773,6 +786,41 @@ describe('appActions', function() {
       expect(app.state.dropMenu).to.be.false;
       appActions.toggleDropMenu();
       expect(app.state.dropMenu).to.be.true;
+    });
+
+  });
+
+  describe('_handleUploadError', function(){
+
+    var uploadDeviceMetricsCall = {};
+    var uploadErrorCall = {};
+
+    beforeEach(function() {
+      api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
+      api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
+    });
+
+    it('will attach the UTC time to the error message', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = new Error('Opps, we got an error');
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        expect(err.debug).to.contain('UTC Time: ');
+        done();
+      });
     });
 
   });
