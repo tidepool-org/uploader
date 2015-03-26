@@ -203,8 +203,7 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{'Done!'}</div>;
     }
     if (this.isUploadFailed()) {
-      var uploadError = this.getUploadError();
-      return <div className="Upload-status Upload-status--error">{uploadError.message}</div>;
+      return <div className="Upload-status Upload-status--error">{'Upload failed'}</div>;
     }
     if (this.isBlockModeFileChosen()) {
       return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
