@@ -15,16 +15,24 @@
 
 @base-height: 305px;
 
-.UploadList-error {
-  padding-top: 10px;
-  color: @red;
+.UploadList-error-item {
+  padding: 15px 0;
+  border-bottom: 1px solid @gray-light;
+}
+
+.UploadList-error-item:last-child {
+  padding-bottom: 10px;
+  border-bottom: 0;
 }
 
 .UploadList-error-name {}
 
-.UploadList-error-message {}
+.UploadList-error-message {
+  color: @red;
+}
 
 .UploadList-error-debug {
+  color: @red;
   font-size: 12px;
   padding-top: 10px;
 }

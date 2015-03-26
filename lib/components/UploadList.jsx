@@ -32,20 +32,23 @@ var UploadList = React.createClass({
 
   renderErrors: function() {
     //do any of the target uploads have errors
-    var errors = _.filter(this.props.targetedUploads, function(upload) {
+    var uploadsWithError = _.filter(this.props.targetedUploads, function(upload) {
       return _.isEmpty(upload.error) === false;
     });
 
-    if(_.isEmpty(errors)) {
+    if(_.isEmpty(uploadsWithError)) {
       return null;
     }
-    return (
-      <div className="UploadList-error">
-        <div className="UploadList-error-name">{errors[0].name}</div>
-        <div className="UploadList-error-message">{errors[0].error.message}</div>
-        <div className="UploadList-error-debug">{errors[0].error.debug}</div>
-      </div>
-    );
+
+    return _.map(uploadsWithError, function(upload){
+      return (
+        <div key={upload.key} className="UploadList-error-item">
+          <div className="UploadList-error-name">{upload.name}</div>
+          <div className="UploadList-error-message">{upload.error.message}</div>
+          <div className="UploadList-error-debug">{upload.error.debug}</div>
+        </div>
+      );
+    });
   },
 
   render: function() {
