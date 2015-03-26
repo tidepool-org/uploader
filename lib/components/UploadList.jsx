@@ -30,6 +30,24 @@ var UploadList = React.createClass({
     groupsDropdown: React.PropTypes.bool.isRequired
   },
 
+  renderErrors: function() {
+    //do any of the target uploads have errors
+    var errors = _.filter(this.props.targetedUploads, function(upload) {
+      return _.isEmpty(upload.error) === false;
+    });
+
+    if(_.isEmpty(errors)) {
+      return null;
+    }
+    return (
+      <div className="UploadList-error">
+        <div className="UploadList-error-name">{errors[0].name}</div>
+        <div className="UploadList-error-message">{errors[0].error.message}</div>
+        <div className="UploadList-error-debug">{errors[0].error.debug}</div>
+      </div>
+    );
+  },
+
   render: function() {
     var self = this;
     var uploadListClasses = cx({
@@ -53,7 +71,14 @@ var UploadList = React.createClass({
       );
     });
 
-    return <div className={uploadListClasses}>{nodes}</div>;
+    return (
+      <div>
+        <div className={uploadListClasses}>
+          {this.renderErrors()}
+          {nodes}
+        </div>
+      </div>
+      );
   }
 });
 
