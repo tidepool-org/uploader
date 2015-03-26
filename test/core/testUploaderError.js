@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
+/* global describe, it */
 
 var expect = require('salinity').expect;
 
@@ -35,7 +35,7 @@ describe('UploaderError', function(){
       expect(errTwo.message).to.equal(originalError.message);
     });
     it('set from wrapped error', function(){
-      var originalError = {error: "Request failed with statusCode 500", code: null, message: null};
+      var originalError = {error: 'Request failed with statusCode 500', code: null, message: null};
       var ule = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }, originalError);
       expect(ule.message).to.equal(originalError.error);
     });
