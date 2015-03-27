@@ -469,9 +469,10 @@ describe('struct.js', function(){
       var s = 'ABC';
       var buf = theStruct.packString(s);
       expect(buf.byteLength).to.equal(3);
-      expect(buf[0]).to.equal(65);
-      expect(buf[1]).to.equal(66);
-      expect(buf[2]).to.equal(67);
+      var data = new Uint8Array(buf);
+      expect(data[0]).to.equal(65);
+      expect(data[1]).to.equal(66);
+      expect(data[2]).to.equal(67);
     });
   });
   describe('general test of unpack builder', function(){
