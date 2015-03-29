@@ -49,7 +49,8 @@ var DeviceSelection = React.createClass({
     var formClasses = cx({
       'DeviceSelection-form': true,
       'DeviceSelection-form--onlyme': !this.props.groupsDropdown,
-      'DeviceSelection-form--groups': this.props.groupsDropdown
+      'DeviceSelection-form--groups': this.props.groupsDropdown,
+      'DeviceSelection-form--timezone' : true
     });
 
     var disabled = this.props.targetDevices.length > 0 ? false : true;
