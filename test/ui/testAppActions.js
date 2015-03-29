@@ -766,6 +766,16 @@ describe('appActions', function() {
 
   });
 
+  describe('changeTimezone', function() {
+
+    it('updates the timezone ', function() {
+      app.state.targetTimezone = 'foo';
+      appActions.changeTimezone('bar');
+      expect(app.state.targetTimezone).to.equal('bar');
+    });
+
+  });
+
   describe('hideDropMenu', function() {
 
     it('sets the boolean for the dropdown menu to false, always', function() {
