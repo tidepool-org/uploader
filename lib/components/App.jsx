@@ -27,6 +27,7 @@ var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
 var UploadSettings = require('./UploadSettings.jsx');
+var TimezoneSelection = require('./TimezoneSelection.jsx');
 var DeviceSelection = require('./DeviceSelection.jsx');
 
 var config = require('../config');
@@ -93,11 +94,13 @@ var App = React.createClass({
     }
 
     var uploadSettings = this.onlyMe() ? null : this.renderUploadSettings();
+    var timezone = this.renderTimezoneSelection();
 
     if (page === 'settings') {
       return (
         <div>
           {uploadSettings}
+          {timezone}
           <DeviceSelection
             uploads={this.state.uploads}
             targetId={this.state.targetId}
@@ -167,6 +170,14 @@ var App = React.createClass({
         targetId={this.state.targetId}
         isUploadInProgress={this.appState.hasUploadInProgress()}
         onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+    );
+  },
+
+  renderTimezoneSelection: function() {
+    return (
+      <TimezoneSelection
+        timezoneLabel={'Choose timezone'}
+        onTimezoneChange={this.appActions.changeTimezone.bind(this.appActions)} />
     );
   },
 
