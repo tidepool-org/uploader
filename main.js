@@ -33,7 +33,6 @@
 
 var contexts = [ 'page' ];
 
-
 var contextMenus = [
   {
     type: 'normal',
@@ -130,10 +129,6 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
     }
   }
 
-  for (var i=0; i<contextMenus.length; ++i) {
-    chrome.contextMenus.create(contextMenus[i]);
-  }
-
   // Center window on screen.
   var screenWidth = screen.availWidth;
   var screenHeight = screen.availHeight;
@@ -151,6 +146,29 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
       minHeight: height
     }
   }, function(createdWindow) {
+    for (var i=0; i<contextMenus.length; ++i) {
+      // In version 42 of Chrome, the create call throws an exception when the
+      // app is reloaded after being closed (but Chrome itself continues to run).
+      // I can't find anything wrong with the code or a way to prevent the
+      // exception from occurring.
+      // However, catching the exception and ignoring it allows things to
+      // proceed, and the app still seems to be working properly -- the menu
+      // items still work, etc.
+      try {
+        chrome.contextMenus.create(contextMenus[i], function()
+          {
+            var err = chrome.runtime.lastError;
+            if (err) {
+              console.log('Error creating menu item #', i, ', "', err, '"');
+            }
+          });
+      } catch (exception) {
+        // Leaving this here and commented out because it seems to be a bug
+        // in Chrome that's causing the exception.
+        // console.log('Caught exception in case ', i);
+      }
+    }
+
     var menucb = setServer.bind(null, createdWindow.contentWindow);
     chrome.contextMenus.onClicked.addListener(menucb);
 
