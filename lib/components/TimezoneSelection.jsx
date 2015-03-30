@@ -28,10 +28,11 @@ var TimezoneSelection = React.createClass({
 
   buildTzSelector:function(){
     var options = _.map(sundial.getTimezones(), function(tz) {
-      return { value : tz.name, label : tz.name }
+      return { value : tz.label, label : tz.name };
     });
+
     var bestGuessTz = sundial.getDeviceTimezone();
-    return (<Select name='timezoneSelect' value={bestGuessTz.name} options={options} onChange={this.props.onTimezoneChange} />);
+    return (<Select name='timezoneSelect' value={bestGuessTz.label} options={options} onChange={this.props.onTimezoneChange} />);
   },
 
   render: function() {
