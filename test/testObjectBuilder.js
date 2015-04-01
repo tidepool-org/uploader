@@ -35,21 +35,20 @@ describe('objectBuilder.js', function(){
   describe('setDefaults', function(){
     it('works', function(){
 
-      var defaults = {deviceId:'123-gg-33-4rrr',timezoneOffset:'-420'};
+      var defaults = {deviceId:'123-gg-33-4rrr'};
 
       bob.setDefaults(defaults);
 
       var dualBolus = bob.makeDualBolus();
 
       expect(dualBolus.deviceId).to.equal(defaults.deviceId);
-      expect(dualBolus.timezoneOffset).to.equal(defaults.timezoneOffset);
 
     });
   });
 
   describe('makeCBG', function(){
 
-    var defaults = {deviceId:'makeCBG',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeCBG'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -60,7 +59,6 @@ describe('objectBuilder.js', function(){
       var cbg = bob.makeCBG();
 
       expect(cbg.deviceId).to.equal(defaults.deviceId);
-      expect(cbg.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(cbg.time).to.equal(REQUIRED);
       expect(cbg.deviceTime).to.equal(OPTIONAL);
       expect(cbg.value).to.equal(REQUIRED);
@@ -70,7 +68,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeDualBolus', function(){
 
-    var defaults = {deviceId:'makeDualBolus',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeDualBolus'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -81,7 +79,6 @@ describe('objectBuilder.js', function(){
       var dualBolus = bob.makeDualBolus();
 
       expect(dualBolus.deviceId).to.equal(defaults.deviceId);
-      expect(dualBolus.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(dualBolus.type).to.equal('bolus');
       expect(dualBolus.subType).to.equal('dual/square');
       expect(dualBolus.deviceTime).to.equal(OPTIONAL);
@@ -95,7 +92,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeFood', function(){
 
-    var defaults = {deviceId:'makeFood',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeFood'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -106,7 +103,6 @@ describe('objectBuilder.js', function(){
       var food = bob.makeFood();
 
       expect(food.deviceId).to.equal(defaults.deviceId);
-      expect(food.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(food.type).to.equal('food');
       expect(food.deviceTime).to.equal(OPTIONAL);
       expect(food.time).to.equal(REQUIRED);
@@ -117,7 +113,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeSuspendBasal', function(){
 
-    var defaults = {deviceId:'makeSuspendBasal',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeSuspendBasal'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -128,7 +124,6 @@ describe('objectBuilder.js', function(){
       var suspendBasal = bob.makeSuspendBasal();
 
       expect(suspendBasal.deviceId).to.equal(defaults.deviceId);
-      expect(suspendBasal.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(suspendBasal.deliveryType).to.equal('suspend');
       expect(suspendBasal.type).to.equal('basal');
 
@@ -143,7 +138,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeNormalBolus', function(){
 
-    var defaults = {deviceId:'makeNormalBolus',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeNormalBolus'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -154,7 +149,6 @@ describe('objectBuilder.js', function(){
       var normal = bob.makeNormalBolus();
 
       expect(normal.deviceId).to.equal(defaults.deviceId);
-      expect(normal.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(normal.type).to.equal('bolus');
       expect(normal.subType).to.equal('normal');
       expect(normal.deviceTime).to.equal(OPTIONAL);
@@ -166,7 +160,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeNote', function(){
 
-    var defaults = {deviceId:'makeNormalBolus',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeNormalBolus'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -177,7 +171,6 @@ describe('objectBuilder.js', function(){
       var note = bob.makeNote();
 
       expect(note.deviceId).to.equal(defaults.deviceId);
-      expect(note.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(note.type).to.equal('note');
       expect(note.deviceTime).to.equal(OPTIONAL);
       expect(note.time).to.equal(REQUIRED);
@@ -188,7 +181,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeSettings', function(){
 
-    var defaults = {deviceId:'makeSettings',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeSettings'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -199,7 +192,6 @@ describe('objectBuilder.js', function(){
       var settings = bob.makeSettings();
 
       expect(settings.deviceId).to.equal(defaults.deviceId);
-      expect(settings.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(settings.type).to.equal('settings');
       expect(settings.deviceTime).to.equal(OPTIONAL);
       expect(settings.time).to.equal(REQUIRED);
@@ -211,7 +203,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeSMBG', function(){
 
-    var defaults = {deviceId:'makeSMBG',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeSMBG'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -222,7 +214,6 @@ describe('objectBuilder.js', function(){
       var smbg = bob.makeSMBG();
 
       expect(smbg.deviceId).to.equal(defaults.deviceId);
-      expect(smbg.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(smbg.type).to.equal('smbg');
       expect(smbg.deviceTime).to.equal(OPTIONAL);
       expect(smbg.time).to.equal(REQUIRED);
@@ -233,7 +224,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeSquareBolus', function(){
 
-    var defaults = {deviceId:'makeSquareBolus',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeSquareBolus'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -245,7 +236,6 @@ describe('objectBuilder.js', function(){
 
 
       expect(square.deviceId).to.equal(defaults.deviceId);
-      expect(square.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(square.type).to.equal('bolus');
       expect(square.subType).to.equal('square');
       expect(square.deviceTime).to.equal(OPTIONAL);
@@ -258,7 +248,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeTempBasal', function(){
 
-    var defaults = {deviceId:'makeTempBasal',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeTempBasal'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -269,7 +259,6 @@ describe('objectBuilder.js', function(){
       var temp = bob.makeTempBasal();
 
       expect(temp.deviceId).to.equal(defaults.deviceId);
-      expect(temp.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(temp.type).to.equal('basal');
       expect(temp.deliveryType).to.equal('temp');
       expect(temp.deviceTime).to.equal(OPTIONAL);
@@ -284,7 +273,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeWizard', function(){
 
-    var defaults = {deviceId:'makeWizard',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeWizard'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -295,7 +284,6 @@ describe('objectBuilder.js', function(){
       var wiz = bob.makeWizard();
 
       expect(wiz.deviceId).to.equal(defaults.deviceId);
-      expect(wiz.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(wiz.type).to.equal('wizard');
       expect(wiz.deviceTime).to.equal(OPTIONAL);
       expect(wiz.time).to.equal(REQUIRED);
@@ -313,7 +301,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeDeviceMetaResume', function(){
 
-    var defaults = {deviceId:'makeDeviceMetaResume',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeDeviceMetaResume'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -324,7 +312,6 @@ describe('objectBuilder.js', function(){
       var resumeMeta = bob.makeDeviceMetaResume();
 
       expect(resumeMeta.deviceId).to.equal(defaults.deviceId);
-      expect(resumeMeta.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(resumeMeta.type).to.equal('deviceMeta');
       expect(resumeMeta.subType).to.equal('status');
       expect(resumeMeta.deviceTime).to.equal(OPTIONAL);
@@ -337,7 +324,7 @@ describe('objectBuilder.js', function(){
 
   describe('makeDeviceMetaSuspend', function(){
 
-    var defaults = {deviceId:'makeDeviceMetaSuspend',timezoneOffset:'-420'};
+    var defaults = {deviceId:'makeDeviceMetaSuspend'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -348,7 +335,6 @@ describe('objectBuilder.js', function(){
       var suspendMeta = bob.makeDeviceMetaSuspend();
 
       expect(suspendMeta.deviceId).to.equal(defaults.deviceId);
-      expect(suspendMeta.timezoneOffset).to.equal(defaults.timezoneOffset);
       expect(suspendMeta.type).to.equal('deviceMeta');
       expect(suspendMeta.subType).to.equal('status');
       expect(suspendMeta.deviceTime).to.equal(OPTIONAL);
