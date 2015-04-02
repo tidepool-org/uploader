@@ -20,38 +20,38 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var lookupMaker = require('../lib/timezoneOffsetLookup');
+var TZOUtil = require('../lib/TimezoneOffsetUtil');
 
-describe('timezoneOffsetLookup.js', function(){
-  it('is a function', function(){
-    expect(typeof lookupMaker).to.equal('function');
+describe('TimezoneOffsetUtil.js', function(){
+  it('exports a function', function(){
+    expect(typeof TZOUtil).to.equal('function');
   });
 
   it('returns an object', function(){
-    var lookup = lookupMaker('US/Pacific', '2015-01-01T00:00:00.000Z', []);
-    expect(typeof lookup).to.equal('object');
+    var util = new TZOUtil('US/Pacific', '2015-01-01T00:00:00.000Z', []);
+    expect(typeof util).to.equal('object');
   });
 
   it('throws an error if a named timezone not provided as first param', function(){
-    var fn = function() { lookupMaker('foo', '2015-01-01T00:00:00.000Z', '2015-01-01T00:00:00.000Z', []); };
+    var fn = function() { new TZOUtil('foo', '2015-01-01T00:00:00.000Z', '2015-01-01T00:00:00.000Z', []); };
     expect(fn).to.throw('Unrecognized timezone name!');
   });
 
   it('throws an error if a valid timestamp is not provided as second param', function(){
-    var fn = function() { lookupMaker('US/Pacific', 'foo', []); };
+    var fn = function() { new TZOUtil('US/Pacific', 'foo', []); };
     expect(fn).to.throw('Invalid timestamp for most recent datum!');
   });
 
   it('defaults to accross-the-board timezone application if no `changes` provided as third param', function(){
-    var lookup = lookupMaker('US/Eastern', '2015-01-01T00:00:00.000Z', []);
-    expect(lookup.fn(new Date('2015-04-01T00:00:00'))).to.deep.equal({
+    var util = new TZOUtil('US/Eastern', '2015-01-01T00:00:00.000Z', []);
+    expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
       timezoneOffset: -240
     });
   });
 
   it('throws an error if `changes` not empty and not all events are `timeChange`', function(){
-    var fn = function() { lookupMaker('US/Eastern', '2015-01-01T00:00:00.000Z', [{type: 'foo'}]); };
+    var fn = function() { new TZOUtil('US/Eastern', '2015-01-01T00:00:00.000Z', [{type: 'foo'}]); };
     expect(fn).to.throw(Error);
   });
 });
