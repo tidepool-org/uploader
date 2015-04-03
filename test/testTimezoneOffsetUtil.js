@@ -49,7 +49,7 @@ describe('TimezoneOffsetUtil.js', function(){
     expect(fn).to.throw(Error);
   });
 
-  it('defaults to accross-the-board timezone application if no `changes` provided as third param', function(){
+  it('defaults to across-the-board timezone application if no `changes` provided as third param', function(){
     var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', []);
     expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
@@ -324,6 +324,31 @@ describe('TimezoneOffsetUtil.js', function(){
           timezoneOffset: -300
         });
       });
+
+      it('when no `index`, uses first UTC timestamp that fits in an offsetInterval', function(){
+        var ambiguousDeviceTime = '2015-04-01T12:00:00';
+        var amNotPM = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-04-01T19:00:00',
+            to: '2015-04-01T07:00:00'
+          })
+          .with_deviceTime('2015-04-01T19:00:00')
+          .set('jsDate', new Date('2015-04-01T19:00:00'))
+          .set('index', 50);
+        var util = new TZOUtil('US/Mountain', '2015-05-01T00:00:00.000Z', [amNotPM]);
+        expect(util.lookup(new Date(ambiguousDeviceTime), 51)).to.deep.equal({
+          time: '2015-04-01T18:00:00.000Z',
+          timezoneOffset: -360
+        });
+        expect(util.lookup(new Date(ambiguousDeviceTime), 49)).to.deep.equal({
+          time: '2015-04-01T06:00:00.000Z',
+          timezoneOffset: 360
+        });
+        expect(util.lookup(new Date(ambiguousDeviceTime))).to.deep.equal({
+          time: '2015-04-01T06:00:00.000Z',
+          timezoneOffset: 360
+        });
+      });
     });
   });
 
@@ -357,14 +382,27 @@ describe('TimezoneOffsetUtil.js', function(){
       var dt = new Date('2015-04-03T11:30:00');
       expect(noChangesUtil.fillInUTCInfo(obj, dt)).to.deep.equal(_.assign({}, obj, {
         time: '2015-04-02T22:30:00.000Z',
+        timezoneOffset: 780
+      }));
+    });
+
+    it('annotates the object if no `index` present', function(){
+      var obj = {
+        type: 'deviceMeta',
+        subType: 'alarm'
+      };
+      var dt = new Date('2015-04-03T11:30:00');
+      expect(noChangesUtil.fillInUTCInfo(obj, dt)).to.deep.equal(_.assign({}, obj, {
+        time: '2015-04-02T22:30:00.000Z',
         timezoneOffset: 780,
+        annotations: [{code: 'uncertain-timestamp'}]
       }));
     });
   });
 });
 
 describe('TimezoneOffsetUtil in practice', function(){
-  it('applies a timezone accross-the-board when no `changes` provided', function(){
+  it('applies a timezone across-the-board when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
     var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
     // Hawaii doesn't use Daylight Savings Time
@@ -376,7 +414,7 @@ describe('TimezoneOffsetUtil in practice', function(){
     expect(_.pluck(data, 'timezoneOffset')[0]).to.equal(-600);
   });
 
-  it('applies a timezone accross-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
+  it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
     var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
     // US/Mountain *does* use Daylight Savings Time
