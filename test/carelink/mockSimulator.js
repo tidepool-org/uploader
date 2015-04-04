@@ -47,9 +47,9 @@ exports.make = function(config) {
     getEvents: function(){
       return _.map(events, function(event) {
         if (event.type === 'wizard') {
-          event.bolus = _.omit(event.bolus, 'jaebPayload');
+          event.bolus = _.omit(event.bolus, ['index', 'jaebPayload', 'jsDate']);
         }
-        return _.omit(event, 'jaebPayload');
+        return _.omit(event, ['index', 'jaebPayload', 'jsDate']);
       });
     }
   };
