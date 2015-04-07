@@ -28,7 +28,6 @@ var config = {
   },
   resolve: {
     alias: {
-      lodash: 'lodash/dist/lodash.js',
       mock: './mock/empty.js'
     }
   }
