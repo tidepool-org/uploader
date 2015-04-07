@@ -23,16 +23,16 @@ var Select = require('react-select');
 var TimezoneSelection = React.createClass({
   propTypes: {
     onTimezoneChange: React.PropTypes.func.isRequired,
-    timezoneLabel : React.PropTypes.string.isRequired
+    timezoneLabel : React.PropTypes.string.isRequired,
+    targetTimezone: React.PropTypes.string
   },
 
   buildTzSelector:function(){
     var opts = _.map(sundial.getTimezones(), function(tz) {
-      return { value : tz.name, label : tz.name };
+      return { value : tz.name, label : tz.label };
     });
 
-    var bestGuessTz = sundial.getDeviceTimezone();
-    return (<Select name='timezoneSelect' value={bestGuessTz.name} options={opts} onChange={this.props.onTimezoneChange} />);
+    return (<Select name='timezoneSelect' value={this.props.targetTimezone} options={opts} onChange={this.props.onTimezoneChange} />);
   },
 
   render: function() {

@@ -760,7 +760,7 @@ describe('appActions', function() {
 
     it('updates user id for uploading', function() {
       app.state.targetId = 'foo';
-      appActions.changeGroup({target: {value: 'bar'}});
+      appActions.changeGroup('bar');
       expect(app.state.targetId).to.equal('bar');
     });
 

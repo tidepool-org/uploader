@@ -17,6 +17,7 @@
 
 var _ = require('lodash');
 var React = require('react');
+var Select = require('react-select');
 
 var UploadSettings = React.createClass({
   propTypes: {
@@ -26,16 +27,7 @@ var UploadSettings = React.createClass({
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
-  render: function() {
-    // we're already doing a check to see if we want to render in App.jsx
-    // but this is an extra measure of protection against trying to render
-    // when we don't have the groups to do so
-    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
-      return null;
-    }
-    var self = this;
-
-    // sort users alpha by full name
+  groupSelector:function(){
     var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
       if(group.profile.patient.isOtherPerson){
         return group.profile.patient.fullName;
@@ -43,43 +35,39 @@ var UploadSettings = React.createClass({
       return group.profile.fullName;
     });
 
-    var options = _.map(sortedGroups, function(group) {
+    //build the options list
+    var opts = _.map(sortedGroups, function(group) {
       if(group.profile.patient.isOtherPerson){
-        return (
-          <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
-        );
+        return { value : group.userid, label : group.profile.patient.fullName };
       }
-      return (
-        <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
-      );
+      return { value : group.userid, label : group.profile.fullName };
     });
 
-    var disabled = this.props.isUploadInProgress ? 'disabled' : '';
+    var disable = this.props.isUploadInProgress ? true : false;
+
+    return (<Select
+        disabled={disable}
+        name='uploadGroupSelect'
+        value={this.props.targetId}
+        options={opts}
+        onChange={this.props.onGroupChange} />);
+  },
+  render: function() {
+    // we're already doing a check to see if we want to render in App.jsx
+    // but this is an extra measure of protection against trying to render
+    // when we don't have the groups to do so
+    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
+      return null;
+    }
 
     var text = this.props.page === 'main' ? 'Upload data for' : 'Choose devices for';
-
-    var select = function() {
-      if (self.props.isUploadInProgress) {
-        return (
-          <select disabled onChange={self.props.onGroupChange} value={self.props.targetId} ref='uploadGroupSelect'>
-            {options}
-          </select>
-        );
-      }
-
-      return (
-        <select onChange={self.props.onGroupChange} defaultValue={self.props.targetId} ref='uploadGroupSelect'>
-          {options}
-        </select>
-      );
-    }();
 
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
           <div className="UploadSettings-uploadGroup--label">{text}</div>
           <div className={'UploadSettings-uploadGroup--list UploadSettings--' + this.props.page}>
-            {select}
+            {this.groupSelector()}
           </div>
         </div>
       </div>
