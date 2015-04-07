@@ -30,25 +30,16 @@ var UploadList = React.createClass({
     groupsDropdown: React.PropTypes.bool.isRequired
   },
 
-  renderErrors: function() {
-    //do any of the target uploads have errors
-    var uploadsWithError = _.filter(this.props.targetedUploads, function(upload) {
-      return _.isEmpty(upload.error) === false;
-    });
-
-    if(_.isEmpty(uploadsWithError)) {
-      return null;
+  renderErrorForUpload: function(upload) {
+    if (_.isEmpty(upload) || _.isEmpty(upload.error)){
+      return;
     }
-
-    return _.map(uploadsWithError, function(upload){
-      return (
-        <div key={upload.key} className="UploadList-error-item">
-          <div className="UploadList-error-name">{upload.name}</div>
-          <div className="UploadList-error-message">{upload.error.message}</div>
-          <div className="UploadList-error-debug">{upload.error.debug}</div>
-        </div>
-      );
-    });
+    return (
+      <div className="UploadList-error-item">
+        <div className="UploadList-error-message">{upload.error.message}</div>
+        <div className="UploadList-error-debug">{upload.error.debug}</div>
+      </div>
+    );
   },
 
   render: function() {
@@ -60,8 +51,14 @@ var UploadList = React.createClass({
     });
 
     var nodes = _.map(this.props.targetedUploads, function(target){
+
+      var matchingUpload;
       var index = _.findIndex(self.props.uploads, function(upload) {
-        return upload.key === target.key;
+        if(upload.key === target.key){
+          matchingUpload = target;
+          return true;
+        }
+        return false;
       });
       return (
         <div key={index} className="UploadList-item">
@@ -70,6 +67,7 @@ var UploadList = React.createClass({
             onUpload={self.props.onUpload.bind(null, index)}
             onReset={self.props.onReset.bind(null, index)}
             readFile={self.props.readFile.bind(null, index, self.props.targetId)} />
+          {self.renderErrorForUpload(matchingUpload)}
         </div>
       );
     });
@@ -77,7 +75,6 @@ var UploadList = React.createClass({
     return (
       <div>
         <div className={uploadListClasses}>
-          {this.renderErrors()}
           {nodes}
         </div>
       </div>
