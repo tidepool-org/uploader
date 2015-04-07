@@ -428,7 +428,7 @@ describe('TimezoneOffsetUtil in practice', function(){
     expect(offsets).to.deep.equal([-420, -360]);
   });
   
-  it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(){
+  it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
     var data = [], index = 0;
     var datetimesHomeAgain = d3.time.minute.utc.range(
       new Date('2015-04-19T05:05:00'),
@@ -488,5 +488,6 @@ describe('TimezoneOffsetUtil in practice', function(){
     // but UTC times should *always* be unique, even with travel!
     // so the length of arrays should stay the same, even when reducing to unique
     expect(times.length).to.equal(uniqTimes.length);
+    done();
   });
 });
