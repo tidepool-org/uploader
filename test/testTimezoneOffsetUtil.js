@@ -429,65 +429,68 @@ describe('TimezoneOffsetUtil in practice', function(){
   });
   
   it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
-    var data = [], index = 0;
-    var datetimesHomeAgain = d3.time.minute.utc.range(
-      new Date('2015-04-19T05:05:00'),
-      new Date('2015-05-01T00:00:00'),
-      5
-    );
-    var datetimesInNZ = d3.time.minute.utc.range(
-      new Date('2015-04-10T19:05:00'),
-      new Date('2015-04-20T00:05:00'),
-      5
-    );
-    var datetimesBeforeTrip = d3.time.minute.utc.range(
-      new Date('2015-04-01T00:00:00'),
-      new Date('2015-04-10T00:05:00'),
-      5
-    );
-    var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
-    _.each(datetimes, function(dt) {
-      data.push({
-        type: 'foo',
-        index: index,
-        deviceTime: dt.toISOString().slice(0,-5)
+    this.timeout(5000);
+    setTimeout(function() {
+      var data = [], index = 0;
+      var datetimesHomeAgain = d3.time.minute.utc.range(
+        new Date('2015-04-19T05:05:00'),
+        new Date('2015-05-01T00:00:00'),
+        5
+      );
+      var datetimesInNZ = d3.time.minute.utc.range(
+        new Date('2015-04-10T19:05:00'),
+        new Date('2015-04-20T00:05:00'),
+        5
+      );
+      var datetimesBeforeTrip = d3.time.minute.utc.range(
+        new Date('2015-04-01T00:00:00'),
+        new Date('2015-04-10T00:05:00'),
+        5
+      );
+      var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
+      _.each(datetimes, function(dt) {
+        data.push({
+          type: 'foo',
+          index: index,
+          deviceTime: dt.toISOString().slice(0,-5)
+        });
+        index += 2;
       });
-      index += 2;
-    });
-    var fromNZ = builder.makeDeviceMetaTimeChange()
-      .with_change({
-        from: '2015-04-20T00:02:30',
-        to: '2015-04-19T05:03:00'
-      })
-      .with_deviceTime('2015-04-20T00:00:00')
-      .set('jsDate', new Date('2015-04-20T00:00:00'))
-      .set('index', 10489);
-    var toNZ = builder.makeDeviceMetaTimeChange()
-      .with_change({
-        from: '2015-04-10T00:02:30',
-        to: '2015-04-10T19:02:00'
-      })
-      .with_deviceTime('2015-04-10T00:02:30')
-      .set('jsDate', new Date('2015-04-10T00:02:30'))
-      .set('index', 5185);
-    var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [toNZ, fromNZ]);
-    for (var i = 0; i < data.length; ++i) {
-      var datum = data[i], date = datetimes[i];
-      util.fillInUTCInfo(datum, date);
-    }
-    var byTime = _.sortBy(data, function(d) { return d.time; });
-    var byIndex = _.sortBy(data, function(d) { return d.index; });
-    expect(byTime).to.deep.equal(byIndex);
-    var deviceTimes = _.pluck(data, 'deviceTime');
-    var uniqDeviceTimes = _.uniq(deviceTimes);
-    // given the time changes involved, device times are *not*
-    // expected to be unique, hence the length of arrays should vary
-    expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
-    var times = _.pluck(data, 'time');
-    var uniqTimes = _.uniq(times);
-    // but UTC times should *always* be unique, even with travel!
-    // so the length of arrays should stay the same, even when reducing to unique
-    expect(times.length).to.equal(uniqTimes.length);
-    done();
+      var fromNZ = builder.makeDeviceMetaTimeChange()
+        .with_change({
+          from: '2015-04-20T00:02:30',
+          to: '2015-04-19T05:03:00'
+        })
+        .with_deviceTime('2015-04-20T00:00:00')
+        .set('jsDate', new Date('2015-04-20T00:00:00'))
+        .set('index', 10489);
+      var toNZ = builder.makeDeviceMetaTimeChange()
+        .with_change({
+          from: '2015-04-10T00:02:30',
+          to: '2015-04-10T19:02:00'
+        })
+        .with_deviceTime('2015-04-10T00:02:30')
+        .set('jsDate', new Date('2015-04-10T00:02:30'))
+        .set('index', 5185);
+      var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [toNZ, fromNZ]);
+      for (var i = 0; i < data.length; ++i) {
+        var datum = data[i], date = datetimes[i];
+        util.fillInUTCInfo(datum, date);
+      }
+      var byTime = _.sortBy(data, function(d) { return d.time; });
+      var byIndex = _.sortBy(data, function(d) { return d.index; });
+      expect(byTime).to.deep.equal(byIndex);
+      var deviceTimes = _.pluck(data, 'deviceTime');
+      var uniqDeviceTimes = _.uniq(deviceTimes);
+      // given the time changes involved, device times are *not*
+      // expected to be unique, hence the length of arrays should vary
+      expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
+      var times = _.pluck(data, 'time');
+      var uniqTimes = _.uniq(times);
+      // but UTC times should *always* be unique, even with travel!
+      // so the length of arrays should stay the same, even when reducing to unique
+      expect(times.length).to.equal(uniqTimes.length);
+      done();
+    }, 50);
   });
 });
