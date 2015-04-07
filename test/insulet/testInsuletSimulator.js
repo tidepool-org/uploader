@@ -223,7 +223,26 @@ describe('insuletSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('throws and error without a status if `stopsDelivery` in payload', function() {
+      it('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
+        var val = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          timezoneOffset: 0,
+          deviceId: 'InsOmn1234',
+          type: 'deviceMeta',
+          subType: 'alarm',
+          alarmType: 'occlusion',
+          payload: {
+            stopsDelivery: true
+          },
+          index: 10
+        };
+
+        var fn = function() { simulator.alarm(val); };
+        expect(fn).to.throw(Error);
+      });
+
+      it('passes through if `stopsDelivery` in payload but no `index` available', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -237,8 +256,8 @@ describe('insuletSimulator.js', function() {
           }
         };
 
-        var fn = function() { simulator.alarm(val); };
-        expect(fn).to.throw(Error);
+        simulator.alarm(val);
+        expect(simulator.getEvents()).deep.equals([val]);
       });
 
       it('passes through if `stopsDelivery` in payload and `status` exists', function() {
