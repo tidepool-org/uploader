@@ -37,6 +37,7 @@ var UploadList = React.createClass({
     return (
       <div className="UploadList-error-item">
         <div className="UploadList-error-message">{upload.error.message}</div>
+        <span className="UploadList-error-show">Details:</span>
         <div className="UploadList-error-debug">{upload.error.debug}</div>
       </div>
     );
