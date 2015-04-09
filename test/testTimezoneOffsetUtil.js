@@ -57,6 +57,21 @@ describe('TimezoneOffsetUtil.js', function(){
     });
   });
 
+  it('identifies the type of timezone offset production used as `utc-bootstrapping` or `across-the-board-timezone`', function() {
+    var atbUtil = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', []);
+    expect(atbUtil.type).to.equal('across-the-board-timezone');
+    var belatedDST = builder.makeDeviceMetaTimeChange()
+      .with_change({
+        from: '2015-03-08T12:01:21',
+        to: '2015-03-08T13:00:00',
+      })
+      .with_deviceTime('2015-03-08T12:01:21')
+      .set('jsDate', new Date('2015-03-08T12:01:21'))
+      .set('index', 10);
+    var bootstrapUtil = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [belatedDST]);
+    expect(bootstrapUtil.type).to.equal('utc-bootstrapping');
+  });
+
   describe('records', function(){
     it('adds `time` and `timezoneOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
       var belatedDST = builder.makeDeviceMetaTimeChange()
