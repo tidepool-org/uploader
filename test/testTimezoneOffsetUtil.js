@@ -219,6 +219,7 @@ describe('TimezoneOffsetUtil.js', function(){
           time: '2015-04-01T05:00:00.000Z',
           timezoneOffset: -300
         });
+        expect(util.type).to.equal('utc-bootstrapping');
       });
 
       it('under DST change (spring forward), offset changes', function(){
