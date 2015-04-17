@@ -4,7 +4,6 @@ var react = require('gulp-react');
 var merge = require('merge-stream');
 
 var jsFiles = [
-  'bin/**/*.js',
   'lib/**/*.js',
   'test/**/*.js',
   '*.js'
