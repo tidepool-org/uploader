@@ -75,6 +75,13 @@
           "mode": "block",
           "vendorId": 7734,
           "productId": 2
+        },
+        {
+          "deviceName": "Tandem t:slim",
+          "driverId": "TandemTslim",
+          "mode": "serial",
+          "vendorId": 1155,
+          "productId": 22336
         }
       ]
     }
