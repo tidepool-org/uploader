@@ -16,21 +16,16 @@
 @base-height: 305px;
 
 
+.UploadList-error-item{
+  padding-top: 10px;
+}
+
 .UploadList-error-message {
   color: @red;
 }
 
-.UploadList-error-debug {
-  display: none;
-}
-
-.UploadList-error-show:focus {
-  .UploadList-error-debug {
-    color: @red;
-    font-size: 12px;
-    padding-top: 10px;
-    display: block;
-  }
+.UploadList-error-show {
+  display:inline-block;
 }
 
 .UploadList {
