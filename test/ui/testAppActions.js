@@ -250,7 +250,6 @@ describe('appActions', function() {
 
       appActions.login({}, {}, function(err) {
         expect(err.message).to.contain(loginError.message);
-        expect(err.originalError).to.deep.equal({originalError:loginError});
         done();
       });
     });
@@ -688,7 +687,6 @@ describe('appActions', function() {
           expect(actual.start).to.equal(expected.start);
           expect(actual.percentage).to.equal(expected.percentage);
           expect(actual.error.name).to.equal('UploaderError');
-          expect(actual.error.originalError).to.not.be.empty;
         }
 
         var instance = {
