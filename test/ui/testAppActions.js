@@ -697,7 +697,7 @@ describe('appActions', function() {
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: new UploaderError('opps',appActions.errorStage.STAGE_UPLOAD ,uploadError)
+          error: new UploaderError('opps',{version: '123-abc', stage:appActions.errorStage.STAGE_UPLOAD} ,uploadError)
         };
 
         expect(app.state.uploads[0].history).to.have.length(1);

@@ -21,22 +21,27 @@ var expect = require('salinity').expect;
 
 var UploaderError = require('../../lib/core/uploaderError.js');
 
+
+
 describe('UploaderError', function(){
 
-  var errToTest = new UploaderError('Oh noes',{ Code: 'E_TEST' , Message: 'Test', Step: 'Loading' });
+  var details = {version: '123', stage: { Code: 'E_TEST' , Message: 'Test', Step: 'Loading' }};
+  var errToTest = new UploaderError('Oh noes', details);
+
+
   describe('message', function(){
     it('set as given message', function(){
       expect(errToTest.message).to.equal('Oh noes');
     });
     it('set as wrapped error message if not overridden', function(){
       var originalError = new Error('the original error we caught');
-      var err = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_A' , Message: 'Test' }, originalError);
-      var errTwo = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }, err);
+      var err = new UploaderError('',{version: '123', stage:{ Code: 'E_TEST_OTHER_PART_A' , Message: 'Test' }}, originalError);
+      var errTwo = new UploaderError('',{version: '123', stage: { Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }}, err);
       expect(errTwo.message).to.equal(originalError.message);
     });
     it('set from wrapped error', function(){
       var originalError = {error: 'Request failed with statusCode 500', code: null, message: null};
-      var ule = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }, originalError);
+      var ule = new UploaderError('',{version: '123', stage:{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }}, originalError);
       expect(ule.message).to.equal(originalError.error);
     });
   });
@@ -47,14 +52,22 @@ describe('UploaderError', function(){
     expect(errToTest.debug).to.include('Oh noes');
     expect(errToTest.debug).to.include(UploaderError.STEP);
     expect(errToTest.debug).to.include('Loading');
+    expect(errToTest.debug).to.include(UploaderError.VERSION);
+    expect(errToTest.debug).to.include('123');
+  });
+  it('stack', function(){
+    expect(errToTest.stack).to.not.be.empty;
   });
   it('debug when no step set', function(){
-    var errToTest = new UploaderError('Oh noes',{ Code: 'E_TEST' , Message: 'Test', Step: '' });
+    var errToTest = new UploaderError('Oh noes',{version: '123', stage:{ Code: 'E_TEST' , Message: 'Test', Step: '' }});
     expect(errToTest.debug).to.include(UploaderError.CODE);
     expect(errToTest.debug).to.include('E_TEST');
     expect(errToTest.debug).to.include(UploaderError.UTC_TIME);
     expect(errToTest.debug).to.include('Oh noes');
+    expect(errToTest.debug).to.include(UploaderError.VERSION);
+    expect(errToTest.debug).to.include('123');
     expect(errToTest.debug).to.not.include(UploaderError.STEP);
+
   });
   it('name', function(){
     expect(errToTest.name).to.equal('UploaderError');
@@ -64,20 +77,20 @@ describe('UploaderError', function(){
   });
   it('originalError when passed', function(){
     var errorToWarp = new Error('error to wrap');
-    var err = new UploaderError('Something bad happened',{ Code: 'E_TEST_OTHER' , Message: 'Test', Step: 'Loading' },errorToWarp);
+    var err = new UploaderError('Something bad happened',{version: '123', stage:{ Code: 'E_TEST_OTHER' , Message: 'Test', Step: 'Loading' }},errorToWarp);
     expect(err.originalError).to.deep.equal({'originalError':errorToWarp});
   });
   it('step is set from originalError', function(){
     var errorToWarp = new Error('error to wrap w step');
     errorToWarp.step = 'carelink_parsefile';
-    var err = new UploaderError('Something bad happened',{ Code: 'E_TEST_OTHER' , Message: 'Test', Step: 'Loading' },errorToWarp);
+    var err = new UploaderError('Something bad happened',{version: '123', stage:{ Code: 'E_TEST_OTHER' , Message: 'Test', Step: 'Loading' }},errorToWarp);
     expect(err.debug).to.include(errorToWarp.step);
   });
   it('keep wrapping errors', function(){
     var originalError = new Error('the original error we caught');
-    var firstUploaderError = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_A' , Message: 'Test' }, originalError);
+    var firstUploaderError = new UploaderError('',{version: '123', stage:{ Code: 'E_TEST_OTHER_PART_A' , Message: 'Test' }}, originalError);
     expect(firstUploaderError.originalError).to.deep.equal({'originalError':originalError});
-    var secondUploaderError = new UploaderError('',{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }, firstUploaderError);
+    var secondUploaderError = new UploaderError('',{version: '123', stage:{ Code: 'E_TEST_OTHER_PART_B' , Message: 'Test_2' }}, firstUploaderError);
     expect(secondUploaderError.originalError).to.deep.equal({'originalError':firstUploaderError});
   });
 });
