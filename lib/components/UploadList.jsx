@@ -55,14 +55,13 @@ var UploadList = React.createClass({
     if (_.isEmpty(upload) || _.isEmpty(upload.error)){
       return;
     }
-
     var errorDetails = this.state.showErrorDetails ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
     var showErrorsText = this.state.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
     
     return (
       <div className="UploadList-error-item">
         <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.message}</span>
-        <span className="UploadList-error-show" onClick={this.handleShowDetails}>{showErrorsText}</span>
+        <a href="" onClick={this.handleShowDetails}>{showErrorsText}</a>
         {errorDetails}
       </div>
     );
