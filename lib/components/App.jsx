@@ -106,7 +106,7 @@ var App = React.createClass({
             targetId={this.state.targetId}
             targetDevices={this.state.targetDevices}
             onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
-            onDone={this.appActions.storeTargetDevices.bind(this.appActions)}
+            onDone={this.appActions.storeUserTargets.bind(this.appActions)}
             groupsDropdown={!this.onlyMe()} />
         </div>
       );

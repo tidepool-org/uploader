@@ -35,7 +35,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}});
+    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}, timezones: { '11':'oldTz'}});
     api = {};
 
     jellyfish = {};
@@ -526,23 +526,30 @@ describe('appActions', function() {
     });
   });
 
-  describe('storeTargetDevices', function() {
+  describe('storeUserTargets', function() {
     beforeEach(function() {
       app.state = {
         page: 'settings',
-        targetDevices: ['foo', 'bar']
+        targetDevices: ['foo', 'bar'],
+        targetTimezone: 'fooTz'
       };
     });
 
     it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
       expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
-      appActions.storeTargetDevices('11');
+      appActions.storeUserTargets('11');
       expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+    });
+
+     it('saves the current targetTimezone in the app state in the localStore under the current\'s user\'s id', function() {
+      expect(localStore.getItem('timezones')['11']).to.equal('oldTz');
+      appActions.storeUserTargets('11');
+      expect(localStore.getItem('timezones')['11']).to.equal('fooTz');
     });
 
     it('also redirects to main page', function() {
       expect(app.state.page).to.equal('settings');
-      appActions.storeTargetDevices('11');
+      appActions.storeUserTargets('11');
       expect(app.state.page).to.equal('main');
     });
   });
