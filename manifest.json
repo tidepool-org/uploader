@@ -75,6 +75,15 @@
           "mode": "block",
           "vendorId": 7734,
           "productId": 2
+        },
+        {
+          "deviceName": "OneTouchUltra2",
+          "driverId": "OneTouchUltra2",
+          "bitrate": 9600,
+          "mode": "FTDI",
+          "vendorId": 1027,
+          "productId": 24577,
+          "sendTimeout": 5000
         }
       ]
     }
