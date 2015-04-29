@@ -128,7 +128,7 @@ describe('carelinkSimulator.js', function(){
   describe('basal', function(){
     describe('scheduled', function(){
       describe('withoutSettings', function(){
-        it('passes through without an annotation', function(){
+        it('passes through without an annotation and sets hasSeenScheduled to `true`', function(){
           var val = {
             time: '2014-09-25T01:00:00.000Z',
             deviceTime: '2014-09-25T01:00:00',
@@ -140,6 +140,7 @@ describe('carelinkSimulator.js', function(){
 
           simulator.basalScheduled(val);
           expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'basal', deliveryType: 'scheduled'}, val)]);
+          expect(simulator.hasSeenScheduled()).to.be.true;
         });
 
         it('attaches a previous when there is an active basal', function(){
@@ -689,7 +690,7 @@ describe('carelinkSimulator.js', function(){
     var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
     var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
 
-    it('sets up the previous', function(){
+    it('sets up the previous and hasSeenScheduled remains default `false`', function(){
       simulator.suspend(suspend);
       simulator.resume(resume);
       var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
@@ -697,6 +698,7 @@ describe('carelinkSimulator.js', function(){
         expectedSuspend,
         _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
         ]);
+      expect(simulator.hasSeenScheduled()).to.be.false;
     });
 
     it('creates a basal with `suspend` deliveryType and duration of suspend', function(){
