@@ -81,7 +81,7 @@ describe('userSettingsChanges.js', function() {
     it('only creates timeChange records when the displayOffset has changed', function() {
       var res = userSettingsChanges(settings, {builder: builder});
       var expectedChange = {
-        deviceTime: '2014-12-25T15:34:00',
+        deviceTime: '2014-12-25T13:34:45',
         change: {
           agent: 'manual',
           from: '2014-12-25T13:34:45',
