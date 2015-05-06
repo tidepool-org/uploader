@@ -244,7 +244,7 @@ var Upload = React.createClass({
   },
   renderLastUpload: function() {
     var lastUpload = this.getLastUpload();
-    if (!lastUpload) {
+    if (!lastUpload || lastUpload.error != null) {
       return null;
     }
     var time = moment(lastUpload.finish).calendar();

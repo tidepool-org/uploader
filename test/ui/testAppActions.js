@@ -19,7 +19,6 @@ var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
-var UploaderError = require('../../lib/core/uploaderError');
 
 
 describe('appActions', function() {
@@ -686,7 +685,7 @@ describe('appActions', function() {
           expect(actual.targetId).to.equal(expected.targetId);
           expect(actual.start).to.equal(expected.start);
           expect(actual.percentage).to.equal(expected.percentage);
-          expect(actual.error.name).to.equal('UploaderError');
+          expect(actual.error.name).to.equal('Error');
         }
 
         var instance = {
@@ -695,7 +694,7 @@ describe('appActions', function() {
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: new UploaderError('opps',{version: '123-abc', stage:appActions.errorStage.STAGE_UPLOAD} ,uploadError)
+          error: new Error('oops',{version: '123-abc', stage:appActions.errorStage.STAGE_UPLOAD} ,uploadError)
         };
 
         expect(app.state.uploads[0].history).to.have.length(1);

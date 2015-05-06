@@ -60,7 +60,7 @@ var UploadList = React.createClass({
     
     return (
       <div className="UploadList-error-item">
-        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.message}</span>
+        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.friendlyMessage}</span>
         <a href="" onClick={this.handleShowDetails}>{showErrorsText}</a>
         {errorDetails}
       </div>
