@@ -32,7 +32,7 @@ var UploadList = React.createClass({
   },
   getInitialState: function() {
     return {
-      showErrorDetails: false
+      showErrorDetails: []
     };
   },
   getDefaultProps: function(){
@@ -44,24 +44,38 @@ var UploadList = React.createClass({
       }
     };
   },
-  handleShowDetails:function(e){
-    if(e){
-      e.preventDefault();
-    }
-    //toggle the current setting
-    this.setState({showErrorDetails: !this.state.showErrorDetails});
+  makeHandleShowDetailsFn: function(upload){
+    var self = this;
+
+    return function(e) {
+      if(e){
+        e.preventDefault();
+      }
+      // add or remove this upload's key to the list of uploads to show errors for
+      var showErrorsList = self.state.showErrorDetails;
+      if (_.includes(showErrorsList, upload.key)) {
+        showErrorsList = _.reject(showErrorsList, function(i) { return i === upload.key; });
+      }
+      else {
+        showErrorsList.push(upload.key);
+      }
+      self.setState({showErrorDetails: showErrorsList});
+    };
   },
   renderErrorForUpload: function(upload) {
-    if (_.isEmpty(upload) || _.isEmpty(upload.error)){
+    if (_.isEmpty(upload) || _.isEmpty(upload.error)) {
       return;
     }
-    var errorDetails = this.state.showErrorDetails ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
-    var showErrorsText = this.state.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
+    var showDetailsThisUpload = _.includes(this.state.showErrorDetails, upload.key);
+    var errorDetails = showDetailsThisUpload ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
+    var showErrorsText = showDetailsThisUpload ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
     
+    var clickHandler = this.makeHandleShowDetailsFn(upload);
+
     return (
       <div className="UploadList-error-item">
         <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.friendlyMessage}</span>
-        <a href="" onClick={this.handleShowDetails}>{showErrorsText}</a>
+        <a href="" onClick={clickHandler}>{showErrorsText}</a>
         {errorDetails}
       </div>
     );
