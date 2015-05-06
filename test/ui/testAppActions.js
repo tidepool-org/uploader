@@ -797,13 +797,13 @@ describe('appActions', function() {
       api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
     });
 
-    it('will attach the UTC time and uploader version to the error message', function(done) {
+    it('each error has a detailed `debug` string attached for logging', function(done) {
       now = '2014-01-31T22:00:00-05:00';
       device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
-        var err = new Error('Opps, we got an error');
+        var err = new Error('Oops, we got an error');
         return cb(err);
       };
       app.state.targetId = '11';
@@ -815,7 +815,10 @@ describe('appActions', function() {
       }];
 
       appActions.upload(0, {}, function(err) {
+        expect(err.debug).to.contain('Detail: ');
         expect(err.debug).to.contain('Error UTC Time: ');
+        expect(err.debug).to.contain('Code: E_');
+        expect(err.debug).to.contain('Error Type: Error');
         expect(err.debug).to.contain('Version: tidepool-uploader');
         done();
       });
