@@ -155,7 +155,7 @@ var Upload = React.createClass({
     }
   },
   renderButton: function() {
-    var text = this.props.text.LAST_UPLOAD;
+    var text = this.props.text.LABEL_UPLOAD;
     var disabled = this.isDisabled();
 
     if (this.isCarelinkUpload()) {
