@@ -171,7 +171,7 @@ var Upload = React.createClass({
         <button
           className="btn btn-primary"
           disabled={disabled}
-          onClick={this.handleUpload}>{text}</button>
+          onClick={disabled ? _.noop : this.handleUpload}>{text}</button>
       </div>
     );
   },

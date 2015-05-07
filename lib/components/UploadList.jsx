@@ -89,19 +89,21 @@ var UploadList = React.createClass({
     });
 
     var nodes = _.map(this.props.targetedUploads, function(target){
-
-      var matchingUpload;
+      var keyToMatch;
       var index = _.findIndex(self.props.uploads, function(upload) {
         if(upload.key === target.key){
-          matchingUpload = target;
+          keyToMatch = target.key;
           return true;
         }
         return false;
       });
+      var matchingUpload = _.find(self.props.targetedUploads, function(upload) {
+        return upload.key === keyToMatch;
+      });
       return (
         <div key={index} className="UploadList-item">
           <Upload
-            upload={target}
+            upload={matchingUpload}
             onUpload={self.props.onUpload.bind(null, index)}
             onReset={self.props.onReset.bind(null, index)}
             readFile={self.props.readFile.bind(null, index, self.props.targetId)} />
