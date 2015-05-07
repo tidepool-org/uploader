@@ -1,5 +1,17 @@
 var path = require('path');
 var _ = require('lodash');
+var webpack = require('webpack');
+
+var definePlugin = new webpack.DefinePlugin({
+  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
+});
+
+if (process.env.BUILD_DEV === 'true') {
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log('### DEBUG MODE ###');
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log();
+}
 
 if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
@@ -23,7 +35,16 @@ var config = {
       { test: /\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]
-  }
+  },
+  plugins: [
+    definePlugin,
+    new webpack.DefinePlugin({
+      'process.env': Object.keys(process.env).reduce(function(o, k) {
+        o[k] = JSON.stringify(process.env[k]);
+        return o;
+      }, {})
+    })
+  ]
 };
 
 module.exports = config;
