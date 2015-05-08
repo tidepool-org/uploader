@@ -138,14 +138,15 @@ describe('appState', function() {
 
     it('adds disabled flag to all uploads not in progress if one is in progress', function() {
       app.state.uploads = [
+        {key: 'whatevs'},
         {key: 'foo'},
         {key: 'bar', progress: {}}
       ];
 
       var uploads = appState.uploadsWithFlags();
       expect(uploads).to.have.length(2);
-      expect(uploads[0].disabled).to.be.ok;
-      expect(uploads[1].disabled).to.not.be.ok;
+      expect(uploads[0].disabled).to.be.true;
+      expect(uploads[1].disabled).to.be.not.ok;
     });
 
     it('adds disabled and disconnected flags to disconnected devices', function() {
