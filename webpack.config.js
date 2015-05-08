@@ -3,10 +3,10 @@ var _ = require('lodash');
 var webpack = require('webpack');
 
 var definePlugin = new webpack.DefinePlugin({
-  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
+  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
 });
 
-if (process.env.BUILD_DEV === 'true') {
+if (process.env.DEBUG === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
   console.log('### DEBUG MODE ###');
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
