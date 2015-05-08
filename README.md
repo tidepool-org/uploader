@@ -31,7 +31,7 @@ $ npm start
 
 ### Debug Mode
 
-The environment variable `DEBUG` (boolean) controls whether or not errors are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible). Debug mode is turned on by default in `config/local.sh`.
+The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible). Debug mode is turned on by default in `config/local.sh`.
 
 ## How to run the tests
 
