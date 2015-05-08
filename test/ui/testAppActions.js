@@ -250,7 +250,6 @@ describe('appActions', function() {
 
       appActions.login({}, {}, function(err) {
         expect(err.message).to.contain(loginError.message);
-        expect(err.originalError).to.deep.equal({originalError:loginError});
         done();
       });
     });
@@ -688,7 +687,6 @@ describe('appActions', function() {
           expect(actual.start).to.equal(expected.start);
           expect(actual.percentage).to.equal(expected.percentage);
           expect(actual.error.name).to.equal('UploaderError');
-          expect(actual.error.originalError).to.not.be.empty;
         }
 
         var instance = {
@@ -697,7 +695,7 @@ describe('appActions', function() {
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: new UploaderError('opps',appActions.errorStage.STAGE_UPLOAD ,uploadError)
+          error: new UploaderError('opps',{version: '123-abc', stage:appActions.errorStage.STAGE_UPLOAD} ,uploadError)
         };
 
         expect(app.state.uploads[0].history).to.have.length(1);

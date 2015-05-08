@@ -29,7 +29,8 @@ var Upload = React.createClass({
     upload: React.PropTypes.object.isRequired,
     onUpload: React.PropTypes.func.isRequired,
     onReset: React.PropTypes.func.isRequired,
-    readFile: React.PropTypes.func.isRequired
+    readFile: React.PropTypes.func.isRequired,
+    text: React.PropTypes.object
   },
 
   getInitialState: function() {
@@ -38,7 +39,25 @@ var Upload = React.createClass({
       blockModeFileNotChosen: true
     };
   },
-
+  getDefaultProps: function(){
+    return {
+      text: {
+        CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
+        CARELINK_USERNAME :'CareLink username',
+        CARELINK_PASSWORD :'CareLink password',
+        CARELINK_DOWNLOADING :'Downloading CareLink export...',
+        LABEL_UPLOAD : 'Upload',
+        LABEL_IMPORT : 'Import',
+        LABEL_OK : 'OK',
+        LABEL_FAILED: 'Try again',
+        LAST_UPLOAD : 'Last upload: ',
+        LABEL_MEDTRONIC_DEVICES :'Medtronic Devices',
+        DEVICE_UNKOWN : 'Unknown device',
+        UPLOAD_COMPLETE: 'Done!',
+        UPLOAD_PROGRESS: 'Uploading... '
+      }
+    };
+  },
   render: function() {
     return (
       <div className="Upload">
@@ -58,11 +77,10 @@ var Upload = React.createClass({
       </div>
     );
   },
-
   renderName: function() {
     var name;
     if (this.isCarelinkUpload()) {
-      name = 'Medtronic Devices';
+      name = this.props.text.LABEL_MEDTRONIC_DEVICES;
     }
     else {
       name = this.getDeviceName(this.props.upload);
@@ -71,11 +89,10 @@ var Upload = React.createClass({
       <div className="Upload-name">{name}</div>
     );
   },
-
   renderDetail: function() {
     var detail;
     if (this.isCarelinkUpload()) {
-      detail = 'Import from CareLink.<br>We will not store your credentials.';
+      detail = this.props.text.CARELINK_CREDS_NOT_SAVED;
     }
     else {
       detail = this.getDeviceDetail(this.props.upload);
@@ -84,7 +101,6 @@ var Upload = React.createClass({
       <div className="Upload-detail" dangerouslySetInnerHTML={{__html: detail}}></div>
     );
   },
-
   renderActions: function() {
     if (this.isUploading() || this.isUploadCompleted() || this.isDisconnected()) {
       return null;
@@ -98,7 +114,6 @@ var Upload = React.createClass({
       </form>
     );
   },
-
   renderBlockModeInput: function() {
     if (!this.isBlockModeDevice()) {
       return null;
@@ -110,7 +125,6 @@ var Upload = React.createClass({
       </div>
     );
   },
-
   onBlockModeInputChange: function(e) {
     var file = e.target.files[0];
     var fileResult = this.props.readFile(file, this.props.upload.source.extension);
@@ -118,7 +132,6 @@ var Upload = React.createClass({
       blockModeFileNotChosen: fileResult === true ? false : true
     });
   },
-
   renderCarelinkInputs: function() {
     if (!this.isCarelinkUpload()) {
       return null;
@@ -126,12 +139,11 @@ var Upload = React.createClass({
 
     return (
       <div>
-        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="username" placeholder="CareLink username"/></div>
-        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder="CareLink password"/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="username" placeholder={this.props.text.CARELINK_USERNAME}/></div>
+        <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder={this.props.text.CARELINK_PASSWORD}/></div>
       </div>
     );
   },
-
   onCareLinkInputChange: function() {
     var username = this.refs.username && this.refs.username.getDOMNode().value;
     var password = this.refs.password && this.refs.password.getDOMNode().value;
@@ -142,13 +154,12 @@ var Upload = React.createClass({
       this.setState({carelinkFormIncomplete: false});
     }
   },
-
   renderButton: function() {
-    var text = 'Upload';
+    var text = this.props.text.LAST_UPLOAD;
     var disabled = this.isDisabled();
 
     if (this.isCarelinkUpload()) {
-      text = 'Import';
+      text = this.props.text.LABEL_IMPORT;
       disabled = disabled || this.state.carelinkFormIncomplete;
     }
     if (this.isBlockModeDevice()) {
@@ -164,7 +175,6 @@ var Upload = React.createClass({
       </div>
     );
   },
-
   renderProgress: function() {
     if (this.isUploadFailed()) {
       return <div className="Upload-progress"></div>;
@@ -184,7 +194,6 @@ var Upload = React.createClass({
 
     return <div className="Upload-progress"><ProgressBar percentage={percentage}/></div>;
   },
-
   renderStatus: function() {
     if (this.isDisconnected()) {
       return (
@@ -194,17 +203,17 @@ var Upload = React.createClass({
       );
     }
     if (this.isFetchingCarelinkData()) {
-      return <div className="Upload-status Upload-status--uploading">{'Downloading CareLink export...'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{this.props.text.CARELINK_DOWNLOADING}</div>;
     }
     if (this.isUploading()) {
-      return <div className="Upload-status Upload-status--uploading">{'Uploading... ' + this.props.upload.progress.percentage + '%'}</div>;
+      return <div className="Upload-status Upload-status--uploading">{this.props.text.UPLOAD_PROGRESS + this.props.upload.progress.percentage + '%'}</div>;
     }
     if (this.isUploadSuccessful()) {
-      return <div className="Upload-status Upload-status--success">{'Done!'}</div>;
+      return <div className="Upload-status Upload-status--success">{this.props.text.UPLOAD_COMPLETE}</div>;
     }
     if (this.isUploadFailed()) {
-      var uploadError = this.getUploadError();
-      return <div className="Upload-status Upload-status--error">{uploadError.message}</div>;
+      //nothing to show here
+      return <div className="Upload-status Upload-status--error"></div>;
     }
     if (this.isBlockModeFileChosen()) {
       return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
@@ -212,16 +221,15 @@ var Upload = React.createClass({
 
     return null;
   },
-
   renderReset: function() {
     if (!this.isUploadCompleted()) {
       return null;
     }
 
-    var text = this.isUploadSuccessful() ? 'OK' : 'Try again';
+    var text = this.isUploadSuccessful() ? this.props.text.LABEL_OK : this.props.text.LABEL_FAILED;
     var classes = 'Upload-reset';
     if (this.isUploadFailed()) {
-      text = 'Try again';
+      text = this.props.text.LABEL_FAILED;
       classes = classes + ' Upload-reset--error';
     }
     else {
@@ -234,16 +242,14 @@ var Upload = React.createClass({
       </div>
     );
   },
-
   renderLastUpload: function() {
     var lastUpload = this.getLastUpload();
     if (!lastUpload) {
       return null;
     }
     var time = moment(lastUpload.finish).calendar();
-    return <div className="Upload-detail">{'Last upload: ' + time}</div>;
+    return <div className="Upload-detail">{this.props.text.LAST_UPLOAD + time}</div>;
   },
-
   getLastUpload: function() {
     var history = this.props.upload.history;
     if (!(history && history.length)) {
@@ -251,16 +257,14 @@ var Upload = React.createClass({
     }
     return history[0];
   },
-
   getDeviceName: function(upload) {
     var getName = getIn(
       deviceInfo,
       [upload.source.driverId, 'getName'],
-      function() { return 'Unknown device'; }
+      function() { return this.props.text.DEVICE_UNKOWN; }
     );
     return getName(upload.source);
   },
-
   getDeviceDetail: function(upload) {
     var getDetail = getIn(
       deviceInfo,

@@ -27,9 +27,45 @@ var UploadList = React.createClass({
     onUpload: React.PropTypes.func.isRequired,
     onReset: React.PropTypes.func.isRequired,
     readFile: React.PropTypes.func.isRequired,
-    groupsDropdown: React.PropTypes.bool.isRequired
+    groupsDropdown: React.PropTypes.bool.isRequired,
+    text: React.PropTypes.object
   },
-
+  getInitialState: function() {
+    return {
+      showErrorDetails: false
+    };
+  },
+  getDefaultProps: function(){
+    return {
+      text: {
+        SHOW_ERROR : '(Show details)',
+        HIDE_ERROR : '(Hide details)',
+        UPLOAD_FAILED : 'Upload Failed: '
+      }
+    };
+  },
+  handleShowDetails:function(e){
+    if(e){
+      e.preventDefault();
+    }
+    //toggle the current setting
+    this.setState({showErrorDetails: !this.state.showErrorDetails});
+  },
+  renderErrorForUpload: function(upload) {
+    if (_.isEmpty(upload) || _.isEmpty(upload.error)){
+      return;
+    }
+    var errorDetails = this.state.showErrorDetails ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
+    var showErrorsText = this.state.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
+    
+    return (
+      <div className="UploadList-error-item">
+        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.message}</span>
+        <a href="" onClick={this.handleShowDetails}>{showErrorsText}</a>
+        {errorDetails}
+      </div>
+    );
+  },
   render: function() {
     var self = this;
     var uploadListClasses = cx({
@@ -39,8 +75,14 @@ var UploadList = React.createClass({
     });
 
     var nodes = _.map(this.props.targetedUploads, function(target){
+
+      var matchingUpload;
       var index = _.findIndex(self.props.uploads, function(upload) {
-        return upload.key === target.key;
+        if(upload.key === target.key){
+          matchingUpload = target;
+          return true;
+        }
+        return false;
       });
       return (
         <div key={index} className="UploadList-item">
@@ -49,11 +91,18 @@ var UploadList = React.createClass({
             onUpload={self.props.onUpload.bind(null, index)}
             onReset={self.props.onReset.bind(null, index)}
             readFile={self.props.readFile.bind(null, index, self.props.targetId)} />
+          {self.renderErrorForUpload(matchingUpload)}
         </div>
       );
     });
 
-    return <div className={uploadListClasses}>{nodes}</div>;
+    return (
+      <div>
+        <div className={uploadListClasses}>
+          {nodes}
+        </div>
+      </div>
+      );
   }
 });
 
