@@ -34,7 +34,6 @@ function stringToArray(str, defaultValue) {
 
 module.exports = {
   DEBUG: stringToBoolean(process.env.DEBUG, true),
-  MOCK: stringToBoolean(process.env.MOCK, false),
   // the defaults for these need to be pointing to prod
   API_URL: process.env.API_URL || 'https://api.tidepool.io',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.io',
