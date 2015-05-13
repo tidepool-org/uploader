@@ -44,6 +44,9 @@ exports.make = function(config) {
     suspend: appendToEvents('suspend'),
     smbg: appendToEvents('smbg'),
     wizard: appendToEvents('wizard'),
+    hasSeenScheduled: function() {
+      return true;
+    },
     getEvents: function(){
       return _.map(events, function(event) {
         if (event.type === 'wizard') {
