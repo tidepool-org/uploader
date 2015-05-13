@@ -26,7 +26,7 @@ var userSettingsChanges = require('../../lib/dexcom/userSettingsChanges');
 
 describe('userSettingsChanges.js', function() {
   var settingsTemplate = {
-    transmitterId: 'abcde',
+    transmitterId: '6397714',
     lowAlarmEnabled: true,
     lowAlarmValue: 70,
     lowAlarmSnoozeMsec: 18e5,
@@ -135,6 +135,16 @@ describe('userSettingsChanges.js', function() {
       });
     });
 
+    it('ignores records with a transmitterId of `60000` (default, not yet set up)', function() {
+      var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
+      thisSettings[0].transmitterId = 6291456;
+      thisSettings[1].transmitterId = 6291456;
+      thisSettings[2].transmitterId = 6291456;
+      var res = userSettingsChanges(thisSettings, {builder: builder});
+      expect(res.settingChanges.length).to.equal(1);
+      expect(res.settingChanges[0].payload.internalTime).to.equal('2014-12-25T21:34:45');
+    });
+
     it('ignores records with an incomplete `setUpState`', function() {
       var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
       thisSettings[4].fallRateEnabled = true;
@@ -161,13 +171,16 @@ describe('userSettingsChanges.js', function() {
       thisSettings[4].riseRateEnabled = true;
       thisSettings[4].lowAlarmValue = 80;
       thisSettings[4].highAlarmValue = 200;
+      var convertedTransmitterId = '637QJ';
       var res = userSettingsChanges(thisSettings, {builder: builder});
       expect(res.settingChanges.length).to.equal(2);
+      expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
       expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
       expect(res.settingChanges[0].rateOfChangeAlerts.fallRate.enabled).to.be.false;
       expect(res.settingChanges[0].rateOfChangeAlerts.riseRate.enabled).to.be.false;
       expect(res.settingChanges[0].lowAlerts.level).to.equal(70);
       expect(res.settingChanges[0].highAlerts.level).to.equal(180);
+      expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
       expect(res.settingChanges[1].payload.internalTime).to.equal('2014-12-25T21:34:45');
       expect(res.settingChanges[1].rateOfChangeAlerts.fallRate.enabled).to.be.true;
       expect(res.settingChanges[1].rateOfChangeAlerts.riseRate.enabled).to.be.true;
