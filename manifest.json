@@ -30,6 +30,7 @@
     "storage",
     "serial",
     "usb",
+    "hid",
     {
       "usbDevices": [
         {
