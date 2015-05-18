@@ -87,8 +87,9 @@
           "sendTimeout": 5000
         },
         {
-          "deviceName": "BayerContourNextUsb",
-          "driverId": "BayerContourNextUsb",
+          "deviceName": "BayerContourNext",
+          "driverId": "BayerContourNext",
+          "mode": "HID",
           "vendorId": 6777,
           "productId": 29520
         }
