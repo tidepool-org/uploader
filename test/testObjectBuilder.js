@@ -179,9 +179,9 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeSettings', function(){
+  describe('makePumpSettings', function(){
 
-    var defaults = {deviceId:'makeSettings'};
+    var defaults = {deviceId:'makePumpSettings'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -189,10 +189,10 @@ describe('objectBuilder.js', function(){
     });
 
     it('works', function(){
-      var settings = bob.makeSettings();
+      var settings = bob.makePumpSettings();
 
       expect(settings.deviceId).to.equal(defaults.deviceId);
-      expect(settings.type).to.equal('settings');
+      expect(settings.type).to.equal('pumpSettings');
       expect(settings.deviceTime).to.equal(OPTIONAL);
       expect(settings.time).to.equal(REQUIRED);
       expect(settings.activeSchedule).to.equal(REQUIRED);

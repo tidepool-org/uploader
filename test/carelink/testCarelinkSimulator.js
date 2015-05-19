@@ -682,7 +682,7 @@ describe('carelinkSimulator.js', function(){
       };
 
       simulator.settings(val);
-      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'settings'}, val)]);
+      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'pumpSettings'}, val)]);
     });
   });
 
@@ -1444,7 +1444,7 @@ describe('carelinkSimulator.js', function(){
         });
         expect(simulator.getEvents()).deep.equals(
           [
-            _.assign({}, settings, {type: 'settings'}),
+            _.assign({}, settings, {type: 'pumpSettings'}),
             firstBasalRes,
             expectedSuspend,
             basalSuspend,
@@ -1877,7 +1877,7 @@ describe('carelinkSimulator.js', function(){
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 expectedSuspend,
                 suspendBasal,
@@ -1918,7 +1918,7 @@ describe('carelinkSimulator.js', function(){
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
@@ -1963,7 +1963,7 @@ describe('carelinkSimulator.js', function(){
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
@@ -2088,7 +2088,7 @@ describe('carelinkSimulator.js', function(){
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
