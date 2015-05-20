@@ -24,16 +24,6 @@ window.DEBUG = config.DEBUG;
 // Important: need to require App after setting `window.DEBUG` to enable logging
 var App = require('./lib/components/App.jsx');
 
-if (config.MOCK) {
-  var mock = require('mock');
-  var api = require('./lib/core/api');
-  var device = require('./lib/core/device');
-  var carelink = require('./lib/core/carelink');
-  mock.patchApi(api);
-  mock.patchDevice(device);
-  mock.patchCarelink(carelink);
-}
-
 window.app = React.render(
   React.createElement(App), document.body
 );

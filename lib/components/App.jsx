@@ -138,7 +138,7 @@ var App = React.createClass({
         <div className="mailto">
           <a href="mailto:support@tidepool.org?Subject=Feedback on Blip" target="mailto">Send us feedback</a>
         </div>
-        <div className="App-footer-version">{'v'+config.version}</div>
+        <div className="App-footer-version">{'v'+config.version+' beta'}</div>
       </div>
     );
   },

@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.117.0",
+  "version": "0.123.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -11,9 +11,7 @@
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "build": "bash ./scripts/build.sh",
     "jshint": "gulp jshint",
-    "jshint-watch": "gulp jshint-watch",
-    "web": "bash ./scripts/config.sh && webpack --watch --devtool eval-source-map --cache --colors --progress",
-    "server": "http-server"
+    "jshint-watch": "gulp jshint-watch"
   },
   "dependencies": {
     "async": "0.9.0",
@@ -21,9 +19,9 @@
     "blueimp-md5": "1.1.0",
     "commander": "2.7.1",
     "lodash": "3.6.0",
-    "moment-timezone": "0.3.0",
     "react": "0.12.0",
     "react-select": "0.4.6",
+    "stack-trace": "0.0.9",
     "sundial": "1.1.8",
     "tidepool-platform-client": "0.16.5"
   },
@@ -32,7 +30,6 @@
     "gulp": "3.8.11",
     "gulp-jshint": "1.9.2",
     "gulp-react": "3.0.0",
-    "http-server": "0.7.5",
     "jshint-stylish": "1.0.1",
     "json-loader": "0.5.1",
     "jsx-loader": "0.12.2",

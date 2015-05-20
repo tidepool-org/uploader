@@ -27,9 +27,59 @@ var UploadList = React.createClass({
     onUpload: React.PropTypes.func.isRequired,
     onReset: React.PropTypes.func.isRequired,
     readFile: React.PropTypes.func.isRequired,
-    groupsDropdown: React.PropTypes.bool.isRequired
+    groupsDropdown: React.PropTypes.bool.isRequired,
+    text: React.PropTypes.object
   },
+  getInitialState: function() {
+    return {
+      showErrorDetails: []
+    };
+  },
+  getDefaultProps: function(){
+    return {
+      text: {
+        SHOW_ERROR : '(Show details)',
+        HIDE_ERROR : '(Hide details)',
+        UPLOAD_FAILED : 'Upload Failed: '
+      }
+    };
+  },
+  makeHandleShowDetailsFn: function(upload){
+    var self = this;
 
+    return function(e) {
+      if(e){
+        e.preventDefault();
+      }
+      // add or remove this upload's key to the list of uploads to show errors for
+      var showErrorsList = self.state.showErrorDetails;
+      if (_.includes(showErrorsList, upload.key)) {
+        showErrorsList = _.reject(showErrorsList, function(i) { return i === upload.key; });
+      }
+      else {
+        showErrorsList.push(upload.key);
+      }
+      self.setState({showErrorDetails: showErrorsList});
+    };
+  },
+  renderErrorForUpload: function(upload) {
+    if (_.isEmpty(upload) || _.isEmpty(upload.error)) {
+      return;
+    }
+    var showDetailsThisUpload = _.includes(this.state.showErrorDetails, upload.key);
+    var errorDetails = showDetailsThisUpload ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
+    var showErrorsText = showDetailsThisUpload ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
+    
+    var clickHandler = this.makeHandleShowDetailsFn(upload);
+
+    return (
+      <div className="UploadList-error-item">
+        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.friendlyMessage}</span>
+        <a href="" onClick={clickHandler}>{showErrorsText}</a>
+        {errorDetails}
+      </div>
+    );
+  },
   render: function() {
     var self = this;
     var uploadListClasses = cx({
@@ -39,21 +89,36 @@ var UploadList = React.createClass({
     });
 
     var nodes = _.map(this.props.targetedUploads, function(target){
+      var keyToMatch;
       var index = _.findIndex(self.props.uploads, function(upload) {
-        return upload.key === target.key;
+        if(upload.key === target.key){
+          keyToMatch = target.key;
+          return true;
+        }
+        return false;
+      });
+      var matchingUpload = _.find(self.props.targetedUploads, function(upload) {
+        return upload.key === keyToMatch;
       });
       return (
         <div key={index} className="UploadList-item">
           <Upload
-            upload={target}
+            upload={matchingUpload}
             onUpload={self.props.onUpload.bind(null, index)}
             onReset={self.props.onReset.bind(null, index)}
             readFile={self.props.readFile.bind(null, index, self.props.targetId)} />
+          {self.renderErrorForUpload(matchingUpload)}
         </div>
       );
     });
 
-    return <div className={uploadListClasses}>{nodes}</div>;
+    return (
+      <div>
+        <div className={uploadListClasses}>
+          {nodes}
+        </div>
+      </div>
+      );
   }
 });
 

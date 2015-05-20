@@ -19,7 +19,6 @@ var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
-var UploaderError = require('../../lib/core/uploaderError');
 
 
 describe('appActions', function() {
@@ -250,7 +249,6 @@ describe('appActions', function() {
 
       appActions.login({}, {}, function(err) {
         expect(err.message).to.contain(loginError.message);
-        expect(err.originalError).to.deep.equal({originalError:loginError});
         done();
       });
     });
@@ -694,8 +692,7 @@ describe('appActions', function() {
           expect(actual.targetId).to.equal(expected.targetId);
           expect(actual.start).to.equal(expected.start);
           expect(actual.percentage).to.equal(expected.percentage);
-          expect(actual.error.name).to.equal('UploaderError');
-          expect(actual.error.originalError).to.not.be.empty;
+          expect(actual.error.name).to.equal('Error');
         }
 
         var instance = {
@@ -704,7 +701,7 @@ describe('appActions', function() {
           finish: '2014-01-31T22:00:30-05:00',
           step: 'fetchData',
           percentage: 50,
-          error: new UploaderError('opps',appActions.errorStage.STAGE_UPLOAD ,uploadError)
+          error: uploadError
         };
 
         expect(app.state.uploads[0].history).to.have.length(1);
@@ -817,13 +814,13 @@ describe('appActions', function() {
       api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
     });
 
-    it('will attach the UTC time to the error message', function(done) {
+    it('each error has a detailed `debug` string attached for logging', function(done) {
       now = '2014-01-31T22:00:00-05:00';
       device.detect = function(driverId, options, cb) { return cb(null, {}); };
       device.upload = function(driverId, options, cb) {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
-        var err = new Error('Opps, we got an error');
+        var err = new Error('Oops, we got an error');
         return cb(err);
       };
       app.state.targetId = '11';
@@ -835,7 +832,11 @@ describe('appActions', function() {
       }];
 
       appActions.upload(0, {}, function(err) {
-        expect(err.debug).to.contain('UTC Time: ');
+        expect(err.debug).to.contain('Detail: ');
+        expect(err.debug).to.contain('Error UTC Time: ');
+        expect(err.debug).to.contain('Code: E_');
+        expect(err.debug).to.contain('Error Type: Error');
+        expect(err.debug).to.contain('Version: tidepool-uploader');
         done();
       });
     });
