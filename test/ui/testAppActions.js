@@ -34,7 +34,12 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}, timezones: { '11':'oldTz'}});
+    localStore = require('../../lib/core/localStore')({
+      devices: {'11': [{
+        key: 'carelink',
+        timezone: 'oldTz'
+      }]}
+    });
     api = {};
 
     jellyfish = {};
@@ -534,21 +539,37 @@ describe('appActions', function() {
     });
 
     it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
-      expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
+      expect(localStore.getItem('devices')['11'][0].key).to.deep.equal('carelink');
       appActions.storeUserTargets('11');
-      expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+      expect(_.pluck(localStore.getItem('devices')['11'], 'key')).to.deep.equal(['foo', 'bar']);
     });
 
-     it('saves the current targetTimezone in the app state in the localStore under the current\'s user\'s id', function() {
-      expect(localStore.getItem('timezones')['11']).to.equal('oldTz');
+    it('saves the current targetTimezone in the app state in the localStore along with each target device', function() {
+      expect(localStore.getItem('devices')['11'][0].timezone).to.equal('oldTz');
       appActions.storeUserTargets('11');
-      expect(localStore.getItem('timezones')['11']).to.equal('fooTz');
+      expect(_.uniq(_.pluck(localStore.getItem('devices')['11'], 'timezone'))[0]).to.equal('fooTz');
     });
 
     it('also redirects to main page', function() {
       expect(app.state.page).to.equal('settings');
       appActions.storeUserTargets('11');
       expect(app.state.page).to.equal('main');
+    });
+  });
+
+  describe('storeUserTargets, timezone empty', function() {
+    beforeEach(function() {
+      app.state = {
+        page: 'settings',
+        targetDevices: ['foo', 'bar'],
+        targetTimezone: ''
+      };
+    });
+
+    it('does not redirect to the main page', function() {
+      expect(app.state.page).to.equal('settings');
+      appActions.storeUserTargets('11');
+      expect(app.state.page).to.equal('settings');
     });
   });
 
@@ -774,7 +795,7 @@ describe('appActions', function() {
 
     it('updates the timezone ', function() {
       app.state.targetTimezone = 'foo';
-      appActions.changeTimezone('bar');
+      appActions.changeTimezone('50_bar');
       expect(app.state.targetTimezone).to.equal('bar');
     });
 
