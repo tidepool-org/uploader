@@ -84,6 +84,7 @@ var App = React.createClass({
 
   renderPage: function() {
     var page = this.state.page;
+    var targetTimezone = this.state.targetTimezone;
 
     if (page === 'loading') {
       return <Loading />;
@@ -105,6 +106,7 @@ var App = React.createClass({
             uploads={this.state.uploads}
             targetId={this.state.targetId}
             targetDevices={this.state.targetDevices}
+            timezoneIsSelected={!_.isEmpty(targetTimezone)}
             onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
             onDone={this.appActions.storeUserTargets.bind(this.appActions)}
             groupsDropdown={!this.onlyMe()} />
