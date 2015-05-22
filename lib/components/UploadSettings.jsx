@@ -26,25 +26,40 @@ var UploadSettings = React.createClass({
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
-  render: function() {
-    // we're already doing a check to see if we want to render in App.jsx
-    // but this is an extra measure of protection against trying to render
-    // when we don't have the groups to do so
+
+  availableUploadGroups: function(){
+    //can only upload for yourself
     if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
       return null;
     }
-    var self = this;
 
-    // sort users alpha by full name
-    var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
+    //only groups we can upload too, e.g. some people simply aren't `patients` and might be setup without data storage
+    var available = _.filter(this.props.user.uploadGroups, function(group) {
+      return _.isEmpty(group.profile.patient) === false;
+    });
+
+    //and now return them sorted them by name
+    return _.sortBy(available, function(group) {
+      if (group.profile.patient.isOtherPerson) {
         return group.profile.patient.fullName;
       }
       return group.profile.fullName;
     });
+  },
+
+  render: function() {
+    var sortedGroups = this.availableUploadGroups();
+
+    if (_.isEmpty(sortedGroups)){
+      // we're already doing a check to see if we want to render in App.jsx
+      // but this is an extra measure of protection against trying to render
+      // when we don't have the groups to do so
+      return null;
+    }
 
     var options = _.map(sortedGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
+      //some people simply aren't `patients` and might be setup without data storage
+      if(_.isEmpty(group.profile.patient) || group.profile.patient.isOtherPerson){
         return (
           <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
         );
@@ -57,6 +72,8 @@ var UploadSettings = React.createClass({
     var disabled = this.props.isUploadInProgress ? 'disabled' : '';
 
     var text = this.props.page === 'main' ? 'Upload data for' : 'Choose devices for';
+
+    var self = this;
 
     var select = function() {
       if (self.props.isUploadInProgress) {
