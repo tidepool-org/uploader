@@ -58,8 +58,8 @@ var UploadSettings = React.createClass({
     }
 
     var options = _.map(sortedGroups, function(group) {
-      //some people simply aren't `patients` and might be setup without data storage
-      if(_.isEmpty(group.profile.patient) || group.profile.patient.isOtherPerson){
+      // for child accounts
+      if (group.profile.patient.isOtherPerson){
         return (
           <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
         );
