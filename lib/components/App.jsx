@@ -180,7 +180,8 @@ var App = React.createClass({
       <TimezoneSelection
         timezoneLabel={'Choose timezone'}
         onTimezoneChange={this.appActions.changeTimezone.bind(this.appActions)}
-        targetTimezone={this.state.targetTimezone} />
+        targetTimezone={this.state.targetTimezone}
+        targetTimezoneLabel={this.state.targetTimezoneLabel} />
     );
   },
 

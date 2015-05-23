@@ -795,8 +795,9 @@ describe('appActions', function() {
 
     it('updates the timezone ', function() {
       app.state.targetTimezone = 'foo';
-      appActions.changeTimezone('50_bar');
+      appActions.changeTimezone('bar_Bar');
       expect(app.state.targetTimezone).to.equal('bar');
+      expect(app.state.targetTimezoneLabel).to.equal('Bar');
     });
 
   });

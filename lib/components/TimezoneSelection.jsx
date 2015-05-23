@@ -24,21 +24,22 @@ var TimezoneSelection = React.createClass({
   propTypes: {
     onTimezoneChange: React.PropTypes.func.isRequired,
     timezoneLabel : React.PropTypes.string.isRequired,
-    targetTimezone: React.PropTypes.string
+    targetTimezone: React.PropTypes.string,
+    targetTimezoneLabel: React.PropTypes.string
   },
 
   buildTzSelector:function(){
     var opts = _.map(sundial.getTimezones(), function(tz, i) {
-      // we have to append the index and _ to clear some really annoying
-      // React warnings (caused by more than one label mapping to the same
-      // timezone name, which means the keys for the child components aren't
-      // unique, and React hates that)
-      return { value : i + '_' + tz.name, label : tz.label };
+      // we have to concatenate the name and label for each timezone
+      // because a name can map to more than one label, and that causes
+      // React to choke because the component keys are not unique
+      return { value : tz.name + '_' + tz.label, label : tz.label };
     });
 
     return (
       <Select name='timezoneSelect'
-        value={this.props.targetTimezone}
+        // if for whatever reason we don't have the label, just display the actual timezone name
+        value={this.props.targetTimezoneLabel || this.props.targetTimezone}
         options={opts}
         onChange={this.props.onTimezoneChange} />
     );
