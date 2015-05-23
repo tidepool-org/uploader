@@ -28,17 +28,18 @@ var UploadSettings = React.createClass({
   },
 
   availableUploadGroups: function(){
-    //can only upload for yourself
+    // can only upload for yourself
     if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
       return null;
     }
 
-    //only groups we can upload too, e.g. some people simply aren't `patients` and might be setup without data storage
+    // only groups we can upload to
+    // e.g. some people simply aren't `patients` and might be setup without data storage
     var available = _.filter(this.props.user.uploadGroups, function(group) {
       return _.isEmpty(group.profile.patient) === false;
     });
 
-    //and now return them sorted them by name
+    // and now return them sorted them by name
     return _.sortBy(available, function(group) {
       if (group.profile.patient.isOtherPerson) {
         return group.profile.patient.fullName;
