@@ -75,7 +75,7 @@ describe('appActions', function() {
       api.user = {};
       api.user.account = function(cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'}]); };
       api.setHosts = function() {};
     });
 
@@ -116,7 +116,7 @@ describe('appActions', function() {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
       api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'},{profile:{},userid: '13'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -129,7 +129,7 @@ describe('appActions', function() {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '12'}); };
       api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{}, userid: '12'},{profile:{},userid: '11'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -142,14 +142,14 @@ describe('appActions', function() {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
       api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{}, userid: '11'},{profile:{},userid: '13'}]); };
 
       appActions.load(function(err) {
         if (err) throw err;
         expect(app.state.user).to.deep.equal({
           userid: '11',
           profile: {fullName: 'bob'},
-          uploadGroups: [ { userid: '11' }, { userid: '13'} ]
+          uploadGroups: [ { profile:{},userid: '11' }, { profile:{},userid: '13'} ]
         });
         done();
       });
@@ -157,7 +157,7 @@ describe('appActions', function() {
 
     it('sets target user id as logged-in user id', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
-      api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.account = function(cb) { cb(null, {profile:{},userid: '11'}); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -175,7 +175,7 @@ describe('appActions', function() {
       api.user = {};
       api.user.login = function(credentials, options, cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'}]); };
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
@@ -195,7 +195,7 @@ describe('appActions', function() {
       };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
       api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '11'},{userid: '13'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'},{profile:{},userid: '13'}]); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -211,7 +211,7 @@ describe('appActions', function() {
       };
       api.user.account = function(cb) { cb(null, {userid: '12'}); };
       api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{userid: '12'},{userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '12'},{profile:{},userid: '11'}]); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -233,7 +233,7 @@ describe('appActions', function() {
         expect(app.state.user).to.deep.equal({
           userid: '11',
           profile: {fullName: 'bob'},
-          uploadGroups: [ { userid: '11' } ]
+          uploadGroups: [ { profile:{}, userid: '11' } ]
         });
         done();
       });
