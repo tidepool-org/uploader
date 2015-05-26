@@ -27,20 +27,32 @@ var UploadSettings = React.createClass({
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
-  groupSelector:function(){
-    var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
+
+  groupSelector: function(){
+    // can only upload for yourself
+    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
+      return null;
+    }
+
+    // only groups we can upload to
+    // e.g. some people simply aren't `patients` and might be setup without data storage
+    var available = _.filter(this.props.user.uploadGroups, function(group) {
+      return _.isEmpty(group.profile.patient) === false;
+    });
+
+    // and now return them sorted them by name
+    var sorted = _.sortBy(available, function(group) {
+      if (group.profile.patient.isOtherPerson) {
         return group.profile.patient.fullName;
       }
       return group.profile.fullName;
     });
 
-    //build the options list
-    var opts = _.map(sortedGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
-        return { value : group.userid, label : group.profile.patient.fullName };
+    var opts = _.map(sorted, function(group) {
+      if (group.profile.patient.isOtherPerson) {
+        return {value: group.userid, label: group.profile.patient.fullName};
       }
-      return { value : group.userid, label : group.profile.fullName };
+      return {value: group.userid, label: group.profile.fullName};
     });
 
     var disable = this.props.isUploadInProgress ? true : false;
