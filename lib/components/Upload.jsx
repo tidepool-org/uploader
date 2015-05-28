@@ -17,8 +17,7 @@
 
 var _ = require('lodash');
 var React = require('react');
-// This is "cheating" a bit, but need an easy way to format for this MVP :)
-var moment = require('sundial/node_modules/moment');
+var sundial = require('sundial');
 var getIn = require('../core/getIn');
 var deviceInfo = require('../core/deviceInfo');
 var ProgressBar = require('./ProgressBar.jsx');
@@ -243,7 +242,7 @@ var Upload = React.createClass({
     if (!lastUpload || lastUpload.error != null) {
       return null;
     }
-    var time = moment(lastUpload.finish).calendar();
+    var time = sundial.formatCalendarTime(lastUpload.finish);
     return <div className="Upload-detail">{this.props.text.LAST_UPLOAD + time}</div>;
   },
   getLastUpload: function() {

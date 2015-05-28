@@ -27,6 +27,28 @@ describe('appActions', function() {
   var app;
   var appActions;
 
+  var defaultUploadGroups = [{
+    profile: {
+      fullName: 'Bob',
+      patient: {
+        birthday: '2000-01-01',
+        diagnosisDate: '2010-04-01',
+        about: ''
+      }
+    },
+    userid: '11'
+  }, {
+    profile: {
+      fullName: 'Alice',
+      patient: {
+        birthday: '1985-07-04',
+        diagnosisDate: '1993-03-25',
+        about: 'Foo bar'
+      }
+    },
+    userid: '12'
+  }];
+
   beforeEach(function() {
 
     config = {};
@@ -34,7 +56,12 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = require('../../lib/core/localStore')({devices: {'11': ['carelink']}});
+    localStore = require('../../lib/core/localStore')({
+      devices: {'11': [{
+        key: 'carelink',
+        timezone: 'oldTz'
+      }]}
+    });
     api = {};
 
     jellyfish = {};
@@ -75,7 +102,7 @@ describe('appActions', function() {
       api.user = {};
       api.user.account = function(cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null, defaultUploadGroups); };
       api.setHosts = function() {};
     });
 
@@ -103,7 +130,6 @@ describe('appActions', function() {
     it('goes to login page if no session found', function(done) {
       localStore.getInitialState = function() {};
       localStore.init = function(options, cb) { cb(); };
-      api.init = function(options, cb) { cb(); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -115,8 +141,7 @@ describe('appActions', function() {
     it('goes to main page if local session found and targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'},{profile:{},userid: '13'}]); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob'}); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -128,8 +153,7 @@ describe('appActions', function() {
     it('goes to settings page if local session found and no targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '12'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{}, userid: '12'},{profile:{},userid: '11'}]); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Alice'}); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -141,27 +165,44 @@ describe('appActions', function() {
     it('loads logged-in user if local session found', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{}, userid: '11'},{profile:{},userid: '13'}]); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob'}); };
 
       appActions.load(function(err) {
         if (err) throw err;
         expect(app.state.user).to.deep.equal({
           userid: '11',
-          profile: {fullName: 'bob'},
-          uploadGroups: [ { profile:{},userid: '11' }, { profile:{},userid: '13'} ]
+          profile: {fullName: 'Bob'},
+          uploadGroups: defaultUploadGroups
         });
         done();
       });
     });
 
-    it('sets target user id as logged-in user id', function(done) {
+    it('sets target user id as logged-in userid if data storage exists for logged-in user', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
-      api.user.account = function(cb) { cb(null, {profile:{},userid: '11'}); };
+      api.user.account = function(cb) { cb(null, {userid: '11'}); };
 
       appActions.load(function(err) {
         if (err) throw err;
         expect(app.state.targetId).to.equal('11');
+        done();
+      });
+    });
+
+    it('sets target user id to other userid if data storage does not exist for logged-in user', function(done) {
+      api.init = function(options, cb) { cb(null, {token: '1234'}); };
+      api.user.account = function(cb) { cb(null, {userid: '2'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Cookie'}); };
+      api.user.getUploadGroups = function(cb) { cb(null, [defaultUploadGroups[1], {
+        profile: {
+          fullName: 'Cookie'
+        },
+        userid: '2'
+      }]); };
+
+      appActions.load(function(err) {
+        if (err) throw err;
+        expect(app.state.targetId).to.equal('12');
         done();
       });
     });
@@ -175,7 +216,7 @@ describe('appActions', function() {
       api.user = {};
       api.user.login = function(credentials, options, cb) { cb(); };
       api.user.profile = function(cb) { cb(); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'}]); };
+      api.user.getUploadGroups = function(cb) { cb(null, defaultUploadGroups); };
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
     });
 
@@ -193,9 +234,6 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
-      api.user.account = function(cb) { cb(null, {userid: '11'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '11'},{profile:{},userid: '13'}]); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -209,9 +247,6 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '12'}});
       };
-      api.user.account = function(cb) { cb(null, {userid: '12'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'alice'}); };
-      api.user.getUploadGroups = function(cb) { cb(null,[{profile:{},userid: '12'},{profile:{},userid: '11'}]); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -225,15 +260,15 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
-      api.user.profile = function(cb) { cb(null, {fullName: 'bob'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob'}); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
 
         expect(app.state.user).to.deep.equal({
           userid: '11',
-          profile: {fullName: 'bob'},
-          uploadGroups: [ { profile:{}, userid: '11' } ]
+          profile: {fullName: 'Bob'},
+          uploadGroups: defaultUploadGroups
         });
         done();
       });
@@ -253,7 +288,7 @@ describe('appActions', function() {
       });
     });
 
-    it('sets target user id as logged-in user id', function(done) {
+    it('sets target user id as logged-in user id if data storage exists for logged-in user', function(done) {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
@@ -261,6 +296,24 @@ describe('appActions', function() {
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.targetId).to.equal('11');
+        done();
+      });
+    });
+
+    it('sets target user id to other userid if data storage does not exist for logged-in user', function(done) {
+      api.user.login = function(credentials, options, cb) {
+        cb(null, {user: {userid: '2'}});
+      };
+      api.user.getUploadGroups = function(cb) { cb(null, [defaultUploadGroups[1], {
+        profile: {
+          fullName: 'Cookie'
+        },
+        userid: '2'
+      }]); };
+
+      appActions.login({}, {}, function(err) {
+        if (err) throw err;
+        expect(app.state.targetId).to.equal('12');
         done();
       });
     });
@@ -524,24 +577,47 @@ describe('appActions', function() {
     });
   });
 
-  describe('storeTargetDevices', function() {
+  describe('storeUserTargets', function() {
     beforeEach(function() {
       app.state = {
         page: 'settings',
-        targetDevices: ['foo', 'bar']
+        targetDevices: ['foo', 'bar'],
+        targetTimezone: 'fooTz'
       };
     });
 
-    it('saves the current targetDevices in the app state in the localStore under the current\'s user\'s id', function() {
-      expect(localStore.getItem('devices')['11']).to.deep.equal(['carelink']);
-      appActions.storeTargetDevices('11');
-      expect(localStore.getItem('devices')['11']).to.deep.equal(['foo', 'bar']);
+    it('saves the current targetDevices in the app state in the localStore under the target userid', function() {
+      expect(localStore.getItem('devices')['11'][0].key).to.deep.equal('carelink');
+      appActions.storeUserTargets('11');
+      expect(_.pluck(localStore.getItem('devices')['11'], 'key')).to.deep.equal(['foo', 'bar']);
+    });
+
+    it('saves the current targetTimezone in the app state in the localStore along with each target device', function() {
+      expect(localStore.getItem('devices')['11'][0].timezone).to.equal('oldTz');
+      appActions.storeUserTargets('11');
+      expect(_.uniq(_.pluck(localStore.getItem('devices')['11'], 'timezone'))[0]).to.equal('fooTz');
     });
 
     it('also redirects to main page', function() {
       expect(app.state.page).to.equal('settings');
-      appActions.storeTargetDevices('11');
+      appActions.storeUserTargets('11');
       expect(app.state.page).to.equal('main');
+    });
+  });
+
+  describe('storeUserTargets, timezone empty', function() {
+    beforeEach(function() {
+      app.state = {
+        page: 'settings',
+        targetDevices: ['foo', 'bar'],
+        targetTimezone: ''
+      };
+    });
+
+    it('does not redirect to the main page', function() {
+      expect(app.state.page).to.equal('settings');
+      appActions.storeUserTargets('11');
+      expect(app.state.page).to.equal('settings');
     });
   });
 
@@ -759,6 +835,17 @@ describe('appActions', function() {
       app.state.targetId = 'foo';
       appActions.changeGroup({target: {value: 'bar'}});
       expect(app.state.targetId).to.equal('bar');
+    });
+
+  });
+
+  describe('changeTimezone', function() {
+
+    it('updates the timezone ', function() {
+      app.state.targetTimezone = 'foo';
+      appActions.changeTimezone('bar_Bar');
+      expect(app.state.targetTimezone).to.equal('bar');
+      expect(app.state.targetTimezoneLabel).to.equal('Bar');
     });
 
   });

@@ -27,6 +27,7 @@ var Scan = require('./Scan.jsx');
 var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
 var UploadSettings = require('./UploadSettings.jsx');
+var TimezoneSelection = require('./TimezoneSelection.jsx');
 var DeviceSelection = require('./DeviceSelection.jsx');
 
 var config = require('../config');
@@ -83,6 +84,7 @@ var App = React.createClass({
 
   renderPage: function() {
     var page = this.state.page;
+    var targetTimezone = this.state.targetTimezone;
 
     if (page === 'loading') {
       return <Loading />;
@@ -93,17 +95,20 @@ var App = React.createClass({
     }
 
     var uploadSettings = this.onlyMe() ? null : this.renderUploadSettings();
+    var timezone = this.renderTimezoneSelection();
 
     if (page === 'settings') {
       return (
         <div>
           {uploadSettings}
+          {timezone}
           <DeviceSelection
             uploads={this.state.uploads}
             targetId={this.state.targetId}
             targetDevices={this.state.targetDevices}
+            timezoneIsSelected={!_.isEmpty(targetTimezone)}
             onCheckChange={this.appActions.addOrRemoveTargetDevice.bind(this.appActions)}
-            onDone={this.appActions.storeTargetDevices.bind(this.appActions)}
+            onDone={this.appActions.storeUserTargets.bind(this.appActions)}
             groupsDropdown={!this.onlyMe()} />
         </div>
       );
@@ -167,6 +172,16 @@ var App = React.createClass({
         targetId={this.state.targetId}
         isUploadInProgress={this.appState.hasUploadInProgress()}
         onGroupChange={this.appActions.changeGroup.bind(this.appActions)} />
+    );
+  },
+
+  renderTimezoneSelection: function() {
+    return (
+      <TimezoneSelection
+        timezoneLabel={'Choose timezone'}
+        onTimezoneChange={this.appActions.changeTimezone.bind(this.appActions)}
+        targetTimezone={this.state.targetTimezone}
+        targetTimezoneLabel={this.state.targetTimezoneLabel} />
     );
   },
 
