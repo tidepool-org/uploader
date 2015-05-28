@@ -28,7 +28,6 @@ var UploadList = require('./UploadList.jsx');
 var ViewDataLink = require('./ViewDataLink.jsx');
 var UploadSettings = require('./UploadSettings.jsx');
 var DeviceSelection = require('./DeviceSelection.jsx');
-var UpdatePlease = require('./UpdatePlease.jsx');
 
 var config = require('../config');
 
@@ -124,12 +123,6 @@ var App = React.createClass({
             groupsDropdown={!this.onlyMe()} />
           {this.renderViewDataLink()}
         </div>
-      );
-    }
-
-    if (page === 'error') {
-      return (
-        <UpdatePlease link={''} />
       );
     }
 
