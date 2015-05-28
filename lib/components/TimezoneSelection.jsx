@@ -33,6 +33,8 @@ var TimezoneSelection = React.createClass({
       // we have to concatenate the name and label for each timezone
       // because a name can map to more than one label, and that causes
       // React to choke because the component keys are not unique
+      // TODO: change the list of timezones in sundial so that all are unique
+      // and we shouldn't have to continue using this hack!
       return { value : tz.name + '_' + tz.label, label : tz.label };
     });
 
