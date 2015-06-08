@@ -134,6 +134,8 @@ var App = React.createClass({
 
     if (page === 'error') {
       return (
+        // TODO: add the link to help page on tidepool.org or knowledge base
+        // re: how to update the uploader
         <UpdatePlease link={''} />
       );
     }
