@@ -22,11 +22,18 @@ var UpdatePlease = React.createClass({
     link: React.PropTypes.string.isRequired
   },
   render: function() {
+    var text = {
+      OUT_OF_DATE: 'Your uploader is out-of-date.',
+      TO_UPDATE: 'To update it, please follow ',
+      LINK_TEXT: 'these instructions',
+      TRY_AGAIN: 'Then try your upload again!'
+    };
+
     return (
       <div className="UpdatePlease">
-        <p>Your uploader is out-of-date.</p>
-        <p className='most-important'>Please follow the instructions <a href={this.props.link}>here</a> to update it.</p>
-        <p>Then try your upload again!</p>
+        <p>{text.OUT_OF_DATE}</p>
+        <p className='most-important'>{text.TO_UPDATE}<a href={this.props.link}>{text.LINK_TEXT}</a>.</p>
+        <p>{text.TRY_AGAIN}</p>
       </div>
     );
   }
