@@ -833,7 +833,7 @@ describe('appActions', function() {
 
     it('updates user id for uploading', function() {
       app.state.targetId = 'foo';
-      appActions.changeGroup({target: {value: 'bar'}});
+      appActions.changeGroup('bar');
       expect(app.state.targetId).to.equal('bar');
     });
 
@@ -907,6 +907,30 @@ describe('appActions', function() {
         expect(err.debug).to.contain('Code: E_');
         expect(err.debug).to.contain('Error Type: Error');
         expect(err.debug).to.contain('Version: tidepool-uploader');
+        done();
+      });
+    });
+
+    it('redirects to the `error` page if jellyfish errors because uploader is out-of-date', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = new Error('Oops, we got an error');
+        err.code = 'E_METADATA_UPLOAD';
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        expect(app.state.page).to.equal('error');
         done();
       });
     });
