@@ -84,6 +84,13 @@
           "vendorId": 1027,
           "productId": 24577,
           "sendTimeout": 5000
+        },
+        {
+          "deviceName": "oneTouchVerioIQ",
+          "driverId": "OneTouchVerioIQ",
+          "mode": "serial",
+          "vendorId": 4292,
+          "productId": 34215
         }
       ]
     }
