@@ -242,6 +242,72 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
+      it('under mixture of clock drift and real changes, intervals are contiguous', function(){
+        var clockDriftAdjust1 = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-03-01T12:02:05',
+            to: '2015-03-01T12:00:00'
+          })
+          .with_deviceTime('2015-03-01T12:02:05')
+          .set('jsDate', new Date('2015-03-01T12:02:05'))
+          .set('index', 10);
+        var belatedDST = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-03-08T12:01:21',
+            to: '2015-03-08T13:00:00',
+          })
+          .with_deviceTime('2015-03-08T12:01:21')
+          .set('jsDate', new Date('2015-03-08T12:01:21'))
+          .set('index', 50);
+        var clockDriftAdjust2 = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-03-15T12:02:05',
+            to: '2015-03-15T12:00:00'
+          })
+          .with_deviceTime('2015-03-15T12:02:05')
+          .set('jsDate', new Date('2015-03-15T12:02:05'))
+          .set('index', 100);
+        var justAChange = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-04-01T15:31:22',
+            to: '2015-04-01T13:30:00'
+          })
+          .with_deviceTime('2015-04-01T15:31:22')
+          .set('jsDate', new Date('2015-04-01T15:31:22'))
+          .set('index', 120);
+        var changeBack = builder.makeDeviceMetaTimeChange()
+          .with_change({
+            from: '2015-04-08T09:04:02',
+            to: '2015-04-08T11:03:00'
+          })
+          .with_deviceTime('2015-04-08T09:04:02')
+          .set('jsDate', new Date('2015-04-08T09:04:02'))
+          .set('index', 150);
+        var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [
+          clockDriftAdjust1,
+          belatedDST,
+          clockDriftAdjust2,
+          justAChange,
+          changeBack
+        ]);
+        expect(util.lookup(new Date('2015-03-05T12:00:00'))).to.deep.equal({
+          time: '2015-03-05T18:00:00.000Z',
+          timezoneOffset: -360
+        });
+        expect(util.lookup(new Date('2015-03-10T12:00:00'))).to.deep.equal({
+          time: '2015-03-10T17:00:00.000Z',
+          timezoneOffset: -300
+        });
+        expect(util.lookup(new Date('2015-03-20T12:00:00'))).to.deep.equal({
+          time: '2015-03-20T17:00:00.000Z',
+          timezoneOffset: -300
+        });
+        expect(util.lookup(new Date('2015-04-02T12:00:00'))).to.deep.equal({
+          time: '2015-04-02T19:00:00.000Z',
+          timezoneOffset: -420
+        });
+      });
+
       it('under DST change (fall back), offset changes', function(){
         var onTimeDST = builder.makeDeviceMetaTimeChange()
           .with_change({

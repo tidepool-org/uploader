@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.123.0",
+  "version": "0.129.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -21,8 +21,9 @@
     "lodash": "3.6.0",
     "node-uuid": "1.4.3",
     "react": "0.12.0",
+    "react-select": "0.4.6",
     "stack-trace": "0.0.9",
-    "sundial": "1.1.8",
+    "sundial": "1.2.0",
     "tidepool-platform-client": "0.16.5"
   },
   "devDependencies": {
