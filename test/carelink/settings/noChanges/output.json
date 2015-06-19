@@ -63,7 +63,6 @@
     "timezoneOffset": -600,
     "time": "2014-03-13T10:00:00.000Z",
     "type": "basal-scheduled",
-    "rate": 0.8,
-    "uploadSeqNum": 635
+    "rate": 0.8
   }
 ]

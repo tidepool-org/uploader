@@ -12,7 +12,7 @@ In the cases of datatypes that are simple, point-in-time events that do not mean
 
 - `cbg`
 - `bloodKetone` and `urineKetone`
-- `deviceMeta`: sub-types `alarm`, `calibration`, `deliveryReset`, `prime`, and `timeChange`
+- `deviceMeta`: sub-types `alarm`, `calibration`, `reservoirChange`, `prime`, and `timeChange`
 - `settings`
 - `smbg`
 
@@ -27,7 +27,7 @@ Some datatypes are not point-in-time (e.g., a `basal` represents a rate of insul
 
 ## Simulators
 
-PWD simulators are, at present, unique to each device we are able to extract data from. Thus far, each device has presented its own unique challenges, particularly with respect to event interplay. For example, the only way to represent the suspension of insulin delivery that occurs when an occlusion occurs in an Insulet OmniPod insulin delivery system is to build a `deviceMeta` event with `status: suspended` alongside the source `deviceMeta` event with `alarmType: occlusion` and feed both to the simulator, where the simulator will use the `status: suspended` information to truncate the duration of a currently active basal rate.
+PWD simulators are, at present, unique to each device we are able to extract data from. Thus far, each device has presented its own unique challenges, particularly with respect to event interplay. For example, the only way to determine the programmed vs. actual insulin delivery when a bolus is interrupted using an Insulet OmniPod insulin delivery system is to feed each `bolus` event to the simulator and store it in the simulator's state as the current bolus (`currBolus`), then feed every bolus termination event into the simulator as well, modifying the `currBolus` with the information from the termination event. This is necessary because the Insulet data format does not include any key to link bolus terminations to their associated boluses; only the order of the events on the pump relates terminations to the boluses terminated.
 
 The following are the most common tasks performed in a PWD simulator, grouped by datatype:
 

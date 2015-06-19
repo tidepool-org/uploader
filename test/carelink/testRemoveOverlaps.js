@@ -23,10 +23,8 @@ var fs = require('fs');
 var util = require('util');
 
 var expect = require('salinity').expect;
-var sundial = require('sundial');
 
 var removeOverlaps = require('../../lib/carelink/removeOverlapping');
-var CARELINK_TS_FORMAT = 'MM/DD/YY HH:mm:ss';
 
 describe('removeOverlapping', function() {
   function convertRawValues(e) {
@@ -63,7 +61,7 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].deviceTime = sundial.parseFromFormat(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
+      payload.theData[i].index = payload.theData[i]['Index'];
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602018', '53602076']);
@@ -82,7 +80,7 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].deviceTime = sundial.parseFromFormat(payload.theData[i]['Timestamp'], CARELINK_TS_FORMAT);
+      payload.theData[i].index = payload.theData[i]['Index'];
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602076']);

@@ -68,7 +68,6 @@
         "time": "2014-11-15T21:41:36.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "uploadSeqNum": 147,
         "deliveryType": "scheduled",
         "scheduleName": "standard",
         "rate": 0.8
@@ -94,7 +93,6 @@
         "time": "2014-11-15T22:00:00.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "uploadSeqNum": 145,
         "deliveryType": "scheduled",
         "scheduleName": "standard",
         "rate": 1.2
