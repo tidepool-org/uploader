@@ -40,7 +40,7 @@ exports.make = function(config) {
     cbg: appendToEvents('cbg'),
     deviceMeta: appendToEvents('deviceMeta'),
     resume: appendToEvents('resume'),
-    settings: appendToEvents('settings'),
+    pumpSettings: appendToEvents('pumpSettings'),
     suspend: appendToEvents('suspend'),
     smbg: appendToEvents('smbg'),
     wizard: appendToEvents('wizard'),

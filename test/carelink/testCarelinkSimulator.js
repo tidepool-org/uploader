@@ -228,7 +228,7 @@ describe('carelinkSimulator.js', function(){
         };
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
         });
 
         describe('with duration', function(){
@@ -385,7 +385,7 @@ describe('carelinkSimulator.js', function(){
         };
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
         });
 
         describe('with duration', function(){
@@ -545,7 +545,7 @@ describe('carelinkSimulator.js', function(){
 
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal);
         });
 
@@ -615,7 +615,7 @@ describe('carelinkSimulator.js', function(){
 
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal);
         });
 
@@ -681,7 +681,7 @@ describe('carelinkSimulator.js', function(){
         timezoneOffset: 0
       };
 
-      simulator.settings(val);
+      simulator.pumpSettings(val);
       expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'pumpSettings'}, val)]);
     });
   });
@@ -756,7 +756,7 @@ describe('carelinkSimulator.js', function(){
       };
 
       it('fills in for changes in schedule when another scheduled appears', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
 
@@ -810,7 +810,7 @@ describe('carelinkSimulator.js', function(){
 
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
-           simulator.settings(settings);
+           simulator.pumpSettings(settings);
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
@@ -972,9 +972,9 @@ describe('carelinkSimulator.js', function(){
       };
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
-        simulator.settings(newSettings);
+        simulator.pumpSettings(newSettings);
         simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
@@ -1044,7 +1044,7 @@ describe('carelinkSimulator.js', function(){
         timezoneOffset: 0
       };
       it('should use a provided nextBasal and not create a duplicate', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.suspend(suspend);
         simulator.resume(resume);
@@ -1071,7 +1071,7 @@ describe('carelinkSimulator.js', function(){
           rate: 2.0,
           timezoneOffset: 0
         };
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.suspend(suspend);
         simulator.resume(resume);
@@ -1155,7 +1155,7 @@ describe('carelinkSimulator.js', function(){
           rate: 1.0,
           timezoneOffset: 0
         };
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(tempBasal);
         simulator.suspend(suspend);
@@ -1201,8 +1201,8 @@ describe('carelinkSimulator.js', function(){
         };
 
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([]);
       });
 
@@ -1221,8 +1221,8 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([]);
       });
 
@@ -1244,8 +1244,8 @@ describe('carelinkSimulator.js', function(){
         var basal = { type: 'basal', deliveryType: 'scheduled', time: '2014-09-25T00:00:00.000Z',
           scheduleName: 'billy', rate: 0, duration: 86400000, timezoneOffset: 0 };
         simulator.basalScheduled(basal);
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([basal]);
       });
 
@@ -1269,8 +1269,8 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
 
         var expectedBasal = {
           deliveryType: 'scheduled',
@@ -1319,7 +1319,7 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
 
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
 
         var expectedBasal = {
           deliveryType: 'scheduled',
@@ -1355,7 +1355,7 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
 
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
 
         var expectedBasal = {
           type: 'basal',
@@ -1419,7 +1419,7 @@ describe('carelinkSimulator.js', function(){
       };
 
       it('should add correct previouses to basals and deviceMetas', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(firstBasal);
         simulator.suspend(suspend);
         simulator.basalScheduled(secondBasal);
@@ -1497,7 +1497,7 @@ describe('carelinkSimulator.js', function(){
       };
 
       it('fills in for changes in schedule when another scheduled appears', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
 
@@ -1552,7 +1552,7 @@ describe('carelinkSimulator.js', function(){
 
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
-           simulator.settings(settings);
+           simulator.pumpSettings(settings);
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
@@ -1727,9 +1727,9 @@ describe('carelinkSimulator.js', function(){
       };
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
-        simulator.settings(newSettings);
+        simulator.pumpSettings(newSettings);
         simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
@@ -1857,7 +1857,7 @@ describe('carelinkSimulator.js', function(){
         };
 
         it('should resume to the appropriate scheduled basal if no temp was running before the LGS suspend', function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.suspend(suspend1);
           simulator.suspend(suspend2);
@@ -1896,7 +1896,7 @@ describe('carelinkSimulator.js', function(){
           var backToScheduled = _.assign({}, basal1, {
             time: '2014-09-25T00:32:00.000Z', deviceTime: '2014-09-25T00:32:00'
           });
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(temp);
           simulator.suspend(suspend1);
@@ -1937,7 +1937,7 @@ describe('carelinkSimulator.js', function(){
 
         it('should not resume to a temp if the temp would not still be running', function() {
           var thisTemp = _.assign({}, temp, {duration: 190000});
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(thisTemp);
           simulator.suspend(suspend1);
@@ -2053,7 +2053,7 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
         it('should not resume to a temp when `auto_resume_reduced` even if the temp would still be running', function() {
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(temp);
           simulator.suspend(suspend1);
