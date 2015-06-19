@@ -5,7 +5,7 @@
   "private": true,
   "main": "main.js",
   "author": "Kent Quirk",
-  "license": "BSD2",
+  "license": "BSD-2-Clause",
   "scripts": {
     "test": "mocha test",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
