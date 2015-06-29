@@ -84,6 +84,14 @@
           "vendorId": 1027,
           "productId": 24577,
           "sendTimeout": 5000
+        },
+        {
+          "deviceName": "FreeStyle Lite",
+          "driverId": "AbbottFreeStyleLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13328
         }
       ]
     }
