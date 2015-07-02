@@ -282,8 +282,12 @@
         "time": "2014-11-26T03:53:45.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53626057",
+        "units": "mg/dL",
         "value": 97,
-        "units": "mg/dL"
+        "subType": "linked",
+        "payload": {
+            "action-requestor": "paradigm link or b key"
+        }
     },
     {
         "type": "smbg",
@@ -292,7 +296,11 @@
         "time": "2014-11-26T20:44:23.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53626057",
+        "units": "mg/dL",
         "value": 96,
-        "units": "mg/dL"
+        "subType": "linked",
+        "payload": {
+            "action-requestor": "paradigm link or b key"
+        }
     }
 ]
