@@ -417,7 +417,7 @@ describe('insuletSimulator.js', function() {
     };
 
     it('passes through', function() {
-      simulator.settings(settings);
+      simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
   });
