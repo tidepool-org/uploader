@@ -38,7 +38,7 @@ exports.make = function(config) {
     bolusNormal: appendToEvents('bolus-normal'),
     bolusSquare: appendToEvents('bolus-square'),
     cbg: appendToEvents('cbg'),
-    deviceMeta: appendToEvents('deviceMeta'),
+    deviceEvent: appendToEvents('deviceEvent'),
     resume: appendToEvents('resume'),
     pumpSettings: appendToEvents('pumpSettings'),
     suspend: appendToEvents('suspend'),

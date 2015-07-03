@@ -60,7 +60,7 @@ describe('TimezoneOffsetUtil.js', function(){
   it('identifies the type of timezone offset production used as `utc-bootstrapping` or `across-the-board-timezone`', function() {
     var atbUtil = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', []);
     expect(atbUtil.type).to.equal('across-the-board-timezone');
-    var belatedDST = builder.makeDeviceMetaTimeChange()
+    var belatedDST = builder.makeDeviceEventTimeChange()
       .with_change({
         from: '2015-03-08T12:01:21',
         to: '2015-03-08T13:00:00',
@@ -74,7 +74,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
   describe('records', function(){
     it('adds `time` and `timezoneOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
-      var belatedDST = builder.makeDeviceMetaTimeChange()
+      var belatedDST = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-03-08T12:01:21',
           to: '2015-03-08T13:00:00',
@@ -82,7 +82,7 @@ describe('TimezoneOffsetUtil.js', function(){
         .with_deviceTime('2015-03-08T12:01:21')
         .set('jsDate', new Date('2015-03-08T12:01:21'))
         .set('index', 10);
-      var travel = builder.makeDeviceMetaTimeChange()
+      var travel = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-04-01T15:33:24',
           to: '2015-04-01T14:35:00'
@@ -96,7 +96,7 @@ describe('TimezoneOffsetUtil.js', function(){
           time: '2015-04-01T20:33:24.000Z',
           deviceTime: '2015-04-01T15:33:24',
           timezoneOffset: -300,
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'timeChange',
           change: {
             from: '2015-04-01T15:33:24',
@@ -106,7 +106,7 @@ describe('TimezoneOffsetUtil.js', function(){
           time: '2015-03-08T16:01:21.000Z',
           deviceTime: '2015-03-08T12:01:21',
           timezoneOffset: -240,
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'timeChange',
           change: {
             from: '2015-03-08T12:01:21',
@@ -117,7 +117,7 @@ describe('TimezoneOffsetUtil.js', function(){
     });
 
     it('makes the `changes` provided (with additional attrs added) publicly available as `records`', function(){
-      var belatedDST = builder.makeDeviceMetaTimeChange()
+      var belatedDST = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-03-08T12:01:21',
           to: '2015-03-08T13:00:00',
@@ -125,7 +125,7 @@ describe('TimezoneOffsetUtil.js', function(){
         .with_deviceTime('2015-03-08T12:01:21')
         .set('jsDate', new Date('2015-03-08T12:01:21'))
         .set('index', 10);
-      var travel = builder.makeDeviceMetaTimeChange()
+      var travel = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-04-01T15:33:24',
           to: '2015-04-01T14:35:00'
@@ -206,7 +206,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
     describe('uses the appropriate offset from UTC given (non-empty) `changes` provided', function(){
       it('under clock drift adjustment only, offset doesn\'t change even if DST', function(){
-        var clockDriftAdjust = builder.makeDeviceMetaTimeChange()
+        var clockDriftAdjust = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-01T12:02:05',
             to: '2015-03-01T12:00:00'
@@ -223,7 +223,7 @@ describe('TimezoneOffsetUtil.js', function(){
       });
 
       it('under DST change (spring forward), offset changes', function(){
-        var belatedDST = builder.makeDeviceMetaTimeChange()
+        var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
             to: '2015-03-08T13:00:00',
@@ -243,7 +243,7 @@ describe('TimezoneOffsetUtil.js', function(){
       });
 
       it('under mixture of clock drift and real changes, intervals are contiguous', function(){
-        var clockDriftAdjust1 = builder.makeDeviceMetaTimeChange()
+        var clockDriftAdjust1 = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-01T12:02:05',
             to: '2015-03-01T12:00:00'
@@ -251,7 +251,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-03-01T12:02:05')
           .set('jsDate', new Date('2015-03-01T12:02:05'))
           .set('index', 10);
-        var belatedDST = builder.makeDeviceMetaTimeChange()
+        var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
             to: '2015-03-08T13:00:00',
@@ -259,7 +259,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-03-08T12:01:21')
           .set('jsDate', new Date('2015-03-08T12:01:21'))
           .set('index', 50);
-        var clockDriftAdjust2 = builder.makeDeviceMetaTimeChange()
+        var clockDriftAdjust2 = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-15T12:02:05',
             to: '2015-03-15T12:00:00'
@@ -267,7 +267,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-03-15T12:02:05')
           .set('jsDate', new Date('2015-03-15T12:02:05'))
           .set('index', 100);
-        var justAChange = builder.makeDeviceMetaTimeChange()
+        var justAChange = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-04-01T15:31:22',
             to: '2015-04-01T13:30:00'
@@ -275,7 +275,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-04-01T15:31:22')
           .set('jsDate', new Date('2015-04-01T15:31:22'))
           .set('index', 120);
-        var changeBack = builder.makeDeviceMetaTimeChange()
+        var changeBack = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-04-08T09:04:02',
             to: '2015-04-08T11:03:00'
@@ -309,7 +309,7 @@ describe('TimezoneOffsetUtil.js', function(){
       });
 
       it('under DST change (fall back), offset changes', function(){
-        var onTimeDST = builder.makeDeviceMetaTimeChange()
+        var onTimeDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-11-01T02:00:00',
             to: '2015-11-01T01:00:00'
@@ -330,7 +330,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
       it('under travel across the date line (eastward), offset changes', function(){
         // i.e., JHB comes to visit
-        var fromNZ = builder.makeDeviceMetaTimeChange()
+        var fromNZ = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-04-03T08:25:00',
             to: '2015-04-02T12:26:00'
@@ -351,7 +351,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
       it('under travel across the date line (westward), offset changes', function(){
         // i.e., Left Coaster goes to NZ
-        var toNZ = builder.makeDeviceMetaTimeChange()
+        var toNZ = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-04-02T12:26:00',
             to: '2015-04-03T08:25:00'
@@ -371,7 +371,7 @@ describe('TimezoneOffsetUtil.js', function(){
       });
 
       it('under huge change (month, year), offset doesn\'t change', function(){
-        var wrongYear = builder.makeDeviceMetaTimeChange()
+        var wrongYear = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2013-12-15T15:00:00',
             to: '2014-12-15T15:00:00'
@@ -388,7 +388,7 @@ describe('TimezoneOffsetUtil.js', function(){
           time: '2013-12-10T05:00:00.000Z',
           timezoneOffset: -300
         });
-        var wrongMonth = builder.makeDeviceMetaTimeChange()
+        var wrongMonth = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2014-11-15T15:00:00',
             to: '2014-12-15T15:00:00'
@@ -409,7 +409,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
       it('when no `index`, uses first UTC timestamp that fits in an offsetInterval', function(){
         var ambiguousDeviceTime = '2015-04-01T12:00:00';
-        var amNotPM = builder.makeDeviceMetaTimeChange()
+        var amNotPM = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-04-01T19:00:00',
             to: '2015-04-01T07:00:00'
@@ -470,7 +470,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
     it('annotates the object if no `index` present', function(){
       var obj = {
-        type: 'deviceMeta',
+        type: 'deviceEvent',
         subType: 'alarm'
       };
       var dt = new Date('2015-04-03T11:30:00');
@@ -538,7 +538,7 @@ describe('TimezoneOffsetUtil in practice', function(){
         });
         index += 2;
       });
-      var fromNZ = builder.makeDeviceMetaTimeChange()
+      var fromNZ = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-04-20T00:02:30',
           to: '2015-04-19T05:03:00'
@@ -546,7 +546,7 @@ describe('TimezoneOffsetUtil in practice', function(){
         .with_deviceTime('2015-04-20T00:00:00')
         .set('jsDate', new Date('2015-04-20T00:00:00'))
         .set('index', 10489);
-      var toNZ = builder.makeDeviceMetaTimeChange()
+      var toNZ = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-04-10T00:02:30',
           to: '2015-04-10T19:02:00'

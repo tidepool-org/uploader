@@ -299,9 +299,9 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceMetaResume', function(){
+  describe('makedeviceEventResume', function(){
 
-    var defaults = {deviceId:'makeDeviceMetaResume'};
+    var defaults = {deviceId:'makeDeviceEventResume'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -309,10 +309,10 @@ describe('objectBuilder.js', function(){
     });
 
     it('works', function(){
-      var resumeMeta = bob.makeDeviceMetaResume();
+      var resumeMeta = bob.makeDeviceEventResume();
 
       expect(resumeMeta.deviceId).to.equal(defaults.deviceId);
-      expect(resumeMeta.type).to.equal('deviceMeta');
+      expect(resumeMeta.type).to.equal('deviceEvent');
       expect(resumeMeta.subType).to.equal('status');
       expect(resumeMeta.deviceTime).to.equal(OPTIONAL);
       expect(resumeMeta.time).to.equal(REQUIRED);
@@ -322,9 +322,9 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceMetaSuspend', function(){
+  describe('makedeviceEventSuspend', function(){
 
-    var defaults = {deviceId:'makeDeviceMetaSuspend'};
+    var defaults = {deviceId:'makeDeviceEventSuspend'};
 
     beforeEach(function(){
       bob = ObjectBuilder();
@@ -332,10 +332,10 @@ describe('objectBuilder.js', function(){
     });
 
     it('works', function(){
-      var suspendMeta = bob.makeDeviceMetaSuspend();
+      var suspendMeta = bob.makeDeviceEventSuspend();
 
       expect(suspendMeta.deviceId).to.equal(defaults.deviceId);
-      expect(suspendMeta.type).to.equal('deviceMeta');
+      expect(suspendMeta.type).to.equal('deviceEvent');
       expect(suspendMeta.subType).to.equal('status');
       expect(suspendMeta.deviceTime).to.equal(OPTIONAL);
       expect(suspendMeta.time).to.equal(REQUIRED);

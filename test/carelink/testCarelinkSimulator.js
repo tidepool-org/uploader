@@ -686,17 +686,17 @@ describe('carelinkSimulator.js', function(){
     });
   });
 
-  describe('deviceMeta', function() {
+  describe('deviceEvent', function() {
     var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
     var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
 
     it('sets up the previous and hasSeenScheduled remains default `false`', function(){
       simulator.suspend(suspend);
       simulator.resume(resume);
-      var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
-      expect(simulator.getEvents().filter(function(e){ return e.type === 'deviceMeta'; })).deep.equals([
+      var expectedSuspend = _.assign({}, {type: 'deviceEvent', subType: 'status', status: 'suspended'}, suspend);
+      expect(simulator.getEvents().filter(function(e){ return e.type === 'deviceEvent'; })).deep.equals([
         expectedSuspend,
-        _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
+        _.assign({}, {type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
         ]);
       expect(simulator.hasSeenScheduled()).to.be.false;
     });
@@ -1418,14 +1418,14 @@ describe('carelinkSimulator.js', function(){
         deviceTime: '2014-03-15T17:18:35'
       };
 
-      it('should add correct previouses to basals and deviceMetas', function(){
+      it('should add correct previouses to basals and deviceEvents', function(){
         simulator.pumpSettings(settings);
         simulator.basalScheduled(firstBasal);
         simulator.suspend(suspend);
         simulator.basalScheduled(secondBasal);
         simulator.resume(resume);
         var firstBasalRes = _.assign({}, firstBasal, {type: 'basal', duration: 27465000, deliveryType: 'scheduled'});
-        var expectedSuspend = _.assign({}, suspend, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var expectedSuspend = _.assign({}, suspend, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
         var basalSuspend = {
           deliveryType: 'suspend',
           type: 'basal',
@@ -1449,7 +1449,7 @@ describe('carelinkSimulator.js', function(){
             expectedSuspend,
             basalSuspend,
             _.assign({}, resume, {
-              type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend,
+              type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend,
               time: secondBasal.time, deviceTime: secondBasal.deviceTime
             }),
             secondBasalRes
@@ -1850,7 +1850,7 @@ describe('carelinkSimulator.js', function(){
           timezoneOffset: 0
         };
         var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
-        var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var expectedSuspend = _.assign({}, suspend1, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
         var suspendBasal = {
           type: 'basal', deliveryType: 'suspend', time: expectedSuspend.time, deviceTime: expectedSuspend.deviceTime,
           suppressed: firstBasal, duration: 20000, timezoneOffset: 0
@@ -1882,7 +1882,7 @@ describe('carelinkSimulator.js', function(){
                 expectedSuspend,
                 suspendBasal,
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -1924,7 +1924,7 @@ describe('carelinkSimulator.js', function(){
                 expectedSuspend,
                 _.assign({}, suspendBasal, {suppressed: tempBasal}),
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -1970,7 +1970,7 @@ describe('carelinkSimulator.js', function(){
                 _.assign({}, suspendBasal, {suppressed: tempBasal}),
                 secondSuspendBasal,
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -2064,7 +2064,7 @@ describe('carelinkSimulator.js', function(){
           var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
           var tempBasal = _.assign({}, temp, {type: 'basal', deliveryType: 'temp', suppressed: firstBasal, rate: 0.5});
 
-          var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+          var expectedSuspend = _.assign({}, suspend1, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
 
           var suspendBasal1 = {
             time: '2014-09-25T00:05:00.000Z', deviceTime: '2014-09-25T00:05:00', type: 'basal', deliveryType: 'suspend',
@@ -2095,7 +2095,7 @@ describe('carelinkSimulator.js', function(){
                 suspendBasal1,
                 suspendBasal2,
                 suspendBasal3,
-                _.assign({}, resume, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}),
+                _.assign({}, resume, {type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend}),
                 _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled'})
               ]
               )

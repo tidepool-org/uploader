@@ -12,16 +12,16 @@ In the cases of datatypes that are simple, point-in-time events that do not mean
 
 - `cbg`
 - `bloodKetone` and `urineKetone`
-- `deviceMeta`: sub-types `alarm`, `calibration`, `reservoirChange`, `prime`, and `timeChange`
+- `deviceEvent`: sub-types `alarm`, `calibration`, `reservoirChange`, `prime`, and `timeChange`
 - `settings`
 - `smbg`
 
 Whether `bolus` and `wizard` events can be completely built in the simulator depends on how the connections between these events are represented and how early termination of a bolus is represented.
 
-Some datatypes are not point-in-time (e.g., a `basal` represents a rate of insulin delivery over an interval of time) and/or interact with other events, as the `status` sub-type of `deviceMeta` events do (these represent suspensions and resumes of insulin delivery and thus imply the stopping and starting of basal delivery). The building of these events cannot usually be completed in the device driver, so the general strategy is to *start* building them in the driver, then pass them to the simulator, where the building is completed before they are uploaded to the Tidepool platform via jellyfish. While there may be exceptions, in many cases the following types will fall into the category of objects that cannot be completely built in a device driver:
+Some datatypes are not point-in-time (e.g., a `basal` represents a rate of insulin delivery over an interval of time) and/or interact with other events, as the `status` sub-type of `deviceEvent` events do (these represent suspensions and resumes of insulin delivery and thus imply the stopping and starting of basal delivery). The building of these events cannot usually be completed in the device driver, so the general strategy is to *start* building them in the driver, then pass them to the simulator, where the building is completed before they are uploaded to the Tidepool platform via jellyfish. While there may be exceptions, in many cases the following types will fall into the category of objects that cannot be completely built in a device driver:
 
 - `basal` - often the `duration` and sometimes other information, especially in the case of temp basals, needs to be added via the simulator
-- `deviceMeta`: sub-types `status`
+- `deviceEvent`: sub-types `status`
 
 **NB:** The general guideline for what tasks can and cannot be done in a device driver with respect to object building is that device drivers should be *stateless* with respect to the object building they do. For example, the task of saving the last basal rate change recorded by an insulin pump as the `currBasal` and setting its duration only upon coming across the *next* basal rate change event is *exactly* the kind of task the simulator should be doing, not the device driver.
 
@@ -39,7 +39,7 @@ The following are the most common tasks performed in a PWD simulator, grouped by
    + connecting `normal` and `square` components into a dual-wave bolus where applicable
    + connecting boluses with accompanying `wizard` events, although this is more commonly accomplished in the device driver
    + adding an `expectedNormal` and/or `expectedExtended` and `expectedDuration` when a bolus is terminated early (i.e., bolus volume programmed !== bolus volume delivered)
-- `deviceMeta` sub-type `status`
+- `deviceEvent` sub-type `status`
    + adding the `previous` event
 
 ## Date & Time Changes

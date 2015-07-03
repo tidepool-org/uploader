@@ -22,7 +22,7 @@ Each device driver - even those for devices that do not allow retrieval of date 
 var TZOUtil = require('lib/TimezoneOffsetUtil');
 
 // where mostRecent is the UTC timestamp of the most recent datum
-// in the data and changes is an array of deviceMeta subType timeChange
+// in the data and changes is an array of deviceEvent subType timeChange
 // objects partially built (i.e., without time and timezoneOffset)
 cfg.tzoUtil = new TZOUtil('US/Pacific', mostRecent, changes);
 
