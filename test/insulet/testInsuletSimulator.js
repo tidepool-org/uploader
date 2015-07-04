@@ -206,7 +206,7 @@ describe('insuletSimulator.js', function() {
     });
   });
 
-  describe('deviceMeta', function() {
+  describe('deviceEvent', function() {
     describe('alarm', function() {
       it('passes through', function() {
         var val = {
@@ -214,7 +214,7 @@ describe('insuletSimulator.js', function() {
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           deviceId: 'InsOmn1234',
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'low_insulin'
         };
@@ -223,13 +223,32 @@ describe('insuletSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('throws and error without a status if `stopsDelivery` in payload', function() {
+      it('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           deviceId: 'InsOmn1234',
-          type: 'deviceMeta',
+          type: 'deviceEvent',
+          subType: 'alarm',
+          alarmType: 'occlusion',
+          payload: {
+            stopsDelivery: true
+          },
+          index: 10
+        };
+
+        var fn = function() { simulator.alarm(val); };
+        expect(fn).to.throw(Error);
+      });
+
+      it('passes through if `stopsDelivery` in payload but no `index` available', function() {
+        var val = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          timezoneOffset: 0,
+          deviceId: 'InsOmn1234',
+          type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'occlusion',
           payload: {
@@ -237,8 +256,8 @@ describe('insuletSimulator.js', function() {
           }
         };
 
-        var fn = function() { simulator.alarm(val); };
-        expect(fn).to.throw(Error);
+        simulator.alarm(val);
+        expect(simulator.getEvents()).deep.equals([val]);
       });
 
       it('passes through if `stopsDelivery` in payload and `status` exists', function() {
@@ -247,7 +266,7 @@ describe('insuletSimulator.js', function() {
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           deviceId: 'InsOmn1234',
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'occlusion',
           payload: {
@@ -258,7 +277,7 @@ describe('insuletSimulator.js', function() {
             deviceTime: '2014-09-25T01:00:00',
             timezoneOffset: 0,
             deviceId: 'InsOmn1234',
-            type: 'deviceMeta',
+            type: 'deviceEvent',
             subType: 'status',
             status: 'suspended'
           }
@@ -275,7 +294,7 @@ describe('insuletSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         deviceId: 'InsOmn1234',
-        type: 'deviceMeta',
+        type: 'deviceEvent',
         subType: 'reservoirChange'
       };
 
@@ -285,7 +304,7 @@ describe('insuletSimulator.js', function() {
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           deviceId: 'InsOmn1234',
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'status',
           status: 'suspended',
           reason: {suspended: 'manual'}
@@ -308,12 +327,12 @@ describe('insuletSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         deviceId: 'InsOmn1234',
-        type: 'deviceMeta',
+        type: 'deviceEvent',
         subType: 'status',
         status: 'suspended',
         reason: {suspended: 'automatic'}
       };
-      var resume = builder.makeDeviceMetaResume()
+      var resume = builder.makeDeviceEventResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
         .with_timezoneOffset(0)
@@ -344,7 +363,7 @@ describe('insuletSimulator.js', function() {
           deviceTime: '2014-09-25T01:05:00',
           timezoneOffset: 0,
           deviceId: 'InsOmn1234',
-          type: 'deviceMeta',
+          type: 'deviceEvent',
           subType: 'status',
           status: 'suspended',
           reason: {suspended: 'automatic'}
@@ -362,7 +381,7 @@ describe('insuletSimulator.js', function() {
         deviceTime: '2014-09-25T01:05:00',
         timezoneOffset: 0,
         deviceId: 'InsOmn1234',
-        type: 'deviceMeta',
+        type: 'deviceEvent',
         subType: 'timeChange',
         change: {
           from: '2014-09-25T01:05:00',
@@ -398,7 +417,7 @@ describe('insuletSimulator.js', function() {
     };
 
     it('passes through', function() {
-      simulator.settings(settings);
+      simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
   });
@@ -628,14 +647,14 @@ describe('insuletSimulator.js', function() {
   });
 
   describe('event interplay', function() {
-    var suspend = builder.makeDeviceMetaSuspend()
+    var suspend = builder.makeDeviceEventSuspend()
       .with_time('2014-09-25T01:50:00.000Z')
       .with_deviceTime('2014-09-25T01:50:00')
       .with_timezoneOffset(0)
       .with_status('suspended')
       .with_reason({suspended: 'manual'})
       .done();
-    var resume = builder.makeDeviceMetaResume()
+    var resume = builder.makeDeviceEventResume()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
       .with_timezoneOffset(0)
