@@ -911,6 +911,30 @@ describe('appActions', function() {
       });
     });
 
+    it('redirects to the `error` page if jellyfish errors because uploader is out-of-date', function(done) {
+      now = '2014-01-31T22:00:00-05:00';
+      device.detect = function(driverId, options, cb) { return cb(null, {}); };
+      device.upload = function(driverId, options, cb) {
+        now = '2014-01-31T22:00:30-05:00';
+        options.progress('fetchData', 50);
+        var err = new Error('Oops, we got an error');
+        err.code = 'E_METADATA_UPLOAD';
+        return cb(err);
+      };
+      app.state.targetId = '11';
+      app.state.uploads = [{
+        source: {
+          type: 'device',
+          driverId: 'DexcomG4'
+        }
+      }];
+
+      appActions.upload(0, {}, function(err) {
+        expect(app.state.page).to.equal('error');
+        done();
+      });
+    });
+
   });
 
 });
