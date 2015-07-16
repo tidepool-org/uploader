@@ -1,11 +1,11 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.129.0",
+  "version": "0.150.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
   "author": "Kent Quirk",
-  "license": "BSD2",
+  "license": "BSD-2-Clause",
   "scripts": {
     "test": "mocha test",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
