@@ -39,8 +39,12 @@
         "time": "2014-11-15T01:07:01.000Z",
         "timezoneOffset": -600,
         "deviceId": "Paradigm Revel - 723-=-53587804",
+        "units": "mg/dL",
         "value": 190,
-        "units": "mg/dL"
+        "subType": "manual",
+        "payload": {
+            "action-requestor": "pump"
+        }
     },
     {
         "type": "bolus",
