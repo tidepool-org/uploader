@@ -41,6 +41,8 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
+        VERIOIQ_NOT_SUPPORTED : 'Your operating system does not support VerioIQ upload',
+        VERIOIQ_SUPPORTED : 'Please download this device driver from here:',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
@@ -107,6 +109,7 @@ var Upload = React.createClass({
 
     return (
       <form className="Upload-form">
+        {this.renderVerioiqWarn()}
         {this.renderCarelinkInputs()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
@@ -142,6 +145,30 @@ var Upload = React.createClass({
         <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder={this.props.text.CARELINK_PASSWORD}/></div>
       </div>
     );
+  },
+  renderVerioiqWarn: function() {
+    if (!this.isVerioiqUpload()) {
+      return null;
+    }
+
+    if (app.device._os !== 'win') {
+      return (
+        <div>
+          <div className="Upload-status--error">{this.props.text.VERIOIQ_NOT_SUPPORTED}</div>
+        </div>
+      );
+    }else{
+      return (
+        <div>
+          <div className="Upload-detail">
+            {this.props.text.VERIOIQ_SUPPORTED}
+            <a className="mailto" href="http://www.lifescan.es/download-driver/USBDriverSetup.exe" target="_blank" onClick={this.props.onViewClicked}>
+            USBDriverSetup.exe
+            </a>
+          </div>
+        </div>
+      );
+    }
   },
   onCareLinkInputChange: function() {
     var username = this.refs.username && this.refs.username.getDOMNode().value;
@@ -298,6 +325,10 @@ var Upload = React.createClass({
         return this.props.upload.file && !_.isEmpty(this.props.upload.file.name);
       }
     }
+  },
+
+  isVerioiqUpload: function() {
+    return this.props.upload.onetouchverioiq;
   },
 
   isCarelinkUpload: function() {
