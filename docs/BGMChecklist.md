@@ -10,13 +10,13 @@
 
 ### Required if Present
 
-- `[ ]` smbg value
+- `[ ]` smbg values
 - `[ ]` units of smbg values (read from device, not hard-coded)
 - `[ ]` out-of-range values (LO or HI)
 - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
-- `[ ]` blood ketone value
-- `[ ]` units of blood ketone value (read from device, not hard-coded)
+- `[ ]` blood ketone values
+- `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
 
