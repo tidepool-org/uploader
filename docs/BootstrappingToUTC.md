@@ -12,14 +12,14 @@ The module in `lib/TimezoneOffsetUtil.js` is our best effort to "bootstrap" from
 
 - the set of changes to the date & time settings on the device
 
-The timezone and most recent timestamp, in combination (because timezones and timezone offsets from UTC do not map 1:1 due to Daylight Savings Time, see Timezone Basics below), allow us to determine the offset from UTC (in minutes) of the most recent data on the device. We then follow the set of date & time settings changes on the device backwards from the most recent data to the earliest data on the device, adjusting the offset used to convert device local time into UTC according to the settings changes. This method produces a more accurate conversion to UTC than applying a timezone across-the-board because it properly accounts for travel across timezones, as well as doing a better job of representing the changes to and from Daylight Savings Time since this "bootstrapping" to UTC [henceforth: BtUTC] does not assume that a device user changes the device time at precisely the moment of change to or from Daylight Savings Time.
+In combination (because timezones and timezone offsets from UTC do not map 1:1 due to Daylight Savings Time, see Timezone Basics below), the timezone and most recent timestamp allow us to determine the offset from UTC (in minutes) of the most recent data on the device. We then follow the set of date & time settings changes on the device backwards from the most recent data to the earliest data on the device, adjusting the offset used to convert device local time into UTC according to the settings changes. This method produces a more accurate conversion to UTC than applying a timezone across-the-board because it properly accounts for travel across timezones, as well as doing a better job of representing the changes to and from Daylight Savings Time since this "bootstrapping" to UTC [henceforth: BtUTC] does not assume that a device user changes the device time at precisely the moment of change to or from Daylight Savings Time.
 
-In its second version, BtUTC now keeps track of *two* offsets from UTC - a `timezoneOffset` (see Timezone Basics below) and a `conversionOffset`. While all date and time settings changes in a device's history factor into updates to the stored `conversionOffset`, only those changes that appear to be DST or travel-across-timezones related changes get factored into the stored `timezoneOffset`. This is to preserve the semantics of the `timezoneOffset` field to match as closely as possible to the concept of what timezone offsets actually *are*. The original version of BtUTC only stored a `timezoneOffset` because it was primarily concerned with solving only the two most common use cases for device time changes on diabetes devices:
+In its second version, BtUTC now keeps track of *two* offsets from UTC - a `timezoneOffset` (see Timezone Basics below) and a `conversionOffset`. Some date & time settings changes in a device's history factor into updates to the stored `conversionOffset`, while others affect the stored `timezoneOffset`. This is to preserve the semantics of the `timezoneOffset` field to match as closely as possible to the concept of what timezone offsets actually *are*. The original version of BtUTC only stored a `timezoneOffset` because it was primarily concerned with solving only the two most common use cases for device time changes on diabetes devices:
 
 1. changes resulting from the shift to or from Daylight Savings Time, in timezones where DST applies
 1. changes resulting from travel across timezones
 
-These changes are interpreted appropriately as changes to the stored `timezoneOffset` on each datum. In the new version of BtUTC, they also factor into changes to the stored `conversionOffset`.
+These changes are interpreted appropriately as changes to the stored `timezoneOffset` on each datum.
 
 The `conversionOffset` was introduced because it became clear through the course of testing that there is a third collection of use cases that it is equally vital for BtUTC to cover - namely, changes resulting from incorrect set up of a device, including the device being set (from the first use of the device or only for a short period at some point in the history of the device's usage) to the wrong datetime entirely, including:
 
@@ -28,18 +28,18 @@ The `conversionOffset` was introduced because it became clear through the course
 1. device set to the wrong month
 1. device set to the wrong year
 
-The bottom two of these changes (device set to wrong month or wrong year) are only reflected in the stored `conversionOffset` on each datum. In a perfect world, BtUTC would also only adjust the `conversionOffset` (but not the `timezoneOffset`) for the top two, but it is unfortunately impossible to distinguish a settings change +/- 12 hours because of the device being set to the wrong a.m. or p.m. from travel across 12 hours worth of timezones. Similarly for when a device is set to the wrong day. The only consequence of this is that the `timezoneOffset` stored on (a subset of) a user's data will not always line up correctly with the timezone(s) the user was actually in when the data was generated. We aren't trying to infer the timezone(s) of gata generation (which would not be an easy task, due to the lack of a 1:1 mapping between timezones and timezone offsets), so this is an acceptable consequence. The only timezone information we store, in fact, is the timezone selected by the user at the time of upload reflecting the timezone of the most recent data on the device about to be uploaded.
+The bottom two of these changes (device set to wrong month or wrong year) are only reflected in the stored `conversionOffset` on each datum. In a perfect world, BtUTC would also only adjust the `conversionOffset` (but not the `timezoneOffset`) for the top two, but it is unfortunately impossible to distinguish a settings change +/- 12 hours because of the device being set to the wrong a.m. or p.m. from travel across 12 hours worth of timezones. Similarly for when a device is set to the wrong day. The only consequence of this is that the `timezoneOffset` stored on (a subset of) a user's data will not always line up correctly with the timezone(s) the user was actually in when the data was generated. We aren't trying to infer the timezone(s) of data generation (which would not be an easy task, due to the lack of a 1:1 mapping between timezones and timezone offsets), so this is an acceptable consequence. The only timezone information we store, in fact, is the timezone selected by the user at the time of upload reflecting the timezone of the most recent data on the device about to be uploaded.
 
 ### Usage
 
-Each device driver - even those for devices that do not allow retrieval of date & time settings changes - should integrate `TimezoneOffsetUtil` as the common way of generating the `time` and `timezoneOffset` fields on each datum. For example:
+Each device driver - even those for devices that do not allow retrieval of date & time settings changes - should integrate `TimezoneOffsetUtil` as the common way of generating the `time`, `timezoneOffset`, and `conversionOffset` fields on each datum. For example:
 
 ```
 var TZOUtil = require('lib/TimezoneOffsetUtil');
 
 // where mostRecent is the UTC timestamp of the most recent datum
 // in the data and changes is an array of deviceEvent subType timeChange
-// objects partially built (i.e., without time and timezoneOffset)
+// objects partially built (i.e., without time, timezoneOffset, and conversionOffset)
 cfg.tzoUtil = new TZOUtil('US/Pacific', mostRecent, changes);
 
 // each datum should already have a jsDate, the JavaScript Date object
@@ -62,7 +62,7 @@ The partially built `timeChange` events used to create a new `TimezoneOffsetUtil
 - `change` = an object that itself has the following fields:
     + `from` = timestamp
     + `to` = timestamp
-    + `agent` = string (*optional*)
+    + `agent` = string (*optional*, can have values such as `manual` or `automatic`)
 - `jsDate` = a JavaScript Date constructed from the `to` time
 - `index` = an index (with an expectation that all indices be monotonically increasing with event order) for the datum that allows it to be sorted with respect to all other events on the device in the order that the events actually happened (which will *not* match `deviceTime` order in the case of date & time settings changes on the device)
 
@@ -85,23 +85,29 @@ In this section, we outline the assumptions that `TimezoneOffsetUtil` currently 
 
 #### Defaulting to Across-the-Board Timezone Application
 
-Some devices that Tidepool supports or plans to support do not provide date & time settings changes in the device data protocol; at present, all such devices Tidepool knows about are traditional fingerstick blood glucose meters. For these devices, there is no way to use the same strategy of "bootstrapping" to true UTC time, and so when `TimezoneOffsetUtil` is initialized with an empty array for `changes` (because there are no date & time settings changes in the device data), it *defaults* to across-the-board application of the specified timezone to convert local device time into UTC time. This means that for users who travel extensively (and change the display time on their diabetes devices when they do so), if they view their data in a timezone-aware display (rather than a display that visualizes data according to local device time), the data from their different devices may not always be aligned properly due to some of their devices' timestamps being converted to UTC via across-the-board application of a timezone and some via "bootstrapping" to UTC.
+Some devices that Tidepool supports or plans to support do not provide date & time settings changes in the device data protocol; at present, all such devices Tidepool knows about are traditional fingerstick blood glucose meters. For these devices, there is no way to use the same BtUTC strategy, and so when `TimezoneOffsetUtil` is initialized with an empty array for `changes` (because there are no date & time settings changes in the device data), it *defaults* to across-the-board application of the specified timezone to convert local device time into UTC time. This means that for users who travel extensively (and change the display time on their diabetes devices when they do so), if they view their data in a timezone-aware display (rather than a display that visualizes data according to local device time), the data from their different devices may not always be aligned properly due to some of their devices' timestamps being converted to UTC via across-the-board application of a timezone and some via BtUTC.
 
 Even for devices from which Tidepool *is* able to extract date & time settings changes, if there are no date & time settings changes in the data extracted from the device during a particular upload session, then the across-the-board timezone application strategy will still come into play as the default. This should produce accurate UTC timestamps as long as the correct timezone is selected by the user of the device on upload.
 
 #### Adjustments for "Clock Drift"
 
-`TimezoneOffsetUtil` does *not* assume that every change to the date & time settings on the device should result in a change to the `timezoneOffset` stored on each datum, but each change does result in a change to the offset used to convert device local timestamps to UTC timestamps - the `conversionOffset`. Diabetes devices often suffer from "clock drift," and some users are in the habit of regularly correcting this drift on their devices. Since the correction to the drift does not represent a change to or from Daylight Savings Time or a change in timezone, it is not a change that we are particularly interested in tracking in the `timezoneOffset`, and in fact it would be detrimental to track it if we want to preserve the potential for associating timezones with the `timezoneOffset`s stored in the data. (Such association could be done via user interaction - e.g., a pop-up with the text: "You changed the time on your device here. Were you travelling? Please select a timezone from these possibilities.")
+`TimezoneOffsetUtil` does *not* assume that every change to the date & time settings on the device should result in a change to the `timezoneOffset` stored on each datum; settings changes that do not look like timezone-related changes (i.e., plausibly to/from DST or travel across timezones) instead result in changes to the stored `conversionOffset`. Aside from the very large changes described above (wrong month, wrong year, etc.), the most common type of change that is factored into the `conversionOffset` but not the `timezoneOffset` is a "clock drift" adjustment. Diabetes devices often suffer from "clock drift," and some users are in the habit of regularly correcting this drift on their devices. Since the correction to the drift does not represent a change to or from Daylight Savings Time or a change in timezone, it is not a change that we are particularly interested in tracking in the `timezoneOffset`, and in fact it would be detrimental to track it if we want to preserve the potential for associating timezones with the `timezoneOffset`s stored in the data. (Such association could be done via user interaction - e.g., a pop-up with the text: "You changed the time on your device here. Were you travelling? Please select a timezone from these possibilities.")
 
-Of course, a threshold had to be chosen to decide what amount of display date & time settings change counts as "clock drift" and what amount *doesn't*. Because there are a few fractional timezones in the world with offsets at the granularity of fifteen minutes - e.g., New Zealand's Chatham Islands (timezone 'Pacific/Chatham' at UTC+12:45) - we have chosen to round all date & time settings changes to the nearest fifteen minutes for the purpose of determining changes to the `timezoneOffset`, so any change that is eight minutes or larger will be interpreted as a change to the `timezoneOffset`, while any change less than eight minutes will be interpreted as "clock drift" and only reflected in an adjustment to the `conversionOffset` used to convert from device time to true UTC time.
+Of course, a threshold had to be chosen to decide what amount of display date & time settings change counts as "clock drift" and what amount *doesn't*. Because there are a few fractional timezones in the world with offsets at the granularity of fifteen minutes - e.g., New Zealand's Chatham Islands (timezone 'Pacific/Chatham' at UTC+12:45) - we have chosen to round all date & time settings changes to the nearest fifteen minutes for the purpose of determining changes to the `timezoneOffset`, so any change that is eight minutes or larger will be interpreted as a change to the `timezoneOffset`, while any change less than eight minutes will be interpreted as "clock drift" and only reflected in an adjustment to the `conversionOffset`. When a user adjusts the "clock drift" at the same time as making a change related to DST or travel across timezones, we factor the (rounded) value of the change into the `timezoneOffset` and the (positive or negative) remainder into the `conversionOffset`.
 
 #### Upper Threshold for Timezone Offset Changes
 
-In rare but certain not unheard-of instances, a diabetes device user sets the time on the device to the entirely wrong month or year and later must correct it. We do not interpret such massive changes to the date & time settings on the device as an adjustment to the `timezoneOffset`. Rather, whenever the absolute value of a date & time settings change, rounded to the nearest fifteen minutes, is larger than the maximum difference possible by travelling between timezones (1560 minutes between UTC-12:00 and UTC+14:00), we apply this change as an adjustment to the `conversionOffset` and keep the same `timezoneOffset`.
+In rare but certainly not unheard-of instances, a diabetes device user sets the time on the device to the entirely wrong month or year and later must correct it. We do not interpret such massive changes to the date & time settings on the device as an adjustment to the `timezoneOffset`. Rather, whenever the absolute value of a date & time settings change, rounded to the nearest fifteen minutes, is larger than the maximum difference possible by travelling between timezones (1560 minutes between UTC-12:00 and UTC+14:00), we apply this change (unrounded) as an adjustment to the `conversionOffset` and keep the same `timezoneOffset`.
+
+#### Conversion Offset Starts at Zero
+
+Another assumption built into the current code is that the `conversionOffset` starts at zero for the most recent data on the device being uploaded. In reality, this is a simplifying assumption; in the vast majority of cases, there is probably a small (within seconds or minutes) difference between the user's device time and the computer time at the time of upload. If we wanted to be extraordinarily precise about the UTC timestamps stored for every datum, we would correct for this difference between device time and computer time immediately, starting with a `conversionOffset` equal to the difference between the two. The main thing stopping us from doing this is the fact that we don't yet have a robust enough interface for distinguishing between device time, computer time, device timezone, and computer timezone.
+
+Put another way, what's essential for this intitial release of BtUTC is that the user selects the timezone that applies to the most recent data on their device, even if that is *not* the user's current timezone (e.g., user travels from California to Florida, leaving all their diabetes devices in Pacific time but uploading from Florida; in this instance we want the user to select 'US/Pacific' as the timezone and we would *not* want to correct for the 3+ hour difference between device time and computer time).
 
 ## Timezone Basics
 
-It is vitally important in the context of complex time-processing code like the above-described "bootstrapping to UTC" to have a good understanding of all the relevant terms and use them precisely. So here is a small glossary, just in case these concepts are new:
+It is vitally important in the context of complex time-processing code like the above-described BtUTC to have a good understanding of all the relevant terms and use them precisely. So here is a small glossary, just in case these concepts are new:
 
 ### timezone
 
@@ -118,7 +124,7 @@ deviceTime = time + timezoneOffset
 In the second version of BtUTC we are adding a `conversionOffset` to the data model to handle a wider range of use cases, and so the *new* generalization is:
 
 ```
-deviceTime = time + conversionOffset
+deviceTime = time + timezoneOffset + conversionOffset
 ```
 
 If you don't have the timezone offset for a particular datum and you want to find it, you need *two* pieces of information:
@@ -140,5 +146,5 @@ There is way too much history and complication on this topic to introduce it her
 
 For our purposes, all that is important to understand is the following:
 
-- DST is responsible from the lack of a 1:1 mapping between timezones and timezone offsets
+- DST is responsible for the lack of a 1:1 mapping between timezones and timezone offsets
 - different countries around the world (and in different hemispheres!) change to and from DST at different dates and times
