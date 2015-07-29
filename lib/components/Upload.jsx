@@ -41,7 +41,7 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
-        VERIOIQ_NOT_SUPPORTED : 'Your operating system does not support VerioIQ upload',
+        VERIOIQ_NOT_SUPPORTED : 'Your operating system doesn\'t support VerioIQ upload',
         VERIOIQ_SUPPORTED : 'Please download this device driver from here:',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
         CARELINK_USERNAME :'CareLink username',
@@ -151,10 +151,12 @@ var Upload = React.createClass({
       return null;
     }
 
-    if (app.device._os !== 'win') {
+    if (!this.isVerioiqUploadSupported()) {
       return (
         <div>
-          <div className="Upload-status--error">{this.props.text.VERIOIQ_NOT_SUPPORTED}</div>
+          <div className="Upload-status--error">
+            {this.props.text.VERIOIQ_NOT_SUPPORTED}
+          </div>
         </div>
       );
     }else{
@@ -162,9 +164,9 @@ var Upload = React.createClass({
         <div>
           <div className="Upload-detail">
             {this.props.text.VERIOIQ_SUPPORTED}
-            <a className="mailto" href="http://www.lifescan.es/download-driver/USBDriverSetup.exe" target="_blank" onClick={this.props.onViewClicked}>
-            USBDriverSetup.exe
-            </a>
+              <a href="http://www.lifescan.es/download-driver/USBDriverSetup.exe" target="_blank" onClick={this.props.onViewClicked}>
+              USBDriverSetup.exe
+              </a>
           </div>
         </div>
       );
@@ -184,6 +186,9 @@ var Upload = React.createClass({
     var text = this.props.text.LABEL_UPLOAD;
     var disabled = this.isDisabled();
 
+    if (this.isVerioiqUpload() && !this.isVerioiqUploadSupported()) {
+      disabled = true;
+    }
     if (this.isCarelinkUpload()) {
       text = this.props.text.LABEL_IMPORT;
       disabled = disabled || this.state.carelinkFormIncomplete;
@@ -329,6 +334,10 @@ var Upload = React.createClass({
 
   isVerioiqUpload: function() {
     return this.props.upload.onetouchverioiq;
+  },
+
+  isVerioiqUploadSupported: function() {
+    return this.props.upload.onetouchverioiqSupported;
   },
 
   isCarelinkUpload: function() {
