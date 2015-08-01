@@ -65,6 +65,7 @@ describe('objectBuilder.js', function(){
       expect(bk.conversionOffset).to.equal(REQUIRED);
       expect(bk.deviceTime).to.equal(REQUIRED);
       expect(bk.value).to.equal(REQUIRED);
+      expect(bk.units).to.equal('mmol/L');
 
       expect(bk.payload).to.equal(OPTIONAL);
     });   
