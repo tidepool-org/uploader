@@ -4,8 +4,8 @@ Index,Date,Time,Timestamp,New Device Time,BG Reading (mg/dL),Linked BG Meter ID,
 1326,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeActiveBasalProfilePattern,"PATTERN_NAME=pattern b, OLD_PATTERN_NAME=standard, ACTION_REQUESTOR=pump",14181659834,53616203,104,Paradigm Revel - 723
 1327,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeBasalProfile,"PATTERN_DATUM_ID=14181659832, PROFILE_INDEX=0, RATE=0.1, START_TIME=0",14181659833,53616203,103,Paradigm Revel - 723
 1328,11/24/14,11:12:26,11/24/14 11:12:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ChangeBasalProfilePattern,"PATTERN_NAME=pattern b, NUM_PROFILES=1, ACTION_REQUESTOR=pump",14181659832,53616203,102,Paradigm Revel - 723
-1437,11/25/14,17:53:45,11/25/14 17:53:45,,,,,,,,,,,,,,,,,,,,,,,,,,97,,,,BGCapturedOnPump,"AMOUNT=97, ACTION_REQUESTOR=paradigm link or b key",14213455647,53626057,123,Paradigm Revel - 723
-1439,11/26/14,10:44:23,11/26/14 10:44:23,,,,,,,,,,,,,,,,,,,,,,,,,,96,,,,BGCapturedOnPump,"AMOUNT=96, ACTION_REQUESTOR=paradigm link or b key",14213455644,53626057,120,Paradigm Revel - 723
+1437,11/25/14,17:53:45,11/25/14 17:53:45,,97,,,,,,,,,,,,,,,,,,,,,,,,97,,,,BGCapturedOnPump,"AMOUNT=97, ACTION_REQUESTOR=paradigm link or b key",14213455647,53626057,123,Paradigm Revel - 723
+1439,11/26/14,10:44:23,11/26/14 10:44:23,,96,,,,,,,,,,,,,,,,,,,,,,,,96,,,,BGCapturedOnPump,"AMOUNT=96, ACTION_REQUESTOR=paradigm link or b key",14213455644,53626057,120,Paradigm Revel - 723
 1459,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM_ID=14213455586, INDEX=0, AMOUNT=50, START_TIME=0",14213455587,53626057,64,Paradigm Revel - 723
 1460,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM_ID=14213455586, INDEX=1, AMOUNT=60, START_TIME=43200000",14213455588,53626057,65,Paradigm Revel - 723
 1461,12/3/14,13:30:58,12/3/14 13:30:58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CurrentInsulinSensitivity,"PATTERN_DATUM_ID=14213455586, INDEX=2, AMOUNT=40, START_TIME=64800000",14213455589,53626057,66,Paradigm Revel - 723

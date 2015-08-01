@@ -47,8 +47,9 @@
     ],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-13T10:00:00.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": {
       "bg": "mg/dL",
       "carb": "grams"
@@ -61,6 +62,7 @@
     "scheduleName": "standard",
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-13T10:00:00.000Z",
     "type": "basal-scheduled",
     "rate": 0.8

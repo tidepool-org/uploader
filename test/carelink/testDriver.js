@@ -56,6 +56,9 @@ function spiderTests(baseDir) {
                 if (e.message === "Cannot read property 'simulator' of undefined") {
                   expect(payload.devices['Paradigm Revel - 723 : CGM'].simulator.getEvents()).deep.equals(output);
                 }
+                else {
+                  throw(e);
+                }
               }
               done(err);
             }

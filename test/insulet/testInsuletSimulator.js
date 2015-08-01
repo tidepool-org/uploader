@@ -36,6 +36,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         units: 'mg/dL',
         type: 'smbg',
@@ -53,6 +54,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         normal: 1.3,
         type: 'bolus',
@@ -97,6 +99,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         extended: 1.4,
         duration: 1800000,
@@ -129,6 +132,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         normal: 1.3,
         extended: 1.4,
@@ -170,6 +174,7 @@ describe('insuletSimulator.js', function() {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
       timezoneOffset: 0,
+      conversionOffset: 0,
       deviceId: 'InsOmn1234',
       normal: 1.3,
       type: 'bolus',
@@ -180,6 +185,7 @@ describe('insuletSimulator.js', function() {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
       timezoneOffset: 0,
+      conversionOffset: 0,
       deviceId: 'InsOmn1234',
       recommended: {
         carb: 1.0,
@@ -213,6 +219,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'alarm',
@@ -228,6 +235,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'alarm',
@@ -247,6 +255,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'alarm',
@@ -265,6 +274,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'alarm',
@@ -293,6 +303,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         type: 'deviceEvent',
         subType: 'reservoirChange'
@@ -303,6 +314,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'status',
@@ -326,6 +338,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         type: 'deviceEvent',
         subType: 'status',
@@ -336,6 +349,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_status('resumed')
         .with_reason({resumed: 'manual'});
       var expectedResume = _.assign({}, resume);
@@ -362,6 +376,7 @@ describe('insuletSimulator.js', function() {
           time: '2014-09-25T01:05:00.000Z',
           deviceTime: '2014-09-25T01:05:00',
           timezoneOffset: 0,
+          conversionOffset: 0,
           deviceId: 'InsOmn1234',
           type: 'deviceEvent',
           subType: 'status',
@@ -380,6 +395,7 @@ describe('insuletSimulator.js', function() {
         time: '2014-09-25T01:05:00.000Z',
         deviceTime: '2014-09-25T01:05:00',
         timezoneOffset: 0,
+        conversionOffset: 0,
         deviceId: 'InsOmn1234',
         type: 'deviceEvent',
         subType: 'timeChange',
@@ -413,7 +429,8 @@ describe('insuletSimulator.js', function() {
           { start: 0, rate: 0.0}
         ]
       },
-      timezoneOffset: 0
+      timezoneOffset: 0,
+      conversionOffset: 0
     };
 
     it('passes through', function() {
@@ -427,18 +444,21 @@ describe('insuletSimulator.js', function() {
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.75);
     var basal2 = builder.makeScheduledBasal()
       .with_time('2014-09-25T03:00:00.000Z')
       .with_deviceTime('2014-09-25T03:00:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.85);
     var basal3 = builder.makeScheduledBasal()
       .with_time('2014-09-25T03:30:00.000Z')
       .with_deviceTime('2014-09-25T03:30:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.90);
 
@@ -490,18 +510,21 @@ describe('insuletSimulator.js', function() {
             { start: 0, rate: 0.0}
           ]
         },
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var regBasal1 = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.3)
         .with_scheduleName('billy');
       var tempBasal = builder.makeTempBasal()
         .with_time('2014-09-25T18:10:00.000Z')
         .with_deviceTime('2014-09-25T18:10:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(0.65)
         .with_percent(0.5)
         .with_duration(1800000);
@@ -509,6 +532,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T18:10:00.000Z')
         .with_deviceTime('2014-09-25T18:10:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.3)
         .with_duration(1800000);
       tempBasal.with_suppressed(suppressed);
@@ -516,6 +540,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T18:40:00.000Z')
         .with_deviceTime('2014-09-25T18:40:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.3)
         .with_scheduleName('billy');
       var thisSim = pwdSimulator.make({settings: settings});
@@ -559,12 +584,14 @@ describe('insuletSimulator.js', function() {
           { start: 0, rate: 0.0}
         ]
       },
-      timezoneOffset: 0
+      timezoneOffset: 0,
+      conversionOffset: 0
     };
     var basal = builder.makeScheduledBasal()
       .with_time('2014-09-25T18:05:00.000Z')
       .with_deviceTime('2014-09-25T18:05:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_rate(1.3)
       .with_scheduleName('billy');
 
@@ -583,6 +610,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T18:00:00.000Z')
         .with_deviceTime('2014-09-25T18:00:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.0)
         .with_scheduleName('billy');
       thisSim.basal(thisBasal);
@@ -599,6 +627,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T18:00:00.000Z')
         .with_deviceTime('2014-09-25T18:00:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.3)
         .with_scheduleName('bob');
       thisSim.basal(thisBasal);
@@ -623,6 +652,7 @@ describe('insuletSimulator.js', function() {
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0)
         .with_rate(1.3)
         .with_duration(1800000);
       var expectedBasal = _.cloneDeep(temp);
@@ -636,7 +666,8 @@ describe('insuletSimulator.js', function() {
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
-        .with_timezoneOffset(0);
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
       var expectedBasal = _.cloneDeep(suspend);
       expectedBasal = expectedBasal.set('duration', 0).done();
       expectedBasal.annotations = [{code: 'basal/unknown-duration'}];
@@ -651,6 +682,7 @@ describe('insuletSimulator.js', function() {
       .with_time('2014-09-25T01:50:00.000Z')
       .with_deviceTime('2014-09-25T01:50:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_status('suspended')
       .with_reason({suspended: 'manual'})
       .done();
@@ -658,18 +690,21 @@ describe('insuletSimulator.js', function() {
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_status('resumed')
       .with_reason({resumed: 'manual'});
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.75);
     var basal2 = builder.makeScheduledBasal()
       .with_time('2014-09-25T03:00:00.000Z')
       .with_deviceTime('2014-09-25T03:00:00')
       .with_timezoneOffset(0)
+      .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.85);
 

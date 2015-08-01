@@ -1,15 +1,5 @@
 [
   {
-    "deviceId": "Paradigm Revel - 723-=-53021863",
-    "deviceTime": "2014-03-13T00:04:00",
-    "source": "carelink",
-    "timezoneOffset": -600,
-    "time": "2014-03-13T10:04:00.000Z",
-    "type": "cbg",
-    "units": "mg/dL",
-    "value": 120
-  },
-  {
     "activeSchedule": "pattern a",
     "basalSchedules": {
       "pattern a": [],
@@ -23,8 +13,9 @@
     "insulinSensitivity": [],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-13T21:51:05.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
@@ -51,8 +42,9 @@
     "insulinSensitivity": [],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-14T11:01:27.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
@@ -81,8 +73,9 @@
     "insulinSensitivity": [],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-14T11:02:02.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
@@ -119,8 +112,9 @@
     "insulinSensitivity": [],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-14T11:03:59.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
@@ -171,8 +165,9 @@
     ],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-14T11:08:07.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   },
   {
@@ -223,8 +218,9 @@
     ],
     "source": "carelink",
     "timezoneOffset": -600,
+    "conversionOffset": 0,
     "time": "2014-03-14T21:51:05.000Z",
-    "type": "settings",
+    "type": "pumpSettings",
     "units": { "bg": "mg/dL", "carb": "grams" }
   }
 ]
