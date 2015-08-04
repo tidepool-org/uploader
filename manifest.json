@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.150.0",
+  "version": "0.151.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -30,6 +30,7 @@
     "storage",
     "serial",
     "usb",
+    "hid",
     {
       "usbDevices": [
         {
@@ -39,20 +40,6 @@
           "mode": "serial",
           "vendorId": 8867,
           "productId": 71
-        },
-        {
-          "deviceName": "Asante SNAP w/Asante cable",
-          "driverId": "AsanteSNAPNeedDriver",
-          "mode": "not supported",
-          "vendorId": 1027,
-          "productId": 32568
-        },
-        {
-          "deviceName": "Asante SNAP w/FTDI cable",
-          "driverId": "AsanteSNAP",
-          "mode": "FTDI",
-          "vendorId": 1027,
-          "productId": 24577
         },
         {
           "deviceName": "OneTouch Mini w/FTDI cable",
@@ -77,7 +64,7 @@
           "productId": 2
         },
         {
-          "deviceName": "OneTouchUltra2",
+          "deviceName": "OneTouchUltra2 w/FTDI cable",
           "driverId": "OneTouchUltra2",
           "bitrate": 9600,
           "mode": "FTDI",
@@ -92,6 +79,13 @@
           "mode": "FTDI",
           "vendorId": 6753,
           "productId": 13328
+        },
+        {
+          "deviceName": "BayerContourNext",
+          "driverId": "BayerContourNext",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 29520
         }
       ]
     }
