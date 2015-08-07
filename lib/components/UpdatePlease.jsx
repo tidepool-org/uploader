@@ -32,7 +32,7 @@ var UpdatePlease = React.createClass({
     return (
       <div className="UpdatePlease">
         <p>{text.OUT_OF_DATE}</p>
-        <p className='most-important'>{text.TO_UPDATE}<a href={this.props.link}>{text.LINK_TEXT}</a>.</p>
+        <p className='most-important'>{text.TO_UPDATE}<a target="_blank" href={this.props.link}>{text.LINK_TEXT}</a>.</p>
         <p>{text.TRY_AGAIN}</p>
       </div>
     );
