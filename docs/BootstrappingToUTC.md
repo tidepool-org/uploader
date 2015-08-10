@@ -14,7 +14,7 @@ The module in `lib/TimezoneOffsetUtil.js` is our best effort to "bootstrap" from
 
 In combination (because timezones and timezone offsets from UTC do not map 1:1 due to Daylight Savings Time, see [Timezone Basics](#timezone-basics) below), the timezone and most recent timestamp allow us to determine the offset from UTC (in minutes) of the most recent data on the device. We then follow the set of date & time settings changes on the device backwards from the most recent data to the earliest data on the device, adjusting the offset used to convert device local time into UTC according to the settings changes. This method produces a more accurate conversion to UTC than applying a timezone across-the-board because it properly accounts for travel across timezones, as well as doing a better job of representing the changes to and from Daylight Savings Time since this "bootstrapping" to UTC [henceforth: BtUTC] does not assume that a device user changes the device time at precisely the moment of change to or from Daylight Savings Time.
 
-In its second version, BtUTC now keeps track of *two* offsets from UTC - a `timezoneOffset` (see Timezone Basics below) and a `conversionOffset`. Some date & time settings changes in a device's history factor into updates to the stored `conversionOffset`, while others affect the stored `timezoneOffset`. This is to preserve the semantics of the `timezoneOffset` field to match as closely as possible to the concept of what timezone offsets actually *are*. The original version of BtUTC only stored a `timezoneOffset` because it was primarily concerned with solving only the two most common use cases for device time changes on diabetes devices:
+In its second version, BtUTC now keeps track of *two* offsets from UTC - a `timezoneOffset` (see [Timezone Basics](#timezone-basics) below) and a `conversionOffset`. Some date & time settings changes in a device's history factor into updates to the stored `conversionOffset`, while others affect the stored `timezoneOffset`. This is to preserve the semantics of the `timezoneOffset` field to match as closely as possible to the concept of what timezone offsets actually *are*. The original version of BtUTC only stored a `timezoneOffset` because it was primarily concerned with solving only the two most common use cases for device time changes on diabetes devices:
 
 1. changes resulting from the shift to or from Daylight Savings Time, in timezones where DST applies
 1. changes resulting from travel across timezones
@@ -32,31 +32,31 @@ The bottom two of these changes (device set to wrong month or wrong year) are on
 
 ### Usage
 
-Each device driver - even those for devices that do not allow retrieval of date & time settings changes - should integrate `TimezoneOffsetUtil` as the common way of generating the `time`, `timezoneOffset`, and `conversionOffset` fields on each datum. For example:
+Each device driver - even those for devices that do not allow retrieval of date & time settings changes - should integrate `TimezoneOffsetUtil` as the common way of generating the `time`, `timezoneOffset`, and `conversionOffset` fields on each datum. For example, each driver should (1) import the utility:
 
-```
+```JavaScript
 var TZOUtil = require('lib/TimezoneOffsetUtil');
+```
 
-// where mostRecent is the UTC timestamp of the most recent datum
-// in the data and changes is an array of deviceEvent subType timeChange
-// objects partially built (i.e., without time, timezoneOffset, and conversionOffset)
-cfg.tzoUtil = new TZOUtil('US/Pacific', mostRecent, changes);
+(2) initialize it with the information required to determine the initial `timezoneOffset` - that is, the user-selected timezone (`timezone`) and the UTC timestamp of the most recent datum from the device's history (`mostRecent`). At this time, an array of the date & time settings changes from the device's history (`changes`) should also be provided as the third argument to the constructor. If the device does not store date & time settings changes (as many/all BGMs do not), then just an empty array should be passed.
 
-// each datum should already have a jsDate, the JavaScript Date object
-// resulting from parsing the device's native datetime format using
-// sundial.buildTimestamp or sundial.parseFromFormat
-// the device local time should also be attached to the datum as deviceTime
-// and each datum should have an index representing the event's position
-// in the sequence of all events that occurred on the device
-// where such indices are monotonically increasing from earliest datum to latest
+```JavaScript
+cfg.tzoUtil = new TZOUtil(timezone, mostRecent, changes);
+```
+
+(3) employ the utility's `fillInUTCInfo` to fill in the `time`, `timezoneOffset`, and `conversionOffset` on data that already have two pieces of time-related information attached: (a) the `deviceTime` as a string (`datum.deviceTime`) and (b) an index (`datum.index`) representing the event's position in the sequence of all events that occurred on the device, where such indices are monotonically increasing from earliest datum to latest. The `fillInUTCInfo` method expects a second argument as well - a `jsDate`, which is a JavaScript Date object resulting from parsing the device's native datetime format using `sundial.buildTimestamp` or `sundial.parseFromFormat` (usually this is the object used to produce `deviceTime` via `sundial.formatDeviceTime`, and we provide it as an additional argument to avoid re-parsing the `deviceTime`, as parsing time strings is rather expensive).
+
+```JavaScript
 _.each(data, function(datum) {
   cfg.tzoUtil.fillInUTCInfo(datum, jsDate);
 });
 ```
 
+Each instance of the `TimezoneOffsetUtil` keeps track of which method for generating the `time` field is being employed - either across-the-board application of a timezone (when no date & time settings changes were provided to the constructor) or "bootstrapping" to UTC. The method of `time` generation is publicly available through the `type` property on the instance (i.e., `cfg.tzoUtil.type`) and must be retrieved and provided as the `timeProcessing` field of the [upload metadata](http://developer.tidepool.io/data-model/v1/upload/).
+
 #### Expectations for `timeChange` events
 
-The partially built `timeChange` events used to create a new `TimezoneOffsetUtil` instance should have the following listed fields set through use of the uploader's [objectBuilder](https://github.com/tidepool-org/chrome-uploader/blob/master/lib/objectBuilder.js). All timestamps should be [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601 'Wikipedia: ISO 8601')-formatted, without timezone offset information - e.g., `2015-01-01T12:00:00`.
+The partially built `timeChange` events composing the array of `changes` provided as the third argument to a new `TimezoneOffsetUtil` instance should have the following listed fields set through use of the uploader's [objectBuilder](https://github.com/tidepool-org/chrome-uploader/blob/master/lib/objectBuilder.js). All timestamps should be [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601 'Wikipedia: ISO 8601')-formatted, without timezone offset information - e.g., `2015-01-01T12:00:00`.
 
 - `deviceTime` = timestamp
 - `change` = an object that itself has the following fields:
@@ -75,7 +75,7 @@ The array of changes does not need to be sorted before passing it into the `Time
 - `conversionOffset` will be added
 - `jsDate` will be deleted
 
-The choice to mutate the `timeChange` events makes for a somewhat deceptive and/or opaque API, but this was felt to be a better choice than repeating the same code (effecting the mutations described above) across all the device drivers. We may change this in the future.
+(As a historical aside: the choice to mutate the `timeChange` events makes for a somewhat deceptive and/or opaque API, but this was felt to be a better choice than repeating the same code (effecting the mutations described above) across all the device drivers. We may change this in the future.)
 
 The `fillInUTCInfo` method from the usage example above also mutates the object passed as its first argument, adding `time`, `timezoneOffset`, and `conversionOffset` fields. An annotation may additionally be added if no `index` was provided on the object, which results in uncertainty in the determination of the correct UTC timestamp.
 
