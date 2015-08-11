@@ -117,7 +117,9 @@ A timezone is a string naming a valid timezone from the [IANA Time Zone Database
 
 ### timezone offset
 
-A timezone offset is an integer, positive or negative, giving the number of minutes of offset required to translate a local datetime into UTC. JavaScript Date and the [Moment Timezone](http://momentjs.com/timezone/) library specify timezone offsets *to* UTC from the local datetime, so the offsets are positive for the North American timezones, which are behind UTC time - that is, you need to *add* hours to get from local time to UTC time. In our data model, for whatever reason that is lost to history, we decided to store timezone offsets as minutes *from* UTC, so the offsets are negative for the North American timezones, reflecting the fact that you need to *subtract* hours from UTC to get the local time. Consequently, the relationship between the fields `deviceTime`, `time`, and `timezoneOffset` in the Tidepool data model can be generalized as follows (assuming all appropriate unit conversions have been made):
+A timezone offset is an integer, positive or negative, giving the number of minutes of offset required to translate a local datetime into UTC. JavaScript Date and the [Moment Timezone](http://momentjs.com/timezone/) library specify timezone offsets *to* UTC from the local datetime, so the offsets are positive for the North American timezones, which are behind UTC time - that is, you need to *add* hours to get from local time to UTC time. In our data model, we store timezone offsets as minutes *from* UTC, so the offsets are negative for the North American timezones, reflecting the fact that you need to *subtract* hours from UTC to get the local time. While this choice goes against the grain of how timezone offsets are represented in JavaScript, it agrees with the [ISO 8601 international standard](https://en.wikipedia.org/wiki/ISO_8601) for representation of dates and times.
+
+Overall, the relationship between the fields `deviceTime`, `time`, and `timezoneOffset` in the Tidepool data model can be generalized as follows (assuming all appropriate unit conversions have been made):
 
 ```
 deviceTime = time + timezoneOffset
