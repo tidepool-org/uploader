@@ -28,3 +28,4 @@ bower_components
 .DS_Store
 .idea
 *.iml
+.com.apple.timemachine.*
