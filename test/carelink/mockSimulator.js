@@ -38,9 +38,9 @@ exports.make = function(config) {
     bolusNormal: appendToEvents('bolus-normal'),
     bolusSquare: appendToEvents('bolus-square'),
     cbg: appendToEvents('cbg'),
-    deviceMeta: appendToEvents('deviceMeta'),
+    deviceEvent: appendToEvents('deviceEvent'),
     resume: appendToEvents('resume'),
-    settings: appendToEvents('settings'),
+    pumpSettings: appendToEvents('pumpSettings'),
     suspend: appendToEvents('suspend'),
     smbg: appendToEvents('smbg'),
     wizard: appendToEvents('wizard'),
@@ -50,9 +50,9 @@ exports.make = function(config) {
     getEvents: function(){
       return _.map(events, function(event) {
         if (event.type === 'wizard') {
-          event.bolus = _.omit(event.bolus, 'jaebPayload');
+          event.bolus = _.omit(event.bolus, ['index', 'jaebPayload', 'jsDate']);
         }
-        return _.omit(event, 'jaebPayload');
+        return _.omit(event, ['index', 'jaebPayload', 'jsDate']);
       });
     }
   };

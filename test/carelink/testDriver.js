@@ -16,6 +16,7 @@
  */
 
 /* global describe, it */
+/*jshint quotmark: false */
 
 var async = require('async');
 var fs = require('fs');
@@ -48,7 +49,17 @@ function spiderTests(baseDir) {
               if(err){
                 console.log(payload);
               }
-              expect(payload.devices['Paradigm Revel - 723'].simulator.getEvents()).deep.equals(output);
+              try {
+                expect(payload.devices['Paradigm Revel - 723'].simulator.getEvents()).deep.equals(output);
+              }
+              catch (e) {
+                if (e.message === "Cannot read property 'simulator' of undefined") {
+                  expect(payload.devices['Paradigm Revel - 723 : CGM'].simulator.getEvents()).deep.equals(output);
+                }
+                else {
+                  throw(e);
+                }
+              }
               done(err);
             }
           );
