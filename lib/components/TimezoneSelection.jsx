@@ -40,13 +40,6 @@ var TimezoneSelection = React.createClass({
       .concat(sortByOffset(timezones.hoisted))
       .concat(sortByOffset(timezones.theRest));
 
-    var targetTimezoneLabel = null;
-    if (this.props.targetTimezone !== null) {
-      targetTimezoneLabel = _.find(timezones, function(tz) {
-        return tz.value === self.props.targetTimezone;
-      });
-    }
-
     return (
       <Select clearable={false}
         name={'timezoneSelect'}
@@ -54,7 +47,7 @@ var TimezoneSelection = React.createClass({
         options={opts}
         placeholder={'Type to search...'}
         // if for whatever reason we don't have the label, just display the actual timezone name
-        value={targetTimezoneLabel || this.props.targetTimezone}/>
+        value={this.props.targetTimezone} />
     );
   },
 
