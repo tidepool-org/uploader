@@ -57,12 +57,14 @@ var UploadSettings = React.createClass({
 
     var disable = this.props.isUploadInProgress ? true : false;
 
-    return (<Select
+    return (
+      <Select clearable={false}
         disabled={disable}
-        name='uploadGroupSelect'
-        value={this.props.targetId}
+        name={'uploadGroupSelect'}
+        onChange={this.props.onGroupChange}
         options={opts}
-        onChange={this.props.onGroupChange} />);
+        value={this.props.targetId} />
+    );
   },
   render: function() {
     // we're already doing a check to see if we want to render in App.jsx
