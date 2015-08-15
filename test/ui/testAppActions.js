@@ -843,9 +843,8 @@ describe('appActions', function() {
 
     it('updates the timezone ', function() {
       app.state.targetTimezone = 'foo';
-      appActions.changeTimezone('bar_Bar');
+      appActions.changeTimezone('bar');
       expect(app.state.targetTimezone).to.equal('bar');
-      expect(app.state.targetTimezoneLabel).to.equal('Bar');
     });
 
   });
