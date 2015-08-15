@@ -46,7 +46,6 @@ var TimezoneSelection = React.createClass({
         onChange={this.props.onTimezoneChange}
         options={opts}
         placeholder={'Type to search...'}
-        // if for whatever reason we don't have the label, just display the actual timezone name
         value={this.props.targetTimezone} />
     );
   },
