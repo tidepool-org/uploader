@@ -285,10 +285,11 @@ var Upload = React.createClass({
     return history[0];
   },
   getDeviceName: function(upload) {
+    var text = this.props.text;
     var getName = getIn(
       deviceInfo,
       [upload.source.driverId, 'getName'],
-      function() { return this.props.text.DEVICE_UNKOWN; }
+      function() { return text.DEVICE_UNKOWN; }
     );
     return getName(upload.source);
   },
