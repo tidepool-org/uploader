@@ -73,6 +73,14 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "OneTouchVerioIQ",
+          "driverId": "OneTouchVerioIQ",
+          "bitrate": 38400,
+          "mode": "serial",
+          "vendorId": 4292,
+          "productId": 34215
+        },
+        {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
           "mode": "HID",
