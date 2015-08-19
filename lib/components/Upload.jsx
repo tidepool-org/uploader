@@ -41,8 +41,8 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
-        VERIOIQ_NOT_SUPPORTED : 'Your operating system doesn\'t support VerioIQ upload',
-        VERIOIQ_SUPPORTED : 'Please download this device driver from here:',
+        VERIOIQ_NOT_SUPPORTED : 'VerioIQ upload is not currently supported on this operating system',
+        VERIOIQ_SUPPORTED : 'Please download and install the USB device driver:',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
@@ -53,7 +53,7 @@ var Upload = React.createClass({
         LABEL_FAILED: 'Try again',
         LAST_UPLOAD : 'Last upload: ',
         LABEL_MEDTRONIC_DEVICES :'Medtronic Devices',
-        DEVICE_UNKOWN : 'Unknown device',
+        DEVICE_UNKNOWN : 'Unknown device',
         UPLOAD_COMPLETE: 'Done!',
         UPLOAD_PROGRESS: 'Uploading... '
       }
@@ -289,7 +289,7 @@ var Upload = React.createClass({
     var getName = getIn(
       deviceInfo,
       [upload.source.driverId, 'getName'],
-      function() { return text.DEVICE_UNKOWN; }
+      function() { return text.DEVICE_UNKNOWN; }
     );
     return getName(upload.source);
   },
