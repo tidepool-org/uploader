@@ -6,6 +6,7 @@
     "scheduleName": "standard",
     "source": "carelink",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
     "conversionOffset": 0,
     "time": "2014-03-13T10:00:00.000Z",
     "type": "basal-scheduled",
@@ -19,6 +20,7 @@
     "rate": 0.55,
     "source": "carelink",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
     "conversionOffset": 0,
     "time": "2014-03-13T10:28:56.000Z",
     "type": "basal-temp"
@@ -30,6 +32,7 @@
     "scheduleName": "standard",
     "source": "carelink",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
     "conversionOffset": 0,
     "time": "2014-03-13T10:29:03.000Z",
     "type": "basal-scheduled",
