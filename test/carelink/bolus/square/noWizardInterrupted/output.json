@@ -5,6 +5,7 @@
         "deviceTime": "2014-11-16T16:03:47",
         "time": "2014-11-17T02:03:47.000Z",
         "timezoneOffset": -600,
+        "clockDriftOffset": 0,
         "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "subType": "square",
@@ -19,6 +20,7 @@
         "deviceTime": "2014-11-16T16:04:30",
         "time": "2014-11-17T02:04:30.000Z",
         "timezoneOffset": -600,
+        "clockDriftOffset": 0,
         "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "deliveryType": "scheduled",
@@ -31,6 +33,7 @@
         "deviceTime": "2014-11-16T16:17:50",
         "time": "2014-11-17T02:17:50.000Z",
         "timezoneOffset": -600,
+        "clockDriftOffset": 0,
         "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "reason": {
@@ -43,6 +46,7 @@
         "deviceTime": "2014-11-16T16:28:43",
         "time": "2014-11-17T02:28:43.000Z",
         "timezoneOffset": -600,
+        "clockDriftOffset": 0,
         "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "payload": {
