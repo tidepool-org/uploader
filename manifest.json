@@ -75,6 +75,7 @@
         {
           "deviceName": "OneTouchVerioIQ",
           "driverId": "OneTouchVerioIQ",
+          "macPortPattern": "/dev/cu\\.SLAB.+",
           "bitrate": 38400,
           "mode": "serial",
           "vendorId": 4292,

@@ -43,6 +43,10 @@ var Upload = React.createClass({
       text: {
         VERIOIQ_NOT_SUPPORTED : 'VerioIQ upload is not currently supported on this operating system',
         VERIOIQ_SUPPORTED : 'Please download and install the USB device driver:',
+        WINDOWS_DRIVER_NAME: 'TODO',
+        WINDOWS_DRIVER_URL: 'TODO',
+        MAC_SILABS_DRIVER_NAME: 'MAC_OSX_VCP_Driver.zip',
+        MAC_SILABS_DRIVER_URL: 'https://www.silabs.com/Support%20Documents/Software/Mac_OSX_VCP_Driver.zip',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
@@ -151,21 +155,23 @@ var Upload = React.createClass({
       return null;
     }
 
-    if (!this.isVerioiqUploadSupported()) {
+    if (!this.isVerioiqOnWindows()) {
       return (
-        <div>
-          <div className="Upload-status--error">
-            {this.props.text.VERIOIQ_NOT_SUPPORTED}
-          </div>
+      <div>
+        <div className="Upload-detail">
+          {this.props.text.VERIOIQ_SUPPORTED}
+            <a href={this.props.text.MAC_SILABS_DRIVER_URL} target="_blank" onClick={this.props.onViewClicked}>
+            {this.props.text.MAC_SILABS_DRIVER_NAME}
+            </a>
         </div>
-      );
+      </div>      );
     }else{
       return (
         <div>
           <div className="Upload-detail">
             {this.props.text.VERIOIQ_SUPPORTED}
-              <a href="http://www.lifescan.es/download-driver/USBDriverSetup.exe" target="_blank" onClick={this.props.onViewClicked}>
-              USBDriverSetup.exe
+              <a href={this.props.text.WINDOWS_DRIVER_URL} target="_blank" onClick={this.props.onViewClicked}>
+              {this.props.text.WINDOWS_DRIVER_NAME}
               </a>
           </div>
         </div>
@@ -186,9 +192,6 @@ var Upload = React.createClass({
     var text = this.props.text.LABEL_UPLOAD;
     var disabled = this.isDisabled();
 
-    if (this.isVerioiqUpload() && !this.isVerioiqUploadSupported()) {
-      disabled = true;
-    }
     if (this.isCarelinkUpload()) {
       text = this.props.text.LABEL_IMPORT;
       disabled = disabled || this.state.carelinkFormIncomplete;
@@ -337,8 +340,8 @@ var Upload = React.createClass({
     return this.props.upload.onetouchverioiq;
   },
 
-  isVerioiqUploadSupported: function() {
-    return this.props.upload.onetouchverioiqSupported;
+  isVerioiqOnWindows: function() {
+    return this.props.upload.onetouchverioiqOnWindows;
   },
 
   isCarelinkUpload: function() {
