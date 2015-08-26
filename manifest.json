@@ -80,8 +80,8 @@
           "productId": 29520
         },
         {
-          "deviceName": "BayerContourNextEZ",
-          "driverId": "BayerContourNextEZ",
+          "deviceName": "BayerContour",
+          "driverId": "BayerContour",
           "mode": "serial",
           "vendorId": 6777,
           "productId": 24577
