@@ -41,6 +41,8 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
+        VERIOIQ_NOT_SUPPORTED : 'Your operating system doesn\'t support VerioIQ upload',
+        VERIOIQ_SUPPORTED : 'Please download this device driver from here:',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
@@ -107,6 +109,7 @@ var Upload = React.createClass({
 
     return (
       <form className="Upload-form">
+        {this.renderVerioiqWarn()}
         {this.renderCarelinkInputs()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
@@ -143,6 +146,32 @@ var Upload = React.createClass({
       </div>
     );
   },
+  renderVerioiqWarn: function() {
+    if (!this.isVerioiqUpload()) {
+      return null;
+    }
+
+    if (!this.isVerioiqUploadSupported()) {
+      return (
+        <div>
+          <div className="Upload-status--error">
+            {this.props.text.VERIOIQ_NOT_SUPPORTED}
+          </div>
+        </div>
+      );
+    }else{
+      return (
+        <div>
+          <div className="Upload-detail">
+            {this.props.text.VERIOIQ_SUPPORTED}
+              <a href="http://www.lifescan.es/download-driver/USBDriverSetup.exe" target="_blank" onClick={this.props.onViewClicked}>
+              USBDriverSetup.exe
+              </a>
+          </div>
+        </div>
+      );
+    }
+  },
   onCareLinkInputChange: function() {
     var username = this.refs.username && this.refs.username.getDOMNode().value;
     var password = this.refs.password && this.refs.password.getDOMNode().value;
@@ -157,6 +186,9 @@ var Upload = React.createClass({
     var text = this.props.text.LABEL_UPLOAD;
     var disabled = this.isDisabled();
 
+    if (this.isVerioiqUpload() && !this.isVerioiqUploadSupported()) {
+      disabled = true;
+    }
     if (this.isCarelinkUpload()) {
       text = this.props.text.LABEL_IMPORT;
       disabled = disabled || this.state.carelinkFormIncomplete;
@@ -298,6 +330,14 @@ var Upload = React.createClass({
         return this.props.upload.file && !_.isEmpty(this.props.upload.file.name);
       }
     }
+  },
+
+  isVerioiqUpload: function() {
+    return this.props.upload.onetouchverioiq;
+  },
+
+  isVerioiqUploadSupported: function() {
+    return this.props.upload.onetouchverioiqSupported;
   },
 
   isCarelinkUpload: function() {
