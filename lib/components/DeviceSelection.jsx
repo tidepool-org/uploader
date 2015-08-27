@@ -22,7 +22,9 @@ var cx = require('react/lib/cx');
 var DeviceSelection = React.createClass({
   propTypes: {
     uploads: React.PropTypes.array.isRequired,
-    targetId: React.PropTypes.string.isRequired,
+    // targetId can be null when logged in user is not a data storage account
+    // for example a clinic worker
+    targetId: React.PropTypes.string,
     targetDevices: React.PropTypes.array.isRequired,
     timezoneIsSelected: React.PropTypes.bool.isRequired,
     onCheckChange: React.PropTypes.func.isRequired,
