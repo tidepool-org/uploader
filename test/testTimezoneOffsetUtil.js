@@ -54,6 +54,7 @@ describe('TimezoneOffsetUtil.js', function(){
     expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
       timezoneOffset: -240,
+      clockDriftOffset: 0,
       conversionOffset: 0
     });
   });
@@ -74,14 +75,14 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   describe('records', function(){
-    it('adds `time`, `timezoneOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
+    it('adds `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
       var belatedDST = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-03-08T12:01:21',
           to: '2015-03-08T13:00:00',
         })
         .with_deviceTime('2015-03-08T12:01:21')
-        .set('jsDate', new Date('2015-03-08T12:01:21'))
+        .set('jsDate', new Date('2015-03-08T13:00:00'))
         .set('index', 10);
       var travel = builder.makeDeviceEventTimeChange()
         .with_change({
@@ -89,15 +90,36 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-04-01T14:35:00'
         })
         .with_deviceTime('2015-04-01T15:33:24')
-        .set('jsDate', new Date('2015-04-01T15:33:24'))
+        .set('jsDate', new Date('2015-04-01T14:35:00'))
         .set('index', 100);
-      var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [belatedDST, travel]);
+      var wrongMonth = builder.makeDeviceEventTimeChange()
+        .with_change({
+          from: '2015-04-10T16:05:10',
+          to: '2015-05-10T16:05:00'
+        })
+        .with_deviceTime('2015-04-10T16:05:10')
+        .set('jsDate', new Date('2015-05-10T16:05:00'))
+        .set('index', 200);
+      var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [belatedDST, travel, wrongMonth]);
       expect(_.map(util.records, function(rec) { return _.omit(rec, ['payload', 'index']); })).to.deep.equal([
         {
-          time: '2015-04-01T20:33:24.000Z',
+          time: '2015-05-10T21:05:00.000Z',
+          deviceTime: '2015-04-10T16:05:10',
+          timezoneOffset: -300,
+          clockDriftOffset: 0,
+          conversionOffset: 0,
+          type: 'deviceEvent',
+          subType: 'timeChange',
+          change: {
+            from: '2015-04-10T16:05:10',
+            to: '2015-05-10T16:05:00'
+          }
+        }, {
+          time: '2015-05-01T19:34:50.000Z',
           deviceTime: '2015-04-01T15:33:24',
           timezoneOffset: -300,
-          conversionOffset: 0,
+          clockDriftOffset: 0,
+          conversionOffset: -2591990000,
           type: 'deviceEvent',
           subType: 'timeChange',
           change: {
@@ -105,10 +127,11 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-04-01T14:35:00'
           }
         }, {
-          time: '2015-03-08T16:02:57.000Z',
+          time: '2015-04-07T16:59:50.000Z',
           deviceTime: '2015-03-08T12:01:21',
           timezoneOffset: -240,
-          conversionOffset: -96000,
+          clockDriftOffset: -96000,
+          conversionOffset: -2591990000,
           type: 'deviceEvent',
           subType: 'timeChange',
           change: {
@@ -238,19 +261,21 @@ describe('TimezoneOffsetUtil.js', function(){
           .set('index', 50);
         var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [clockDriftAdjust]);
         expect(util.lookup(new Date('2015-02-01T00:00:00'))).to.deep.equal({
-          time: '2015-02-01T04:57:55.000Z',
+          time: '2015-02-01T05:00:00.000Z',
           timezoneOffset: -300,
-          conversionOffset: 125000
+          clockDriftOffset: 125000,
+          conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
           time: '2015-04-01T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.type).to.equal('utc-bootstrapping');
       });
 
-      it('under DST change (spring forward), offset changes', function(){
+      it('under DST change (spring forward), timezoneOffset changes', function(){
         var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
@@ -263,12 +288,14 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
           time: '2015-04-01T04:00:00.000Z',
           timezoneOffset: -240,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-03-01T00:00:00'))).to.deep.equal({
-          time: '2015-03-01T04:58:39.000Z',
+          time: '2015-03-01T05:00:00.000Z',
           timezoneOffset: -300,
-          conversionOffset: 81000
+          clockDriftOffset: 81000,
+          conversionOffset: 0
         });
       });
 
@@ -321,28 +348,32 @@ describe('TimezoneOffsetUtil.js', function(){
           changeBack
         ]);
         expect(util.lookup(new Date('2015-03-05T12:00:00'))).to.deep.equal({
-          time: '2015-03-05T17:54:10.000Z',
+          time: '2015-03-05T18:00:00.000Z',
           timezoneOffset: -360,
-          conversionOffset: 350000
+          clockDriftOffset: 350000,
+          conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-03-10T12:00:00'))).to.deep.equal({
-          time: '2015-03-10T16:55:31.000Z',
+          time: '2015-03-10T17:00:00.000Z',
           timezoneOffset: -300,
-          conversionOffset: 269000
+          clockDriftOffset: 269000,
+          conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-03-20T12:00:00'))).to.deep.equal({
-          time: '2015-03-20T16:57:36.000Z',
+          time: '2015-03-20T17:00:00.000Z',
           timezoneOffset: -300,
-          conversionOffset: 144000
+          clockDriftOffset: 144000,
+          conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-04-02T12:00:00'))).to.deep.equal({
-          time: '2015-04-02T18:58:58.000Z',
+          time: '2015-04-02T19:00:00.000Z',
           timezoneOffset: -420,
-          conversionOffset: 62000
+          clockDriftOffset: 62000,
+          conversionOffset: 0
         });
       });
 
-      it('under DST change (fall back), offset changes', function(){
+      it('under DST change (fall back), timezoneOffset changes', function(){
         var onTimeDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-11-01T02:00:00',
@@ -355,16 +386,18 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date('2015-11-05T00:00:00'))).to.deep.equal({
           time: '2015-11-05T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-10-05T00:00:00'))).to.deep.equal({
           time: '2015-10-05T04:00:00.000Z',
           timezoneOffset: -240,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
       });
 
-      it('under travel across the date line (eastward), offset changes', function(){
+      it('under travel across the date line (eastward), timezoneOffset changes', function(){
         // i.e., JHB comes to visit
         var fromNZ = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -378,16 +411,18 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date('2015-04-10T00:00:00'))).to.deep.equal({
           time: '2015-04-10T07:00:00.000Z',
           timezoneOffset: -420,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-03-10T00:00:00'))).to.deep.equal({
-          time: '2015-03-09T11:01:00.000Z',
+          time: '2015-03-09T11:00:00.000Z',
           timezoneOffset: 780,
-          conversionOffset: -60000
+          clockDriftOffset: -60000,
+          conversionOffset: 0
         });
       });
 
-      it('under travel across the date line (westward), offset changes', function(){
+      it('under travel across the date line (westward), timezoneOffset changes', function(){
         // i.e., Left Coaster goes to NZ
         var toNZ = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -401,12 +436,14 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date('2015-04-05T00:00:00'))).to.deep.equal({
           time: '2015-04-04T11:00:00.000Z',
           timezoneOffset: 780,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-03-10T00:00:00'))).to.deep.equal({
-          time: '2015-03-10T06:59:00.000Z',
+          time: '2015-03-10T07:00:00.000Z',
           timezoneOffset: -420,
-          conversionOffset: 60000
+          clockDriftOffset: 60000,
+          conversionOffset: 0
         });
       });
 
@@ -425,11 +462,13 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date('2014-12-25T00:00:00'), 15)).to.deep.equal({
           time: '2014-12-25T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2013-12-10T00:00:00'), 5)).to.deep.equal({
           time: '2014-12-10T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: -31536000000
         });
         var wrongMonth = builder.makeDeviceEventTimeChange()
@@ -444,11 +483,13 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util2.lookup(new Date('2014-12-25T00:00:00'), 15)).to.deep.equal({
           time: '2014-12-25T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util2.lookup(new Date('2014-11-10T00:00:00'), 5)).to.deep.equal({
           time: '2014-12-10T05:00:00.000Z',
           timezoneOffset: -300,
+          clockDriftOffset: 0,
           conversionOffset: -2592000000
         });
       });
@@ -467,16 +508,19 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.lookup(new Date(ambiguousDeviceTime), 51)).to.deep.equal({
           time: '2015-04-01T18:00:00.000Z',
           timezoneOffset: -360,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date(ambiguousDeviceTime), 49)).to.deep.equal({
           time: '2015-04-01T06:00:00.000Z',
           timezoneOffset: 360,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
         expect(util.lookup(new Date(ambiguousDeviceTime))).to.deep.equal({
           time: '2015-04-01T06:00:00.000Z',
           timezoneOffset: 360,
+          clockDriftOffset: 0,
           conversionOffset: 0
         });
       });
@@ -506,7 +550,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(fn).to.throw('Date must be provided!');
     });
 
-    it('mutates the object passed in, adding `time`, `timezoneOffset`, and `conversionOffset` attrs by way of lookup function', function(){
+    it('mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', function(){
       var obj = {
         type: 'foo',
         index: 10
@@ -515,6 +559,7 @@ describe('TimezoneOffsetUtil.js', function(){
       var expectedRes = _.assign({}, obj, {
         time: '2015-04-02T22:30:00.000Z',
         timezoneOffset: 780,
+        clockDriftOffset: 0,
         conversionOffset: 0
       });
       expect(noChangesUtil.fillInUTCInfo(obj, dt)).to.deep.equal(expectedRes);
@@ -529,6 +574,7 @@ describe('TimezoneOffsetUtil.js', function(){
       var expectedRes = _.assign({}, obj, {
         time: '2015-04-02T22:30:00.000Z',
         timezoneOffset: 780,
+        clockDriftOffset: 0,
         conversionOffset: 0,
         annotations: [{code: 'uncertain-timestamp'}]
       });

@@ -24,26 +24,29 @@ var TimezoneSelection = React.createClass({
   propTypes: {
     onTimezoneChange: React.PropTypes.func.isRequired,
     timezoneLabel : React.PropTypes.string.isRequired,
-    targetTimezone: React.PropTypes.string,
-    targetTimezoneLabel: React.PropTypes.string
+    targetTimezone: React.PropTypes.string
   },
 
-  buildTzSelector:function(){
-    var opts = _.map(sundial.getTimezones(), function(tz, i) {
-      // we have to concatenate the name and label for each timezone
-      // because a name can map to more than one label, and that causes
-      // React to choke because the component keys are not unique
-      // TODO: change the list of timezones in sundial so that all are unique
-      // and we shouldn't have to continue using this hack!
-      return { value : tz.name + '_' + tz.label, label : tz.label };
-    });
+  buildTzSelector: function() {
+    var self = this;
+    function sortByOffset(timezones) {
+      return _.sortBy(timezones, function(tz) {
+        return tz.offset;
+      });
+    }
+    var timezones = sundial.getTimezones();
+    var opts = sortByOffset(timezones.bigFour)
+      .concat(sortByOffset(timezones.unitedStates))
+      .concat(sortByOffset(timezones.hoisted))
+      .concat(sortByOffset(timezones.theRest));
 
     return (
-      <Select name='timezoneSelect'
-        // if for whatever reason we don't have the label, just display the actual timezone name
-        value={this.props.targetTimezoneLabel || this.props.targetTimezone}
+      <Select clearable={false}
+        name={'timezoneSelect'}
+        onChange={this.props.onTimezoneChange}
         options={opts}
-        onChange={this.props.onTimezoneChange} />
+        placeholder={'Type to search...'}
+        value={this.props.targetTimezone} />
     );
   },
 
