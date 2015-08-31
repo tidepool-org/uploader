@@ -3,6 +3,7 @@
         "time": "2014-03-14T15:48:38.000Z",
         "deviceTime": "2014-03-14T05:48:38",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "suspend",
         "reason": {
@@ -14,6 +15,7 @@
         "time": "2014-03-14T20:08:19.000Z",
         "deviceTime": "2014-03-14T10:08:19",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "suspend",
         "reason": {
@@ -25,6 +27,7 @@
         "time": "2014-03-14T20:11:06.000Z",
         "deviceTime": "2014-03-14T10:11:06",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "resume",
         "payload": {
@@ -39,6 +42,7 @@
         "time": "2014-03-15T01:40:47.000Z",
         "deviceTime": "2014-03-14T15:40:47",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "suspend",
         "reason": {
@@ -50,6 +54,7 @@
         "time": "2014-03-15T01:42:38.000Z",
         "deviceTime": "2014-03-14T15:42:38",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "suspend",
         "reason": {
@@ -61,6 +66,7 @@
         "time": "2014-03-15T01:42:52.000Z",
         "deviceTime": "2014-03-14T15:42:52",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "resume",
         "payload": {
@@ -75,6 +81,7 @@
         "time": "2014-03-15T01:51:39.000Z",
         "deviceTime": "2014-03-14T15:51:39",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "source": "carelink",
         "type": "resume",
         "payload": {

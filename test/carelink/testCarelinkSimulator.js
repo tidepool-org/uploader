@@ -54,6 +54,7 @@ describe('carelinkSimulator.js', function(){
         deviceTime: '2014-09-25T01:00:00',
         value: 6.8274200289860065,
         timezoneOffset: 0,
+        conversionOffset: 0,
         units: 'mg/dL'
       };
 
@@ -69,6 +70,7 @@ describe('carelinkSimulator.js', function(){
         deviceTime: '2014-09-25T01:00:00',
         value: 6.8274200289860065,
         timezoneOffset: 0,
+        conversionOffset: 0,
         units: 'mg/dL'
       };
 
@@ -86,7 +88,8 @@ describe('carelinkSimulator.js', function(){
           normal: 1.3,
           extended: 1.4,
           duration: 60000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         simulator.bolusDual(val);
@@ -100,7 +103,8 @@ describe('carelinkSimulator.js', function(){
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           normal: 1.3,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         simulator.bolusNormal(val);
@@ -115,7 +119,8 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T01:00:00',
           extended: 1.4,
           duration: 60000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         simulator.bolusSquare(val);
@@ -135,7 +140,8 @@ describe('carelinkSimulator.js', function(){
             scheduleName: 'billy',
             rate: 1.3,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalScheduled(val);
@@ -150,7 +156,8 @@ describe('carelinkSimulator.js', function(){
             scheduleName: 'billy',
             rate: 1.3,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
           var secondBasal = {
             time: '2014-09-25T02:00:00.000Z',
@@ -158,7 +165,8 @@ describe('carelinkSimulator.js', function(){
             scheduleName: 'billy',
             rate: 1.4,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
           var thirdBasal = {
             time: '2014-09-25T03:00:00.000Z',
@@ -166,7 +174,8 @@ describe('carelinkSimulator.js', function(){
             scheduleName: 'billy',
             rate: 1.5,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalScheduled(initialBasal);
@@ -188,7 +197,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:00:00',
             scheduleName: 'billy',
             rate: 1.3,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalScheduled(val);
@@ -224,11 +234,12 @@ describe('carelinkSimulator.js', function(){
               { start: 0, rate: 0.0}
             ]
           },
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
         });
 
         describe('with duration', function(){
@@ -239,7 +250,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -256,7 +268,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21540000,
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -273,7 +286,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.0,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -295,7 +309,8 @@ describe('carelinkSimulator.js', function(){
               duration: 64800000,
               scheduleName: 'bob',
               rate: 0.0,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
             var basal2 = {
               time: '2014-09-27T00:00:00.000Z',
@@ -303,7 +318,8 @@ describe('carelinkSimulator.js', function(){
               duration: 864e5,
               scheduleName: 'bob',
               rate: 0.0,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             var annotation = [{code: 'carelink/basal/off-schedule-rate'}];
@@ -316,90 +332,11 @@ describe('carelinkSimulator.js', function(){
                 [
                   _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled', annotations: annotation}),
                   {
-                    time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0,
+                    deviceTime: '2014-09-26T00:00:00', time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0, conversionOffset: 0,
                     duration: 864e5, scheduleName: 'bob', rate: 0.0, type: 'basal', deliveryType: 'scheduled',
                     annotations: [{code: 'carelink/basal/fabricated-from-schedule'}]
                   },
                   _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled', annotations: annotation})
-                ]
-                )
-              );
-          });
-
-          it('skips over a scheduled that has an out-of-sequence uploadSeqNum', function(){
-            // NB: based on a true story
-            // TODO: remove when we are boostrapping to 100% UTC timestamps before processing
-            // that should eliminate all out-of-sequence scheduled basals
-            var basal1 = {
-              time: '2014-09-25T06:00:00.000Z',
-              deviceTime: '2014-09-25T06:00:00',
-              duration: 21600000,
-              scheduleName: 'billy',
-              rate: 1.1,
-              timezoneOffset: 0,
-              uploadSeqNum: 100
-            };
-            var basal2 = {
-              time: '2014-09-25T07:00:00.000Z',
-              deviceTime: '2014-09-25T07:00:00',
-              duration: 61200000,
-              scheduleName: 'bob',
-              rate: 0.0,
-              timezoneOffset: 0,
-              uploadSeqNum: 101
-            };
-            var basal3 = {
-              time: '2014-09-27T00:00:00.000Z',
-              deviceTime: '2014-09-27T00:00:00',
-              duration: 864e5,
-              scheduleName: 'bob',
-              rate: 0.0,
-              timezoneOffset: 0,
-              uploadSeqNum: 99
-            };
-
-            var annotation = [{code: 'carelink/basal/off-schedule-rate'}];
-            var fabricated = [{code: 'carelink/basal/fabricated-from-schedule'}];
-
-            simulator.basalScheduled(basal1);
-            simulator.basalScheduled(basal2);
-            simulator.basalScheduled(basal3);
-
-            expect(getBasals()).deep.equals(
-              attachPrev(
-                [
-                  _.assign({}, _.omit(basal1, 'uploadSeqNum'), {type: 'basal', deliveryType: 'scheduled'}),
-                  {
-                    time: '2014-09-25T12:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.2,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  {
-                    time: '2014-09-25T18:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.3,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  {
-                    time: '2014-09-26T00:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  {
-                    time: '2014-09-26T06:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.1,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  {
-                    time: '2014-09-26T12:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.2,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  {
-                    time: '2014-09-26T18:00:00.000Z', timezoneOffset: 0, type: 'basal',
-                    deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.3,
-                    duration: 21600000, annotations: fabricated
-                  },
-                  _.assign({}, _.omit(basal3, 'uploadSeqNum'), {type: 'basal', deliveryType: 'scheduled', annotations: annotation})
                 ]
                 )
               );
@@ -413,7 +350,8 @@ describe('carelinkSimulator.js', function(){
               deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.0,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -429,7 +367,8 @@ describe('carelinkSimulator.js', function(){
               deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: 0
+              timezoneOffset: 0,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -460,11 +399,12 @@ describe('carelinkSimulator.js', function(){
               { start: 64800000, rate: 1.3 } // 18:00
             ]
           },
-          timezoneOffset: -240
+          timezoneOffset: -240,
+          conversionOffset: 0
         };
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
         });
 
         describe('with duration', function(){
@@ -475,7 +415,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: -240
+              timezoneOffset: -240,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -492,7 +433,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21540000,
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: -240
+              timezoneOffset: -240,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -509,7 +451,8 @@ describe('carelinkSimulator.js', function(){
               duration: 21600000,
               scheduleName: 'billy',
               rate: 1.0,
-              timezoneOffset: -240
+              timezoneOffset: -240,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -532,7 +475,8 @@ describe('carelinkSimulator.js', function(){
               deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.0,
-              timezoneOffset: -240
+              timezoneOffset: -240,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -548,7 +492,8 @@ describe('carelinkSimulator.js', function(){
               deviceTime: '2014-09-25T01:00:00',
               scheduleName: 'billy',
               rate: 1.1,
-              timezoneOffset: -240
+              timezoneOffset: -240,
+              conversionOffset: 0
             };
 
             simulator.basalScheduled(val);
@@ -574,7 +519,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:31:57',
             rate: 1.3,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -588,7 +534,8 @@ describe('carelinkSimulator.js', function(){
             scheduleName: 'billy',
             percent: 0.7,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -611,20 +558,22 @@ describe('carelinkSimulator.js', function(){
               { start: 64800000, rate: 2.3 }
             ]
           },
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basal = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           scheduleName: 'billy',
           rate: 2.0,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basalEvent = _.assign({}, {type: 'basal', deliveryType: 'scheduled', duration: 18000000}, basal);
 
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal);
         });
 
@@ -638,7 +587,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:31:57',
             rate: 0.5,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -653,7 +603,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:31:57',
             percent: 0.3,
             duration: 3600000,
-            timezoneOffset: 0
+            timezoneOffset: 0,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -681,20 +632,22 @@ describe('carelinkSimulator.js', function(){
               { start: 64800000, rate: 2.3 }
             ]
           },
-          timezoneOffset: -240
+          timezoneOffset: -240,
+          conversionOffset: 0
         };
         var basal = {
           time: '2014-09-25T05:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
           scheduleName: 'billy',
           rate: 2.0,
-          timezoneOffset: -240
+          timezoneOffset: -240,
+          conversionOffset: 0
         };
         var basalEvent = _.assign({}, {type: 'basal', deliveryType: 'scheduled', duration: 18000000}, basal);
 
 
         beforeEach(function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal);
         });
 
@@ -708,7 +661,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:31:57',
             rate: 0.5,
             duration: 3600000,
-            timezoneOffset: -240
+            timezoneOffset: -240,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -723,7 +677,8 @@ describe('carelinkSimulator.js', function(){
             deviceTime: '2014-09-25T01:31:57',
             percent: 0.3,
             duration: 3600000,
-            timezoneOffset: -240
+            timezoneOffset: -240,
+            conversionOffset: 0
           };
 
           simulator.basalTemp(val);
@@ -757,25 +712,26 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
 
-      simulator.settings(val);
-      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'settings'}, val)]);
+      simulator.pumpSettings(val);
+      expect(simulator.getEvents()).deep.equals([_.assign({}, {type: 'pumpSettings'}, val)]);
     });
   });
 
-  describe('deviceMeta', function() {
-    var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
-    var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 };
+  describe('deviceEvent', function() {
+    var suspend = { time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0, conversionOffset: 0 };
+    var resume = { time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0, conversionOffset: 0 };
 
     it('sets up the previous and hasSeenScheduled remains default `false`', function(){
       simulator.suspend(suspend);
       simulator.resume(resume);
-      var expectedSuspend = _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'suspended'}, suspend);
-      expect(simulator.getEvents().filter(function(e){ return e.type === 'deviceMeta'; })).deep.equals([
+      var expectedSuspend = _.assign({}, {type: 'deviceEvent', subType: 'status', status: 'suspended'}, suspend);
+      expect(simulator.getEvents().filter(function(e){ return e.type === 'deviceEvent'; })).deep.equals([
         expectedSuspend,
-        _.assign({}, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
+        _.assign({}, {type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend}, resume),
         ]);
       expect(simulator.hasSeenScheduled()).to.be.false;
     });
@@ -789,6 +745,7 @@ describe('carelinkSimulator.js', function(){
         deviceTime: suspend.deviceTime,
         time: suspend.time,
         timezoneOffset: 0,
+        conversionOffset: 0,
         duration: 1800000 
       }]);
     });
@@ -817,25 +774,28 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var temp = {
         time: '2014-09-25T00:30:00.000Z',
         deviceTime: '2014-09-25T00:30:00',
         percent: 0.1,
         duration: 7200000,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
 
       it('fills in for changes in schedule when another scheduled appears', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
 
@@ -844,7 +804,8 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T02:30:00',
           scheduleName: 'billy',
           rate: 2.1,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         simulator.basalScheduled(val);
@@ -856,44 +817,48 @@ describe('carelinkSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 7200000,
                 time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                timezoneOffset: 0,
+                timezoneOffset: 0, conversionOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                  time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
+                  time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
+                  conversionOffset: 0
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.2, duration: 5400000,
-                time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
+                time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0, conversionOffset: 0,
+                deviceTime: '2014-09-25T01:00:00',
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                  time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
+                  time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0, conversionOffset: 0, deviceTime: '2014-09-25T01:00:00',
                   annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 2.1 * 0.1, duration: 1800000,
-                time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0,
+                time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0, conversionOffset: 0,
+                deviceTime: '2014-09-25T02:00:00',
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.1, duration: 3600000,
-                  time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0,
+                  time: '2014-09-25T02:00:00.000Z', timezoneOffset: 0, conversionOffset: 0,
+                  deviceTime: '2014-09-25T02:00:00',
                   annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               _.assign({}, val,
                        { type: 'basal', time: '2014-09-25T02:30:00.000Z', deviceTime: '2014-09-25T02:30:00',
-                         deliveryType: 'scheduled', duration: 1800000, timezoneOffset: 0 }
+                         deliveryType: 'scheduled', duration: 1800000, timezoneOffset: 0, conversionOffset: 0 }
               )
             ]));
       });
 
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
-           simulator.settings(settings);
+           simulator.pumpSettings(settings);
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
-           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 });
+           simulator.suspend({ time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', reason: {'suspended': 'manual'}, timezoneOffset: 0, conversionOffset: 0 });
            expect(getBasals()).deep.equals(
              attachPrev(
                [
@@ -901,28 +866,32 @@ describe('carelinkSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                   timezoneOffset: 0,
+                   timezoneOffset: 0, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
+                     conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend',
                    time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00', timezoneOffset: 0,
+                   conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                      time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
+                     conversionOffset: 0,  
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
+                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
+                       conversionOffset: 0
                      }
                    }
                  }
                ])
            );
 
-           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0 });
+           simulator.resume({ time: '2014-09-25T01:10:00.000Z', deviceTime: '2014-09-25T01:10:00', reason: {'suspended': 'manual'}, timezoneOffset: 0, conversionOffset: 0 });
 
            expect(getBasals()).deep.equals(
              attachPrev(
@@ -931,39 +900,45 @@ describe('carelinkSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                   timezoneOffset: 0,
+                   timezoneOffset: 0, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
+                     conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1800000,
                    time: '2014-09-25T00:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
-                   timezoneOffset: 0,
+                   timezoneOffset: 0, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                      time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
+                     conversionOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',  timezoneOffset: 0
+                       time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',  timezoneOffset: 0,
+                       conversionOffset: 0
                      }
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1500000,
-                   time: '2014-09-25T00:45:00.000Z', timezoneOffset: 0,
+                   time: '2014-09-25T00:45:00.000Z', timezoneOffset: 0, conversionOffset: 0,
+                   deviceTime: '2014-09-25T00:45:00',
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
-                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0
+                     time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
+                     conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 600000,
-                   time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
+                   time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0, conversionOffset: 0,
+                   deviceTime: '2014-09-25T01:00:00',
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                     time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0,
+                     time: '2014-09-25T01:00:00.000Z', timezoneOffset: 0, conversionOffset: 0, deviceTime: '2014-09-25T01:00:00',
                      annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                    }
                  }
@@ -982,7 +957,8 @@ describe('carelinkSimulator.js', function(){
             ),
             {
               type: 'basal', deliveryType: 'temp', percent: 0.1, duration: 7200000,
-              time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0
+              time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
+              conversionOffset: 0
             }
           ]);
       });
@@ -1010,14 +986,16 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var newSettings = {
         time: '2014-09-25T00:30:00.000Z',
@@ -1040,20 +1018,22 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var nextScheduled = {
         time: '2014-09-25T00:30:05.000Z',
         deviceTime: '2014-09-25T00:30:05',
         scheduleName: 'billy',
         rate: 1.5,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
-        simulator.settings(newSettings);
+        simulator.pumpSettings(newSettings);
         simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
@@ -1063,7 +1043,7 @@ describe('carelinkSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'scheduled', duration: 1795000,
                 time: '2014-09-25T00:30:05.000Z', deviceTime: '2014-09-25T00:30:05',
-                rate: 1.5, scheduleName: 'billy', timezoneOffset: 0
+                rate: 1.5, scheduleName: 'billy', timezoneOffset: 0, conversionOffset: 0
               }
             ]
           )
@@ -1094,36 +1074,41 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var suspend = {
         reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:05:00.000Z',
-        deviceTime: '2014-09-25T00:05:00'
+        deviceTime: '2014-09-25T00:05:00',
+        conversionOffset: 0
       };
       var resume = {
         reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:12:00.000Z',
-        deviceTime: '2014-09-25T00:12:00'
+        deviceTime: '2014-09-25T00:12:00',
+        conversionOffset: 0
       };
       var nextBasal = {
         time: '2014-09-25T00:12:00.000Z',
         deviceTime: '2014-09-25T00:12:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       it('should use a provided nextBasal and not create a duplicate', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.suspend(suspend);
         simulator.resume(resume);
@@ -1135,7 +1120,8 @@ describe('carelinkSimulator.js', function(){
             expectedFirstBasal,
             {
               type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
-              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedFirstBasal
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, 
+              conversionOffset: 0, suppressed: expectedFirstBasal
             },
             _.assign({}, nextBasal, {type: 'basal', deliveryType: 'scheduled', duration: 2880000 })
           ]
@@ -1148,9 +1134,10 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T01:00:00',
           scheduleName: 'billy',
           rate: 2.0,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.suspend(suspend);
         simulator.resume(resume);
@@ -1162,7 +1149,8 @@ describe('carelinkSimulator.js', function(){
             expectedFirstBasal,
             {
               type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
-              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedFirstBasal
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, 
+              conversionOffset: 0, suppressed: expectedFirstBasal
             },
             _.assign({}, nextBasal, {
               type: 'basal', deliveryType: 'scheduled', duration: 2880000,
@@ -1196,14 +1184,16 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T00:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: 0
+        timezoneOffset: 0,
+        conversionOffset: 0
       };
       var tempBasal = {
         time: '2014-09-25T00:02:00.000Z',
@@ -1211,19 +1201,22 @@ describe('carelinkSimulator.js', function(){
         percent: 0.2,
         timezoneOffset: 0,
         scheduleName: 'billy',
-        duration: 1800000
+        duration: 1800000,
+        conversionOffset: 0
       };
       var suspend = {
         reason: {'suspended': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:05:00.000Z',
-        deviceTime: '2014-09-25T00:05:00'
+        deviceTime: '2014-09-25T00:05:00',
+        conversionOffset: 0
       };
       var resume = {
         reason: {'resumed': 'manual'},
         timezoneOffset: 0,
         time: '2014-09-25T00:12:00.000Z',
-        deviceTime: '2014-09-25T00:12:00'
+        deviceTime: '2014-09-25T00:12:00',
+        conversionOffset: 0
       };
 
       it('generates a temp basal from the suppressed if resume happens within original duration of temp', function(){
@@ -1232,9 +1225,10 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T00:32:00',
           scheduleName: 'billy',
           rate: 1.0,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(tempBasal);
         simulator.suspend(suspend);
@@ -1249,7 +1243,8 @@ describe('carelinkSimulator.js', function(){
             expectedTempBasal,
             {
               type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
-              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, suppressed: expectedTempBasal
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0,
+              conversionOffset: 0, suppressed: expectedTempBasal
             },
             _.assign({}, expectedTempBasal, {
               time: '2014-09-25T00:12:00.000Z', deviceTime: '2014-09-25T00:12:00', duration: 1200000,
@@ -1276,12 +1271,13 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([]);
       });
 
@@ -1297,11 +1293,12 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([]);
       });
 
@@ -1317,14 +1314,16 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         var basal = { type: 'basal', deliveryType: 'scheduled', time: '2014-09-25T00:00:00.000Z',
-          scheduleName: 'billy', rate: 0, duration: 86400000, timezoneOffset: 0 };
+          scheduleName: 'billy', rate: 0, duration: 86400000, timezoneOffset: 0, conversionOffset: 0,
+          deviceTime: '2014-09-25T00:00:00' };
         simulator.basalScheduled(basal);
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
         expect(getBasals()).deep.equals([basal]);
       });
 
@@ -1345,34 +1344,37 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
-        simulator.settings(settings);
-        simulator.settings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
+        simulator.pumpSettings(settings);
+        simulator.pumpSettings(_.assign({}, settings, {time: '2014-09-27T00:00:00.000Z', activeSchedule: 'bob'}));
 
         var expectedBasal = {
           deliveryType: 'scheduled',
           type: 'basal',
+          deviceTime: '2014-09-25T00:00:00',
           time: '2014-09-25T00:00:00.000Z',
           scheduleName: 'billy',
           rate: 1.0,
           duration: 21600000,
           annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         expect(getBasals()).deep.equals(
           attachPrev(
             [
               expectedBasal,
-              _.assign({}, expectedBasal, {time: '2014-09-25T06:00:00.000Z', rate: 1.1}),
-              _.assign({}, expectedBasal, {time: '2014-09-25T12:00:00.000Z', rate: 1.2}),
-              _.assign({}, expectedBasal, {time: '2014-09-25T18:00:00.000Z', rate: 1.3}),
-              _.assign({}, expectedBasal, {time: '2014-09-26T00:00:00.000Z', rate: 1.0}),
-              _.assign({}, expectedBasal, {time: '2014-09-26T06:00:00.000Z', rate: 1.1}),
-              _.assign({}, expectedBasal, {time: '2014-09-26T12:00:00.000Z', rate: 1.2}),
-              _.assign({}, expectedBasal, {time: '2014-09-26T18:00:00.000Z', rate: 1.3})
+              _.assign({}, expectedBasal, {time: '2014-09-25T06:00:00.000Z', deviceTime: '2014-09-25T06:00:00', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T12:00:00.000Z', deviceTime: '2014-09-25T12:00:00', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-25T18:00:00.000Z', deviceTime: '2014-09-25T18:00:00', rate: 1.3}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T00:00:00.000Z', deviceTime: '2014-09-26T00:00:00', rate: 1.0}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T06:00:00.000Z', deviceTime: '2014-09-26T06:00:00', rate: 1.1}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T12:00:00.000Z', deviceTime: '2014-09-26T12:00:00', rate: 1.2}),
+              _.assign({}, expectedBasal, {time: '2014-09-26T18:00:00.000Z', deviceTime: '2014-09-26T18:00:00', rate: 1.3})
             ]
           )
         );
@@ -1395,20 +1397,23 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
 
         var expectedBasal = {
           deliveryType: 'scheduled',
           type: 'basal',
+          deviceTime: '2014-09-25T07:00:00',
           time: '2014-09-25T07:00:00.000Z',
           scheduleName: 'billy',
           rate: 1.1,
           duration: 18000000,
           annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         expect(getBasals()).deep.equals([expectedBasal]);
@@ -1431,20 +1436,23 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
 
         var expectedBasal = {
           type: 'basal',
           deliveryType: 'scheduled',
+          deviceTime: '2014-09-25T20:00:00',
           time: '2014-09-25T20:00:00.000Z',
           scheduleName: 'billy',
           rate: 1.3,
           duration: 14400000,
           annotations: [{code: 'carelink/basal/fabricated-from-schedule'}],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
 
         expect(getBasals()).deep.equals([expectedBasal]);
@@ -1468,47 +1476,53 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: -600
+        timezoneOffset: -600,
+        conversionOffset: 0
       };
       var firstBasal = {
         rate: 0.825,
         deviceTime: '2014-03-15T16:22:15',
         time: '2014-03-16T02:22:15.000Z',
         timezoneOffset: -600,
-        scheduleName: 'standard'
+        scheduleName: 'standard',
+        conversionOffset: 0
       };
       var suspend = {
         reason: {'suspended': 'manual'},
         timezoneOffset: -600,
         time: '2014-03-16T02:23:19.000Z',
-        deviceTime: '2014-03-15T16:23:19'
+        deviceTime: '2014-03-15T16:23:19',
+        conversionOffset: 0
       };
       var secondBasal = {
         rate: 0.825,
         deviceTime: '2014-03-15T17:18:34',
         time: '2014-03-16T03:18:34.000Z',
         timezoneOffset: -600,
-        scheduleName: 'standard'
+        scheduleName: 'standard',
+        conversionOffset: 0
       };
       var resume = {
         reason: {'resumed': 'manual'},
         timezoneOffset: -600,
         time: '2014-03-16T03:18:35.000Z',
-        deviceTime: '2014-03-15T17:18:35'
+        deviceTime: '2014-03-15T17:18:35',
+        conversionOffset: 0
       };
 
-      it('should add correct previouses to basals and deviceMetas', function(){
-        simulator.settings(settings);
+      it('should add correct previouses to basals and deviceEvents', function(){
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(firstBasal);
         simulator.suspend(suspend);
         simulator.basalScheduled(secondBasal);
         simulator.resume(resume);
         var firstBasalRes = _.assign({}, firstBasal, {type: 'basal', duration: 27465000, deliveryType: 'scheduled'});
-        var expectedSuspend = _.assign({}, suspend, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var expectedSuspend = _.assign({}, suspend, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
         var basalSuspend = {
           deliveryType: 'suspend',
           type: 'basal',
           timezoneOffset: -600,
+          conversionOffset: 0,
           deviceTime: suspend.deviceTime,
           time: suspend.time,
           duration: 3315000,
@@ -1523,12 +1537,12 @@ describe('carelinkSimulator.js', function(){
         });
         expect(simulator.getEvents()).deep.equals(
           [
-            _.assign({}, settings, {type: 'settings'}),
+            _.assign({}, settings, {type: 'pumpSettings'}),
             firstBasalRes,
             expectedSuspend,
             basalSuspend,
             _.assign({}, resume, {
-              type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend,
+              type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend,
               time: secondBasal.time, deviceTime: secondBasal.deviceTime
             }),
             secondBasalRes
@@ -1558,25 +1572,28 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
       var temp = {
         time: '2014-09-25T04:30:00.000Z',
         deviceTime: '2014-09-25T00:30:00',
         percent: 0.1,
         duration: 7200000,
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
 
       it('fills in for changes in schedule when another scheduled appears', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
         simulator.basalTemp(temp);
 
@@ -1585,7 +1602,8 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T02:30:00',
           scheduleName: 'billy',
           rate: 2.1,
-          timezoneOffset: -240
+          timezoneOffset: -240,
+          conversionOffset: 0
         };
 
         simulator.basalScheduled(val);
@@ -1597,28 +1615,32 @@ describe('carelinkSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 7200000,
                 time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                timezoneOffset: -240,
+                timezoneOffset: -240, conversionOffset: 0,
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                   time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                  timezoneOffset: -240
+                  timezoneOffset: -240, conversionOffset: 0
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.2, duration: 5400000,
-                time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240,
+                time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240, conversionOffset: 0,
+                deviceTime: '2014-09-25T01:00:00',
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                  time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240,
+                  time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240, conversionOffset: 0,
+                  deviceTime: '2014-09-25T01:00:00',
                   annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
               {
                 type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 2.1 * 0.1, duration: 1800000,
-                time: '2014-09-25T06:00:00.000Z', timezoneOffset: -240,
+                time: '2014-09-25T06:00:00.000Z', timezoneOffset: -240, conversionOffset: 0,
+                deviceTime: '2014-09-25T02:00:00',
                 suppressed: {
                   type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.1, duration: 3600000,
-                  time: '2014-09-25T06:00:00.000Z', timezoneOffset: -240,
+                  time: '2014-09-25T06:00:00.000Z', timezoneOffset: -240, conversionOffset: 0,
+                  deviceTime: '2014-09-25T02:00:00',
                   annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                 }
               },
@@ -1631,12 +1653,12 @@ describe('carelinkSimulator.js', function(){
 
       it('completes a temp that is suppressed by a suspended before completing the scheduled that ends after the temp',
          function(){
-           simulator.settings(settings);
+           simulator.pumpSettings(settings);
            simulator.basalScheduled(basal);
            simulator.basalTemp(_.assign({}, temp, { duration: 900000 })); // 15 minutes
 
            simulator.suspend({ time: '2014-09-25T04:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
-              reason: {'suspended': 'manual'}, timezoneOffset: -240 });
+              reason: {'suspended': 'manual'}, timezoneOffset: -240, conversionOffset: 0 });
            expect(getBasals()).deep.equals(
              attachPrev(
                [
@@ -1644,25 +1666,25 @@ describe('carelinkSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                   timezoneOffset: -240,
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                      time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                     timezoneOffset: -240
+                     timezoneOffset: -240, conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend',
                    time: '2014-09-25T04:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
-                   timezoneOffset: -240,
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                      time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                     timezoneOffset: -240,
+                     timezoneOffset: -240, conversionOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                        time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                       timezoneOffset: -240
+                       timezoneOffset: -240, conversionOffset: 0
                      }
                    }
                  }
@@ -1670,7 +1692,7 @@ describe('carelinkSimulator.js', function(){
            );
 
            simulator.resume({ time: '2014-09-25T05:10:00.000Z', deviceTime: '2014-09-25T01:10:00',
-            reason: {'resumed': 'manual'}, timezoneOffset: -240 });
+            reason: {'resumed': 'manual'}, timezoneOffset: -240, conversionOffset: 0 });
 
            expect(getBasals()).deep.equals(
              attachPrev(
@@ -1679,45 +1701,46 @@ describe('carelinkSimulator.js', function(){
                  {
                    type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                    time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                   timezoneOffset: -240,
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                      time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                     timezoneOffset: -240
+                     timezoneOffset: -240, conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1800000,
                    time: '2014-09-25T04:40:00.000Z', deviceTime: '2014-09-25T00:40:00',
-                   timezoneOffset: -240,
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                      time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-                     timezoneOffset: -240,
+                     timezoneOffset: -240, conversionOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                        time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                       timezoneOffset: -240
+                       timezoneOffset: -240, conversionOffset: 0
                      }
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 1500000,
-                   time: '2014-09-25T04:45:00.000Z',
-                   timezoneOffset: -240,
+                   time: '2014-09-25T04:45:00.000Z', deviceTime: '2014-09-25T00:45:00',
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                      time: '2014-09-25T04:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00',
-                     timezoneOffset: -240
+                     timezoneOffset: -240, conversionOffset: 0
                    }
                  },
                  {
                    type: 'basal', deliveryType: 'suspend', duration: 600000,
-                   time: '2014-09-25T05:00:00.000Z',
-                   timezoneOffset: -240,
+                   time: '2014-09-25T05:00:00.000Z', deviceTime: '2014-09-25T01:00:00',
+                   timezoneOffset: -240, conversionOffset: 0,
                    suppressed: {
                      type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 2.0, duration: 3600000,
-                     time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240,
+                     time: '2014-09-25T05:00:00.000Z', timezoneOffset: -240, conversionOffset: 0,
+                     deviceTime: '2014-09-25T01:00:00',
                      annotations: [{ code: 'carelink/basal/fabricated-from-schedule' }]
                    }
                  }
@@ -1737,7 +1760,7 @@ describe('carelinkSimulator.js', function(){
             {
               type: 'basal', deliveryType: 'temp', percent: 0.1, duration: 7200000,
               time: '2014-09-25T04:30:00.000Z', deviceTime: '2014-09-25T00:30:00',
-              timezoneOffset: -240
+              timezoneOffset: -240, conversionOffset: 0
             }
           ]);
       });
@@ -1765,14 +1788,16 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
       var basal = {
         time: '2014-09-25T04:00:00.000Z',
         deviceTime: '2014-09-25T00:00:00',
         scheduleName: 'billy',
         rate: 1.0,
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
       var newSettings = {
         time: '2014-09-25T04:30:00.000Z',
@@ -1795,20 +1820,22 @@ describe('carelinkSimulator.js', function(){
         bgTarget: [],
         insulinSensitivity: [],
         carbRatio: [],
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
       var nextScheduled = {
         time: '2014-09-25T04:30:05.000Z',
         deviceTime: '2014-09-25T00:30:05',
         scheduleName: 'billy',
         rate: 1.5,
-        timezoneOffset: -240
+        timezoneOffset: -240,
+        conversionOffset: 0
       };
 
       it('includes old-settings scheduled as `previous` in new-settings scheduled', function(){
-        simulator.settings(settings);
+        simulator.pumpSettings(settings);
         simulator.basalScheduled(basal);
-        simulator.settings(newSettings);
+        simulator.pumpSettings(newSettings);
         simulator.basalScheduled(nextScheduled);
 
         expect(getBasals()).deep.equals(
@@ -1818,7 +1845,7 @@ describe('carelinkSimulator.js', function(){
               {
                 type: 'basal', deliveryType: 'scheduled', duration: 1795000,
                 time: '2014-09-25T04:30:05.000Z', deviceTime: '2014-09-25T00:30:05',
-                rate: 1.5, scheduleName: 'billy', timezoneOffset: -240
+                rate: 1.5, scheduleName: 'billy', timezoneOffset: -240, conversionOffset: 0
               }
             ]
           )
@@ -1850,7 +1877,8 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basal1 = {
           time: '2014-09-25T00:00:00.000Z',
@@ -1858,14 +1886,16 @@ describe('carelinkSimulator.js', function(){
           rate: 1.0,
           scheduleName: 'billy',
           duration: 3600000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var temp = {
           time: '2014-09-25T00:02:00.000Z',
           deviceTime: '2014-09-25T00:02:00',
           percent: 0.5,
           duration: 1800000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         // alarm_suspend
         var suspend1 = {
@@ -1873,7 +1903,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:00.000Z',
-          deviceTime: '2014-09-25T00:05:00'
+          deviceTime: '2014-09-25T00:05:00',
+          conversionOffset: 0
         };
         // low_suspend_mode_1
         var suspend2 = {
@@ -1881,7 +1912,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:05.000Z',
-          deviceTime: '2014-09-25T00:05:05'
+          deviceTime: '2014-09-25T00:05:05',
+          conversionOffset: 0
         };
         // low_suspend_no_response
         var suspend3 = {
@@ -1889,7 +1921,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:10.000Z',
-          deviceTime: '2014-09-25T00:05:10'
+          deviceTime: '2014-09-25T00:05:10',
+          conversionOffset: 0
         };
         // low_suspend_user_selected
         var suspend4 = {
@@ -1897,7 +1930,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:15.000Z',
-          deviceTime: '2014-09-25T00:05:15'
+          deviceTime: '2014-09-25T00:05:15',
+          conversionOffset: 0
         };
         var basal2 = {
           time: '2014-09-25T00:05:20.000Z',
@@ -1905,20 +1939,23 @@ describe('carelinkSimulator.js', function(){
           rate: 1.0,
           scheduleName: 'billy',
           duration: 3600000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var resume1 = {
           time: '2014-09-25T00:05:20.000Z',
           deviceTime: '2014-09-25T00:05:20',
           reason: {resumed: 'manual'},
           payload: {cause: 'user_restart_basal'},
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var resume2 = {
           time: '2014-09-25T00:05:30.000Z',
           deviceTime: '2014-09-25T00:05:30',
           reason: {resumed: 'manual'},
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basal3 = {
           time: '2014-09-25T01:00:00.000Z',
@@ -1926,17 +1963,18 @@ describe('carelinkSimulator.js', function(){
           rate: 2.0,
           scheduleName: 'billy',
           duration: 3600000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
-        var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+        var expectedSuspend = _.assign({}, suspend1, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
         var suspendBasal = {
           type: 'basal', deliveryType: 'suspend', time: expectedSuspend.time, deviceTime: expectedSuspend.deviceTime,
-          suppressed: firstBasal, duration: 20000, timezoneOffset: 0
+          suppressed: firstBasal, duration: 20000, timezoneOffset: 0, conversionOffset: 0
         };
 
         it('should resume to the appropriate scheduled basal if no temp was running before the LGS suspend', function(){
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.suspend(suspend1);
           simulator.suspend(suspend2);
@@ -1950,18 +1988,18 @@ describe('carelinkSimulator.js', function(){
           var fillInBasal = {
             type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
             previous: suspendBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}], duration: 3280000,
-            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
+            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0, conversionOffset: 0
           };
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 expectedSuspend,
                 suspendBasal,
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -1975,7 +2013,7 @@ describe('carelinkSimulator.js', function(){
           var backToScheduled = _.assign({}, basal1, {
             time: '2014-09-25T00:32:00.000Z', deviceTime: '2014-09-25T00:32:00'
           });
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(temp);
           simulator.suspend(suspend1);
@@ -1991,19 +2029,19 @@ describe('carelinkSimulator.js', function(){
           var fillInBasal = _.assign({}, temp, {
             type: 'basal', deliveryType: 'temp', time: resume1.time, deviceTime: resume1.deviceTime,
             timezoneOffset: 0, suppressed: firstBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}],
-            rate: 0.5, duration: 1600000
+            rate: 0.5, duration: 1600000, conversionOffset: 0
           });
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
                 _.assign({}, suspendBasal, {suppressed: tempBasal}),
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -2016,7 +2054,7 @@ describe('carelinkSimulator.js', function(){
 
         it('should not resume to a temp if the temp would not still be running', function() {
           var thisTemp = _.assign({}, temp, {duration: 190000});
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(thisTemp);
           simulator.suspend(suspend1);
@@ -2029,27 +2067,27 @@ describe('carelinkSimulator.js', function(){
 
           var tempBasal = _.assign({}, thisTemp, {type: 'basal', deliveryType: 'temp', rate: 0.5, suppressed: firstBasal});
           var secondSuspendBasal = {
-            time: '2014-09-25T00:05:10.000Z', type: 'basal', deliveryType: 'suspend',
-            suppressed: firstBasal, duration: 10000, timezoneOffset: 0
+            time: '2014-09-25T00:05:10.000Z', deviceTime: '2014-09-25T00:05:10', type: 'basal', deliveryType: 'suspend',
+            suppressed: firstBasal, duration: 10000, timezoneOffset: 0, conversionOffset: 0
           };
 
           var fillInBasal = {
             type: 'basal', deliveryType: 'scheduled', time: resume1.time, deviceTime: resume1.deviceTime,
             previous: secondSuspendBasal, annotations: [{code: 'carelink/basal/fabricated-from-suppressed'}], duration: 3280000,
-            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0
+            rate: 1.0, scheduleName: 'billy', timezoneOffset: 0, conversionOffset: 0
           };
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
                 _.assign({}, suspendBasal, {suppressed: tempBasal}),
                 secondSuspendBasal,
                 _.assign({}, resume1, {
-                  type: 'deviceMeta', subType: 'status',
+                  type: 'deviceEvent', subType: 'status',
                   status: 'resumed', previous: expectedSuspend, reason: {'resumed': 'manual'}
                 }),
                 fillInBasal,
@@ -2082,7 +2120,8 @@ describe('carelinkSimulator.js', function(){
           bgTarget: [],
           insulinSensitivity: [],
           carbRatio: [],
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basal1 = {
           time: '2014-09-25T00:00:00.000Z',
@@ -2090,14 +2129,16 @@ describe('carelinkSimulator.js', function(){
           rate: 1.0,
           scheduleName: 'billy',
           duration: 3600000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var temp = {
           time: '2014-09-25T00:02:00.000Z',
           deviceTime: '2014-09-25T00:02:00',
           percent: 0.5,
           duration: 864e5,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         // alarm_suspend
         var suspend1 = {
@@ -2105,7 +2146,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:00.000Z',
-          deviceTime: '2014-09-25T00:05:00'
+          deviceTime: '2014-09-25T00:05:00',
+          conversionOffset: 0
         };
         // low_suspend_no_response
         var suspend2 = {
@@ -2113,7 +2155,8 @@ describe('carelinkSimulator.js', function(){
           payload: {cause: 'low_glucose'},
           timezoneOffset: 0,
           time: '2014-09-25T00:05:10.000Z',
-          deviceTime: '2014-09-25T00:05:10'
+          deviceTime: '2014-09-25T00:05:10',
+          conversionOffset: 0
         };
         // auto_resume_reduced
         var resume = {
@@ -2121,7 +2164,8 @@ describe('carelinkSimulator.js', function(){
           deviceTime: '2014-09-25T02:05:00',
           reason: {resumed: 'automatic'},
           payload: {cause: 'auto_resume_reduced', user_intervention: 'ignored'},
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         var basal2 = {
           time: '2014-09-25T02:05:00.000Z',
@@ -2129,10 +2173,11 @@ describe('carelinkSimulator.js', function(){
           rate: 2.1,
           scheduleName: 'billy',
           duration: 3300000,
-          timezoneOffset: 0
+          timezoneOffset: 0,
+          conversionOffset: 0
         };
         it('should not resume to a temp when `auto_resume_reduced` even if the temp would still be running', function() {
-          simulator.settings(settings);
+          simulator.pumpSettings(settings);
           simulator.basalScheduled(basal1);
           simulator.basalTemp(temp);
           simulator.suspend(suspend1);
@@ -2143,38 +2188,38 @@ describe('carelinkSimulator.js', function(){
           var firstBasal = _.assign({}, basal1, {type: 'basal', deliveryType: 'scheduled'});
           var tempBasal = _.assign({}, temp, {type: 'basal', deliveryType: 'temp', suppressed: firstBasal, rate: 0.5});
 
-          var expectedSuspend = _.assign({}, suspend1, {type: 'deviceMeta', subType: 'status', status: 'suspended'});
+          var expectedSuspend = _.assign({}, suspend1, {type: 'deviceEvent', subType: 'status', status: 'suspended'});
 
           var suspendBasal1 = {
             time: '2014-09-25T00:05:00.000Z', deviceTime: '2014-09-25T00:05:00', type: 'basal', deliveryType: 'suspend',
-            timezoneOffset: 0, suppressed: tempBasal, previous: tempBasal, duration: 7200000
+            timezoneOffset: 0, conversionOffset: 0, suppressed: tempBasal, previous: tempBasal, duration: 7200000
           };
           var suspendBasal2 = {
-            time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 3900000,
-            timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.0, suppressed: {
-              time: '2014-09-25T01:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
-              timezoneOffset: 0, rate: 2.0, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
+            time: '2014-09-25T01:00:00.000Z', deviceTime: '2014-09-25T01:00:00', type: 'basal', deliveryType: 'suspend', duration: 3900000,
+            timezoneOffset: 0, conversionOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.0, suppressed: {
+              time: '2014-09-25T01:00:00.000Z', deviceTime: '2014-09-25T01:00:00', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
+              timezoneOffset: 0, conversionOffset: 0, rate: 2.0, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
             }}), previous: _.omit(suspendBasal1, 'previous')
           };
           var suspendBasal3 = {
-            time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'suspend', duration: 300000,
-            timezoneOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.05, suppressed: {
-              time: '2014-09-25T02:00:00.000Z', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
-              timezoneOffset: 0, rate: 2.1, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
+            time: '2014-09-25T02:00:00.000Z', deviceTime: '2014-09-25T02:00:00', type: 'basal', deliveryType: 'suspend', duration: 300000,
+            timezoneOffset: 0, conversionOffset: 0, suppressed: _.assign({}, tempBasal, {rate: 1.05, suppressed: {
+              time: '2014-09-25T02:00:00.000Z', deviceTime: '2014-09-25T02:00:00', type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy',
+              timezoneOffset: 0, conversionOffset: 0, rate: 2.1, annotations: [{code: 'carelink/basal/fabricated-from-schedule'}], duration: 3600000
             }}), previous: _.omit(suspendBasal2, 'previous')
           };
 
           expect(simulator.getEvents()).deep.equals(
             attachPrev(
               [
-                _.assign({}, settings, {type: 'settings'}),
+                _.assign({}, settings, {type: 'pumpSettings'}),
                 firstBasal,
                 tempBasal,
                 expectedSuspend,
                 suspendBasal1,
                 suspendBasal2,
                 suspendBasal3,
-                _.assign({}, resume, {type: 'deviceMeta', subType: 'status', status: 'resumed', previous: expectedSuspend}),
+                _.assign({}, resume, {type: 'deviceEvent', subType: 'status', status: 'resumed', previous: expectedSuspend}),
                 _.assign({}, basal2, {type: 'basal', deliveryType: 'scheduled'})
               ]
               )

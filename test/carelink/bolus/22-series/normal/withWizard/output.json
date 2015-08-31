@@ -5,6 +5,7 @@
         "deviceTime": "2014-05-17T19:47:58",
         "time": "2014-05-18T05:47:58.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm 722-=-53552475",
         "bgInput": 80,
         "bgTarget": {
@@ -27,6 +28,7 @@
             "deviceTime": "2014-05-17T19:47:58",
             "time": "2014-05-18T05:47:58.000Z",
             "timezoneOffset": -600,
+            "conversionOffset": 0,
             "deviceId": "Paradigm 722-=-53552475",
             "subType": "normal",
             "normal": 1.4
@@ -38,6 +40,7 @@
         "deviceTime": "2014-05-17T19:47:58",
         "time": "2014-05-18T05:47:58.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm 722-=-53552475",
         "subType": "normal",
         "normal": 1.4

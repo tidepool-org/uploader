@@ -5,6 +5,7 @@
         "deviceTime": "2014-11-15T10:47:16",
         "time": "2014-11-15T20:47:16.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "bgInput": 146,
         "bgTarget": {
@@ -27,6 +28,7 @@
             "deviceTime": "2014-11-15T10:47:17",
             "time": "2014-11-15T20:47:17.000Z",
             "timezoneOffset": -600,
+            "conversionOffset": 0,
             "deviceId": "Paradigm Revel - 723-=-53602018",
             "subType": "dual/square",
             "extended": 2,
@@ -42,6 +44,7 @@
         "deviceTime": "2014-11-15T10:47:17",
         "time": "2014-11-15T20:47:17.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "subType": "dual/square",
         "extended": 2,
@@ -56,6 +59,7 @@
         "deviceTime": "2014-11-15T11:31:40",
         "time": "2014-11-15T21:31:40.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "reason": {
             "suspended": "manual"
@@ -67,8 +71,8 @@
         "deviceTime": "2014-11-15T11:41:36",
         "time": "2014-11-15T21:41:36.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "uploadSeqNum": 147,
         "deliveryType": "scheduled",
         "scheduleName": "standard",
         "rate": 0.8
@@ -79,6 +83,7 @@
         "deviceTime": "2014-11-15T11:41:37",
         "time": "2014-11-15T21:41:37.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
         "payload": {
             "code": "normal_pumping"
@@ -93,8 +98,8 @@
         "deviceTime": "2014-11-15T12:00:00",
         "time": "2014-11-15T22:00:00.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602018",
-        "uploadSeqNum": 145,
         "deliveryType": "scheduled",
         "scheduleName": "standard",
         "rate": 1.2

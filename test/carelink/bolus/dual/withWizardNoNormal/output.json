@@ -5,6 +5,7 @@
         "deviceTime": "2014-11-16T20:33:49",
         "time": "2014-11-17T06:33:49.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602076",
         "bgInput": 232,
         "bgTarget": {
@@ -27,6 +28,7 @@
             "deviceTime": "2014-11-16T20:33:50",
             "time": "2014-11-17T06:33:50.000Z",
             "timezoneOffset": -600,
+            "conversionOffset": 0,
             "deviceId": "Paradigm Revel - 723-=-53602076",
             "subType": "square",
             "extended": 5,
@@ -39,6 +41,7 @@
         "deviceTime": "2014-11-16T20:33:50",
         "time": "2014-11-17T06:33:50.000Z",
         "timezoneOffset": -600,
+        "conversionOffset": 0,
         "deviceId": "Paradigm Revel - 723-=-53602076",
         "subType": "square",
         "extended": 5,
