@@ -78,6 +78,20 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 29520
+        },
+        {
+          "deviceName": "BayerContourNextLink",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25088
+         },
+         {
+           "deviceName": "BayerContourNextUsb",
+           "driverId": "BayerContourNextUsb",
+           "mode": "HID",
+           "vendorId": 6777,
+           "productId": 29712
         }
       ]
     }
