@@ -141,7 +141,7 @@ describe('appActions', function() {
     it('goes to main page if local session found and targeted devices fetched from localStore', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
-      api.user.profile = function(cb) { cb(null, {fullName: 'Bob'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -181,6 +181,7 @@ describe('appActions', function() {
     it('sets target user id as logged-in userid if data storage exists for logged-in user', function(done) {
       api.init = function(options, cb) { cb(null, {token: '1234'}); };
       api.user.account = function(cb) { cb(null, {userid: '11'}); };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
 
       appActions.load(function(err) {
         if (err) throw err;
@@ -221,6 +222,8 @@ describe('appActions', function() {
     });
 
     it('goes to settings page by default', function(done) {
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
+
       appActions.login({}, {}, function(err) {
         if (err) throw err;
         expect(app.state.page).to.equal('settings');
@@ -234,6 +237,7 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -247,6 +251,7 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '12'}});
       };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -292,6 +297,7 @@ describe('appActions', function() {
       api.user.login = function(credentials, options, cb) {
         cb(null, {user: {userid: '11'}});
       };
+      api.user.profile = function(cb) { cb(null, {fullName: 'Bob', patient: {about: 'Foo'}}); };
 
       appActions.login({}, {}, function(err) {
         if (err) throw err;
@@ -843,9 +849,8 @@ describe('appActions', function() {
 
     it('updates the timezone ', function() {
       app.state.targetTimezone = 'foo';
-      appActions.changeTimezone('bar_Bar');
+      appActions.changeTimezone('bar');
       expect(app.state.targetTimezone).to.equal('bar');
-      expect(app.state.targetTimezoneLabel).to.equal('Bar');
     });
 
   });
