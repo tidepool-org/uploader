@@ -38,7 +38,16 @@ The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors 
 ```npm test```
 
 
-## Publishing
+## Publishing (to the devel/staging test Chrome store or production)
 
+Assuming you've already merged any changes to master and are on master locally...
+
+1. Start with a fresh Terminal window and `cd` into the chrome-uploader repo (Alternatively, just make certain you haven't set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
-1. Build `dist.zip` file with `npm run build`
+1. Push the new tag commit and tag up to GitHub with `git push origin master` and `git push origin --tags`
+1. Checkout your new tag
+1. Remove your node modules with `rm -rf node_modules/` (This may not always be necessary, but it's good to be safe in case anything has changed.)
+1. Install fresh dependencies with `npm install`
+1. Build the `dist.zip` file with `npm run build` - Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
+1. Follow instructions in secrets for actually publishing to the Chrome store
+1. Fill out the release notes for the tag on GitHub. If tag is known to *not* be a release candidate, mark as a pre-release.
