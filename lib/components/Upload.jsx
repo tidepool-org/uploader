@@ -43,8 +43,8 @@ var Upload = React.createClass({
       text: {
         VERIOIQ_NOT_SUPPORTED : 'VerioIQ upload is not currently supported on this operating system',
         VERIOIQ_SUPPORTED : 'Please download and install the USB device driver:',
-        WINDOWS_DRIVER_NAME: 'TODO',
-        WINDOWS_DRIVER_URL: 'TODO',
+        WINDOWS_DRIVER_NAME: 'TidepoolUSBDriverSetup.exe',
+        WINDOWS_DRIVER_URL: 'http://tidepool.org/downloads/',
         MAC_SILABS_DRIVER_NAME: 'MAC_OSX_VCP_Driver.zip',
         MAC_SILABS_DRIVER_URL: 'https://www.silabs.com/Support%20Documents/Software/Mac_OSX_VCP_Driver.zip',
         CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
