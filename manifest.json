@@ -50,7 +50,7 @@
         },
         {
           "deviceName": "Precision Xtra",
-          "driverId": "AbbottFreeStyle",
+          "driverId": "AbbottPrecisionXtra",
           "bitrate": 19200,
           "mode": "FTDI",
           "vendorId": 6753,
