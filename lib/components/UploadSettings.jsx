@@ -17,6 +17,7 @@
 
 var _ = require('lodash');
 var React = require('react');
+var Select = require('react-select');
 
 var UploadSettings = React.createClass({
   propTypes: {
@@ -26,6 +27,45 @@ var UploadSettings = React.createClass({
     targetId: React.PropTypes.string,
     isUploadInProgress: React.PropTypes.bool
   },
+
+  groupSelector: function(){
+    // can only upload for yourself
+    if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
+      return null;
+    }
+
+    // only groups we can upload to
+    // e.g. some people simply aren't `patients` and might be setup without data storage
+    var available = _.filter(this.props.user.uploadGroups, function(group) {
+      return _.isEmpty(group.profile.patient) === false;
+    });
+
+    // and now return them sorted them by name
+    var sorted = _.sortBy(available, function(group) {
+      if (group.profile.patient.isOtherPerson) {
+        return group.profile.patient.fullName;
+      }
+      return group.profile.fullName;
+    });
+
+    var opts = _.map(sorted, function(group) {
+      if (group.profile.patient.isOtherPerson) {
+        return {value: group.userid, label: group.profile.patient.fullName};
+      }
+      return {value: group.userid, label: group.profile.fullName};
+    });
+
+    var disable = this.props.isUploadInProgress ? true : false;
+
+    return (
+      <Select clearable={false}
+        disabled={disable}
+        name={'uploadGroupSelect'}
+        onChange={this.props.onGroupChange}
+        options={opts}
+        value={this.props.targetId} />
+    );
+  },
   render: function() {
     // we're already doing a check to see if we want to render in App.jsx
     // but this is an extra measure of protection against trying to render
@@ -33,53 +73,15 @@ var UploadSettings = React.createClass({
     if (_.isEmpty(this.props.user.uploadGroups) || this.props.user.uploadGroups.length <= 1) {
       return null;
     }
-    var self = this;
-
-    // sort users alpha by full name
-    var sortedGroups = _.sortBy(this.props.user.uploadGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
-        return group.profile.patient.fullName;
-      }
-      return group.profile.fullName;
-    });
-
-    var options = _.map(sortedGroups, function(group) {
-      if(group.profile.patient.isOtherPerson){
-        return (
-          <option key={group.userid} value={group.userid}>{group.profile.patient.fullName}</option>
-        );
-      }
-      return (
-        <option key={group.userid} value={group.userid}>{group.profile.fullName}</option>
-      );
-    });
-
-    var disabled = this.props.isUploadInProgress ? 'disabled' : '';
 
     var text = this.props.page === 'main' ? 'Upload data for' : 'Choose devices for';
-
-    var select = function() {
-      if (self.props.isUploadInProgress) {
-        return (
-          <select disabled onChange={self.props.onGroupChange} value={self.props.targetId} ref='uploadGroupSelect'>
-            {options}
-          </select>
-        );
-      }
-
-      return (
-        <select onChange={self.props.onGroupChange} defaultValue={self.props.targetId} ref='uploadGroupSelect'>
-          {options}
-        </select>
-      );
-    }();
 
     return (
       <div className="UploadSettings">
         <div className="UploadSettings-uploadGroup">
           <div className="UploadSettings-uploadGroup--label">{text}</div>
           <div className={'UploadSettings-uploadGroup--list UploadSettings--' + this.props.page}>
-            {select}
+            {this.groupSelector()}
           </div>
         </div>
       </div>

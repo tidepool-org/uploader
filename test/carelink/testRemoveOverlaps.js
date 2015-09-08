@@ -61,13 +61,14 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].index = payload.theData[i]['Index'];
+      payload.theData[i].csvIndex = payload.theData[i]['Index'];
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602018', '53602076']);
+    expect(payload.skippedUploads).to.deep.equal([]);
   });
 
-  it('should keep latest of two overapping uploads in file', function() {
+  it('when overlapping uploads in file, should keep only latest and report skipped in payload', function() {
     var input = fs.readFileSync(__dirname + '/overlaps/overlap.csv', {encoding: 'utf8'}), payload = {};
     var endOfPreamble = input.indexOf('Index');
     // Setup the preamble to have everything up to the header line
@@ -80,9 +81,10 @@ describe('removeOverlapping', function() {
 
     for (var i = 0; i < payload.theData.length; ++i) {
       convertRawValues(payload.theData[i]);
-      payload.theData[i].index = payload.theData[i]['Index'];
+      payload.theData[i].csvIndex = payload.theData[i]['Index'];
     }
 
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602076']);
+    expect(payload.skippedUploads).to.deep.equal(['53602018']);
   });
 });

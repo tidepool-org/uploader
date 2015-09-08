@@ -8,6 +8,8 @@
     "source": "carelink",
     "time": "2014-03-13T10:29:03.000Z",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
+    "conversionOffset": 0,
     "type": "basal-scheduled"
   },
   {
@@ -19,6 +21,8 @@
     "source": "carelink",
     "time": "2014-03-13T15:27:15.000Z",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
+    "conversionOffset": 0,
     "type": "basal-scheduled"
   },
   {
@@ -30,6 +34,8 @@
     "source": "carelink",
     "time": "2014-03-14T12:00:00.000Z",
     "timezoneOffset": -600,
+    "clockDriftOffset": 0,
+    "conversionOffset": 0,
     "type": "basal-scheduled"
   }
 ]

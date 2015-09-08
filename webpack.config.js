@@ -1,8 +1,19 @@
 var path = require('path');
 var _ = require('lodash');
+var webpack = require('webpack');
 
-if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL) &&
-     process.env.MOCK != 'true') {
+var definePlugin = new webpack.DefinePlugin({
+  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false'))
+});
+
+if (process.env.DEBUG_ERROR === 'true') {
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log('### DEBUG MODE ###');
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log();
+}
+
+if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
@@ -10,7 +21,6 @@ if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL) &
   console.log('API_URL =', process.env.API_URL);
   console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
   console.log('BLIP_URL =', process.env.BLIP_URL);
-  console.log('MOCK =', process.env.MOCK);
 }
 
 var config = {
@@ -26,17 +36,18 @@ var config = {
       { test: /\.json$/, loader: 'json' }
     ]
   },
-  resolve: {
-    alias: {
-      mock: './mock/empty.js'
-    }
-  }
+  plugins: [
+    definePlugin,
+    new webpack.DefinePlugin({
+      'process.env': Object.keys(process.env).reduce(function(o, k) {
+        o[k] = JSON.stringify(process.env[k]);
+        return o;
+      }, {})
+    })
+  ],
+  // to fix the 'broken by design' issue with npm link-ing modules
+  resolve: { fallback: path.join(__dirname, 'node_modules') },
+  resolveLoader: { fallback: path.join(__dirname, 'node_modules') }
 };
-
-if (process.env.MOCK === 'true') {
-  config.resolve.alias = _.assign(config.resolve.alias, {
-    mock: './mock'
-  });
-}
 
 module.exports = config;
