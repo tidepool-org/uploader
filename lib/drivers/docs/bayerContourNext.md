@@ -1,5 +1,10 @@
 # Bayer Contour Next
 
+Supported devices:
+- Bayer Contour Next
+- Bayer Contour Next USB
+- Bayer Contour USB
+
 ## Checklist for Blood Glucose Meter Implementation
 
 (Key:
