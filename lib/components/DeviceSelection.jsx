@@ -44,7 +44,7 @@ var DeviceSelection = React.createClass({
         displayText = <div>
                       <label htmlFor={upload.key}>{upload.name}</label>
                       <div className="DeviceSelection-detail">Please install driver:
-                      <a href={upload.driverLink}>{upload.driverName}</a></div>
+                      <a href={upload.driverLink} target="_blank">{upload.driverName}</a></div>
                       </div>;
       } else {
         displayText = <label htmlFor={upload.key}>{upload.name}</label>;
