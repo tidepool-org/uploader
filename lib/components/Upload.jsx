@@ -41,8 +41,6 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
-        VERIOIQ_NOT_SUPPORTED : 'VerioIQ upload is not currently supported on this operating system',
-        VERIOIQ_SUPPORTED : 'Please download and install the USB device driver:',
         WINDOWS_DRIVER_NAME: 'TidepoolUSBDriverSetup.exe',
         WINDOWS_DRIVER_URL: 'http://tidepool.org/downloads/',
         MAC_SILABS_DRIVER_NAME: 'MAC_OSX_VCP_Driver.zip',
@@ -113,7 +111,6 @@ var Upload = React.createClass({
 
     return (
       <form className="Upload-form">
-        {this.renderVerioiqWarn()}
         {this.renderCarelinkInputs()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
@@ -149,34 +146,6 @@ var Upload = React.createClass({
         <div className="Upload-input"><input onChange={this.onCareLinkInputChange} className="form-control" ref="password" type="password" placeholder={this.props.text.CARELINK_PASSWORD}/></div>
       </div>
     );
-  },
-  renderVerioiqWarn: function() {
-    if (!this.isVerioiqUpload()) {
-      return null;
-    }
-
-    if (!this.isVerioiqOnWindows()) {
-      return (
-      <div>
-        <div className="Upload-detail">
-          {this.props.text.VERIOIQ_SUPPORTED}
-            <a href={this.props.text.MAC_SILABS_DRIVER_URL} target="_blank" onClick={this.props.onViewClicked}>
-            {this.props.text.MAC_SILABS_DRIVER_NAME}
-            </a>
-        </div>
-      </div>      );
-    }else{
-      return (
-        <div>
-          <div className="Upload-detail">
-            {this.props.text.VERIOIQ_SUPPORTED}
-              <a href={this.props.text.WINDOWS_DRIVER_URL} target="_blank" onClick={this.props.onViewClicked}>
-              {this.props.text.WINDOWS_DRIVER_NAME}
-              </a>
-          </div>
-        </div>
-      );
-    }
   },
   onCareLinkInputChange: function() {
     var username = this.refs.username && this.refs.username.getDOMNode().value;
@@ -334,14 +303,6 @@ var Upload = React.createClass({
         return this.props.upload.file && !_.isEmpty(this.props.upload.file.name);
       }
     }
-  },
-
-  isVerioiqUpload: function() {
-    return this.props.upload.onetouchverioiq;
-  },
-
-  isVerioiqOnWindows: function() {
-    return this.props.upload.onetouchverioiqOnWindows;
   },
 
   isCarelinkUpload: function() {
