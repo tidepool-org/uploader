@@ -36,15 +36,29 @@ var DeviceSelection = React.createClass({
     var self = this;
 
     var items = _.map(this.props.uploads, function(upload) {
+
+      var isChecked = _.contains(self.props.targetDevices, upload.key);
+
+      var displayText;
+      if (isChecked && upload.driverLink) {
+        displayText = <div>
+                      <label htmlFor={upload.key}>{upload.name}</label>
+                      <div className="DeviceSelection-detail">Please install driver:
+                      <a href={upload.driverLink}>{upload.driverName}</a></div>
+                      </div>;
+      } else {
+        displayText = <label htmlFor={upload.key}>{upload.name}</label>;
+      }
+
       return (
         <div key={upload.key} className="Device-checkbox">
           <input type="checkbox"
             value={upload.key}
             ref={upload.key}
             id={upload.key}
-            checked={_.contains(self.props.targetDevices, upload.key)}
+            checked={isChecked}
             onChange={self.props.onCheckChange} />
-          <label htmlFor={upload.key}>{upload.name}</label>
+            {displayText}
         </div>
       );
     });
