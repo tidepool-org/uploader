@@ -47,7 +47,7 @@ describe('appState', function() {
 
     it('checks devices listed for Windows', function() {
 
-      app.device = { _os : 'win'};
+      app._os = 'win';
       app.state = appState.getInitial();
       appState.hideUnavailableDevices();
 
@@ -61,7 +61,7 @@ describe('appState', function() {
 
     it('checks devices listed for Mac', function() {
 
-      app.device = { _os : 'mac'};
+      app._os = 'mac';
       app.state = appState.getInitial();
       appState.hideUnavailableDevices();
 
