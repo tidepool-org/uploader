@@ -41,36 +41,34 @@ var DeviceSelection = React.createClass({
       var driverLink = '';
       var driverName = '';
 
-      if((window.app._os === 'mac') && (window.app.mac.driverLink !== undefined) ) {
-        driverLink = window.app.mac.driverLink;
-        driverName = windows.app.mac.driverName;
+      if((window.app._os === 'mac') && (upload.mac !== undefined) ) {
+        driverLink = upload.mac.driverLink;
+        driverName = upload.mac.driverName;
       }
 
-      if((window.app._os === 'win') && (window.app.win.driverLink !== undefined) ) {
-        driverLink = window.app.win.driverLink;
-        driverName = windows.app.win.driverName;
+      if((window.app._os === 'win') && (upload.win !== undefined) ) {
+        driverLink = upload.win.driverLink;
+        driverName = upload.win.driverName;
       }
 
-      var displayText;
+      var displayText = '';
       if (isChecked && (driverLink !== '')) {
-        displayText = <div>
-                      <label htmlFor={upload.key}>{upload.name}</label>
-                      <div className="DeviceSelection-detail">Please install driver:
-                      <a href={driverLink} target="_blank">{driverName}</a></div>
-                      </div>;
-      } else {
-        displayText = <label htmlFor={upload.key}>{upload.name}</label>;
+        displayText = <div className="DeviceSelection-detail">Please install driver:
+                      <a href={driverLink} target="_blank">{driverName}</a></div>;
       }
 
       return (
-        <div key={upload.key} className="Device-checkbox">
-          <input type="checkbox"
-            value={upload.key}
-            ref={upload.key}
-            id={upload.key}
-            checked={isChecked}
-            onChange={self.props.onCheckChange} />
-            {displayText}
+        <div key={upload.key} >
+          <div className="Device-checkbox">
+            <input type="checkbox"
+              value={upload.key}
+              ref={upload.key}
+              id={upload.key}
+              checked={isChecked}
+              onChange={self.props.onCheckChange} />
+              <label htmlFor={upload.key}>{upload.name}</label>
+          </div>
+          {displayText}
         </div>
       );
     });
