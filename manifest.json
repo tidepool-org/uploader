@@ -73,6 +73,14 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "FreeStyle Lite",
+          "driverId": "AbbottFreeStyleLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13328
+        },
+        {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
           "mode": "HID",
