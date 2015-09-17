@@ -75,6 +75,8 @@ var App = React.createClass({
       return this.renderSignupLink();
     }
 
+    appState.hideUnavailableDevices();
+
     return <LoggedInAs
       dropMenu={this.state.dropMenu}
       user={this.state.user}
