@@ -39,22 +39,23 @@ var DeviceSelection = React.createClass({
 
       var isChecked = _.contains(self.props.targetDevices, upload.key);
       var driverLink = '';
-      var driverName = '';
+      var driverLabel = '';
+      var driverMessage = 'Download driver for ';
 
       if((window.app._os === 'mac') && (upload.mac !== undefined) ) {
         driverLink = upload.mac.driverLink;
-        driverName = upload.mac.driverName;
+        driverLabel = upload.mac.driverLabel;
       }
 
       if((window.app._os === 'win') && (upload.win !== undefined) ) {
         driverLink = upload.win.driverLink;
-        driverName = upload.win.driverName;
+        driverLabel = upload.win.driverLabel;
       }
 
       var displayText = '';
       if (isChecked && (driverLink !== '')) {
-        displayText = <div className="DeviceSelection-detail">Please install driver:
-                      <a href={driverLink} target="_blank">{driverName}</a></div>;
+        displayText = <div className="DeviceSelection-detail">
+                      <a href={driverLink} target="_blank">{driverMessage + driverLabel}</a></div>;
       }
 
       return (

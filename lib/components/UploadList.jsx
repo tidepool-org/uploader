@@ -74,7 +74,7 @@ var UploadList = React.createClass({
 
     return (
       <div className="UploadList-error-item">
-        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.friendlyMessage} <a href={upload.error.driverLink} target="_blank">{upload.error.driverName}</a></span>
+        <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED}<a href={upload.error.driverLink} target="_blank">{upload.error.friendlyMessage + upload.error.driverLabel}</a></span>
         <a href="" onClick={clickHandler}>{showErrorsText}</a>
         {errorDetails}
       </div>
