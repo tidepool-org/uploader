@@ -92,6 +92,13 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 24578
+        },
+        {
+          "deviceName": "Animas OneTouch Ping",
+          "driverId": "AnimasPing",
+          "mode": "serial",
+          "vendorId": 8963,
+          "productId": 1659
         }
       ]
     }
