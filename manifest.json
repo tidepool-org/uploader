@@ -79,12 +79,19 @@
           "vendorId": 6777,
           "productId": 29520
         },
-        {
-          "deviceName": "BayerContourNextUsb",
-          "driverId": "BayerContourNextUsb",
+         {
+           "deviceName": "BayerContourNextUsb",
+           "driverId": "BayerContourNextUsb",
+           "mode": "HID",
+           "vendorId": 6777,
+           "productId": 29712
+        },
+          {
+          "deviceName": "BayerContourNextLink",
+          "driverId": "BayerContourNextLink",
           "mode": "HID",
           "vendorId": 6777,
-          "productId": 29712
+          "productId": 25088
         },
         {
           "deviceName": "BayerContourUsb",
