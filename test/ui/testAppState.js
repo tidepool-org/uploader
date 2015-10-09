@@ -56,6 +56,8 @@ describe('appState', function() {
       expect(_.findWhere(app.state.uploads, {key: 'bayercontournext'})).to.be.ok;
       expect(_.findWhere(app.state.uploads, {key: 'bayercontournextusb'})).to.be.ok;
       expect(_.findWhere(app.state.uploads, {key: 'bayercontourusb'})).to.be.ok;
+      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.be.ok;
+      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.be.ok;
 
     });
 
@@ -72,7 +74,8 @@ describe('appState', function() {
 
       // should not be available
       expect(_.findWhere(app.state.uploads, {key: 'precisionxtra'})).to.not.be.ok;
-
+      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.not.be.ok;
+      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.not.be.ok;
     });
 
   });
