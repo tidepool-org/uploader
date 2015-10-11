@@ -24,6 +24,7 @@
   "permissions": [
     "http://localhost/",
     "https://*.tidepool.io/",
+    "https://*.tidepool.org/",
     "contextMenus",
     "fileSystem",
     "system.storage",
