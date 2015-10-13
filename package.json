@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.215.0",
+  "version": "0.220.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -24,7 +24,7 @@
     "react-select": "0.4.6",
     "stack-trace": "0.0.9",
     "sundial": "1.4.0",
-    "tidepool-platform-client": "0.16.5"
+    "tidepool-platform-client": "0.19.0"
   },
   "devDependencies": {
     "css-loader": "0.9.1",
@@ -40,7 +40,7 @@
     "merge-stream": "0.1.7",
     "mocha": "2.2.1",
     "proxyquire": "1.4.0",
-    "salinity": "0.0.7",
+    "salinity": "0.0.8",
     "style-loader": "0.8.3",
     "webpack": "1.7.2"
   }

@@ -50,6 +50,14 @@ var contextMenus = [
   },
   {
     type: 'radio',
+    id: 'Prd',
+    title: 'Prd',
+    contexts: contexts,
+    parentId: 'MENUROOT',
+    checked: false
+  },
+  {
+    type: 'radio',
     id: 'Development',
     title: 'Development',
     contexts: contexts,
@@ -80,6 +88,11 @@ function setServer(window, info) {
       API_URL: 'http://localhost:8009',
       UPLOAD_URL: 'http://localhost:9122',
       BLIP_URL: 'http://localhost:3000'
+    },
+    Prd: {
+      API_URL: 'https://prd-api.tidepool.org',
+      UPLOAD_URL: 'https://prd-uploads.tidepool.org',
+      BLIP_URL: 'https://prd-blip.tidepool.org'
     },
     Development: {
       API_URL: 'https://devel-api.tidepool.io',
