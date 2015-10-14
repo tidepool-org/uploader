@@ -176,9 +176,9 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` recommendation for carbohydrates
     - `[ ]` recommendation for correction (calculation from BG input)
     - net recommendation
-        - `[ ]` net recommendation provided directed in data OR
+        - `[ ]` net recommendation provided directly in data OR
         - `[ ]` net recommendation is just `recommended.carb` + `recommended.correction` OR
-        - `[ ]` method for calculating net recommendation documented in data spec
+        - `[ ]` method for calculating net recommendation documented in data spec OR
         - `[ ]` method for calculating net recommendation reverse-engineered from pump manuals/test data
   - `[ ]` input blood glucose value
   - `[ ]` carbohydrate input in grams
