@@ -23,7 +23,7 @@
         - `[ ]` rate provided directly OR
         - `[ ]` rate computed from percent x suppressed.rate
     - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `[ ]` "suspended" basals (see [status - suspends & resumes)[#device-events] below)
+  - `[ ]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
     - `[ ]` basal interval with a start time and duration but no rate (b/c suspended)
     - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
   - `[ ]` final (most recent) basal
@@ -54,6 +54,11 @@ Device-specific? (Add any device-specific notes/additions here.)
   - bolus cancellations/interruptions
     - `[ ]` represented by a separate event in the device's data log OR
     - `[ ]` result in modifications to a bolus event in the device's data log
+
+No Tidepool data model yet:
+
+  - bolus cancellations/interruptions
+    - `[ ]` agent/reason for bolus cancellation
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -167,6 +172,7 @@ No Tidepool data model yet:
         - `[ ]` enabled
         - `[ ]` increment
   - `[ ]` insulin action time
+  - `[ ]` clock display preference (12h vs 24h format)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
