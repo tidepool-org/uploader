@@ -55,6 +55,7 @@ Device-specific? (Add any device-specific notes/additions here.)
   - bolus cancellations/interruptions
     - `[ ]` represented by a separate event in the device's data log OR
     - `[ ]` result in modifications to a bolus event in the device's data log
+  - `[ ]` link to "wizard"/calculator entry (via log entry ID or similar)
 
 No Tidepool data model yet:
 
@@ -164,8 +165,10 @@ No Tidepool data model yet:
     - `[ ]` temp basal type (`manual` or `percentage`)
     - `[ ]` max basal (as a u/hr rate)
   - bolus features:
-    - `[ ]` extended boluses enabled
     - `[ ]` bolus "wizard"/calculator enabled
+    - `[ ]` bolus increment for non-"quick"/manual boluses
+    - `[ ]` extended boluses enabled
+    - `[ ]` extended bolus type (`manual` or `percentage`)
     - `[ ]` min BG to allow calculation of bolus delivery
     - `[ ]` reverse correction enabled
     - `[ ]` max bolus
