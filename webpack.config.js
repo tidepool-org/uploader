@@ -31,7 +31,7 @@ var config = {
   },
   module: {
     loaders: [
-      { test: /\.jsx$/, loader: 'jsx' },
+      { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel-loader' },
       { test: /\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]

@@ -17,7 +17,7 @@
 
 var _ = require('lodash');
 var React = require('react');
-var cx = require('react/lib/cx');
+var cx = require('classnames');
 var Upload = require('./Upload.jsx');
 
 var UploadList = React.createClass({
