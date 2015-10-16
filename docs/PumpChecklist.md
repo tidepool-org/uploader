@@ -15,6 +15,7 @@
   - `[ ]` scheduled basal
     - `[ ]` basal rate intervals with a start time, duration, and rate delivered
     - `[ ]` name of basal schedule on each scheduled basal rate interval
+    - `[ ]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[ ]` manual temp basal
     - `[ ]` basal rate intervals with a start time, duration, and rate delivered
     - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
