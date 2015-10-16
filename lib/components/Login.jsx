@@ -89,9 +89,9 @@ var Login = React.createClass({
 
   handleLogin: function(e) {
     e.preventDefault();
-    var username = this.refs.username.getDOMNode().value;
-    var password = this.refs.password.getDOMNode().value;
-    var remember = this.refs.remember.getDOMNode().checked;
+    var username = this.refs.username.value;
+    var password = this.refs.password.value;
+    var remember = this.refs.remember.checked;
 
     this.setState({
       working: true,

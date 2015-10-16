@@ -18,12 +18,13 @@
 require('./styles/main.less');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 window.React = React;
 var config = require('./lib/config');
 window.DEBUG = config.DEBUG;
 // Important: need to require App after setting `window.DEBUG` to enable logging
 var App = require('./lib/components/App.jsx');
 
-window.app = React.render(
-  React.createElement(App), document.body
+window.app = ReactDOM.render(
+  React.createElement(App), document.getElementById('app')
 );
