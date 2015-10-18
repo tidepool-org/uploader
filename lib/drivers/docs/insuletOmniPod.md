@@ -155,35 +155,35 @@ Settings history:
 
 No Tidepool data model yet:
 
-  - `[x]` low insulin alert threshold
+  - `[-]` low insulin alert threshold
   - auto-off:
-    - `[x]` enabled
-    - `[x]` threshold
-  - `[x]` language
+    - `[-]` enabled
+    - `[-]` threshold
+  - `[-]` language
   - reminders:
-    - `[x]` BG reminder
+    - `[-]` BG reminder
     - `[ ]` bolus reminder
-  - `[x]` alert settings (volume or vibration-only; whether enabled)
+  - `[-]` alert settings (volume or vibration-only; whether enabled)
   - basal features:
-    - `[x]` temp basal type (`manual` or `percentage`)
-    - `[x]` max basal (as a u/hr rate)
+    - `[-]` temp basal type (`manual` or `percentage`)
+    - `[-]` max basal (as a u/hr rate)
   - bolus features:
-    - `[x]` bolus "wizard"/calculator enabled
-    - `[x]` bolus increment for non-"quick"/manual boluses
-    - `[x]` extended boluses enabled
-    - `[x]` extended bolus type (`manual` or `percentage`)
-    - `[x]` min BG to allow calculation of bolus delivery
-    - `[x]` reverse correction enabled
-    - `[x]` max bolus
+    - `[-]` bolus "wizard"/calculator enabled
+    - `[-]` bolus increment for non-"quick"/manual boluses
+    - `[-]` extended boluses enabled
+    - `[-]` extended bolus type (`manual` or `percentage`)
+    - `[-]` min BG to allow calculation of bolus delivery
+    - `[-]` reverse correction enabled
+    - `[-]` max bolus
     - "quick"/manual bolus:
         - `[ ]` enabled
         - `[ ]` increment
-  - `[x]` insulin action time
+  - `[-]` insulin action time
   - `[ ]` clock display preference (12h vs 24h format)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
-  - `[x]` threshold for pod expiration alerts
+  - `[-]` threshold for pod expiration alerts
 
 #### Wizard
 
