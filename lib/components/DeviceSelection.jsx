@@ -22,8 +22,11 @@ var cx = require('react/lib/cx');
 var DeviceSelection = React.createClass({
   propTypes: {
     uploads: React.PropTypes.array.isRequired,
-    targetId: React.PropTypes.string.isRequired,
+    // targetId can be null when logged in user is not a data storage account
+    // for example a clinic worker
+    targetId: React.PropTypes.string,
     targetDevices: React.PropTypes.array.isRequired,
+    timezoneIsSelected: React.PropTypes.bool.isRequired,
     onCheckChange: React.PropTypes.func.isRequired,
     onDone: React.PropTypes.func.isRequired,
     groupsDropdown: React.PropTypes.bool.isRequired
@@ -49,10 +52,12 @@ var DeviceSelection = React.createClass({
     var formClasses = cx({
       'DeviceSelection-form': true,
       'DeviceSelection-form--onlyme': !this.props.groupsDropdown,
-      'DeviceSelection-form--groups': this.props.groupsDropdown
+      'DeviceSelection-form--groups': this.props.groupsDropdown,
+      'DeviceSelection-form--timezone' : true
     });
 
-    var disabled = this.props.targetDevices.length > 0 ? false : true;
+    var disabled = (this.props.targetDevices.length > 0 && this.props.timezoneIsSelected) ?
+      false : true;
     return (
       <div className="DeviceSelection">
         <h3 className="DeviceSelection-headline">Choose devices</h3>

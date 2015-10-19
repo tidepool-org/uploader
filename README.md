@@ -22,19 +22,32 @@ WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPL
 
 ## Config
 
-Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables, for example:
+Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.io/starting-up-services/)), for example:
 
 ```bash
 $ source config/local.sh
 $ npm start
 ```
 
+### Debug Mode
+
+The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible). Debug mode is turned on by default in `config/debug.sh`.
+
 ## How to run the tests
 
 ```npm test```
 
 
-## Publishing
+## Publishing (to the devel/staging test Chrome store or production)
 
+Assuming you've already merged any changes to master and are on master locally...
+
+1. Start with a fresh Terminal window and `cd` into the chrome-uploader repo (Alternatively, just make certain you haven't set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)
 1. Bump version number and tag with `mversion minor -m` (`npm install -g mversion` if you haven't already)
-1. Build `dist.zip` file with `npm run build`
+1. Push the new tag commit and tag up to GitHub with `git push origin master` and `git push origin --tags`
+1. Checkout your new tag, using `git checkout tags/<tag_name>`
+1. Remove your node modules with `rm -rf node_modules/` (This may not always be necessary, but it's good to be safe in case anything has changed.)
+1. Install fresh dependencies with `npm install`
+1. Build the `dist.zip` file with `npm run build` - Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
+1. Follow instructions in secrets for actually publishing to the Chrome store
+1. Fill out the release notes for the tag on GitHub. If tag is known to *not* be a release candidate, mark as a pre-release.
