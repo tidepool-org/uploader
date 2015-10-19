@@ -16,7 +16,7 @@
 
   - `*[-]` scheduled basal
     - `*[-]` basal rate intervals with a start time, duration, and rate delivered
-    - `[x]` name of basal schedule on each scheduled basal rate interval
+    - `*[-]` name of basal schedule on each scheduled basal rate interval
     - `[?]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[?]` manual temp basal
     - `[?]` basal rate intervals with a start time, duration, and rate delivered
@@ -198,9 +198,9 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[x]` insulin on board
   - `[x]` insulin-to-carb ratio
   - `[x]` insulin sensitivity factor (with units)
-  - `[x]` blood glucose target
+  - `*[-]` blood glucose target
     - `[ ]` shape `{low: 80, high: 120}` OR
-    - `[x]` shape `{target: 100, low: 80, high: 120}` OR
+    - `[?]` shape `{target: 100, low: 80, high: 120}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
   - `*[?]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
