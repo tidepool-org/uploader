@@ -318,6 +318,9 @@ describe('objectBuilder.js', function(){
 
       expect(dualBolus.clockDriftOffset).to.equal(OPTIONAL);
       expect(dualBolus.payload).to.equal(OPTIONAL);
+      expect(dualBolus.expectedNormal).to.equal(OPTIONAL);
+      expect(dualBolus.expectedExtended).to.equal(OPTIONAL);
+      expect(dualBolus.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
@@ -369,6 +372,7 @@ describe('objectBuilder.js', function(){
 
       expect(normal.clockDriftOffset).to.equal(OPTIONAL);
       expect(normal.payload).to.equal(OPTIONAL);
+      expect(normal.expectedNormal).to.equal(OPTIONAL);
     });
   });
 
@@ -506,6 +510,8 @@ describe('objectBuilder.js', function(){
 
       expect(square.clockDriftOffset).to.equal(OPTIONAL);
       expect(square.payload).to.equal(OPTIONAL);
+      expect(square.expectedExtended).to.equal(OPTIONAL);
+      expect(square.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
