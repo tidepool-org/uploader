@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.220.0",
+  "version": "0.210.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -24,7 +24,6 @@
   "permissions": [
     "http://localhost/",
     "https://*.tidepool.io/",
-    "https://*.tidepool.org/",
     "contextMenus",
     "fileSystem",
     "system.storage",
@@ -51,7 +50,7 @@
         },
         {
           "deviceName": "Precision Xtra",
-          "driverId": "AbbottPrecisionXtra",
+          "driverId": "AbbottFreeStyle",
           "bitrate": 19200,
           "mode": "FTDI",
           "vendorId": 6753,
@@ -72,29 +71,13 @@
           "productId": 22336
         },
         {
-		  "deviceName": "OneTouchUltra2 w/FTDI cable",
+          "deviceName": "OneTouchUltra2 w/FTDI cable",
           "driverId": "OneTouchUltra2",
           "bitrate": 9600,
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577,
           "sendTimeout": 5000
-        },
-        {
-          "deviceName": "FreeStyle Lite",
-          "driverId": "AbbottFreeStyleLite",
-          "bitrate": 19200,
-          "mode": "FTDI",
-          "vendorId": 6753,
-          "productId": 13328
-        },
-        {
-          "deviceName": "FreeStyle Freedom Lite",
-          "driverId": "AbbottFreeStyleFreedomLite",
-          "bitrate": 19200,
-          "mode": "FTDI",
-          "vendorId": 6753,
-          "productId": 13328
         },
         {
           "deviceName": "BayerContourNext",
@@ -109,13 +92,6 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 29712
-        },
-        {
-          "deviceName": "BayerContourNextLink",
-          "driverId": "BayerContourNextLink",
-          "mode": "HID",
-          "vendorId": 6777,
-          "productId": 25088
         },
         {
           "deviceName": "BayerContourUsb",

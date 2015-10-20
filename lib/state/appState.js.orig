@@ -43,14 +43,25 @@ appState.getInitial = function() {
     {
       name: 'Abbott Precision Xtra',
       key: 'precisionxtra',
-      source: {type: 'device', driverId: 'AbbottPrecisionXtra'}
-    },
-    {
-       name: 'Tandem t:slim',
-       key: 'tandemtslim',
-       source: {type: 'device', driverId: 'TandemTslim'}
+      source: {type: 'device', driverId: 'AbbottFreeStyle'}
     },
     // {
+<<<<<<< HEAD
+    //   name: 'Asante SNAP',
+    //   key: 'asantesnap',
+    //   source: {type: 'device', driverId: 'AsanteSNAP'}
+    // }
+   // {                                                                                                                                               
+   //   name: 'OneTouchUltra2 (In development!)',                                                                                                  
+   //   key: 'onetouchultra2',                                                                                                                            
+   //   source: {type: 'device', driverId: 'OneTouchUltra2'}                                                                  
+   // }      
+      {
+          name: 'Tandem t:slim',
+          key: 'tandemtslim',
+          source: {type: 'device', driverId: 'TandemTslim'}
+      }
+=======
     //   name: 'OneTouch Ultra2',
     //   key: 'onetouchultra2',
     //   source: {type: 'device', driverId: 'OneTouchUltra2'}
@@ -60,16 +71,6 @@ appState.getInitial = function() {
     //   key: 'onetouchmini',
     //   source: {type: 'device', driverId: 'OneTouchMini'}
     // },
-    {
-      name: 'Abbott FreeStyle Lite',
-      key: 'abbottfreestylelite',
-      source: {type: 'device', driverId: 'AbbottFreeStyleLite'}
-    },
-    {
-      name: 'Abbott FreeStyle Freedom Lite',
-      key: 'abbottfreestylefreedomlite',
-      source: {type: 'device', driverId: 'AbbottFreeStyleFreedomLite'}
-    },
     {
       name: 'Bayer Contour Next',
       key: 'bayercontournext',
@@ -84,12 +85,8 @@ appState.getInitial = function() {
        name: 'Bayer Contour USB',
        key: 'bayercontourusb',
        source: {type: 'device', driverId: 'BayerContourUsb'}
-     },
-     {
-      name: 'Bayer Contour Next LINK',
-      key: 'bayercontournextlink',
-      source: {type: 'device', driverId: 'BayerContourNextLink'}
     }
+>>>>>>> master
   ];
 
   if (config.CARELINK) {
@@ -107,14 +104,6 @@ appState.getInitial = function() {
     targetTimezoneLabel: null,
     uploads: uploads
   };
-};
-
-appState.hideUnavailableDevices = function() {
-  if(this.app._os === 'mac') { // this.app._os can be "mac", "win", "android", "cros", "linux", or "openbsd"
-    this.app.state.uploads = _.reject(this.app.state.uploads, function(d){
-      return d.key === 'precisionxtra' || d.key === 'abbottfreestylelite' || d.key === 'abbottfreestylefreedomlite';
-    });
-  }
 };
 
 appState.isLoggedIn = function() {
