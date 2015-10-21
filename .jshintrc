@@ -3,6 +3,7 @@
   // Example: https://github.com/jshint/jshint/blob/master/examples/.jshintrc
   // Documentation: http://www.jshint.com/docs/
   "browser": true,
+  "curly": true,
   "esnext": true,
   "eqnull": true,
   "globalstrict": true,
