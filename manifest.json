@@ -90,6 +90,13 @@
           "productId": 13328
         },
         {
+          "deviceName": "BayerContour",
+          "driverId": "BayerContour",
+          "mode": "serial",
+          "vendorId": 6777,
+          "productId": 24577
+        },
+        {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
           "mode": "HID",
