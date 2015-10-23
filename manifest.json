@@ -65,7 +65,14 @@
           "productId": 2
         },
         {
-          "deviceName": "OneTouchUltra2 w/FTDI cable",
+          "deviceName": "Tandem t:slim",
+          "driverId": "TandemTslim",
+          "mode": "serial",
+          "vendorId": 1155,
+          "productId": 22336
+        },
+        {
+		  "deviceName": "OneTouchUltra2 w/FTDI cable",
           "driverId": "OneTouchUltra2",
           "bitrate": 9600,
           "mode": "FTDI",
