@@ -30,6 +30,7 @@ var UploadSettings = require('./UploadSettings.jsx');
 var TimezoneSelection = require('./TimezoneSelection.jsx');
 var DeviceSelection = require('./DeviceSelection.jsx');
 var UpdatePlease = require('./UpdatePlease.jsx');
+var DaylightSavingMessage = require('./DaylightSavingMessage.jsx');
 
 var config = require('../config');
 
@@ -121,6 +122,10 @@ var App = React.createClass({
       return (
         <div>
           {uploadSettings}
+          <DaylightSavingMessage
+            onAcknowledge={this.appActions.acknowledge.bind(this.appActions, 'daylightSavings')}
+            acknowledged={this.state.acknowledgments.daylightSavings}
+            timezone={this.state.targetTimezone} />
           <UploadList
             targetId={this.state.targetId}
             uploads={this.state.uploads}
