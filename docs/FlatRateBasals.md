@@ -12,7 +12,7 @@ The second representation - only recording basal rate change events when the ins
 
 ### Terminology
 
-**basal rate change**: A basal rate change event is a point-in-time data type. 
+**basal rate change**: A basal rate change event is a point-in-time data type. It consists of a _rate_ (insulin delivery in units of insulin per hour) and a timestamp.
 
 **basal (rate) segment**: A basal (rate) segment is an interval data type. It consists of a _rate_ (insulin delivery in units of insulin per hour), and either a pair of _start_ and _end_ timestamps or a _start_ timestamp and a _duration_.
 
