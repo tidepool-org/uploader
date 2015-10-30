@@ -21,8 +21,8 @@ var sundial = require('sundial');
 var DaylightSavingMessage = React.createClass({
   propTypes: {
     onAcknowledge: React.PropTypes.func.isRequired,
-    acknowledged: React.PropTypes.number,
-    timezone: React.PropTypes.any
+    timezone: React.PropTypes.any,
+    onlyMe: React.PropTypes.bool
   },
   /**
    * Set the initial state of the component
@@ -40,19 +40,6 @@ var DaylightSavingMessage = React.createClass({
    */
   handleAcknowledge: function() {
     this.props.onAcknowledge();
-  },
-
-  /**
-   * Determine whether the message should be displayed to the user or not
-   * 
-   * @return {boolean}
-   */
-  shouldDisplayOverlay: function() {
-    // for now show if the user has not previously acknowledged this warning
-    // in future though, we could make this show if
-    //  - the current date is within X days of DST starting/ending
-    //  - and acknowledged is false or not within X days
-    return (!this.props.acknowledged);
   },
 
   /**
@@ -83,21 +70,18 @@ var DaylightSavingMessage = React.createClass({
    */
   render: function() {
     var timeString = sundial.formatInTimezone(this.state.time, this.props.timezone,'h:mm a');
+    var extraSpacingClass = (!this.props.onlyMe) ? ' DaylightSavingMessage-showSelector' : '';
+    var containerClasses = 'DaylightSavingMessage-container' + extraSpacingClass;
+    return (
+      <div className={containerClasses}>
+        <h2 className="DaylightSavingMessage-header">Make sure your <span className="red-text">device time</span> is the <span className="blue-text">right time</span>.</h2>
+        <div className="DaylightSavingMessage-clock"></div>
+        <p>It is <span className="DaylightSavingMessage-time">{timeString}</span> in your selected timezone: <span className="DaylightSavingMessage-timezone">{this.props.timezone}</span>.</p>
+        <p>Daylight savings time ended on Nov 1. Make sure your<br/>device times are up-to-date.</p>
+        <button className="btn btn-primary" onClick={this.handleAcknowledge}>Okay, it is</button>
 
-    if (this.shouldDisplayOverlay()) {
-      return (
-        <div className="DaylightSavingMessage-container">
-          <h2 className="DaylightSavingMessage-header">Make sure your <span className="red-text">device time</span> is the <span className="blue-text">right time</span>.</h2>
-          <div className="DaylightSavingMessage-clock"></div>
-          <p>It is <span className="DaylightSavingMessage-time">{timeString}</span> in your selected timezone: <span className="DaylightSavingMessage-timezone">{this.props.timezone}</span>.</p>
-          <p>Daylight savings time ended on Nov 1. Make sure your<br/>device times are up-to-date.</p>
-          <button className="btn btn-primary" onClick={this.handleAcknowledge}>Okay, it is</button>
-
-        </div>
-      );
-    } else {
-      return null;
-    }
+      </div>
+    );
   }
 });
 
