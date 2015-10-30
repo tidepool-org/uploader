@@ -21,7 +21,7 @@ var sundial = require('sundial');
 var DaylightSavingMessage = React.createClass({
   propTypes: {
     onAcknowledge: React.PropTypes.func.isRequired,
-    timezone: React.PropTypes.any,
+    timezone: React.PropTypes.string,
     onlyMe: React.PropTypes.bool
   },
   /**
@@ -69,7 +69,7 @@ var DaylightSavingMessage = React.createClass({
    * @return {Component | null}
    */
   render: function() {
-    var timeString = sundial.formatInTimezone(this.state.time, this.props.timezone,'h:mm a');
+    var timeString = sundial.formatInTimezone(this.state.time, this.props.timezone, 'h:mm a');
     var extraSpacingClass = (!this.props.onlyMe) ? ' DaylightSavingMessage-showSelector' : '';
     var containerClasses = 'DaylightSavingMessage-container' + extraSpacingClass;
     return (
