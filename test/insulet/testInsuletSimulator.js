@@ -555,7 +555,7 @@ describe('insuletSimulator.js', function() {
       expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
         .set('previous', _.omit(expectedSecondBasal, 'previous'))
         .done();
-      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}]
+      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
       thisSim.basal(regBasal1);
       thisSim.basal(tempBasal);
       thisSim.basal(regBasal2);
@@ -646,7 +646,7 @@ describe('insuletSimulator.js', function() {
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
-        .with_rate(1.3)
+        .with_rate(1.3);
       simulator.basal(thisBasal);
       simulator.finalBasal();
       var expectedBasal = _.cloneDeep(thisBasal);
