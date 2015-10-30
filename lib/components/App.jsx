@@ -124,7 +124,7 @@ var App = React.createClass({
           {uploadSettings}
           <DaylightSavingMessage
             onAcknowledge={this.appActions.acknowledge.bind(this.appActions, 'daylightSavings')}
-            acknowledged={this.state.acknowledgments.daylightSavings}
+            acknowledged={this.state.acknowledgments.daylightSavings[this.state.targetId]}
             timezone={this.state.targetTimezone} />
           <UploadList
             targetId={this.state.targetId}
