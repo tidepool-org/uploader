@@ -943,7 +943,7 @@ describe('appActions', function() {
   });
 
   describe('acknowledge', function() {
-    it('should record acknoledgment for user for specific key', function() {
+    it('should record acknowledgment for user for specific key', function() {
       var userid = 'foobar';
       var key = 'daylightSavings';
       app.state.targetId = userid;
@@ -953,8 +953,8 @@ describe('appActions', function() {
   });
 
   describe('shouldDisplayDaylightSavingsMessage', function() {
-    it('should return false when currentTime is less than time chnage time and user not seen message', function() {
-      var currentTimeIso = '2015-10-30T14:34:00';
+    it('should return false when currentTime is less than time change time and user not seen message', function() {
+      var currentTimeIso = '2015-10-30T14:34:00.000Z';
       app.state.targetTimezone = 'US/Pacific';
       app.state.targetId = 'foobar';
       app.state.acknowledgments = {};
@@ -963,7 +963,7 @@ describe('appActions', function() {
     });
 
     it('should return false when currentTime is less than time change time and user has seen message', function() {
-      var currentTimeIso = '2015-10-01T14:34:00';
+      var currentTimeIso = '2015-10-01T14:34:00.000Z';
       app.state.targetTimezone = 'US/Pacific';
       app.state.targetId = 'foobar';
       app.state.acknowledgments = {};
@@ -972,7 +972,7 @@ describe('appActions', function() {
     });
 
     it('should return false when currentTime is more than time change time and user has seen message', function() {
-      var currentTimeIso = '2015-11-01T14:34:00';
+      var currentTimeIso = '2015-11-01T14:34:00.000Z';
       app.state.targetTimezone = 'US/Pacific';
       app.state.targetId = 'foobar';
       app.state.acknowledgments = {};
@@ -981,7 +981,7 @@ describe('appActions', function() {
     });
 
     it('should return true when currentTime is more than time change time and user not seen message', function() {
-      var currentTimeIso = '2015-11-01T14:34:00';
+      var currentTimeIso = '2015-11-01T14:34:00.000Z';
       app.state.targetTimezone = 'US/Pacific';
       app.state.targetId = 'foobar';
       app.state.acknowledgments = {};
