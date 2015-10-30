@@ -87,10 +87,10 @@ var DaylightSavingMessage = React.createClass({
     if (this.shouldDisplayOverlay()) {
       return (
         <div className="DaylightSavingMessage-container">
-          <h2 className="DaylightSavingMessage-header">Make sure your <span className="red-text">device time</span> is the <span className="blue-text">right time</span></h2>
+          <h2 className="DaylightSavingMessage-header">Make sure your <span className="red-text">device time</span> is the <span className="blue-text">right time</span>.</h2>
           <div className="DaylightSavingMessage-clock"></div>
-          <p>It is <span className="DaylightSavingMessage-time">{timeString}</span> in the selected timezone: <span className="DaylightSavingMessage-timezone">{this.props.timezone}</span></p>
-          <p>Daylight savings time ended on Nov 1 and our magic time adjustments for your data depends on it</p>
+          <p>It is <span className="DaylightSavingMessage-time">{timeString}</span> in your selected timezone: <span className="DaylightSavingMessage-timezone">{this.props.timezone}</span>.</p>
+          <p>Daylight savings time ended on Nov 1. Make sure your<br/>device times are up-to-date.</p>
           <button className="btn btn-primary" onClick={this.handleAcknowledge}>Okay, it is</button>
 
         </div>
