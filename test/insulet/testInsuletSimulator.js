@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -555,6 +555,7 @@ describe('insuletSimulator.js', function() {
       expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
         .set('previous', _.omit(expectedSecondBasal, 'previous'))
         .done();
+      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}]
       thisSim.basal(regBasal1);
       thisSim.basal(tempBasal);
       thisSim.basal(regBasal2);
@@ -600,6 +601,7 @@ describe('insuletSimulator.js', function() {
       thisSim.basal(basal);
       thisSim.finalBasal();
       var expectedBasal = _.cloneDeep(basal);
+      expectedBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
       expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
       expect(thisSim.getEvents()).deep.equals([expectedBasal]);
     });
@@ -639,9 +641,15 @@ describe('insuletSimulator.js', function() {
     });
 
     it('a single basal gets null duration and annotated with a call to finalBasal when settings unavailable', function() {
-      simulator.basal(basal);
+      var thisBasal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3)
+      simulator.basal(thisBasal);
       simulator.finalBasal();
-      var expectedBasal = _.cloneDeep(basal);
+      var expectedBasal = _.cloneDeep(thisBasal);
       expectedBasal = expectedBasal.set('duration', 0).done();
       expectedBasal.annotations = [{code: 'basal/unknown-duration'}];
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
