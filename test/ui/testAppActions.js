@@ -16,7 +16,6 @@
 */
 
 var _ = require('lodash');
-var sd = require('sundial');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
 var appState = require('../../lib/state/appState');
@@ -54,8 +53,9 @@ describe('appActions', function() {
 
     config = {};
     now = '2014-01-31T22:00:00-05:00';
-    sundial = sd;
-    sundial.utcDateString = function() { return now; };
+    sundial = {
+      utcDateString: function() { return now; }
+    };
     localStore = require('../../lib/core/localStore')({
       devices: {'11': [{
         key: 'carelink',
@@ -942,51 +942,4 @@ describe('appActions', function() {
 
   });
 
-  describe('acknowledge', function() {
-    it('should record acknowledgment for user for specific key', function() {
-      var userid = 'foobar';
-      var key = 'daylightSavings';
-      app.state.targetId = userid;
-      appActions.acknowledge(key);
-      expect(app.state.acknowledgments[key][userid]).to.be.ok;
-    });
-  });
-
-  describe('shouldDisplayDaylightSavingsMessage', function() {
-    it('should return false when currentTime is less than time change time and user not seen message', function() {
-      var currentTimeIso = '2015-10-30T14:34:00.000Z';
-      app.state.targetTimezone = 'US/Pacific';
-      app.state.targetId = 'foobar';
-      app.state.acknowledgments = {};
-      app.state.acknowledgments.daylightSavings = {};
-      expect(appActions.shouldDisplayDaylightSavingsMessage(currentTimeIso)).to.be.false;
-    });
-
-    it('should return false when currentTime is less than time change time and user has seen message', function() {
-      var currentTimeIso = '2015-10-01T14:34:00.000Z';
-      app.state.targetTimezone = 'US/Pacific';
-      app.state.targetId = 'foobar';
-      app.state.acknowledgments = {};
-      app.state.acknowledgments.daylightSavings = { foobar: 134577844};
-      expect(appActions.shouldDisplayDaylightSavingsMessage(currentTimeIso)).to.be.false;
-    });
-
-    it('should return false when currentTime is more than time change time and user has seen message', function() {
-      var currentTimeIso = '2015-11-01T14:34:00.000Z';
-      app.state.targetTimezone = 'US/Pacific';
-      app.state.targetId = 'foobar';
-      app.state.acknowledgments = {};
-      app.state.acknowledgments.daylightSavings = { foobar: 134577844};
-      expect(appActions.shouldDisplayDaylightSavingsMessage(currentTimeIso)).to.be.false;
-    });
-
-    it('should return true when currentTime is more than time change time and user not seen message', function() {
-      var currentTimeIso = '2015-11-01T14:34:00.000Z';
-      app.state.targetTimezone = 'US/Pacific';
-      app.state.targetId = 'foobar';
-      app.state.acknowledgments = {};
-      app.state.acknowledgments.daylightSavings = {};
-      expect(appActions.shouldDisplayDaylightSavingsMessage(currentTimeIso)).to.be.true;
-    });
-  });
 });

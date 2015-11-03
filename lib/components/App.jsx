@@ -30,7 +30,6 @@ var UploadSettings = require('./UploadSettings.jsx');
 var TimezoneSelection = require('./TimezoneSelection.jsx');
 var DeviceSelection = require('./DeviceSelection.jsx');
 var UpdatePlease = require('./UpdatePlease.jsx');
-var DaylightSavingMessage = require('./DaylightSavingMessage.jsx');
 
 var config = require('../config');
 
@@ -122,7 +121,15 @@ var App = React.createClass({
       return (
         <div>
           {uploadSettings}
-          {this.renderUploadList()}
+          <UploadList
+            targetId={this.state.targetId}
+            uploads={this.state.uploads}
+            targetedUploads={this.appState.uploadsWithFlags()}
+            onUpload={this.appActions.upload.bind(this.appActions)}
+            onReset={this.appActions.reset.bind(this.appActions)}
+            readFile={this.appActions.readFile.bind(this.appActions)}
+            groupsDropdown={!this.onlyMe()} />
+          {this.renderViewDataLink()}
         </div>
       );
     }
@@ -137,31 +144,6 @@ var App = React.createClass({
 
     return null;
   },
-
-  renderUploadList: function() {
-    if (this.appActions.shouldDisplayDaylightSavingsMessage(new Date().toISOString())) {
-      return (
-        <DaylightSavingMessage
-        onAcknowledge={this.appActions.acknowledge.bind(this.appActions, 'daylightSavings')}
-        onlyMe={this.onlyMe()}
-        timezone={this.state.targetTimezone} />
-      );
-    } else {
-      return (
-        <div>
-          <UploadList
-              targetId={this.state.targetId}
-              uploads={this.state.uploads}
-              targetedUploads={this.appState.uploadsWithFlags()}
-              onUpload={this.appActions.upload.bind(this.appActions)}
-              onReset={this.appActions.reset.bind(this.appActions)}
-              readFile={this.appActions.readFile.bind(this.appActions)}
-              groupsDropdown={!this.onlyMe()} />
-          {this.renderViewDataLink()}
-        </div>
-      );
-    }
-  },  
 
   renderFooter: function() {
     return(
