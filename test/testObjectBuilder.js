@@ -452,6 +452,7 @@ describe('objectBuilder.js', function(){
       expect(schedBasal.deviceTime).to.equal(REQUIRED);
       expect(schedBasal.duration).to.equal(REQUIRED);
 
+      expect(schedBasal.scheduleName).to.equal(OPTIONAL);
       expect(schedBasal.clockDriftOffset).to.equal(OPTIONAL);
       expect(schedBasal.previous).to.equal(OPTIONAL);
       expect(schedBasal.payload).to.equal(OPTIONAL);
