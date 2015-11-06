@@ -69,7 +69,10 @@
           "driverId": "TandemTslim",
           "mode": "serial",
           "vendorId": 1155,
-          "productId": 22336
+          "productId": 22336,
+          "bitrate": 921600,
+          "ctsFlowControl": true,
+          "sendTimeout": 5000
         },
         {
 		  "deviceName": "OneTouchUltra2 w/FTDI cable",
