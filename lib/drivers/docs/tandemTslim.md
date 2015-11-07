@@ -14,23 +14,23 @@
 
 #### Basals
 
-  - `*[-]` scheduled basal
-    - `*[-]` basal rate intervals with a start time, duration, and rate delivered
+  - `[x]` scheduled basal
+    - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `*[-]` name of basal schedule on each scheduled basal rate interval
-    - `[?]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
+    - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[?]` manual temp basal
     - `[?]` basal rate intervals with a start time, duration, and rate delivered
     - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `*[-]` percentage temp basal
-    - `*[-]` basal rate intervals with a start time, duration, percent
+  - `[x]` percentage temp basal
+    - `[x]` basal rate intervals with a start time, duration, percent
         - `[x]` rate provided directly OR
         - `[ ]` rate computed from percent x suppressed.rate
     - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `*[-]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
-    - `*[-]` basal interval with a start time and duration but no rate (b/c suspended)
+  - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
+    - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
     - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
-  - `*[-]` final (most recent) basal
-    - `*[-]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
+  - `[x]` final (most recent) basal
+    - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
 
 Device-specific? (Add any device-specific notes/additions here.)
@@ -44,7 +44,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` amount of insulin delivered
     - `[x]` duration of insulin delivery
     - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
-    - `*[-]` duration of insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
+    - `[x]` duration of insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
     - `[ ]` extended bolus that crosses midnight is split into two records
   - `[x]` combo/dual bolus
     - `[x]` amount of insulin delivered - immediate (normal)
@@ -52,12 +52,12 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` duration of extended insulin delivery
     - `[x]` amount of immediate insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
     - `[x]` amount of extended insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
-    - `*[-]` duration of extended insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
+    - `[x]` duration of extended insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
     - `[ ]` extended portion of combo bolus that crosses midnight is split into two records
   - bolus cancellations/interruptions
     - `[ ]` represented by a separate event in the device's data log OR
     - `[x]` result in modifications to a bolus event in the device's data log
-  - `[?]` link to "wizard"/calculator entry (via log entry ID or similar)
+  - `[x]` link to "wizard"/calculator entry (via log entry ID or similar)
 
 No Tidepool data model yet:
 
@@ -126,25 +126,25 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 #### Settings
 
-  - `[x]` basal schedules
+  - `*[-]` basal schedules
     - `[ ]` name of basal schedule OR
-    - `[x]` name of settings profile
-    - `[x]` each schedule as a set of objects each with a rate and a start time
-  - `[x]` name of currently active basal schedule
+    - `*[-]` name of settings profile
+    - `*[-]` each schedule as a set of objects each with a rate and a start time
+  - `*[-]` name of currently active basal schedule
   - `[?]` units of all blood glucose-related fields (read from device, not hard-coded)
   - `[?]` units of all carb-related fields (read from device, not hard-coded)
   - `*[-]` carb ratio(s)
     - `*[-]` name of settings profile
-    - `[x]` (one or more) set(s) of objects each with a ratio (amount) and a start time
+    - `*[-]` (one or more) set(s) of objects each with a ratio (amount) and a start time
   - `*[-]` insulin sensitivity factor(s)
     - `*[-]` name of settings profile
-    - `[x]` (one or more) set(s) of objects each with an amount and a start time
+    - `*[-]` (one or more) set(s) of objects each with an amount and a start time
   - `*[-]` blood glucose target(s)
     - `*[-]` name of settings profile
-    - `[x]` (one or more) set(s) of objects each with a target and a start time
+    - `*[-]` (one or more) set(s) of objects each with a target and a start time
     - target shape:
-        - `[x]` shape `{low: 80, high: 120}` OR
-        - `[ ]` shape `{target: 100, low: 80, high: 120}` OR
+        - `[ ]` shape `{low: 80, high: 120}` OR
+        - `[x]` shape `{target: 100}` OR
         - `[ ]` shape `{target: 100, range: 20}` OR
         - `[ ]` shape `{target: 100, high: 120}`
 
@@ -189,8 +189,8 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` recommendation for carbohydrates
     - `[x]` recommendation for correction (calculation from BG input)
     - net recommendation
-        - `[?]` net recommendation provided directly in data OR
-        - `[ ]` net recommendation is just `recommended.carb` + `recommended.correction` OR
+        - `[ ]` net recommendation provided directly in data OR
+        - `[x]` net recommendation is just `recommended.carb` + `recommended.correction` OR
         - `[ ]` method for calculating net recommendation documented in data spec OR
         - `[ ]` method for calculating net recommendation reverse-engineered from pump manuals/test data
   - `[x]` input blood glucose value
@@ -198,23 +198,23 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[x]` insulin on board
   - `[x]` insulin-to-carb ratio
   - `[x]` insulin sensitivity factor (with units)
-  - `*[-]` blood glucose target
+  - `[x]` blood glucose target
     - `[ ]` shape `{low: 80, high: 120}` OR
-    - `[?]` shape `{target: 100, low: 80, high: 120}` OR
+    - `[x]` shape `{target: 100}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
   - `*[?]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
-  - `[?]` link to bolus delivered as a result of wizard (via log entry ID or similar)
+  - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
 #### "Bootstrapping" to UTC
 
-  - `[ ]` index
-    - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
-    - `[ ]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
+  - `[x]` index
+    - `[x]` UTC timestamp (*Hey, one can dream!*) OR
+    - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
-  - `[ ]` date & time settings changes
+  - `[x]` date & time settings changes
 
 Device-specific? (Add any device-specific notes/additions here.)
 
