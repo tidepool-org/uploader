@@ -515,7 +515,36 @@ describe('tandemSimulator.js', function() {
         expectedThirdBasal
       ]);
     });*/
-    
+
+  });
+
+  describe('newDay', function() {
+    it('fabricated from new day event', function () {
+      var currBasal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+      newDay.set('type', 'new-day');
+
+      simulator.basal(currBasal);
+      simulator.newDay(newDay);
+      simulator.finalBasal();
+
+      var events = simulator.getEvents();
+      var lastEvent = events[events.length - 1];
+      expect(lastEvent.type).to.equal('basal');
+      expect(lastEvent.annotations[0].code).to.equal('tandem/basal/fabricated-from-new-day');
+
+    });
   });
 
   describe('finalBasal', function() {
