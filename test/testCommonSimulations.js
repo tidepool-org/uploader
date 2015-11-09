@@ -27,14 +27,19 @@ var common = require('../lib/commonSimulations');
 describe('commonSimulations.js', function(){
 
   describe('finalScheduledBasal', function(){
-    it('fabricates from two schedule segments', function(){
-      var basal = builder.makeScheduledBasal()
+
+    var basal;
+    beforeEach(function(){
+      basal = builder.makeScheduledBasal()
         .with_deviceTime('2015-11-05T17:36:39')
         .with_time('2015-11-05T17:36:39.000Z')
         .with_rate(0.3)
         .with_scheduleName('Test')
         .with_conversionOffset(0)
         .with_timezoneOffset(0);
+    });
+
+    it('fabricates from two schedule segments', function(){
       var settings = {
         basalSchedules: {
           'Test': [
@@ -49,15 +54,61 @@ describe('commonSimulations.js', function(){
           ]
         }
       };
-      var finalBasal = common.finalScheduledBasal(basal, settings, 'tandem');
-      expect(finalBasal.annotations[0].code).to.equal('tandem/basal/fabricated-from-schedule');
+      var finalBasal = common.finalScheduledBasal(basal, settings, 'test');
+      expect(finalBasal.annotations[0].code).to.equal('test/basal/fabricated-from-schedule');
       expect(finalBasal.duration).to.equal(1000);
     });
+
     it('fabricates from only one schedule segment', function(){
-      //TODO: 864e5 - millisInDay
+      var settings = {
+        basalSchedules: {
+          'Test': [
+            {
+              rate: 0.3,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      expect(finalBasal.annotations[0].code).to.equal('test/basal/fabricated-from-schedule');
+      expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
     });
 
-    //TODO: off-schedule-rate
-    //TODO: basal/unknown-duration if no schedule
+    it('has an off-schedule rate', function() {
+      var settings = {
+        basalSchedules: {
+          'Test': [
+            {
+              rate: 0.5,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      // TODO: to make the following test more robust, consider using chai-things (new dependency)
+      // that supports assertions on array elements, e.g.:
+      // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
+      expect(finalBasal.annotations[0].code).to.equal('test/basal/off-schedule-rate');
+      expect(finalBasal.annotations[1].code).to.equal('basal/unknown-duration');
+      expect(finalBasal.duration).to.equal(0);
+    });
+
+    it('sets unknown-duration if no schedule found', function(){
+      var settings = {
+        basalSchedules: {
+          'NotTest': [
+            {
+              rate: 0.3,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
+      expect(finalBasal.duration).to.equal(0);
+    });
   });
 });
