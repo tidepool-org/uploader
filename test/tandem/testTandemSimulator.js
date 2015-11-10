@@ -616,4 +616,37 @@ describe('tandemSimulator.js', function() {
     });
   });
 
+  describe('event interplay', function() {
+    it('new-day event not passing through when current basal is suspended', function() {
+
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T15:00:00.000Z')
+        .with_deviceTime('2014-09-25T15:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var suspend = builder.makeSuspendBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+      newDay.set('type', 'new-day');
+
+      simulator.basal(basal);
+      simulator.basal(suspend);
+      simulator.newDay(newDay);
+
+      expect(simulator.getEvents()).deep.equals([basal.done()]);
+    });
+
+  });
+
 });
