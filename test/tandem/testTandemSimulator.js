@@ -106,6 +106,7 @@ describe('tandemSimulator.js', function() {
         type: 'bolus',
         subType: 'dual/square'
       };
+
       it('passes through', function(){
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
@@ -176,73 +177,6 @@ describe('tandemSimulator.js', function() {
           type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'low_insulin'
-        };
-
-        simulator.alarm(val);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
-
-      it.skip('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          },
-          index: 10
-        };
-
-        var fn = function() { simulator.alarm(val); };
-        expect(fn).to.throw(Error);
-      });
-
-      it.skip('passes through if `stopsDelivery` in payload but no `index` available', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          }
-        };
-
-        simulator.alarm(val);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
-
-      it.skip('passes through if `stopsDelivery` in payload and `status` exists', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          },
-          status: {
-            time: '2014-09-25T01:00:00.000Z',
-            deviceTime: '2014-09-25T01:00:00',
-            timezoneOffset: 0,
-            deviceId: 'tandemTslim12345',
-            type: 'deviceEvent',
-            subType: 'status',
-            status: 'suspended'
-          }
         };
 
         simulator.alarm(val);
