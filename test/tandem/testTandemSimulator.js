@@ -195,27 +195,9 @@ describe('tandemSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it.skip('passes through with a status', function() {
-        var suspend = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
-          type: 'deviceEvent',
-          subType: 'status',
-          status: 'suspended',
-          reason: {suspended: 'manual'}
-        };
-
-        var withStatus = _.assign({}, val, {status: suspend});
-        simulator.changeReservoir(withStatus);
-        expect(simulator.getEvents()).deep.equals([withStatus]);
-      });
-
-      it.skip('throws an error without a status', function() {
-        var fn = function() { simulator.changeReservoir(val); };
-        expect(fn).to.throw(Error);
+      it.skip('passes through', function() {
+        simulator.changeReservoir(val);
+        expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
