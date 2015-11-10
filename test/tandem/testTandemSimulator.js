@@ -164,9 +164,9 @@ describe('tandemSimulator.js', function() {
   });
 
   describe('deviceEvent', function() {
-  /* TODO: revisit these when all device events are implemented
+  // TODO: these tests are pending until device events are implemented
     describe('alarm', function() {
-      it('passes through', function() {
+      it.skip('passes through', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -182,7 +182,7 @@ describe('tandemSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
+      it.skip('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -202,7 +202,7 @@ describe('tandemSimulator.js', function() {
         expect(fn).to.throw(Error);
       });
 
-      it('passes through if `stopsDelivery` in payload but no `index` available', function() {
+      it.skip('passes through if `stopsDelivery` in payload but no `index` available', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -221,7 +221,7 @@ describe('tandemSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('passes through if `stopsDelivery` in payload and `status` exists', function() {
+      it.skip('passes through if `stopsDelivery` in payload and `status` exists', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -261,7 +261,7 @@ describe('tandemSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it('passes through with a status', function() {
+      it.skip('passes through with a status', function() {
         var suspend = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -279,7 +279,7 @@ describe('tandemSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([withStatus]);
       });
 
-      it('throws an error without a status', function() {
+      it.skip('throws an error without a status', function() {
         var fn = function() { simulator.changeReservoir(val); };
         expect(fn).to.throw(Error);
       });
@@ -307,23 +307,23 @@ describe('tandemSimulator.js', function() {
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
-      it('a suspend passes through', function() {
+      it.skip('a suspend passes through', function() {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it('a resume passes through', function() {
+      it.skip('a resume passes through', function() {
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
-      it('a resume includes a previous when preceded by a suspend', function() {
+      it.skip('a resume includes a previous when preceded by a suspend', function() {
         simulator.suspend(suspend);
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
+      it.skip('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
         var suspend2 = {
           time: '2014-09-25T01:05:00.000Z',
           deviceTime: '2014-09-25T01:05:00',
@@ -341,7 +341,6 @@ describe('tandemSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
     });
-    */
 
     describe('timeChange', function() {
       var change = {
@@ -365,7 +364,7 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  /* TODO: revisit these when settings are implemented
+  // TODO: these tests are pending until settings are implemented
   describe('settings', function() {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
@@ -387,12 +386,11 @@ describe('tandemSimulator.js', function() {
       conversionOffset: 0
     };
 
-    it('passes through', function() {
+    it.skip('passes through', function() {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
   });
-  */
 
   describe('basal', function() {
     var basal1 = builder.makeScheduledBasal()
@@ -448,8 +446,8 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    /* TODO: revisit when suppressed basals are handled
-    it('fills in the suppressed.scheduleName for a temp basal by percentage', function() {
+    // TODO: these tests are pending until suppressed basals are handled
+    it.skip('fills in the suppressed.scheduleName for a temp basal by percentage', function() {
       var settings = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -521,7 +519,7 @@ describe('tandemSimulator.js', function() {
         expectedSecondBasal,
         expectedThirdBasal
       ]);
-    });*/
+    });
 
   });
 
