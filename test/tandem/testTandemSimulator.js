@@ -390,6 +390,12 @@ describe('tandemSimulator.js', function() {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
+
+    //TODO: remove this test when we handle settings
+    it('does not pass through', function() {
+      simulator.pumpSettings(settings);
+      expect(simulator.getEvents()).deep.equals([]);
+    });
   });
 
   describe('basal', function() {

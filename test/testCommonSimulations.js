@@ -39,7 +39,7 @@ describe('commonSimulations.js', function(){
         .with_timezoneOffset(0);
     });
 
-    it('fabricates from two schedule segments', function(){
+    it('fabricates final basal duration from two schedule segments', function(){
       var settings = {
         basalSchedules: {
           'Test': [
@@ -59,7 +59,7 @@ describe('commonSimulations.js', function(){
       expect(finalBasal.duration).to.equal(1000);
     });
 
-    it('fabricates from only one schedule segment', function(){
+    it('fabricates final basal duration from only one schedule segment', function(){
       var settings = {
         basalSchedules: {
           'Test': [
@@ -75,7 +75,7 @@ describe('commonSimulations.js', function(){
       expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
     });
 
-    it('has an off-schedule rate', function() {
+    it('final basal has zero duration when it has an off-schedule rate', function() {
       var settings = {
         basalSchedules: {
           'Test': [
@@ -95,7 +95,7 @@ describe('commonSimulations.js', function(){
       expect(finalBasal.duration).to.equal(0);
     });
 
-    it('sets unknown-duration if no schedule found', function(){
+    it('final basal has zero duration if no schedule and duration found', function(){
       var settings = {
         basalSchedules: {
           'NotTest': [
