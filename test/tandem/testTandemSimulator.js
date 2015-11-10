@@ -533,7 +533,7 @@ describe('tandemSimulator.js', function() {
   });
 
   describe('event interplay', function() {
-    it('new-day event not passing through when current basal is suspended', function() {
+    it('new-day event does not pass through as scheduled basal when pump is suspended', function() {
 
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-25T15:00:00.000Z')
