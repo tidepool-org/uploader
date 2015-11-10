@@ -154,6 +154,13 @@ describe('tandemSimulator.js', function() {
       simulator.wizard(val);
       expect(simulator.getEvents()).deep.equals([val]);
     });
+
+    it('does not pass through a zero-volume wizard bolus', function() {
+      var zeroWizard = _.assign({}, bolus, {normal: 0.0});
+      simulator.bolus(val);
+      simulator.bolus(zeroWizard);
+      expect(simulator.getEvents()).deep.equals([val]);
+    });
   });
 
   describe('deviceEvent', function() {
