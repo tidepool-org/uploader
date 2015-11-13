@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.222.0",
+  "version": "0.224.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -63,6 +63,16 @@
           "mode": "block",
           "vendorId": 7734,
           "productId": 2
+        },
+        {
+          "deviceName": "Tandem t:slim",
+          "driverId": "TandemTslim",
+          "mode": "serial",
+          "vendorId": 1155,
+          "productId": 22336,
+          "bitrate": 921600,
+          "ctsFlowControl": true,
+          "sendTimeout": 5000
         },
         {
           "deviceName": "OneTouchUltra2 w/FTDI cable",

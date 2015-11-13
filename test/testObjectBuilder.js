@@ -318,6 +318,9 @@ describe('objectBuilder.js', function(){
 
       expect(dualBolus.clockDriftOffset).to.equal(OPTIONAL);
       expect(dualBolus.payload).to.equal(OPTIONAL);
+      expect(dualBolus.expectedNormal).to.equal(OPTIONAL);
+      expect(dualBolus.expectedExtended).to.equal(OPTIONAL);
+      expect(dualBolus.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
@@ -369,6 +372,7 @@ describe('objectBuilder.js', function(){
 
       expect(normal.clockDriftOffset).to.equal(OPTIONAL);
       expect(normal.payload).to.equal(OPTIONAL);
+      expect(normal.expectedNormal).to.equal(OPTIONAL);
     });
   });
 
@@ -448,9 +452,11 @@ describe('objectBuilder.js', function(){
       expect(schedBasal.deviceTime).to.equal(REQUIRED);
       expect(schedBasal.duration).to.equal(REQUIRED);
 
+      expect(schedBasal.scheduleName).to.equal(OPTIONAL);
       expect(schedBasal.clockDriftOffset).to.equal(OPTIONAL);
       expect(schedBasal.previous).to.equal(OPTIONAL);
       expect(schedBasal.payload).to.equal(OPTIONAL);
+      expect(schedBasal.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
@@ -506,6 +512,8 @@ describe('objectBuilder.js', function(){
 
       expect(square.clockDriftOffset).to.equal(OPTIONAL);
       expect(square.payload).to.equal(OPTIONAL);
+      expect(square.expectedExtended).to.equal(OPTIONAL);
+      expect(square.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
@@ -534,6 +542,7 @@ describe('objectBuilder.js', function(){
       expect(suspendBasal.suppressed).to.equal(OPTIONAL);
       expect(suspendBasal.previous).to.equal(OPTIONAL);
       expect(suspendBasal.payload).to.equal(OPTIONAL);
+      expect(suspendBasal.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
@@ -564,6 +573,7 @@ describe('objectBuilder.js', function(){
       expect(temp.previous).to.equal(OPTIONAL);
       expect(temp.suppressed).to.equal(OPTIONAL);
       expect(temp.payload).to.equal(OPTIONAL);
+      expect(temp.expectedDuration).to.equal(OPTIONAL);
     });
   });
 
