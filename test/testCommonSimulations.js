@@ -55,7 +55,7 @@ describe('commonSimulations.js', function(){
         }
       };
       var finalBasal = common.finalScheduledBasal(basal, settings, 'test');
-      expect(finalBasal.annotations[0].code).to.equal('test/basal/fabricated-from-schedule');
+      expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
       expect(finalBasal.duration).to.equal(1000);
     });
 
@@ -71,7 +71,7 @@ describe('commonSimulations.js', function(){
         }
       };
       var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-      expect(finalBasal.annotations[0].code).to.equal('test/basal/fabricated-from-schedule');
+      expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
       expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
     });
 
