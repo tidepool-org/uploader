@@ -37,7 +37,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         units: 'mg/dL',
         type: 'smbg',
         value: 1.3
@@ -55,7 +55,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         normal: 1.3,
         type: 'bolus',
         subType: 'normal'
@@ -80,7 +80,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         extended: 1.4,
         duration: 1800000,
         type: 'bolus',
@@ -99,7 +99,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         normal: 1.3,
         extended: 1.4,
         duration: 0,
@@ -120,7 +120,7 @@ describe('tandemSimulator.js', function() {
       deviceTime: '2014-09-25T01:00:00',
       timezoneOffset: 0,
       conversionOffset: 0,
-      deviceId: 'tandemTslim12345',
+      deviceId: 'tandem12345',
       normal: 1.3,
       type: 'bolus',
       subType: 'normal'
@@ -131,7 +131,7 @@ describe('tandemSimulator.js', function() {
       deviceTime: '2014-09-25T01:00:00',
       timezoneOffset: 0,
       conversionOffset: 0,
-      deviceId: 'tandemTslim12345',
+      deviceId: 'tandem12345',
       recommended: {
         carb: 1.0,
         correction: 2.0,
@@ -173,7 +173,7 @@ describe('tandemSimulator.js', function() {
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
+          deviceId: 'tandem12345',
           type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'low_insulin'
@@ -190,7 +190,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         type: 'deviceEvent',
         subType: 'reservoirChange'
       };
@@ -207,7 +207,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         type: 'deviceEvent',
         subType: 'status',
         status: 'suspended',
@@ -245,7 +245,7 @@ describe('tandemSimulator.js', function() {
           deviceTime: '2014-09-25T01:05:00',
           timezoneOffset: 0,
           conversionOffset: 0,
-          deviceId: 'tandemTslim12345',
+          deviceId: 'tandem12345',
           type: 'deviceEvent',
           subType: 'status',
           status: 'suspended',
@@ -264,7 +264,7 @@ describe('tandemSimulator.js', function() {
         deviceTime: '2014-09-25T01:05:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'tandemTslim12345',
+        deviceId: 'tandem12345',
         type: 'deviceEvent',
         subType: 'timeChange',
         change: {
