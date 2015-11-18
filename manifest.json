@@ -65,8 +65,8 @@
           "productId": 2
         },
         {
-          "deviceName": "Tandem t:slim",
-          "driverId": "TandemTslim",
+          "deviceName": "Tandem",
+          "driverId": "Tandem",
           "mode": "serial",
           "vendorId": 1155,
           "productId": 22336,
