@@ -548,6 +548,41 @@ describe('appActions', function() {
 
   });
 
+  describe('hideUnavailableDevices', function() {
+    beforeEach(function() {
+      var state = appState.getInitial();
+      app.setState(state);
+    });
+
+    describe('[windows]', function() {
+      beforeEach(function() {
+        app.setState({_os: 'win'});
+      });
+
+      it('excludes only Tandem', function() {
+        expect(app.state.uploads.length).to.equal(10);
+        appActions._hideUnavailableDevices();
+        expect(app.state.uploads.length).to.equal(9);
+        expect(_.findWhere(app.state.uploads, {key: 'tandem'})).to.not.be.ok;
+      });
+    });
+
+    describe('[mac]', function() {
+      beforeEach(function() {
+        app.setState({_os: 'mac'});
+      });
+
+      it('excludes all Abbott devices', function() {
+        expect(app.state.uploads.length).to.equal(10);
+        appActions._hideUnavailableDevices();
+        expect(app.state.uploads.length).to.equal(7);
+        expect(_.findWhere(app.state.uploads, {key: 'precisionxtra'})).to.not.be.ok;
+        expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.not.be.ok;
+        expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.not.be.ok;
+      });
+    });
+  });
+
   describe('chooseDevices', function() {
     beforeEach(function() {
       app.state = {

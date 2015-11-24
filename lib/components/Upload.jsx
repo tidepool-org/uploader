@@ -41,7 +41,7 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
-        CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
+        CARELINK_CREDS_NOT_SAVED :'Import from CareLink<br>(We will not store your credentials)',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
         CARELINK_DOWNLOADING :'Downloading CareLink export...',
@@ -50,7 +50,7 @@ var Upload = React.createClass({
         LABEL_OK : 'OK',
         LABEL_FAILED: 'Try again',
         LAST_UPLOAD : 'Last upload: ',
-        LABEL_MEDTRONIC_DEVICES :'Medtronic Devices',
+        LABEL_MEDTRONIC_DEVICES :'Medtronic',
         DEVICE_UNKOWN : 'Unknown device',
         UPLOAD_COMPLETE: 'Done!',
         UPLOAD_PROGRESS: 'Uploading... '
