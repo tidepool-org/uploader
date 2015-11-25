@@ -1,0 +1,657 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Dexcom CGM | Tidepool Uploader</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.3">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../../lib/drivers/docs/carelinkCGM.html" />
+    
+    
+    <link rel="prev" href="../../../lib/drivers/docs/bayerContourNext.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="4.5" data-basepath="../../.." data-revision="Tue Nov 24 2015 23:22:01 GMT-0800 (PST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="docs/state/index.html">
+            
+                
+                    <a href="../../../docs/state/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        application state
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="docs/BootstrappingToUTC.html">
+            
+                
+                    <a href="../../../docs/BootstrappingToUTC.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        &quot;bootstrapping&quot; to UTC (BtUTC)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="docs/checklisttemplates/index.html">
+            
+                
+                    <a href="../../../docs/checklisttemplates/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        checklist TEMPLATES
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="docs/checklisttemplates/BGMChecklist.html">
+            
+                
+                    <a href="../../../docs/checklisttemplates/BGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        BGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="docs/checklisttemplates/CGMChecklist.html">
+            
+                
+                    <a href="../../../docs/checklisttemplates/CGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        CGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="docs/checklisttemplates/PumpChecklist.html">
+            
+                
+                    <a href="../../../docs/checklisttemplates/PumpChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Insulin Pump Checklist
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="lib/drivers/docs/index.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        checklists
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/abbottFreeStyleLite.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        Abbott FreeStyle
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="lib/drivers/docs/abbottPrecisionXtra.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/abbottPrecisionXtra.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        Abbott Precision Xtra
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="lib/drivers/docs/animasPingAndVibe.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/animasPingAndVibe.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.</b>
+                        
+                        Animas Ping and Vibe Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="lib/drivers/docs/bayerContourNext.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/bayerContourNext.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.</b>
+                        
+                        Bayer Contour Next
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.5" data-path="lib/drivers/docs/dexcomG4.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/dexcomG4.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.5.</b>
+                        
+                        Dexcom CGM
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="lib/drivers/docs/carelinkCGM.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/carelinkCGM.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.6.</b>
+                        
+                        CareLink (CGM data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="lib/drivers/docs/carelinkPumpData.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/carelinkPumpData.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.7.</b>
+                        
+                        CareLink (insulin pump data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="lib/drivers/docs/insuletOmniPod.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/insuletOmniPod.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.8.</b>
+                        
+                        Insulet OmniPod
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="lib/drivers/docs/tandem.html">
+            
+                
+                    <a href="../../../lib/drivers/docs/tandem.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.9.</b>
+                        
+                        Tandem Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="docs/misc/index.html">
+            
+                
+                    <a href="../../../docs/misc/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        miscellaneous
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="docs/misc/PWDSimulators.html">
+            
+                
+                    <a href="../../../docs/misc/PWDSimulators.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        PWD &quot;simulators&quot;
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="docs/misc/FlatRateBasals.html">
+            
+                
+                    <a href="../../../docs/misc/FlatRateBasals.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        challenges of flat basal profiles
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="docs/misc/2015.06.29CareLinkCSVChanges.html">
+            
+                
+                    <a href="../../../docs/misc/2015.06.29CareLinkCSVChanges.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        2015.06 CareLink CSV updates
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../../" >Tidepool Uploader</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="dexcom-g4-share">Dexcom G4 (&amp; Share)</h1>
+<h2 id="checklist-for-cgm-implementation">Checklist for CGM Implementation</h2>
+<p>(Key:</p>
+<ul>
+<li><code>[x]</code> available in data protocol/documented in spec and implemented</li>
+<li><code>[-]</code> available in data protocol/documented in spec but <em>not</em> yet implemented</li>
+<li><code>[?]</code> unknown whether available in data protocol/documented in spec; <em>not</em> yet implemented</li>
+<li><code>*[ ]</code> TODO: needs implementation!</li>
+<li><code>[ ]</code> unavailable in data protocol and/or not documented in spec and not yet implemented)</li>
+</ul>
+<h3 id="required-if-present">Required if Present</h3>
+<h4 id="cbg">CBG</h4>
+<ul>
+<li><code>[x]</code> cbg values</li>
+<li><code>[?]</code> units of cbg values (read from device, not hard-coded)</li>
+<li><code>[x]</code> out-of-range values (LO or HI)</li>
+<li><code>[?]</code> out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h4 id="device-events">Device Events</h4>
+<ul>
+<li><code>[x]</code> calibrations<ul>
+<li><code>[x]</code> calibration value</li>
+<li><code>[?]</code> units of calibration value (read from device, not hard-coded)</li>
+</ul>
+</li>
+<li><code>[x]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
+<li><code>[x]</code> device display time <code>from</code> (before change) and <code>to</code> (result of change)</li>
+<li><code>[x]</code> agent of change (<code>automatic</code> or <code>manual</code>)</li>
+<li><code>[ ]</code> timezone</li>
+<li><code>[ ]</code> reason for change (read from device)</li>
+</ul>
+</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<p>We are including the following in the payload for Dexcom time changes:</p>
+<ul>
+<li>original system seconds (raw internal timestamp), used as the BtUTC index</li>
+<li>raw old display offset</li>
+<li>raw new display offset</li>
+</ul>
+<h4 id="settings">Settings</h4>
+<ul>
+<li><code>[?]</code> units preference for BG display</li>
+<li><code>[?]</code> units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)</li>
+<li><code>[x]</code> transmitter ID</li>
+<li><code>[x]</code> low alert settings<ul>
+<li><code>[x]</code> enabled</li>
+<li><code>[x]</code> level/threshold</li>
+<li><code>[x]</code> snooze threshold</li>
+</ul>
+</li>
+<li><code>[x]</code> high alert settings<ul>
+<li><code>[x]</code> enabled</li>
+<li><code>[x]</code> level/threshold</li>
+<li><code>[x]</code> snooze threshold</li>
+</ul>
+</li>
+<li><code>[x]</code> rate-of-change alerts<ul>
+<li><code>[x]</code> fall rate alert<ul>
+<li><code>[x]</code> enabled</li>
+<li><code>[x]</code> rate threshold for alerting</li>
+</ul>
+</li>
+<li><code>[x]</code> rise rate alert<ul>
+<li><code>[x]</code> enabled</li>
+<li><code>[x]</code> rate threshold for alerting</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[x]</code> out-of-range alerts<ul>
+<li><code>[x]</code> enabled</li>
+<li><code>[x]</code> snooze time between alerts</li>
+</ul>
+</li>
+<li><code>[ ]</code> predictive alerts<ul>
+<li><code>[ ]</code> low prediction<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> time sensitivity (minutes to predicted low for alerting)</li>
+</ul>
+</li>
+<li><code>[ ]</code> high prediction<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> time sensitivity (minutes to predicted high for alerting)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[ ]</code> calibration alerts/reminders<ul>
+<li><code>[ ]</code> pre-reminder</li>
+<li><code>[ ]</code> overdue alert</li>
+</ul>
+</li>
+</ul>
+<p>Settings history:</p>
+<ul>
+<li><code>[x]</code> device stores all changes to settings OR</li>
+<li><code>[ ]</code> device only returns current settings at time of upload</li>
+</ul>
+<p>No Tidepool data model (yet): volume and/or vibrate mode of all alerts (can/should go in <code>payload</code>).</p>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<p>We are including the following in the payload for Dexcom settings:</p>
+<ul>
+<li>language</li>
+<li>alarm profile name (e.g., &quot;Attentive,&quot; &quot;Hypo Repeat,&quot; etc.)</li>
+<li>internal timestamp</li>
+</ul>
+<h4 id="-bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
+<ul>
+<li><code>[x]</code> index<ul>
+<li><code>[ ]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
+<li><code>[x]</code> internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR</li>
+<li><code>[ ]</code> ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time</li>
+</ul>
+</li>
+<li><code>[x]</code> date &amp; time settings changes</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
+<blockquote>
+<p><strong>NB:</strong> You can and should add to this section if there are other data types documented in the device&apos;s data protocol specification but not part of Tidepool&apos;s data model (yet).</p>
+</blockquote>
+<ul>
+<li><code>[-]</code> activity/exercise</li>
+<li><code>[-]</code> food (e.g., Dexcom allows logging carb events)</li>
+<li><code>[-]</code> notes/other events</li>
+</ul>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../../lib/drivers/docs/bayerContourNext.html" class="navigation navigation-prev " aria-label="Previous page: Bayer Contour Next"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../../lib/drivers/docs/carelinkCGM.html" class="navigation navigation-next " aria-label="Next page: CareLink (CGM data)"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../../gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

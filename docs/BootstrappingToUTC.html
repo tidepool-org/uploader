@@ -1,0 +1,641 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>&quot;bootstrapping&quot; to UTC (BtUTC) | Tidepool Uploader</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.3">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../docs/checklisttemplates/index.html" />
+    
+    
+    <link rel="prev" href="../docs/state/index.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="2" data-basepath=".." data-revision="Tue Nov 24 2015 23:22:01 GMT-0800 (PST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="docs/state/index.html">
+            
+                
+                    <a href="../docs/state/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        application state
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="2" data-path="docs/BootstrappingToUTC.html">
+            
+                
+                    <a href="../docs/BootstrappingToUTC.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        &quot;bootstrapping&quot; to UTC (BtUTC)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="docs/checklisttemplates/index.html">
+            
+                
+                    <a href="../docs/checklisttemplates/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        checklist TEMPLATES
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="docs/checklisttemplates/BGMChecklist.html">
+            
+                
+                    <a href="../docs/checklisttemplates/BGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        BGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="docs/checklisttemplates/CGMChecklist.html">
+            
+                
+                    <a href="../docs/checklisttemplates/CGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        CGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="docs/checklisttemplates/PumpChecklist.html">
+            
+                
+                    <a href="../docs/checklisttemplates/PumpChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Insulin Pump Checklist
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="lib/drivers/docs/index.html">
+            
+                
+                    <a href="../lib/drivers/docs/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        checklists
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
+            
+                
+                    <a href="../lib/drivers/docs/abbottFreeStyleLite.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        Abbott FreeStyle
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="lib/drivers/docs/abbottPrecisionXtra.html">
+            
+                
+                    <a href="../lib/drivers/docs/abbottPrecisionXtra.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        Abbott Precision Xtra
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="lib/drivers/docs/animasPingAndVibe.html">
+            
+                
+                    <a href="../lib/drivers/docs/animasPingAndVibe.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.</b>
+                        
+                        Animas Ping and Vibe Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="lib/drivers/docs/bayerContourNext.html">
+            
+                
+                    <a href="../lib/drivers/docs/bayerContourNext.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.</b>
+                        
+                        Bayer Contour Next
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcomG4.html">
+            
+                
+                    <a href="../lib/drivers/docs/dexcomG4.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.5.</b>
+                        
+                        Dexcom CGM
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="lib/drivers/docs/carelinkCGM.html">
+            
+                
+                    <a href="../lib/drivers/docs/carelinkCGM.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.6.</b>
+                        
+                        CareLink (CGM data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="lib/drivers/docs/carelinkPumpData.html">
+            
+                
+                    <a href="../lib/drivers/docs/carelinkPumpData.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.7.</b>
+                        
+                        CareLink (insulin pump data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="lib/drivers/docs/insuletOmniPod.html">
+            
+                
+                    <a href="../lib/drivers/docs/insuletOmniPod.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.8.</b>
+                        
+                        Insulet OmniPod
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="lib/drivers/docs/tandem.html">
+            
+                
+                    <a href="../lib/drivers/docs/tandem.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.9.</b>
+                        
+                        Tandem Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="docs/misc/index.html">
+            
+                
+                    <a href="../docs/misc/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        miscellaneous
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="docs/misc/PWDSimulators.html">
+            
+                
+                    <a href="../docs/misc/PWDSimulators.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        PWD &quot;simulators&quot;
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="docs/misc/FlatRateBasals.html">
+            
+                
+                    <a href="../docs/misc/FlatRateBasals.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        challenges of flat basal profiles
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="docs/misc/2015.06.29CareLinkCSVChanges.html">
+            
+                
+                    <a href="../docs/misc/2015.06.29CareLinkCSVChanges.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        2015.06 CareLink CSV updates
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >Tidepool Uploader</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h2 id="background">Background</h2>
+<p>At present, no diabetes device that Tidepool knows about represents the date &amp; time at which device events occur in either UTC time or in a way that is anchored to UTC time - i.e., providing timezone and/or offset-from-UTC information. Because we are correlating data from many different sources for each user, we rely on UTC time as the absolute scale on which to place all the time series data ingested by the Tidepool platform.</p>
+<h2 id="timezoneoffsetutil">TimezoneOffsetUtil</h2>
+<p>The module in <code>lib/TimezoneOffsetUtil.js</code> is our best effort to &quot;bootstrap&quot; from device local time (<code>deviceTime</code>) to true UTC from a combination of three sources of information:</p>
+<ul>
+<li><p>the timezone that applies to the device user&apos;s most recent data on the device (selected by the device user in the uploader UI at the time of upload)</p>
+</li>
+<li><p>the timestamp of the most recent datum on the device</p>
+</li>
+<li><p>the set of changes to the date &amp; time settings on the device</p>
+</li>
+</ul>
+<p>In combination (because timezones and timezone offsets from UTC do not map 1:1 due to Daylight Savings Time, see <a href="#timezone-basics">Timezone Basics</a> below), the timezone and most recent timestamp allow us to determine the offset from UTC (in minutes) of the most recent data on the device. We then follow the set of date &amp; time settings changes on the device backwards from the most recent data to the earliest data on the device, adjusting the offset used to convert device local time into UTC according to the settings changes. This method produces a more accurate conversion to UTC than applying a timezone across-the-board because it properly accounts for travel across timezones, as well as doing a better job of representing the changes to and from Daylight Savings Time since this &quot;bootstrapping&quot; to UTC [henceforth: BtUTC] does not assume that a device user changes the device time at precisely the moment of change to or from Daylight Savings Time.</p>
+<p>In its current version, BtUTC now keeps track of <em>three</em> offsets from UTC - a <code>timezoneOffset</code> (see <a href="#timezone-basics">Timezone Basics</a> below) a <code>conversionOffset</code>, and a <code>clockDriftOffset</code>. Some date &amp; time settings changes in a device&apos;s history factor into updates to the stored <code>conversionOffset</code> or <code>clockDriftOffset</code>, while others affect the stored <code>timezoneOffset</code>. This is to preserve the semantics of the <code>timezoneOffset</code> field to match as closely as possible to the concept of what timezone offsets actually <em>are</em>. The original version of BtUTC only stored a <code>timezoneOffset</code> because it was primarily concerned with solving only the two most common use cases for device time changes on diabetes devices:</p>
+<ol>
+<li>changes resulting from the shift to or from Daylight Savings Time, in timezones where DST is observed</li>
+<li>changes resulting from travel across timezones</li>
+</ol>
+<p>These changes are interpreted appropriately as changes to the stored <code>timezoneOffset</code> on each datum.</p>
+<p>The <code>conversionOffset</code> was introduced because it became clear through the course of testing that there is a third collection of use cases that it is equally vital for BtUTC to cover - namely, changes resulting from incorrect set up of a device, including the device being set (from the first use of the device or only for a short period at some point in the history of the device&apos;s usage) to the wrong datetime entirely, including:</p>
+<ol>
+<li>device set to the wrong a.m. or p.m.</li>
+<li>device set to the wrong day</li>
+<li>device set to the wrong month</li>
+<li>device set to the wrong year</li>
+</ol>
+<p>The bottom two of these changes (device set to wrong month or wrong year) are only reflected in the stored <code>conversionOffset</code> on each datum. In a perfect world, BtUTC would also only adjust the <code>conversionOffset</code> (but not the <code>timezoneOffset</code>) for the top two, but it is unfortunately impossible to distinguish a settings change +/- 12 hours because of the device being set to the wrong a.m. or p.m. from travel across 12 hours worth of timezones. Similarly for when a device is set to the wrong day. The only consequence of this is that the <code>timezoneOffset</code> stored on (a subset of) a user&apos;s data will not always line up correctly with the timezone(s) the user was actually in when the data was generated. We aren&apos;t trying to infer the timezone(s) of data generation (which would not be an easy task, due to the lack of a 1:1 mapping between timezones and timezone offsets), so this is an acceptable consequence. The only timezone information we store, in fact, is the timezone selected by the user at the time of upload reflecting the timezone of the most recent data on the device about to be uploaded.</p>
+<p>Finally, the <code>clockDriftOffset</code> was introduced to handle:</p>
+<ol>
+<li>small changes (&lt; 7 minutes, 30 seconds) to the device display time, made when the user notices the device clock has &quot;drifted&quot; a few minutes from their phone/computer/other standard clock</li>
+<li>for any change interpreted as a change to the <code>timezoneOffset</code>, the difference between the offset change rounded to the nearest fifteen minutes (again, this is to preserve the semantics of the <code>timezoneOffset</code> field as far as is possible) and the raw offset change</li>
+</ol>
+<p>At one point, we simply included the <code>clockDriftOffset</code> as part of the <code>conversionOffset</code> and used both <code>conversionOffset</code> and <code>timezoneOffset</code> to convert between <code>time</code> and <code>deviceTime</code>. This had several undesirable side-effects, including the fact that factoring in every small device display time change a user makes results in the appperance of a drift away from start and end times of basal rate segments on exact hour, half-hour, etc. intervals. For a more detailed discussion of the <code>clockDriftOffset</code>, see <a href="#adjustments-for-clock-drift">Adjustments for &quot;Clock Drift&quot;</a> below.</p>
+<h3 id="usage">Usage</h3>
+<p>Each device driver - even those for devices that do not allow retrieval of date &amp; time settings changes - should integrate <code>TimezoneOffsetUtil</code> as the common way of generating the <code>time</code>, <code>timezoneOffset</code>, <code>conversionOffset</code>, and <code>clockDriftOffset</code> fields on each datum. For example, each driver should (1) import the utility:</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">var</span> TZOUtil = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;lib/TimezoneOffsetUtil&apos;</span>);
+</code></pre>
+<p>(2) initialize it with the information required to determine the initial <code>timezoneOffset</code> - that is, the user-selected timezone (<code>timezone</code>) and the UTC timestamp of the most recent datum from the device&apos;s history (<code>mostRecent</code>). At this time, an array of the date &amp; time settings changes from the device&apos;s history (<code>changes</code>) should also be provided as the third argument to the constructor. If the device does not store date &amp; time settings changes (as many/all BGMs do not), then just an empty array should be passed.</p>
+<pre><code class="lang-JavaScript">cfg.tzoUtil = <span class="hljs-keyword">new</span> TZOUtil(timezone, mostRecent, changes);
+</code></pre>
+<p>(3) employ the utility&apos;s <code>fillInUTCInfo</code> to fill in the <code>time</code>, <code>timezoneOffset</code>, <code>conversionOffset</code>, and <code>clockDriftOffset</code> on data that already have two pieces of time-related information attached: (a) the <code>deviceTime</code> as a string (<code>datum.deviceTime</code>) and (b) an index (<code>datum.index</code>) representing the event&apos;s position in the sequence of all events that occurred on the device, where such indices are monotonically increasing from earliest datum to latest. The <code>fillInUTCInfo</code> method expects a second argument as well - a <code>jsDate</code>, which is a JavaScript Date object resulting from parsing the device&apos;s native datetime format using <code>sundial.buildTimestamp</code> or <code>sundial.parseFromFormat</code> (usually this is the object used to produce <code>deviceTime</code> via <code>sundial.formatDeviceTime</code>, and we provide it as an additional argument to avoid re-parsing the <code>deviceTime</code>, as parsing time strings is rather expensive).</p>
+<pre><code class="lang-JavaScript">_.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">datum</span>) </span>{
+  cfg.tzoUtil.fillInUTCInfo(datum, jsDate);
+});
+</code></pre>
+<p>Each instance of the <code>TimezoneOffsetUtil</code> keeps track of which method for generating the <code>time</code> field is being employed - either across-the-board application of a timezone (when no date &amp; time settings changes were provided to the constructor) or &quot;bootstrapping&quot; to UTC. The method of <code>time</code> generation is publicly available through the <code>type</code> property on the instance (i.e., <code>cfg.tzoUtil.type</code>) and must be retrieved and provided as the <code>timeProcessing</code> field of the <a href="http://developer.tidepool.io/data-model/v1/upload/" target="_blank">upload metadata</a>.</p>
+<h4 id="expectations-for-timechange-events">Expectations for <code>timeChange</code> events</h4>
+<p>The partially built <code>timeChange</code> events composing the array of <code>changes</code> provided as the third argument to a new <code>TimezoneOffsetUtil</code> instance should have the following listed fields set through use of the uploader&apos;s <a href="https://github.com/tidepool-org/chrome-uploader/blob/master/lib/objectBuilder.js" target="_blank">objectBuilder</a>. All timestamps should be <a href="https://en.wikipedia.org/wiki/ISO_8601" title="Wikipedia: ISO 8601" target="_blank">ISO 8601</a>-formatted, without timezone offset information - e.g., <code>2015-01-01T12:00:00</code>.</p>
+<ul>
+<li><code>deviceTime</code> = timestamp</li>
+<li><code>change</code> = an object that itself has the following fields:<ul>
+<li><code>from</code> = timestamp</li>
+<li><code>to</code> = timestamp</li>
+<li><code>agent</code> = string (<em>optional</em>, can have values such as <code>manual</code> or <code>automatic</code>)</li>
+</ul>
+</li>
+<li><code>jsDate</code> = a JavaScript Date constructed from the <code>to</code> time</li>
+<li><code>index</code> = an index (with an expectation that all indices be monotonically increasing with event order) for the datum that allows it to be sorted with respect to all other events on the device in the order that the events actually happened (which will <em>not</em> match <code>deviceTime</code> order in the case of date &amp; time settings changes on the device)</li>
+</ul>
+<p>The <code>index</code> does not have to be numerical. For example, in the case of Dexcom data, the <code>index</code> is the Dexcom&apos;s <code>internalTime</code>, which is monotonically increasing and never affected by adjustments to the Dexcom&apos;s date &amp; time settings.</p>
+<p>The array of changes does not need to be sorted before passing it into the <code>TimezoneOffsetUtil</code> constructor. The changes <em>will</em> be mutated by the <code>TimezoneOffsetUtil</code>:</p>
+<ul>
+<li><code>time</code> will be added (the true UTC timestamp)</li>
+<li><code>timezoneOffset</code> will be added</li>
+<li><code>conversionOffset</code> will be added</li>
+<li><code>clockDriftOffset</code> will be added</li>
+<li><code>jsDate</code> will be deleted</li>
+</ul>
+<p>(As a historical aside: the choice to mutate the <code>timeChange</code> events makes for a somewhat deceptive and/or opaque API, but this was felt to be a better choice than repeating the same code (effecting the mutations described above) across all the device drivers. We may change this in the future.)</p>
+<p>The <code>fillInUTCInfo</code> method from the usage example above also mutates the object passed as its first argument, adding <code>time</code>, <code>timezoneOffset</code>, <code>conversionOffset</code>, and <code>clockDriftOffset</code> fields. An annotation may additionally be added if no <code>index</code> was provided on the object, which results in uncertainty in the determination of the correct UTC timestamp. (Some diabetes devices do not provide a monotonically increasing index on <em>all</em> events in the device history.)</p>
+<h3 id="assumptions">Assumptions</h3>
+<p>In this section, we outline the assumptions that <code>TimezoneOffsetUtil</code> currently makes. These may change - or may become configurable - in the future.</p>
+<h4 id="defaulting-to-across-the-board-timezone-application">Defaulting to Across-the-Board Timezone Application</h4>
+<p>Some devices that Tidepool supports or plans to support do not provide date &amp; time settings changes in the device data protocol; at present, all such devices Tidepool knows about are traditional fingerstick blood glucose meters. For these devices, there is no way to use the same BtUTC strategy, and so when <code>TimezoneOffsetUtil</code> is initialized with an empty array for <code>changes</code> (because there are no date &amp; time settings changes in the device data), it <em>defaults</em> to across-the-board application of the specified timezone to convert local device time into UTC time. This means that for users who travel extensively (and change the display time on all their diabetes devices when they do so), if they view their data in a timezone-aware display (rather than a display that visualizes data according to local device time), the data from their different devices may not always be aligned properly due to some of their devices&apos; timestamps being converted to UTC via across-the-board application of a timezone and some via BtUTC.</p>
+<p>Even for devices from which Tidepool <em>is</em> able to extract date &amp; time settings changes, if there are no date &amp; time settings changes in the data extracted from the device during a particular upload session, then the across-the-board timezone application strategy will still come into play as the default. This should produce accurate UTC timestamps as long as the correct timezone is selected by the user of the device on upload.</p>
+<h4 id="adjustments-for-clock-drift">Adjustments for &quot;Clock Drift&quot;</h4>
+<p><code>TimezoneOffsetUtil</code> does <em>not</em> assume that every change to the date &amp; time settings on the device should result in a change to the <code>timezoneOffset</code> stored on each datum; settings changes that do not look like timezone-related changes (i.e., plausibly to/from DST or travel across timezones) instead result in changes to the stored <code>conversionOffset</code> or <code>clockDriftOffset</code>. As described above, very large changes (wrong month, wrong year, etc.) are factored into the <code>conversionOffset</code>. On the other hand, very small changes are factored into the <code>clockDriftOffset</code>.</p>
+<p>Diabetes devices often suffer from &quot;clock drift,&quot; and some users are in the habit of regularly correcting this drift on their devices. &quot;Clock drift&quot; adjustments can also happen unintentionally due to the way that device UIs often work, allowing the user to set only the hour and minutes in the display time, such that changes the user makes will almost never be precisely <em>x</em> number of hours earlier or later, but rather <em>x</em> + some seconds. That difference of seconds will be perceived by the BtUTC code as &quot;clock drift&quot; adjustment. Since the correction to the drift does not represent a change to or from Daylight Savings Time or a change in timezone, it is not a change that we are particularly interested in tracking in the <code>timezoneOffset</code>, and in fact it would be detrimental to track it if we want to preserve the potential for associating timezones with the <code>timezoneOffset</code>s stored in the data. (Such association could be done via user interaction - e.g., a pop-up with the text: &quot;You changed the time on your device here. Were you travelling? Please select a timezone from these possibilities.&quot;)</p>
+<p>Of course, a threshold had to be chosen to decide what amount of display date &amp; time settings change counts as &quot;clock drift&quot; and what amount <em>doesn&apos;t</em>. Because there are a few fractional timezones in the world with offsets at the granularity of fifteen minutes - e.g., New Zealand&apos;s Chatham Islands (timezone &apos;Pacific/Chatham&apos; at UTC+12:45) - we have chosen to round all date &amp; time settings changes to the nearest fifteen minutes for the purpose of determining changes to the <code>timezoneOffset</code>, so any change that is seven and a half minutes or larger will be interpreted as a change to the <code>timezoneOffset</code>, while any change less than seven and a half minutes will be interpreted as &quot;clock drift&quot; and only reflected in an adjustment to the <code>clockDriftOffset</code>. When a user adjusts the &quot;clock drift&quot; at the same time as making a change related to DST or travel across timezones, we factor the (rounded) value of the change into the <code>timezoneOffset</code> and the (positive or negative) remainder into the <code>clockDriftOffset</code>.</p>
+<h4 id="clock-drift-offset-starts-at-zero">Clock Drift Offset Starts at Zero</h4>
+<p>Another assumption built into the current code is that the <code>clockDriftOffset</code> starts at zero for the most recent data on the device being uploaded. In reality, this is a simplifying assumption; in the vast majority of cases, there is probably a small (within seconds or minutes) difference between the user&apos;s device time and the computer time at the time of upload. If we wanted to be extraordinarily precise about the UTC timestamps stored for every datum, we would correct for this difference between device time and computer time immediately, starting with a <code>clockDriftOffset</code> equal to the difference between the two. The main thing stopping us from doing this is the fact that we don&apos;t yet have a robust enough interface for distinguishing between device time, computer time, device timezone, and computer timezone.</p>
+<p>Put another way, what&apos;s essential for this intitial release of BtUTC is that the user selects the timezone that applies to the most recent data on their device, even if that is <em>not</em> the user&apos;s current timezone (e.g., user travels from California to Florida, leaving all their diabetes devices in Pacific time but uploading from Florida; in this instance we want the user to select &apos;Pacific&apos; as the timezone that applies to their most recent data and we would <em>not</em> want to correct for the 3+ hour difference between device time and computer time).</p>
+<h4 id="upper-threshold-for-timezone-offset-changes">Upper Threshold for Timezone Offset Changes</h4>
+<p>In rare but certainly not unheard-of instances, a diabetes device user sets the time on the device to the entirely wrong month or year and later must correct it. We do not interpret such massive changes to the date &amp; time settings on the device as an adjustment to the <code>timezoneOffset</code>. Rather, whenever the absolute value of a date &amp; time settings change, rounded to the nearest fifteen minutes, is larger than the maximum difference possible by travelling between timezones (1560 minutes between UTC-12:00 and UTC+14:00), we apply this change (unrounded) as an adjustment to the <code>conversionOffset</code> and keep the same <code>timezoneOffset</code>.</p>
+<h2 id="timezone-basics">Timezone Basics</h2>
+<p>It is vitally important in the context of complex time-processing code like the above-described BtUTC to have a good understanding of all the relevant terms and use them precisely. So here is a small glossary, just in case these concepts are new:</p>
+<h3 id="timezone">timezone</h3>
+<p>A timezone is a string naming a valid timezone from the <a href="https://www.iana.org/time-zones" target="_blank">IANA Time Zone Database</a>. Some examples are <code>US/Pacific</code> or <code>Pacific/Auckland</code>. You can see many more examples by hovering over the map on <a href="http://momentjs.com/timezone/" target="_blank">Moment Timezone&apos;s landing page</a>. In many cases a timezone does <em>not</em> map 1:1 with a timezone offset to UTC because of Daylight Savings Time. For example, the timezone <code>US/Eastern</code> has an offset to UTC of 300 (UTC is 300 minutes <em>ahead</em> of <code>US/Eastern</code>) when Daylight Savings is <em>not</em> in effect, but an offset to UTC of 240 when Daylight Savings <em>is</em> in effect.</p>
+<h3 id="timezone-offset">timezone offset</h3>
+<p>A timezone offset is an integer, positive or negative, giving the number of minutes of offset required to translate a local datetime into UTC. JavaScript Date and the <a href="http://momentjs.com/timezone/" target="_blank">Moment Timezone</a> library specify timezone offsets <em>to</em> UTC from the local datetime, so the offsets are positive for the North American timezones, which are behind UTC time - that is, you need to <em>add</em> hours to get from local time to UTC time. In our data model, we store timezone offsets as minutes <em>from</em> UTC, so the offsets are negative for the North American timezones, reflecting the fact that you need to <em>subtract</em> hours from UTC to get the local time. While this choice goes against the grain of how timezone offsets are represented in JavaScript, it agrees with the <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601 international standard</a> for representation of dates and times.</p>
+<p>Overall, the relationship between the fields <code>deviceTime</code>, <code>time</code>, and <code>timezoneOffset</code> in the Tidepool data model can be generalized as follows (assuming all appropriate unit conversions have been made):</p>
+<pre><code>deviceTime = time + timezoneOffset
+</code></pre><p>In the second version of BtUTC we are adding a <code>conversionOffset</code> to the data model to handle a wider range of use cases, and so the <em>new</em> generalization is:</p>
+<pre><code>deviceTime = time + timezoneOffset + conversionOffset
+</code></pre><p>In the most current (and production) version of BtUTC, this generalization has <em>not</em> changed, despite the addition of the <code>clockDriftOffset</code>. Another way of putting this is to say that we store <code>clockDriftOffset</code> for data auditing and provenance <em>only</em>, at least at this point in time.</p>
+<h4 id="finding-a-timezone-offset">finding a timezone offset</h4>
+<p>If you don&apos;t have the timezone offset for a particular datum and you want to find it, you need <em>two</em> pieces of information:</p>
+<ol>
+<li>the local timezone (name)</li>
+<li>the local datetime OR the UTC time</li>
+</ol>
+<p>This is because again, timezones do not map to timezone offsets 1:1, so some other anchor is needed to decide which offset associated with a named timezone to map to, when there is more than one option. Either the local datetime or the true UTC time for the datum can serve as this anchor.</p>
+<p>The reverse is also true: timezone offsets do not map to timezones 1:1. For example, in the United States, Arizona does not participate in DST. It has a timezone offset of 420 minutes to UTC year-round, while neighboring geographical areas in the <code>US/Mountain</code> timezone (e.g., New Mexico) share the same offset when DST is <em>not</em> in effect but have an offset of 360 minutes to UTC when DST <em>is</em> in effect. So the offset of 420 is ambiguous between at least two timezones (and actually more, when you consider Canadian and South American timezones as well).</p>
+<h3 id="timezone-offset-abbreviations">timezone offset abbreviations</h3>
+<p>There is a set of (mostly?) three-letter codes used to abbreviate timezone + timezone offset information. For example, <code>PDT</code> refers to the <code>US/Pacific</code> timezone under Daylight Savings Time, which is an offset of 420 minutes to UTC, while <code>PST</code> refers to the same timezone when DST is not in effect (the <code>S</code> in <code>PST</code> is for &quot;standard&quot; time), an offset of 480 minutes to UTC. It is important to keep these abbreviations distinct from timezone names. Don&apos;t use an abbreviation where a timezone is requested, and vice versa.</p>
+<h3 id="daylight-savings-time">Daylight Savings Time</h3>
+<p>There is way too much history and complication on this topic to introduce it here concisely. If you don&apos;t know what Daylight Savings Time is, try <a href="https://en.wikipedia.org/wiki/Daylight_saving_time" title="Wikipedia: Daylight Savings Time" target="_blank">the wikipedia article</a> for it.</p>
+<p>For our purposes, all that is important to understand is the following:</p>
+<ul>
+<li>DST is responsible for the lack of a 1:1 mapping between timezones and timezone offsets</li>
+<li>different countries around the world (and in different hemispheres!) change to and from DST at different dates and times</li>
+</ul>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../docs/state/index.html" class="navigation navigation-prev " aria-label="Previous page: application state"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../docs/checklisttemplates/index.html" class="navigation navigation-next " aria-label="Next page: checklist TEMPLATES"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

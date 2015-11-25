@@ -1,0 +1,545 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>challenges of flat basal profiles | Tidepool Uploader</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.3">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../docs/misc/2015.06.29CareLinkCSVChanges.html" />
+    
+    
+    <link rel="prev" href="../../docs/misc/PWDSimulators.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="5.2" data-basepath="../.." data-revision="Tue Nov 24 2015 23:22:01 GMT-0800 (PST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="docs/state/index.html">
+            
+                
+                    <a href="../../docs/state/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        application state
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="docs/BootstrappingToUTC.html">
+            
+                
+                    <a href="../../docs/BootstrappingToUTC.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        &quot;bootstrapping&quot; to UTC (BtUTC)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="docs/checklisttemplates/index.html">
+            
+                
+                    <a href="../../docs/checklisttemplates/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        checklist TEMPLATES
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="docs/checklisttemplates/BGMChecklist.html">
+            
+                
+                    <a href="../../docs/checklisttemplates/BGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        BGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="docs/checklisttemplates/CGMChecklist.html">
+            
+                
+                    <a href="../../docs/checklisttemplates/CGMChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        CGM Checklist
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="docs/checklisttemplates/PumpChecklist.html">
+            
+                
+                    <a href="../../docs/checklisttemplates/PumpChecklist.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        Insulin Pump Checklist
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="lib/drivers/docs/index.html">
+            
+                
+                    <a href="../../lib/drivers/docs/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        checklists
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
+            
+                
+                    <a href="../../lib/drivers/docs/abbottFreeStyleLite.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        Abbott FreeStyle
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="lib/drivers/docs/abbottPrecisionXtra.html">
+            
+                
+                    <a href="../../lib/drivers/docs/abbottPrecisionXtra.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        Abbott Precision Xtra
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="lib/drivers/docs/animasPingAndVibe.html">
+            
+                
+                    <a href="../../lib/drivers/docs/animasPingAndVibe.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.</b>
+                        
+                        Animas Ping and Vibe Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="lib/drivers/docs/bayerContourNext.html">
+            
+                
+                    <a href="../../lib/drivers/docs/bayerContourNext.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.</b>
+                        
+                        Bayer Contour Next
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcomG4.html">
+            
+                
+                    <a href="../../lib/drivers/docs/dexcomG4.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.5.</b>
+                        
+                        Dexcom CGM
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="lib/drivers/docs/carelinkCGM.html">
+            
+                
+                    <a href="../../lib/drivers/docs/carelinkCGM.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.6.</b>
+                        
+                        CareLink (CGM data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="lib/drivers/docs/carelinkPumpData.html">
+            
+                
+                    <a href="../../lib/drivers/docs/carelinkPumpData.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.7.</b>
+                        
+                        CareLink (insulin pump data)
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" data-path="lib/drivers/docs/insuletOmniPod.html">
+            
+                
+                    <a href="../../lib/drivers/docs/insuletOmniPod.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.8.</b>
+                        
+                        Insulet OmniPod
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.9" data-path="lib/drivers/docs/tandem.html">
+            
+                
+                    <a href="../../lib/drivers/docs/tandem.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.9.</b>
+                        
+                        Tandem Insulin Pumps
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="docs/misc/index.html">
+            
+                
+                    <a href="../../docs/misc/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        miscellaneous
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="docs/misc/PWDSimulators.html">
+            
+                
+                    <a href="../../docs/misc/PWDSimulators.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        PWD &quot;simulators&quot;
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="5.2" data-path="docs/misc/FlatRateBasals.html">
+            
+                
+                    <a href="../../docs/misc/FlatRateBasals.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        challenges of flat basal profiles
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="docs/misc/2015.06.29CareLinkCSVChanges.html">
+            
+                
+                    <a href="../../docs/misc/2015.06.29CareLinkCSVChanges.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        2015.06 CareLink CSV updates
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../" >Tidepool Uploader</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h2 id="flat-rate-basals">Flat-Rate Basals</h2>
+<h3 id="the-problem">The Problem</h3>
+<p>Most - if not all - diabetes manufacturers represent basal rate insulin data with <em>basal rate change</em> events (see <a href="#terminology">Terminology</a> below) rather than <em>basal rate intervals</em>. In the particular case where the user of an insulin pump has programmed a <em>flat-rate basal schedule</em>, this means that flat-rate basal rate change events are represented in one of two ways:</p>
+<ol>
+<li><p>The pump records a basal rate change event every midnight (local device time) when the basal schedule (with its single segment) takes effect, as well as at any other times when the basal rate has changed such as upon the conclusion of a temp basal or on resumption from a suspend event.</p>
+</li>
+<li><p>The pump records a basal rate change event only when the basal rate has actually <em>changed</em>, which means only: on first initialization of the schedule and after any temp basals or resumption from a suspend event.</p>
+</li>
+</ol>
+<p>The second representation - only recording basal rate change events when the insulin delivery rate has truly changed - unfortunately poses quite a challenge for any data processing (such as ours at Tidepool) attempting to transform <em>basal rate change events</em> (point-in-time data) to <em>basal rate segments</em> (interval data). The issue is that when determining the duration of a basal rate segment from the user&apos;s current settings (as is necessary for the final basal segment in any upload), our general strategy is to only extend the duration of the final segment up to the maximum based on the final basal&apos;s matched segment in the schedule - no greater than twenty-four hours on a normal (i.e., not affected by DST) day. If a user has a flat-rate basal, this means we may fail to extend basal data up until the time of upload (if the last rate change was several days prior to upload). In this case, the user will appear to be missing basal data for the most recent day(s) in their upload. One potential solution to this problem is to &quot;simulate&quot; basal rate change events at midnight as an aid to producing the correct basal rate segments representing the scheduled delivery for each day. If this strategy is employed, the segments resulting from such fabrication should be given an annotation to record that they are fabricated events.</p>
+<h3 id="terminology">Terminology</h3>
+<p><strong>basal rate change</strong>: A basal rate change event is a point-in-time data type. It consists of a <em>rate</em> (insulin delivery in units of insulin per hour) and a timestamp.</p>
+<p><strong>basal (rate) segment</strong>: A basal (rate) segment is an interval data type. It consists of a <em>rate</em> (insulin delivery in units of insulin per hour), and either a pair of <em>start</em> and <em>end</em> timestamps or a <em>start</em> timestamp and a <em>duration</em>.</p>
+<p><strong>basal schedule</strong>: A set of basal rate segments that is programmed into an insulin pump. Each basal schedule represents the basal rate(s) (in units of insulin per hour) to be delivered at different times in a standard twenty-four hour day. Thus, each segment of the schedule consists of a <em>rate</em> and a <em>start</em>. The latter is represented as milliseconds from midnight. The first segment of every basal schedule will have a <em>start</em> of 0 (representing midnight). When there is more than one segment in the schedule, the duration of each segment is determined by subtracting the start of the segment in question from the start of the following segment. If there is only one segment in the schedule, it&apos;s duration is (normally) 86,400,000 milliseconds (twenty-four hours), but it could be 90,000,000 or 82,800,000 on a (theoretical) device that is timezone-aware and set to a timezone that observes Daylight Savings Time.</p>
+<p>(NB: Various manufacturers use different terms for this - e.g., basal profile. We have chosen basal schedule as our standard term.)</p>
+<p><strong>flat-rate basal (schedule)</strong>: A flat-rate basal (or more precisely a flat-rate basal <em>schedule</em>) is a basal schedule that consists in only <em>one</em> basal rate segment that operates all twenty-four hours of a normal day.</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../docs/misc/PWDSimulators.html" class="navigation navigation-prev " aria-label="Previous page: PWD &quot;simulators&quot;"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../docs/misc/2015.06.29CareLinkCSVChanges.html" class="navigation navigation-next " aria-label="Next page: 2015.06 CareLink CSV updates"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../gitbook/app.js"></script>
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
