@@ -33,7 +33,9 @@ The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors 
 
 ## How to run the tests
 
-```npm test```
+```bash
+$ npm test
+```
 
 
 ## Publishing (to the devel/staging testing & development Chrome store account or production)

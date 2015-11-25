@@ -29,3 +29,6 @@ bower_components
 .idea
 *.iml
 .com.apple.timemachine.*
+
+_book/
+web/

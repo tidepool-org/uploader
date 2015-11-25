@@ -72,7 +72,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 #### CBG
 
-(See [the CGM checklist](CGMChecklist.md) instead.)
+(See [the CGM checklist](../../../docs/checklisttemplates/CGMChecklist.md) instead.)
 
 #### Device Events
 
