@@ -71,8 +71,8 @@
           "vendorId": 1155,
           "productId": 22336,
           "bitrate": 921600,
-          "sendTimeout": 100,
-          "receiveTimeout": 100
+          "sendTimeout": 50,
+          "receiveTimeout": 50
         },
         {
           "deviceName": "OneTouchUltra2 w/FTDI cable",
