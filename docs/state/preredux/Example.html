@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>CareLink (CGM data) | Tidepool Uploader</title>
+        <title>Pre-redux example | Tidepool Uploader</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.4.3">
@@ -29,10 +29,10 @@
         
     
     
-    <link rel="next" href="../../../lib/drivers/docs/carelinkPumpData.html" />
+    <link rel="next" href="../../../docs/state/preredux/Problems.html" />
     
     
-    <link rel="prev" href="../../../lib/drivers/docs/dexcomG4.html" />
+    <link rel="prev" href="../../../docs/state/preredux/index.html" />
     
 
         
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.6" data-basepath="../../.." data-revision="Thu Nov 26 2015 17:14:54 GMT-0800 (PST)">
+    <div class="book" data-level="1.2" data-basepath="../../.." data-revision="Thu Nov 26 2015 17:14:54 GMT-0800 (PST)">
     
 
 <div class="book-summary">
@@ -102,7 +102,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="docs/state/preredux/Example.html">
+        <li class="chapter active" data-level="1.2" data-path="docs/state/preredux/Example.html">
             
                 
                     <a href="../../../docs/state/preredux/Example.html">
@@ -309,7 +309,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="4.6" data-path="lib/drivers/docs/carelinkCGM.html">
+        <li class="chapter " data-level="4.6" data-path="lib/drivers/docs/carelinkCGM.html">
             
                 
                     <a href="../../../lib/drivers/docs/carelinkCGM.html">
@@ -546,126 +546,156 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="cgm-via-carelink">CGM via CareLink</h1>
-<h2 id="checklist-for-cgm-implementation">Checklist for CGM Implementation</h2>
-<p>(Key:</p>
-<ul>
-<li><code>[x]</code> available in data protocol/documented in spec and implemented</li>
-<li><code>[-]</code> available in data protocol/documented in spec but <em>not</em> yet implemented</li>
-<li><code>[?]</code> unknown whether available in data protocol/documented in spec; <em>not</em> yet implemented</li>
-<li><code>*[ ]</code> TODO: needs implementation!</li>
-<li><code>[ ]</code> unavailable in data protocol and/or not documented in spec and not yet implemented)</li>
-</ul>
-<h3 id="required-if-present">Required if Present</h3>
-<h4 id="cbg">CBG</h4>
-<ul>
-<li><code>[x]</code> cbg values</li>
-<li><code>[x]</code> units of cbg values (read from device, not hard-coded)</li>
-<li><code>*[-]</code> out-of-range values (LO or HI)</li>
-<li><code>[?]</code> out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)</li>
-</ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<h4 id="device-events">Device Events</h4>
-<ul>
-<li><code>*[-]</code> calibrations<ul>
-<li><code>*[-]</code> calibration value</li>
-<li><code>*[-]</code> units of calibration value (read from device, not hard-coded)</li>
-</ul>
-</li>
-<li><code>[x]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
-<li><code>[x]</code> device display time <code>from</code> (before change) and <code>to</code> (result of change)</li>
-<li><code>[x]</code> agent of change (<code>automatic</code> or <code>manual</code>)</li>
-<li><code>[ ]</code> timezone</li>
-<li><code>[ ]</code> reason for change (read from device)</li>
-</ul>
-</li>
-</ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<p>We are including the following in the payload for CareLink time changes:</p>
-<ul>
-<li>raw <code>NEW_TIME</code> in pseudo-POSIX integer format</li>
-</ul>
-<h4 id="settings">Settings</h4>
-<ul>
-<li><code>*[-]</code> units preference for BG display</li>
-<li><code>*[-]</code> units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)</li>
-<li><code>*[-]</code> transmitter ID</li>
-<li><code>*[-]</code> low alert settings<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> level/threshold</li>
-<li><code>*[-]</code> snooze threshold</li>
-</ul>
-</li>
-<li><code>*[-]</code> high alert settings<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> level/threshold</li>
-<li><code>*[-]</code> snooze threshold</li>
-</ul>
-</li>
-<li><code>*[-]</code> rate-of-change alerts<ul>
-<li><code>*[-]</code> fall rate alert<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> rate threshold for alerting</li>
-</ul>
-</li>
-<li><code>*[-]</code> rise rate alert<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> rate threshold for alerting</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>*[-]</code> out-of-range alerts<ul>
-<li><code>[?]</code> enabled</li>
-<li><code>*[-]</code> snooze time between alerts</li>
-</ul>
-</li>
-<li><code>*[-]</code> predictive alerts<ul>
-<li><code>*[-]</code> low prediction<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> time sensitivity (minutes to predicted low for alerting)</li>
-</ul>
-</li>
-<li><code>*[-]</code> high prediction<ul>
-<li><code>*[-]</code> enabled</li>
-<li><code>*[-]</code> time sensitivity (minutes to predicted high for alerting)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>*[-]</code> calibration alerts/reminders<ul>
-<li><code>*[-]</code> pre-reminder</li>
-<li><code>*[-]</code> overdue alert</li>
-</ul>
-</li>
-</ul>
-<p>Settings history:</p>
-<ul>
-<li><code>[x]</code> device stores all changes to settings OR</li>
-<li><code>[ ]</code> device only returns current settings at time of upload</li>
-</ul>
-<p>No Tidepool data model (yet): volume and/or vibrate mode of all alerts (can/should go in <code>payload</code>).</p>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<h4 id="-bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
-<ul>
-<li><code>[x]</code> index<ul>
-<li><code>[ ]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
-<li><code>[?]</code> internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR</li>
-<li><code>[?]</code> ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time</li>
-</ul>
-</li>
-<li><code>[x]</code> date &amp; time settings changes</li>
-</ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
-<blockquote>
-<p><strong>NB:</strong> You can and should add to this section if there are other data types documented in the device&apos;s data protocol specification but not part of Tidepool&apos;s data model (yet).</p>
-</blockquote>
-<ul>
-<li><code>[ ]</code> activity/exercise</li>
-<li><code>[ ]</code> food (e.g., Dexcom allows logging carb events)</li>
-<li><code>[ ]</code> notes/other events</li>
-</ul>
+                        <p>Here is an example of the entire application state before the migration into redux, stringified into JSON:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;dropMenu&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-string">&quot;howToUpdateKBLink&quot;</span>: <span class="hljs-string">&quot;https://tidepool-project.helpscoutdocs.com/article/6-how-to-install-or-upgrade-the-tidepool-uploader-gen&quot;</span>,
+  <span class="hljs-string">&quot;page&quot;</span>: <span class="hljs-string">&quot;main&quot;</span>,
+  <span class="hljs-string">&quot;user&quot;</span>: {
+    <span class="hljs-string">&quot;userid&quot;</span>: <span class="hljs-string">&quot;abcdef123&quot;</span>,
+    <span class="hljs-string">&quot;username&quot;</span>: <span class="hljs-string">&quot;jane+skip@tidepool.org&quot;</span>,
+    <span class="hljs-string">&quot;emails&quot;</span>: [
+      <span class="hljs-string">&quot;jane+skip@tidepool.org&quot;</span>
+    ],
+    <span class="hljs-string">&quot;termsAccepted&quot;</span>: <span class="hljs-string">&quot;2015-11-17T16:10:53-08:00&quot;</span>,
+    <span class="hljs-string">&quot;profile&quot;</span>: {
+      <span class="hljs-string">&quot;fullName&quot;</span>: <span class="hljs-string">&quot;Jane Doe&quot;</span>,
+      <span class="hljs-string">&quot;patient&quot;</span>: {
+        <span class="hljs-string">&quot;birthday&quot;</span>: <span class="hljs-string">&quot;1980-01-01&quot;</span>,
+        <span class="hljs-string">&quot;diagnosisDate&quot;</span>: <span class="hljs-string">&quot;1999-04-01&quot;</span>,
+        <span class="hljs-string">&quot;about&quot;</span>: <span class="hljs-string">&quot;No thanks :P&quot;</span>
+      }
+    },
+    <span class="hljs-string">&quot;uploadGroups&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;userid&quot;</span>: <span class="hljs-string">&quot;ghijkl456&quot;</span>,
+        <span class="hljs-string">&quot;profile&quot;</span>: {
+          <span class="hljs-string">&quot;fullName&quot;</span>: <span class="hljs-string">&quot;Jack Doe&quot;</span>,
+          <span class="hljs-string">&quot;patient&quot;</span>: {
+            <span class="hljs-string">&quot;birthday&quot;</span>: <span class="hljs-string">&quot;1982-05-01&quot;</span>,
+            <span class="hljs-string">&quot;diagnosisDate&quot;</span>: <span class="hljs-string">&quot;1999-04-01&quot;</span>,
+            <span class="hljs-string">&quot;about&quot;</span>: <span class="hljs-string">&quot;Another Doe sibling...&quot;</span>
+          }
+        }
+      },
+      {
+        <span class="hljs-string">&quot;userid&quot;</span>: <span class="hljs-string">&quot;abcdef123&quot;</span>,
+        <span class="hljs-string">&quot;profile&quot;</span>: {
+          <span class="hljs-string">&quot;fullName&quot;</span>: <span class="hljs-string">&quot;Jane Doe&quot;</span>,
+          <span class="hljs-string">&quot;patient&quot;</span>: {
+            <span class="hljs-string">&quot;birthday&quot;</span>: <span class="hljs-string">&quot;1980-01-01&quot;</span>,
+            <span class="hljs-string">&quot;diagnosisDate&quot;</span>: <span class="hljs-string">&quot;1999-04-01&quot;</span>,
+            <span class="hljs-string">&quot;about&quot;</span>: <span class="hljs-string">&quot;No thanks :P&quot;</span>
+          }
+        }
+      }
+    ]
+  },
+  <span class="hljs-string">&quot;targetId&quot;</span>: <span class="hljs-string">&quot;abcdef123&quot;</span>,
+  <span class="hljs-string">&quot;targetDevices&quot;</span>: [
+    <span class="hljs-string">&quot;omnipod&quot;</span>
+  ],
+  <span class="hljs-string">&quot;targetTimezone&quot;</span>: <span class="hljs-string">&quot;US/Pacific&quot;</span>,
+  <span class="hljs-string">&quot;targetTimezoneLabel&quot;</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-string">&quot;uploads&quot;</span>: [
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Medtronic (from CareLink)&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;carelink&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;carelink&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Insulet OmniPod&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;omnipod&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;block&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;InsuletOmniPod&quot;</span>,
+        <span class="hljs-string">&quot;extension&quot;</span>: <span class="hljs-string">&quot;.ibf&quot;</span>
+      },
+      <span class="hljs-string">&quot;progress&quot;</span>: {
+        <span class="hljs-string">&quot;targetId&quot;</span>: <span class="hljs-string">&quot;abcdef123&quot;</span>,
+        <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;2015-11-26T17:08:50-08:00&quot;</span>,
+        <span class="hljs-string">&quot;step&quot;</span>: <span class="hljs-string">&quot;start&quot;</span>,
+        <span class="hljs-string">&quot;percentage&quot;</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-string">&quot;finish&quot;</span>: <span class="hljs-string">&quot;2015-11-26T17:08:50-08:00&quot;</span>,
+        <span class="hljs-string">&quot;error&quot;</span>: {
+          <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;tidepool-uploader 0.233.0&quot;</span>,
+          <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-string">&quot;E_SELECTING_FILE&quot;</span>,
+          <span class="hljs-string">&quot;friendlyMessage&quot;</span>: <span class="hljs-string">&quot;Error during file selection&quot;</span>,
+          <span class="hljs-string">&quot;stringifiedStack&quot;</span>: <span class="hljs-string">&quot;Object.appActions.readFile, onBlockModeInputChange, Object.LinkedValueUtils.executeOnChange, ReactDOMComponent._handleChange, Object.ReactErrorUtils.invokeGuardedCallback, executeDispatch, Object.executeDispatchesInOrder, executeDispatchesAndRelease, executeDispatchesAndReleaseTopLevel, Array.forEach&quot;</span>,
+          <span class="hljs-string">&quot;debug&quot;</span>: <span class="hljs-string">&quot;Detail: Please choose a file ending in .ibf | Error UTC Time: 2015-11-26T17:08:50-08:00 | Code: E_SELECTING_FILE | Error Type: Error | Version: tidepool-uploader 0.233.0 | Stack Trace: Object.appActions.readFile, onBlockModeInputChange, Object.LinkedValueUtils.executeOnChange, ReactDOMComponent._handleChange, Object.ReactErrorUtils.invokeGuardedCallback, executeDispatch, Object.executeDispatchesInOrder, executeDispatchesAndRelease, executeDispatchesAndReleaseTopLevel, Array.forEach&quot;</span>
+        }
+      },
+      <span class="hljs-string">&quot;history&quot;</span>: [
+        {
+          <span class="hljs-string">&quot;targetId&quot;</span>: <span class="hljs-string">&quot;abcdef123&quot;</span>,
+          <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;2015-11-26T17:08:50-08:00&quot;</span>,
+          <span class="hljs-string">&quot;step&quot;</span>: <span class="hljs-string">&quot;start&quot;</span>,
+          <span class="hljs-string">&quot;percentage&quot;</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-string">&quot;finish&quot;</span>: <span class="hljs-string">&quot;2015-11-26T17:08:50-08:00&quot;</span>,
+          <span class="hljs-string">&quot;error&quot;</span>: {
+            <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;tidepool-uploader 0.233.0&quot;</span>,
+            <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-string">&quot;E_SELECTING_FILE&quot;</span>,
+            <span class="hljs-string">&quot;friendlyMessage&quot;</span>: <span class="hljs-string">&quot;Error during file selection&quot;</span>,
+            <span class="hljs-string">&quot;stringifiedStack&quot;</span>: <span class="hljs-string">&quot;Object.appActions.readFile, onBlockModeInputChange, Object.LinkedValueUtils.executeOnChange, ReactDOMComponent._handleChange, Object.ReactErrorUtils.invokeGuardedCallback, executeDispatch, Object.executeDispatchesInOrder, executeDispatchesAndRelease, executeDispatchesAndReleaseTopLevel, Array.forEach&quot;</span>,
+            <span class="hljs-string">&quot;debug&quot;</span>: <span class="hljs-string">&quot;Detail: Please choose a file ending in .ibf | Error UTC Time: 2015-11-26T17:08:50-08:00 | Code: E_SELECTING_FILE | Error Type: Error | Version: tidepool-uploader 0.233.0 | Stack Trace: Object.appActions.readFile, onBlockModeInputChange, Object.LinkedValueUtils.executeOnChange, ReactDOMComponent._handleChange, Object.ReactErrorUtils.invokeGuardedCallback, executeDispatch, Object.executeDispatchesInOrder, executeDispatchesAndRelease, executeDispatchesAndReleaseTopLevel, Array.forEach&quot;</span>
+          }
+        }
+      ]
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Dexcom G4&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;dexcom&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;DexcomG4&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Tandem&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;tandem&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;Tandem&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bayer Contour Next&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;bayercontournext&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;BayerContourNext&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bayer Contour Next USB&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;bayercontournextusb&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;BayerContourNextUsb&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bayer Contour USB&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;bayercontourusb&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;BayerContourUsb&quot;</span>
+      }
+    },
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bayer Contour Next LINK&quot;</span>,
+      <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;bayercontournextlink&quot;</span>,
+      <span class="hljs-string">&quot;source&quot;</span>: {
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;device&quot;</span>,
+        <span class="hljs-string">&quot;driverId&quot;</span>: <span class="hljs-string">&quot;BayerContourNextLink&quot;</span>
+      }
+    }
+  ],
+  <span class="hljs-string">&quot;_os&quot;</span>: <span class="hljs-string">&quot;mac&quot;</span>
+}
+</code></pre>
 
                     
                     </section>
@@ -676,10 +706,10 @@
         </div>
 
         
-        <a href="../../../lib/drivers/docs/dexcomG4.html" class="navigation navigation-prev " aria-label="Previous page: Dexcom CGM"><i class="fa fa-angle-left"></i></a>
+        <a href="../../../docs/state/preredux/index.html" class="navigation navigation-prev " aria-label="Previous page: Pre-redux"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../../../lib/drivers/docs/carelinkPumpData.html" class="navigation navigation-next " aria-label="Next page: CareLink (insulin pump data)"><i class="fa fa-angle-right"></i></a>
+        <a href="../../../docs/state/preredux/Problems.html" class="navigation navigation-next " aria-label="Next page: Pre-redux problems"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
