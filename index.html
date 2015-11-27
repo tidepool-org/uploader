@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="0" data-basepath="." data-revision="Tue Nov 24 2015 23:22:01 GMT-0800 (PST)">
+    <div class="book" data-level="0" data-basepath="." data-revision="Thu Nov 26 2015 16:47:25 GMT-0800 (PST)">
     
 
 <div class="book-summary">
@@ -81,6 +81,42 @@
                         application state
                     </a>
             
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="docs/state/preredux/index.html">
+            
+                
+                    <a href="./docs/state/preredux/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        Pre-redux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="docs/state/preredux/Problems.html">
+            
+                
+                    <a href="./docs/state/preredux/Problems.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Pre-redux problems
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -501,7 +537,7 @@
 <ol>
 <li>Clone this repository.</li>
 <li>Run <code>npm install</code></li>
-<li>Set the config for the environment you want to target (see <a href="#config">Config</a> section below)</li>
+<li>Set the config for the environment you want to target (See <a href="#config">Config</a> section below.)</li>
 <li>Run <code>npm start</code> (This will bundle files and watch for changes. When it stops printing output you can continue to the next step.)</li>
 <li>Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).</li>
 <li>Click &quot;Load Unpacked Extension&quot;.</li>
@@ -517,8 +553,7 @@ $ npm start
 <h3 id="debug-mode">Debug Mode</h3>
 <p>The environment variable <code>DEBUG_ERROR</code> (boolean) controls whether or not errors are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible). Debug mode is turned on by default in <code>config/debug.sh</code>.</p>
 <h2 id="how-to-run-the-tests">How to run the tests</h2>
-<pre><code class="lang-bash">$ <span class="hljs-built_in">source</span> config/local.sh
-$ npm <span class="hljs-built_in">test</span>
+<pre><code class="lang-bash">$ npm <span class="hljs-built_in">test</span>
 </code></pre>
 <h2 id="publishing-to-the-devel-staging-test-chrome-store-or-production">Publishing (to the devel/staging test Chrome store or production)</h2>
 <p>Assuming you&apos;ve already merged any changes to master and are on master locally...</p>
