@@ -1,6 +1,9 @@
 # Summary
 
 * [application state](docs/state/README.md)
+  * [Pre-redux](docs/state/preredux/README.md)
+  * [Pre-redux problems](docs/state/preredux/Problems.md)
+  <!-- * [Post-migration to redux](docs/state/redux/README.md) -->
 
 * ["bootstrapping" to UTC (BtUTC)](docs/BootstrappingToUTC.md)
 
