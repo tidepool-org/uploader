@@ -20,8 +20,8 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../lib/insulet/insuletSimulator.js');
-var builder = require('../../lib/objectBuilder')();
+var pwdSimulator = require('../../../lib/insulet/insuletSimulator.js');
+var builder = require('../../../lib/objectBuilder')();
 
 describe('insuletSimulator.js', function() {
   var simulator = null;

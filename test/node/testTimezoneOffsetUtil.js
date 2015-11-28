@@ -15,14 +15,12 @@
  * == BSD2 LICENSE ==
  */
 
-/* global describe, it */
-
 var _ = require('lodash');
 var d3 = require('d3');
 var expect = require('salinity').expect;
 
-var builder = require('../lib/objectBuilder')();
-var TZOUtil = require('../lib/TimezoneOffsetUtil');
+var builder = require('../../lib/objectBuilder')();
+var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
 describe('TimezoneOffsetUtil.js', function(){
   it('exports a function', function(){

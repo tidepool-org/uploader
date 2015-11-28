@@ -15,12 +15,10 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var localStore = require('../lib/core/localStore');
+var localStore = require('../../lib/core/localStore');
 
 describe('localStore [node.js version for testing]', function() {
   it('is an object', function() {

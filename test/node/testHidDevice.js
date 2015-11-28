@@ -20,11 +20,9 @@
  * Test for new hidDevice facilities
  * */
 
-/* global beforeEach, describe, it */
-
 var expect = require('salinity').expect;
 
-var hidDevice = require('../lib/hidDevice.js');
+var hidDevice = require('../../lib/hidDevice.js');
 
 describe('hidDevice.js', function(){
 

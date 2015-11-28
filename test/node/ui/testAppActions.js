@@ -18,7 +18,7 @@
 var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;
-var appState = require('../../lib/state/appState');
+var appState = require('../../../lib/state/appState');
 
 
 describe('appActions', function() {
@@ -56,7 +56,7 @@ describe('appActions', function() {
     sundial = {
       utcDateString: function() { return now; }
     };
-    localStore = require('../../lib/core/localStore')({
+    localStore = require('../../../lib/core/localStore')({
       devices: {'11': [{
         key: 'carelink',
         timezone: 'oldTz'
@@ -76,7 +76,7 @@ describe('appActions', function() {
     };
     appState.bindApp(app);
 
-    appActions = proxyquire('../../lib/state/appActions', {
+    appActions = proxyquire('../../../lib/state/appActions', {
       '../config': config,
       'sundial': sundial,
       '../core/localStore': localStore,

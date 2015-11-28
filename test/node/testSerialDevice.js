@@ -15,11 +15,9 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var expect = require('salinity').expect;
 
-var serialDevice = require('../lib/serialDevice.js');
+var serialDevice = require('../../lib/serialDevice.js');
 
 /*
 setPattern: setPattern,

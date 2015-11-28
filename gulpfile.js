@@ -10,7 +10,8 @@ var jsFiles = [
 ];
 
 var jsxFiles = [
-  'lib/**/*.jsx'
+  'lib/**/*.jsx',
+  'test/**/*.jsx'
 ];
 
 gulp.task('jshint', function() {

@@ -32,7 +32,7 @@ describe('appState', function() {
       }
     };
 
-    appState = proxyquire('../../lib/state/appState', {
+    appState = proxyquire('../../../lib/state/appState', {
       '../config': config
     });
     appState.bindApp(app);

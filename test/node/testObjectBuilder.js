@@ -15,12 +15,10 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var ObjectBuilder = require('../lib/objectBuilder.js');
+var ObjectBuilder = require('../../lib/objectBuilder.js');
 
 describe('objectBuilder.js', function(){
   var objBuilder = null;

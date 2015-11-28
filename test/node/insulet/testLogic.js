@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var logic = require('../../lib/insulet/objectBuildingLogic');
+var logic = require('../../../lib/insulet/objectBuildingLogic');
 
 describe('objectBuildingLogic', function() {
   describe('calculateNetRecommendation', function() {

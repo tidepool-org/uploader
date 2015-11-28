@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../lib/carelink/carelinkSimulator.js');
+var pwdSimulator = require('../../../lib/carelink/carelinkSimulator.js');
 
 function attachPrev(arr) {
   var prevBasal = null;

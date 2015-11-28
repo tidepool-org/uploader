@@ -19,7 +19,7 @@
 
 var expect = require('salinity').expect;
 
-var getIn = require('../../lib/core/getIn');
+var getIn = require('../../../lib/core/getIn');
 
 describe('getIn', function() {
   var obj = {

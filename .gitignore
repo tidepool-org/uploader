@@ -18,7 +18,9 @@ dist
 dist.zip
 
 test/carelink/overlaps/test-account.csv
+test/node/carelink/overlaps/test-account.csv
 test/carelink/testRemoveOverlapsFullTestFile.js
+test/node/carelink/testRemoveOverlapsFullTestFile.js
 
 tmp
 npm-debug.log

@@ -22,7 +22,7 @@ var async = require('async');
 var fs = require('fs');
 var expect = require('salinity').expect;
 
-var carelinkDriver = require('../../lib/drivers/carelinkDriver.js')(require('./mockSimulator.js'));
+var carelinkDriver = require('../../../lib/drivers/carelinkDriver.js')(require('./mockSimulator.js'));
 
 function noop() {}
 

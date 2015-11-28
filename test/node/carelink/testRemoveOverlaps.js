@@ -24,7 +24,7 @@ var util = require('util');
 
 var expect = require('salinity').expect;
 
-var removeOverlaps = require('../../lib/carelink/removeOverlapping');
+var removeOverlaps = require('../../../lib/carelink/removeOverlapping');
 
 describe('removeOverlapping', function() {
   function convertRawValues(e) {

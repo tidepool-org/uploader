@@ -21,8 +21,8 @@ var _ = require('lodash');
 var expect = require('salinity').expect;
 var sundial = require('sundial');
 
-var builder = require('../../lib/objectBuilder')();
-var userSettingsChanges = require('../../lib/dexcom/userSettingsChanges');
+var builder = require('../../../lib/objectBuilder')();
+var userSettingsChanges = require('../../../lib/dexcom/userSettingsChanges');
 
 describe('userSettingsChanges.js', function() {
   var settingsTemplate = {

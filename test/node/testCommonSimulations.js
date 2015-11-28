@@ -15,14 +15,12 @@
  * == BSD2 LICENSE ==
  */
 
-/* global describe, it */
-
 var expect = require('salinity').expect;
 
-var builder = require('../lib/objectBuilder')();
-var TZOUtil = require('../lib/TimezoneOffsetUtil');
+var builder = require('../../lib/objectBuilder')();
+var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
-var common = require('../lib/commonSimulations');
+var common = require('../../lib/commonSimulations');
 
 describe('commonSimulations.js', function(){
 

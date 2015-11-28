@@ -15,11 +15,9 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var expect = require('salinity').expect;
 
-var statusManager = require('../lib/statusManager.js');
+var statusManager = require('../../lib/statusManager.js');
 
 
 describe('statusManager.js', function(){

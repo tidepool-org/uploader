@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var common = require('../../lib/carelink/common');
+var common = require('../../../lib/carelink/common');
 
 describe('common', function() {
 

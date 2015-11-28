@@ -15,11 +15,9 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var expect = require('salinity').expect;
 
-var driverManager = require('../lib/driverManager.js');
+var driverManager = require('../../lib/driverManager.js');
 
 
 describe('driverManager.js', function(){

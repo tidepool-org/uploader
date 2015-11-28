@@ -15,11 +15,9 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
 var expect = require('salinity').expect;
 
-var struct = require('../lib/struct.js');
+var struct = require('../../lib/struct.js');
 
 
 describe('struct.js', function(){
