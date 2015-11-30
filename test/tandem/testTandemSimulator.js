@@ -547,7 +547,8 @@ describe('tandemSimulator.js', function() {
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
-        .with_conversionOffset(0);
+        .with_conversionOffset(0)
+        .done();
 
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
@@ -564,11 +565,11 @@ describe('tandemSimulator.js', function() {
       newDay.set('type', 'new-day');
 
       simulator.basal(basal);
-      simulator.suspendResume(suspendEvent);
+      simulator.suspend(suspendEvent);
       simulator.basal(suspend);
       simulator.newDay(newDay);
 
-      expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent.done()]);
+      expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
     });
 
   });
