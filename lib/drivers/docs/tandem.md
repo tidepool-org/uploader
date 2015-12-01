@@ -1,4 +1,4 @@
-# Tandem t:slim
+# Tandem
 
 ## Checklist for Insulin Pump Implementation
 
@@ -89,7 +89,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[?]` other alarm types (details to be provided in `payload` object)
   - `*[-]` prime events
     - `[?]` prime target = tubing
-    - `*[-]` prime target = cannula 
+    - `*[-]` prime target = cannula
     - `[ ]` prime targets not differentiated
     - `[?]` prime volume in units of insulin
   - `*[-]` reservoir change (or reservoir rewind)
