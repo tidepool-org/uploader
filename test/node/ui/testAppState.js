@@ -15,6 +15,8 @@
 * == BSD2 LICENSE ==
 */
 
+/*eslint-env mocha*/
+
 var _ = require('lodash');
 var proxyquire = require('proxyquire').noCallThru();
 var expect = require('salinity').expect;

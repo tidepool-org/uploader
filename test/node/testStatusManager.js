@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+/*eslint-env mocha*/
+
 var expect = require('salinity').expect;
 
 var statusManager = require('../../lib/statusManager.js');

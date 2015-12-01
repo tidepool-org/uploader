@@ -16,7 +16,7 @@
  */
 
 /* global describe, it */
-/*jshint quotmark: false */
+/* eslint quotes: 0 */
 
 var async = require('async');
 var fs = require('fs');

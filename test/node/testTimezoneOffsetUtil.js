@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+/*eslint-env mocha*/
+
 var _ = require('lodash');
 var d3 = require('d3');
 var expect = require('salinity').expect;

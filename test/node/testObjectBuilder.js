@@ -15,10 +15,12 @@
  * == BSD2 LICENSE ==
  */
 
+/*eslint-env mocha*/
+
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var ObjectBuilder = require('../../lib/objectBuilder.js');
+var objectBuilder = require('../../lib/objectBuilder.js');
 
 describe('objectBuilder.js', function(){
   var objBuilder = null;
@@ -27,7 +29,7 @@ describe('objectBuilder.js', function(){
   var bob;
 
   beforeEach(function(){
-    bob = ObjectBuilder();
+    bob = objectBuilder();
   });
 
   describe('setDefaults', function(){
@@ -49,7 +51,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeBloodKetone'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -75,7 +77,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeCBG'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -101,7 +103,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeCGMSettings'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -134,7 +136,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventAlarm'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -161,7 +163,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventCalibration'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -188,7 +190,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventReservoirChange'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -214,7 +216,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventResume'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -242,7 +244,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventSuspend'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -270,7 +272,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDeviceEventTimeChange'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -296,7 +298,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeDualBolus'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -327,7 +329,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeFood'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -352,7 +354,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeNormalBolus'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -379,7 +381,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeNormalBolus'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -404,7 +406,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makePumpSettings'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -434,7 +436,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeScheduledBasal'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -463,7 +465,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeSMBG'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -490,7 +492,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeSquareBolus'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -520,7 +522,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeSuspendBasal'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -549,7 +551,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeTempBasal'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -580,7 +582,7 @@ describe('objectBuilder.js', function(){
     var defaults = {deviceId:'makeWizard'};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
@@ -613,7 +615,7 @@ describe('objectBuilder.js', function(){
     var defaults = {};
 
     beforeEach(function(){
-      bob = ObjectBuilder();
+      bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 

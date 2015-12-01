@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+/*eslint-env mocha*/
+
 /*
  * IOET
  * Test for new hidDevice facilities
