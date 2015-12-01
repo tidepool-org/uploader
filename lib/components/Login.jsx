@@ -103,9 +103,16 @@ var Login = React.createClass({
       password: password
     }, {remember: remember}, function(err) {
       if (err) {
+
+        var msg = 'Wrong username or password.';
+
+        if (err.friendlyMessage){
+          msg = err.friendlyMessage;
+        }
+
         self.setState({
           working: false,
-          error: 'Wrong username or password.'
+          error: msg
         });
         return;
       }
