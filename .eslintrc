@@ -43,6 +43,7 @@
     "camelcase": 0,
     "eqeqeq": 0,
     "no-bitwise": 0,
+    // TODO: either try to fix this globally or use an embedded .eslintrc for drivers
     "no-use-before-define": 0
   },
   "plugins": [
