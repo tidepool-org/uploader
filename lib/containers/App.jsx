@@ -15,6 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -27,12 +28,16 @@ import carelink from '../core/carelink.js'
 import device from '../core/device.js'
 import localStore from '../core/localStore.js'
 
-import { appInit } from '../redux/actions'
+import { appInit, toggleDropdown, Pages } from '../redux/actions'
+
+import Loading from '../components/Loading.jsx'
+import Login from '../components/Login.jsx'
 
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.log = bows('App');
+    this.handleToggleDropdown = this.handleToggleDropdown.bind(this)
   }
 
   componentWillMount() {
@@ -47,7 +52,45 @@ export default class App extends Component {
   }
 
   render() {
-    return (<p>{this.props.page}</p>);
+    return (
+      <div className={'App App--' + this.props.page.toLowerCase()}
+        onClick={this.handleToggleDropdown}>
+        <div className="App-header">{this.renderHeader()}</div>
+        <div className="App-page">{this.renderPage()}</div>
+        <div className="App-footer">{this.renderFooter()}</div>
+      </div>
+    );
+  }
+
+  handleToggleDropdown() {
+    const { dispatch } = this.props
+    dispatch(toggleDropdown(this.state.dropdown))
+  }
+
+  renderHeader() {
+    return null;
+  }
+
+  renderPage() {
+    const { page, url } = this.props
+
+    if (page === Pages.LOADING) {
+      return (<Loading />)
+    }
+    else if (page === Pages.LOGIN) {
+      return (<Login onLogin={_.noop} forgotPasswordUrl={url.forgotPassword} />)
+    }
+  }
+
+  renderFooter() {
+    return (
+      <div>
+        <div className="mailto">
+          <a href="mailto:support@tidepool.org?Subject=Feedback on Blip" target="mailto">Send us feedback</a>
+        </div>
+        <div className="App-footer-version">{'v'+this.props.version+' beta'}</div>
+      </div>
+    )
   }
 }
 
@@ -59,7 +102,10 @@ App.propTypes = {
 // Note: use https://github.com/faassen/reselect for better performance.
 function select(state) {
   return {
-    page: state.page
+    dropdown: state.dropdown,
+    page: state.page,
+    version: state.version,
+    url: state.url
   }
 }
 

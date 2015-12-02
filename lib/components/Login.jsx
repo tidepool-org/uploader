@@ -21,6 +21,7 @@ var config = require('../config');
 
 var Login = React.createClass({
   propTypes: {
+    forgotPasswordUrl: React.PropTypes.string.isRequired,
     onLogin: React.PropTypes.func.isRequired
   },
 
@@ -61,7 +62,7 @@ var Login = React.createClass({
 
   renderForgotPasswordLink: function() {
     return (
-      <a href={window.app.api.makeBlipUrl('#/request-password-from-uploader')} target="_blank">
+      <a href={this.props.forgotPasswordUrl} target="_blank">
         {'Forgot your password?'}
       </a>
     );
