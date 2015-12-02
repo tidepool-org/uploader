@@ -28,7 +28,8 @@ import carelink from '../core/carelink.js'
 import device from '../core/device.js'
 import localStore from '../core/localStore.js'
 
-import { doAppInit, doLogin, toggleDropdown, Pages } from '../redux/actions'
+import Actions from '../redux/actions/'
+const { ActionTypes, AsyncActions, SimpleActions, Pages, Path } = Actions
 
 import Loading from '../components/Loading.jsx'
 import Login from '../components/Login.jsx'
@@ -44,7 +45,7 @@ export default class App extends Component {
 
   componentWillMount() {
     const { dispatch } = this.props
-    dispatch(doAppInit(config, {
+    dispatch(AsyncActions.doAppInit(config, {
       api,
       carelink,
       device,
@@ -67,12 +68,12 @@ export default class App extends Component {
 
   handleLogin(creds, opts) {
     const { dispatch } = this.props
-    dispatch(doLogin(creds, opts))
+    dispatch(AsyncActions.doLogin(creds, opts))
   }
 
   handleToggleDropdown() {
     const { dispatch } = this.props
-    dispatch(toggleDropdown(this.props.dropdown))
+    dispatch(SimpleActions.toggleDropdown(this.props.dropdown))
   }
 
   renderHeader() {
