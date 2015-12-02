@@ -18,7 +18,7 @@ scripts/
 styles/
 test/
 **/*.js
-.jshintrc
+.eslintrc
 .travis.yml
 description.txt
 LICENSE
