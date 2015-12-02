@@ -29,9 +29,11 @@ export default class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div>
+        <div className='DevTools-container'>
           <App />
-          <DevTools />
+          <div className='DevTools'>
+            <DevTools store={store} />
+          </div>
         </div>
       </Provider>
     )
