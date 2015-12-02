@@ -21,15 +21,10 @@ var config = require('../config');
 
 var Login = React.createClass({
   propTypes: {
+    errorMessage: React.PropTypes.string,
     forgotPasswordUrl: React.PropTypes.string.isRequired,
+    isFetching: React.PropTypes.bool.isRequired,
     onLogin: React.PropTypes.func.isRequired
-  },
-
-  getInitialState: function() {
-    return {
-      working: false,
-      error: null
-    };
   },
 
   render: function() {
@@ -69,20 +64,17 @@ var Login = React.createClass({
   },
 
   renderButton: function() {
-    var disabled;
     var text = 'Login';
 
-    if (this.state.working) {
-      disabled = true;
+    if (this.props.isFetching) {
       text = 'Logging in...';
     }
 
     return (
-      <button
-        type="submit"
+      <button type="submit"
         className="Login-button"
         onClick={this.handleLogin}
-        disabled={disabled}>
+        disabled={this.props.isFetching}>
         {text}
       </button>
     );
@@ -94,31 +86,15 @@ var Login = React.createClass({
     var password = this.refs.password.value;
     var remember = this.refs.remember.checked;
 
-    this.setState({
-      working: true,
-      error: null
-    });
-    var self = this;
-    this.props.onLogin({
-      username: username,
-      password: password
-    }, {remember: remember}, function(err) {
-      if (err) {
-        self.setState({
-          working: false,
-          error: 'Wrong username or password.'
-        });
-        return;
-      }
-    });
+    this.props.onLogin({ username, password }, { remember })
   },
 
   renderError: function() {
-    if (!this.state.error) {
+    if (!this.props.errorMessage) {
       return null;
     }
 
-    return <span>{this.state.error}</span>;
+    return <span>{this.props.errorMessage}</span>;
   }
 });
 
