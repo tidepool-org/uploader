@@ -23,7 +23,10 @@
     "node-uuid": "1.4.7",
     "react": "0.14.3",
     "react-dom": "0.14.3",
+    "react-redux": "4.0.0",
     "react-select": "0.9.1",
+    "redux": "3.0.4",
+    "redux-thunk": "1.0.0",
     "stack-trace": "0.0.9",
     "sundial": "1.5.1",
     "tidepool-platform-client": "0.19.0"
@@ -51,6 +54,10 @@
     "phantomjs": "1.9.19",
     "proxyquire": "1.7.3",
     "react-addons-test-utils": "0.14.3",
+    "redux-devtools": "3.0.0-beta-3",
+    "redux-devtools-dock-monitor": "1.0.0-beta-3",
+    "redux-devtools-log-monitor": "1.0.0-beta-3",
+    "redux-logger": "2.0.4",
     "salinity": "0.0.8",
     "style-loader": "0.13.0",
     "webpack": "1.12.9"

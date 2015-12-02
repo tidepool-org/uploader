@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2014, Tidepool Project
+ * Copyright (c) 2015, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -15,16 +15,25 @@
  * == BSD2 LICENSE ==
  */
 
-require('./styles/main.less');
+import React, { Component } from 'react'
+import { Provider } from 'react-redux'
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-window.React = React;
-var config = require('./lib/config');
-window.DEBUG = config.DEBUG;
-// Important: need to require App after setting `window.DEBUG` to enable logging
-var Root = require('./lib/containers/root/Root.jsx');
+import configureStore from '../../redux/store/configureStore'
 
-window.app = ReactDOM.render(
-  React.createElement(Root), document.getElementById('app')
-);
+import App from '../App.jsx'
+import DevTools from '../../components/DevTools.jsx'
+
+const store = configureStore()
+
+export default class Root extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <div>
+          <App />
+          <DevTools />
+        </div>
+      </Provider>
+    )
+  }
+}

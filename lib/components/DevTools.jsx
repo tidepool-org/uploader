@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2014, Tidepool Project
+ * Copyright (c) 2015, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -15,16 +15,14 @@
  * == BSD2 LICENSE ==
  */
 
-require('./styles/main.less');
+import React from 'react'
+import { createDevTools } from 'redux-devtools'
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-window.React = React;
-var config = require('./lib/config');
-window.DEBUG = config.DEBUG;
-// Important: need to require App after setting `window.DEBUG` to enable logging
-var Root = require('./lib/containers/root/Root.jsx');
-
-window.app = ReactDOM.render(
-  React.createElement(Root), document.getElementById('app')
-);
+export default createDevTools(
+  <DockMonitor toggleVisibilityKey="H"
+               changePositionKey="W">
+    <LogMonitor />
+  </DockMonitor>
+)
