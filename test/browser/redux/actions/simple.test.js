@@ -19,8 +19,8 @@
 
 import { isFSA } from 'flux-standard-action'
 
-import { ActionSources, ActionTypes } from '../../../lib/redux/actions/constants'
-import * as SimpleActions from '../../../lib/redux/actions/simple'
+import { ActionSources, ActionTypes } from '../../../../lib/redux/actions/constants'
+import * as SimpleActions from '../../../../lib/redux/actions/simple'
 
 describe('simple actions', () => {
   describe('setForgotPasswordUrl', () => {
