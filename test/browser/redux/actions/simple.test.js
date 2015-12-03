@@ -22,7 +22,7 @@ import { isFSA } from 'flux-standard-action'
 import { ActionSources, ActionTypes } from '../../../lib/redux/actions/constants'
 import * as SimpleActions from '../../../lib/redux/actions/simple'
 
-describe('actions', () => {
+describe('simple actions', () => {
   describe('setForgotPasswordUrl', () => {
     it('should create an action to set the forgot password url', () => {
       const URL = 'http://www.acme.com/forgot-password'
