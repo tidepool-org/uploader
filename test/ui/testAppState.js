@@ -43,43 +43,6 @@ describe('appState', function() {
     expect(appState.app.state.FOO).to.equal('bar');
   });
 
-  describe('Hide BGMs in UI if not available for a specific OS', function() {
-
-    it('checks devices listed for Windows', function() {
-
-      app._os = 'win';
-      app.state = appState.getInitial();
-      appState.hideUnavailableDevices();
-
-      // should be available
-      expect(_.findWhere(app.state.uploads, {key: 'precisionxtra'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontournext'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontournextusb'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontourusb'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.be.ok;
-
-    });
-
-    it('checks devices listed for Mac', function() {
-
-      app._os = 'mac';
-      app.state = appState.getInitial();
-      appState.hideUnavailableDevices();
-
-      // should be available
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontournextusb'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontourusb'})).to.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'bayercontournext'})).to.be.ok;
-
-      // should not be available
-      expect(_.findWhere(app.state.uploads, {key: 'precisionxtra'})).to.not.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.not.be.ok;
-      expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.not.be.ok;
-    });
-
-  });
-
   describe('isLoggedIn', function() {
 
     it('returns true if there is a logged-in user object', function() {
