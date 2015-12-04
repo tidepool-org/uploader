@@ -367,78 +367,52 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    // TODO: these tests are pending until suppressed basals are handled
-    it.skip('fills in the suppressed.scheduleName for a temp basal by percentage', function() {
-      var settings = {
-        time: '2014-09-25T01:00:00.000Z',
-        deviceTime: '2014-09-25T01:00:00',
-        activeSchedule: 'billy',
-        units: { 'bg': 'mg/dL' },
-        basalSchedules: {
-          'billy': [
-            { start: 0, rate: 1.0 },
-            { start: 21600000, rate: 1.1 },
-            { start: 43200000, rate: 1.2 },
-            { start: 64800000, rate: 1.3 }
-          ],
-          'bob': [
-            { start: 0, rate: 0.0}
-          ]
-        },
-        timezoneOffset: 0,
-        conversionOffset: 0
-      };
-      var regBasal1 = builder.makeScheduledBasal()
+    it('temp basal has percentage and payload', function() {
+      var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_rate(1.3)
-        .with_scheduleName('billy');
+        .with_duration(2000000);
       var tempBasal = builder.makeTempBasal()
         .with_time('2014-09-25T18:10:00.000Z')
         .with_deviceTime('2014-09-25T18:10:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
-        .with_rate(0.65)
-        .with_percent(0.5)
-        .with_duration(1800000);
-      var suppressed = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:10:00.000Z')
-        .with_deviceTime('2014-09-25T18:10:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_duration(1800000);
-      tempBasal.with_suppressed(suppressed);
-      var regBasal2 = builder.makeScheduledBasal()
+        .with_duration(1800000)
+        .with_previous(suppressed.done());
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1500000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+      var basal2 = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:40:00.000Z')
         .with_deviceTime('2014-09-25T18:40:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_scheduleName('billy');
-      var thisSim = pwdSimulator.make({settings: settings});
-      var expectedFirstBasal = _.cloneDeep(regBasal1);
-      expectedFirstBasal = expectedFirstBasal.set('duration', 300000).done();
-      var expectedSecondBasal = _.cloneDeep(tempBasal);
-      expectedSecondBasal.set('previous', expectedFirstBasal);
-      expectedSecondBasal.suppressed = expectedSecondBasal.suppressed
-        .set('scheduleName', 'billy').done();
-      expectedSecondBasal = expectedSecondBasal.done();
-      var expectedThirdBasal = _.cloneDeep(regBasal2);
-      expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
-        .set('previous', _.omit(expectedSecondBasal, 'previous'))
-        .done();
-      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
-      thisSim.basal(regBasal1);
-      thisSim.basal(tempBasal);
-      thisSim.basal(regBasal2);
-      thisSim.finalBasal();
-      expect(thisSim.getEvents()).deep.equals([
-        expectedFirstBasal,
-        expectedSecondBasal,
-        expectedThirdBasal
+        .with_rate(2)
+        .with_duration(1800000);
+
+      var expectedTempBasal = tempBasal.with_payload({duration:1500000})
+                                        .set('percent',0.65)
+                                        .done();
+
+      simulator.basal(suppressed);
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(tempBasal);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([
+        suppressed.done(),
+        expectedTempBasal
       ]);
     });
 
