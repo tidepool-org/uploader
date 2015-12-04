@@ -21,6 +21,7 @@ import { isFSA } from 'flux-standard-action'
 
 import { ActionSources, ActionTypes } from '../../../../lib/redux/actions/constants'
 import * as SimpleActions from '../../../../lib/redux/actions/simple'
+import { ErrorText } from '../../../../lib/redux/errors'
 
 describe('simple actions', () => {
   describe('setForgotPasswordUrl', () => {
@@ -98,6 +99,103 @@ describe('simple actions', () => {
       }
       expect(SimpleActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE)).to.deep.equal(expectedAction)
       expect(isFSA(SimpleActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE))).to.be.true
+    })
+  })
+
+  describe('for doAppInit', () => {
+    describe('initRequest', () => {
+      it('should create an action to record the start of app initialization', () => {
+        const expectedAction = {
+          type: ActionTypes.INIT_APP_REQUEST,
+          meta: {source: ActionSources[ActionTypes.INIT_APP_REQUEST]}
+        }
+        expect(SimpleActions.initRequest()).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.initRequest())).to.be.true
+      })
+    })
+
+    describe('initDone [no session token]', () => {
+      it('should create an action to record the successful completion of app initialization', () => {
+        const expectedAction = {
+          type: ActionTypes.INIT_APP_DONE,
+          payload: {session: null},
+          meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
+        }
+        expect(SimpleActions.initDone()).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.initDone())).to.be.true
+      })
+    })
+
+    describe('initDone [with session token]', () => {
+      it('should create an action to record the successful completion of app initialization', () => {
+        const token = 'iAmAToken'
+        const expectedAction = {
+          type: ActionTypes.INIT_APP_DONE,
+          payload: {session: token},
+          meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
+        }
+        expect(SimpleActions.initDone(token)).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.initDone(token))).to.be.true
+      })
+    })
+
+    describe('initError', () => {
+      it('should create an action to record early exit from app initialization due to error', () => {
+        const expectedAction = {
+          type: ActionTypes.INIT_APP_DONE,
+          error: true,
+          payload: new Error(ErrorText.E_INIT),
+          meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
+        }
+        expect(SimpleActions.initError()).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.initError())).to.be.true
+      })
+    })
+  })
+
+  describe('for doLogin', () => {
+    describe('loginRequest', () => {
+      it('should create an action to record the start of user login', () => {
+        const expectedAction = {
+          type: ActionTypes.LOGIN_REQUEST,
+          meta: {source: ActionSources[ActionTypes.LOGIN_REQUEST]}
+        }
+        expect(SimpleActions.loginRequest()).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.loginRequest())).to.be.true
+      })
+    })
+
+    describe('loginDone', () => {
+      it('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)', () => {
+        // NB: this is not what these objects actually look like
+        // actual shape is irrelevant to testing action creators
+        const userObj = {user: {userid: 'abc123'}}
+        const profile = {fullName: 'Jane Doe'}
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}]
+        const expectedAction = {
+          type: ActionTypes.LOGIN_DONE,
+          payload: { user: userObj.user, profile, memberships },
+          meta: {source: ActionSources[ActionTypes.LOGIN_DONE]}
+        }
+        expect(SimpleActions.loginDone([userObj, profile, memberships])).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.loginDone([userObj, profile, memberships]))).to.be.true
+      })
+    })
+
+    describe('loginError', () => {
+      it('should create an action to report a login error', () => {
+        const err = 'Login error!'
+        SimpleActions.__Rewire__('getLoginErrorMessage', () => err)
+        const expectedAction = {
+          type: ActionTypes.LOGIN_DONE,
+          error: true,
+          payload: new Error(err),
+          meta: {source: ActionSources[ActionTypes.LOGIN_DONE]}
+        }
+        expect(SimpleActions.loginError(err)).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.loginError(err))).to.be.true
+        SimpleActions.__ResetDependency__('getLoginErrorMessage')
+      })
     })
   })
 })

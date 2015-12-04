@@ -86,7 +86,10 @@ var Login = React.createClass({
     var password = this.refs.password.value;
     var remember = this.refs.remember.checked;
 
-    this.props.onLogin({ username, password }, { remember })
+    this.props.onLogin(
+      {username: username, password: password},
+      {remember: remember}
+    )
   },
 
   renderError: function() {
