@@ -165,9 +165,8 @@ describe('tandemSimulator.js', function() {
   });
 
   describe('deviceEvent', function() {
-  // TODO: these tests are pending until device events are implemented
     describe('alarm', function() {
-      it.skip('passes through', function() {
+      it('passes through', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -195,8 +194,8 @@ describe('tandemSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it.skip('passes through', function() {
-        simulator.changeReservoir(val);
+      it('passes through', function() {
+        simulator.cartridgeChange(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
@@ -223,23 +222,23 @@ describe('tandemSimulator.js', function() {
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
-      it.skip('a suspend passes through', function() {
+      it('a suspend passes through', function() {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it.skip('a resume passes through', function() {
+      it('a resume passes through', function() {
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
-      it.skip('a resume includes a previous when preceded by a suspend', function() {
+      it('a resume includes a previous when preceded by a suspend', function() {
         simulator.suspend(suspend);
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      it.skip('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
+      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
         var suspend2 = {
           time: '2014-09-25T01:05:00.000Z',
           deviceTime: '2014-09-25T01:05:00',
