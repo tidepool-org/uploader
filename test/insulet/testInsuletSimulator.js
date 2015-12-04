@@ -555,7 +555,7 @@ describe('insuletSimulator.js', function() {
       expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
         .set('previous', _.omit(expectedSecondBasal, 'previous'))
         .done();
-      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
+      expectedThirdBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
       thisSim.basal(regBasal1);
       thisSim.basal(tempBasal);
       thisSim.basal(regBasal2);
@@ -601,7 +601,7 @@ describe('insuletSimulator.js', function() {
       thisSim.basal(basal);
       thisSim.finalBasal();
       var expectedBasal = _.cloneDeep(basal);
-      expectedBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
+      expectedBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
       expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
       expect(thisSim.getEvents()).deep.equals([expectedBasal]);
     });
