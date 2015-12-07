@@ -26,6 +26,9 @@ import { ActionSources, ActionTypes, Pages } from '../../../../lib/redux/actions
 import * as AsyncActions from '../../../../lib/redux/actions/async'
 import { getLoginErrorMessage } from '../../../../lib/redux/errors'
 
+let pwd = require('../../fixtures/pwd.json')
+let nonpwd = require('../../fixtures/nonpwd.json')
+
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
@@ -41,7 +44,7 @@ global.chrome = {
 
 describe('async actions', () => {
   describe('doAppInit [no session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_DONE actions', (done) => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_DONE actions', (done) => {
       const config = {
         version: '0.100.0',
         API_URL: 'http://www.acme.com/'
@@ -82,6 +85,11 @@ describe('async actions', () => {
           meta: {source: ActionSources[ActionTypes.SET_OS]}
         },
         {
+          type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: ActionSources[ActionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
           type: ActionTypes.SET_FORGOT_PASSWORD_URL,
           payload: {url: 'http://www.acme.com/#/request-password-from-uploader'},
           meta: {source: ActionSources[ActionTypes.SET_FORGOT_PASSWORD_URL]}
@@ -98,7 +106,6 @@ describe('async actions', () => {
         },
         {
           type: ActionTypes.INIT_APP_DONE,
-          payload: {session: null},
           meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
         }
       ]
@@ -108,11 +115,83 @@ describe('async actions', () => {
   })
 
   describe('doAppInit [with session token in local storage]', () => {
-    it('should dispatch a bunch of actions')
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_DONE, LOGIN_DONE actions', (done) => {
+      const config = {
+        version: '0.100.0',
+        API_URL: 'http://www.acme.com/'
+      }
+      const servicesToInit = {
+        api: {
+          init: (opts, cb) => { cb(null, {token: 'iAmAToken'}) },
+          makeBlipUrl: (path) => {
+            return 'http://www.acme.com/' + path
+          },
+          setHosts: _.noop,
+          user: {
+            account: (cb) => { cb(null, pwd.user) },
+            profile: (cb) => { cb(null, pwd.profile) },
+            getUploadGroups: (cb) => { cb(null, pwd.memberships)}
+          }
+        },
+        carelink: {
+          init: (opts, cb) => { cb() }
+        },
+        device: {
+          init: (opts, cb) => { cb() }
+        },
+        localStore: {
+          init: (opts, cb) => { cb() },
+          getInitialState: _.noop
+        },
+        log: _.noop
+      }
+      const expectedActions = [
+        {
+          type: ActionTypes.SET_VERSION,
+          payload: {version: '0.100.0'},
+          meta: {source: ActionSources[ActionTypes.SET_VERSION]}
+        },
+        {
+          type: ActionTypes.INIT_APP_REQUEST,
+          meta: {source: ActionSources[ActionTypes.INIT_APP_REQUEST]}
+        },
+        {
+          type: ActionTypes.SET_OS,
+          payload: {os: 'test'},
+          meta: {source: ActionSources[ActionTypes.SET_OS]}
+        },
+        {
+          type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: ActionSources[ActionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
+          type: ActionTypes.SET_FORGOT_PASSWORD_URL,
+          payload: {url: 'http://www.acme.com/#/request-password-from-uploader'},
+          meta: {source: ActionSources[ActionTypes.SET_FORGOT_PASSWORD_URL]}
+        },
+        {
+          type: ActionTypes.SET_SIGNUP_URL,
+          payload: {url: 'http://www.acme.com/#/signup'},
+          meta: {source: ActionSources[ActionTypes.SET_SIGNUP_URL]}
+        },
+        {
+          type: ActionTypes.INIT_APP_DONE,
+          meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
+        },
+        {
+          type: ActionTypes.LOGIN_DONE,
+          payload: {user: pwd.user, profile: pwd.profile, memberships: pwd.memberships},
+          meta: {source: ActionSources[ActionTypes.LOGIN_DONE]}
+        }
+      ]
+      const store = mockStore({}, expectedActions, done)
+      store.dispatch(AsyncActions.doAppInit(config, servicesToInit))
+    })
   })
 
   describe('doAppInit [with error in api init]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, INIT_APP_DONE actions', (done) => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, INIT_APP_DONE actions', (done) => {
       const config = {
         version: '0.100.0',
         API_URL: 'http://www.acme.com/'
@@ -153,6 +232,11 @@ describe('async actions', () => {
           meta: {source: ActionSources[ActionTypes.SET_OS]}
         },
         {
+          type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: ActionSources[ActionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
           type: ActionTypes.INIT_APP_DONE,
           error: true,
           payload: new Error('Error during app initialization.'),
@@ -164,7 +248,7 @@ describe('async actions', () => {
     })
   })
 
-  describe('doLogin [no remember me]', () => {
+  describe('doLogin [no error]', () => {
     it('should dispatch LOGIN_REQUEST, LOGIN_DONE, SET_PAGE actions', (done) => {
       // NB: this is not what these objects actually look like
       // actual shape is irrelevant to testing action creators
@@ -209,10 +293,6 @@ describe('async actions', () => {
         {remember: false}
       ))
     })
-  })
-
-  describe('doLogin [with remember me]', () => {
-    it('should dispatch a bunch of actions')
   })
 
   describe('doLogin [with error]', () => {

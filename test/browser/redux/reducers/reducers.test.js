@@ -22,10 +22,60 @@ import _ from 'lodash'
 import { ActionTypes, Pages } from '../../../../lib/redux/actions/constants'
 import * as reducers from '../../../../lib/redux/reducers/reducers'
 
+import devices from '../../../../lib/redux/devices'
+
 let pwd = require('../../fixtures/pwd.json')
 let nonpwd = require('../../fixtures/nonpwd.json')
 
 describe('reducers', () => {
+  describe('devices', () => {
+    function filterDevicesFn(unavail) {
+      return function(device) {
+        if (_.includes(unavail, device.key)) {
+          return false
+        }
+        return true
+      }
+    }
+    it('should return the initial state', () => {
+      expect(reducers.devices(undefined, {})).to.deep.equal(devices)
+    })
+
+    it('should handle HIDE_UNAVAILABLE_DEVICES [mac]', () => {
+      let unavailableOnMac = [
+        'precisionxtra',
+        'abbottfreestylelite',
+        'abbottfreestylefreedomlite'
+      ]
+      expect(reducers.devices(undefined, {
+        type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+        payload: {os: 'mac'}
+      })).to.deep.equal(_.pick(devices, filterDevicesFn(unavailableOnMac)))
+      // test to be sure not *mutating* state object but rather returning new!
+      let prevState = devices
+      let resultState = reducers.devices(prevState, {
+        type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+        payload: {os: 'mac'}
+      })
+      expect(prevState === resultState).to.be.false
+    })
+
+    it('should handle HIDE_UNAVAILABLE_DEVICES [win]', () => {
+      let unavailableOnWin = []
+      expect(reducers.devices(undefined, {
+        type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+        payload: {os: 'win'}
+      })).to.deep.equal(_.pick(devices, filterDevicesFn(unavailableOnWin)))
+      // test to be sure not *mutating* state object but rather returning new!
+      let prevState = devices
+      let resultState = reducers.devices(prevState, {
+        type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+        payload: {os: 'win'}
+      })
+      expect(prevState === resultState).to.be.false
+    })
+  })
+
   describe('dropdown', () => {
     it('should return the initial state', () => {
       expect(reducers.dropdown(undefined, {})).to.be.false
@@ -90,10 +140,12 @@ describe('reducers', () => {
       let resultState = {
         isFetching: false,
         loggedInUser: pwd.user.userid,
-        [pwd.user.userid]: _.assign({}, _.omit(pwd.user, 'userid'), pwd.profile)
+        [pwd.user.userid]: _.assign({}, _.omit(pwd.user, 'userid'), pwd.profile),
+        targetsForUpload: [pwd.user.userid]
       }
       pwd.memberships.slice(1).map(function(mship) {
         resultState[mship.userid] = _.assign({}, mship.profile)
+        resultState.targetsForUpload.push(mship.userid)
       })
       const actionPayload = {
         user: pwd.user,
@@ -117,10 +169,12 @@ describe('reducers', () => {
       let resultState = {
         isFetching: false,
         loggedInUser: nonpwd.user.userid,
-        [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile)
+        [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
+        targetsForUpload: []
       }
       nonpwd.memberships.slice(1).map(function(mship) {
         resultState[mship.userid] = _.assign({}, mship.profile)
+        resultState.targetsForUpload.push(mship.userid)
       })
       const actionPayload = {
         user: nonpwd.user,
@@ -157,6 +211,60 @@ describe('reducers', () => {
         error: true,
         payload: new Error(errMsg)
       })
+      expect(prevState === resultState).to.be.false
+    })
+
+    it('should handle SET_DEFAULT_TARGET_ID [logged-in PWD]', () => {
+      const loginPayload = {
+        user: pwd.user,
+        profile: pwd.profile,
+        memberships: pwd.memberships
+      }
+      let prevState = reducers.users(undefined, {
+        type: ActionTypes.LOGIN_DONE,
+        payload: loginPayload
+      })
+      let resultState = reducers.users(prevState, {
+        type: ActionTypes.SET_DEFAULT_TARGET_ID
+      })
+      expect(resultState.uploadTargetUser).to.equal(pwd.user.userid)
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(prevState === resultState).to.be.false
+    })
+
+    it('should handle SET_DEFAULT_TARGET_ID [logged-in non-PWD, can upload to one]', () => {
+      const loginPayload = {
+        user: nonpwd.user,
+        profile: nonpwd.profile,
+        memberships: nonpwd.memberships.slice(1,2)
+      }
+      let prevState = reducers.users(undefined, {
+        type: ActionTypes.LOGIN_DONE,
+        payload: loginPayload
+      })
+      let resultState = reducers.users(prevState, {
+        type: ActionTypes.SET_DEFAULT_TARGET_ID
+      })
+      expect(resultState.uploadTargetUser).to.equal(loginPayload.memberships[0].userid)
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(prevState === resultState).to.be.false
+    })
+
+    it('should handle SET_DEFAULT_TARGET_ID [logged-in non-PWD, can upload to many]', () => {
+      const loginPayload = {
+        user: nonpwd.user,
+        profile: nonpwd.profile,
+        memberships: nonpwd.memberships
+      }
+      let prevState = reducers.users(undefined, {
+        type: ActionTypes.LOGIN_DONE,
+        payload: loginPayload
+      })
+      let resultState = reducers.users(prevState, {
+        type: ActionTypes.SET_DEFAULT_TARGET_ID
+      })
+      expect(resultState.uploadTargetUser).to.be.null
+      // test to be sure not *mutating* state object but rather returning new!
       expect(prevState === resultState).to.be.false
     })
   })

@@ -24,6 +24,30 @@ import * as SimpleActions from '../../../../lib/redux/actions/simple'
 import { ErrorText } from '../../../../lib/redux/errors'
 
 describe('simple actions', () => {
+  describe('hideUnavailableDevices', () => {
+    it('should create an action to hide devices unavailable on given operating system', () => {
+      const OS = 'test'
+      const expectedAction = {
+        type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
+        payload: {os: OS},
+        meta: {source: ActionSources[ActionTypes.HIDE_UNAVAILABLE_DEVICES]}
+      }
+      expect(SimpleActions.hideUnavailableDevices(OS)).to.deep.equal(expectedAction)
+      expect(isFSA(SimpleActions.hideUnavailableDevices(OS))).to.be.true
+    })
+  })
+
+  describe('setDefaultTargetId', () => {
+    it('should create an action to set the default targetId for device data upload', () => {
+      const expectedAction = {
+        type: ActionTypes.SET_DEFAULT_TARGET_ID,
+        meta: {source: ActionSources[ActionTypes.SET_DEFAULT_TARGET_ID]}
+      }
+      expect(SimpleActions.setDefaultTargetId()).to.deep.equal(expectedAction)
+      expect(isFSA(SimpleActions.setDefaultTargetId())).to.be.true
+    })
+  })
+
   describe('setForgotPasswordUrl', () => {
     it('should create an action to set the forgot password url', () => {
       const URL = 'http://www.acme.com/forgot-password'
@@ -114,28 +138,14 @@ describe('simple actions', () => {
       })
     })
 
-    describe('initDone [no session token]', () => {
+    describe('initDone', () => {
       it('should create an action to record the successful completion of app initialization', () => {
         const expectedAction = {
           type: ActionTypes.INIT_APP_DONE,
-          payload: {session: null},
           meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
         }
         expect(SimpleActions.initDone()).to.deep.equal(expectedAction)
         expect(isFSA(SimpleActions.initDone())).to.be.true
-      })
-    })
-
-    describe('initDone [with session token]', () => {
-      it('should create an action to record the successful completion of app initialization', () => {
-        const token = 'iAmAToken'
-        const expectedAction = {
-          type: ActionTypes.INIT_APP_DONE,
-          payload: {session: token},
-          meta: {source: ActionSources[ActionTypes.INIT_APP_DONE]}
-        }
-        expect(SimpleActions.initDone(token)).to.deep.equal(expectedAction)
-        expect(isFSA(SimpleActions.initDone(token))).to.be.true
       })
     })
 
@@ -169,16 +179,16 @@ describe('simple actions', () => {
       it('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)', () => {
         // NB: this is not what these objects actually look like
         // actual shape is irrelevant to testing action creators
-        const userObj = {user: {userid: 'abc123'}}
+        const user = {userid: 'abc123'}
         const profile = {fullName: 'Jane Doe'}
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}]
         const expectedAction = {
           type: ActionTypes.LOGIN_DONE,
-          payload: { user: userObj.user, profile, memberships },
+          payload: { user, profile, memberships },
           meta: {source: ActionSources[ActionTypes.LOGIN_DONE]}
         }
-        expect(SimpleActions.loginDone([userObj, profile, memberships])).to.deep.equal(expectedAction)
-        expect(isFSA(SimpleActions.loginDone([userObj, profile, memberships]))).to.be.true
+        expect(SimpleActions.loginDone({ user, profile, memberships })).to.deep.equal(expectedAction)
+        expect(isFSA(SimpleActions.loginDone({ user, profile, memberships }))).to.be.true
       })
     })
 
