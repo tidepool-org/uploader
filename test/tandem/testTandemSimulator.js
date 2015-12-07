@@ -416,6 +416,68 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
+    it('temp basal crossing multiple segments', function() {
+      var suppressed1 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:00:00.000Z')
+        .with_deviceTime('2014-09-25T18:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3)
+        .with_duration(1800000);
+      var suppressed2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:30:00.000Z')
+        .with_deviceTime('2014-09-25T18:30:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2)
+        .with_duration(1800000);
+      var tempBasal = builder.makeTempBasal()
+        .with_time('2014-09-25T18:15:00.000Z')
+        .with_deviceTime('2014-09-25T18:15:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_duration(1800000)
+        .with_previous(suppressed1.done());
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+
+
+      var basal3 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T19:40:00.000Z')
+        .with_deviceTime('2014-09-25T19:40:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2)
+        .with_duration(1800000);
+
+
+      var expectedTempBasal = tempBasal.with_payload({duration:1800000})
+                                        .set('percent',0.65)
+                                        .done();
+
+      simulator.basal(suppressed1);
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(tempBasal);
+      simulator.basal(suppressed2);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal3);
+      expect(simulator.getEvents()).deep.equals([
+        suppressed1.done(),
+        expectedTempBasal,
+        suppressed2.done()
+      ]);
+    });
+
+
   });
 
   describe('newDay', function() {
