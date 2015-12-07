@@ -490,6 +490,39 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
 
+    it('a temp basal was terminated early', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 300000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.duration = 1500000;  //currTempBasal.duration - currTempBasal.time_left
+      expectedTempBasal.annotations = [{code: 'tandem/basal/fabricated-from-time-left'}];
+      expectedTempBasal = expectedTempBasal.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.tempBasal(tempBasalStop);
+      simulator.finalBasal();
+
+      console.log("getEvents:",simulator.getEvents());
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
+    });
+
     it('a suspend basal is given a null duration and annotated', function() {
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
