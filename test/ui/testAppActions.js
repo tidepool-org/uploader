@@ -559,11 +559,10 @@ describe('appActions', function() {
         app.setState({_os: 'win'});
       });
 
-      it('excludes only Tandem', function() {
+      it('excludes nothing', function() {
         expect(app.state.uploads.length).to.equal(10);
         appActions._hideUnavailableDevices();
-        expect(app.state.uploads.length).to.equal(9);
-        expect(_.findWhere(app.state.uploads, {key: 'tandem'})).to.not.be.ok;
+        expect(app.state.uploads.length).to.equal(10);
       });
     });
 
