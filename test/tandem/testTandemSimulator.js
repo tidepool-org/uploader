@@ -636,6 +636,72 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
     });
 
+    it('a new-day event during a cancelled temp basal', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.5,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 600000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T23:50:00.000Z')
+        .with_deviceTime('2014-09-25T23:50:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(0.5);
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1);
+      newDay.set('type', 'new-day');
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-26T07:40:00.000Z')
+        .with_deviceTime('2014-09-26T07:40:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.percent = 0.5;
+      expectedTempBasal.payload = {duration:1800000};
+      expectedTempBasal.duration = 600000; // 10 minutes before new-day
+      expectedTempBasal = expectedTempBasal.done();
+
+      var expectedNewDay = _.cloneDeep(temp);
+      expectedNewDay.percent = 0.5;
+      expectedNewDay.payload = {duration:1800000};
+      expectedNewDay.previous = expectedTempBasal;
+      expectedNewDay.time = '2014-09-26T00:00:00.000Z';
+      expectedNewDay.deviceTime = '2014-09-26T00:00:00';
+      expectedNewDay.annotations = [{code: 'tandem/basal/fabricated-from-new-day'},
+        {code: 'tandem/basal/fabricated-from-time-left'}];
+      expectedNewDay.duration = 600000;
+      expectedNewDay = expectedNewDay.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.newDay(newDay);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
+
+      // check with different order of events
+      simulator = pwdSimulator.make();
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.tempBasal(tempBasalStop);
+      simulator.newDay(newDay);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
+    });
   });
 
 });
