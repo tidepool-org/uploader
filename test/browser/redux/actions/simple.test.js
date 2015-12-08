@@ -37,17 +37,6 @@ describe('simple actions', () => {
     })
   })
 
-  describe('setDefaultTargetId', () => {
-    it('should create an action to set the default targetId for device data upload', () => {
-      const expectedAction = {
-        type: ActionTypes.SET_DEFAULT_TARGET_ID,
-        meta: {source: ActionSources[ActionTypes.SET_DEFAULT_TARGET_ID]}
-      }
-      expect(SimpleActions.setDefaultTargetId()).to.deep.equal(expectedAction)
-      expect(isFSA(SimpleActions.setDefaultTargetId())).to.be.true
-    })
-  })
-
   describe('setForgotPasswordUrl', () => {
     it('should create an action to set the forgot password url', () => {
       const URL = 'http://www.acme.com/forgot-password'

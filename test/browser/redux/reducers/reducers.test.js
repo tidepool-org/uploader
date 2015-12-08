@@ -141,7 +141,8 @@ describe('reducers', () => {
         isFetching: false,
         loggedInUser: pwd.user.userid,
         [pwd.user.userid]: _.assign({}, _.omit(pwd.user, 'userid'), pwd.profile),
-        targetsForUpload: [pwd.user.userid]
+        targetsForUpload: [pwd.user.userid],
+        uploadTargetUser: pwd.user.userid
       }
       pwd.memberships.slice(1).map(function(mship) {
         resultState[mship.userid] = _.assign({}, mship.profile)
@@ -165,12 +166,43 @@ describe('reducers', () => {
       expect(initialState === finalState).to.be.false
     })
 
-    it('should handle LOGIN_DONE [no error, logged-in non-PWD]', () => {
+    it('should handle LOGIN_DONE [no error, logged-in non-PWD, can upload to one]', () => {
       let resultState = {
         isFetching: false,
         loggedInUser: nonpwd.user.userid,
         [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
-        targetsForUpload: []
+        targetsForUpload: [],
+        uploadTargetUser: nonpwd.memberships[1].userid
+      }
+      nonpwd.memberships.slice(1,2).map(function(mship) {
+        resultState[mship.userid] = _.assign({}, mship.profile)
+        resultState.targetsForUpload.push(mship.userid)
+      })
+      const actionPayload = {
+        user: nonpwd.user,
+        profile: nonpwd.profile,
+        memberships: nonpwd.memberships.slice(0,2)
+      }
+      expect(reducers.users(undefined, {
+        type: ActionTypes.LOGIN_DONE,
+        payload: actionPayload
+      })).to.deep.equal(resultState)
+      // test to be sure not *mutating* state object but rather returning new!
+      let initialState = {isFetching: true}
+      let finalState = reducers.users(initialState, {
+        type: ActionTypes.LOGIN_DONE,
+        payload: actionPayload
+      })
+      expect(initialState === finalState).to.be.false
+    })
+
+    it('should handle LOGIN_DONE [no error, logged-in non-PWD, can upload to > 1]', () => {
+      let resultState = {
+        isFetching: false,
+        loggedInUser: nonpwd.user.userid,
+        [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
+        targetsForUpload: [],
+        uploadTargetUser: null
       }
       nonpwd.memberships.slice(1).map(function(mship) {
         resultState[mship.userid] = _.assign({}, mship.profile)
@@ -211,60 +243,6 @@ describe('reducers', () => {
         error: true,
         payload: new Error(errMsg)
       })
-      expect(prevState === resultState).to.be.false
-    })
-
-    it('should handle SET_DEFAULT_TARGET_ID [logged-in PWD]', () => {
-      const loginPayload = {
-        user: pwd.user,
-        profile: pwd.profile,
-        memberships: pwd.memberships
-      }
-      let prevState = reducers.users(undefined, {
-        type: ActionTypes.LOGIN_DONE,
-        payload: loginPayload
-      })
-      let resultState = reducers.users(prevState, {
-        type: ActionTypes.SET_DEFAULT_TARGET_ID
-      })
-      expect(resultState.uploadTargetUser).to.equal(pwd.user.userid)
-      // test to be sure not *mutating* state object but rather returning new!
-      expect(prevState === resultState).to.be.false
-    })
-
-    it('should handle SET_DEFAULT_TARGET_ID [logged-in non-PWD, can upload to one]', () => {
-      const loginPayload = {
-        user: nonpwd.user,
-        profile: nonpwd.profile,
-        memberships: nonpwd.memberships.slice(1,2)
-      }
-      let prevState = reducers.users(undefined, {
-        type: ActionTypes.LOGIN_DONE,
-        payload: loginPayload
-      })
-      let resultState = reducers.users(prevState, {
-        type: ActionTypes.SET_DEFAULT_TARGET_ID
-      })
-      expect(resultState.uploadTargetUser).to.equal(loginPayload.memberships[0].userid)
-      // test to be sure not *mutating* state object but rather returning new!
-      expect(prevState === resultState).to.be.false
-    })
-
-    it('should handle SET_DEFAULT_TARGET_ID [logged-in non-PWD, can upload to many]', () => {
-      const loginPayload = {
-        user: nonpwd.user,
-        profile: nonpwd.profile,
-        memberships: nonpwd.memberships
-      }
-      let prevState = reducers.users(undefined, {
-        type: ActionTypes.LOGIN_DONE,
-        payload: loginPayload
-      })
-      let resultState = reducers.users(prevState, {
-        type: ActionTypes.SET_DEFAULT_TARGET_ID
-      })
-      expect(resultState.uploadTargetUser).to.be.null
-      // test to be sure not *mutating* state object but rather returning new!
       expect(prevState === resultState).to.be.false
     })
   })

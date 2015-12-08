@@ -43,6 +43,12 @@ global.chrome = {
 }
 
 describe('async actions', () => {
+  afterEach(function() {
+    // very important to do this in an afterEach than in each test when __Rewire__ is used
+    // if you try to reset within each test you'll make it impossible for tests to fail!
+    AsyncActions.__ResetDependency__('services')
+  })
+
   describe('doAppInit [no session token in local storage]', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_DONE actions', (done) => {
       const config = {
@@ -267,11 +273,6 @@ describe('async actions', () => {
             profile, memberships
           },
           meta: {source: ActionSources[ActionTypes.LOGIN_DONE]}
-        },
-        {
-          type: ActionTypes.SET_PAGE,
-          payload: {page: Pages.MAIN},
-          meta: {source: ActionSources[ActionTypes.SET_PAGE]}
         }
       ]
       AsyncActions.__Rewire__('services', {
@@ -284,10 +285,7 @@ describe('async actions', () => {
         },
         log: _.noop
       })
-      const store = mockStore({}, expectedActions, () => {
-        AsyncActions.__ResetDependency__('services')
-        done()
-      })
+      const store = mockStore({}, expectedActions, done)
       store.dispatch(AsyncActions.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
@@ -322,6 +320,27 @@ describe('async actions', () => {
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ))
+    })
+  })
+
+  describe('retrieveTargetsFromStorage', () => {
+    describe('no targets retrieved from local storage', () => {
+      it('should dispatch SET_PAGE (redirect to settings page)', (done) => {
+        const expectedActions = [
+          {
+            type: ActionTypes.SET_PAGE,
+            payload: {page: Pages.SETTINGS},
+            meta: {source: ActionSources[ActionTypes.SET_PAGE]}
+          }
+        ]
+        AsyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null
+          }
+        })
+        const store = mockStore({}, expectedActions, done)
+        store.dispatch(AsyncActions.retrieveTargetsFromStorage())
+      })
     })
   })
 })
