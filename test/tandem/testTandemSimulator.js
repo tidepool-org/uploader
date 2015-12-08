@@ -535,8 +535,8 @@ describe('tandemSimulator.js', function() {
       newDay.set('type', 'new-day');
 
       var basal2 = builder.makeScheduledBasal()
-        .with_time('2014-09-26T07:40:00.000Z')
-        .with_deviceTime('2014-09-26T07:40:00')
+        .with_time('2014-09-26T00:20:00.000Z')
+        .with_deviceTime('2014-09-26T00:20:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_rate(2);
@@ -632,12 +632,37 @@ describe('tandemSimulator.js', function() {
 
       var expectedTempBasal = _.cloneDeep(temp);
       expectedTempBasal.duration = 1500000;  //tempBasalStart.duration - tempBasalStop.time_left
-      expectedTempBasal.annotations = [{code: 'tandem/basal/fabricated-from-time-left'}];
       expectedTempBasal = expectedTempBasal.done();
 
       simulator.tempBasal(tempBasalStart);
       simulator.basal(temp);
       simulator.tempBasal(tempBasalStop);
+      simulator.finalBasal();
+
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
+    });
+
+    it('upload during temp basal', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.duration = 0;
+      expectedTempBasal.annotations = [{code:'basal/unknown-duration'}];
+      expectedTempBasal = expectedTempBasal.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
       simulator.finalBasal();
 
       expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
@@ -725,8 +750,8 @@ describe('tandemSimulator.js', function() {
       newDay.set('type', 'new-day');
 
       var basal2 = builder.makeScheduledBasal()
-        .with_time('2014-09-26T07:40:00.000Z')
-        .with_deviceTime('2014-09-26T07:40:00')
+        .with_time('2014-09-26T00:10:00.000Z')
+        .with_deviceTime('2014-09-26T00:10:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_rate(2);
@@ -743,8 +768,7 @@ describe('tandemSimulator.js', function() {
       expectedNewDay.previous = expectedTempBasal;
       expectedNewDay.time = '2014-09-26T00:00:00.000Z';
       expectedNewDay.deviceTime = '2014-09-26T00:00:00';
-      expectedNewDay.annotations = [{code: 'tandem/basal/fabricated-from-new-day'},
-        {code: 'tandem/basal/fabricated-from-time-left'}];
+      expectedNewDay.annotations = [{code: 'tandem/basal/fabricated-from-new-day'}];
       expectedNewDay.duration = 600000;
       expectedNewDay = expectedNewDay.done();
 
