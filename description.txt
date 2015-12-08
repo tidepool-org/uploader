@@ -5,7 +5,7 @@ Dexcom G4 Platinum, Insulet OmniPod, Medtronic Minimed (523 and up), Abbott Prec
 
 ■ Where can I see my data?
 Blip is the first app built on the Tidepool Platform. Blip displays your diabetes data from any of the the supported devices along with context from your life.
-Sign up for Blip at https://blip-pilot.tidepool.io
+Sign up for Blip at https://blip.tidepool.org
 
 ■ Privacy
 The data is only accessible to you and the people that you invite to view it. We also follow HIPAA guidelines (your data is safe).

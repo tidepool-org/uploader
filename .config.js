@@ -35,9 +35,9 @@ function stringToArray(str, defaultValue) {
 module.exports = {
   DEBUG: stringToBoolean(process.env.DEBUG, true),
   // the defaults for these need to be pointing to prod
-  API_URL: process.env.API_URL || 'https://api.tidepool.io',
-  UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.io',
-  BLIP_URL: process.env.BLIP_URL || 'https://blip-ucsf-pilot.tidepool.io',
+  API_URL: process.env.API_URL || 'https://api.tidepool.org',
+  UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.org',
+  BLIP_URL: process.env.BLIP_URL || 'https://blip.tidepool.org',
   CARELINK: stringToBoolean(process.env.CARELINK, true),
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
   DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'
