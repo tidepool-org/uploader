@@ -280,7 +280,6 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  // TODO: these tests are pending until settings are implemented
   describe('settings', function() {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
@@ -290,28 +289,48 @@ describe('tandemSimulator.js', function() {
       basalSchedules: {
         'billy': [
           { start: 0, rate: 1.0 },
-          { start: 21600000, rate: 1.1 },
-          { start: 43200000, rate: 1.2 },
-          { start: 64800000, rate: 1.3 }
+          { start: 21600000, rate: 1.1 }
         ],
         'bob': [
           { start: 0, rate: 0.0}
+        ]
+      },
+      carbSchedules: {
+        'billy': [
+          { start: 0, amount: 1.0 },
+          { start: 21600000, amount: 1.1 }
+        ],
+        'bob': [
+          { start: 0, amount: 0.0}
+        ]
+      },
+      sensitivitySchedules: {
+        'billy': [
+          { start: 0, amount: 1.0 },
+          { start: 21600000, amount: 1.1 }
+        ],
+        'bob': [
+          { start: 0, amount: 0.0}
+        ]
+      },
+      targetSchedules: {
+        'billy': [
+          { start: 0, target: 100 },
+          { start: 21600000, target: 110 }
+        ],
+        'bob': [
+          { start: 0, target: 105}
         ]
       },
       timezoneOffset: 0,
       conversionOffset: 0
     };
 
-    it.skip('passes through', function() {
+    it('passes through', function() {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
 
-    //TODO: remove this test when we handle settings
-    it('does not pass through', function() {
-      simulator.pumpSettings(settings);
-      expect(simulator.getEvents()).deep.equals([]);
-    });
   });
 
   describe('basal', function() {
