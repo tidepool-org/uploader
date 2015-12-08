@@ -165,9 +165,8 @@ describe('tandemSimulator.js', function() {
   });
 
   describe('deviceEvent', function() {
-  // TODO: these tests are pending until device events are implemented
     describe('alarm', function() {
-      it.skip('passes through', function() {
+      it('passes through', function() {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -195,8 +194,8 @@ describe('tandemSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it.skip('passes through', function() {
-        simulator.changeReservoir(val);
+      it('passes through', function() {
+        simulator.cartridgeChange(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
@@ -223,23 +222,23 @@ describe('tandemSimulator.js', function() {
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
-      it.skip('a suspend passes through', function() {
+      it('a suspend passes through', function() {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it.skip('a resume passes through', function() {
+      it('a resume passes through', function() {
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
-      it.skip('a resume includes a previous when preceded by a suspend', function() {
+      it('a resume includes a previous when preceded by a suspend', function() {
         simulator.suspend(suspend);
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      it.skip('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
+      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
         var suspend2 = {
           time: '2014-09-25T01:05:00.000Z',
           deviceTime: '2014-09-25T01:05:00',
@@ -280,7 +279,6 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  // TODO: these tests are pending until settings are implemented
   describe('settings', function() {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
@@ -290,28 +288,48 @@ describe('tandemSimulator.js', function() {
       basalSchedules: {
         'billy': [
           { start: 0, rate: 1.0 },
-          { start: 21600000, rate: 1.1 },
-          { start: 43200000, rate: 1.2 },
-          { start: 64800000, rate: 1.3 }
+          { start: 21600000, rate: 1.1 }
         ],
         'bob': [
           { start: 0, rate: 0.0}
+        ]
+      },
+      carbSchedules: {
+        'billy': [
+          { start: 0, amount: 1.0 },
+          { start: 21600000, amount: 1.1 }
+        ],
+        'bob': [
+          { start: 0, amount: 0.0}
+        ]
+      },
+      sensitivitySchedules: {
+        'billy': [
+          { start: 0, amount: 1.0 },
+          { start: 21600000, amount: 1.1 }
+        ],
+        'bob': [
+          { start: 0, amount: 0.0}
+        ]
+      },
+      targetSchedules: {
+        'billy': [
+          { start: 0, target: 100 },
+          { start: 21600000, target: 110 }
+        ],
+        'bob': [
+          { start: 0, target: 105}
         ]
       },
       timezoneOffset: 0,
       conversionOffset: 0
     };
 
-    it.skip('passes through', function() {
+    it('passes through', function() {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
 
-    //TODO: remove this test when we handle settings
-    it('does not pass through', function() {
-      simulator.pumpSettings(settings);
-      expect(simulator.getEvents()).deep.equals([]);
-    });
   });
 
   describe('basal', function() {
@@ -368,80 +386,123 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    // TODO: these tests are pending until suppressed basals are handled
-    it.skip('fills in the suppressed.scheduleName for a temp basal by percentage', function() {
-      var settings = {
-        time: '2014-09-25T01:00:00.000Z',
-        deviceTime: '2014-09-25T01:00:00',
-        activeSchedule: 'billy',
-        units: { 'bg': 'mg/dL' },
-        basalSchedules: {
-          'billy': [
-            { start: 0, rate: 1.0 },
-            { start: 21600000, rate: 1.1 },
-            { start: 43200000, rate: 1.2 },
-            { start: 64800000, rate: 1.3 }
-          ],
-          'bob': [
-            { start: 0, rate: 0.0}
-          ]
-        },
-        timezoneOffset: 0,
-        conversionOffset: 0
-      };
-      var regBasal1 = builder.makeScheduledBasal()
+    it('temp basal has percentage and payload', function() {
+      var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_rate(1.3)
-        .with_scheduleName('billy');
+        .with_duration(2000000);
       var tempBasal = builder.makeTempBasal()
         .with_time('2014-09-25T18:10:00.000Z')
         .with_deviceTime('2014-09-25T18:10:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
-        .with_rate(0.65)
-        .with_percent(0.5)
-        .with_duration(1800000);
-      var suppressed = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:10:00.000Z')
-        .with_deviceTime('2014-09-25T18:10:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_duration(1800000);
-      tempBasal.with_suppressed(suppressed);
-      var regBasal2 = builder.makeScheduledBasal()
+        .with_duration(1800000)
+        .with_previous(suppressed.done());
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1500000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+      var basal2 = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:40:00.000Z')
         .with_deviceTime('2014-09-25T18:40:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_scheduleName('billy');
-      var thisSim = pwdSimulator.make({settings: settings});
-      var expectedFirstBasal = _.cloneDeep(regBasal1);
-      expectedFirstBasal = expectedFirstBasal.set('duration', 300000).done();
-      var expectedSecondBasal = _.cloneDeep(tempBasal);
-      expectedSecondBasal.set('previous', expectedFirstBasal);
-      expectedSecondBasal.suppressed = expectedSecondBasal.suppressed
-        .set('scheduleName', 'billy').done();
-      expectedSecondBasal = expectedSecondBasal.done();
-      var expectedThirdBasal = _.cloneDeep(regBasal2);
-      expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
-        .set('previous', _.omit(expectedSecondBasal, 'previous'))
-        .done();
-      expectedThirdBasal.annotations = [{code: 'insulet/basal/fabricated-from-schedule'}];
-      thisSim.basal(regBasal1);
-      thisSim.basal(tempBasal);
-      thisSim.basal(regBasal2);
-      thisSim.finalBasal();
-      expect(thisSim.getEvents()).deep.equals([
-        expectedFirstBasal,
-        expectedSecondBasal,
-        expectedThirdBasal
+        .with_rate(2)
+        .with_duration(1800000);
+
+      var expectedTempBasal = tempBasal.with_payload({duration:1500000})
+                                        .set('percent',0.65)
+                                        .done();
+
+      simulator.basal(suppressed);
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(tempBasal);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([
+        suppressed.done(),
+        expectedTempBasal
       ]);
     });
+
+    it('temp basal crossing multiple segments', function() {
+      var suppressed1 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:00:00.000Z')
+        .with_deviceTime('2014-09-25T18:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_duration(180000)
+        .with_rate(1.3);
+      var suppressed2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:30:00.000Z')
+        .with_deviceTime('2014-09-25T18:30:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_duration(180000)
+        .with_rate(2);
+      var tempBasal = builder.makeTempBasal()
+        .with_time('2014-09-25T18:15:00.000Z')
+        .with_deviceTime('2014-09-25T18:15:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+      var tempBasal2 = builder.makeTempBasal()
+        .with_time('2014-09-25T18:30:00.000Z')
+        .with_deviceTime('2014-09-25T18:30:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+      var basal3 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T19:00:00.000Z')
+        .with_deviceTime('2014-09-25T19:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+
+      var expectedTempBasal = tempBasal.with_payload({duration:1800000})
+                                        .set('percent',0.65)
+                                        .with_duration(900000)
+                                        .with_previous(suppressed1.done())
+                                        .done();
+      var expectedTempBasal2 = tempBasal2.with_payload({duration:1800000})
+                                        .set('percent',0.65)
+                                        .with_duration(900000)
+                                        .with_previous(suppressed2.done())
+                                        .done();
+
+      simulator.basal(suppressed1);
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(tempBasal);
+      simulator.basal(suppressed2);
+      simulator.basal(tempBasal2);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal3);
+      expect(simulator.getEvents()).deep.equals([
+        suppressed1.done(),
+        expectedTempBasal,
+        expectedTempBasal2
+      ]);
+    });
+
 
   });
 
@@ -472,6 +533,65 @@ describe('tandemSimulator.js', function() {
       expect(lastEvent.annotations[0].code).to.equal('tandem/basal/fabricated-from-new-day');
 
     });
+
+    it('a new-day event during a temp basal', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.5,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T23:50:00.000Z')
+        .with_deviceTime('2014-09-25T23:50:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(0.5);
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1);
+      newDay.set('type', 'new-day');
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:20:00.000Z')
+        .with_deviceTime('2014-09-26T00:20:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.percent = 0.5;
+      expectedTempBasal.payload = {duration:1800000};
+      expectedTempBasal.duration = 600000; // 10 minutes before new-day
+      expectedTempBasal = expectedTempBasal.done();
+
+      var expectedNewDay = _.cloneDeep(temp);
+      expectedNewDay.percent = 0.5;
+      expectedNewDay.payload = {duration:1800000};
+      expectedNewDay.previous = expectedTempBasal;
+      expectedNewDay.time = '2014-09-26T00:00:00.000Z';
+      expectedNewDay.deviceTime = '2014-09-26T00:00:00';
+      expectedNewDay.annotations = [{code: 'tandem/basal/fabricated-from-new-day'}];
+      expectedNewDay.duration = 1200000;
+      expectedNewDay = expectedNewDay.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.newDay(newDay);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
+
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
+    });
+
   });
 
   describe('finalBasal', function() {
@@ -517,6 +637,63 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
 
+    it('a temp basal was terminated early', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 300000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.duration = 1500000;  //tempBasalStart.duration - tempBasalStop.time_left
+      expectedTempBasal = expectedTempBasal.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.tempBasal(tempBasalStop);
+      simulator.finalBasal();
+
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
+    });
+
+    it('upload during temp basal', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1800000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.duration = 0;
+      expectedTempBasal.annotations = [{code:'basal/unknown-duration'}];
+      expectedTempBasal = expectedTempBasal.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.finalBasal();
+
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
+    });
+
     it('a suspend basal is given a null duration and annotated', function() {
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
@@ -542,6 +719,14 @@ describe('tandemSimulator.js', function() {
         .with_conversionOffset(0)
         .with_rate(1.3);
 
+      var suspendEvent = builder.makeDeviceEventSuspend()
+        .with_reason({suspended: 'manual'})
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .done();
+
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -557,12 +742,78 @@ describe('tandemSimulator.js', function() {
       newDay.set('type', 'new-day');
 
       simulator.basal(basal);
+      simulator.suspend(suspendEvent);
       simulator.basal(suspend);
       simulator.newDay(newDay);
 
-      expect(simulator.getEvents()).deep.equals([basal.done()]);
+      expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
     });
 
+    it('a new-day event during a cancelled temp basal', function() {
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.5,
+            duration: 1800000
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 600000
+          };
+      var temp = builder.makeTempBasal()
+        .with_time('2014-09-25T23:50:00.000Z')
+        .with_deviceTime('2014-09-25T23:50:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(0.5);
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1);
+      newDay.set('type', 'new-day');
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:10:00.000Z')
+        .with_deviceTime('2014-09-26T00:10:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+
+      var expectedTempBasal = _.cloneDeep(temp);
+      expectedTempBasal.percent = 0.5;
+      expectedTempBasal.payload = {duration:1800000};
+      expectedTempBasal.duration = 600000; // 10 minutes before new-day
+      expectedTempBasal = expectedTempBasal.done();
+
+      var expectedNewDay = _.cloneDeep(temp);
+      expectedNewDay.percent = 0.5;
+      expectedNewDay.payload = {duration:1800000};
+      expectedNewDay.previous = expectedTempBasal;
+      expectedNewDay.time = '2014-09-26T00:00:00.000Z';
+      expectedNewDay.deviceTime = '2014-09-26T00:00:00';
+      expectedNewDay.annotations = [{code: 'tandem/basal/fabricated-from-new-day'}];
+      expectedNewDay.duration = 600000;
+      expectedNewDay = expectedNewDay.done();
+
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.newDay(newDay);
+      simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
+
+      // check with different order of events
+      simulator = pwdSimulator.make();
+      simulator.tempBasal(tempBasalStart);
+      simulator.basal(temp);
+      simulator.tempBasal(tempBasalStop);
+      simulator.newDay(newDay);
+      simulator.basal(basal2);
+      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
+    });
   });
 
 });
