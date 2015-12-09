@@ -795,15 +795,6 @@ describe('tandemSimulator.js', function() {
       simulator.tempBasal(tempBasalStop);
       simulator.basal(basal2);
       expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
-
-      // check with different order of events
-      simulator = pwdSimulator.make();
-      simulator.tempBasal(tempBasalStart);
-      simulator.basal(temp);
-      simulator.tempBasal(tempBasalStop);
-      simulator.newDay(newDay);
-      simulator.basal(basal2);
-      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
     });
   });
 
