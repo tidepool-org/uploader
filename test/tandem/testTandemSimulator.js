@@ -675,8 +675,7 @@ describe('tandemSimulator.js', function() {
         .with_rate(1.3);
 
       var expectedTempBasal = _.cloneDeep(temp);
-      expectedTempBasal.duration = 0;
-      expectedTempBasal.annotations = [{code:'basal/unknown-duration'}];
+      expectedTempBasal.duration = 1800000;
       expectedTempBasal = expectedTempBasal.done();
 
       simulator.tempBasal(tempBasalStart);
