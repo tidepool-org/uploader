@@ -436,20 +436,13 @@ describe('tandemSimulator.js', function() {
     });
 
     it('temp basal crossing multiple segments', function() {
-      var suppressed1 = builder.makeScheduledBasal()
+      var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:00:00.000Z')
         .with_deviceTime('2014-09-25T18:00:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_duration(180000)
         .with_rate(1.3);
-      var suppressed2 = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:30:00.000Z')
-        .with_deviceTime('2014-09-25T18:30:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_duration(180000)
-        .with_rate(2);
       var tempBasal = builder.makeTempBasal()
         .with_time('2014-09-25T18:15:00.000Z')
         .with_deviceTime('2014-09-25T18:15:00')
@@ -481,23 +474,22 @@ describe('tandemSimulator.js', function() {
       var expectedTempBasal = tempBasal.with_payload({duration:1800000})
                                         .set('percent',0.65)
                                         .with_duration(900000)
-                                        .with_previous(suppressed1.done())
+                                        .with_previous(suppressed.done())
                                         .done();
       var expectedTempBasal2 = tempBasal2.with_payload({duration:1800000})
                                         .set('percent',0.65)
                                         .with_duration(900000)
-                                        .with_previous(suppressed2.done())
+                                        .with_previous(_.omit(expectedTempBasal, 'previous'))
                                         .done();
 
-      simulator.basal(suppressed1);
+      simulator.basal(suppressed);
       simulator.tempBasal(tempBasalStart);
       simulator.basal(tempBasal);
-      simulator.basal(suppressed2);
       simulator.basal(tempBasal2);
       simulator.tempBasal(tempBasalStop);
       simulator.basal(basal3);
       expect(simulator.getEvents()).deep.equals([
-        suppressed1.done(),
+        suppressed.done(),
         expectedTempBasal,
         expectedTempBasal2
       ]);
@@ -683,8 +675,7 @@ describe('tandemSimulator.js', function() {
         .with_rate(1.3);
 
       var expectedTempBasal = _.cloneDeep(temp);
-      expectedTempBasal.duration = 0;
-      expectedTempBasal.annotations = [{code:'basal/unknown-duration'}];
+      expectedTempBasal.duration = 1800000;
       expectedTempBasal = expectedTempBasal.done();
 
       simulator.tempBasal(tempBasalStart);
@@ -802,15 +793,6 @@ describe('tandemSimulator.js', function() {
       simulator.basal(temp);
       simulator.newDay(newDay);
       simulator.tempBasal(tempBasalStop);
-      simulator.basal(basal2);
-      expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
-
-      // check with different order of events
-      simulator = pwdSimulator.make();
-      simulator.tempBasal(tempBasalStart);
-      simulator.basal(temp);
-      simulator.tempBasal(tempBasalStop);
-      simulator.newDay(newDay);
       simulator.basal(basal2);
       expect(simulator.getEvents()).deep.equals([expectedTempBasal,expectedNewDay]);
     });
