@@ -18,14 +18,14 @@
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `*[-]` name of basal schedule on each scheduled basal rate interval
     - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
-  - `[?]` manual temp basal
-    - `[?]` basal rate intervals with a start time, duration, and rate delivered
-    - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+  - `[ ]` manual temp basal
+    - `[ ]` basal rate intervals with a start time, duration, and rate delivered
+    - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
   - `[x]` percentage temp basal
     - `[x]` basal rate intervals with a start time, duration, percent
         - `[x]` rate provided directly OR
         - `[ ]` rate computed from percent x suppressed.rate
-    - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+    - `[x]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
   - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
     - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
     - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
@@ -73,35 +73,35 @@ Device-specific? (Add any device-specific notes/additions here.)
 #### Device Events
 
   - alarms:
-    - `[?]` low insulin
-    - `[?]` no insulin
+    - `[x]` low insulin
+    - `[x]` no insulin
+        - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[x]` low power
+    - `[x]` no power
         - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` low power
-    - `[?]` no power
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` occlusion
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[x]` occlusion
+        - `[x]` needed to infer a suspend (stoppage of all insulin delivery)
     - `[?]` no delivery
         - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` auto-off
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` over limit (i.e., max bolus exceeded through override)
-    - `[?]` other alarm types (details to be provided in `payload` object)
-  - `*[-]` prime events
-    - `[?]` prime target = tubing
-    - `*[-]` prime target = cannula
+    - `[x]` auto-off
+        - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[ ]` over limit (i.e., max bolus exceeded through override)
+    - `[x]` other alarm types (details to be provided in `payload` object)
+  - `[x]` prime events
+    - `[x]` prime target = tubing
+    - `[x]` prime target = cannula
     - `[ ]` prime targets not differentiated
-    - `[?]` prime volume in units of insulin
-  - `*[-]` reservoir change (or reservoir rewind)
-    - `*[-]` needed to infer a suspend (stoppage of all insulin delivery)
-  - `*[-]` status events (i.e., suspend & resume)
-    - `[?]` suspensions of insulin delivery are represented as (interval) events with a duration OR
-    - `[?]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
-    - `[?]` reason/agent of suspension (`automatic` or `manual`)
-    - `[?]` reason/agent of resumption (`automatic` or `manual`)
+    - `[x]` prime volume in units of insulin
+  - `[x]` reservoir change (or reservoir rewind)
+    - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+  - `[x]` status events (i.e., suspend & resume)
+    - `[ ]` suspensions of insulin delivery are represented as (interval) events with a duration OR
+    - `[x]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
+    - `[x]` reason/agent of suspension (`automatic` or `manual`)
+    - `[ ]` reason/agent of resumption (`automatic` or `manual`)
   - calibrations: see [the CGM checklist](CGMChecklist.md) instead
-  - `*[-]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
-    - `*[-]` device display time `from` (before change) and `to` (result of change)
+  - `[x]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
+    - `[x]` device display time `from` (before change) and `to` (result of change)
     - `[x]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
@@ -112,7 +112,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
-  - `*[?]` units of value (read from device, not hard-coded)
+  - `[ ]` units of value (read from device, not hard-coded)
   - `*[?]` out-of-range values (LO or HI)
   - `*[?]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
@@ -126,22 +126,22 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 #### Settings
 
-  - `*[-]` basal schedules
+  - `[x]` basal schedules
     - `[ ]` name of basal schedule OR
-    - `*[-]` name of settings profile
-    - `*[-]` each schedule as a set of objects each with a rate and a start time
-  - `*[-]` name of currently active basal schedule
+    - `[x]` name of settings profile
+    - `[x]` each schedule as a set of objects each with a rate and a start time
+  - `[x]` name of currently active basal schedule
   - `[?]` units of all blood glucose-related fields (read from device, not hard-coded)
   - `[?]` units of all carb-related fields (read from device, not hard-coded)
-  - `*[-]` carb ratio(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with a ratio (amount) and a start time
-  - `*[-]` insulin sensitivity factor(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with an amount and a start time
-  - `*[-]` blood glucose target(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with a target and a start time
+  - `[x]` carb ratio(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with a ratio (amount) and a start time
+  - `[x]` insulin sensitivity factor(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with an amount and a start time
+  - `[x]` blood glucose target(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with a target and a start time
     - target shape:
         - `[ ]` shape `{low: 80, high: 120}` OR
         - `[x]` shape `{target: 100}` OR
