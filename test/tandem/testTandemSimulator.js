@@ -495,7 +495,45 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
+    it('ignore duplicate suspended basals', function() {
 
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T15:00:00.000Z')
+        .with_deviceTime('2014-09-25T15:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      var suspend = builder.makeSuspendBasal()
+        .with_time('2014-09-25T18:00:00.000Z')
+        .with_deviceTime('2014-09-25T18:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+
+      var duplicateSuspend = builder.makeSuspendBasal()
+        .with_time('2014-09-25T18:00:00.000Z')
+        .with_deviceTime('2014-09-25T18:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T18:30:00.000Z')
+        .with_deviceTime('2014-09-25T18:30:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+
+      simulator.basal(basal);
+      simulator.basal(suspend);
+      simulator.basal(duplicateSuspend);
+      simulator.basal(basal2);
+
+      var expectedSuspend = suspend.set('duration', 1800000)
+        .set('previous', basal.done())
+        .done();
+
+      expect(simulator.getEvents()).deep.equals([basal.done(),expectedSuspend]);
+    });
   });
 
   describe('newDay', function() {
