@@ -33,7 +33,10 @@
     - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- we cannot add the name of the basal schedule on each scheduled basal rate interval at the moment, as that would require a full settings history
+- we cannot represent suppressed scheduled basals during suspended basals at the moment, as we require a full settings history to determine them for each segment of the basal schedule that the suspended basal intersects
 
 #### Boluses
 
@@ -155,18 +158,18 @@ Settings history:
 
 No Tidepool data model yet:
 
-  - `[ ]` low insulin alert threshold
+  - `[-]` low insulin alert threshold
   - auto-off:
-    - `[ ]` enabled
-    - `[ ]` threshold
+    - `[-]` enabled
+    - `[-]` threshold
   - `[ ]` language
   - reminders:
-    - `[ ]` BG reminder
-    - `[ ]` bolus reminder
-  - `[ ]` alert settings (volume or vibration-only; whether enabled)
+    - `[-]` BG reminder
+    - `[-]` bolus reminder
+  - `[-]` alert settings (volume or vibration-only; whether enabled)
   - basal features:
     - `[ ]` temp basal type (`manual` or `percentage`)
-    - `[ ]` max basal (as a u/hr rate)
+    - `[-]` max basal (as a u/hr rate)
   - bolus features:
     - `[ ]` bolus "wizard"/calculator enabled
     - `[ ]` bolus increment for non-"quick"/manual boluses
@@ -174,14 +177,16 @@ No Tidepool data model yet:
     - `[ ]` extended bolus type (`manual` or `percentage`)
     - `[ ]` min BG to allow calculation of bolus delivery
     - `[ ]` reverse correction enabled
-    - `[ ]` max bolus
+    - `[-]` max bolus
     - "quick"/manual bolus:
-        - `[ ]` enabled
-        - `[ ]` increment
-  - `[ ]` insulin action time
+        - `[-]` enabled
+        - `[-]` increment
+  - `[-]` insulin action time
   - `[ ]` clock display preference (12h vs 24h format)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- To build a full settings history we'll need to use the entire log record, not just the last 90 days. For example, a profile name change event only contains the new name, so you'll need to read the record where it was first created to get the original name. Until we do diff uploads (so it only happens once), or significantly improve the upload speed, reading the entire log record is not possible.
 
 #### Wizard
 
@@ -203,7 +208,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` shape `{target: 100}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
-  - `*[?]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
+  - `[ ]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
   - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
 Device-specific? (Add any device-specific notes/additions here.)
