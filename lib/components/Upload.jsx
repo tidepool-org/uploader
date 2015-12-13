@@ -118,6 +118,11 @@ var Upload = React.createClass({
       return null;
     }
 
+    // don't show the 'choose file' button if a file has already been selected.
+    if (this.isBlockModeFileChosen()) {
+      return null;
+    }
+
     return (
       <div className="Upload-inputWrapper">
         <input className="Upload-fileinput" ref="file" type="file" onChange={this.onBlockModeInputChange}/>
@@ -211,9 +216,13 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{this.props.text.UPLOAD_COMPLETE}</div>;
     }
     if (this.isBlockModeFileChosen()) {
-      return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
+      return (
+          <div className="Upload-status Upload-status--filename">
+            <p>{this.props.upload.file.name}</p>
+            <i className="icon-delete" onClick={this.clearBlockModeFile}></i>
+          </div>
+      );
     }
-
     return null;
   },
   renderReset: function() {
@@ -347,15 +356,19 @@ var Upload = React.createClass({
     this.props.onUpload(options);
   },
 
+  clearBlockModeFile: function() {
+    this.setState({
+      blockModeFileNotChosen: true
+    });
+  },
+
   handleBlockModeUpload: function() {
     var options = {
       filename: this.props.upload.file.name,
       filedata: this.props.upload.file.data
     };
     this.props.onUpload(options);
-    this.setState({
-      blockModeFileNotChosen: true
-    });
+    this.clearBlockModeFile();
   },
 
   handleReset: function(e) {
