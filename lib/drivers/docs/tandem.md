@@ -109,7 +109,9 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- At the moment we only process the most recent 90 days of log history, as it takes too long to get all the records from pumps with a large history. This means we also need to search for the newest relevant event to start reading from. Events like USB-connected are considered to be not relevant (since we don't process them), but we do consider events like reservoir-change events to be relevant (as they are rendered in the Basics view).
 
 #### SMBG
 
