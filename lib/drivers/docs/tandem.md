@@ -221,7 +221,9 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
   - `[x]` date & time settings changes
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
 
 ### No Tidepool Data Model Yet
 
