@@ -112,6 +112,8 @@ Device-specific? (Add any device-specific notes/additions here.)
 ##### Device-specific? (Add any device-specific notes/additions here.)
 
 - At the moment we only process the most recent 90 days of log history, as it takes too long to get all the records from pumps with a large history. This means we also need to search for the newest relevant event to start reading from. Events like USB-connected are considered to be not relevant (since we don't process them), but we do consider events like reservoir-change events to be relevant (as they are rendered in the Basics view).
+- An occlusion alarm does not trigger a basal rate change event (used to create all other basals), so a suspended basal is created manually.
+- For status events reasons and causes are provided from the alarms if available, i.e., for occlusion, auto-off, no-insulin and no-power alarms. For cartridge-change alarms, the cause will show as other.
 
 #### SMBG
 
