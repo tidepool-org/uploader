@@ -18,14 +18,14 @@
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `*[-]` name of basal schedule on each scheduled basal rate interval
     - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
-  - `[?]` manual temp basal
-    - `[?]` basal rate intervals with a start time, duration, and rate delivered
-    - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+  - `[ ]` manual temp basal
+    - `[ ]` basal rate intervals with a start time, duration, and rate delivered
+    - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
   - `[x]` percentage temp basal
     - `[x]` basal rate intervals with a start time, duration, percent
         - `[x]` rate provided directly OR
         - `[ ]` rate computed from percent x suppressed.rate
-    - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+    - `[x]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
   - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
     - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
     - `*[-]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
@@ -33,7 +33,11 @@
     - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- we cannot add the name of the basal schedule on each scheduled basal rate interval at the moment, as that would require a full settings history
+- we cannot represent suppressed scheduled basals during suspended basals at the moment, as we require a full settings history to determine them for each segment of the basal schedule that the suspended basal intersects
+- manual temp basals are not implemented, as Tandem only allows for percentage temp basals
 
 #### Boluses
 
@@ -73,48 +77,53 @@ Device-specific? (Add any device-specific notes/additions here.)
 #### Device Events
 
   - alarms:
-    - `[?]` low insulin
-    - `[?]` no insulin
+    - `[x]` low insulin
+    - `[x]` no insulin
+        - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[x]` low power
+    - `[x]` no power
         - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` low power
-    - `[?]` no power
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` occlusion
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[x]` occlusion
+        - `[x]` needed to infer a suspend (stoppage of all insulin delivery)
     - `[?]` no delivery
         - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` auto-off
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` over limit (i.e., max bolus exceeded through override)
-    - `[?]` other alarm types (details to be provided in `payload` object)
-  - `*[-]` prime events
-    - `[?]` prime target = tubing
-    - `*[-]` prime target = cannula
+    - `[x]` auto-off
+        - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[ ]` over limit (i.e., max bolus exceeded through override)
+    - `[x]` other alarm types (details to be provided in `payload` object)
+  - `[x]` prime events
+    - `[x]` prime target = tubing
+    - `[x]` prime target = cannula
     - `[ ]` prime targets not differentiated
-    - `[?]` prime volume in units of insulin
-  - `*[-]` reservoir change (or reservoir rewind)
-    - `*[-]` needed to infer a suspend (stoppage of all insulin delivery)
-  - `*[-]` status events (i.e., suspend & resume)
-    - `[?]` suspensions of insulin delivery are represented as (interval) events with a duration OR
-    - `[?]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
-    - `[?]` reason/agent of suspension (`automatic` or `manual`)
-    - `[?]` reason/agent of resumption (`automatic` or `manual`)
+    - `[x]` prime volume in units of insulin
+  - `[x]` reservoir change (or reservoir rewind)
+    - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+  - `[x]` status events (i.e., suspend & resume)
+    - `[ ]` suspensions of insulin delivery are represented as (interval) events with a duration OR
+    - `[x]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
+    - `[x]` reason/agent of suspension (`automatic` or `manual`)
+    - `[ ]` reason/agent of resumption (`automatic` or `manual`)
   - calibrations: see [the CGM checklist](CGMChecklist.md) instead
-  - `*[-]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
-    - `*[-]` device display time `from` (before change) and `to` (result of change)
+  - `[x]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
+    - `[x]` device display time `from` (before change) and `to` (result of change)
     - `[x]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- At the moment we only process the most recent 90 days of log history, as it takes too long to get all the records from pumps with a large history. This means we also need to search for the newest relevant event to start reading from. Events like USB-connected are considered to be not relevant (since we don't process them), but we do consider events like reservoir-change events to be relevant (as they are rendered in the Basics view).
+- An occlusion alarm does not trigger a basal rate change event (used to create all other basals), so a suspended basal is created manually.
+- For status events reasons and causes are provided from the alarms if available, i.e., for occlusion, auto-off, no-insulin and no-power alarms. For cartridge-change alarms, the cause will show as other.
+- There are no Tandem alarm or alert types that map directly to "no delivery", which is why it's not implemented.
 
 #### SMBG
 
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
-  - `*[?]` units of value (read from device, not hard-coded)
-  - `*[?]` out-of-range values (LO or HI)
-  - `*[?]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+  - `[ ]` units of value (read from device, not hard-coded)
+  - `[ ]` out-of-range values (LO or HI)
+  - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
 No Tidepool data model yet:
 
@@ -122,26 +131,28 @@ No Tidepool data model yet:
   - `[ ]` other/freeform tags
   - `[?]` categorization of value according to BG target(s) from settings
 
-Device-specific? (Add any device-specific notes/additions here.)
+#### Device-specific? (Add any device-specific notes/additions here.)
+
+- Tandem only provides BG thresholds for triggering reminders. Out-of-range/threshold info are available for CGM data.
 
 #### Settings
 
-  - `*[-]` basal schedules
+  - `[x]` basal schedules
     - `[ ]` name of basal schedule OR
-    - `*[-]` name of settings profile
-    - `*[-]` each schedule as a set of objects each with a rate and a start time
-  - `*[-]` name of currently active basal schedule
+    - `[x]` name of settings profile
+    - `[x]` each schedule as a set of objects each with a rate and a start time
+  - `[x]` name of currently active basal schedule
   - `[?]` units of all blood glucose-related fields (read from device, not hard-coded)
   - `[?]` units of all carb-related fields (read from device, not hard-coded)
-  - `*[-]` carb ratio(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with a ratio (amount) and a start time
-  - `*[-]` insulin sensitivity factor(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with an amount and a start time
-  - `*[-]` blood glucose target(s)
-    - `*[-]` name of settings profile
-    - `*[-]` (one or more) set(s) of objects each with a target and a start time
+  - `[x]` carb ratio(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with a ratio (amount) and a start time
+  - `[x]` insulin sensitivity factor(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with an amount and a start time
+  - `[x]` blood glucose target(s)
+    - `[x]` name of settings profile
+    - `[x]` (one or more) set(s) of objects each with a target and a start time
     - target shape:
         - `[ ]` shape `{low: 80, high: 120}` OR
         - `[x]` shape `{target: 100}` OR
@@ -155,18 +166,18 @@ Settings history:
 
 No Tidepool data model yet:
 
-  - `[ ]` low insulin alert threshold
+  - `[-]` low insulin alert threshold
   - auto-off:
-    - `[ ]` enabled
-    - `[ ]` threshold
+    - `[-]` enabled
+    - `[-]` threshold
   - `[ ]` language
   - reminders:
-    - `[ ]` BG reminder
-    - `[ ]` bolus reminder
-  - `[ ]` alert settings (volume or vibration-only; whether enabled)
+    - `[-]` BG reminder
+    - `[-]` bolus reminder
+  - `[-]` alert settings (volume or vibration-only; whether enabled)
   - basal features:
     - `[ ]` temp basal type (`manual` or `percentage`)
-    - `[ ]` max basal (as a u/hr rate)
+    - `[-]` max basal (as a u/hr rate)
   - bolus features:
     - `[ ]` bolus "wizard"/calculator enabled
     - `[ ]` bolus increment for non-"quick"/manual boluses
@@ -174,14 +185,16 @@ No Tidepool data model yet:
     - `[ ]` extended bolus type (`manual` or `percentage`)
     - `[ ]` min BG to allow calculation of bolus delivery
     - `[ ]` reverse correction enabled
-    - `[ ]` max bolus
+    - `[-]` max bolus
     - "quick"/manual bolus:
-        - `[ ]` enabled
-        - `[ ]` increment
-  - `[ ]` insulin action time
+        - `[-]` enabled
+        - `[-]` increment
+  - `[-]` insulin action time
   - `[ ]` clock display preference (12h vs 24h format)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- To build a full settings history we'll need to use the entire log record, not just the last 90 days. For example, a profile name change event only contains the new name, so you'll need to read the record where it was first created to get the original name. Until we do diff uploads (so it only happens once), or significantly improve the upload speed, reading the entire log record is not possible.
 
 #### Wizard
 
@@ -203,20 +216,24 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` shape `{target: 100}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
-  - `*[?]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
+  - `[ ]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
   - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- Instead of a bolus calculator (or wizard), Tandem has a carbs setting enabled or not. When the carbs setting is not enabled, a manual bolus is entered. When it is enabled, a recommended bolus dose is provided.
 
 #### "Bootstrapping" to UTC
 
   - `[x]` index
-    - `[x]` UTC timestamp (*Hey, one can dream!*) OR
+    - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
     - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
   - `[x]` date & time settings changes
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
 
 ### No Tidepool Data Model Yet
 
