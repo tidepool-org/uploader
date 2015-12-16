@@ -37,6 +37,7 @@
 
 - we cannot add the name of the basal schedule on each scheduled basal rate interval at the moment, as that would require a full settings history
 - we cannot represent suppressed scheduled basals during suspended basals at the moment, as we require a full settings history to determine them for each segment of the basal schedule that the suspended basal intersects
+- manual temp basals are not implemented, as Tandem only allows for percentage temp basals
 
 #### Boluses
 
@@ -114,14 +115,15 @@ Device-specific? (Add any device-specific notes/additions here.)
 - At the moment we only process the most recent 90 days of log history, as it takes too long to get all the records from pumps with a large history. This means we also need to search for the newest relevant event to start reading from. Events like USB-connected are considered to be not relevant (since we don't process them), but we do consider events like reservoir-change events to be relevant (as they are rendered in the Basics view).
 - An occlusion alarm does not trigger a basal rate change event (used to create all other basals), so a suspended basal is created manually.
 - For status events reasons and causes are provided from the alarms if available, i.e., for occlusion, auto-off, no-insulin and no-power alarms. For cartridge-change alarms, the cause will show as other.
+- There are no Tandem alarm or alert types that map directly to "no delivery", which is why it's not implemented.
 
 #### SMBG
 
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
   - `[ ]` units of value (read from device, not hard-coded)
-  - `*[?]` out-of-range values (LO or HI)
-  - `*[?]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+  - `[ ]` out-of-range values (LO or HI)
+  - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
 No Tidepool data model yet:
 
@@ -129,7 +131,9 @@ No Tidepool data model yet:
   - `[ ]` other/freeform tags
   - `[?]` categorization of value according to BG target(s) from settings
 
-Device-specific? (Add any device-specific notes/additions here.)
+#### Device-specific? (Add any device-specific notes/additions here.)
+
+- Tandem only provides BG thresholds for triggering reminders. Out-of-range/threshold info are available for CGM data.
 
 #### Settings
 
@@ -215,12 +219,14 @@ No Tidepool data model yet:
   - `[ ]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
   - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
-Device-specific? (Add any device-specific notes/additions here.)
+##### Device-specific? (Add any device-specific notes/additions here.)
+
+- Instead of a bolus calculator (or wizard), Tandem has a carbs setting enabled or not. When the carbs setting is not enabled, a manual bolus is entered. When it is enabled, a recommended bolus dose is provided.
 
 #### "Bootstrapping" to UTC
 
   - `[x]` index
-    - `[x]` UTC timestamp (*Hey, one can dream!*) OR
+    - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
     - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
   - `[x]` date & time settings changes
