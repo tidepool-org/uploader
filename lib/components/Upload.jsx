@@ -144,8 +144,8 @@ var Upload = React.createClass({
     );
   },
   onCareLinkInputChange: function() {
-    var username = this.refs.username && this.refs.username.getDOMNode().value;
-    var password = this.refs.password && this.refs.password.getDOMNode().value;
+    var username = this.refs.username && this.refs.username.value;
+    var password = this.refs.password && this.refs.password.value;
 
     if (!username || !password) {
       this.setState({carelinkFormIncomplete: true});
