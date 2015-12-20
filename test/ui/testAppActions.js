@@ -104,6 +104,9 @@ describe('appActions', function() {
       api.user.profile = function(cb) { cb(); };
       api.user.getUploadGroups = function(cb) { cb(null, defaultUploadGroups); };
       api.setHosts = function() {};
+
+      api.upload = {};
+      api.upload.isAllowed = function(version){return true;};
     });
 
     it('initializes all I/O services', function(done) {
@@ -219,6 +222,8 @@ describe('appActions', function() {
       api.user.profile = function(cb) { cb(); };
       api.user.getUploadGroups = function(cb) { cb(null, defaultUploadGroups); };
       api.metrics = { track : function(one, two) { loginMetricsCall.one = one; loginMetricsCall.two = two;  }};
+      api.upload = {};
+      api.upload.isAllowed = function(version){return true;};
     });
 
     it('goes to settings page by default', function(done) {
@@ -681,6 +686,8 @@ describe('appActions', function() {
     beforeEach(function() {
       api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
       api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
+      api.upload = {};
+      api.upload.isAllowed = function(version){return true;};
     });
 
     it('throws an error if upload index is invalid', function() {
@@ -921,6 +928,8 @@ describe('appActions', function() {
     beforeEach(function() {
       api.metrics = { track : function(one, two) { uploadDeviceMetricsCall.one = one; uploadDeviceMetricsCall.two = two;  }};
       api.errors = { log : function(one, two, three) { uploadErrorCall.one = one; uploadErrorCall.two = two; uploadErrorCall.three = three; }};
+      api.upload = {};
+      api.upload.isAllowed = function(version){return true;};
     });
 
     it('each error has a detailed `debug` string attached for logging', function(done) {
