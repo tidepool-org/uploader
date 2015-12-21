@@ -68,7 +68,6 @@ var Upload = React.createClass({
         <div className="Upload-right">
           <div className="Upload-statusSection">
             {this.renderStatus()}
-            {this.renderReset()}
           </div>
           {this.renderProgress()}
           {this.renderActions()}
@@ -101,8 +100,16 @@ var Upload = React.createClass({
     );
   },
   renderActions: function() {
-    if (this.isUploading() || this.isUploadCompleted() || this.isDisconnected()) {
+    if (this.isUploading()) {
       return null;
+    }
+
+    if (this.isUploadCompleted() || this.isDisconnected()) {
+      return (
+        <div className="Upload-button">
+          {this.renderReset()}
+        </div>
+      );
     }
 
     return (
