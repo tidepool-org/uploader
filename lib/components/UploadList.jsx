@@ -69,7 +69,11 @@ var UploadList = React.createClass({
     var showDetailsThisUpload = _.includes(this.state.showErrorDetails, upload.key);
     var errorDetails = showDetailsThisUpload ? (<div className="UploadList-error-details">{upload.error.debug}</div>) : null;
     var showErrorsText = showDetailsThisUpload ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
-    var errorMessage = upload.error.driverLink ? <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED}<a href={upload.error.driverLink} target="_blank">{upload.error.friendlyMessage}</a></span> :
+    var errorMessage = upload.error.driverLink ? <div className="UploadList-error-message-wrapper">
+                                                  <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED}</span>
+                                                  <span className="UploadList-error-message-friendly">{upload.error.friendlyMessage}</span>
+                                                  <span className="UploadList-error-message-link"><a href={upload.error.driverLink} target="_blank">{upload.error.driverName}</a></span>
+                                                 </div> :
         <span className="UploadList-error-message">{this.props.text.UPLOAD_FAILED + upload.error.friendlyMessage}</span>;
 
     var clickHandler = this.makeHandleShowDetailsFn(upload);
