@@ -560,9 +560,9 @@ describe('appActions', function() {
       });
 
       it('excludes nothing', function() {
-        expect(app.state.uploads.length).to.equal(10);
+        expect(app.state.uploads.length).to.equal(11);
         appActions._hideUnavailableDevices();
-        expect(app.state.uploads.length).to.equal(10);
+        expect(app.state.uploads.length).to.equal(11);
       });
     });
 
@@ -572,9 +572,9 @@ describe('appActions', function() {
       });
 
       it('excludes all Abbott devices', function() {
-        expect(app.state.uploads.length).to.equal(10);
+        expect(app.state.uploads.length).to.equal(11);
         appActions._hideUnavailableDevices();
-        expect(app.state.uploads.length).to.equal(7);
+        expect(app.state.uploads.length).to.equal(8);
         expect(_.findWhere(app.state.uploads, {key: 'precisionxtra'})).to.not.be.ok;
         expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylelite'})).to.not.be.ok;
         expect(_.findWhere(app.state.uploads, {key: 'abbottfreestylefreedomlite'})).to.not.be.ok;
