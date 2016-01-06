@@ -5,3 +5,9 @@ node_js:
 script:
 - npm run jshint
 - npm test
+
+matrix:
+  allow_failures:
+    - node_js: "stable"
+
+
