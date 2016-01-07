@@ -142,7 +142,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` (one or more) set(s) of objects each with a target and a start time
     - target shape:
         - `[ ]` shape `{low: 80, high: 120}` OR
-        - `[ ]` shape `{target: 100, low: 80, high: 120}` OR
+        - `[ ]` shape `{target: 100}` OR
         - `[ ]` shape `{target: 100, range: 20}` OR
         - `[ ]` shape `{target: 100, high: 120}`
 
@@ -198,7 +198,7 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` insulin sensitivity factor (with units)
   - `[ ]` blood glucose target
     - `[ ]` shape `{low: 80, high: 120}` OR
-    - `[ ]` shape `{target: 100, low: 80, high: 120}` OR
+    - `[ ]` shape `{target: 100}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
   - `[ ]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
