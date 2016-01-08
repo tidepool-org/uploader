@@ -41,7 +41,7 @@ var Upload = React.createClass({
   getDefaultProps: function(){
     return {
       text: {
-        CARELINK_CREDS_NOT_SAVED :'Import from CareLink.<br>We will not store your credentials.',
+        CARELINK_CREDS_NOT_SAVED :'Import from CareLink<br>(We will not store your credentials)',
         CARELINK_USERNAME :'CareLink username',
         CARELINK_PASSWORD :'CareLink password',
         CARELINK_DOWNLOADING :'Downloading CareLink export...',
@@ -50,7 +50,7 @@ var Upload = React.createClass({
         LABEL_OK : 'OK',
         LABEL_FAILED: 'Try again',
         LAST_UPLOAD : 'Last upload: ',
-        LABEL_MEDTRONIC_DEVICES :'Medtronic Devices',
+        LABEL_MEDTRONIC_DEVICES :'Medtronic',
         DEVICE_UNKOWN : 'Unknown device',
         UPLOAD_COMPLETE: 'Done!',
         UPLOAD_PROGRESS: 'Uploading... '
@@ -115,6 +115,11 @@ var Upload = React.createClass({
   },
   renderBlockModeInput: function() {
     if (!this.isBlockModeDevice()) {
+      return null;
+    }
+
+    // don't show the 'choose file' button if a file has already been selected.
+    if (this.isBlockModeFileChosen()) {
       return null;
     }
 
@@ -211,9 +216,13 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{this.props.text.UPLOAD_COMPLETE}</div>;
     }
     if (this.isBlockModeFileChosen()) {
-      return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
+      return (
+          <div className="Upload-status Upload-status--filename">
+            <p>{this.props.upload.file.name}</p>
+            <i className="icon-delete" onClick={this.clearBlockModeFile}></i>
+          </div>
+      );
     }
-
     return null;
   },
   renderReset: function() {
@@ -347,15 +356,19 @@ var Upload = React.createClass({
     this.props.onUpload(options);
   },
 
+  clearBlockModeFile: function() {
+    this.setState({
+      blockModeFileNotChosen: true
+    });
+  },
+
   handleBlockModeUpload: function() {
     var options = {
       filename: this.props.upload.file.name,
       filedata: this.props.upload.file.data
     };
     this.props.onUpload(options);
-    this.setState({
-      blockModeFileNotChosen: true
-    });
+    this.clearBlockModeFile();
   },
 
   handleReset: function(e) {

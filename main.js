@@ -50,14 +50,6 @@ var contextMenus = [
   },
   {
     type: 'radio',
-    id: 'Prd',
-    title: 'Prd',
-    contexts: contexts,
-    parentId: 'MENUROOT',
-    checked: false
-  },
-  {
-    type: 'radio',
     id: 'Development',
     title: 'Development',
     contexts: contexts,
@@ -89,25 +81,20 @@ function setServer(window, info) {
       UPLOAD_URL: 'http://localhost:9122',
       BLIP_URL: 'http://localhost:3000'
     },
-    Prd: {
-      API_URL: 'https://prd-api.tidepool.org',
-      UPLOAD_URL: 'https://prd-uploads.tidepool.org',
-      BLIP_URL: 'https://prd-blip.tidepool.org'
-    },
     Development: {
-      API_URL: 'https://devel-api.tidepool.io',
-      UPLOAD_URL: 'https://devel-uploads.tidepool.io',
-      BLIP_URL: 'https://blip-devel.tidepool.io'
+      API_URL: 'https://dev-api.tidepool.org',
+      UPLOAD_URL: 'https://dev-uploads.tidepool.org',
+      BLIP_URL: 'https://dev-blip.tidepool.org'
     },
     Staging: {
-      API_URL: 'https://staging-api.tidepool.io',
-      UPLOAD_URL: 'https://staging-uploads.tidepool.io',
-      BLIP_URL: 'https://blip-staging.tidepool.io'
+      API_URL: 'https://stg-api.tidepool.org',
+      UPLOAD_URL: 'https://stg-uploads.tidepool.org',
+      BLIP_URL: 'https://stg-blip.tidepool.org'
     },
     Production: {
-      API_URL: 'https://api.tidepool.io',
-      UPLOAD_URL: 'https://uploads.tidepool.io',
-      BLIP_URL: 'https://blip-ucsf-pilot.tidepool.io'
+      API_URL: 'https://api.tidepool.org',
+      UPLOAD_URL: 'https://uploads.tidepool.org',
+      BLIP_URL: 'https://blip.tidepool.org'
     }
   };
 
