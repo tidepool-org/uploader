@@ -217,9 +217,9 @@ var Upload = React.createClass({
     }
     if (this.isBlockModeFileChosen()) {
       return (
-          <div className="Upload">
-            <div className="Upload-status Upload-status--preparing">Preparing file &hellip;</div>
-            <div className="Upload-progress Upload-status--filename">{this.props.upload.file.name}</div>
+          <div className="Upload-blockMode">
+            <div className="Upload-blockMode Upload-blockMode--preparing">Preparing file &hellip;</div>
+            <div className="Upload-blockMode">{this.props.upload.file.name}</div>
           </div>
       );
     }
