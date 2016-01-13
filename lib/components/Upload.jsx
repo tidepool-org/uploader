@@ -353,12 +353,6 @@ var Upload = React.createClass({
     this.props.onUpload(options);
   },
 
-  clearBlockModeFile: function() {
-    this.setState({
-      blockModeFileNotChosen: true
-    });
-  },
-
   handleReset: function(e) {
     if (e) {
       e.preventDefault();
