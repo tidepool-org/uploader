@@ -957,7 +957,7 @@ describe('appActions', function() {
         now = '2014-01-31T22:00:30-05:00';
         options.progress('fetchData', 50);
         var err = new Error('Oops, we got an error');
-        err.code = 'E_METADATA_UPLOAD';
+        err.code = 'outdatedVersion';
         return cb(err);
       };
       app.state.targetId = '11';

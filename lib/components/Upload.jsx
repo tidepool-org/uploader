@@ -118,6 +118,11 @@ var Upload = React.createClass({
       return null;
     }
 
+    // don't show the 'choose file' button if a file has already been selected.
+    if (this.isBlockModeFileChosen()) {
+      return null;
+    }
+
     return (
       <div className="Upload-inputWrapper">
         <input className="Upload-fileinput" ref="file" type="file" onChange={this.onBlockModeInputChange}/>
@@ -162,7 +167,7 @@ var Upload = React.createClass({
       disabled = disabled || this.state.carelinkFormIncomplete;
     }
     if (this.isBlockModeDevice()) {
-      disabled = disabled || this.state.blockModeFileNotChosen;
+      return null;
     }
 
     return (
@@ -211,9 +216,13 @@ var Upload = React.createClass({
       return <div className="Upload-status Upload-status--success">{this.props.text.UPLOAD_COMPLETE}</div>;
     }
     if (this.isBlockModeFileChosen()) {
-      return <div className="Upload-status Upload-status--uploading"><p>{this.props.upload.file.name}</p></div>;
+      return (
+          <div className="Upload-blockMode">
+            <div className="Upload-blockMode Upload-blockMode--preparing">Preparing file &hellip;</div>
+            <div className="Upload-blockMode">{this.props.upload.file.name}</div>
+          </div>
+      );
     }
-
     return null;
   },
   renderReset: function() {
@@ -329,9 +338,6 @@ var Upload = React.createClass({
     if (this.isCarelinkUpload()) {
       return this.handleCarelinkUpload();
     }
-    else if (this.isBlockModeDevice()) {
-      return this.handleBlockModeUpload();
-    }
 
     var options = {};
     this.props.onUpload(options);
@@ -345,17 +351,6 @@ var Upload = React.createClass({
       password: password
     };
     this.props.onUpload(options);
-  },
-
-  handleBlockModeUpload: function() {
-    var options = {
-      filename: this.props.upload.file.name,
-      filedata: this.props.upload.file.data
-    };
-    this.props.onUpload(options);
-    this.setState({
-      blockModeFileNotChosen: true
-    });
   },
 
   handleReset: function(e) {
