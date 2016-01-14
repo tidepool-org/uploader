@@ -49,7 +49,7 @@ var DeviceSelection = React.createClass({
       }
 
       var displayText = '';
-      if (isChecked && (driverLink !== '')) {
+      if (isChecked && !_.isEmpty(driverLink)) {
         displayText = <div className="DeviceSelection-detail">
                       <a href={driverLink} target="_blank">Download driver</a></div>;
       }
