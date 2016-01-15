@@ -23,7 +23,7 @@ window.React = React;
 var config = require('./lib/config');
 window.DEBUG = config.DEBUG;
 // Important: need to require App after setting `window.DEBUG` to enable logging
-var Root = require('./lib/containers/root/Root.jsx');
+var Root = require('./lib/containers/root/Root');
 
 window.app = ReactDOM.render(
   React.createElement(Root), document.getElementById('app')
