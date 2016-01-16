@@ -24,10 +24,11 @@ import thunk from 'redux-thunk';
 
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
+import * as metrics from '../../../../lib/redux/constants/metrics';
 import { pages } from '../../../../lib/redux/constants/otherConstants';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage } from '../../../../lib/redux/errors';
+import { getLoginErrorMessage } from '../../../../lib/redux/utils/errors';
 
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
@@ -45,7 +46,7 @@ global.chrome = {
   }
 };
 
-describe('async actions', () => {
+describe('Asynchronous Actions', () => {
   afterEach(function() {
     // very important to do this in an afterEach than in each test when __Rewire__ is used
     // if you try to reset within each test you'll make it impossible for tests to fail!
@@ -60,7 +61,7 @@ describe('async actions', () => {
       };
       const servicesToInit = {
         api: {
-          init: (opts, cb) => { cb(); },
+          init: (cb) => { cb(); },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com/' + path;
           },
@@ -131,7 +132,7 @@ describe('async actions', () => {
       };
       const servicesToInit = {
         api: {
-          init: (opts, cb) => { cb(null, {token: 'iAmAToken'}); },
+          init: (cb) => { cb(null, {token: 'iAmAToken'}); },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com/' + path;
           },
@@ -207,7 +208,7 @@ describe('async actions', () => {
       };
       const servicesToInit = {
         api: {
-          init: (opts, cb) => { cb('Error!'); },
+          init: (cb) => { cb('Error!'); },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com/' + path;
           },
@@ -275,7 +276,10 @@ describe('async actions', () => {
             user: userObj.user,
             profile, memberships
           },
-          meta: {source: actionSources[actionTypes.LOGIN_SUCCESS]}
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: metrics.LOGIN_SUCCESS
+          }
         }
       ];
       asyncActions.__Rewire__('services', {

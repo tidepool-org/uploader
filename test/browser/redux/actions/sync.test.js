@@ -21,11 +21,12 @@ import { isFSA } from 'flux-standard-action';
 
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
+import * as metrics from '../../../../lib/redux/constants/metrics';
 
 import * as syncActions from '../../../../lib/redux/actions/sync';
-import { errorText } from '../../../../lib/redux/errors';
+import { errorText } from '../../../../lib/redux/utils/errors';
 
-describe('simple actions', () => {
+describe('Synchronous Actions', () => {
   describe('hideUnavailableDevices', () => {
     it('should create an action to hide devices unavailable on given operating system', () => {
       const OS = 'test';
@@ -186,7 +187,6 @@ describe('simple actions', () => {
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
       it('should be an FSA', () => {
         let action = syncActions.setUserInfoFromToken({ user, profile, memberships });
-        console.log(action);
         expect(isFSA(action)).to.be.true;
       });
 
@@ -232,7 +232,10 @@ describe('simple actions', () => {
         const expectedAction = {
           type: actionTypes.LOGIN_SUCCESS,
           payload: { user, profile, memberships },
-          meta: {source: actionSources[actionTypes.LOGIN_SUCCESS]}
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: metrics.LOGIN_SUCCESS
+          }
         };
         expect(syncActions.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
       });
