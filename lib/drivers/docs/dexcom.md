@@ -1,4 +1,4 @@
-# Dexcom G4 (& Share)
+# Dexcom G4 & G5
 
 ## Checklist for CGM Implementation
 

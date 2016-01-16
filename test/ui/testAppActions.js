@@ -395,7 +395,7 @@ describe('appActions', function() {
 
       app.state.uploads = [];
       connectedDevices = [{
-        driverId: 'DexcomG4',
+        driverId: 'Dexcom',
         usb: 3
       }];
 
@@ -404,7 +404,7 @@ describe('appActions', function() {
         expect(app.state.uploads).to.have.length(1);
         expect(app.state.uploads[0].source).to.deep.equal({
           type: 'device',
-          driverId: 'DexcomG4',
+          driverId: 'Dexcom',
           usb: 3,
           connected: true
         });
@@ -417,7 +417,7 @@ describe('appActions', function() {
         {source: {type: 'carelink'}}
       ];
       connectedDevices = [{
-        driverId: 'DexcomG4',
+        driverId: 'Dexcom',
         usb: 3
       }];
 
@@ -434,7 +434,7 @@ describe('appActions', function() {
         {
           source: {
             type: 'device',
-            driverId: 'DexcomG4',
+            driverId: 'Dexcom',
             usb: 3,
             connected: true
           }
@@ -455,7 +455,7 @@ describe('appActions', function() {
       {
         source: {
           type: 'device',
-          driverId: 'DexcomG4',
+          driverId: 'Dexcom',
           usb: 3,
           connected: true
         },
@@ -477,14 +477,14 @@ describe('appActions', function() {
       {
         source: {
           type: 'device',
-          driverId: 'DexcomG4',
+          driverId: 'Dexcom',
           usb: 3,
           connected: false
         }
       }
       ];
       connectedDevices = [{
-        driverId: 'DexcomG4',
+        driverId: 'Dexcom',
         usb: 3
       }];
 
@@ -501,14 +501,14 @@ describe('appActions', function() {
       {
         source: {
           type: 'device',
-          driverId: 'DexcomG4',
+          driverId: 'Dexcom',
           usb: 3,
           connected: true
         }
       }
       ];
       connectedDevices = [{
-        driverId: 'DexcomG4',
+        driverId: 'Dexcom',
         usb: 11
       }];
 
@@ -525,7 +525,7 @@ describe('appActions', function() {
       {
         source: {
           type: 'device',
-          driverId: 'DexcomG4',
+          driverId: 'Dexcom',
           serialNumber: 'AA11',
           usb: 3,
           connected: true
@@ -533,7 +533,7 @@ describe('appActions', function() {
       }
       ];
       connectedDevices = [{
-        driverId: 'DexcomG4',
+        driverId: 'Dexcom',
         serialNumber: 'BB22',
         usb: 11
       }];
@@ -707,7 +707,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
       appActions.upload(0, {}, _.noop);
@@ -718,7 +718,7 @@ describe('appActions', function() {
         percentage: 0
       });
       expect(uploadDeviceMetricsCall).to.not.be.empty;
-      expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_STARTED+' DexcomG4');
+      expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_STARTED+' Dexcom');
     });
 
     it('updates upload with correct progress data', function(done) {
@@ -733,7 +733,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
 
@@ -753,7 +753,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
 
@@ -772,7 +772,7 @@ describe('appActions', function() {
         expect(app.state.uploads[0].history).to.have.length(1);
         expect(app.state.uploads[0].history[0]).to.deep.equal(instance);
         expect(uploadDeviceMetricsCall).to.not.be.empty;
-        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_SUCCESS+' DexcomG4');
+        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_SUCCESS+' Dexcom');
         done();
       });
     });
@@ -791,7 +791,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
 
@@ -818,8 +818,8 @@ describe('appActions', function() {
         checkInstance(app.state.uploads[0].history[0],instance);
         expect(uploadErrorCall).to.not.be.empty;
         expect(uploadDeviceMetricsCall).to.not.be.empty;
-        expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
-        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_FAILED+' DexcomG4');
+        expect(uploadErrorCall.two).to.equal(appActions.trackedState.UPLOAD_FAILED+' Dexcom');
+        expect(uploadDeviceMetricsCall.one).to.equal(appActions.trackedState.UPLOAD_FAILED+' Dexcom');
         done();
       });
     });
@@ -830,7 +830,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         },
         history: [
           {targetId: '1'}
@@ -936,7 +936,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
 
@@ -964,7 +964,7 @@ describe('appActions', function() {
       app.state.uploads = [{
         source: {
           type: 'device',
-          driverId: 'DexcomG4'
+          driverId: 'Dexcom'
         }
       }];
 
