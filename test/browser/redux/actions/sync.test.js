@@ -28,67 +28,92 @@ import { errorText } from '../../../../lib/redux/utils/errors';
 
 describe('Synchronous Actions', () => {
   describe('hideUnavailableDevices', () => {
+    const OS = 'test';
+    it('should be an FSA', () => {
+      let action = syncActions.hideUnavailableDevices(OS);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
     it('should create an action to hide devices unavailable on given operating system', () => {
-      const OS = 'test';
       const expectedAction = {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: OS},
         meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
       };
       expect(syncActions.hideUnavailableDevices(OS)).to.deep.equal(expectedAction);
-      expect(isFSA(syncActions.hideUnavailableDevices(OS))).to.be.true;
     });
   });
 
   describe('setForgotPasswordUrl', () => {
+    const URL = 'http://www.acme.com/forgot-password';
+    it('should be an FSA', () => {
+      let action = syncActions.setForgotPasswordUrl(URL);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
     it('should create an action to set the forgot password url', () => {
-      const URL = 'http://www.acme.com/forgot-password';
       const expectedAction = {
         type: actionTypes.SET_FORGOT_PASSWORD_URL,
         payload: {url: URL},
         meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
       };
       expect(syncActions.setForgotPasswordUrl(URL)).to.deep.equal(expectedAction);
-      expect(isFSA(syncActions.setForgotPasswordUrl(URL))).to.be.true;
     });
   });
 
   describe('setSignUpUrl', () => {
+    const URL = 'http://www.acme.com/sign-up';
+    it('should be an FSA', () => {
+      let action = syncActions.setSignUpUrl(URL);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
     it('should create an action to set the sign-up url', () => {
-      const URL = 'http://www.acme.com/sign-up';
       const expectedAction = {
         type: actionTypes.SET_SIGNUP_URL,
         payload: {url: URL},
         meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
       };
       expect(syncActions.setSignUpUrl(URL)).to.deep.equal(expectedAction);
-      expect(isFSA(syncActions.setSignUpUrl(URL))).to.be.true;
     });
   });
 
   describe('setOs', () => {
+    const OS = 'mac';
+    it('should be an FSA', () => {
+      let action = syncActions.setOs(OS);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
     it('should create an action to set the operating system', () => {
-      const OS = 'mac';
       const expectedAction = {
         type: actionTypes.SET_OS,
         payload: {os: OS},
         meta: {source: actionSources[actionTypes.SET_OS]}
       };
       expect(syncActions.setOs(OS)).to.deep.equal(expectedAction);
-      expect(isFSA(syncActions.setOs(OS))).to.be.true;
     });
   });
 
   describe('setPage', () => {
+    const PAGE = 'FOO';
+    it('should be an FSA', () => {
+      let action = syncActions.setPage(PAGE);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
     it('should create an action to set the page', () => {
-      const PAGE = 'FOO';
       const expectedAction = {
         type: actionTypes.SET_PAGE,
         payload: {page: PAGE},
         meta: {source: actionSources[actionTypes.SET_PAGE]}
       };
       expect(syncActions.setPage(PAGE)).to.deep.equal(expectedAction);
-      expect(isFSA(syncActions.setPage(PAGE))).to.be.true;
     });
   });
 
