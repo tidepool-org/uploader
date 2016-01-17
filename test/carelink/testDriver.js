@@ -35,7 +35,7 @@ function spiderTests(baseDir) {
           var input = fs.readFileSync(path + '/input.csv', {encoding: 'utf8'});
           var output = JSON.parse(fs.readFileSync(path + '/output.json'));
 
-          var drvr = carelinkDriver({ filename: '/input.csv', fileData: input, timezone: 'Pacific/Honolulu' });
+          var drvr = carelinkDriver({ filename: path + '/input.csv', fileData: input, timezone: 'Pacific/Honolulu' });
 
           async.waterfall(
             [
@@ -71,7 +71,7 @@ function spiderTests(baseDir) {
           var input = fs.readFileSync(path + '/old.csv', {encoding: 'utf8'});
           var output = JSON.parse(fs.readFileSync(path + '/output.json'));
 
-          var drvr = carelinkDriver({ filename: '/old.csv', fileData: input, timezone: 'Pacific/Honolulu' });
+          var drvr = carelinkDriver({ filename: path + '/old.csv', fileData: input, timezone: 'Pacific/Honolulu' });
 
           async.waterfall(
             [
