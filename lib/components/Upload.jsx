@@ -174,7 +174,7 @@ var Upload = React.createClass({
       disabled = disabled || this.state.carelinkFormIncomplete;
     }
     if (this.isBlockModeDevice()) {
-      disabled = disabled || this.state.blockModeFileNotChosen;
+      return null;
     }
 
     return (
@@ -224,9 +224,9 @@ var Upload = React.createClass({
     }
     if (this.isBlockModeFileChosen()) {
       return (
-          <div className="Upload-status Upload-status--filename">
-            <p>{this.props.upload.file.name}</p>
-            <i className="icon-delete" onClick={this.clearBlockModeFile}></i>
+          <div className="Upload-blockMode">
+            <div className="Upload-blockMode Upload-blockMode--preparing">Preparing file &hellip;</div>
+            <div className="Upload-blockMode">{this.props.upload.file.name}</div>
           </div>
       );
     }
@@ -345,9 +345,6 @@ var Upload = React.createClass({
     if (this.isCarelinkUpload()) {
       return this.handleCarelinkUpload();
     }
-    else if (this.isBlockModeDevice()) {
-      return this.handleBlockModeUpload();
-    }
 
     var options = {};
     this.props.onUpload(options);
@@ -361,21 +358,6 @@ var Upload = React.createClass({
       password: password
     };
     this.props.onUpload(options);
-  },
-
-  clearBlockModeFile: function() {
-    this.setState({
-      blockModeFileNotChosen: true
-    });
-  },
-
-  handleBlockModeUpload: function() {
-    var options = {
-      filename: this.props.upload.file.name,
-      filedata: this.props.upload.file.data
-    };
-    this.props.onUpload(options);
-    this.clearBlockModeFile();
   },
 
   handleReset: function(e) {
