@@ -28,7 +28,7 @@ import * as metrics from '../../../../lib/redux/constants/metrics';
 import { pages } from '../../../../lib/redux/constants/otherConstants';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage } from '../../../../lib/redux/utils/errors';
+import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
 
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
@@ -259,7 +259,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doLogin [no error]', () => {
-    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS, SET_PAGE actions', (done) => {
+    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS actions', (done) => {
       // NB: this is not what these objects actually look like
       // actual shape is irrelevant to testing action creators
       const userObj = {user: {userid: 'abc123'}};
@@ -278,7 +278,7 @@ describe('Asynchronous Actions', () => {
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: metrics.LOGIN_SUCCESS
+            metric: {eventName: metrics.LOGIN_SUCCESS}
           }
         }
       ];
@@ -327,6 +327,72 @@ describe('Asynchronous Actions', () => {
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
+    });
+  });
+
+  describe('doLogout [no error]', () => {
+    it('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', (done) => {
+      const expectedActions = [
+        {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        },
+        {
+          type: actionTypes.LOGOUT_SUCCESS,
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.LOGIN},
+          meta: {source: actionSources[actionTypes.SET_PAGE]}
+        }
+      ];
+      asyncActions.__Rewire__('services', {
+        api: {
+          user: {
+            logout: (cb) => cb(null)
+          }
+        }
+      });
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(asyncActions.doLogout());
+    });
+  });
+
+  describe('doLogout [with error]', () => {
+    it('should dispatch LOGOUT_REQUEST, LOGOUT_FAILURE, SET_PAGE actions', (done) => {
+      const expectedActions = [
+        {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        },
+        {
+          type: actionTypes.LOGOUT_FAILURE,
+          error: true,
+          payload: new Error(getLogoutErrorMessage()),
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.LOGIN},
+          meta: {source: actionSources[actionTypes.SET_PAGE]}
+        }
+      ];
+      asyncActions.__Rewire__('services', {
+        api: {
+          user: {
+            logout: (cb) => cb('Error :(')
+          }
+        }
+      });
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(asyncActions.doLogout());
     });
   });
 

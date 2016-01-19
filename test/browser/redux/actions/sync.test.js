@@ -313,7 +313,7 @@ describe('Synchronous Actions', () => {
           payload: { user, profile, memberships },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: metrics.LOGIN_SUCCESS
+            metric: {eventName: metrics.LOGIN_SUCCESS}
           }
         };
         expect(syncActions.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
@@ -337,6 +337,64 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         };
         expect(syncActions.loginFailure(err)).to.deep.equal(expectedAction);
+        syncActions.__ResetDependency__('getLoginErrorMessage');
+      });
+    });
+  });
+
+  describe('for doLogout', () => {
+    describe('logoutRequest', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.logoutRequest();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to request logout and clear logged-in user related state', () => {
+        const expectedAction = {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        };
+        expect(syncActions.logoutRequest()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('logoutSuccess', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.logoutSuccess();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to announce the success of logout', () => {
+        const expectedAction = {
+          type: actionTypes.LOGOUT_SUCCESS,
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        };
+        expect(syncActions.logoutSuccess()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('logoutFailure', () => {
+      const err = 'Logout error!';
+      it('should be an FSA', () => {
+        let action = syncActions.logoutFailure(err);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to report a logout error', () => {
+        syncActions.__Rewire__('getLogoutErrorMessage', () => err);
+        const expectedAction = {
+          type: actionTypes.LOGOUT_FAILURE,
+          error: true,
+          payload: new Error(err),
+          meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
+        };
+        expect(syncActions.logoutFailure(err)).to.deep.equal(expectedAction);
         syncActions.__ResetDependency__('getLoginErrorMessage');
       });
     });

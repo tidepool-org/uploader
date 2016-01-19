@@ -94,6 +94,18 @@ describe('reducers', () => {
         payload: {isVisible: false}
       })).to.be.false;
     });
+
+    it('should handle LOGOUT_REQUEST', () => {
+      expect(reducers.dropdown(undefined, {
+        type: actionTypes.LOGOUT_REQUEST
+      })).to.be.false;
+      expect(reducers.dropdown(true, {
+        type: actionTypes.LOGOUT_REQUEST
+      })).to.be.false;
+      expect(reducers.dropdown(false, {
+        type: actionTypes.LOGOUT_REQUEST
+      })).to.be.false;
+    });
   });
 
   describe('os', () => {
@@ -365,6 +377,25 @@ describe('reducers', () => {
           type: actionTypes.LOGIN_SUCCESS,
           payload: actionPayload
         });
+        expect(initialState === finalState).to.be.false;
+      });
+    });
+
+    describe('logging out', () => {
+      it('should handle LOGOUT_REQUEST by restoring to initial state', () => {
+        let blankSlate = reducers.users(undefined, {type: 'foo'});
+        let initialState = {
+          isFetching: false,
+          a1b2c3: {
+            fullName: 'Jane Doe',
+            targets: {devices: ['a_pump', 'a_cgm']}
+          },
+          loggedInUser: 'a1b2c3'
+        };
+        let finalState = reducers.users(initialState, {
+          type: actionTypes.LOGOUT_REQUEST
+        });
+        expect(finalState).to.deep.equal(blankSlate);
         expect(initialState === finalState).to.be.false;
       });
     });
