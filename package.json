@@ -7,7 +7,7 @@
   "author": "Kent Quirk",
   "license": "BSD-2-Clause",
   "scripts": {
-    "test": "mocha test/node/**/*.js && ./node_modules/karma/bin/karma start",
+    "test": "mocha test/node/ && mocha test/node/**/*.js && ./node_modules/karma/bin/karma start",
     "browser-tests": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome",
     "karma-watch": "./node_modules/karma/bin/karma start --no-single-run",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
