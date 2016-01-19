@@ -57,13 +57,13 @@ describe('Asynchronous Actions', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS actions', (done) => {
       const config = {
         version: '0.100.0',
-        API_URL: 'http://www.acme.com/'
+        API_URL: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
           init: (cb) => { cb(); },
           makeBlipUrl: (path) => {
-            return 'http://www.acme.com/' + path;
+            return 'http://www.acme.com' + path;
           },
           setHosts: _.noop
         },
@@ -101,12 +101,12 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_FORGOT_PASSWORD_URL,
-          payload: {url: 'http://www.acme.com/#/request-password-from-uploader'},
+          payload: {url: 'http://www.acme.com/request-password-from-uploader'},
           meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
         },
         {
           type: actionTypes.SET_SIGNUP_URL,
-          payload: {url: 'http://www.acme.com/#/signup'},
+          payload: {url: 'http://www.acme.com/signup'},
           meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
         },
         {
@@ -128,13 +128,13 @@ describe('Asynchronous Actions', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, SET_USER_INFO_FROM_TOKEN actions', (done) => {
       const config = {
         version: '0.100.0',
-        API_URL: 'http://www.acme.com/'
+        API_URL: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
           init: (cb) => { cb(null, {token: 'iAmAToken'}); },
           makeBlipUrl: (path) => {
-            return 'http://www.acme.com/' + path;
+            return 'http://www.acme.com' + path;
           },
           setHosts: _.noop,
           user: {
@@ -177,12 +177,12 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_FORGOT_PASSWORD_URL,
-          payload: {url: 'http://www.acme.com/#/request-password-from-uploader'},
+          payload: {url: 'http://www.acme.com/request-password-from-uploader'},
           meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
         },
         {
           type: actionTypes.SET_SIGNUP_URL,
-          payload: {url: 'http://www.acme.com/#/signup'},
+          payload: {url: 'http://www.acme.com/signup'},
           meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
         },
         {
@@ -330,10 +330,102 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('putUsersTargetsInStorage', () => {
+    describe('no targets in local storage', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.STORING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          users: {
+            abc123: {
+              targets: {
+                devices: ['a_pump', 'a_bg_meter'],
+                timezone: 'Europe/Budapest'
+              }
+            },
+            uploadTargetUser: 'abc123'
+          }
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.putTargetsInStorage());
+      });
+    });
+
+    describe('existing targets in local storage', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.STORING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            setItem: () => { return {
+              abc123: [
+                {key: 'a_pump', timezone: 'US/Central'}
+              ],
+              def456: [
+                {key: 'a_pump', timezone: 'US/Eastern'},
+                {key: 'a_cgm', timezone: 'US/Eastern'}
+              ]
+            }; }
+          }
+        });
+        const state = {
+          users: {
+            abc123: {
+              targets: {
+                devices: ['a_pump', 'a_bg_meter'],
+                timezone: 'Europe/Budapest'
+              }
+            },
+            uploadTargetUser: 'abc123'
+          }
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.putTargetsInStorage());
+      });
+    });
+  });
+
   describe('retrieveTargetsFromStorage', () => {
     describe('no targets retrieved from local storage', () => {
       it('should dispatch SET_PAGE (redirect to settings page)', (done) => {
         const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
@@ -360,6 +452,10 @@ describe('Asynchronous Actions', () => {
           ]
         };
         const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
           {
             type: actionTypes.SET_USERS_TARGETS,
             payload: { targets },

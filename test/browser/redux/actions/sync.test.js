@@ -27,6 +27,24 @@ import * as syncActions from '../../../../lib/redux/actions/sync';
 import { errorText } from '../../../../lib/redux/utils/errors';
 
 describe('Synchronous Actions', () => {
+  describe('addTargetDevice', () => {
+    const DEVICE = 'a_pump', ID = 'a1b2c3';
+    it('should be an FSA', () => {
+      let action = syncActions.addTargetDevice(ID, DEVICE);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to add a device to a user\'s target devices', () => {
+      const expectedAction = {
+        type: actionTypes.ADD_TARGET_DEVICE,
+        payload: {userId: ID, deviceKey: DEVICE},
+        meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
+      };
+      expect(syncActions.addTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('hideUnavailableDevices', () => {
     const OS = 'test';
     it('should be an FSA', () => {
@@ -45,6 +63,24 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('removeTargetDevice', () => {
+    const DEVICE = 'a_pump', ID = 'a1b2c3';
+    it('should be an FSA', () => {
+      let action = syncActions.removeTargetDevice(ID, DEVICE);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to remove a device from a user\'s target devices', () => {
+      const expectedAction = {
+        type: actionTypes.REMOVE_TARGET_DEVICE,
+        payload: {userId: ID, deviceKey: DEVICE},
+        meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
+      };
+      expect(syncActions.removeTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('setForgotPasswordUrl', () => {
     const URL = 'http://www.acme.com/forgot-password';
     it('should be an FSA', () => {
@@ -60,24 +96,6 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
       };
       expect(syncActions.setForgotPasswordUrl(URL)).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('setSignUpUrl', () => {
-    const URL = 'http://www.acme.com/sign-up';
-    it('should be an FSA', () => {
-      let action = syncActions.setSignUpUrl(URL);
-
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to set the sign-up url', () => {
-      const expectedAction = {
-        type: actionTypes.SET_SIGNUP_URL,
-        payload: {url: URL},
-        meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
-      };
-      expect(syncActions.setSignUpUrl(URL)).to.deep.equal(expectedAction);
     });
   });
 
@@ -114,6 +132,42 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.SET_PAGE]}
       };
       expect(syncActions.setPage(PAGE)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('setSignUpUrl', () => {
+    const URL = 'http://www.acme.com/sign-up';
+    it('should be an FSA', () => {
+      let action = syncActions.setSignUpUrl(URL);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set the sign-up url', () => {
+      const expectedAction = {
+        type: actionTypes.SET_SIGNUP_URL,
+        payload: {url: URL},
+        meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+      };
+      expect(syncActions.setSignUpUrl(URL)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('setTargetTimezone', () => {
+    const TIMEZONE = 'Europe/Budapest', ID = 'a1b2c3';
+    it('should be an FSA', () => {
+      let action = syncActions.setTargetTimezone(ID, TIMEZONE);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set the target timezone for a user', () => {
+      const expectedAction = {
+        type: actionTypes.SET_TARGET_TIMEZONE,
+        payload: {userId: ID, timezoneName: TIMEZONE},
+        meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+      };
+      expect(syncActions.setTargetTimezone(ID, TIMEZONE)).to.deep.equal(expectedAction);
     });
   });
 
@@ -289,6 +343,38 @@ describe('Synchronous Actions', () => {
   });
 
   describe('for retrieveTargetsFromStorage', () => {
+    describe('putUsersTargetsInStorage', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.putUsersTargetsInStorage();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to announce the side effet of storing users\' targets locally', () => {
+        const expectedAction = {
+          type: actionTypes.STORING_USERS_TARGETS,
+          meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+        };
+        expect(syncActions.putUsersTargetsInStorage()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('retrieveUsersTargetsFromStorage', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.retrieveUsersTargetsFromStorage();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to announce the side effet of storing users\' targets locally', () => {
+        const expectedAction = {
+          type: actionTypes.RETRIEVING_USERS_TARGETS,
+          meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+        };
+        expect(syncActions.retrieveUsersTargetsFromStorage()).to.deep.equal(expectedAction);
+      });
+    });
+
     describe('setUsersTargets', () => {
       // NB: this is not what this object actually looks like
       // actual shape is irrelevant to testing action creators
