@@ -132,6 +132,7 @@ describe('struct.js', function(){
   });
 // The legal type characters are:
 // b -- a 1-byte unsigned value
+// y -- a 1-byte signed value
 // s -- a 2-byte unsigned short in little-endian format (0x01 0x00 is returned as 1, not 256)
 // S -- a 2-byte unsigned short in big-endian format (0x01 0x00 is returned as 256, not 1)
 // i -- a 4-byte unsigned integer in little-endian format
@@ -148,6 +149,7 @@ describe('struct.js', function(){
   describe('structlen and format parsing', function(){
     it('work properly', function(){
       expect(theStruct.structlen('b6.Si')).to.equal(13);
+      expect(theStruct.structlen('y6.Si')).to.equal(13);
       expect(theStruct.structlen('bsSiInNhHfF.')).to.equal(34);
       expect(theStruct.structlen('4b2s1I48.')).to.equal(60);
       expect(theStruct.structlen('4b 2s 1I 48.')).to.equal(60);
@@ -255,6 +257,18 @@ describe('struct.js', function(){
       expect(result.a).to.equal(255);
       expect(result.b).to.equal(0x55);
       expect(result.c).to.equal(0xAA);
+      expect(result.d).to.equal(1);
+    });
+    it('works for y', function(){
+      var buf = new Uint8Array(4);
+      buf[0] = 0x80;
+      buf[1] = 0x7F;
+      buf[2] = 0x00;
+      buf[3] = 0x01;
+      var result = theStruct.unpack(buf, 0, '4y', ['a', 'b', 'c', 'd']);
+      expect(result.a).to.equal(-128);
+      expect(result.b).to.equal(127);
+      expect(result.c).to.equal(0);
       expect(result.d).to.equal(1);
     });
     it('works for B', function(){
@@ -450,9 +464,9 @@ describe('struct.js', function(){
   describe('general test of pack/unpack', function(){
     it('works', function(){
       var buf = new Uint8Array(32);
-      var len = theStruct.pack(buf, 0, 'bsShHiInN', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6);
-      expect(len).to.equal(25);
-      var result = theStruct.unpack(buf, 0, 'bsShHiInN', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
+      var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6,-127);
+      expect(len).to.equal(26);
+      var result = theStruct.unpack(buf, 0, 'bsShHiInNy', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']);
       expect(result.a).to.equal(254);
       expect(result.b).to.equal(65534);
       expect(result.c).to.equal(65533);
@@ -462,6 +476,7 @@ describe('struct.js', function(){
       expect(result.g).to.equal(65538);
       expect(result.h).to.equal(-5);
       expect(result.i).to.equal(-6);
+      expect(result.j).to.equal(-127);
     });
   });
   describe('test of packString', function(){
@@ -478,13 +493,13 @@ describe('struct.js', function(){
   describe('general test of unpack builder', function(){
     it('works', function(){
       var buf = new Uint8Array(32);
-      var len = theStruct.pack(buf, 0, 'bsShHiInN', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6);
-      expect(len).to.equal(25);
+      var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6, -127);
+      expect(len).to.equal(26);
       var unpacker = theStruct.createUnpacker()
         .add('b', ['a'])
         .add('sS', ['b', 'c'])
         .add('hH', ['d', 'e'])
-        .add('iInN', ['f', 'g', 'h', 'i']);
+        .add('iInNy', ['f', 'g', 'h', 'i', 'j']);
       var result = unpacker.go(buf, 0);
       expect(result.a).to.equal(254);
       expect(result.b).to.equal(65534);
@@ -495,16 +510,17 @@ describe('struct.js', function(){
       expect(result.g).to.equal(65538);
       expect(result.h).to.equal(-5);
       expect(result.i).to.equal(-6);
+      expect(result.j).to.equal(-127);
     });
     it('can use your object', function(){
       var buf = new Uint8Array(32);
-      var len = theStruct.pack(buf, 0, 'bsShHiInN', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6);
-      expect(len).to.equal(25);
+      var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6, -127);
+      expect(len).to.equal(26);
       var unpacker = theStruct.createUnpacker()
         .add('b', ['a'])
         .add('sS', ['b', 'c'])
         .add('hH', ['d', 'e'])
-        .add('iInN', ['f', 'g', 'h', 'i']);
+        .add('iInNy', ['f', 'g', 'h', 'i', 'j']);
       var result = {};
       var result2 = unpacker.go(buf, 0, result);
       expect(result2).to.equal(result);
@@ -517,6 +533,7 @@ describe('struct.js', function(){
       expect(result.g).to.equal(65538);
       expect(result.h).to.equal(-5);
       expect(result.i).to.equal(-6);
+      expect(result.j).to.equal(-127);
     });
   });
 });
