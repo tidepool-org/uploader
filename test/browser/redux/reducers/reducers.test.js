@@ -512,6 +512,52 @@ describe('reducers', () => {
       });
     });
 
+    describe('setting the target user for data upload', () => {
+      it('should handle SET_UPLOAD_TARGET_USER without error when no users', () => {
+        const USER = 'a1b2c3';
+        const actionPayload = {
+          userId: USER
+        };
+        let resultState = {
+          isFetching: false,
+          uploadTargetUser: USER
+        };
+        expect(reducers.users(undefined, {
+          type: actionTypes.SET_UPLOAD_TARGET_USER,
+          payload: actionPayload
+        })).to.deep.equal(resultState);
+        // test to be sure not *mutating* state object but rather returning new!
+        let initialState = {isFetching: false};
+        let finalState = reducers.users(initialState, {
+          type: actionTypes.SET_UPLOAD_TARGET_USER,
+          payload: actionPayload
+        });
+        expect(initialState === finalState).to.be.false;
+      });
+
+      it('should handle SET_UPLOAD_TARGET_USER by replacing uploadTargetUser when already set', () => {
+        const USER = 'a1b2c3';
+        const actionPayload = {
+          userId: USER
+        };
+        let initialState = {
+          isFetching: false,
+          uploadTargetUser: 'd4e5f6'
+        };
+        let resultState = {
+          isFetching: false,
+          uploadTargetUser: USER
+        };
+        let finalState = reducers.users(initialState, {
+          type: actionTypes.SET_UPLOAD_TARGET_USER,
+          payload: actionPayload
+        });
+        expect(finalState).to.deep.equal(resultState);
+        // tests to be sure not *mutating* state object but rather returning new!
+        expect(initialState === finalState).to.be.false;
+      });
+    });
+
     describe('"logging in" via stored token, getting & setting user info', () => {
       it('should handle SET_USER_INFO_FROM_TOKEN [no error, logged-in PWD]', () => {
         let resultState = {

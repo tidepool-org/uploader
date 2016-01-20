@@ -133,6 +133,15 @@ describe('Synchronous Actions', () => {
       };
       expect(syncActions.setPage(PAGE)).to.deep.equal(expectedAction);
     });
+
+    it('should accept a second-parameter to reflect a directly user-trigged action', () => {
+      const expectedAction = {
+        type: actionTypes.SET_PAGE,
+        payload: {page: PAGE},
+        meta: {source: actionSources.USER}
+      };
+      expect(syncActions.setPage(PAGE, true)).to.deep.equal(expectedAction);
+    });
   });
 
   describe('setSignUpUrl', () => {
@@ -168,6 +177,24 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
       };
       expect(syncActions.setTargetTimezone(ID, TIMEZONE)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('setUploadTargetUser', () => {
+    const ID = 'a1b2c3';
+    it('should be an FSA', () => {
+      let action = syncActions.setUploadTargetUser(ID);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set the target user for data upload', () => {
+      const expectedAction = {
+        type: actionTypes.SET_UPLOAD_TARGET_USER,
+        payload: {userId: ID},
+        meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+      };
+      expect(syncActions.setUploadTargetUser(ID)).to.deep.equal(expectedAction);
     });
   });
 

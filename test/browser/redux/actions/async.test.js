@@ -347,7 +347,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
+          meta: {source: actionSources.USER}
         }
       ];
       asyncActions.__Rewire__('services', {
@@ -381,7 +381,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
+          meta: {source: actionSources.USER}
         }
       ];
       asyncActions.__Rewire__('services', {
