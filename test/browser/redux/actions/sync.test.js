@@ -134,13 +134,13 @@ describe('Synchronous Actions', () => {
       expect(syncActions.setPage(PAGE)).to.deep.equal(expectedAction);
     });
 
-    it('should accept a second-parameter to reflect a directly user-trigged action', () => {
+    it('should accept a second parameter to override the default action source', () => {
       const expectedAction = {
         type: actionTypes.SET_PAGE,
         payload: {page: PAGE},
         meta: {source: actionSources.USER}
       };
-      expect(syncActions.setPage(PAGE, true)).to.deep.equal(expectedAction);
+      expect(syncActions.setPage(PAGE, actionSources.USER)).to.deep.equal(expectedAction);
     });
   });
 
@@ -231,6 +231,15 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.TOGGLE_DROPDOWN]}
       };
       expect(syncActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE)).to.deep.equal(expectedAction);
+    });
+
+    it('should accept a second parameter to override the default action source', () => {
+      const expectedAction = {
+        type: actionTypes.TOGGLE_DROPDOWN,
+        payload: {isVisible: false},
+        meta: {source: actionSources.UNDER_THE_HOOD}
+      };
+      expect(syncActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE, actionSources.UNDER_THE_HOOD)).to.deep.equal(expectedAction);
     });
   });
 
