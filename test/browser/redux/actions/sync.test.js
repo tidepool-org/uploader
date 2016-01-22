@@ -180,6 +180,27 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('setUploads', () => {
+    const uploadsByUser = {
+      a1b2c3: {a_pump: {}, a_cgm: {}},
+      d4e5f6: {another_pump: {}}
+    };
+    it('should be an FSA', () => {
+      let action = syncActions.setUploads(uploadsByUser);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set up the potential uploads for each user reflecting target devices selected', () => {
+      const expectedAction = {
+        type: actionTypes.SET_UPLOADS,
+        payload: { uploadsByUser },
+        meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+      };
+      expect(syncActions.setUploads(uploadsByUser)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('setUploadTargetUser', () => {
     const ID = 'a1b2c3';
     it('should be an FSA', () => {

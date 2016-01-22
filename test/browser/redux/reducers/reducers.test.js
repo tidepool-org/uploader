@@ -134,6 +134,32 @@ describe('reducers', () => {
     });
   });
 
+  describe('uploads', () => {
+    it('should return the initial state', () => {
+      expect(reducers.uploads(undefined, {})).to.deep.equal({});
+    });
+
+    it('should handle SET_UPLOADS', () => {
+      const uploadsByUser = {
+        a1b2c3: {a_pump: {}, a_cgm: {}},
+        d4e5f6: {another_pump: {}}
+      };
+      const actionPayload = { uploadsByUser };
+      expect(reducers.uploads(undefined, {
+        type: actionTypes.SET_UPLOADS,
+        payload: { uploadsByUser }
+      })).to.deep.equal(uploadsByUser);
+      let initialState = {
+        a1b2c3: {a_cgm: {}}
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.SET_UPLOADS,
+        payload: { uploadsByUser }
+      });
+      expect(initialState === finalState).to.be.false;
+    });
+  });
+
   describe('url', () => {
     it('should return the initial state', () => {
       expect(reducers.url(undefined, {})).to.deep.equal({});

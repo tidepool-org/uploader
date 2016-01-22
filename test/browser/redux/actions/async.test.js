@@ -509,7 +509,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, but no user targeted for upload by default', () => {
-      it('should dispatch SET_USERS_TARGETS, then SET_PAGE (redirect to main page for user selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for user selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -517,10 +517,207 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
+        const uploadsByUser = {
+          abc123: {
+            carelink: {}
+          },
+          def456: {
+            dexcom: {},
+            omnipod: {}
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
             meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { uploadsByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => targets
+          }
+        });
+        const store = mockStore({
+          users: {
+            loggedInUser: 'ghi789',
+            ghi789: {},
+            abc123: {},
+            def456: {},
+            targetsForUpload: ['abc123', 'def456'],
+            uploadTargetUser: null
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload is missing timezone', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for timezone selection)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const uploadsByUser = {
+          abc123: {
+            carelink: {}
+          },
+          def456: {
+            dexcom: {},
+            omnipod: {}
+          }
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { uploadsByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => targets
+          }
+        });
+        const store = mockStore({
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            loggedInUser: 'ghi789',
+            ghi789: {},
+            abc123: {},
+            def456: {},
+            targetsForUpload: ['abc123', 'def456'],
+            uploadTargetUser: 'abc123'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload has no supported devices', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for device selection)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const uploadsByUser = {
+          abc123: {
+            carelink: {}
+          },
+          def456: {
+            dexcom: {},
+            omnipod: {}
+          }
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { uploadsByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => targets
+          }
+        });
+        const store = mockStore({
+          devices: {
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            loggedInUser: 'ghi789',
+            ghi789: {},
+            abc123: {},
+            def456: {},
+            targetsForUpload: ['abc123', 'def456'],
+            uploadTargetUser: 'abc123'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload is all set to upload', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const uploadsByUser = {
+          abc123: {
+            carelink: {}
+          },
+          def456: {
+            dexcom: {},
+            omnipod: {}
+          }
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { uploadsByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
             type: actionTypes.SET_USERS_TARGETS,
@@ -538,15 +735,114 @@ describe('Asynchronous Actions', () => {
             getItem: () => targets
           }
         });
-        const store = mockStore({users: {
-          loggedInUser: 'ghi789',
-          ghi789: {},
-          abc123: {},
-          def456: {},
-          targetsForUpload: ['abc123', 'def456'],
-          uploadTargetUser: null
-        }}, expectedActions, done);
+        const store = mockStore({
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            loggedInUser: 'ghi789',
+            ghi789: {},
+            abc123: {},
+            def456: {},
+            targetsForUpload: ['abc123', 'def456'],
+            uploadTargetUser: 'abc123'
+          }
+        }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+  });
+
+  describe('setUploadTargetUserAndMaybeRedirect', () => {
+    describe('new target user has selected devices and timezone', () => {
+      it('should dispatch just SET_UPLOAD_TARGET_USER', (done) => {
+        const userId = 'abc123';
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          }
+        ];
+        const store = mockStore({
+          users: {
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+      });
+    });
+
+    describe('new target user has not selected devices', () => {
+      it('should dispatch just SET_UPLOAD_TARGET_USER, SET_PAGE (redirect to settings)', (done) => {
+        const userId = 'abc123';
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        const store = mockStore({
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {
+                timezone: 'Europe/London'
+              }
+            }
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+      });
+    });
+
+    describe('new target user has not selected timezone', () => {
+      it('should dispatch just SET_UPLOAD_TARGET_USER, SET_PAGE (redirect to settings)', (done) => {
+        const userId = 'abc123';
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        const store = mockStore({
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {
+                devices: ['carelink']
+              }
+            }
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
       });
     });
   });
