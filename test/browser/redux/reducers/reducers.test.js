@@ -716,6 +716,39 @@ describe('reducers', () => {
         expect(initialState.d4e5f6 === finalState.d4e5f6).to.be.false;
       });
     });
+
+    describe('should handle STORING_USERS_TARGETS by clearing any targets stored under `noUserSelected`', () => {
+      const initialState = {
+        noUserSelected: {
+          targets: {
+            devices: ['a_pump', 'a_cgm'],
+            timezone: 'Europe/Budapest'
+          }
+        },
+        a1b2c3: {
+          targets: {
+            devices: ['another_pump', 'a_cgm'],
+            timezone: 'Europe/Budapest'
+          }
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          targets: {
+            devices: ['another_pump', 'a_cgm'],
+            timezone: 'Europe/Budapest'
+          }
+        }
+      };
+      let finalState = reducers.users(initialState, {
+        type: actionTypes.STORING_USERS_TARGETS
+      });
+      expect(finalState).to.deep.equal(resultState);
+        // we're not mutating this, so we expect it to stay the same
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.true;
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+    });
   });
 
   describe('version', () => {
