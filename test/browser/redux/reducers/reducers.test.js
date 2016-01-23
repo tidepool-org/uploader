@@ -20,7 +20,7 @@
 import _ from 'lodash';
 
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
-import { pages } from '../../../../lib/redux/constants/otherConstants';
+import { pages, steps } from '../../../../lib/redux/constants/otherConstants';
 import * as reducers from '../../../../lib/redux/reducers/reducers';
 
 import devices from '../../../../lib/redux/reducers/devices';
@@ -136,7 +136,7 @@ describe('reducers', () => {
 
   describe('uploads', () => {
     it('should return the initial state', () => {
-      expect(reducers.uploads(undefined, {})).to.deep.equal({});
+      expect(reducers.uploads(undefined, {})).to.deep.equal({uploadInProgress: false});
     });
 
     it('should handle SET_UPLOADS', () => {
@@ -144,19 +144,59 @@ describe('reducers', () => {
         a1b2c3: {a_pump: {}, a_cgm: {}},
         d4e5f6: {another_pump: {}}
       };
+      let resultState = _.cloneDeep(uploadsByUser);
+      resultState.uploadInProgress = false;
       const actionPayload = { uploadsByUser };
       expect(reducers.uploads(undefined, {
         type: actionTypes.SET_UPLOADS,
         payload: { uploadsByUser }
-      })).to.deep.equal(uploadsByUser);
+      })).to.deep.equal(resultState);
       let initialState = {
-        a1b2c3: {a_cgm: {}}
+        a1b2c3: {a_cgm: {}},
+        uploadInProgress: false
       };
       let finalState = reducers.uploads(initialState, {
         type: actionTypes.SET_UPLOADS,
         payload: { uploadsByUser }
       });
       expect(initialState === finalState).to.be.false;
+    });
+
+    it('should handle UPLOAD_START', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const upload = {
+        progress: {
+          start: '2016-01-01T12:05:00.123Z',
+          step: steps.START,
+          percentage: 0
+        }
+      };
+      const actionPayload = { userId, deviceKey, upload };
+      let initialState = {
+        uploadInProgress: false,
+        a1b2c3: {
+          a_cgm: {},
+          a_pump: {}
+        }
+      };
+      let resultState = {
+        uploadInProgress: true,
+        a1b2c3: {
+          a_cgm: upload,
+          a_pump: {}
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.UPLOAD_START,
+        payload: actionPayload
+      });
+      expect(finalState).to.deep.equal(resultState);
+        // we're not mutating this, so we expect it to stay the same
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.true;
+        // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
     });
   });
 

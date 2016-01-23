@@ -22,6 +22,7 @@ import { isFSA } from 'flux-standard-action';
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
+import { steps } from '../../../../lib/redux/constants/otherConstants';
 
 import * as syncActions from '../../../../lib/redux/actions/sync';
 import { errorText } from '../../../../lib/redux/utils/errors';
@@ -457,7 +458,85 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('for retrieveTargetsFromStorage', () => {
+  describe('for doUpload', () => {
+    describe('uploadAborted', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.uploadAborted();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action reporting an aborted upload (b/c another upload in progress)', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_ABORTED,
+          error: true,
+          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
+        };
+
+        expect(syncActions.uploadAborted()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('uploadRequest', () => {
+      const device = {
+        key: 'a_pump',
+        name: 'Acme Pump',
+        showDriverLink: {mac: true, win: true},
+        source: {type: 'device', driverId: 'AcmePump'},
+        enabled: {mac: true, win: true}
+      };
+      it('should be an FSA', () => {
+        let action = syncActions.uploadRequest(device);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record the user\'s request to begin an upload', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { device },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: device.source.type, source: device.source.driverId}
+            }
+          }
+        };
+
+        expect(syncActions.uploadRequest(device)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('uploadStart', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const upload = {
+        progress: {
+          start: '2016-01-01T12:05:00.123Z',
+          step: steps.START,
+          percentage: 0
+        }
+      };
+      it('should be an FSA', () => {
+        let action = syncActions.uploadStart(userId, deviceKey, upload);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record the start of an upload', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_START,
+          payload: { userId, deviceKey, upload },
+          meta: {source: actionSources[actionTypes.UPLOAD_START]}
+        };
+
+        expect(syncActions.uploadStart(userId, deviceKey, upload)).to.deep.equal(expectedAction);
+      });
+    });
+  });
+
+  describe('for retrieveTargetsFromStorage & putUsersTargetsInStorage', () => {
     describe('putUsersTargetsInStorage', () => {
       it('should be an FSA', () => {
         let action = syncActions.putUsersTargetsInStorage();

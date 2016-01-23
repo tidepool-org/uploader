@@ -25,7 +25,8 @@ import thunk from 'redux-thunk';
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
-import { pages } from '../../../../lib/redux/constants/otherConstants';
+import { pages, steps } from '../../../../lib/redux/constants/otherConstants';
+import { errorText } from '../../../../lib/redux/utils/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
 import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
@@ -393,6 +394,73 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({}, expectedActions, done);
       store.dispatch(asyncActions.doLogout());
+    });
+  });
+
+  describe('doUpload [upload aborted b/c another upload already in progress]', () => {
+    it('should dispatch UPLOAD_ABORTED', (done) => {
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_ABORTED,
+          error: true,
+          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
+        }
+      ];
+      const store = mockStore({uploads: {uploadInProgress: true}}, expectedActions, done);
+      store.dispatch(asyncActions.doUpload());
+    });
+  });
+
+  describe('doUpload [device, without error]', () => {
+    it('should dispatch UPLOAD_REQUEST, UPLOAD_START...', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const upload = {
+        progress: {
+          start: '2016-01-01T12:05:00.123Z',
+          step: steps.START,
+          percentage: 0
+        }
+      };
+      const device = {
+        key: deviceKey,
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: device
+        },
+        uploads: {
+          uploadInProgress: false,
+          [userId]: {
+            a_cgm: {},
+            a_pump: {}
+          }
+        },
+        users: {
+          uploadTargetUser: userId
+        }
+      };
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { device },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: device.source.type, source: device.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.UPLOAD_START,
+          payload: { userId, deviceKey, upload },
+          meta: {source: actionSources[actionTypes.UPLOAD_START]}
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, {start: upload.progress.start}));
     });
   });
 
