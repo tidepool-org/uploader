@@ -25,7 +25,7 @@ import thunk from 'redux-thunk';
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
-import { pages, steps } from '../../../../lib/redux/constants/otherConstants';
+import { pages, steps, urls } from '../../../../lib/redux/constants/otherConstants';
 import { errorText } from '../../../../lib/redux/utils/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
@@ -413,22 +413,23 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, without error]', () => {
-    it('should dispatch UPLOAD_REQUEST, UPLOAD_START...', (done) => {
+    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST...', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
-      const upload = {
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
         progress: {
-          start: '2016-01-01T12:05:00.123Z',
-          step: steps.START,
+          step: steps.start,
           percentage: 0
         }
       };
-      const device = {
+      const targetDevice = {
         key: deviceKey,
         source: {type: 'device', driverId: 'AcmePump'}
       };
       const initialState = {
         devices: {
-          a_pump: device
+          a_pump: targetDevice
         },
         uploads: {
           uploadInProgress: false,
@@ -441,26 +442,109 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: userId
         }
       };
+      asyncActions.__Rewire__('services', {
+        device: {
+          detect: (foo, bar, cb) => cb(null)
+        }
+      });
       const expectedActions = [
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { device },
+          payload: { uploadInProgress, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted AcmePump',
-              properties: {type: device.source.type, source: device.source.driverId}
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
         },
         {
-          type: actionTypes.UPLOAD_START,
-          payload: { userId, deviceKey, upload },
-          meta: {source: actionSources[actionTypes.UPLOAD_START]}
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, {start: upload.progress.start}));
+      store.dispatch(asyncActions.doUpload(deviceKey, time));
+    });
+  });
+
+  describe('doUpload [device, driver error]', () => {
+    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: true},
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: false,
+          [userId]: {
+            a_cgm: {},
+            a_pump: {}
+          }
+        },
+        users: {
+          uploadTargetUser: userId
+        }
+      };
+      let err = new Error(`You may need to install the ${targetDevice.name} device driver.`);
+      err.driverLink = urls.DRIVER_DOWNLOAD;
+      err.debug = `UTC Time: ${time}`;
+      asyncActions.__Rewire__('services', {
+        device: {
+          detect: (foo, bar, cb) => cb('Error :(')
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: { err },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed AcmePump',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, time));
     });
   });
 

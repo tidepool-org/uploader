@@ -17,6 +17,7 @@
 
 /*eslint-env mocha*/
 
+import _ from 'lodash';
 import { isFSA } from 'flux-standard-action';
 
 import * as actionSources from '../../../../lib/redux/constants/actionSources';
@@ -479,6 +480,7 @@ describe('Synchronous Actions', () => {
     });
 
     describe('uploadRequest', () => {
+      const userId = 'a1b2c3';
       const device = {
         key: 'a_pump',
         name: 'Acme Pump',
@@ -487,15 +489,25 @@ describe('Synchronous Actions', () => {
         enabled: {mac: true, win: true}
       };
       it('should be an FSA', () => {
-        let action = syncActions.uploadRequest(device);
+        let action = syncActions.uploadRequest(userId, device);
 
         expect(isFSA(action)).to.be.true;
       });
 
-      it('should create an action to record the user\'s request to begin an upload', () => {
+      it('should create an action to record the start of an upload', () => {
+        const time = '2016-01-01T12:05:00.123Z';
         const expectedAction = {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { device },
+          payload: {
+            uploadInProgress: {
+              pathToUpload: [userId, device.key],
+              progress: {
+                step: steps.start,
+                percentage: 0
+              }
+            },
+            utc: time
+          },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -505,33 +517,64 @@ describe('Synchronous Actions', () => {
           }
         };
 
-        expect(syncActions.uploadRequest(device)).to.deep.equal(expectedAction);
+        expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
       });
     });
 
-    describe('uploadStart', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const upload = {
-        progress: {
-          start: '2016-01-01T12:05:00.123Z',
-          step: steps.START,
-          percentage: 0
-        }
+    // describe('uploadSuccess', () => {
+
+    // });
+
+    describe('uploadFailure', () => {
+      const time = '2016-01-01T12:05:00.123Z';
+      let err = new Error('I\'m an upload error!');
+      const device = {
+        source: {type: 'device', driverId: 'AcmePump'}
       };
       it('should be an FSA', () => {
-        let action = syncActions.uploadStart(userId, deviceKey, upload);
+        let action = syncActions.uploadFailure(err, device);
 
         expect(isFSA(action)).to.be.true;
       });
 
-      it('should create an action to record the start of an upload', () => {
+      it('should create an action to report an upload failure', () => {
+        err.debug = 'Code: RED';
+        const errWithTime = new Error(err.message);
+        errWithTime.debug = `UTC Time: ${time} | ${err.debug}`;
         const expectedAction = {
-          type: actionTypes.UPLOAD_START,
-          payload: { userId, deviceKey, upload },
-          meta: {source: actionSources[actionTypes.UPLOAD_START]}
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: { err: errWithTime },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: `${metrics.UPLOAD_FAILURE} ${device.source.driverId}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                error: errWithTime
+              }
+            }
+          }
+        };
+        expect(syncActions.uploadFailure(err, device, time)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('deviceDetectRequest', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.deviceDetectRequest();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action record an attempt to detect a device', () => {
+        const expectedAction = {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
         };
 
-        expect(syncActions.uploadStart(userId, deviceKey, upload)).to.deep.equal(expectedAction);
+        expect(syncActions.deviceDetectRequest()).to.deep.equal(expectedAction);
       });
     });
   });

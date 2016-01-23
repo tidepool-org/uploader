@@ -139,6 +139,28 @@ describe('reducers', () => {
       expect(reducers.uploads(undefined, {})).to.deep.equal({uploadInProgress: false});
     });
 
+    it('should handle DEVICE_DETECT_REQUEST', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      let initialState = {
+        uploadInProgress: {
+          progress: {
+            step: steps.start,
+            percentage: 0
+          },
+          pathToUpload: ['foo', 'bar']
+        }
+      };
+      let resultState = _.cloneDeep(initialState);
+      resultState.uploadInProgress.progress.step = steps.detect;
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.DEVICE_DETECT_REQUEST,
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.uploadInProgress === finalState.uploadInProgress).to.be.false;
+    });
+
     it('should handle SET_UPLOADS', () => {
       const uploadsByUser = {
         a1b2c3: {a_pump: {}, a_cgm: {}},
@@ -162,16 +184,17 @@ describe('reducers', () => {
       expect(initialState === finalState).to.be.false;
     });
 
-    it('should handle UPLOAD_START', () => {
+    it('should handle UPLOAD_REQUEST', () => {
       const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const upload = {
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
         progress: {
-          start: '2016-01-01T12:05:00.123Z',
-          step: steps.START,
+          step: steps.start,
           percentage: 0
         }
       };
-      const actionPayload = { userId, deviceKey, upload };
+      const actionPayload = { uploadInProgress, utc: time };
       let initialState = {
         uploadInProgress: false,
         a1b2c3: {
@@ -180,20 +203,22 @@ describe('reducers', () => {
         }
       };
       let resultState = {
-        uploadInProgress: true,
+        uploadInProgress: uploadInProgress,
         a1b2c3: {
-          a_cgm: upload,
+          a_cgm: {
+            start: time
+          },
           a_pump: {}
         }
       };
       let finalState = reducers.uploads(initialState, {
-        type: actionTypes.UPLOAD_START,
+        type: actionTypes.UPLOAD_REQUEST,
         payload: actionPayload
       });
       expect(finalState).to.deep.equal(resultState);
-        // we're not mutating this, so we expect it to stay the same
+      // we're not changing this, so we expect it to stay the same
       expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.true;
-        // tests to be sure not *mutating* state object but rather returning new!
+      // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === finalState).to.be.false;
       expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
       expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
@@ -567,7 +592,7 @@ describe('reducers', () => {
           payload: actionPayload
         });
         expect(finalState).to.deep.equal(resultState);
-        // we're not mutating this, so we expect it to stay the same
+        // we're not changing this, so we expect it to stay the same
         expect(initialState[USER].targets.devices === finalState[USER].targets.devices)
           .to.be.true;
         // tests to be sure not *mutating* state object but rather returning new!
@@ -810,7 +835,7 @@ describe('reducers', () => {
         type: actionTypes.STORING_USERS_TARGETS
       });
       expect(finalState).to.deep.equal(resultState);
-        // we're not mutating this, so we expect it to stay the same
+        // we're not changing this, so we expect it to stay the same
       expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.true;
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === finalState).to.be.false;
