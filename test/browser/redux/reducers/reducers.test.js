@@ -493,6 +493,59 @@ describe('reducers', () => {
       expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
       expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
     });
+
+    it('should handle UPLOAD_SUCCESS', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const time = '2016-01-01T12:05:00.123Z';
+      const data = [1,2,3,4,5];
+      let initialState = {
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey],
+          progress: {
+            step: steps.start,
+            percentage: 0
+          }
+        },
+        a1b2c3: {
+          a_cgm: {
+            history: [{start: time}],
+            uploading: true
+          },
+          a_pump: {
+            history: [],
+            disabled: true
+          }
+        }
+      };
+      let resultState = {
+        uploadInProgress: false,
+        a1b2c3: {
+          a_cgm: {
+            completed: true,
+            history: [{
+              start: time,
+              finish: time
+            }],
+            successful: true
+          },
+          a_pump: {
+            history: []
+          }
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.UPLOAD_SUCCESS,
+        payload: { userId, deviceKey, data, utc: time }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history[0] === finalState.a1b2c3.a_cgm.history[0]).to.be.false;
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
+    });
   });
 
   describe('url', () => {

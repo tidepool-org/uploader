@@ -568,9 +568,23 @@ describe('Synchronous Actions', () => {
       });
     });
 
-    // describe('uploadSuccess', () => {
+    describe('uploadSuccess', () => {
+      const time = '2016-01-01T12:05:00.123Z';
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const device = {
+        key: deviceKey,
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const upload = {
+        history: [{start: time}]
+      };
+      const data = [1,2,3,4,5];
+      it('should be an FSA', () => {
+        let action = syncActions.uploadSuccess(userId, device, upload, data);
 
-    // });
+        expect(isFSA(action)).to.be.true;
+      });
+    });
 
     describe('uploadFailure', () => {
       const origError = new Error('I\'m an upload error!');

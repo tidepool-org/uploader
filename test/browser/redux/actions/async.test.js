@@ -874,7 +874,7 @@ describe('Asynchronous Actions', () => {
           },
           [userId]: {
             a_cgm: {},
-            a_pump: {start: time}
+            a_pump: {history: [{start: time}]}
           }
         },
         users: {
