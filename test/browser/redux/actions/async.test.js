@@ -250,7 +250,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_FAILURE,
           error: true,
-          payload: new Error('Error during app initialization.'),
+          payload: new Error(errorText.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         }
       ];
@@ -519,7 +519,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Version: ${errProps.version} | Code: ${errProps.code}`;
+      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
         device: {
           detect: (foo, bar, cb) => cb('Error :(')
@@ -612,7 +612,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Version: ${errProps.version} | Code: ${errProps.code}`;
+      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
         device: {
           detect: (foo, bar, cb) => cb('Error :(')
@@ -705,7 +705,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Version: ${errProps.version} | Code: ${errProps.code}`;
+      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
         device: {
           detect: (foo, bar, cb) => cb(null, null)
