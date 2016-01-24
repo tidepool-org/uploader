@@ -544,7 +544,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.UPLOAD_FAILURE,
           error: true,
-          payload: { err },
+          payload: err,
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
@@ -637,7 +637,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.UPLOAD_FAILURE,
           error: true,
-          payload: { err },
+          payload: err,
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
@@ -653,6 +653,36 @@ describe('Asynchronous Actions', () => {
       ];
       const store = mockStore(initialState, expectedActions, done);
       store.dispatch(asyncActions.doUpload(deviceKey, time));
+    });
+  });
+
+  describe('readFile', () => {
+    describe('wrong file extension chosen', () => {
+      it('should dispatch CHOOSING_FILE, READ_FILE_ABORTED actions', (done) => {
+        const userId = 'abc123', deviceKey = 'a_pump', ext = '.abc', version = '0.100.0';
+        let err = new Error(errorText.E_FILE_EXT + ext);
+        err.code = 'E_FILE_EXT';
+        err.version = version;
+        err.debug = `Code: ${err.code} | Version: ${version}`;
+        const expectedActions = [
+          {
+            type: actionTypes.CHOOSING_FILE,
+            payload: { userId, deviceKey },
+            meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
+          },
+          {
+            type: actionTypes.READ_FILE_ABORTED,
+            error: true,
+            payload: err,
+            meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
+          }
+        ];
+        const state = {
+          version: version
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
+      });
     });
   });
 

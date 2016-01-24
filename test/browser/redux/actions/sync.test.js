@@ -549,6 +549,25 @@ describe('Synchronous Actions', () => {
       });
     });
 
+    describe('uploadProgress', () => {
+      const step = 'READ', percentage = 50;
+      it('should be an FSA', () => {
+        let action = syncActions.uploadProgress(step, percentage);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to update the step and percentage complete for the upload in progress', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_PROGRESS,
+          payload: { step, percentage },
+          meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
+        };
+
+        expect(syncActions.uploadProgress(step, percentage)).to.deep.equal(expectedAction);
+      });
+    });
+
     // describe('uploadSuccess', () => {
 
     // });
@@ -576,7 +595,7 @@ describe('Synchronous Actions', () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_FAILURE,
           error: true,
-          payload: { err: resError },
+          payload: resError,
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
@@ -607,6 +626,47 @@ describe('Synchronous Actions', () => {
         };
 
         expect(syncActions.deviceDetectRequest()).to.deep.equal(expectedAction);
+      });
+    });
+  });
+
+  describe('for readFile', () => {
+    describe('choosingFile', () => {
+      const userId = 'abc123', deviceKey = 'a_pump';
+      it('should be an FSA', () => {
+        let action = syncActions.choosingFile(userId, deviceKey);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record file selection for a block-mode device', () => {
+        const expectedAction = {
+          type: actionTypes.CHOOSING_FILE,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
+        };
+
+        expect(syncActions.choosingFile(userId, deviceKey)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('readFileAborted', () => {
+      let err = new Error('Wrong file extension!');
+      it('should be an FSA', () => {
+        let action = syncActions.readFileAborted(err);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to report user error in choosing a file with the wrong extension', () => {
+        const expectedAction = {
+          type: actionTypes.READ_FILE_ABORTED,
+          error: true,
+          payload: err,
+          meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
+        };
+
+        expect(syncActions.readFileAborted(err)).to.deep.equal(expectedAction);
       });
     });
   });

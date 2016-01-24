@@ -139,6 +139,30 @@ describe('reducers', () => {
       expect(reducers.uploads(undefined, {})).to.deep.equal({uploadInProgress: false});
     });
 
+    it('should handle CHOOSING_FILE', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      let initialState = {
+        a1b2c3: {
+          a_cgm: {history: []}
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_cgm: {history: []}
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.CHOOSING_FILE,
+        payload: { userId, deviceKey }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+    });
+
     it('should handle DEVICE_DETECT_REQUEST', () => {
       const userId = 'a1b2c3', deviceKey = 'a_cgm';
       let initialState = {
@@ -159,6 +183,39 @@ describe('reducers', () => {
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === finalState).to.be.false;
       expect(initialState.uploadInProgress === finalState.uploadInProgress).to.be.false;
+    });
+
+    it('should handle READ_FILE_ABORTED', () => {
+      const err = new Error('Wrong file ext!');
+      let initialState = {
+        a1b2c3: {
+          a_pump: {history: []}
+        },
+        uploadInProgress: {
+          pathToUpload: ['a1b2c3', 'a_pump']
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_pump: {
+            completed: true,
+            error: err,
+            failed: true,
+            history: []
+          }
+        },
+        uploadInProgress: false
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.READ_FILE_ABORTED,
+        error: true,
+        payload: err
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
     });
 
     it('should handle SET_UPLOADS', () => {
@@ -249,7 +306,7 @@ describe('reducers', () => {
       let finalState = reducers.uploads(initialState, {
         type: actionTypes.UPLOAD_FAILURE,
         error: true,
-        payload: { err }
+        payload: err
       });
       expect(finalState).to.deep.equal(resultState);
       // tests to be sure not *mutating* state object but rather returning new!
@@ -259,6 +316,29 @@ describe('reducers', () => {
       expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.false;
       expect(initialState.a1b2c3.a_cgm.history[0] === finalState.a1b2c3.a_cgm.history[0]).to.be.false;
       expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
+    });
+
+    it('should handle UPLOAD_PROGRESS', () => {
+      const step = 'READ', percentage = 50;
+      const actionPayload = { step, percentage };
+      let initialState = {
+        uploadInProgress: {
+          progress: {
+            step: 'DETECT',
+            percentage: 0
+          }
+        }
+      };
+      let resultState = {
+        uploadInProgress: {
+          progress: { step, percentage }
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.UPLOAD_PROGRESS,
+        payload: actionPayload
+      });
+      expect(finalState).to.deep.equal(resultState);
     });
 
     it('should handle UPLOAD_REQUEST', () => {
