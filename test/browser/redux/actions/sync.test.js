@@ -266,6 +266,34 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('toggleErrorDetails', () => {
+    const DETAILS_PREVIOUS_STATE = true;
+    const userId = 'a1b2c3', deviceKey = 'a_cgm';
+    it('should be an FSA', () => {
+      let action = syncActions.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to toggle error details for an upload', () => {
+      const expectedAction = {
+        type: actionTypes.TOGGLE_ERROR_DETAILS,
+        payload: {isVisible: false, userId, deviceKey },
+        meta: {source: actionSources[actionTypes.TOGGLE_ERROR_DETAILS]}
+      };
+      expect(syncActions.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE)).to.deep.equal(expectedAction);
+    });
+
+    it('should toggle on error details if previous state is undefined', () => {
+      const expectedAction = {
+        type: actionTypes.TOGGLE_ERROR_DETAILS,
+        payload: {isVisible: true, userId, deviceKey },
+        meta: {source: actionSources[actionTypes.TOGGLE_ERROR_DETAILS]}
+      };
+      expect(syncActions.toggleErrorDetails(userId, deviceKey, undefined)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('for doAppInit', () => {
     describe('initRequest', () => {
       it('should be an FSA', () => {
@@ -526,25 +554,29 @@ describe('Synchronous Actions', () => {
     // });
 
     describe('uploadFailure', () => {
-      const time = '2016-01-01T12:05:00.123Z';
-      let err = new Error('I\'m an upload error!');
+      const origError = new Error('I\'m an upload error!');
+      const errProps = {
+        utc: '2016-01-01T12:05:00.123Z',
+        code: 'RED'
+      };
+      let resError = new Error('I\'m an upload error!');
+      resError.code = errProps.code;
+      resError.utc = errProps.utc;
+      resError.debug = `UTC Time: ${errProps.utc} | Code: ${errProps.code}`;
       const device = {
         source: {type: 'device', driverId: 'AcmePump'}
       };
       it('should be an FSA', () => {
-        let action = syncActions.uploadFailure(err, device);
+        let action = syncActions.uploadFailure(origError, errProps, device);
 
         expect(isFSA(action)).to.be.true;
       });
 
       it('should create an action to report an upload failure', () => {
-        err.debug = 'Code: RED';
-        const errWithTime = new Error(err.message);
-        errWithTime.debug = `UTC Time: ${time} | ${err.debug}`;
         const expectedAction = {
           type: actionTypes.UPLOAD_FAILURE,
           error: true,
-          payload: { err: errWithTime },
+          payload: { err: resError },
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
@@ -552,12 +584,12 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                error: errWithTime
+                error: resError
               }
             }
           }
         };
-        expect(syncActions.uploadFailure(err, device, time)).to.deep.equal(expectedAction);
+        expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
       });
     });
 

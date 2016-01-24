@@ -499,12 +499,120 @@ describe('Asynchronous Actions', () => {
           }
         },
         users: {
-          uploadTargetUser: userId
-        }
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'a_pump'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_DRIVER'
       };
       let err = new Error(`You may need to install the ${targetDevice.name} device driver.`);
       err.driverLink = urls.DRIVER_DOWNLOAD;
-      err.debug = `UTC Time: ${time}`;
+      err.code = errProps.code;
+      err.utc = errProps.utc;
+      err.version = errProps.version;
+      err.debug = `UTC Time: ${time} | Version: ${errProps.version} | Code: ${errProps.code}`;
+      asyncActions.__Rewire__('services', {
+        device: {
+          detect: (foo, bar, cb) => cb('Error :(')
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: { err },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed AcmePump',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, time));
+    });
+  });
+
+  describe('doUpload [device, device detection error]', () => {
+    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: false},
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: false,
+          [userId]: {
+            a_cgm: {},
+            a_pump: {}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'a_pump'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_DEVICE_DETECT'
+      };
+      let err = new Error(errorText.E_DEVICE_DETECT);
+      err.code = errProps.code;
+      err.utc = errProps.utc;
+      err.version = errProps.version;
+      err.debug = `UTC Time: ${time} | Version: ${errProps.version} | Code: ${errProps.code}`;
       asyncActions.__Rewire__('services', {
         device: {
           detect: (foo, bar, cb) => cb('Error :(')
@@ -671,11 +779,11 @@ describe('Asynchronous Actions', () => {
         };
         const uploadsByUser = {
           abc123: {
-            carelink: {}
+            carelink: {history: []}
           },
           def456: {
-            dexcom: {},
-            omnipod: {}
+            dexcom: {history: []},
+            omnipod: {history: []}
           }
         };
         const expectedActions = [
@@ -729,11 +837,11 @@ describe('Asynchronous Actions', () => {
         };
         const uploadsByUser = {
           abc123: {
-            carelink: {}
+            carelink: {history: []}
           },
           def456: {
-            dexcom: {},
-            omnipod: {}
+            dexcom: {history: []},
+            omnipod: {history: []}
           }
         };
         const expectedActions = [
@@ -792,11 +900,11 @@ describe('Asynchronous Actions', () => {
         };
         const uploadsByUser = {
           abc123: {
-            carelink: {}
+            carelink: {history: []}
           },
           def456: {
-            dexcom: {},
-            omnipod: {}
+            dexcom: {history: []},
+            omnipod: {history: []}
           }
         };
         const expectedActions = [
@@ -854,11 +962,11 @@ describe('Asynchronous Actions', () => {
         };
         const uploadsByUser = {
           abc123: {
-            carelink: {}
+            carelink: {history: []}
           },
           def456: {
-            dexcom: {},
-            omnipod: {}
+            dexcom: {history: []},
+            omnipod: {history: []}
           }
         };
         const expectedActions = [

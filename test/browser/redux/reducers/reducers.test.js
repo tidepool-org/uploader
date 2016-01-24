@@ -184,6 +184,83 @@ describe('reducers', () => {
       expect(initialState === finalState).to.be.false;
     });
 
+    it('should handle TOGGLE_ERROR_DETAILS', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      let initialState = {
+        a1b2c3: {
+          a_cgm: {history: []}
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_cgm: {history: [], showErrorDetails: true}
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.TOGGLE_ERROR_DETAILS,
+        payload: { userId, deviceKey, isVisible: true}
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // we're not changing this, so we expect it to stay the same
+      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.true;
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+    });
+
+    it('should handle UPLOAD_FAILURE', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      let initialState = {
+        uploadInProgress: uploadInProgress,
+        a1b2c3: {
+          a_cgm: {
+            history: [{start: time}],
+            uploading: true
+          },
+          a_pump: {
+            history: [{foo: 'bar'}],
+            disabled: true
+          }
+        }
+      };
+      let err = new Error('Upload error');
+      err.utc = time;
+      let resultState = {
+        uploadInProgress: false,
+        a1b2c3: {
+          a_cgm: {
+            completed: true,
+            error: err,
+            failed: true,
+            history: [{start: time, finish: time, error: true}]
+          },
+          a_pump: {history: [{foo: 'bar'}]}
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.UPLOAD_FAILURE,
+        error: true,
+        payload: { err }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history[0] === finalState.a1b2c3.a_cgm.history[0]).to.be.false;
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
+    });
+
     it('should handle UPLOAD_REQUEST', () => {
       const userId = 'a1b2c3', deviceKey = 'a_cgm';
       const time = '2016-01-01T12:05:00.123Z';
@@ -198,17 +275,21 @@ describe('reducers', () => {
       let initialState = {
         uploadInProgress: false,
         a1b2c3: {
-          a_cgm: {},
-          a_pump: {}
+          a_cgm: {history: []},
+          a_pump: {history: []}
         }
       };
       let resultState = {
         uploadInProgress: uploadInProgress,
         a1b2c3: {
           a_cgm: {
-            start: time
+            history: [{start: time}],
+            uploading: true
           },
-          a_pump: {}
+          a_pump: {
+            history: [],
+            disabled: true
+          }
         }
       };
       let finalState = reducers.uploads(initialState, {
@@ -216,12 +297,11 @@ describe('reducers', () => {
         payload: actionPayload
       });
       expect(finalState).to.deep.equal(resultState);
-      // we're not changing this, so we expect it to stay the same
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.true;
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === finalState).to.be.false;
       expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
       expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
     });
   });
 
