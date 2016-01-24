@@ -669,6 +669,65 @@ describe('Synchronous Actions', () => {
         expect(syncActions.readFileAborted(err)).to.deep.equal(expectedAction);
       });
     });
+
+    describe('readFileRequest', () => {
+      const filename = 'my-data.ext';
+      it('should be an FSA', () => {
+        let action = syncActions.readFileRequest(filename);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record request to read a chosen file', () => {
+        const expectedAction = {
+          type: actionTypes.READ_FILE_REQUEST,
+          payload: { filename },
+          meta: {source: actionSources[actionTypes.READ_FILE_REQUEST]}
+        };
+
+        expect(syncActions.readFileRequest(filename)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('readFileSuccess', () => {
+      const userId = 'abc123', deviceKey = 'a_pump';
+      const filedata = [1,2,3,4,5];
+      it('should be an FSA', () => {
+        let action = syncActions.readFileSuccess(userId, deviceKey, filedata);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record data of successfully read file', () => {
+        const expectedAction = {
+          type: actionTypes.READ_FILE_SUCCESS,
+          payload: { userId, deviceKey, filedata },
+          meta: {source: actionSources[actionTypes.READ_FILE_SUCCESS]}
+        };
+
+        expect(syncActions.readFileSuccess(userId, deviceKey, filedata)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('readFileFailure', () => {
+      let err = new Error('Error reading file!');
+      it('should be an FSA', () => {
+        let action = syncActions.readFileFailure(err);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to report error reading chosen file', () => {
+        const expectedAction = {
+          type: actionTypes.READ_FILE_FAILURE,
+          error: true,
+          payload: err,
+          meta: {source: actionSources[actionTypes.READ_FILE_FAILURE]}
+        };
+
+        expect(syncActions.readFileFailure(err)).to.deep.equal(expectedAction);
+      });
+    });
   });
 
   describe('for retrieveTargetsFromStorage & putUsersTargetsInStorage', () => {

@@ -218,6 +218,116 @@ describe('reducers', () => {
       expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
     });
 
+    it('should handle READ_FILE_FAILURE', () => {
+      const err = new Error('Error reading file!');
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const filename = 'foo.csv';
+      let initialState = {
+        a1b2c3: {
+          a_cgm: {
+            history: [],
+            file: {name: filename}
+          }
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_cgm: {
+            completed: true,
+            error: err,
+            failed: true,
+            file: {name: filename},
+            history: []
+          }
+        },
+        uploadInProgress: false
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.READ_FILE_FAILURE,
+        error: true,
+        payload: err
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+    });
+
+    it('should handle READ_FILE_REQUEST', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const filename = 'foo.csv';
+      let initialState = {
+        a1b2c3: {
+          a_cgm: {history: []}
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_cgm: {
+            history: [],
+            file: {name: filename}
+          }
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.READ_FILE_REQUEST,
+        payload: { filename }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+    });
+
+    it('should handle READ_FILE_SUCCESS', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const filename = 'foo.csv';
+      const filedata = [1,2,3,4,5];
+      let initialState = {
+        a1b2c3: {
+          a_cgm: {
+            history: [],
+            file: {name: filename}
+          }
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let resultState = {
+        a1b2c3: {
+          a_cgm: {
+            history: [],
+            file: {name: filename, data: filedata}
+          }
+        },
+        uploadInProgress: {
+          pathToUpload: [userId, deviceKey]
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.READ_FILE_SUCCESS,
+        payload: { userId, deviceKey, filedata }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.file === finalState.a1b2c3.a_cgm.file).to.be.false;
+    });
+
     it('should handle SET_UPLOADS', () => {
       const uploadsByUser = {
         a1b2c3: {a_pump: {}, a_cgm: {}},
