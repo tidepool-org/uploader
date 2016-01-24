@@ -749,6 +749,190 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('doUpload [device, error during upload]', () => {
+    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: false},
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: false,
+          [userId]: {
+            a_cgm: {},
+            a_pump: {}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'a_pump'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_DEVICE_UPLOAD'
+      };
+      const basalErr = 'Problem processing basal!';
+      let err = new Error(errorText.E_DEVICE_UPLOAD);
+      err.details = basalErr;
+      err.utc = errProps.utc;
+      err.name = 'Error';
+      err.code = errProps.code;
+      err.version = errProps.version;
+      err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
+      asyncActions.__Rewire__('services', {
+        device: {
+          detect: (foo, bar, cb) => cb(null, {}),
+          upload: (foo, bar, cb) => cb(new Error(basalErr))
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: err,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed AcmePump',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, time));
+    });
+  });
+
+  describe('doUpload [no error]', () => {
+    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_SUCCESS actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: false},
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
+          [userId]: {
+            a_cgm: {},
+            a_pump: {start: time}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'a_pump'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      asyncActions.__Rewire__('services', {
+        device: {
+          detect: (foo, bar, cb) => cb(null, {}),
+          upload: (foo, bar, cb) => cb(null, [1,2,3,4,5])
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted AcmePump',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+        },
+        {
+          type: actionTypes.UPLOAD_SUCCESS,
+          payload: { userId, deviceKey, utc: time, data: [1,2,3,4,5] },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_SUCCESS],
+            metric: {
+              eventName: 'Upload Successful AcmePump',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                started: time,
+                finished: time,
+                processed: 5
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, time));
+    });
+  });
+
   describe('readFile', () => {
     describe('wrong file extension chosen', () => {
       it('should dispatch CHOOSING_FILE, READ_FILE_ABORTED actions', (done) => {
