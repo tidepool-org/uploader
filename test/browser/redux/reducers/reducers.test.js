@@ -569,6 +569,7 @@ describe('reducers', () => {
               start: time,
               finish: time
             }],
+            data: data,
             successful: true
           },
           a_pump: {
