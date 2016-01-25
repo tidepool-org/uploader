@@ -328,6 +328,46 @@ describe('reducers', () => {
       expect(initialState.a1b2c3.a_cgm.file === finalState.a1b2c3.a_cgm.file).to.be.false;
     });
 
+    it('should handle RESET_UPLOAD [upload successful]', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_cgm';
+      const time = '2016-01-01T12:05:00.123Z';
+      let initialState = {
+        uploadInProgress: false,
+        a1b2c3: {
+          a_cgm: {
+            completed: true,
+            history: [{
+              start: time,
+              finish: time
+            }],
+            successful: true
+          },
+          a_pump: {
+            history: []
+          }
+        }
+      };
+      let resultState = {
+        uploadInProgress: false,
+        a1b2c3: {
+          a_cgm: {
+            history: [{
+              start: time,
+              finish: time
+            }]
+          },
+          a_pump: {
+            history: []
+          }
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.RESET_UPLOAD,
+        payload: { userId, deviceKey }
+      });
+      expect(finalState).to.deep.equal(resultState);
+    });
+
     it('should handle SET_UPLOADS', () => {
       const uploadsByUser = {
         a1b2c3: {a_pump: {}, a_cgm: {}},

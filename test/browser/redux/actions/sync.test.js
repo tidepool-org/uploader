@@ -83,6 +83,24 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('resetUpload', () => {
+    const userId = 'a1b2c3', deviceKey = 'a_pump';
+    it('should be an FSA', () => {
+      let action = syncActions.resetUpload(userId, deviceKey);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to reset an upload after failure or success', () => {
+      const expectedAction = {
+        type: actionTypes.RESET_UPLOAD,
+        payload: { userId, deviceKey },
+        meta: {source: actionSources[actionTypes.RESET_UPLOAD]}
+      };
+      expect(syncActions.resetUpload(userId, deviceKey)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('setForgotPasswordUrl', () => {
     const URL = 'http://www.acme.com/forgot-password';
     it('should be an FSA', () => {
