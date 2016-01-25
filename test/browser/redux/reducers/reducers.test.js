@@ -370,18 +370,21 @@ describe('reducers', () => {
 
     it('should handle SET_UPLOADS', () => {
       const uploadsByUser = {
-        a1b2c3: {a_pump: {}, a_cgm: {}},
+        a1b2c3: {a_pump: {}},
         d4e5f6: {another_pump: {}}
       };
-      let resultState = _.cloneDeep(uploadsByUser);
-      resultState.uploadInProgress = false;
+      let resultState = {
+        a1b2c3: {a_cgm: {completed: true}, a_pump: {}},
+        d4e5f6: {another_pump: {}},
+        uploadInProgress: false
+      };
       const actionPayload = { uploadsByUser };
       expect(reducers.uploads(undefined, {
         type: actionTypes.SET_UPLOADS,
         payload: { uploadsByUser }
-      })).to.deep.equal(resultState);
+      })).to.deep.equal(_.assign(_.cloneDeep(uploadsByUser), {uploadInProgress: false}));
       let initialState = {
-        a1b2c3: {a_cgm: {}},
+        a1b2c3: {a_cgm: {completed: true}},
         uploadInProgress: false
       };
       let finalState = reducers.uploads(initialState, {
