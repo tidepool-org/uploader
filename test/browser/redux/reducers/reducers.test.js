@@ -370,11 +370,11 @@ describe('reducers', () => {
 
     it('should handle SET_UPLOADS', () => {
       const uploadsByUser = {
-        a1b2c3: {a_pump: {}},
+        a1b2c3: {a_pump: {}, a_cgm: {}},
         d4e5f6: {another_pump: {}}
       };
       let resultState = {
-        a1b2c3: {a_cgm: {completed: true}, a_pump: {}},
+        a1b2c3: {a_cgm: {completed: true, history: [1,2,3]}, a_pump: {}},
         d4e5f6: {another_pump: {}},
         uploadInProgress: false
       };
@@ -384,14 +384,19 @@ describe('reducers', () => {
         payload: { uploadsByUser }
       })).to.deep.equal(_.assign(_.cloneDeep(uploadsByUser), {uploadInProgress: false}));
       let initialState = {
-        a1b2c3: {a_cgm: {completed: true}},
+        a1b2c3: {a_meter: {history: [1]}, a_cgm: {completed: true, history: [1,2,3]}},
         uploadInProgress: false
       };
       let finalState = reducers.uploads(initialState, {
         type: actionTypes.SET_UPLOADS,
         payload: { uploadsByUser }
       });
+      expect(finalState).to.deep.equal(resultState);
+      // we're not changing this, so we expect it to stay the same
+      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.true;
+      // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
     });
 
     it('should handle TOGGLE_ERROR_DETAILS', () => {
