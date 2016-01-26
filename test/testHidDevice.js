@@ -75,9 +75,4 @@ describe('hidDevice.js', function(){
       expect(device).itself.to.respondTo('flush');
     });
   });
-  describe('emitLog', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('emitLog');
-    });
-  });
 });
