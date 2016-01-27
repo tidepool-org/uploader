@@ -606,9 +606,9 @@ describe('Asynchronous Actions', () => {
       const errProps = {
         utc: time,
         version: initialState.version,
-        code: 'E_DEVICE_DETECT'
+        code: 'E_SERIAL_CONNECTION'
       };
-      let err = new Error(errorText.E_DEVICE_DETECT);
+      let err = new Error(errorText.E_SERIAL_CONNECTION);
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
@@ -699,9 +699,9 @@ describe('Asynchronous Actions', () => {
       const errProps = {
         utc: time,
         version: initialState.version,
-        code: 'E_DEVICE_DISCONNECT'
+        code: 'E_HID_CONNECTION'
       };
-      let err = new Error(errorText.E_DEVICE_DISCONNECT);
+      let err = new Error(errorText.E_HID_CONNECTION);
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
