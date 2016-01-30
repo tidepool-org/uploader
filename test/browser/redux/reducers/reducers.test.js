@@ -163,6 +163,111 @@ describe('reducers', () => {
       expect(initialState === finalState).to.be.false;
     });
 
+    it('should handle CARELINK_FETCH_FAILURE', () => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.carelinkFetch,
+          percentage: 0
+        }
+      };
+      let initialState = {
+        uploadInProgress: uploadInProgress,
+        a1b2c3: {
+          carelink: {
+            history: [{start: time}],
+            isFetching: true
+          },
+          a_pump: {
+            history: [{foo: 'bar'}],
+            disabled: true
+          }
+        }
+      };
+      let err = new Error('Upload error');
+      err.utc = time;
+      let resultState = {
+        uploadInProgress: uploadInProgress,
+        a1b2c3: {
+          carelink: {
+            history: [{start: time}],
+            isFetching: false
+          },
+          a_pump: {
+            history: [{foo: 'bar'}],
+            disabled: true
+          }
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.CARELINK_FETCH_FAILURE,
+        error: true,
+        payload: err
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // we're not changing this, so we expect it to stay the same
+      expect(initialState.a1b2c3.carelink.history === finalState.a1b2c3.carelink.history).to.be.true;
+      expect(initialState.a1b2c3.carelink.history[0] === finalState.a1b2c3.carelink.history[0]).to.be.true;
+      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.true;
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
+    });
+
+    it('should handle CARELINK_FETCH_REQUEST', () => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      let initialState = {
+        a1b2c3: {
+          carelink: {history: []}
+        },
+        uploadInProgress: {progress: {step: 'start', percentage: 0}}
+      };
+      let resultState = {
+        a1b2c3: {
+          carelink: {history: [], isFetching: true}
+        },
+        uploadInProgress: {progress: {step: steps.carelinkFetch, percentage: 0}}
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.CARELINK_FETCH_REQUEST,
+        payload: { userId, deviceKey }
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
+      expect(initialState.uploadInProgress === finalState.uploadInProgress).to.be.false;
+      expect(initialState.uploadInProgress.progress === finalState.uploadInProgress.progress).to.be.false;
+    });
+
+    it('should handle CARELINK_FETCH_SUCCESS', () => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      let initialState = {
+        uploadInProgress: {pathToUpload: [userId, deviceKey]},
+        a1b2c3: {
+          carelink: {history: [], isFetching: true}
+        }
+      };
+      let resultState = {
+        uploadInProgress: {pathToUpload: [userId, deviceKey]},
+        a1b2c3: {
+          carelink: {history: [], isFetching: false}
+        }
+      };
+      let finalState = reducers.uploads(initialState, {
+        type: actionTypes.CARELINK_FETCH_SUCCESS
+      });
+      expect(finalState).to.deep.equal(resultState);
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === finalState).to.be.false;
+      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
+    });
+
     it('should handle DEVICE_DETECT_REQUEST', () => {
       const userId = 'a1b2c3', deviceKey = 'a_cgm';
       let initialState = {

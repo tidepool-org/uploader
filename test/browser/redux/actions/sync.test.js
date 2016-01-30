@@ -505,6 +505,58 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('for doCareLinkUpload', () => {
+    const userId = 'a1b2c3', deviceKey = 'carelink';
+    describe('fetchCareLinkRequest', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.fetchCareLinkRequest(userId, deviceKey);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record an attempt to fetch data from CareLink', () => {
+        const expectedAction = {
+          type: actionTypes.CARELINK_FETCH_REQUEST,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
+        };
+
+        expect(syncActions.fetchCareLinkRequest(userId, deviceKey)).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('fetchCareLinkSuccess', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.fetchCareLinkSuccess();
+
+        expect(isFSA(action)).to.be.true;
+      });
+    });
+
+    describe('fetchCareLinkFailure', () => {
+      const err = new Error('Error :(');
+      it('should be an FSA', () => {
+        let action = syncActions.fetchCareLinkFailure('Error :(');
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record the failure of an attempt to fetch data from CareLink', () => {
+        const expectedAction = {
+          type: actionTypes.CARELINK_FETCH_FAILURE,
+          error: true,
+          payload: err,
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
+            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
+          }
+        };
+        expect(syncActions.fetchCareLinkFailure('Error :(')).to.deep.equal(expectedAction);
+      });
+
+    });
+  });
+
   describe('for doUpload', () => {
     describe('uploadAborted', () => {
       it('should be an FSA', () => {

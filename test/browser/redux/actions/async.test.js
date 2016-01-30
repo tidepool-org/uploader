@@ -412,63 +412,6 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('doUpload [device, without error]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST...', (done) => {
-      const userId = 'a1b2c3', deviceKey = 'a_pump';
-      const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
-      const targetDevice = {
-        key: deviceKey,
-        source: {type: 'device', driverId: 'AcmePump'}
-      };
-      const initialState = {
-        devices: {
-          a_pump: targetDevice
-        },
-        uploads: {
-          uploadInProgress: false,
-          [userId]: {
-            a_cgm: {},
-            a_pump: {}
-          }
-        },
-        users: {
-          uploadTargetUser: userId
-        }
-      };
-      asyncActions.__Rewire__('services', {
-        device: {
-          detect: (foo, bar, cb) => cb(null)
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted AcmePump',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
-            }
-          }
-        },
-        {
-          type: actionTypes.DEVICE_DETECT_REQUEST,
-          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
-        }
-      ];
-      const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
-    });
-  });
-
   describe('doUpload [device, driver error]', () => {
     it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
@@ -559,7 +502,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
     });
   });
 
@@ -652,7 +595,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
     });
   });
 
@@ -745,7 +688,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
     });
   });
 
@@ -772,7 +715,7 @@ describe('Asynchronous Actions', () => {
         },
         os: 'mac',
         uploads: {
-          uploadInProgress: false,
+          uploadInProgress: uploadInProgress,
           [userId]: {
             a_cgm: {},
             a_pump: {}
@@ -842,7 +785,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
     });
   });
 
@@ -929,7 +872,432 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState, expectedActions, done);
-      store.dispatch(asyncActions.doUpload(deviceKey, time));
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+    });
+  });
+
+  describe('doUpload [CareLink fetch error]', () => {
+    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'CareLink',
+        showDriverLink: {mac: false},
+        source: {type: 'carelink'}
+      };
+      const initialState = {
+        devices: {
+          carelink: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
+          [userId]: {
+            a_cgm: {},
+            carelink: {history: [{start: time}]}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'carelink'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_FETCH_CARELINK'
+      };
+      let err = new Error(errorText.E_FETCH_CARELINK);
+      err.details = 'Error!';
+      err.utc = errProps.utc;
+      err.code = errProps.code;
+      err.version = errProps.version;
+      err.debug = `Details: Error! | UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            fetchCarelinkData: (foo, cb) => cb(new Error('Error!'))
+          }
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted CareLink',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_REQUEST,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_FAILURE,
+          error: true,
+          payload: new Error(errorText.E_FETCH_CARELINK),
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
+            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
+          }
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: err,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed CareLink',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+    });
+  });
+
+  describe('doUpload [CareLink fetch, incorrect creds]', () => {
+    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'CareLink',
+        showDriverLink: {mac: false},
+        source: {type: 'carelink'}
+      };
+      const initialState = {
+        devices: {
+          carelink: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
+          [userId]: {
+            a_cgm: {},
+            carelink: {history: [{start: time}]}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'carelink'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_CARELINK_CREDS'
+      };
+      let err = new Error(errorText.E_CARELINK_CREDS);
+      err.utc = errProps.utc;
+      err.code = errProps.code;
+      err.version = errProps.version;
+      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            fetchCarelinkData: (foo, cb) => cb(null, '302 Moved Temporarily')
+          }
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted CareLink',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_REQUEST,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_FAILURE,
+          error: true,
+          payload: new Error(errorText.E_CARELINK_CREDS),
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
+            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
+          }
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: err,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed CareLink',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+    });
+  });
+
+  describe('doUpload [CareLink, error in processing & uploading]', () => {
+    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_FAILURE actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: false},
+        source: {type: 'carelink'}
+      };
+      const initialState = {
+        devices: {
+          carelink: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
+          [userId]: {
+            a_cgm: {},
+            carelink: {history: [{start: time}]}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'carelink'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      const errProps = {
+        utc: time,
+        version: initialState.version,
+        code: 'E_CARELINK_UPLOAD'
+      };
+      const basalErr = 'Problem processing basal!';
+      let err = new Error(errorText.E_CARELINK_UPLOAD);
+      err.details = basalErr;
+      err.utc = errProps.utc;
+      err.name = 'Error';
+      err.code = errProps.code;
+      err.version = errProps.version;
+      err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5')
+          }
+        },
+        carelink: {
+          upload: (foo, bar, cb) => cb(new Error(basalErr))
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted CareLink',
+              properties: {type: targetDevice.source.type, source: undefined}
+            }
+          }
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_REQUEST,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_SUCCESS,
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
+            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: err,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: 'Upload Failed CareLink',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                error: err
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+    });
+  });
+
+  describe('doUpload [CareLink, no error]', () => {
+    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_SUCCESS actions', (done) => {
+      const userId = 'a1b2c3', deviceKey = 'carelink';
+      const time = '2016-01-01T12:05:00.123Z';
+      const uploadInProgress = {
+        pathToUpload: [userId, deviceKey],
+        progress: {
+          step: steps.start,
+          percentage: 0
+        }
+      };
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        showDriverLink: {mac: false},
+        source: {type: 'carelink'}
+      };
+      const initialState = {
+        devices: {
+          carelink: targetDevice
+        },
+        os: 'mac',
+        uploads: {
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
+          [userId]: {
+            a_cgm: {},
+            carelink: {history: [{start: time}]}
+          }
+        },
+        users: {
+          uploadTargetUser: userId,
+          [userId]: {
+            targets: {
+              devices: ['a_cgm', 'carelink'],
+              timezone: 'US/Mountain'
+            }
+          }
+        },
+        version: '0.100.0'
+      };
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5')
+          }
+        },
+        carelink: {
+          upload: (foo, bar, cb) => cb(null, [1,2,3,4])
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { uploadInProgress, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted CareLink',
+              properties: {type: targetDevice.source.type, source: undefined}
+            }
+          }
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_REQUEST,
+          payload: { userId, deviceKey },
+          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
+        },
+        {
+          type: actionTypes.CARELINK_FETCH_SUCCESS,
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
+            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.UPLOAD_SUCCESS,
+          payload: { userId, deviceKey, utc: time, data: [1,2,3,4] },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_SUCCESS],
+            metric: {
+              eventName: 'Upload Successful CareLink',
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                started: time,
+                finished: time,
+                processed: 4
+              }
+            }
+          }
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
     });
   });
 
