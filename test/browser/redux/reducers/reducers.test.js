@@ -707,6 +707,22 @@ describe('reducers', () => {
       expect(reducers.url(undefined, {})).to.deep.equal({});
     });
 
+    it('should handle SET_BLIP_VIEW_DATA_URL', () => {
+      const VIEW_DATA_LINK = 'http://www.acme.com/patients/a1b2c3/data';
+      const actionPayload = {url: VIEW_DATA_LINK};
+      expect(reducers.url(undefined, {
+        type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+        payload: actionPayload
+      }).viewDataLink).to.equal(VIEW_DATA_LINK);
+      // test to be sure not *mutating* state object but rather returning new!
+      let initialState = {};
+      let finalState = reducers.url(initialState, {
+        type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+        payload: actionPayload
+      });
+      expect(initialState === finalState).to.be.false;
+    });
+
     it('should handle SET_FORGOT_PASSWORD_URL', () => {
       const FORGOT_PWD = 'http://www.acme.com/forgot-password';
       const actionPayload = {url: FORGOT_PWD};

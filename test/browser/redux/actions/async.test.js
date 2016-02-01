@@ -1691,16 +1691,27 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('setUploadTargetUserAndMaybeRedirect', () => {
+    const userId = 'abc123', url = 'http://acme-blip.com/patients/abc123/data';
+    const apiRewire = {
+      api: {
+        makeBlipUrl: (path) => { return 'http://acme-blip.com' + path; }
+      }
+    };
     describe('new target user has selected devices and timezone', () => {
-      it('should dispatch just SET_UPLOAD_TARGET_USER', (done) => {
-        const userId = 'abc123';
+      it('should dispatch just SET_UPLOAD_TARGET_USER and SET_BLIP_VIEW_DATA_URL', (done) => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
             payload: { userId },
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           }
         ];
+        asyncActions.__Rewire__('services', apiRewire);
         const store = mockStore({
           users: {
             abc123: {
@@ -1716,8 +1727,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('new target user has not selected devices', () => {
-      it('should dispatch just SET_UPLOAD_TARGET_USER, SET_PAGE (redirect to settings)', (done) => {
-        const userId = 'abc123';
+      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', (done) => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -1725,11 +1735,17 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
           },
           {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
+        asyncActions.__Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
             carelink: {},
@@ -1749,8 +1765,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('new target user has not selected timezone', () => {
-      it('should dispatch just SET_UPLOAD_TARGET_USER, SET_PAGE (redirect to settings)', (done) => {
-        const userId = 'abc123';
+      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', (done) => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -1758,11 +1773,17 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
           },
           {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
+        asyncActions.__Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
             carelink: {},

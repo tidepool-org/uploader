@@ -47,6 +47,26 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('clickGoToBlip', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.clickGoToBlip();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to report a user\'s clicking of the \'Go to Blip\' button', () => {
+      const expectedAction = {
+        type: actionTypes.CLICK_GO_TO_BLIP,
+        meta: {
+          source: actionSources[actionTypes.CLICK_GO_TO_BLIP],
+          metric: {eventName: metrics.CLICK_GO_TO_BLIP}
+        }
+      };
+
+      expect(syncActions.clickGoToBlip()).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('hideUnavailableDevices', () => {
     const OS = 'test';
     it('should be an FSA', () => {
@@ -98,6 +118,25 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.RESET_UPLOAD]}
       };
       expect(syncActions.resetUpload(userId, deviceKey)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('setBlipViewDataUrl', () => {
+    const url = 'http://acme-blip.com/patients/a1b2c3/data';
+    it('should be an FSA', () => {
+      let action = syncActions.setBlipViewDataUrl(url);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action set the url for viewing data in blip (wrt current uploadTargetUser)', () => {
+      const expectedAction = {
+        type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+        payload: { url },
+        meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+      };
+
+      expect(syncActions.setBlipViewDataUrl(url)).to.deep.equal(expectedAction);
     });
   });
 
