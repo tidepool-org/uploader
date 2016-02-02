@@ -1,0 +1,36 @@
+.VersionCheck {
+  position: absolute;
+  top: 0; left: 0;
+
+  width: 100%;
+  height: @app-height;
+
+  background-color: rgba(255, 255, 255, 0.925);
+  // background: radial-gradient(
+  //   ellipse at center,
+  //   rgba(255, 255, 255, 0.975) 0%, rgba(255, 255, 255, 0.925) 50%, rgba(255, 255, 255, 0.50) 100%
+  // );
+
+  .VersionCheck-text {
+    min-height: 600px;
+    justify-content: center;
+
+    a {
+      .blue-link;
+    }
+
+    p {
+      font-size: 1.2em;
+      text-align: center;
+      // our box-flex mixin wreaked havoc here and was making spans display flex
+      // (effectively block)
+      // TODO: fix that at the source
+      span {
+        display: inline;
+      }
+      &.most-important {
+        font-weight: bold;
+      }
+    }
+  }
+}
