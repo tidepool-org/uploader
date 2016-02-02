@@ -1420,6 +1420,8 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('retrieveTargetsFromStorage', () => {
+    const url = 'http://acme-blip.com/patients/abc123/data';
+    const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
     describe('no targets retrieved from local storage', () => {
       it('should dispatch SET_PAGE (redirect to settings page)', (done) => {
         const expectedActions = [
@@ -1535,12 +1537,20 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
           localStore: {
             getItem: () => targets
           }
@@ -1598,12 +1608,20 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
           localStore: {
             getItem: () => targets
           }
@@ -1660,12 +1678,20 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
           localStore: {
             getItem: () => targets
           }
