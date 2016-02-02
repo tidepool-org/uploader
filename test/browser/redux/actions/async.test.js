@@ -26,7 +26,7 @@ import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
 import { pages, steps, urls } from '../../../../lib/redux/constants/otherConstants';
-import { errorText } from '../../../../lib/redux/utils/errors';
+import { errorText, UnsupportedError } from '../../../../lib/redux/utils/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
 import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
@@ -1327,6 +1327,127 @@ describe('Asynchronous Actions', () => {
         };
         const store = mockStore(state, expectedActions, done);
         store.dispatch(asyncActions.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
+      });
+    });
+  });
+
+  describe('doVersionCheck', () => {
+    describe('API error when attempting to get versions info from jellyfish', () => {
+      it('should dispatch VERSION_CHECK_REQUEST and VERSION_CHECK_FAILURE', (done) => {
+        const err = new Error('API error!');
+        const expectedActions = [
+          {
+            type: actionTypes.VERSION_CHECK_REQUEST,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+          },
+          {
+            type: actionTypes.VERSION_CHECK_FAILURE,
+            error: true,
+            payload: err,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            upload: {
+              getVersions: (cb) => { cb(err); }
+            }
+          }
+        });
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.doVersionCheck());
+      });
+    });
+
+    describe('missing or invalid semver in response from jellyfish', () => {
+      it('should dispatch VERSION_CHECK_REQUEST and VERSION_CHECK_FAILURE', (done) => {
+        const err = new Error('Invalid semver [foo.bar]');
+        const expectedActions = [
+          {
+            type: actionTypes.VERSION_CHECK_REQUEST,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+          },
+          {
+            type: actionTypes.VERSION_CHECK_FAILURE,
+            error: true,
+            payload: err,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            upload: {
+              getVersions: (cb) => { cb(err); }
+            }
+          }
+        });
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.doVersionCheck());
+      });
+    });
+
+    describe('uploader\'s version is below the required minimum', () => {
+      it('should dispatch VERSION_CHECK_REQUEST and VERSION_CHECK_FAILURE', (done) => {
+        const currentVersion = '0.99.0', requiredVersion = '0.100.0';
+        const err = new UnsupportedError(currentVersion, requiredVersion);
+        const expectedActions = [
+          {
+            type: actionTypes.VERSION_CHECK_REQUEST,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+          },
+          {
+            type: actionTypes.VERSION_CHECK_FAILURE,
+            error: true,
+            payload: err,
+            meta: {
+              source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+              metric: {
+                eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
+                properties: { currentVersion, requiredVersion }
+              }
+            }
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            upload: {
+              getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
+            }
+          }
+        });
+        const state = {
+          version: currentVersion
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.doVersionCheck());
+      });
+    });
+
+    describe('uploader\'s version meets the minimum', () => {
+      it('should dispatch VERSION_CHECK_REQUEST and VERSION_CHECK_SUCCESS', (done) => {
+        const currentVersion = '0.100.0', requiredVersion = '0.100.0';
+        const expectedActions = [
+          {
+            type: actionTypes.VERSION_CHECK_REQUEST,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+          },
+          {
+            type: actionTypes.VERSION_CHECK_SUCCESS,
+            meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            upload: {
+              getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
+            }
+          }
+        });
+        const state = {
+          version: currentVersion
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.doVersionCheck());
       });
     });
   });

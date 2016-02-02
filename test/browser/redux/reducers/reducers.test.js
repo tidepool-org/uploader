@@ -25,6 +25,8 @@ import * as reducers from '../../../../lib/redux/reducers/reducers';
 
 import devices from '../../../../lib/redux/reducers/devices';
 
+import { UnsupportedError } from '../../../../lib/redux/utils/errors';
+
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
 
@@ -131,6 +133,37 @@ describe('reducers', () => {
         type: actionTypes.SET_PAGE,
         payload: {page: 'main'}
       })).to.equal('main');
+    });
+  });
+
+  describe('unsupported', () => {
+    it('should return the initial state', () => {
+      expect(reducers.unsupported(undefined, {})).to.be.true;
+    });
+
+    it('should handle VERSION_CHECK_FAILURE [API error]', () => {
+      const err = new Error('API error!');
+      expect(reducers.unsupported(undefined, {
+        type: actionTypes.VERSION_CHECK_FAILURE,
+        error: true,
+        payload: err
+      })).to.deep.equal(err);
+    });
+
+    it('should handle VERSION_CHECK_FAILURE [uploader version doesn\'t meet minimum]', () => {
+      const currentVersion = '0.99.0', requiredVersion = '0.100.0';
+      const err = new UnsupportedError(currentVersion, requiredVersion);
+      expect(reducers.unsupported(undefined, {
+        type: actionTypes.VERSION_CHECK_FAILURE,
+        error: true,
+        payload: err
+      })).to.be.true;
+    });
+
+    it('should handle VERSION_CHECK_SUCCESS', () => {
+      expect(reducers.unsupported(undefined, {
+        type: actionTypes.VERSION_CHECK_SUCCESS
+      })).to.be.false;
     });
   });
 

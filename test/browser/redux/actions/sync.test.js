@@ -26,7 +26,7 @@ import * as metrics from '../../../../lib/redux/constants/metrics';
 import { steps } from '../../../../lib/redux/constants/otherConstants';
 
 import * as syncActions from '../../../../lib/redux/actions/sync';
-import { errorText } from '../../../../lib/redux/utils/errors';
+import { errorText, UnsupportedError } from '../../../../lib/redux/utils/errors';
 
 describe('Synchronous Actions', () => {
   describe('addTargetDevice', () => {
@@ -882,6 +882,86 @@ describe('Synchronous Actions', () => {
         };
 
         expect(syncActions.readFileFailure(err)).to.deep.equal(expectedAction);
+      });
+    });
+  });
+
+  describe('for doVersionCheck', () => {
+    describe('versionCheckRequest', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.versionCheckRequest();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record the start of the uploader supported version check', () => {
+        const expectedAction = {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        };
+
+        expect(syncActions.versionCheckRequest()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('versionCheckSuccess', () => {
+      it('should be an FSA', () => {
+        let action = syncActions.versionCheckSuccess();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to mark the current uploader\'s version as supported', () => {
+        const expectedAction = {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        };
+
+        expect(syncActions.versionCheckSuccess()).to.deep.equal(expectedAction);
+      });
+    });
+
+    describe('versionCheckFailure', () => {
+      const currentVersion = '0.99.0', requiredVersion = '0.100.0';
+      it('should be an FSA [API response err]', () => {
+        let action = syncActions.versionCheckFailure(new Error('API error!'));
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should be an FSA [out-of-date version]', () => {
+        let action = syncActions.versionCheckFailure(null, currentVersion, requiredVersion);
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record an unsuccessful attempt to check the uploader\'s version', () => {
+        const err = new Error('API error');
+        const expectedAction = {
+          type: actionTypes.VERSION_CHECK_FAILURE,
+          error: true,
+          payload: err,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+        };
+
+        expect(syncActions.versionCheckFailure(err)).to.deep.equal(expectedAction);
+      });
+
+      it('should create an action to mark the current uploader\'s version as unsupported', () => {
+        const expectedAction = {
+          type: actionTypes.VERSION_CHECK_FAILURE,
+          error: true,
+          payload: new UnsupportedError(currentVersion, requiredVersion),
+          meta: {
+            source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+            metric: {
+              eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
+              properties: { currentVersion, requiredVersion }
+            }
+          }
+        };
+
+        expect(syncActions.versionCheckFailure(null, currentVersion, requiredVersion)).to.deep.equal(expectedAction);
       });
     });
   });
