@@ -570,6 +570,18 @@ describe('Synchronous Actions', () => {
 
         expect(isFSA(action)).to.be.true;
       });
+
+      it('should create an action to record a successful fetch from CareLink', () => {
+        const expectedAction = {
+          type: actionTypes.CARELINK_FETCH_SUCCESS,
+          meta: {
+            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
+            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
+          }
+        };
+
+        expect(syncActions.fetchCareLinkSuccess()).to.deep.equal(expectedAction);
+      });
     });
 
     describe('fetchCareLinkFailure', () => {
@@ -692,6 +704,27 @@ describe('Synchronous Actions', () => {
         let action = syncActions.uploadSuccess(userId, device, upload, data);
 
         expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to record a successful upload', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_SUCCESS,
+          payload: { userId, deviceKey: device.key, data, utc: time},
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_SUCCESS],
+            metric: {
+              eventName: `${metrics.UPLOAD_SUCCESS} ${device.source.driverId}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                started: time,
+                finished: time,
+                processed: data.length
+              }
+            }
+          }
+        };
+        expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
       });
     });
 
