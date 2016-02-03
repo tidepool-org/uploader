@@ -735,21 +735,21 @@ describe('reducers', () => {
     });
   });
 
-  describe('url', () => {
+  describe('blipUrls', () => {
     it('should return the initial state', () => {
-      expect(reducers.url(undefined, {})).to.deep.equal({});
+      expect(reducers.blipUrls(undefined, {})).to.deep.equal({});
     });
 
     it('should handle SET_BLIP_VIEW_DATA_URL', () => {
       const VIEW_DATA_LINK = 'http://www.acme.com/patients/a1b2c3/data';
       const actionPayload = {url: VIEW_DATA_LINK};
-      expect(reducers.url(undefined, {
+      expect(reducers.blipUrls(undefined, {
         type: actionTypes.SET_BLIP_VIEW_DATA_URL,
         payload: actionPayload
       }).viewDataLink).to.equal(VIEW_DATA_LINK);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
-      let finalState = reducers.url(initialState, {
+      let finalState = reducers.blipUrls(initialState, {
         type: actionTypes.SET_BLIP_VIEW_DATA_URL,
         payload: actionPayload
       });
@@ -759,13 +759,13 @@ describe('reducers', () => {
     it('should handle SET_FORGOT_PASSWORD_URL', () => {
       const FORGOT_PWD = 'http://www.acme.com/forgot-password';
       const actionPayload = {url: FORGOT_PWD};
-      expect(reducers.url(undefined, {
+      expect(reducers.blipUrls(undefined, {
         type: actionTypes.SET_FORGOT_PASSWORD_URL,
         payload: actionPayload
       }).forgotPassword).to.equal(FORGOT_PWD);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
-      let finalState = reducers.url(initialState, {
+      let finalState = reducers.blipUrls(initialState, {
         type: actionTypes.SET_FORGOT_PASSWORD_URL,
         payload: actionPayload
       });
@@ -775,13 +775,13 @@ describe('reducers', () => {
     it('should handle SET_SIGNUP_URL', () => {
       const SIGN_UP = 'http://www.acme.com/sign-up';
       const actionPayload = {url: SIGN_UP};
-      expect(reducers.url(undefined, {
+      expect(reducers.blipUrls(undefined, {
         type: actionTypes.SET_SIGNUP_URL,
         payload: actionPayload
       }).signUp).to.equal(SIGN_UP);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
-      let finalState = reducers.url(initialState, {
+      let finalState = reducers.blipUrls(initialState, {
         type: actionTypes.SET_SIGNUP_URL,
         payload: actionPayload
       });
