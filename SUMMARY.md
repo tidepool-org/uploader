@@ -18,7 +18,7 @@
    * [Abbott Precision Xtra](lib/drivers/docs/abbottPrecisionXtra.md)
    * [Animas Ping and Vibe Insulin Pumps](lib/drivers/docs/animasPingAndVibe.md)
    * [Bayer Contour Next](lib/drivers/docs/bayerContourNext.md)
-   * [Dexcom CGM](lib/drivers/docs/dexcomG4.md)
+   * [Dexcom CGM](lib/drivers/docs/dexcom.md)
    * [CareLink (CGM data)](lib/drivers/docs/carelinkCGM.md)
    * [CareLink (insulin pump data)](lib/drivers/docs/carelinkPumpData.md)
    * [Insulet OmniPod](lib/drivers/docs/insuletOmniPod.md)

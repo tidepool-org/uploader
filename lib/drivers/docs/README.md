@@ -6,6 +6,6 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [Bayer Contour Next (BGM)](bayerContourNext.md)
    * [CareLink (CGM data)](carelinkCGM.md)
    * [CareLink (insulin pump data)](carelinkPumpData.md)
-   * [Dexcom G4 CGM](dexcomG4.md)
+   * [Dexcom CGM](dexcom.md)
    * [Insulet OmniPod Insulin Delivery System](insuletOmniPod.md)
    * [Tandem Insulin Pumps](tandem.md)
