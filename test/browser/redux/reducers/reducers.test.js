@@ -1380,4 +1380,58 @@ describe('reducers', () => {
       })).to.deep.equal('0.100.0');
     });
   });
+
+  describe('working', () => {
+    it('should return the initial state', () => {
+      expect(reducers.working(undefined, {})).to.deep.equal({
+        checkingVersion: false,
+        initializingApp: true
+      });
+    });
+
+    it('should handle INIT_APP_FAILURE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.INIT_APP_FAILURE
+      })).to.deep.equal({
+        checkingVersion: false,
+        initializingApp: false
+      });
+    });
+
+    it('should handle INIT_APP_SUCCESS', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.INIT_APP_SUCCESS
+      })).to.deep.equal({
+        checkingVersion: false,
+        initializingApp: false
+      });
+    });
+
+    it('should handle VERSION_CHECK_FAILURE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.VERSION_CHECK_FAILURE
+      })).to.deep.equal({
+        checkingVersion: false,
+        initializingApp: true
+      });
+    });
+
+    it('should handle VERSION_CHECK_REQUEST', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.VERSION_CHECK_REQUEST
+      })).to.deep.equal({
+        checkingVersion: true,
+        initializingApp: true
+      });
+    });
+
+    it('should handle VERSION_CHECK_SUCCESS', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.VERSION_CHECK_SUCCESS
+      })).to.deep.equal({
+        checkingVersion: false,
+        initializingApp: true
+      });
+    });
+  });
 });

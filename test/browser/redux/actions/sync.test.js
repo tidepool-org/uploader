@@ -956,7 +956,7 @@ describe('Synchronous Actions', () => {
             source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
             metric: {
               eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
-              properties: { currentVersion, requiredVersion }
+              properties: { requiredVersion }
             }
           }
         };

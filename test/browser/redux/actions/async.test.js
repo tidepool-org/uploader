@@ -55,7 +55,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doAppInit [no session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS actions', (done) => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS actions', (done) => {
       const config = {
         version: '0.100.0',
         API_URL: 'http://www.acme.com'
@@ -66,7 +66,10 @@ describe('Asynchronous Actions', () => {
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
           },
-          setHosts: _.noop
+          setHosts: _.noop,
+          upload: {
+            getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
+          }
         },
         carelink: {
           init: (opts, cb) => { cb(); }
@@ -83,7 +86,7 @@ describe('Asynchronous Actions', () => {
       const expectedActions = [
         {
           type: actionTypes.SET_VERSION,
-          payload: {version: '0.100.0'},
+          payload: {version: config.version},
           meta: {source: actionSources[actionTypes.SET_VERSION]}
         },
         {
@@ -118,15 +121,23 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_SUCCESS,
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
         }
       ];
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({version: config.version}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
 
   describe('doAppInit [with session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, SET_USER_INFO_FROM_TOKEN actions', (done) => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, RETRIEVING_USERS_TARGETS, SET_PAGE actions', (done) => {
       const config = {
         version: '0.100.0',
         API_URL: 'http://www.acme.com'
@@ -138,6 +149,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           setHosts: _.noop,
+          upload: {
+            getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
+          },
           user: {
             account: (cb) => { cb(null, pwd.user); },
             profile: (cb) => { cb(null, pwd.profile); },
@@ -152,14 +166,15 @@ describe('Asynchronous Actions', () => {
         },
         localStore: {
           init: (opts, cb) => { cb(); },
-          getInitialState: _.noop
+          getInitialState: _.noop,
+          getItem: () => null
         },
         log: _.noop
       };
       const expectedActions = [
         {
           type: actionTypes.SET_VERSION,
-          payload: {version: '0.100.0'},
+          payload: {version: config.version},
           meta: {source: actionSources[actionTypes.SET_VERSION]}
         },
         {
@@ -191,12 +206,29 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
         },
         {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
           payload: {user: pwd.user, profile: pwd.profile, memberships: pwd.memberships},
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
+        },
+        {
+          type: actionTypes.RETRIEVING_USERS_TARGETS,
+          meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.SETTINGS},
+          meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({version: config.version}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
@@ -1403,7 +1435,7 @@ describe('Asynchronous Actions', () => {
               source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
               metric: {
                 eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
-                properties: { currentVersion, requiredVersion }
+                properties: { requiredVersion }
               }
             }
           }
