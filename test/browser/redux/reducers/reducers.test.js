@@ -791,7 +791,7 @@ describe('reducers', () => {
 
   describe('users', () => {
     it('should return the initial state', () => {
-      expect(reducers.users(undefined, {})).to.deep.equal({isFetching: false});
+      expect(reducers.users(undefined, {})).to.deep.equal({});
     });
 
     describe('adding a target device for a user', () => {
@@ -801,7 +801,6 @@ describe('reducers', () => {
           userId: USER, deviceKey: DEVICE
         };
         let resultState = {
-          isFetching: false,
           [USER]: {targets: {devices: [DEVICE]}}
         };
         expect(reducers.users(undefined, {
@@ -882,7 +881,6 @@ describe('reducers', () => {
           error: true,
           payload: new Error(errMsg)
         })).to.deep.equal({
-          isFetching: false,
           errorMessage: errMsg
         });
         // test to be sure not *mutating* state object but rather returning new!
@@ -898,18 +896,18 @@ describe('reducers', () => {
       it('should handle LOGIN_REQUEST', () => {
         expect(reducers.users(undefined, {
           type: actionTypes.LOGIN_REQUEST
-        })).to.deep.equal({isFetching: true});
+        })).to.deep.equal({});
         // test to be sure not *mutating* state object but rather returning new!
-        let initialState = {isFetching: false};
+        let initialState = {errorMessage: 'Login error!'};
         let finalState = reducers.users(initialState, {
           type: actionTypes.LOGIN_REQUEST
         });
+        expect(finalState).to.deep.equal({});
         expect(initialState === finalState).to.be.false;
       });
 
       it('should handle LOGIN_SUCCESS [no error, logged-in PWD]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: pwd.user.userid,
           [pwd.user.userid]: _.assign({}, _.omit(pwd.user, 'userid'), pwd.profile),
           targetsForUpload: [pwd.user.userid],
@@ -939,7 +937,6 @@ describe('reducers', () => {
 
       it('should handle LOGIN_SUCCESS [no error, logged-in non-PWD, can upload to one]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: nonpwd.user.userid,
           [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
           targetsForUpload: [],
@@ -969,7 +966,6 @@ describe('reducers', () => {
 
       it('should handle LOGIN_SUCCESS [no error, logged-in non-PWD, can upload to > 1]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: nonpwd.user.userid,
           [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
           targetsForUpload: [],
@@ -1002,7 +998,6 @@ describe('reducers', () => {
       it('should handle LOGOUT_REQUEST by restoring to initial state', () => {
         let blankSlate = reducers.users(undefined, {type: 'foo'});
         let initialState = {
-          isFetching: false,
           a1b2c3: {
             fullName: 'Jane Doe',
             targets: {devices: ['a_pump', 'a_cgm']}
@@ -1023,9 +1018,7 @@ describe('reducers', () => {
         const actionPayload = {
           userId: USER, deviceKey: DEVICE
         };
-        let resultState = {
-          isFetching: false
-        };
+        let resultState = {};
         expect(reducers.users(undefined, {
           type: actionTypes.REMOVE_TARGET_DEVICE,
           payload: actionPayload
@@ -1045,14 +1038,12 @@ describe('reducers', () => {
           userId: USER, deviceKey: DEVICE
         };
         let initialState = {
-          isFetching: false,
           [USER]: {
             fullName: 'Jane Doe',
             targets: {devices: [DEVICE, 'a_pump', 'a_cgm']}
           }
         };
         let resultState = {
-          isFetching: false,
           [USER]: {
             fullName: 'Jane Doe',
             targets: {devices: ['a_pump', 'a_cgm']}
@@ -1078,7 +1069,6 @@ describe('reducers', () => {
           userId: USER, timezoneName: TIMEZONE
         };
         let resultState = {
-          isFetching: false,
           [USER]: {targets: {timezone: TIMEZONE}}
         };
         expect(reducers.users(undefined, {
@@ -1100,14 +1090,12 @@ describe('reducers', () => {
           userId: USER, timezoneName: TIMEZONE
         };
         let initialState = {
-          isFetching: false,
           [USER]: {
             fullName: 'Jane Doe',
             targets: {devices: ['a_pump', 'a_cgm'], timezone: 'US/Mountain'}
           }
         };
         let resultState = {
-          isFetching: false,
           [USER]: {
             fullName: 'Jane Doe',
             targets: {devices: ['a_pump', 'a_cgm'], timezone: 'Pacific/Honolulu'}
@@ -1136,7 +1124,6 @@ describe('reducers', () => {
           userId: USER
         };
         let resultState = {
-          isFetching: false,
           uploadTargetUser: USER
         };
         expect(reducers.users(undefined, {
@@ -1158,11 +1145,9 @@ describe('reducers', () => {
           userId: USER
         };
         let initialState = {
-          isFetching: false,
           uploadTargetUser: 'd4e5f6'
         };
         let resultState = {
-          isFetching: false,
           uploadTargetUser: USER
         };
         let finalState = reducers.users(initialState, {
@@ -1178,7 +1163,6 @@ describe('reducers', () => {
     describe('"logging in" via stored token, getting & setting user info', () => {
       it('should handle SET_USER_INFO_FROM_TOKEN [no error, logged-in PWD]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: pwd.user.userid,
           [pwd.user.userid]: _.assign({}, _.omit(pwd.user, 'userid'), pwd.profile),
           targetsForUpload: [pwd.user.userid],
@@ -1208,7 +1192,6 @@ describe('reducers', () => {
 
       it('should handle SET_USER_INFO_FROM_TOKEN [no error, logged-in non-PWD, can upload to one]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: nonpwd.user.userid,
           [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
           targetsForUpload: [],
@@ -1238,7 +1221,6 @@ describe('reducers', () => {
 
       it('should handle SET_USER_INFO_FROM_TOKEN [no error, logged-in non-PWD, can upload to > 1]', () => {
         let resultState = {
-          isFetching: false,
           loggedInUser: nonpwd.user.userid,
           [nonpwd.user.userid]: _.assign({}, _.omit(nonpwd.user, 'userid'), nonpwd.profile),
           targetsForUpload: [],
@@ -1276,7 +1258,6 @@ describe('reducers', () => {
           targets: TARGETS
         };
         const initialState = {
-          isFetching: false,
           loggedInUser: 'a1b2c3'
         };
         let resultState = _.cloneDeep(initialState);
@@ -1301,7 +1282,6 @@ describe('reducers', () => {
           targets: TARGETS
         };
         const initialState = {
-          isFetching: false,
           loggedInUser: 'a1b2c3',
           a1b2c3: {
             fullName: 'Jane Doe'
@@ -1311,7 +1291,6 @@ describe('reducers', () => {
           }
         };
         let resultState = {
-          isFetching: false,
           loggedInUser: 'a1b2c3',
           a1b2c3: {
             fullName: 'Jane Doe',
@@ -1385,6 +1364,7 @@ describe('reducers', () => {
     it('should return the initial state', () => {
       expect(reducers.working(undefined, {})).to.deep.equal({
         checkingVersion: false,
+        fetchingUserInfo: false,
         initializingApp: true
       });
     });
@@ -1394,7 +1374,18 @@ describe('reducers', () => {
         type: actionTypes.INIT_APP_FAILURE
       })).to.deep.equal({
         checkingVersion: false,
+        fetchingUserInfo: false,
         initializingApp: false
+      });
+    });
+
+    it('should handle INIT_APP_REQUEST', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.INIT_APP_REQUEST
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true
       });
     });
 
@@ -1403,7 +1394,38 @@ describe('reducers', () => {
         type: actionTypes.INIT_APP_SUCCESS
       })).to.deep.equal({
         checkingVersion: false,
+        fetchingUserInfo: false,
         initializingApp: false
+      });
+    });
+
+    it('should handle LOGIN_FAILURE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.LOGIN_FAILURE
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true
+      });
+    });
+
+    it('should handle LOGIN_REQUEST', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.LOGIN_REQUEST
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: true,
+        initializingApp: true
+      });
+    });
+
+    it('should handle LOGIN_SUCCESS', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.LOGIN_SUCCESS
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true
       });
     });
 
@@ -1412,6 +1434,7 @@ describe('reducers', () => {
         type: actionTypes.VERSION_CHECK_FAILURE
       })).to.deep.equal({
         checkingVersion: false,
+        fetchingUserInfo: false,
         initializingApp: true
       });
     });
@@ -1421,6 +1444,7 @@ describe('reducers', () => {
         type: actionTypes.VERSION_CHECK_REQUEST
       })).to.deep.equal({
         checkingVersion: true,
+        fetchingUserInfo: false,
         initializingApp: true
       });
     });
@@ -1430,6 +1454,7 @@ describe('reducers', () => {
         type: actionTypes.VERSION_CHECK_SUCCESS
       })).to.deep.equal({
         checkingVersion: false,
+        fetchingUserInfo: false,
         initializingApp: true
       });
     });
