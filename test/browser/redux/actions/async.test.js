@@ -137,7 +137,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doAppInit [with session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, RETRIEVING_USERS_TARGETS, SET_PAGE actions', (done) => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE actions', (done) => {
       const config = {
         version: '0.100.0',
         API_URL: 'http://www.acme.com'
@@ -219,6 +219,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
+          type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+          payload: {url: `http://www.acme.com/patients/${pwd.user.userid}/data`},
+          meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+        },
+        {
           type: actionTypes.RETRIEVING_USERS_TARGETS,
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         },
@@ -228,7 +233,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
-      const store = mockStore({version: config.version}, expectedActions, done);
+      const state = {
+        users: {uploadTargetUser: pwd.user.userid},
+        version: config.version
+      };
+      const store = mockStore(state, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
@@ -1657,7 +1666,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for timezone selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for timezone selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -1688,11 +1697,6 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_USERS_TARGETS,
             payload: { targets },
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
-            payload: { url },
-            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1728,7 +1732,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload has no supported devices', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for device selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for device selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -1759,11 +1763,6 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_USERS_TARGETS,
             payload: { targets },
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
-            payload: { url },
-            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1798,7 +1797,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is all set to upload', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to main page)', (done) => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -1829,11 +1828,6 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_USERS_TARGETS,
             payload: { targets },
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
-            payload: { url },
-            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           },
           {
             type: actionTypes.SET_PAGE,
