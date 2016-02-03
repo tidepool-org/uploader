@@ -1,3 +1,8 @@
+.purple-centered {
+  color: @purple-dark;
+  text-align: center;
+}
+
 .VersionCheck {
   position: absolute;
   top: 0; left: 0;
@@ -20,23 +25,32 @@
     }
 
     p {
-      font-size: 1.2em;
-      text-align: center;
+      .purple-centered();
+      font-size: @font-size-large;
+      font-weight: bold;
       // our box-flex mixin wreaked havoc here and was making spans display flex
       // (effectively block)
       // TODO: fix that at the source
       span {
         display: inline;
       }
-      &.most-important {
-        font-weight: bold;
-      }
+      // &.most-important {
+      //   font-weight: bold;
+      // }
     }
   }
+}
 
-  .VersionCheck-error {
-    margin: 40px auto 0;
-    width: 400px;
-    min-height: 80px;
+.VersionCheck-error {
+  position: absolute;
+  top: 600px; left: 0px;
+
+  width: 100%;
+  min-height: 80px;
+
+  p {
+    .purple-centered();
+    font-size: @font-size-small;
+    margin: 0;
   }
 }
