@@ -234,7 +234,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const state = {
-        users: {uploadTargetUser: pwd.user.userid},
+        uploadTargetUser: pwd.user.userid,
         version: config.version
       };
       const store = mockStore(state, expectedActions, done);
@@ -476,21 +476,21 @@ describe('Asynchronous Actions', () => {
         },
         os: 'mac',
         uploads: {
-          uploadInProgress: false,
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
           [userId]: {
             a_cgm: {},
-            a_pump: {}
+            a_pump: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'a_pump'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -570,21 +570,21 @@ describe('Asynchronous Actions', () => {
         },
         os: 'mac',
         uploads: {
-          uploadInProgress: false,
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
           [userId]: {
             a_cgm: {},
-            a_pump: {}
+            a_pump: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'a_pump'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -663,21 +663,21 @@ describe('Asynchronous Actions', () => {
         },
         os: 'mac',
         uploads: {
-          uploadInProgress: false,
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
           [userId]: {
             a_cgm: {},
-            a_pump: {}
+            a_pump: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'a_pump'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -756,21 +756,21 @@ describe('Asynchronous Actions', () => {
         },
         os: 'mac',
         uploads: {
-          uploadInProgress: uploadInProgress,
+          uploadInProgress: {
+            pathToUpload: [userId, deviceKey]
+          },
           [userId]: {
             a_cgm: {},
-            a_pump: {}
+            a_pump: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'a_pump'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -861,15 +861,13 @@ describe('Asynchronous Actions', () => {
             a_pump: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'a_pump'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       asyncActions.__Rewire__('services', {
@@ -948,15 +946,13 @@ describe('Asynchronous Actions', () => {
             carelink: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'carelink'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'carelink']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -1056,15 +1052,13 @@ describe('Asynchronous Actions', () => {
             carelink: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'carelink'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'carelink']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -1163,15 +1157,13 @@ describe('Asynchronous Actions', () => {
             carelink: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'carelink'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'carelink']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       const errProps = {
@@ -1274,15 +1266,13 @@ describe('Asynchronous Actions', () => {
             carelink: {history: [{start: time}]}
           }
         },
-        users: {
-          uploadTargetUser: userId,
-          [userId]: {
-            targets: {
-              devices: ['a_cgm', 'carelink'],
-              timezone: 'US/Mountain'
-            }
-          }
+        targetDevices: {
+          [userId]: ['a_cgm', 'carelink']
         },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetUser: userId,
         version: '0.100.0'
       };
       asyncActions.__Rewire__('services', {
@@ -1493,7 +1483,7 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('putUsersTargetsInStorage', () => {
+  describe('putTargetsInStorage', () => {
     describe('no targets in local storage', () => {
       it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
@@ -1518,15 +1508,13 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
-          users: {
-            abc123: {
-              targets: {
-                devices: ['a_pump', 'a_bg_meter'],
-                timezone: 'Europe/Budapest'
-              }
-            },
-            uploadTargetUser: 'abc123'
-          }
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
         store.dispatch(asyncActions.putTargetsInStorage());
@@ -1565,15 +1553,13 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
-          users: {
-            abc123: {
-              targets: {
-                devices: ['a_pump', 'a_bg_meter'],
-                timezone: 'Europe/Budapest'
-              }
-            },
-            uploadTargetUser: 'abc123'
-          }
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
         store.dispatch(asyncActions.putTargetsInStorage());
@@ -1652,14 +1638,14 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({
-          users: {
-            loggedInUser: 'ghi789',
+          allUsers: {
             ghi789: {},
             abc123: {},
             def456: {},
-            targetsForUpload: ['abc123', 'def456'],
-            uploadTargetUser: null
-          }
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: null
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
@@ -1713,19 +1699,19 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
           devices: {
             carelink: {},
             dexcom: {},
             omnipod: {}
           },
-          users: {
-            loggedInUser: 'ghi789',
-            ghi789: {},
-            abc123: {},
-            def456: {},
-            targetsForUpload: ['abc123', 'def456'],
-            uploadTargetUser: 'abc123'
-          }
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123'
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
@@ -1779,18 +1765,18 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
           devices: {
             dexcom: {},
             omnipod: {}
           },
-          users: {
-            loggedInUser: 'ghi789',
-            ghi789: {},
-            abc123: {},
-            def456: {},
-            targetsForUpload: ['abc123', 'def456'],
-            uploadTargetUser: 'abc123'
-          }
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123'
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
@@ -1844,19 +1830,18 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
           devices: {
             carelink: {},
             dexcom: {},
             omnipod: {}
           },
-          users: {
-            loggedInUser: 'ghi789',
-            ghi789: {},
-            abc123: {},
-            def456: {},
-            targetsForUpload: ['abc123', 'def456'],
-            uploadTargetUser: 'abc123'
-          }
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123'
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
