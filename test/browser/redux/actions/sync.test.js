@@ -385,8 +385,9 @@ describe('Synchronous Actions', () => {
     });
 
     describe('initFailure', () => {
+      const err = new Error();
       it('should be an FSA', () => {
-        let action = syncActions.initFailure();
+        let action = syncActions.initFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -398,7 +399,7 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-        expect(syncActions.initFailure()).to.deep.equal(expectedAction);
+        expect(syncActions.initFailure(err)).to.deep.equal(expectedAction);
       });
     });
 

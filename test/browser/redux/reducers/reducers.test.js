@@ -141,6 +141,15 @@ describe('reducers', () => {
       expect(reducers.unsupported(undefined, {})).to.be.true;
     });
 
+    it('should handle INIT_APP_FAILURE', () => {
+      const err = new Error('Offline!');
+      expect(reducers.unsupported(undefined, {
+        type: actionTypes.INIT_APP_FAILURE,
+        error: true,
+        payload: err
+      })).to.deep.equal(err);
+    });
+
     it('should handle VERSION_CHECK_FAILURE [API error]', () => {
       const err = new Error('API error!');
       expect(reducers.unsupported(undefined, {
