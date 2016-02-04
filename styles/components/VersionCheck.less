@@ -4,20 +4,29 @@
 }
 
 .VersionCheck {
+  .mostly-opaque-background {
+    background-color: rgba(255, 255, 255, 0.925);
+  }
+  &.VersionCheck--failed {
+    background: url(/images/unhappy_meter.png) center center / 69px 166px no-repeat;
+    .mostly-opaque-background();
+  }
+  &.VersionCheck--outdated {
+    background: url(/images/happy_device.png);
+    background-position: 50% 60%;
+    background-size: 156px 213px;
+    background-repeat: no-repeat;
+    .mostly-opaque-background();
+  }
+
   position: absolute;
   top: 0; left: 0;
 
   width: 100%;
   height: @app-height;
 
-  background-color: rgba(255, 255, 255, 0.925);
-  // background: radial-gradient(
-  //   ellipse at center,
-  //   rgba(255, 255, 255, 0.975) 0%, rgba(255, 255, 255, 0.925) 50%, rgba(255, 255, 255, 0.50) 100%
-  // );
-
   .VersionCheck-text {
-    min-height: 600px;
+    min-height: 425px;
     justify-content: center;
 
     a {
