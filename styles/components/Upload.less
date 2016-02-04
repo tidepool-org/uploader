@@ -134,18 +134,22 @@ input[type=file] {
   height: 0;
   position: absolute;
 }
-// replace with a button consistent with rest of app
 .Upload-fileinput::before {
   visibility: visible;
   content: 'Choose file';
   .btn;
   .btn-primary;
+}
 
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    background-color: fade(@purple-dark, 30%);
-  }
+// this is some shame.css right here
+// this style is part of the btn-primary mixin
+// but neither the selector nor the transparency work with the file input
+.Upload-fileinput[disabled]::before,
+.Upload-fileinput[disabled]:hover::before,
+.Upload-fileinput[disabled]:focus::before,
+.Upload-fileinput[disabled]:active::before {
+  cursor: not-allowed;
+  background-color: rgb(211, 208, 218);
 }
 
 .Upload-fileinput:hover::before,
