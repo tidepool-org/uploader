@@ -21,10 +21,18 @@
     justify-content: center;
 
     a {
-      .blue-link;
+      color: @purple-light;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: @purple-medium;
+        text-decoration: none;
+      }
     }
 
     p {
+      margin: 0;
       .purple-centered();
       font-size: @font-size-large;
       font-weight: bold;
@@ -34,9 +42,9 @@
       span {
         display: inline;
       }
-      // &.most-important {
-      //   font-weight: bold;
-      // }
+      &.most-important {
+        margin-top: 20px;
+      }
     }
   }
 }
@@ -49,8 +57,8 @@
   min-height: 80px;
 
   p {
+    margin: 0;
     .purple-centered();
     font-size: @font-size-small;
-    margin: 0;
   }
 }
