@@ -139,13 +139,19 @@ input[type=file] {
   visibility: visible;
   content: 'Choose file';
   .btn;
-  .btn-secondary;
+  .btn-primary;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: fade(@purple-dark, 30%);
+  }
 }
 
 .Upload-fileinput:hover::before,
 .Upload-fileinput:focus::before,
 .Upload-fileinput:active::before {
-  border-color: @purple-light;
+  background-color: @purple-light;
 }
 
 .Upload-helpText {

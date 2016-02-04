@@ -59,7 +59,7 @@ a.btn {
 // Main action button style
 .btn-primary,
 a.btn-primary {
-  background-color: #291647;
+  background-color: @purple-dark;
   color: #fff;
 
   &:hover,
@@ -71,7 +71,7 @@ a.btn-primary {
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
-    background-color: fade(@purple-light, 30%);
+    background-color: fade(@purple-dark, 30%);
   }
 }
 
@@ -85,18 +85,5 @@ a.btn-secondary {
   &:focus,
   &:active {
     border-color: @purple-light;
-  }
-}
-
-.btn-tertiary,
-a.btn-tertiary {
-  color: @text-color;
-  background-color: #fff;
-  border-color: fade(@red, 50%);
-
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: @red;
   }
 }
