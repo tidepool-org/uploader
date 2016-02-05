@@ -438,9 +438,36 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('doUpload [upload aborted b/c another upload already in progress]', () => {
-    it('should dispatch UPLOAD_ABORTED', (done) => {
+  describe('doUpload [upload aborted b/c version check failed]', () => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_FAILURE, UPLOAD_ABORTED', (done) => {
+      const requiredVersion = '0.99.0';
+      const initialState = {
+        version: '0.50.0'
+      };
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: requiredVersion})
+          }
+        }
+      });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_FAILURE,
+          error: true,
+          payload: new UnsupportedError(initialState.version, requiredVersion),
+          meta: {
+            source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+            metric: {
+              eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
+              properties: { requiredVersion }
+            }
+          }
+        },
         {
           type: actionTypes.UPLOAD_ABORTED,
           error: true,
@@ -448,13 +475,49 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      const store = mockStore({uploads: {uploadInProgress: true}}, expectedActions, done);
+      const store = mockStore(initialState, expectedActions, done);
+      store.dispatch(asyncActions.doUpload());
+    });
+  });
+
+  describe('doUpload [upload aborted b/c another upload already in progress]', () => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_ABORTED', (done) => {
+      const initialState = {
+        uploads: {
+          uploadInProgress: true
+        },
+        version: '0.100.0'
+      };
+      asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
+          type: actionTypes.UPLOAD_ABORTED,
+          error: true,
+          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
+        }
+      ];
+      const store = mockStore(initialState, expectedActions, done);
       store.dispatch(asyncActions.doUpload());
     });
   });
 
   describe('doUpload [device, driver error]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -505,11 +568,24 @@ describe('Asynchronous Actions', () => {
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
         device: {
           detect: (foo, bar, cb) => cb('Error :(')
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -548,7 +624,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, device detection error (serial)]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -598,11 +674,24 @@ describe('Asynchronous Actions', () => {
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
         device: {
           detect: (foo, bar, cb) => cb('Error :(')
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -641,7 +730,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, device detection error (hid)]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -691,11 +780,24 @@ describe('Asynchronous Actions', () => {
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
         device: {
           detect: (foo, bar, cb) => cb(null, null)
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -734,7 +836,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, error during upload]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -787,12 +889,25 @@ describe('Asynchronous Actions', () => {
       err.version = errProps.version;
       err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
       asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
         device: {
           detect: (foo, bar, cb) => cb(null, {}),
           upload: (foo, bar, cb) => cb(new Error(basalErr))
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -831,7 +946,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [no error]', () => {
-    it('should dispatch UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_SUCCESS actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_SUCCESS actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -871,12 +986,25 @@ describe('Asynchronous Actions', () => {
         version: '0.100.0'
       };
       asyncActions.__Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
         device: {
           detect: (foo, bar, cb) => cb(null, {}),
           upload: (foo, bar, cb) => cb(null, [1,2,3,4,5])
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -916,7 +1044,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [CareLink fetch error]', () => {
-    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -969,11 +1097,20 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           upload: {
-            fetchCarelinkData: (foo, cb) => cb(new Error('Error!'))
+            fetchCarelinkData: (foo, cb) => cb(new Error('Error!')),
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
           }
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -1022,7 +1159,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [CareLink fetch, incorrect creds]', () => {
-    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -1074,11 +1211,20 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '302 Moved Temporarily')
+            fetchCarelinkData: (foo, cb) => cb(null, '302 Moved Temporarily'),
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
           }
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -1127,7 +1273,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [CareLink, error in processing & uploading]', () => {
-    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_FAILURE actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -1182,7 +1328,8 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5')
+            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
           }
         },
         carelink: {
@@ -1190,6 +1337,14 @@ describe('Asynchronous Actions', () => {
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
@@ -1236,7 +1391,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [CareLink, no error]', () => {
-    it('should dispatch UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_SUCCESS actions', (done) => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_SUCCESS actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
       const uploadInProgress = {
@@ -1278,7 +1433,8 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5')
+            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
           }
         },
         carelink: {
@@ -1286,6 +1442,14 @@ describe('Asynchronous Actions', () => {
         }
       });
       const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
         {
           type: actionTypes.UPLOAD_REQUEST,
           payload: { uploadInProgress, utc: time },
