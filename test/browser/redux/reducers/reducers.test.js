@@ -176,574 +176,6 @@ describe('reducers', () => {
     });
   });
 
-  describe('uploads', () => {
-    it('should return the initial state', () => {
-      expect(reducers.uploads(undefined, {})).to.deep.equal({uploadInProgress: false});
-    });
-
-    it('should handle CHOOSING_FILE', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      let initialState = {
-        a1b2c3: {
-          a_cgm: {history: []}
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_cgm: {history: []}
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.CHOOSING_FILE,
-        payload: { userId, deviceKey }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // test to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-    });
-
-    it('should handle CARELINK_FETCH_FAILURE', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.carelinkFetch,
-          percentage: 0
-        }
-      };
-      let initialState = {
-        uploadInProgress: uploadInProgress,
-        a1b2c3: {
-          carelink: {
-            history: [{start: time}],
-            isFetching: true
-          },
-          a_pump: {
-            history: [{foo: 'bar'}],
-            disabled: true
-          }
-        }
-      };
-      let err = new Error('Upload error');
-      err.utc = time;
-      let resultState = {
-        uploadInProgress: uploadInProgress,
-        a1b2c3: {
-          carelink: {
-            history: [{start: time}],
-            isFetching: false
-          },
-          a_pump: {
-            history: [{foo: 'bar'}],
-            disabled: true
-          }
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.CARELINK_FETCH_FAILURE,
-        error: true,
-        payload: err
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // we're not changing this, so we expect it to stay the same
-      expect(initialState.a1b2c3.carelink.history === finalState.a1b2c3.carelink.history).to.be.true;
-      expect(initialState.a1b2c3.carelink.history[0] === finalState.a1b2c3.carelink.history[0]).to.be.true;
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.true;
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
-    });
-
-    it('should handle CARELINK_FETCH_REQUEST', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      let initialState = {
-        a1b2c3: {
-          carelink: {history: []}
-        },
-        uploadInProgress: {progress: {step: 'start', percentage: 0}}
-      };
-      let resultState = {
-        a1b2c3: {
-          carelink: {history: [], isFetching: true}
-        },
-        uploadInProgress: {progress: {step: steps.carelinkFetch, percentage: 0}}
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.CARELINK_FETCH_REQUEST,
-        payload: { userId, deviceKey }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
-      expect(initialState.uploadInProgress === finalState.uploadInProgress).to.be.false;
-      expect(initialState.uploadInProgress.progress === finalState.uploadInProgress.progress).to.be.false;
-    });
-
-    it('should handle CARELINK_FETCH_SUCCESS', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      let initialState = {
-        uploadInProgress: {pathToUpload: [userId, deviceKey]},
-        a1b2c3: {
-          carelink: {history: [], isFetching: true}
-        }
-      };
-      let resultState = {
-        uploadInProgress: {pathToUpload: [userId, deviceKey]},
-        a1b2c3: {
-          carelink: {history: [], isFetching: false}
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.CARELINK_FETCH_SUCCESS
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.carelink === finalState.a1b2c3.carelink).to.be.false;
-    });
-
-    it('should handle DEVICE_DETECT_REQUEST', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      let initialState = {
-        uploadInProgress: {
-          progress: {
-            step: steps.start,
-            percentage: 0
-          },
-          pathToUpload: ['foo', 'bar']
-        }
-      };
-      let resultState = _.cloneDeep(initialState);
-      resultState.uploadInProgress.progress.step = steps.detect;
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.DEVICE_DETECT_REQUEST,
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.uploadInProgress === finalState.uploadInProgress).to.be.false;
-    });
-
-    it('should handle READ_FILE_ABORTED', () => {
-      const err = new Error('Wrong file ext!');
-      let initialState = {
-        a1b2c3: {
-          a_pump: {history: []}
-        },
-        uploadInProgress: {
-          pathToUpload: ['a1b2c3', 'a_pump']
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_pump: {
-            completed: true,
-            error: err,
-            failed: true,
-            history: []
-          }
-        },
-        uploadInProgress: false
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.READ_FILE_ABORTED,
-        error: true,
-        payload: err
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
-    });
-
-    it('should handle READ_FILE_FAILURE', () => {
-      const err = new Error('Error reading file!');
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const filename = 'foo.csv';
-      let initialState = {
-        a1b2c3: {
-          a_cgm: {
-            history: [],
-            file: {name: filename}
-          }
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_cgm: {
-            completed: true,
-            error: err,
-            failed: true,
-            file: {name: filename},
-            history: []
-          }
-        },
-        uploadInProgress: false
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.READ_FILE_FAILURE,
-        error: true,
-        payload: err
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-    });
-
-    it('should handle READ_FILE_REQUEST', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const filename = 'foo.csv';
-      let initialState = {
-        a1b2c3: {
-          a_cgm: {history: []}
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_cgm: {
-            history: [],
-            file: {name: filename}
-          }
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.READ_FILE_REQUEST,
-        payload: { filename }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-    });
-
-    it('should handle READ_FILE_SUCCESS', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const filename = 'foo.csv';
-      const filedata = [1,2,3,4,5];
-      let initialState = {
-        a1b2c3: {
-          a_cgm: {
-            history: [],
-            file: {name: filename}
-          }
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_cgm: {
-            history: [],
-            file: {name: filename, data: filedata}
-          }
-        },
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey]
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.READ_FILE_SUCCESS,
-        payload: { userId, deviceKey, filedata }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-      expect(initialState.a1b2c3.a_cgm.file === finalState.a1b2c3.a_cgm.file).to.be.false;
-    });
-
-    it('should handle RESET_UPLOAD [upload successful]', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const time = '2016-01-01T12:05:00.123Z';
-      let initialState = {
-        uploadInProgress: false,
-        a1b2c3: {
-          a_cgm: {
-            completed: true,
-            history: [{
-              start: time,
-              finish: time
-            }],
-            successful: true
-          },
-          a_pump: {
-            history: []
-          }
-        }
-      };
-      let resultState = {
-        uploadInProgress: false,
-        a1b2c3: {
-          a_cgm: {
-            history: [{
-              start: time,
-              finish: time
-            }]
-          },
-          a_pump: {
-            history: []
-          }
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.RESET_UPLOAD,
-        payload: { userId, deviceKey }
-      });
-      expect(finalState).to.deep.equal(resultState);
-    });
-
-    it('should handle SET_UPLOADS', () => {
-      const uploadsByUser = {
-        a1b2c3: {a_pump: {}, a_cgm: {}},
-        d4e5f6: {another_pump: {}}
-      };
-      let resultState = {
-        a1b2c3: {a_cgm: {completed: true, history: [1,2,3]}, a_pump: {}},
-        d4e5f6: {another_pump: {}},
-        uploadInProgress: false
-      };
-      const actionPayload = { uploadsByUser };
-      expect(reducers.uploads(undefined, {
-        type: actionTypes.SET_UPLOADS,
-        payload: { uploadsByUser }
-      })).to.deep.equal(_.assign(_.cloneDeep(uploadsByUser), {uploadInProgress: false}));
-      let initialState = {
-        a1b2c3: {a_meter: {history: [1]}, a_cgm: {completed: true, history: [1,2,3]}},
-        uploadInProgress: false
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.SET_UPLOADS,
-        payload: { uploadsByUser }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // we're not changing this, so we expect it to stay the same
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.true;
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-    });
-
-    it('should handle TOGGLE_ERROR_DETAILS', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      let initialState = {
-        a1b2c3: {
-          a_cgm: {history: []}
-        }
-      };
-      let resultState = {
-        a1b2c3: {
-          a_cgm: {history: [], showErrorDetails: true}
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.TOGGLE_ERROR_DETAILS,
-        payload: { userId, deviceKey, isVisible: true}
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // we're not changing this, so we expect it to stay the same
-      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.true;
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-    });
-
-    it('should handle UPLOAD_FAILURE', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
-      let initialState = {
-        uploadInProgress: uploadInProgress,
-        a1b2c3: {
-          a_cgm: {
-            history: [{start: time}],
-            uploading: true
-          },
-          a_pump: {
-            history: [{foo: 'bar'}],
-            disabled: true
-          }
-        }
-      };
-      let err = new Error('Upload error');
-      err.utc = time;
-      let resultState = {
-        uploadInProgress: false,
-        a1b2c3: {
-          a_cgm: {
-            completed: true,
-            error: err,
-            failed: true,
-            history: [{start: time, finish: time, error: true}]
-          },
-          a_pump: {history: [{foo: 'bar'}]}
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.UPLOAD_FAILURE,
-        error: true,
-        payload: err
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.false;
-      expect(initialState.a1b2c3.a_cgm.history[0] === finalState.a1b2c3.a_cgm.history[0]).to.be.false;
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
-    });
-
-    it('should handle UPLOAD_PROGRESS', () => {
-      const step = 'READ', percentage = 50;
-      const actionPayload = { step, percentage };
-      let initialState = {
-        uploadInProgress: {
-          progress: {
-            step: 'DETECT',
-            percentage: 0
-          }
-        }
-      };
-      let resultState = {
-        uploadInProgress: {
-          progress: { step, percentage }
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.UPLOAD_PROGRESS,
-        payload: actionPayload
-      });
-      expect(finalState).to.deep.equal(resultState);
-    });
-
-    it('should handle UPLOAD_REQUEST', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
-      const actionPayload = { uploadInProgress, utc: time };
-      let initialState = {
-        uploadInProgress: false,
-        a1b2c3: {
-          a_cgm: {history: []},
-          a_pump: {history: []}
-        }
-      };
-      let resultState = {
-        uploadInProgress: uploadInProgress,
-        a1b2c3: {
-          a_cgm: {
-            history: [{start: time}],
-            uploading: true
-          },
-          a_pump: {
-            history: [],
-            disabled: true
-          }
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.UPLOAD_REQUEST,
-        payload: actionPayload
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
-    });
-
-    it('should handle UPLOAD_SUCCESS', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_cgm';
-      const time = '2016-01-01T12:05:00.123Z';
-      const data = [1,2,3,4,5];
-      let initialState = {
-        uploadInProgress: {
-          pathToUpload: [userId, deviceKey],
-          progress: {
-            step: steps.start,
-            percentage: 0
-          }
-        },
-        a1b2c3: {
-          a_cgm: {
-            history: [{start: time}],
-            uploading: true
-          },
-          a_pump: {
-            history: [],
-            disabled: true
-          }
-        }
-      };
-      let resultState = {
-        uploadInProgress: false,
-        a1b2c3: {
-          a_cgm: {
-            completed: true,
-            history: [{
-              start: time,
-              finish: time
-            }],
-            data: data,
-            successful: true
-          },
-          a_pump: {
-            history: []
-          }
-        }
-      };
-      let finalState = reducers.uploads(initialState, {
-        type: actionTypes.UPLOAD_SUCCESS,
-        payload: { userId, deviceKey, data, utc: time }
-      });
-      expect(finalState).to.deep.equal(resultState);
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === finalState).to.be.false;
-      expect(initialState.a1b2c3 === finalState.a1b2c3).to.be.false;
-      expect(initialState.a1b2c3.a_cgm === finalState.a1b2c3.a_cgm).to.be.false;
-      expect(initialState.a1b2c3.a_cgm.history === finalState.a1b2c3.a_cgm.history).to.be.false;
-      expect(initialState.a1b2c3.a_cgm.history[0] === finalState.a1b2c3.a_cgm.history[0]).to.be.false;
-      expect(initialState.a1b2c3.a_pump === finalState.a1b2c3.a_pump).to.be.false;
-    });
-  });
-
   describe('blipUrls', () => {
     it('should return the initial state', () => {
       expect(reducers.blipUrls(undefined, {})).to.deep.equal({});
@@ -816,7 +248,19 @@ describe('reducers', () => {
       expect(reducers.working(undefined, {})).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle CHOOSING_FILE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.CHOOSING_FILE
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: true
       });
     });
 
@@ -826,7 +270,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: false
+        initializingApp: false,
+        uploading: false
       });
     });
 
@@ -836,7 +281,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -846,7 +292,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: false
+        initializingApp: false,
+        uploading: false
       });
     });
 
@@ -856,7 +303,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -866,7 +314,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: true,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -876,7 +325,30 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle READ_FILE_ABORTED', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.READ_FILE_ABORTED
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle READ_FILE_FAILURE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.READ_FILE_FAILURE
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -886,7 +358,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -896,7 +369,8 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: true,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
       });
     });
 
@@ -906,7 +380,41 @@ describe('reducers', () => {
       })).to.deep.equal({
         checkingVersion: false,
         fetchingUserInfo: false,
-        initializingApp: true
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle UPLOAD_FAILURE', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.UPLOAD_FAILURE
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle UPLOAD_REQUEST', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.UPLOAD_REQUEST
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: true
+      });
+    });
+
+    it('should handle UPLOAD_SUCCESS', () => {
+      expect(reducers.working(undefined, {
+        type: actionTypes.UPLOAD_SUCCESS
+      })).to.deep.equal({
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
       });
     });
   });

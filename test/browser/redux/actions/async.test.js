@@ -483,10 +483,8 @@ describe('Asynchronous Actions', () => {
   describe('doUpload [upload aborted b/c another upload already in progress]', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_ABORTED', (done) => {
       const initialState = {
-        uploads: {
-          uploadInProgress: true
-        },
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: true}
       };
       asyncActions.__Rewire__('services', {
         api: {
@@ -520,13 +518,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -538,10 +529,7 @@ describe('Asynchronous Actions', () => {
           a_pump: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             a_pump: {history: [{start: time}]}
@@ -553,8 +541,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -588,7 +578,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -627,13 +617,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -645,10 +628,7 @@ describe('Asynchronous Actions', () => {
           a_pump: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             a_pump: {history: [{start: time}]}
@@ -660,8 +640,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -694,7 +676,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -733,13 +715,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -751,10 +726,7 @@ describe('Asynchronous Actions', () => {
           a_pump: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             a_pump: {history: [{start: time}]}
@@ -766,8 +738,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -800,7 +774,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -839,13 +813,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -857,10 +824,7 @@ describe('Asynchronous Actions', () => {
           a_pump: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             a_pump: {history: [{start: time}]}
@@ -872,8 +836,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -910,7 +876,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -949,13 +915,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_SUCCESS actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -967,10 +926,7 @@ describe('Asynchronous Actions', () => {
           a_pump: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             a_pump: {history: [{start: time}]}
@@ -982,8 +938,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       asyncActions.__Rewire__('services', {
         api: {
@@ -1007,7 +965,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -1047,13 +1005,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'CareLink',
@@ -1065,10 +1016,7 @@ describe('Asynchronous Actions', () => {
           carelink: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             carelink: {history: [{start: time}]}
@@ -1080,8 +1028,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -1113,7 +1063,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -1162,13 +1112,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'CareLink',
@@ -1180,10 +1123,7 @@ describe('Asynchronous Actions', () => {
           carelink: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             carelink: {history: [{start: time}]}
@@ -1195,8 +1135,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -1227,7 +1169,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -1276,13 +1218,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_FAILURE actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -1294,10 +1229,7 @@ describe('Asynchronous Actions', () => {
           carelink: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             carelink: {history: [{start: time}]}
@@ -1309,8 +1241,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       const errProps = {
         utc: time,
@@ -1347,7 +1281,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -1363,6 +1297,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.CARELINK_FETCH_SUCCESS,
+          payload: { userId, deviceKey },
           meta: {
             source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
             metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
@@ -1394,13 +1329,6 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_SUCCESS actions', (done) => {
       const userId = 'a1b2c3', deviceKey = 'carelink';
       const time = '2016-01-01T12:05:00.123Z';
-      const uploadInProgress = {
-        pathToUpload: [userId, deviceKey],
-        progress: {
-          step: steps.start,
-          percentage: 0
-        }
-      };
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
@@ -1412,10 +1340,7 @@ describe('Asynchronous Actions', () => {
           carelink: targetDevice
         },
         os: 'mac',
-        uploads: {
-          uploadInProgress: {
-            pathToUpload: [userId, deviceKey]
-          },
+        uploadsByUser: {
           [userId]: {
             a_cgm: {},
             carelink: {history: [{start: time}]}
@@ -1427,8 +1352,10 @@ describe('Asynchronous Actions', () => {
         targetTimezones: {
           [userId]: 'US/Mountain'
         },
+        uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
-        version: '0.100.0'
+        version: '0.100.0',
+        working: {uploading: false}
       };
       asyncActions.__Rewire__('services', {
         api: {
@@ -1452,7 +1379,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: { uploadInProgress, utc: time },
+          payload: { userId, deviceKey, utc: time },
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -1468,6 +1395,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.CARELINK_FETCH_SUCCESS,
+          payload: { userId, deviceKey },
           meta: {
             source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
             metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
@@ -1766,14 +1694,9 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const uploadsByUser = {
-          abc123: {
-            carelink: {history: []}
-          },
-          def456: {
-            dexcom: {history: []},
-            omnipod: {history: []}
-          }
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
           {
@@ -1782,7 +1705,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.SET_UPLOADS,
-            payload: { uploadsByUser },
+            payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
@@ -1824,14 +1747,9 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const uploadsByUser = {
-          abc123: {
-            carelink: {history: []}
-          },
-          def456: {
-            dexcom: {history: []},
-            omnipod: {history: []}
-          }
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
           {
@@ -1840,7 +1758,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.SET_UPLOADS,
-            payload: { uploadsByUser },
+            payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
@@ -1890,14 +1808,9 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const uploadsByUser = {
-          abc123: {
-            carelink: {history: []}
-          },
-          def456: {
-            dexcom: {history: []},
-            omnipod: {history: []}
-          }
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
           {
@@ -1906,7 +1819,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.SET_UPLOADS,
-            payload: { uploadsByUser },
+            payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
@@ -1955,14 +1868,9 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const uploadsByUser = {
-          abc123: {
-            carelink: {history: []}
-          },
-          def456: {
-            dexcom: {history: []},
-            omnipod: {history: []}
-          }
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
           {
@@ -1971,7 +1879,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.SET_UPLOADS,
-            payload: { uploadsByUser },
+            payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {

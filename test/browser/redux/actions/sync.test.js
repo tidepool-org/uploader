@@ -240,12 +240,12 @@ describe('Synchronous Actions', () => {
   });
 
   describe('setUploads', () => {
-    const uploadsByUser = {
+    const devicesByUser = {
       a1b2c3: {a_pump: {}, a_cgm: {}},
       d4e5f6: {another_pump: {}}
     };
     it('should be an FSA', () => {
-      let action = syncActions.setUploads(uploadsByUser);
+      let action = syncActions.setUploads(devicesByUser);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -253,10 +253,10 @@ describe('Synchronous Actions', () => {
     it('should create an action to set up the potential uploads for each user reflecting target devices selected', () => {
       const expectedAction = {
         type: actionTypes.SET_UPLOADS,
-        payload: { uploadsByUser },
+        payload: { devicesByUser },
         meta: {source: actionSources[actionTypes.SET_UPLOADS]}
       };
-      expect(syncActions.setUploads(uploadsByUser)).to.deep.equal(expectedAction);
+      expect(syncActions.setUploads(devicesByUser)).to.deep.equal(expectedAction);
     });
   });
 
@@ -567,7 +567,7 @@ describe('Synchronous Actions', () => {
 
     describe('fetchCareLinkSuccess', () => {
       it('should be an FSA', () => {
-        let action = syncActions.fetchCareLinkSuccess();
+        let action = syncActions.fetchCareLinkSuccess(userId, deviceKey);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -575,13 +575,14 @@ describe('Synchronous Actions', () => {
       it('should create an action to record a successful fetch from CareLink', () => {
         const expectedAction = {
           type: actionTypes.CARELINK_FETCH_SUCCESS,
+          payload: { userId, deviceKey },
           meta: {
             source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
             metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
           }
         };
 
-        expect(syncActions.fetchCareLinkSuccess()).to.deep.equal(expectedAction);
+        expect(syncActions.fetchCareLinkSuccess(userId, deviceKey)).to.deep.equal(expectedAction);
       });
     });
 
@@ -648,16 +649,7 @@ describe('Synchronous Actions', () => {
         const time = '2016-01-01T12:05:00.123Z';
         const expectedAction = {
           type: actionTypes.UPLOAD_REQUEST,
-          payload: {
-            uploadInProgress: {
-              pathToUpload: [userId, device.key],
-              progress: {
-                step: steps.start,
-                percentage: 0
-              }
-            },
-            utc: time
-          },
+          payload: { userId, deviceKey: device.key, utc: time},
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
@@ -828,9 +820,10 @@ describe('Synchronous Actions', () => {
     });
 
     describe('readFileRequest', () => {
+      const userId = 'abc123', deviceKey = 'a_pump';
       const filename = 'my-data.ext';
       it('should be an FSA', () => {
-        let action = syncActions.readFileRequest(filename);
+        let action = syncActions.readFileRequest(userId, deviceKey, filename);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -838,11 +831,11 @@ describe('Synchronous Actions', () => {
       it('should create an action to record request to read a chosen file', () => {
         const expectedAction = {
           type: actionTypes.READ_FILE_REQUEST,
-          payload: { filename },
+          payload: { userId, deviceKey, filename },
           meta: {source: actionSources[actionTypes.READ_FILE_REQUEST]}
         };
 
-        expect(syncActions.readFileRequest(filename)).to.deep.equal(expectedAction);
+        expect(syncActions.readFileRequest(userId, deviceKey, filename)).to.deep.equal(expectedAction);
       });
     });
 
