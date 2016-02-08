@@ -1,4 +1,9 @@
 var path = require('path');
+var webpack = require('webpack');
+
+var definePlugin = new webpack.DefinePlugin({
+  __TEST__: true
+});
 
 module.exports = {
   module: {
@@ -15,6 +20,9 @@ module.exports = {
       { test: /\.json$/, loader: 'json' }
     ]
   },
+  plugins: [
+    definePlugin
+  ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
   resolveLoader: { fallback: path.join(__dirname, 'node_modules') }

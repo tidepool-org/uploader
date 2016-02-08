@@ -3,7 +3,8 @@ var _ = require('lodash');
 var webpack = require('webpack');
 
 var definePlugin = new webpack.DefinePlugin({
-  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false'))
+  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
+  __TEST__: false
 });
 
 if (process.env.DEBUG_ERROR === 'true') {
@@ -38,13 +39,7 @@ var config = {
     ]
   },
   plugins: [
-    definePlugin,
-    new webpack.DefinePlugin({
-      'process.env': Object.keys(process.env).reduce(function(o, k) {
-        o[k] = JSON.stringify(process.env[k]);
-        return o;
-      }, {})
-    })
+    definePlugin
   ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
