@@ -862,7 +862,7 @@ describe('Asynchronous Actions', () => {
         },
         device: {
           detect: (foo, bar, cb) => cb(null, {}),
-          upload: (foo, bar, cb) => cb(new Error(basalErr))
+          upload: (foo, bar, cb) => cb(basalErr)
         }
       });
       const expectedActions = [
