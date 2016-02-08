@@ -11,8 +11,9 @@ pids
 logs
 results
 config/*
-!config/mock.sh
+!config/device-debug.sh
 !config/local.sh
+!config/ui-debug.sh
 build
 dist
 dist.zip
