@@ -180,14 +180,20 @@ describe('uploads', () => {
 
     it('should handle CHOOSING_FILE', () => {
       let initialState = {
-        [userId]: {[deviceKey]: {history: []}}
+        [userId]: {
+          a_pump: {history: [1,2]},
+          [deviceKey]: {history: []}
+        }
       };
       let result = uploads.uploadsByUser(initialState, {
         type: actionTypes.CHOOSING_FILE,
         payload: { userId, deviceKey }
       });
       expect(result).to.deep.equal({
-        [userId]: {[deviceKey]: {choosingFile: true, history: []}}
+        [userId]: {
+          a_pump: {disabled: true, history: [1,2]},
+          [deviceKey]: {choosingFile: true, history: []}
+        },
       });
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === result).to.be.false;
@@ -411,7 +417,7 @@ describe('uploads', () => {
       err.utc = time;
       let initialState = {
         [userId]: {
-          a_pump: {history: []},
+          a_pump: {disabled: true, history: []},
           [deviceKey]: {
             history: [{start: time},1,2,3],
             uploading: true
@@ -454,9 +460,6 @@ describe('uploads', () => {
         [userId]: {
           a_pump: {history: []},
           [deviceKey]: {history: [1,2,3]}
-        },
-        d4e5f6: {
-          another_pump: {history: []}
         }
       };
       const actionPayload = { userId, deviceKey };
@@ -466,14 +469,11 @@ describe('uploads', () => {
       });
       expect(result).to.deep.equal({
         [userId]: {
-          a_pump: {history: []},
+          a_pump: {disabled: true, history: []},
           [deviceKey]: {
             history: [{start: time},1,2,3],
             uploading: true
           }
-        },
-        d4e5f6: {
-          another_pump: {history: []}
         }
       });
       // tests to be sure not *mutating* state object but rather returning new!
@@ -486,7 +486,7 @@ describe('uploads', () => {
       const data = [1,2,3,4,5];
       let initialState = {
         [userId]: {
-          a_pump: {history: []},
+          a_pump: {disabled: true, history: []},
           [deviceKey]: {
             history: [{start: time},1,2,3],
             uploading: true

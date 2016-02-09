@@ -253,17 +253,6 @@ describe('reducers', () => {
       });
     });
 
-    it('should handle CHOOSING_FILE', () => {
-      expect(reducers.working(undefined, {
-        type: actionTypes.CHOOSING_FILE
-      })).to.deep.equal({
-        checkingVersion: false,
-        fetchingUserInfo: false,
-        initializingApp: true,
-        uploading: true
-      });
-    });
-
     it('should handle INIT_APP_FAILURE', () => {
       expect(reducers.working(undefined, {
         type: actionTypes.INIT_APP_FAILURE
