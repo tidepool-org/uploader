@@ -9,6 +9,7 @@
   "scripts": {
     "test": "mocha test/node/ && mocha test/node/**/*.js && ./node_modules/karma/bin/karma start",
     "browser-tests": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome",
+    "node-tests": "mocha test/node/ && mocha test/node/**/*.js",
     "karma-watch": "./node_modules/karma/bin/karma start --no-single-run",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "build": "bash ./scripts/build.sh",
