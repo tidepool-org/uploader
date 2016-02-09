@@ -333,6 +333,40 @@ describe('uploads', () => {
       expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
     });
 
+    it('should handle RESET_UPLOAD [another upload in progress]', () => {
+      let initialState = {
+        [userId]: {[deviceKey]: {
+          completed: true,
+          error: new Error(),
+          failed: true,
+          history: [{start: time, finish: time, error: true}]
+        },
+        another_pump: {
+          history: [{start: time}],
+          uploading: true
+        }
+      }};
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.RESET_UPLOAD,
+        payload: { userId, deviceKey }
+      });
+      expect(result).to.deep.equal({
+        [userId]: {[deviceKey]: {
+          disabled: true,
+          history: [{start: time, finish: time, error: true}]
+        },
+          another_pump: {
+            history: [{start: time}],
+            uploading: true
+          }
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+      expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
+    });
+
     it('should handle RESET_UPLOAD [upload successful]', () => {
       let initialState = {
         [userId]: {[deviceKey]: {
