@@ -84,6 +84,21 @@ $ npm run karma-watch
 ```
 
 
+## Linting & Code Style
+
+We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
+
+To run the linter (which also runs on Travis CI with every push, along with `npm test`), use:
+
+```
+$ npm run lint
+```
+
+Aside from the (fairly minimal) JavaScript code style options we *enforce* through the linter, we ask that internal developers and external contributors try to match the style of the code in each module being modified. New modules should look to similar modules for style guidance. In React component code, use existing ES6/ES2015 components (not legacy ES5 components) as the style model for new components.
+
+**NB: Please keep ES5 and ES6/ES2015 code distinct. Do *NOT* use ES6/ES2105 features in ES5 modules (most easily recognizable by the use of `require` rather than `import`).**
+
+
 ## Publishing (to the devel/staging testing & development Chrome store account or production)
 
 Assuming you've already merged any changes to master and are on master locally...
