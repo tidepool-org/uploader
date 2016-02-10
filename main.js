@@ -100,7 +100,7 @@ function setServer(window, info) {
 
   console.log('will use', info.menuItemId, 'server');
   var serverinfo = serverdata[info.menuItemId];
-  window.app.api.setHosts(serverinfo);
+  window.api.setHosts(serverinfo);
 }
 
 
