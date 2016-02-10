@@ -3,6 +3,8 @@ var _ = require('lodash');
 var webpack = require('webpack');
 
 var definePlugin = new webpack.DefinePlugin({
+  // this first as advised to get the correct production build of redux
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"development"',
   __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
   __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
   __REDUX_DEV_UI__: JSON.stringify(JSON.parse(process.env.REDUX_DEV_UI || 'false')),
