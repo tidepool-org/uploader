@@ -68,7 +68,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 #### CBG
 
-(See [the CGM checklist](CGMChecklist.md) instead.)
+(See [the CGM checklist](../../../docs/checklisttemplates/CGMChecklist.md) instead.)
 
 #### Device Events
 
@@ -99,7 +99,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
     - `[ ]` reason/agent of suspension (`automatic` or `manual`)
     - `[ ]` reason/agent of resumption (`automatic` or `manual`)
-  - calibrations: see [the CGM checklist](CGMChecklist.md) instead
+  - calibrations: see [the CGM checklist](../../../docs/checklisttemplates/CGMChecklist.md) instead
   - `[x]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
     - `[x]` device display time `from` (before change) and `to` (result of change)
     - `[x]` agent of change (`automatic` or `manual`)

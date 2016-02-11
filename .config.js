@@ -33,12 +33,13 @@ function stringToArray(str, defaultValue) {
 }
 
 module.exports = {
+  // this is to always have the Bows logger turned on!
+  // NB: it is distinct from our own "debug mode"
   DEBUG: stringToBoolean(process.env.DEBUG, true),
   // the defaults for these need to be pointing to prod
   API_URL: process.env.API_URL || 'https://api.tidepool.org',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.org',
   BLIP_URL: process.env.BLIP_URL || 'https://blip.tidepool.org',
-  CARELINK: stringToBoolean(process.env.CARELINK, true),
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
   DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'
 };
