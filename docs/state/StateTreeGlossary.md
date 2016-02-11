@@ -116,12 +116,6 @@ Since the Tidepool Uploader is a Chrome App that runs *outside* of the browser e
 
 To ensure the highest possible standards of data quality, it is very important for us at Tidepool to prevent uploaders that have been succeeded by newer versions from uploading to the Tidepool cloud. To this end, we have implemented an "info" endpoint on our data ingestion API that responds with (among other things) the minimum version of the Tidepool Uploader that the data ingestion API will accept data from.
 
-#### `version`
-
-*The property `version` encodes the current version of the uploader in [semver](http://semver.org/).*
-
-While we use semver at Tidepool, the Chrome Store does not support patch-level version increments, so the minimum - and typical - version number increase that will appear in the Tidepool Uploader is a minor version bump. As a way of distinguishing major releases, on occasion we will choose an arbitrary increase of the minor version number - e.g., skipping from 0.122.0 to 0.150.0 for a major feature release in 0.150.0.
-
 #### `working`
 
 *The `working` property is an object with a small handful of keys that record the app's current state with respect to certain asynchronous actions.*

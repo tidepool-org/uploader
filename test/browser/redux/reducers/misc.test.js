@@ -230,19 +230,6 @@ describe('misc reducers', () => {
     });
   });
 
-  describe('version', () => {
-    it('should return the initial state', () => {
-      expect(misc.version(undefined, {})).to.be.null;
-    });
-
-    it('should handle SET_VERSION', () => {
-      expect(misc.version(undefined, {
-        type: actionTypes.SET_VERSION,
-        payload: {version: '0.100.0'}
-      })).to.deep.equal('0.100.0');
-    });
-  });
-
   describe('working', () => {
     it('should return the initial state', () => {
       expect(misc.working(undefined, {})).to.deep.equal({

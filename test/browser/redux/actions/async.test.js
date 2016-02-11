@@ -85,11 +85,6 @@ describe('Asynchronous Actions', () => {
       };
       const expectedActions = [
         {
-          type: actionTypes.SET_VERSION,
-          payload: {version: config.version},
-          meta: {source: actionSources[actionTypes.SET_VERSION]}
-        },
-        {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
         },
@@ -131,7 +126,10 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
         }
       ];
-      const store = mockStore({version: config.version}, expectedActions, done);
+      asyncActions.__Rewire__('versionInfo', {
+        semver: config.version
+      });
+      const store = mockStore({}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
@@ -172,11 +170,6 @@ describe('Asynchronous Actions', () => {
         log: _.noop
       };
       const expectedActions = [
-        {
-          type: actionTypes.SET_VERSION,
-          payload: {version: config.version},
-          meta: {source: actionSources[actionTypes.SET_VERSION]}
-        },
         {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
@@ -233,9 +226,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
+      asyncActions.__Rewire__('versionInfo', {
+        semver: config.version
+      });
       const state = {
-        uploadTargetUser: pwd.user.userid,
-        version: config.version
+        uploadTargetUser: pwd.user.userid
       };
       const store = mockStore(state, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
@@ -270,11 +265,6 @@ describe('Asynchronous Actions', () => {
       };
       const expectedActions = [
         {
-          type: actionTypes.SET_VERSION,
-          payload: {version: '0.100.0'},
-          meta: {source: actionSources[actionTypes.SET_VERSION]}
-        },
-        {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
         },
@@ -295,6 +285,9 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         }
       ];
+      asyncActions.__Rewire__('versionInfo', {
+        semver: config.version
+      });
       const store = mockStore({}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
@@ -441,9 +434,7 @@ describe('Asynchronous Actions', () => {
   describe('doUpload [upload aborted b/c version check failed]', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_FAILURE, UPLOAD_ABORTED', (done) => {
       const requiredVersion = '0.99.0';
-      const initialState = {
-        version: '0.50.0'
-      };
+      const currentVersion = '0.50.0';
       asyncActions.__Rewire__('services', {
         api: {
           upload: {
@@ -459,7 +450,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.VERSION_CHECK_FAILURE,
           error: true,
-          payload: new UnsupportedError(initialState.version, requiredVersion),
+          payload: new UnsupportedError(currentVersion, requiredVersion),
           meta: {
             source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
             metric: {
@@ -475,7 +466,10 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      const store = mockStore(initialState, expectedActions, done);
+      asyncActions.__Rewire__('versionInfo', {
+        semver: currentVersion
+      });
+      const store = mockStore({}, expectedActions, done);
       store.dispatch(asyncActions.doUpload());
     });
   });
@@ -483,7 +477,6 @@ describe('Asynchronous Actions', () => {
   describe('doUpload [upload aborted b/c another upload already in progress]', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_ABORTED', (done) => {
       const initialState = {
-        version: '0.100.0',
         working: {uploading: true}
       };
       asyncActions.__Rewire__('services', {
@@ -509,6 +502,9 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
+      asyncActions.__Rewire__('versionInfo', {
+        semver: '0.100.0'
+      });
       const store = mockStore(initialState, expectedActions, done);
       store.dispatch(asyncActions.doUpload());
     });
@@ -1538,10 +1534,10 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        const state = {
-          version: currentVersion
-        };
-        const store = mockStore(state, expectedActions, done);
+        asyncActions.__Rewire__('versionInfo', {
+          semver: currentVersion
+        });
+        const store = mockStore({}, expectedActions, done);
         store.dispatch(asyncActions.doVersionCheck());
       });
     });
@@ -1566,10 +1562,10 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        const state = {
-          version: currentVersion
-        };
-        const store = mockStore(state, expectedActions, done);
+        asyncActions.__Rewire__('versionInfo', {
+          semver: currentVersion
+        });
+        const store = mockStore({}, expectedActions, done);
         store.dispatch(asyncActions.doVersionCheck());
       });
     });

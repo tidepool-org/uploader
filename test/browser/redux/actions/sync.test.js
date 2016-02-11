@@ -278,24 +278,6 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('setVersion', () => {
-    const VERSION = '0.100.0';
-    it('should be an FSA', () => {
-      let action = syncActions.setVersion(VERSION);
-
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to set the uploader version', () => {
-      const expectedAction = {
-        type: actionTypes.SET_VERSION,
-        payload: {version: VERSION},
-        meta: {source: actionSources[actionTypes.SET_VERSION]}
-      };
-      expect(syncActions.setVersion(VERSION)).to.deep.equal(expectedAction);
-    });
-  });
-
   describe('toggleDropdown', () => {
     const DROPDOWN_PREVIOUS_STATE = true;
     it('should be an FSA', () => {
