@@ -26,7 +26,8 @@ import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
 import { pages, steps, urls } from '../../../../lib/redux/constants/otherConstants';
-import { errorText, UnsupportedError } from '../../../../lib/redux/utils/errors';
+import { UnsupportedError } from '../../../../lib/redux/utils/errors';
+import errorText from '../../../../lib/redux/constants/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
 import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
