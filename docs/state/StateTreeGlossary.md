@@ -100,10 +100,6 @@ The properties of each "device" in `devices` should be fairly self-explanatory. 
 
 *The Tidepool Uploader inclues a dropdown menu, which is accessible after logging in by clicking on the area where the logged-in user's name is displayed in the upper-right corner. The property `dropdown` in the state tree encodes whether this menu is currently in its open (dropped-down) state (`true`) or closed and hidden (`false`).*
 
-#### `os`
-
-*The property `os` encodes the operating system environment the Tidepool Uploader is running inside. This value is determined at runtime as part of the app initialization step through the `chrome.runtime.getPlatformInfo` function.*
-
 #### `page`
 
 *The property `page` encodes the current "page" of the application that is active. Possible values are, for example, `SETTINGS` for the device selection "page" and `MAIN` for the main upload interface shown in [the app snapshot](./ExampleStateTree.md).*

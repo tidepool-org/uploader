@@ -148,7 +148,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
     }
   },
   "dropdown": true,
-  "os": "mac",
   "page": "MAIN",
   "unsupported": false,
   "blipUrls": {
@@ -156,7 +155,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
     "signUp": "http://localhost:3000/signup",
     "viewDataLink": "http://localhost:3000/patients/4a86ec44ff/data"
   },
-  "version": "0.245.0",
   "working": {
     "checkingVersion": false,
     "fetchingUserInfo": false,

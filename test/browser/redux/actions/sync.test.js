@@ -158,24 +158,6 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('setOs', () => {
-    const OS = 'mac';
-    it('should be an FSA', () => {
-      let action = syncActions.setOs(OS);
-
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to set the operating system', () => {
-      const expectedAction = {
-        type: actionTypes.SET_OS,
-        payload: {os: OS},
-        meta: {source: actionSources[actionTypes.SET_OS]}
-      };
-      expect(syncActions.setOs(OS)).to.deep.equal(expectedAction);
-    });
-  });
-
   describe('setPage', () => {
     const PAGE = 'FOO';
     it('should be an FSA', () => {

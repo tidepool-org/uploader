@@ -57,6 +57,7 @@ describe('Asynchronous Actions', () => {
   describe('doAppInit [no session token in local storage]', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS actions', (done) => {
       const config = {
+        os: 'test',
         version: '0.100.0',
         API_URL: 'http://www.acme.com'
       };
@@ -87,11 +88,6 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
-        },
-        {
-          type: actionTypes.SET_OS,
-          payload: {os: 'test'},
-          meta: {source: actionSources[actionTypes.SET_OS]}
         },
         {
           type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
@@ -137,6 +133,7 @@ describe('Asynchronous Actions', () => {
   describe('doAppInit [with session token in local storage]', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE actions', (done) => {
       const config = {
+        os: 'test',
         version: '0.100.0',
         API_URL: 'http://www.acme.com'
       };
@@ -173,11 +170,6 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
-        },
-        {
-          type: actionTypes.SET_OS,
-          payload: {os: 'test'},
-          meta: {source: actionSources[actionTypes.SET_OS]}
         },
         {
           type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
@@ -240,6 +232,7 @@ describe('Asynchronous Actions', () => {
   describe('doAppInit [with error in api init]', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, INIT_APP_FAILURE actions', (done) => {
       const config = {
+        os: 'test',
         version: '0.100.0',
         API_URL: 'http://www.acme.com/'
       };
@@ -267,11 +260,6 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
-        },
-        {
-          type: actionTypes.SET_OS,
-          payload: {os: 'test'},
-          meta: {source: actionSources[actionTypes.SET_OS]}
         },
         {
           type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
