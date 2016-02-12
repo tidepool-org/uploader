@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="0" data-basepath="." data-revision="Thu Nov 26 2015 17:14:54 GMT-0800 (PST)">
+    <div class="book" data-level="0" data-basepath="." data-revision="Thu Feb 11 2016 20:23:58 GMT-0800 (PST)">
     
 
 <div class="book-summary">
@@ -85,46 +85,46 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.1" data-path="docs/state/preredux/index.html">
+        <li class="chapter " data-level="1.1" data-path="docs/state/ExampleStateTree.html">
             
                 
-                    <a href="./docs/state/preredux/index.html">
+                    <a href="./docs/state/ExampleStateTree.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.1.</b>
                         
-                        Pre-redux
+                        Example state tree
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="docs/state/preredux/Example.html">
+        <li class="chapter " data-level="1.2" data-path="docs/state/StateTreeGlossary.html">
             
                 
-                    <a href="./docs/state/preredux/Example.html">
+                    <a href="./docs/state/StateTreeGlossary.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.2.</b>
                         
-                        Pre-redux example
+                        Glossary of state tree terms
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="docs/state/preredux/Problems.html">
+        <li class="chapter " data-level="1.3" data-path="docs/state/CustomMiddleware.html">
             
                 
-                    <a href="./docs/state/preredux/Problems.html">
+                    <a href="./docs/state/CustomMiddleware.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.3.</b>
                         
-                        Pre-redux problems
+                        Custom middleware
                     </a>
             
             
@@ -292,10 +292,10 @@
             
         </li>
     
-        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcomG4.html">
+        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcom.html">
             
                 
-                    <a href="./lib/drivers/docs/dexcomG4.html">
+                    <a href="./lib/drivers/docs/dexcom.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -546,42 +546,70 @@
                     
                         <h1 id="tidepool-uploader">Tidepool Uploader</h1>
 <p><a href="https://travis-ci.org/tidepool-org/chrome-uploader" target="_blank"><img src="https://travis-ci.org/tidepool-org/chrome-uploader.png" alt="Build Status"></a></p>
-<p>This is a Chrome App that acts as an uploader client for Tidepool. It is intended to allow you to plug devices into the USB port and automatically load the data stored on it up to the Tidepool cloud.</p>
-<p>WARNING! THIS SOURCE CODE IS UNDER ACTIVE DEVELOPMENT AND IS KNOWN TO BE INCOMPLETE AND WITH ERRORS. IT IS ACTIVELY CHANGING. THIS CODE SHOULD NOT BE USED FOR COMMERCIAL MEDICAL SYSTEMS OR FOR ANY PURPOSE OTHER THAN ONGOING DEVELOPMENT AND IMPROVEMENT OF THIS CODE.</p>
+<p>This is a <a href="https://developer.chrome.com/apps/about_apps" target="_blank">Chrome App</a> that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into the USB port and automatically load the data stored on them up to the Tidepool cloud.</p>
 <h2 id="how-to-set-it-up">How to set it up</h2>
 <ol>
 <li>Clone this repository.</li>
 <li>Run <code>npm install</code></li>
-<li>Set the config for the environment you want to target (See <a href="#config">Config</a> section below.)</li>
-<li>Run <code>npm start</code> (This will bundle files and watch for changes. When it stops printing output you can continue to the next step.)</li>
+<li>Set the config for the environment you want to target (see <a href="#config">Config</a> below)</li>
+<li>Run <code>npm start</code> (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)</li>
 <li>Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).</li>
 <li>Click &quot;Load Unpacked Extension&quot;.</li>
-<li>Choose the directory you checked out above and click OK.</li>
+<li>Choose the directory where you cloned the repository and click OK.</li>
 <li>To run it, you can choose &quot;Launch&quot; from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.</li>
-<li>If you&apos;re developing, you may find that the only way it runs properly is to hit &quot;Reload&quot; after each change to the source. You will definitely need to reload any time you change the manifest.</li>
+<li>To open the JavaScript console/Chrome Dev Tools, click on the <code>index.html</code> link in the section of chrome://extensions devoted to the uploader. (Note: this link will only appear after you&apos;ve launched the uploader.)</li>
+<li>If you&apos;re developing, you may find that the only way it runs properly is to hit the &quot;Reload&quot; link in chrome://extensions after each change to the source. You will definitely need to reload any time you change the manifest.</li>
 </ol>
 <h2 id="config">Config</h2>
 <p>Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the <code>.config.js</code> file. If you need to read a config value inside the app, use <code>var config = require(&apos;./lib/config&apos;)</code>. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when <a href="http://developer.tidepool.io/starting-up-services/" target="_blank">running the whole Tidepool platform locally using runservers</a>), for example:</p>
 <pre><code class="lang-bash">$ <span class="hljs-built_in">source</span> config/local.sh
 $ npm start
 </code></pre>
-<h3 id="debug-mode">Debug Mode</h3>
-<p>The environment variable <code>DEBUG_ERROR</code> (boolean) controls whether or not errors are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible). Debug mode is turned on by default in <code>config/debug.sh</code>.</p>
-<h2 id="how-to-run-the-tests">How to run the tests</h2>
+<h3 id="debug-mode-s">Debug Mode(s)</h3>
+<p>For ease of development we have several debug features that developers can turn on and off at will (and to suit various development use cases, such as working on a new device driver versus working on the app&apos;s UI). Each of these debug features is set with an environment variable, but rather than being loaded through <code>.config.js</code> (as we do for production configuration variables, see above), we load these through the webpack <code>DefinePlugin</code> (see <a href="https://github.com/petehunt/webpack-howto#6-feature-flags" target="_blank">Pete Hunt&apos;s webpack-howto</a> for an example, although note Hunt uses the term &apos;feature flag&apos;).</p>
+<h4 id="-debug-error"><code>DEBUG_ERROR</code></h4>
+<p>The environment variable <code>DEBUG_ERROR</code> (boolean) controls whether or not errors sourced in device drivers are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible, along with a stack trace). <code>DEBUG_ERROR</code> mode is turned on by default in <code>config/device-debug.sh</code>.</p>
+<h4 id="-redux-log"><code>REDUX_LOG</code></h4>
+<p>The environment variable <code>REDUX_LOG</code> (boolean) controls whether or not the <a href="https://github.com/fcomb/redux-logger/blob/master/README.md" target="_blank">redux logger middleware</a> is included. This middleware logs all redux actions in the Chrome developer console, including the (entire) previous and following app state trees. It is primarily useful when working on the UI of the app, and in fact can be quite performance-expensive (especially when uploading a device, due to the fact that every update to the progress bar constitutes an action), so it is not recommended to turn it on while working on device code.</p>
+<h4 id="-redux-dev-ui"><code>REDUX_DEV_UI</code></h4>
+<p>The environment variable <code>REDUX_DEV_UI</code> (boolean) controls whether or not the <a href="https://github.com/gaearon/redux-devtools/blob/master/README.md" target="_blank">redux dev tools UI</a> is included. The redux dev tools add a UI interface for exploring - and, to a limited extent, manipulating - app actions and state. Even when <code>REDUX_DEV_UI</code> is <code>true</code>, we have the dev tools hidden by default: the key combination <code>ctrl + h</code> will toggle their visibility. The key combination <code>ctrl + q</code> will rotate (clockwise) the location at which the dev tools are anchored; the default is for them to be anchored at the bottom of the app. Similarly to the redux logger middleware, the redux dev tools UI is also quite performance expensive and only recommended for use while working on UI code.</p>
+<p><code>REDUX_LOG</code> and <code>REDUX_DEV_UI</code> are both turned on by default in <code>config/ui-debug.sh</code>.</p>
+<h3 id="local-development-w-o-debug-mode-s">Local Development w/o Debug Mode(s)</h3>
+<p>All debug options are turned <em>off</em> by default in <code>config/local.sh</code>.</p>
+<h2 id="tests">Tests</h2>
+<p>There are two sets of (unit) tests for the code in this repository.</p>
+<p>The tests for all device and data-processing code currently run in the <a href="https://nodejs.org/en/" target="_blank">nodejs</a> server-side JavaScript environment. (We plan to eventually migrate these tests to run in-browser since the code itself runs in-browser in the Chrome App.)</p>
+<p>The tests for all the UI code run using the <a href="https://karma-runner.github.io/0.13/index.html" target="_blank">Karma test runner</a> in <a href="http://phantomjs.org/" target="_blank">the headless WebKit browser PhantomJS</a> or the Chrome browser.</p>
+<p>To run the tests in this repository as they are run on Travis CI, use:</p>
 <pre><code class="lang-bash">$ npm <span class="hljs-built_in">test</span>
 </code></pre>
-<h2 id="publishing-to-the-devel-staging-test-chrome-store-or-production">Publishing (to the devel/staging test Chrome store or production)</h2>
+<p>To run just the UI tests in both PhantomJS and Chrome <em>locally</em>, use:</p>
+<pre><code class="lang-bash">$ npm run browser-tests
+</code></pre>
+<p>To run just the device and data-processing tests in node, use:</p>
+<pre><code class="lang-bash">$ npm run node-tests
+</code></pre>
+<p>To run just the UI tests in PhantomJS with webpack &amp; Karma watching all files for changes and both rebundling the app and re-running the tests on every change, use:</p>
+<pre><code class="lang-bash">$ npm run karma-watch
+</code></pre>
+<h2 id="linting-code-style">Linting &amp; Code Style</h2>
+<p>We use <a href="http://eslint.org/" target="_blank">ESLint</a> to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the <code>.eslintrc</code> configuration file.</p>
+<p>To run the linter (which also runs on Travis CI with every push, along with <code>npm test</code>), use:</p>
+<pre><code>$ npm run lint
+</code></pre><p>Aside from the (fairly minimal) JavaScript code style options we <em>enforce</em> through the linter, we ask that internal developers and external contributors try to match the style of the code in each module being modified. New modules should look to similar modules for style guidance. In React component code, use existing ES6/ES2015 components (not legacy ES5 components) as the style model for new components.</p>
+<p><strong>NB: Please keep ES5 and ES6/ES2015 code distinct. Do <em>NOT</em> use ES6/ES2105 features in ES5 modules (most easily recognizable by the use of <code>require</code> rather than <code>import</code>).</strong></p>
+<h2 id="publishing-to-the-devel-staging-testing-development-chrome-store-account-or-production">Publishing (to the devel/staging testing &amp; development Chrome store account or production)</h2>
 <p>Assuming you&apos;ve already merged any changes to master and are on master locally...</p>
 <ol>
-<li>Start with a fresh Terminal window and <code>cd</code> into the chrome-uploader repo (Alternatively, just make certain you haven&apos;t set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)</li>
-<li>Bump version number and tag with <code>mversion minor -m</code> (<code>npm install -g mversion</code> if you haven&apos;t already)</li>
-<li>Push the new tag commit and tag up to GitHub with <code>git push origin master</code> and <code>git push origin --tags</code></li>
-<li>Checkout your new tag, using <code>git checkout tags/&lt;tag_name&gt;</code></li>
-<li>Remove your node modules with <code>rm -rf node_modules/</code> (This may not always be necessary, but it&apos;s good to be safe in case anything has changed.)</li>
-<li>Install fresh dependencies with <code>npm install</code></li>
-<li>Build the <code>dist.zip</code> file with <code>npm run build</code> - Look for the &quot;<strong>Using the default environment, which is now production</strong>&quot; message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing &apos;Load unpacked extension&apos; from chrome://extensions to the <code>dist/</code> subdir.)</li>
-<li>Follow instructions in secrets for actually publishing to the Chrome store</li>
-<li>Fill out the release notes for the tag on GitHub. If tag is known to <em>not</em> be a release candidate, mark as a pre-release.</li>
+<li>Start with a fresh Terminal window and <code>cd</code> into the chrome-uploader repo. (Alternatively, just make certain you haven&apos;t set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)</li>
+<li>Use the command <code>mversion minor -m</code> to bump the version number and create a tag. (You will need to <code>npm install -g mversion</code> if you don&apos;t have <a href="https://github.com/mikaelbr/mversion" target="_blank">mversion</a> installed already.)</li>
+<li>Push the new tag commit and tag up to GitHub with <code>git push origin master</code> and <code>git push origin --tags</code>.</li>
+<li>Checkout your new tag, using <code>git checkout tags/&lt;tag_name&gt;</code>.</li>
+<li>Remove your node modules with <code>rm -rf node_modules/</code>. (This may not always be necessary, but it&apos;s good to be safe in case anything has changed.)</li>
+<li>Make sure you are using node v0.12.0 and install fresh dependencies with <code>npm install</code>.</li>
+<li>Build the <code>dist.zip</code> file with <code>npm run build</code>. Look for the &quot;<strong>Using the default environment, which is now production</strong>&quot; message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing &apos;Load unpacked extension&apos; from chrome://extensions to the <code>dist/</code> subdir.)</li>
+<li>Follow instructions in secrets for actually publishing to the Chrome store.</li>
+<li>Fill out the release notes for the tag on GitHub. If the tag is known to <em>not</em> be a release candidate, mark it as a pre-release.</li>
 </ol>
 
                     

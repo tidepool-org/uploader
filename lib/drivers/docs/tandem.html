@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="4.9" data-basepath="../../.." data-revision="Thu Nov 26 2015 17:14:54 GMT-0800 (PST)">
+    <div class="book" data-level="4.9" data-basepath="../../.." data-revision="Thu Feb 11 2016 20:23:58 GMT-0800 (PST)">
     
 
 <div class="book-summary">
@@ -87,46 +87,46 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.1" data-path="docs/state/preredux/index.html">
+        <li class="chapter " data-level="1.1" data-path="docs/state/ExampleStateTree.html">
             
                 
-                    <a href="../../../docs/state/preredux/index.html">
+                    <a href="../../../docs/state/ExampleStateTree.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.1.</b>
                         
-                        Pre-redux
+                        Example state tree
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="docs/state/preredux/Example.html">
+        <li class="chapter " data-level="1.2" data-path="docs/state/StateTreeGlossary.html">
             
                 
-                    <a href="../../../docs/state/preredux/Example.html">
+                    <a href="../../../docs/state/StateTreeGlossary.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.2.</b>
                         
-                        Pre-redux example
+                        Glossary of state tree terms
                     </a>
             
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="docs/state/preredux/Problems.html">
+        <li class="chapter " data-level="1.3" data-path="docs/state/CustomMiddleware.html">
             
                 
-                    <a href="../../../docs/state/preredux/Problems.html">
+                    <a href="../../../docs/state/CustomMiddleware.html">
                 
                         <i class="fa fa-check"></i>
                         
                             <b>1.3.</b>
                         
-                        Pre-redux problems
+                        Custom middleware
                     </a>
             
             
@@ -294,10 +294,10 @@
             
         </li>
     
-        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcomG4.html">
+        <li class="chapter " data-level="4.5" data-path="lib/drivers/docs/dexcom.html">
             
                 
-                    <a href="../../../lib/drivers/docs/dexcomG4.html">
+                    <a href="../../../lib/drivers/docs/dexcom.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -565,9 +565,9 @@
 <li><code>[x]</code> if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight</li>
 </ul>
 </li>
-<li><code>[?]</code> manual temp basal<ul>
-<li><code>[?]</code> basal rate intervals with a start time, duration, and rate delivered</li>
-<li><code>[?]</code> object representing suppressed scheduled basal <em>for each segment of the basal schedule that the temp basal intersects</em></li>
+<li><code>[ ]</code> manual temp basal<ul>
+<li><code>[ ]</code> basal rate intervals with a start time, duration, and rate delivered</li>
+<li><code>[ ]</code> object representing suppressed scheduled basal <em>for each segment of the basal schedule that the temp basal intersects</em></li>
 </ul>
 </li>
 <li><code>[x]</code> percentage temp basal<ul>
@@ -576,7 +576,7 @@
 <li><code>[ ]</code> rate computed from percent x suppressed.rate</li>
 </ul>
 </li>
-<li><code>*[-]</code> object representing suppressed scheduled basal <em>for each segment of the basal schedule that the temp basal intersects</em></li>
+<li><code>[x]</code> object representing suppressed scheduled basal <em>for each segment of the basal schedule that the temp basal intersects</em></li>
 </ul>
 </li>
 <li><code>[x]</code> &quot;suspended&quot; basals (see <a href="#device-events">status - suspends &amp; resumes</a> below)<ul>
@@ -590,7 +590,12 @@
 </ul>
 </li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h5 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h5>
+<ul>
+<li>we cannot add the name of the basal schedule on each scheduled basal rate interval at the moment, as that would require a full settings history</li>
+<li>we cannot represent suppressed scheduled basals during suspended basals at the moment, as we require a full settings history to determine them for each segment of the basal schedule that the suspended basal intersects</li>
+<li>manual temp basals are not implemented, as Tandem only allows for percentage temp basals</li>
+</ul>
 <h4 id="boluses">Boluses</h4>
 <ul>
 <li><code>[x]</code> normal bolus<ul>
@@ -636,67 +641,73 @@
 <h4 id="device-events">Device Events</h4>
 <ul>
 <li>alarms:<ul>
-<li><code>[?]</code> low insulin</li>
-<li><code>[?]</code> no insulin<ul>
+<li><code>[x]</code> low insulin</li>
+<li><code>[x]</code> no insulin<ul>
+<li><code>[ ]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
+</ul>
+</li>
+<li><code>[x]</code> low power</li>
+<li><code>[x]</code> no power<ul>
 <li><code>[?]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
 </ul>
 </li>
-<li><code>[?]</code> low power</li>
-<li><code>[?]</code> no power<ul>
-<li><code>[?]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
-</ul>
-</li>
-<li><code>[?]</code> occlusion<ul>
-<li><code>[?]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
+<li><code>[x]</code> occlusion<ul>
+<li><code>[x]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
 </ul>
 </li>
 <li><code>[?]</code> no delivery<ul>
 <li><code>[?]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
 </ul>
 </li>
-<li><code>[?]</code> auto-off<ul>
-<li><code>[?]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
+<li><code>[x]</code> auto-off<ul>
+<li><code>[ ]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
 </ul>
 </li>
-<li><code>[?]</code> over limit (i.e., max bolus exceeded through override)</li>
-<li><code>[?]</code> other alarm types (details to be provided in <code>payload</code> object)</li>
+<li><code>[ ]</code> over limit (i.e., max bolus exceeded through override)</li>
+<li><code>[x]</code> other alarm types (details to be provided in <code>payload</code> object)</li>
 </ul>
 </li>
-<li><code>*[-]</code> prime events<ul>
-<li><code>[?]</code> prime target = tubing</li>
-<li><code>*[-]</code> prime target = cannula</li>
+<li><code>[x]</code> prime events<ul>
+<li><code>[x]</code> prime target = tubing</li>
+<li><code>[x]</code> prime target = cannula</li>
 <li><code>[ ]</code> prime targets not differentiated</li>
-<li><code>[?]</code> prime volume in units of insulin</li>
+<li><code>[x]</code> prime volume in units of insulin</li>
 </ul>
 </li>
-<li><code>*[-]</code> reservoir change (or reservoir rewind)<ul>
-<li><code>*[-]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
+<li><code>[x]</code> reservoir change (or reservoir rewind)<ul>
+<li><code>[ ]</code> needed to infer a suspend (stoppage of all insulin delivery)</li>
 </ul>
 </li>
-<li><code>*[-]</code> status events (i.e., suspend &amp; resume)<ul>
-<li><code>[?]</code> suspensions of insulin delivery are represented as (interval) events with a duration OR</li>
-<li><code>[?]</code> suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption</li>
-<li><code>[?]</code> reason/agent of suspension (<code>automatic</code> or <code>manual</code>)</li>
-<li><code>[?]</code> reason/agent of resumption (<code>automatic</code> or <code>manual</code>)</li>
+<li><code>[x]</code> status events (i.e., suspend &amp; resume)<ul>
+<li><code>[ ]</code> suspensions of insulin delivery are represented as (interval) events with a duration OR</li>
+<li><code>[x]</code> suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption</li>
+<li><code>[x]</code> reason/agent of suspension (<code>automatic</code> or <code>manual</code>)</li>
+<li><code>[ ]</code> reason/agent of resumption (<code>automatic</code> or <code>manual</code>)</li>
 </ul>
 </li>
 <li>calibrations: see <a href="../../../docs/checklisttemplates/CGMChecklist.html">the CGM checklist</a> instead</li>
-<li><code>*[-]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
-<li><code>*[-]</code> device display time <code>from</code> (before change) and <code>to</code> (result of change)</li>
+<li><code>[x]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
+<li><code>[x]</code> device display time <code>from</code> (before change) and <code>to</code> (result of change)</li>
 <li><code>[x]</code> agent of change (<code>automatic</code> or <code>manual</code>)</li>
 <li><code>[ ]</code> timezone</li>
 <li><code>[ ]</code> reason for change (read from device)</li>
 </ul>
 </li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h5 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h5>
+<ul>
+<li>At the moment we only process the most recent 90 days of log history, as it takes too long to get all the records from pumps with a large history. This means we also need to search for the newest relevant event to start reading from. Events like USB-connected are considered to be not relevant (since we don&apos;t process them), but we do consider events like reservoir-change events to be relevant (as they are rendered in the Basics view).</li>
+<li>An occlusion alarm does not trigger a basal rate change event (used to create all other basals), so a suspended basal is created manually.</li>
+<li>For status events reasons and causes are provided from the alarms if available, i.e., for occlusion, auto-off, no-insulin and no-power alarms. For cartridge-change alarms, the cause will show as other.</li>
+<li>There are no Tandem alarm or alert types that map directly to &quot;no delivery&quot;, which is why it&apos;s not implemented.</li>
+</ul>
 <h4 id="smbg">SMBG</h4>
 <ul>
 <li><code>[x]</code> blood glucose value</li>
 <li><code>[x]</code> subType (<code>linked</code> or <code>manual</code>)</li>
-<li><code>*[?]</code> units of value (read from device, not hard-coded)</li>
-<li><code>*[?]</code> out-of-range values (LO or HI)</li>
-<li><code>*[?]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
+<li><code>[ ]</code> units of value (read from device, not hard-coded)</li>
+<li><code>[ ]</code> out-of-range values (LO or HI)</li>
+<li><code>[ ]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
 </ul>
 <p>No Tidepool data model yet:</p>
 <ul>
@@ -704,31 +715,34 @@
 <li><code>[ ]</code> other/freeform tags</li>
 <li><code>[?]</code> categorization of value according to BG target(s) from settings</li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h4 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h4>
+<ul>
+<li>Tandem only provides BG thresholds for triggering reminders. Out-of-range/threshold info are available for CGM data.</li>
+</ul>
 <h4 id="settings">Settings</h4>
 <ul>
-<li><code>*[-]</code> basal schedules<ul>
+<li><code>[x]</code> basal schedules<ul>
 <li><code>[ ]</code> name of basal schedule OR</li>
-<li><code>*[-]</code> name of settings profile</li>
-<li><code>*[-]</code> each schedule as a set of objects each with a rate and a start time</li>
+<li><code>[x]</code> name of settings profile</li>
+<li><code>[x]</code> each schedule as a set of objects each with a rate and a start time</li>
 </ul>
 </li>
-<li><code>*[-]</code> name of currently active basal schedule</li>
+<li><code>[x]</code> name of currently active basal schedule</li>
 <li><code>[?]</code> units of all blood glucose-related fields (read from device, not hard-coded)</li>
 <li><code>[?]</code> units of all carb-related fields (read from device, not hard-coded)</li>
-<li><code>*[-]</code> carb ratio(s)<ul>
-<li><code>*[-]</code> name of settings profile</li>
-<li><code>*[-]</code> (one or more) set(s) of objects each with a ratio (amount) and a start time</li>
+<li><code>[x]</code> carb ratio(s)<ul>
+<li><code>[x]</code> name of settings profile</li>
+<li><code>[x]</code> (one or more) set(s) of objects each with a ratio (amount) and a start time</li>
 </ul>
 </li>
-<li><code>*[-]</code> insulin sensitivity factor(s)<ul>
-<li><code>*[-]</code> name of settings profile</li>
-<li><code>*[-]</code> (one or more) set(s) of objects each with an amount and a start time</li>
+<li><code>[x]</code> insulin sensitivity factor(s)<ul>
+<li><code>[x]</code> name of settings profile</li>
+<li><code>[x]</code> (one or more) set(s) of objects each with an amount and a start time</li>
 </ul>
 </li>
-<li><code>*[-]</code> blood glucose target(s)<ul>
-<li><code>*[-]</code> name of settings profile</li>
-<li><code>*[-]</code> (one or more) set(s) of objects each with a target and a start time</li>
+<li><code>[x]</code> blood glucose target(s)<ul>
+<li><code>[x]</code> name of settings profile</li>
+<li><code>[x]</code> (one or more) set(s) of objects each with a target and a start time</li>
 <li>target shape:<ul>
 <li><code>[ ]</code> shape <code>{low: 80, high: 120}</code> OR</li>
 <li><code>[x]</code> shape <code>{target: 100}</code> OR</li>
@@ -746,22 +760,22 @@
 </ul>
 <p>No Tidepool data model yet:</p>
 <ul>
-<li><code>[ ]</code> low insulin alert threshold</li>
+<li><code>[-]</code> low insulin alert threshold</li>
 <li>auto-off:<ul>
-<li><code>[ ]</code> enabled</li>
-<li><code>[ ]</code> threshold</li>
+<li><code>[-]</code> enabled</li>
+<li><code>[-]</code> threshold</li>
 </ul>
 </li>
 <li><code>[ ]</code> language</li>
 <li>reminders:<ul>
-<li><code>[ ]</code> BG reminder</li>
-<li><code>[ ]</code> bolus reminder</li>
+<li><code>[-]</code> BG reminder</li>
+<li><code>[-]</code> bolus reminder</li>
 </ul>
 </li>
-<li><code>[ ]</code> alert settings (volume or vibration-only; whether enabled)</li>
+<li><code>[-]</code> alert settings (volume or vibration-only; whether enabled)</li>
 <li>basal features:<ul>
 <li><code>[ ]</code> temp basal type (<code>manual</code> or <code>percentage</code>)</li>
-<li><code>[ ]</code> max basal (as a u/hr rate)</li>
+<li><code>[-]</code> max basal (as a u/hr rate)</li>
 </ul>
 </li>
 <li>bolus features:<ul>
@@ -771,18 +785,21 @@
 <li><code>[ ]</code> extended bolus type (<code>manual</code> or <code>percentage</code>)</li>
 <li><code>[ ]</code> min BG to allow calculation of bolus delivery</li>
 <li><code>[ ]</code> reverse correction enabled</li>
-<li><code>[ ]</code> max bolus</li>
+<li><code>[-]</code> max bolus</li>
 <li>&quot;quick&quot;/manual bolus:<ul>
-<li><code>[ ]</code> enabled</li>
-<li><code>[ ]</code> increment</li>
+<li><code>[-]</code> enabled</li>
+<li><code>[-]</code> increment</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><code>[ ]</code> insulin action time</li>
+<li><code>[-]</code> insulin action time</li>
 <li><code>[ ]</code> clock display preference (12h vs 24h format)</li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h5 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h5>
+<ul>
+<li>To build a full settings history we&apos;ll need to use the entire log record, not just the last 90 days. For example, a profile name change event only contains the new name, so you&apos;ll need to read the record where it was first created to get the original name. Until we do diff uploads (so it only happens once), or significantly improve the upload speed, reading the entire log record is not possible.</li>
+</ul>
 <h4 id="wizard">Wizard</h4>
 <ul>
 <li><code>[x]</code> recommended bolus dose<ul>
@@ -809,21 +826,25 @@
 <li><code>[ ]</code> shape <code>{target: 100, high: 120}</code></li>
 </ul>
 </li>
-<li><code>*[?]</code> units of BG input and related fields (read from device, not hard-coded; related fields are <code>bgInput</code>, <code>bgTarget</code>, <code>insulinSensitivityFactor</code>)</li>
+<li><code>[ ]</code> units of BG input and related fields (read from device, not hard-coded; related fields are <code>bgInput</code>, <code>bgTarget</code>, <code>insulinSensitivityFactor</code>)</li>
 <li><code>[x]</code> link to bolus delivered as a result of wizard (via log entry ID or similar)</li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h5 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h5>
+<ul>
+<li>Instead of a bolus calculator (or wizard), Tandem has a carbs setting enabled or not. When the carbs setting is not enabled, a manual bolus is entered. When it is enabled, a recommended bolus dose is provided.</li>
+</ul>
 <h4 id="-bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
 <ul>
 <li><code>[x]</code> index<ul>
-<li><code>[x]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
+<li><code>[ ]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
 <li><code>[x]</code> internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR</li>
 <li><code>[ ]</code> ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time</li>
 </ul>
 </li>
 <li><code>[x]</code> date &amp; time settings changes</li>
 </ul>
-<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h5 id="device-specific-add-any-device-specific-notes-additions-here">Device-specific? (Add any device-specific notes/additions here.)</h5>
+<p>At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, but we&apos;ll need to research and potentially prototype these to figure out the best approach and then implement it.</p>
 <h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
 <blockquote>
 <p><strong>NB:</strong> You can and should add to this section if there are other data types documented in the device&apos;s data protocol specification but not part of Tidepool&apos;s data model (yet).</p>
