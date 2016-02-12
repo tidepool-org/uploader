@@ -10,10 +10,7 @@ lib-cov
 pids
 logs
 results
-config/*
-!config/device-debug.sh
-!config/local.sh
-!config/ui-debug.sh
+config/
 build
 dist
 dist.zip
