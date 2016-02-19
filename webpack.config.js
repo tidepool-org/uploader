@@ -38,7 +38,8 @@ var config = {
     loaders: [
       { test: /\.js$/, exclude: /(node_modules)/, loader: 'babel-loader' },
       { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel-loader' },
-      { test: /\.less$/, loader: 'style!css!less' },
+      { test: /\.module\.less$/, loader: 'style?sourceMap!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less?sourceMap' },
+      { test: /^((?!module).)*\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]
   },

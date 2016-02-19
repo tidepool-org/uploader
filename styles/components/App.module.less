@@ -13,6 +13,8 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import '../core/variables.less';
+
 .App {
   height: 100%;
 }
@@ -35,6 +37,20 @@
   margin-right: auto;
   margin-bottom: 20px;
   height: 470px;
+}
+
+.App-page--login {
+  composes: App-page;
+  width: 300px;
+}
+
+.App-page--main, .App-page--settings {
+  composes: App-page;
+  width: 550px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: @App-mainPageBorder solid @gray-border;
+  border-radius: 2px;
+  padding: 15px (30px - @App-mainPageBorder) 25px;
 }
 
 .App--login .App-page {
