@@ -209,7 +209,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(util.findOffsetDifferences(b).rawDifference).to.equal(80000);
     });
 
-    it('rounds offsetDifference to the nearest 15 minutes', function(){
+    it('rounds offsetDifference to the nearest 30 minutes', function(){
       // from Pacific/Chatham (UTC+13:45) to UTC
       var a = {
         change: {
@@ -217,29 +217,29 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-04-02T20:04:00'
         }
       };
-      expect(util.findOffsetDifferences(a).offsetDifference).to.equal(825);
+      expect(util.findOffsetDifferences(a).offsetDifference).to.equal(810);
     });
 
-    it('only allows for "clock drift" adjustments of < 8 minutes', function(){
+    it('only allows for "clock drift" adjustments of < 15 minutes', function(){
       // clock drift adjustment = difference of 0
       var a = {
         change: {
-          from: '2015-04-01T00:07:59',
+          from: '2015-04-01T00:14:59',
           to: '2015-04-01T00:00:00'
         }
       };
       // won't be interpreted as clock drift
-      // but rather offset change of 15 minutes
+      // but rather offset change of 30 minutes
       var b = {
         change: {
-          from: '2015-04-01T00:08:00',
+          from: '2015-04-01T00:15:00',
           to: '2015-04-01T00:00:00'
         }
       };
       expect(util.findOffsetDifferences(a).offsetDifference).to.equal(0);
-      expect(util.findOffsetDifferences(a).rawDifference).to.equal(479000);
-      expect(util.findOffsetDifferences(b).offsetDifference).to.equal(15);
-      expect(util.findOffsetDifferences(b).rawDifference).to.equal(480000);
+      expect(util.findOffsetDifferences(a).rawDifference).to.equal(899000);
+      expect(util.findOffsetDifferences(b).offsetDifference).to.equal(30);
+      expect(util.findOffsetDifferences(b).rawDifference).to.equal(900000);
     });
   });
 
