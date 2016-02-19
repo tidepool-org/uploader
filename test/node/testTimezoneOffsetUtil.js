@@ -426,21 +426,21 @@ describe('TimezoneOffsetUtil.js', function(){
         // i.e., Left Coaster goes to NZ
         var toNZ = builder.makeDeviceEventTimeChange()
           .with_change({
-            from: '2015-04-02T12:26:00',
-            to: '2015-04-03T08:25:00'
+            from: '2015-03-25T12:26:00',
+            to: '2015-03-26T08:25:00'
           })
-          .with_deviceTime('2015-04-02T12:26:00')
-          .set('jsDate', new Date('2015-04-02T12:26:00'))
+          .with_deviceTime('2015-03-25T12:26:00')
+          .set('jsDate', new Date('2015-03-25T12:26:00'))
           .set('index', 10);
-        var util = new TZOUtil('Pacific/Auckland', '2015-04-15T00:00:00.000Z', [toNZ]);
-        expect(util.lookup(new Date('2015-04-05T00:00:00'))).to.deep.equal({
-          time: '2015-04-04T11:00:00.000Z',
+        var util = new TZOUtil('Pacific/Auckland', '2015-04-01T00:00:00.000Z', [toNZ]);
+        expect(util.lookup(new Date('2015-03-31T00:00:00'))).to.deep.equal({
+          time: '2015-03-30T11:00:00.000Z',
           timezoneOffset: 780,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-10T00:00:00'))).to.deep.equal({
-          time: '2015-03-10T07:00:00.000Z',
+        expect(util.lookup(new Date('2015-03-15T00:00:00'))).to.deep.equal({
+          time: '2015-03-15T07:00:00.000Z',
           timezoneOffset: -420,
           clockDriftOffset: 60000,
           conversionOffset: 0
