@@ -15,6 +15,7 @@
 
 .Login-input {
   margin-bottom: 15px;
+  display: flex;
 }
 
 .Login-form {
@@ -22,12 +23,14 @@
 }
 
 .Login-actions {
+  display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   margin-top: 5px;
 }
 
 .Login-remember {
+  display: flex;
   flex-flow: row wrap;
   align-items: center;
 
@@ -39,7 +42,7 @@
 
 .Login-button {
   &:extend(.btn all);
-  
+
   background-color: @blue;
   color: #fff;
 
@@ -66,6 +69,7 @@
 }
 
 .Login-error {
+  display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
   color: @red;
