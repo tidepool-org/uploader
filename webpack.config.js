@@ -3,7 +3,12 @@ var _ = require('lodash');
 var webpack = require('webpack');
 
 var definePlugin = new webpack.DefinePlugin({
-  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false'))
+  // this first as advised to get the correct production build of redux
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"development"',
+  __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
+  __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
+  __REDUX_DEV_UI__: JSON.stringify(JSON.parse(process.env.REDUX_DEV_UI || 'false')),
+  __TEST__: false
 });
 
 if (process.env.DEBUG_ERROR === 'true') {
@@ -31,19 +36,14 @@ var config = {
   },
   module: {
     loaders: [
-      { test: /\.jsx$/, loader: 'jsx' },
+      { test: /\.js$/, exclude: /(node_modules)/, loader: 'babel-loader' },
+      { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel-loader' },
       { test: /\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]
   },
   plugins: [
-    definePlugin,
-    new webpack.DefinePlugin({
-      'process.env': Object.keys(process.env).reduce(function(o, k) {
-        o[k] = JSON.stringify(process.env[k]);
-        return o;
-      }, {})
-    })
+    definePlugin
   ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
