@@ -30,12 +30,12 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   it('returns an object', function(){
-    var util = new TZOUtil('US/Pacific', '2016-01-01T00:00:00.000Z', []);
+    var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', []);
     expect(typeof util).to.equal('object');
   });
 
   it('throws an error if a named timezone not provided as first param', function(){
-    var fn = function() { new TZOUtil('foo', '2016-01-01T00:00:00.000Z', '2015-01-01T00:00:00.000Z', []); };
+    var fn = function() { new TZOUtil('foo', '2015-06-01T00:00:00.000Z', '2015-01-01T00:00:00.000Z', []); };
     expect(fn).to.throw('Unrecognized timezone name!');
   });
 
@@ -45,12 +45,12 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   it('throws an error if `changes` not empty and not all events are `timeChange`', function(){
-    var fn = function() { new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [{type: 'foo'}]); };
+    var fn = function() { new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [{type: 'foo'}]); };
     expect(fn).to.throw(Error);
   });
 
   it('defaults to across-the-board timezone application if no `changes` provided as third param', function(){
-    var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', []);
+    var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
     expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
       timezoneOffset: -240,
@@ -60,7 +60,7 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   it('identifies the type of timezone offset production used as `utc-bootstrapping` or `across-the-board-timezone`', function() {
-    var atbUtil = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', []);
+    var atbUtil = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
     expect(atbUtil.type).to.equal('across-the-board-timezone');
     var belatedDST = builder.makeDeviceEventTimeChange()
       .with_change({
@@ -70,7 +70,7 @@ describe('TimezoneOffsetUtil.js', function(){
       .with_deviceTime('2015-03-08T12:01:21')
       .set('jsDate', new Date('2015-03-08T12:01:21'))
       .set('index', 10);
-    var bootstrapUtil = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [belatedDST]);
+    var bootstrapUtil = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [belatedDST]);
     expect(bootstrapUtil.type).to.equal('utc-bootstrapping');
   });
 
@@ -100,7 +100,7 @@ describe('TimezoneOffsetUtil.js', function(){
         .with_deviceTime('2015-04-10T16:05:10')
         .set('jsDate', new Date('2015-05-10T16:05:00'))
         .set('index', 200);
-      var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [belatedDST, travel, wrongMonth]);
+      var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [belatedDST, travel, wrongMonth]);
       expect(_.map(util.records, function(rec) { return _.omit(rec, ['payload', 'index']); })).to.deep.equal([
         {
           time: '2015-05-10T21:05:00.000Z',
@@ -159,10 +159,10 @@ describe('TimezoneOffsetUtil.js', function(){
         .with_deviceTime('2015-04-01T15:33:24')
         .set('jsDate', new Date('2015-04-01T15:33:24'))
         .set('index', 100);
-      var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [belatedDST, travel]);
+      var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [belatedDST, travel]);
       expect(Array.isArray(util.records)).to.be.true;
       expect(util.records.length).to.equal(2);
-      var noChangesUtil = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', []);
+      var noChangesUtil = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', []);
       expect(Array.isArray(noChangesUtil.records)).to.be.true;
       expect(noChangesUtil.records.length).to.equal(0);
     });
@@ -170,7 +170,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
 
   describe('findOffsetDifferences', function(){
-    var util = new TZOUtil('Pacific/Auckland', '2016-01-01T00:00:00.000Z', []);
+    var util = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
     it('is a function', function(){
       expect(typeof util.findOffsetDifferences).to.equal('function');
     });
@@ -209,7 +209,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(util.findOffsetDifferences(b).rawDifference).to.equal(80000);
     });
 
-    it('rounds offsetDifference to the nearest 15 minutes', function(){
+    it('rounds offsetDifference to the nearest 30 minutes', function(){
       // from Pacific/Chatham (UTC+13:45) to UTC
       var a = {
         change: {
@@ -217,35 +217,35 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-04-02T20:04:00'
         }
       };
-      expect(util.findOffsetDifferences(a).offsetDifference).to.equal(825);
+      expect(util.findOffsetDifferences(a).offsetDifference).to.equal(810);
     });
 
-    it('only allows for "clock drift" adjustments of < 8 minutes', function(){
+    it('only allows for "clock drift" adjustments of < 15 minutes', function(){
       // clock drift adjustment = difference of 0
       var a = {
         change: {
-          from: '2015-04-01T00:07:59',
+          from: '2015-04-01T00:14:59',
           to: '2015-04-01T00:00:00'
         }
       };
       // won't be interpreted as clock drift
-      // but rather offset change of 15 minutes
+      // but rather offset change of 30 minutes
       var b = {
         change: {
-          from: '2015-04-01T00:08:00',
+          from: '2015-04-01T00:15:00',
           to: '2015-04-01T00:00:00'
         }
       };
       expect(util.findOffsetDifferences(a).offsetDifference).to.equal(0);
-      expect(util.findOffsetDifferences(a).rawDifference).to.equal(479000);
-      expect(util.findOffsetDifferences(b).offsetDifference).to.equal(15);
-      expect(util.findOffsetDifferences(b).rawDifference).to.equal(480000);
+      expect(util.findOffsetDifferences(a).rawDifference).to.equal(899000);
+      expect(util.findOffsetDifferences(b).offsetDifference).to.equal(30);
+      expect(util.findOffsetDifferences(b).rawDifference).to.equal(900000);
     });
   });
 
   describe('lookup', function(){
     it('is a function', function(){
-      var util = new TZOUtil('Pacific/Auckland', '2016-01-01T00:00:00.000Z', []);
+      var util = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
       expect(typeof util.lookup).to.equal('function');
     });
 
@@ -259,16 +259,16 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-03-01T12:02:05')
           .set('jsDate', new Date('2015-03-01T12:02:05'))
           .set('index', 50);
-        var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [clockDriftAdjust]);
+        var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [clockDriftAdjust]);
         expect(util.lookup(new Date('2015-02-01T00:00:00'))).to.deep.equal({
-          time: '2015-02-01T05:00:00.000Z',
-          timezoneOffset: -300,
+          time: '2015-02-01T04:00:00.000Z',
+          timezoneOffset: -240,
           clockDriftOffset: 125000,
           conversionOffset: 0
         });
         expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
-          time: '2015-04-01T05:00:00.000Z',
-          timezoneOffset: -300,
+          time: '2015-04-01T04:00:00.000Z',
+          timezoneOffset: -240,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
@@ -284,7 +284,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-03-08T12:01:21')
           .set('jsDate', new Date('2015-03-08T12:01:21'))
           .set('index', 10);
-        var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [belatedDST]);
+        var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [belatedDST]);
         expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
           time: '2015-04-01T04:00:00.000Z',
           timezoneOffset: -240,
@@ -340,7 +340,7 @@ describe('TimezoneOffsetUtil.js', function(){
           .with_deviceTime('2015-04-08T09:04:02')
           .set('jsDate', new Date('2015-04-08T09:04:02'))
           .set('index', 150);
-        var util = new TZOUtil('US/Central', '2016-01-01T00:00:00.000Z', [
+        var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [
           clockDriftAdjust1,
           belatedDST,
           clockDriftAdjust2,
@@ -426,21 +426,21 @@ describe('TimezoneOffsetUtil.js', function(){
         // i.e., Left Coaster goes to NZ
         var toNZ = builder.makeDeviceEventTimeChange()
           .with_change({
-            from: '2015-04-02T12:26:00',
-            to: '2015-04-03T08:25:00'
+            from: '2015-03-25T12:26:00',
+            to: '2015-03-26T08:25:00'
           })
-          .with_deviceTime('2015-04-02T12:26:00')
-          .set('jsDate', new Date('2015-04-02T12:26:00'))
+          .with_deviceTime('2015-03-25T12:26:00')
+          .set('jsDate', new Date('2015-03-25T12:26:00'))
           .set('index', 10);
-        var util = new TZOUtil('Pacific/Auckland', '2015-04-15T00:00:00.000Z', [toNZ]);
-        expect(util.lookup(new Date('2015-04-05T00:00:00'))).to.deep.equal({
-          time: '2015-04-04T11:00:00.000Z',
+        var util = new TZOUtil('Pacific/Auckland', '2015-04-01T00:00:00.000Z', [toNZ]);
+        expect(util.lookup(new Date('2015-03-31T00:00:00'))).to.deep.equal({
+          time: '2015-03-30T11:00:00.000Z',
           timezoneOffset: 780,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-10T00:00:00'))).to.deep.equal({
-          time: '2015-03-10T07:00:00.000Z',
+        expect(util.lookup(new Date('2015-03-15T00:00:00'))).to.deep.equal({
+          time: '2015-03-15T07:00:00.000Z',
           timezoneOffset: -420,
           clockDriftOffset: 60000,
           conversionOffset: 0
@@ -528,7 +528,7 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   describe('fillInUTCInfo', function(){
-    var noChangesUtil = new TZOUtil('Pacific/Auckland', '2016-01-01T00:00:00.000Z', []);
+    var noChangesUtil = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
     it('is a function', function() {
       expect(typeof noChangesUtil.fillInUTCInfo).to.equal('function');
     });
