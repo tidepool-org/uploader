@@ -55,6 +55,18 @@ describe('Asynchronous Actions', () => {
     asyncActions.__ResetDependency__('services');
   });
 
+  describe('doAppInit [hot reload, app already initialized]', () => {
+    it('should dispatch no actions!', (done) => {
+      const expectedActions = [];
+      const store = mockStore({working: {initializingApp: false}}, expectedActions, done.fail);
+      store.dispatch(asyncActions.doAppInit({}, {}));
+      // somewhat hacky solution to testing for no actions
+      // discussed here: https://github.com/arnaudbenard/redux-mock-store/issues/17
+      // happy to live with the hack since this is only for hot-reloading anyway
+      setTimeout(() => done(), 1000);
+    });
+  });
+
   describe('doAppInit [no session token in local storage]', () => {
     it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS actions', (done) => {
       const config = {
@@ -126,7 +138,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({working: {initializingApp: true}}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
@@ -223,7 +235,8 @@ describe('Asynchronous Actions', () => {
         semver: config.version
       });
       const state = {
-        uploadTargetUser: pwd.user.userid
+        uploadTargetUser: pwd.user.userid,
+        working: {initializingApp: true}
       };
       const store = mockStore(state, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
@@ -277,7 +290,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({working: {initializingApp: true}}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
