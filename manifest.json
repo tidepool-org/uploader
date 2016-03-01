@@ -132,8 +132,8 @@
           "mode": "serial",
           "bitrate": 9600,
           "ctsFlowControl": true,
-          "sendTimeout": 100,
-          "receiveTimeout": 180,
+          "sendTimeout": 500,
+          "receiveTimeout": 500,
           "vendorId": 8963,
           "productId": 1659
         }
