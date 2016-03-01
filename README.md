@@ -13,11 +13,13 @@ This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts a
 1. Run `npm start` (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
-1. Choose the directory where you cloned the repository and click OK.
+1. Choose the directory where you cloned the repository and click OK.<sup name="foot1">[1](#f1)</sup>
 1. To run it, you can choose "Launch" from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.
 1. To open the JavaScript console/Chrome Dev Tools, click on the `index.html` link in the section of chrome://extensions devoted to the uploader. (Note: this link will only appear after you've launched the uploader.)
 1. If you're developing, you may find that the only way it runs properly is to hit the "Reload" link in chrome://extensions after each change to the source. You will definitely need to reload any time you change the manifest.
 
+---
+<b name="f1">1</b> You may see a warning from Chrome concerning the inclusion of a key file. (`This extension includes the key file '<project_path>/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem`) This is due to the loading of all the `node_modules` and their various internal testing utilities. This isn't a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored. [↩](#a1)
 
 ## Config
 
