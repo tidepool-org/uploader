@@ -14,12 +14,15 @@
 */
 
 .Upload {
+  display: flex;
   flex-flow: row wrap;
 }
 
 .Upload-left,
 .Upload-right {
+  display: flex;
   // Same width, and stretch
+  flex-direction: column;
   flex: 1 0px;
 }
 
@@ -39,12 +42,14 @@
 }
 
 .Upload-statusSection {
+  display: flex;
   flex-flow: row;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
 .Upload-status {
+  display: flex;
   flex-flow: row;
   flex-shrink: 1;
   // Reset button height
@@ -94,6 +99,7 @@
 }
 
 .Upload-progress {
+  display: flex;
   justify-content: center;
   margin-bottom: 10px;
 }
@@ -107,6 +113,7 @@
 }
 
 .Upload-button {
+  display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
 }
