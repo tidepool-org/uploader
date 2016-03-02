@@ -13,6 +13,11 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import '../core/variables.less';
+@import '../core/fonts.less';
+@import '../core/icons.less';
+@import '../core/mixins.less';
+
 .interactive {
   &:hover,
   &:focus,
@@ -33,7 +38,7 @@
   justify-content: flex-end;
   margin-top: 20px;
 
-  .interactive;
+  composes: interactive;
 }
 
 .LoggedInAs-logout {
@@ -43,7 +48,7 @@
   margin-left: 10px;
 }
 
-a.LoggedInAs-link {
+.LoggedInAs-link {
   text-decoration: none;
 
   > i {
@@ -54,7 +59,7 @@ a.LoggedInAs-link {
     cursor: not-allowed;
   }
 
-  .interactive;
+  composes: interactive;
 }
 
 .Menu-arrow-down {
