@@ -13,24 +13,22 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Core
-// ====================================
+@import '../core/variables.less';
 
-@import "core/variables.less";
-@import "core/mixins.less";
-@import "core/fonts.less";
-@import "core/icons.less";
+.TimezoneDropdown {
+  border-bottom: 1px solid @gray-border;
+}
 
-@import "core/scaffolding.less";
-@import "core/forms.less";
-@import "core/buttons.less";
-@import "core/dropdowns.less";
+.TimezoneDropdown-timezone {
+  margin: 10px 40px 10px 40px;
+}
 
-// Components
-// ====================================
+.TimezoneDropdown-timezone--label {
+  font-size: @font-size-large;
+}
 
-@import "components/Upload.less";
-@import "components/UploadList.less";
-@import "components/UserDropdown.less";
-@import "components/VersionCheck.less";
-@import "components/ViewDataLink.less";
+.TimezoneDropdown-timezone--list {
+  margin-top: -30px;
+  margin-left: 150px;
+  width: 260px;
+}
