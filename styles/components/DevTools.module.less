@@ -13,26 +13,16 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Core
-// ====================================
+.DevTools-container {
+  width: 100%;
+  height: 100%;
+}
 
-@import "core/variables.less";
-@import "core/mixins.less";
-@import "core/fonts.less";
-@import "core/icons.less";
-
-@import "core/scaffolding.less";
-@import "core/forms.less";
-@import "core/buttons.less";
-@import "core/dropdowns.less";
-
-// Components
-// ====================================
-
-@import "components/LoadingBar.less";
-@import "components/TimezoneDropdown.less";
-@import "components/Upload.less";
-@import "components/UploadList.less";
-@import "components/UserDropdown.less";
-@import "components/VersionCheck.less";
-@import "components/ViewDataLink.less";
+.DevTools * {
+  div {
+    display: block;
+  }
+  span {
+    display: inline;
+  }
+}
