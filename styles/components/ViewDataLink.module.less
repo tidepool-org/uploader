@@ -13,8 +13,11 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.ViewData-button,
-a.ViewData-button {
+@import '../core/variables.less';
+@import '../core/buttons.less';
+
+.ViewData-button {
+  composes: btn btn-primary;
   font-size: @font-size-large;
   padding: 5px 0px;
   width: 150px;
