@@ -13,6 +13,11 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import '../core/variables.less';
+@import '../core/buttons.less';
+@import '../core/mixins.less';
+@import '../core/forms.less';
+
 .Upload {
   display: flex;
   flex-flow: row wrap;
@@ -74,15 +79,18 @@
 }
 
 .Upload-blockMode--preparing {
+  composes: Upload-blockMode;
   color: @purple-light;
 }
 
 .Upload-status--error {
+  composes: Upload-status;
   padding-right: 5px;
   color: @red;
 }
 
 .Upload-status--error--debug {
+  composes: Upload-status--error;
   font-size: 10px;
 }
 
@@ -116,6 +124,11 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
+}
+
+.Upload-button--button {
+  composes: btn;
+  composes: btn-primary;
 }
 
 input[type=file] {
