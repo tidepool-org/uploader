@@ -31,6 +31,31 @@ describe('animasSimulator.js', function() {
   });
 
   describe('smbg', function(){
+
+    var manual = {
+      time: '2014-09-25T01:00:00.000Z',
+      deviceTime: '2014-09-25T01:00:00',
+      timezoneOffset: 0,
+      conversionOffset: 0,
+      deviceId: 'animas12345',
+      units: 'mg/dL',
+      type: 'smbg',
+      subType: 'manual',
+      value: 1.3
+    };
+
+    var linked = {
+      time: '2014-09-25T01:08:00.000Z',
+      deviceTime: '2014-09-25T01:08:00',
+      timezoneOffset: 0,
+      conversionOffset: 0,
+      deviceId: 'animas12345',
+      units: 'mg/dL',
+      type: 'smbg',
+      subType:'linked',
+      value: 1.3
+    };
+
     it('passes through', function(){
       var val = {
         time: '2014-09-25T01:00:00.000Z',
@@ -45,6 +70,18 @@ describe('animasSimulator.js', function() {
 
       simulator.smbg(val);
       expect(simulator.getEvents()).deep.equals([val]);
+    });
+
+    it('drops manual if same value linked within 15 minutes', function(){
+      simulator.smbg(linked);
+      simulator.smbg(manual);
+      expect(simulator.getEvents()).deep.equals([linked]);
+    });
+
+    it('does not drop duplicate linked values', function(){
+      simulator.smbg(linked);
+      simulator.smbg(linked);
+      expect(simulator.getEvents()).deep.equals([linked, linked]);
     });
   });
 
