@@ -15,7 +15,9 @@
 
 @import '../core/variables.less';
 
-.App {
+@mainPageBorder: 1px;
+
+.app {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -24,7 +26,7 @@
 // Header
 // ====================================
 
-.App-header {
+.header {
   display: flex;
   flex-direction: column;
   padding: 0 25px;
@@ -36,7 +38,7 @@
 // Page
 // ====================================
 
-.App-page {
+.page {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
@@ -44,41 +46,27 @@
   box-sizing: border-box;
 }
 
-.App-page--login {
-  composes: App-page;
+.loginPage {
+  composes: page;
   width: 300px;
 }
 
-.App-page--main, .App-page--settings {
-  composes: App-page;
+.mainPage, .settingsPage {
+  composes: page;
   width: 550px;
   background-color: rgba(255, 255, 255, 0.75);
-  border: @App-mainPageBorder solid @gray-border;
+  border: @mainPageBorder solid @gray-border;
   border-radius: 2px;
-  padding: 15px (30px - @App-mainPageBorder) 25px;
+  padding: 15px (30px - @mainPageBorder) 25px;
   box-sizing: border-box;
 }
 
-.App--login .App-page {
-  width: 300px;
-}
-
-@App-mainPageBorder: 1px;
-
-.App--main .App-page, .App--settings .App-page {
-  width: 550px;
-  background-color: rgba(255, 255, 255, 0.75);
-  border: @App-mainPageBorder solid @gray-border;
-  border-radius: 2px;
-  padding: 15px (30px - @App-mainPageBorder) 25px;
-}
-
-.App-main-wrap {
+.mainWrap {
   display: flex;
   flex-direction: column;
 }
 
-.App-signup {
+.signup {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -100,7 +88,7 @@
   }
 }
 
-.App-footer {
+.footer {
   margin-top: 10px;
   margin-bottom: 20px;
   background: url(/images/tidepool_logo_transparent.png) 50px 5px no-repeat;
@@ -125,6 +113,6 @@
   }
 }
 
-.App-footer-version {
+.version {
   color: @gray-text;
 }
