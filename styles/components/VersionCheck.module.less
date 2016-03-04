@@ -5,58 +5,64 @@
   text-align: center;
 }
 
-.VersionCheck {
-  .mostly-opaque-background {
-    background-color: rgba(255, 255, 255, 0.925);
-  }
-  &.VersionCheck--failed {
-    background: url(/images/unhappy_meter.png) center center / 69px 166px no-repeat;
-    .mostly-opaque-background();
-  }
-  &.VersionCheck--offline {
-    background: url(/images/unhappy_device.png);
-    background-position: 50% 60%;
-    background-size: 105px 237px;
-    background-repeat: no-repeat;
-    .mostly-opaque-background();
-  }
-  &.VersionCheck--outdated {
-    background: url(/images/happy_device.png);
-    background-position: 50% 60%;
-    background-size: 156px 213px;
-    background-repeat: no-repeat;
-    .mostly-opaque-background();
-  }
+.mostly-opaque-background {
+  background-color: rgba(255, 255, 255, 0.925);
+}
 
+.VersionCheck {
   position: absolute;
   top: 0; left: 0;
 
   width: 100%;
   height: @app-height;
+}
 
-  .VersionCheck-text {
-    min-height: 425px;
-    justify-content: center;
+.VersionCheck--failed {
+  composes: VersionCheck;
+  composes: mostly-opaque-background;
+  background: url(/images/unhappy_meter.png) center center / 69px 166px no-repeat;
+}
 
-    a {
-      color: @purple-light;
+.VersionCheck--offline {
+  composes: VersionCheck;
+  composes: mostly-opaque-background;
+  background: url(/images/unhappy_device.png);
+  background-position: 50% 60%;
+  background-size: 105px 237px;
+  background-repeat: no-repeat;
+}
 
-      &:hover,
-      &:focus,
-      &:active {
-        color: @purple-medium;
-        text-decoration: none;
-      }
+.VersionCheck--outdated {
+  composes: VersionCheck;
+  composes: mostly-opaque-background;
+  background: url(/images/happy_device.png);
+  background-position: 50% 60%;
+  background-size: 156px 213px;
+  background-repeat: no-repeat;
+}
+
+.VersionCheck-text {
+  min-height: 425px;
+  justify-content: center;
+
+  a {
+    color: @purple-light;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: @purple-medium;
+      text-decoration: none;
     }
+  }
 
-    p {
-      margin: 0;
-      .purple-centered();
-      font-size: @font-size-large;
-      font-weight: bold;
-      &.most-important {
-        margin-top: 20px;
-      }
+  p {
+    margin: 0;
+    .purple-centered();
+    font-size: @font-size-large;
+    font-weight: bold;
+    &.most-important {
+      margin-top: 20px;
     }
   }
 }
