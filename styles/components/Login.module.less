@@ -13,29 +13,30 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-@import '../core/mixins.less';
 @import '../core/variables.less';
-@import '../core/forms.less';
-@import '../core/buttons.less';
 
-.Login-input {
+.form {
+  composes: box-flex from '../core/mixins.less';
+}
+
+.inputWrap {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
 }
 
-.Login-form {
-  .box-flex();
+.input {
+  composes: form-control from '../core/forms.less';
 }
 
-.Login-actions {
+.actions {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   margin-top: 5px;
 }
 
-.Login-remember {
+.remember {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -46,8 +47,8 @@
   }
 }
 
-.Login-button {
-  &:extend(.btn all);
+.button {
+  composes: btn from '../core/buttons.less';
 
   background-color: @blue;
   color: #fff;
@@ -59,7 +60,7 @@
   }
 }
 
-.Login-forgot {
+.forgot {
   font-size: 11px;
 
   a {
@@ -74,7 +75,7 @@
   }
 }
 
-.Login-error {
+.error {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
