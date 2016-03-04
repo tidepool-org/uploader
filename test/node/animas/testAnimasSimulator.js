@@ -407,49 +407,6 @@ describe('animasSimulator.js', function() {
       ]);
     });
 
-    it('temp basal crossing multiple segments', function() {
-      var suppressed = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:00:00.000Z')
-        .with_deviceTime('2014-09-25T18:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_duration(180000)
-        .with_rate(1.3);
-      var tempBasal = builder.makeTempBasal()
-        .with_time('2014-09-25T18:15:00.000Z')
-        .with_deviceTime('2014-09-25T18:15:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0);
-      var tempBasal2 = builder.makeTempBasal()
-        .with_time('2014-09-25T18:30:00.000Z')
-        .with_deviceTime('2014-09-25T18:30:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0);
-      var basal3 = builder.makeScheduledBasal()
-        .with_time('2014-09-25T19:00:00.000Z')
-        .with_deviceTime('2014-09-25T19:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(2);
-
-      var expectedTempBasal = tempBasal.with_payload({duration:1800000})
-                                        .with_duration(900000)
-                                        .done();
-      var expectedTempBasal2 = tempBasal2.with_payload({duration:1800000})
-                                        .with_duration(900000)
-                                        .done();
-
-      simulator.basal(suppressed);
-      simulator.basal(tempBasal);
-      simulator.basal(tempBasal2);
-      simulator.basal(basal3);
-      expect(simulator.getCrudEvents()).deep.equals([
-        suppressed.done(),
-        expectedTempBasal,
-        expectedTempBasal2
-      ]);
-    });
-
     it('ignore duplicate suspended basals', function() {
 
       var basal = builder.makeScheduledBasal()
