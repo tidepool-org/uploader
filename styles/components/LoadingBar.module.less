@@ -18,13 +18,13 @@
 
 @import '../core/variables.less';
 
-.LoadingBar {
+.loadingBar {
   border: 1px solid @gray-border;
   color: #fff;
   width: 100%;
 }
 
-.LoadingBar-fill {
+.fill {
   display: block;
   width: 100%;
   height: 100%;
@@ -33,7 +33,7 @@
   overflow: hidden;
 }
 
-.LoadingBar-fill:after {
+.fill:after {
   content: "";
   position: absolute;
   top: 0;
@@ -49,11 +49,11 @@
   );
   z-index: 1;
   -webkit-background-size: 50px 50px;
-  -webkit-animation: LoadingBar-animation 2s linear infinite;
+  -webkit-animation: animation 2s linear infinite;
   overflow: hidden;
 }
 
-@-webkit-keyframes LoadingBar-animation {
+@-webkit-keyframes animation {
   0% {
     background-position: 0 0;
   }
