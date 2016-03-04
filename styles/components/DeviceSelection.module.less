@@ -14,36 +14,33 @@
 */
 
 @import '../core/variables.less';
-@import '../core/mixins.less';
-@import '../core/buttons.less';
 
-.DeviceSelection {
-  .center-container;
+@form-height: 200px;
+
+.main {
+  composes: center-container from '../core/mixins.less';
 }
 
-.DeviceSelection-headline {
+.headline {
   width: 250px;
   margin: 20px auto 20px auto;
   text-align: center;
 }
 
-@form-height: 200px;
-
-.DeviceSelection-form {
-  .box-flex();
+.form {
+  composes: box-flex scroll from '../core/mixins.less';
   margin: 0px auto 20px auto;
-  .scroll();
 }
 
-.DeviceSelection-form--onlyme {
+.onlyme {
   max-height: @form-height + @groups-dropdown-height;
 }
 
-.DeviceSelection-form--groups {
+.groups {
   max-height: @form-height;
 }
 
-.Device-checkbox {
+.checkbox {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -57,14 +54,13 @@
   margin-bottom: 30px;
 }
 
-.DeviceSelection-button {
-  composes: btn;
-  composes: btn-primary;
+.button {
+  composes: btn btn-primary from '../core/buttons.less';
   width: 150px;
   margin: 0px auto 5px auto;
 }
 
-.DeviceSelection-detail {
+.detail {
   color: @gray-text;
   font-size: @font-size-small;
   a {
