@@ -219,8 +219,6 @@ describe('animasSimulator.js', function() {
         .with_conversionOffset(0)
         .with_status('resumed')
         .with_reason({resumed: 'manual'});
-      var expectedResume = _.assign({}, resume);
-      expectedResume = expectedResume.set('previous', suspend).done();
 
       it('a suspend passes through', function() {
         simulator.suspend(suspend);
@@ -230,12 +228,6 @@ describe('animasSimulator.js', function() {
       it('a resume passes through', function() {
         simulator.resume(resume);
         expect(simulator.getCrudEvents()).deep.equals([resume.done()]);
-      });
-
-      it('a resume includes a previous when preceded by a suspend', function() {
-        simulator.suspend(suspend);
-        simulator.resume(resume);
-        expect(simulator.getCrudEvents()).deep.equals([suspend, expectedResume]);
       });
 
       it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
@@ -253,7 +245,7 @@ describe('animasSimulator.js', function() {
         simulator.suspend(suspend);
         simulator.suspend(suspend2);
         simulator.resume(resume);
-        expect(simulator.getCrudEvents()).deep.equals([suspend, expectedResume]);
+        expect(simulator.getCrudEvents()).deep.equals([suspend, resume.done()]);
       });
     });
   });
@@ -358,8 +350,7 @@ describe('animasSimulator.js', function() {
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_duration(1800000)
-        .with_rate(1.0)
-        .with_previous(suppressed.done());
+        .with_rate(1.0);
       var basal2 = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:40:00.000Z')
         .with_deviceTime('2014-09-25T18:40:00')
@@ -406,11 +397,9 @@ describe('animasSimulator.js', function() {
 
       var expectedTempBasal = tempBasal.with_payload({duration:1800000})
                                         .with_duration(900000)
-                                        .with_previous(suppressed.done())
                                         .done();
       var expectedTempBasal2 = tempBasal2.with_payload({duration:1800000})
                                         .with_duration(900000)
-                                        .with_previous(_.omit(expectedTempBasal, 'previous'))
                                         .done();
 
       simulator.basal(suppressed);
