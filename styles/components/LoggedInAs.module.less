@@ -14,9 +14,6 @@
 */
 
 @import '../core/variables.less';
-@import '../core/fonts.less';
-@import '../core/icons.less';
-@import '../core/mixins.less';
 
 .interactive {
   &:hover,
@@ -27,28 +24,21 @@
   }
 };
 
-.LoggedInAsWrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
 }
 
-.LoggedInAs {
+.main {
+  composes: interactive;
+
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
   margin-top: 20px;
-
-  composes: interactive;
 }
 
-.LoggedInAs-logout {
-  .box-flex();
-  color: black;
-  flex-flow: row wrap;
-  margin-left: 10px;
-}
-
-.LoggedInAs-link {
+.link {
   text-decoration: none;
 
   > i {
@@ -62,12 +52,12 @@
   composes: interactive;
 }
 
-.Menu-arrow-down {
+.downArrow {
   font-size: 5px;
   padding-left: 5px;
 }
 
-.Menu-dropdown {
+.dropdown {
   border: 1px solid @gray-light;
   cursor: default;
   position: absolute;
@@ -102,8 +92,8 @@
   }
 }
 
-.Menu-dropdown:after,
-.Menu-dropdown:before {
+.dropdown:after,
+.dropdown:before {
   position: absolute;
   top: -10px;
   right: 10px;
@@ -118,14 +108,10 @@
   width: 0;
 }
 
-.Menu-dropdown:before {
+.dropdown:before {
   top: -16px;
   border-color: rgba(230,230,229,0);
   border-bottom-color: @gray-light;
   border-width: 8px;
   margin-left: -8px;
-}
-
-.Menu-dropdown-hide {
-  display: none;
 }
