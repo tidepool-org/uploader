@@ -373,6 +373,24 @@ describe('animasSimulator.js', function() {
       expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal]);
     });
 
+    it('limits duration to five days for flat-rate basals', function() {
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-01T02:00:00.000Z') // more than five days before basal1
+        .with_deviceTime('2014-09-01T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_scheduleName('Alice')
+        .with_rate(0.75);
+
+      var expectedFirstBasal = _.cloneDeep(basal);
+      expectedFirstBasal = expectedFirstBasal.set('duration', 432000000).done();
+      expectedFirstBasal.annotations = [{code: 'animas/basal/flat-rate'}];
+      simulator.basal(basal);
+      simulator.basal(basal1);
+      expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal]);
+
+    });
+
     it('temp basal', function() {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
