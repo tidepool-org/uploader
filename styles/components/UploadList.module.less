@@ -14,28 +14,27 @@
 */
 
 @import '../core/variables.less';
-@import '../core/mixins.less';
 
 @base-height: 305px;
 
-.UploadList-error-item{
+.errorItem{
   padding-top: 10px;
 }
 
-.UploadList-error-message {
+.errorMessage {
   color: @red;
   display: inline;
 }
 
-.UploadList-error-message-wrapper {
+.errorMessageWrapper {
   display: inline;
 }
 
-.UploadList-error-message-friendly {
+.errorMessageFriendly{
   display: inline;
 }
 
-.UploadList-error-message-link {
+.errorMessageLink {
   display: inline;
   a {
     color: @purple-dark;
@@ -45,7 +44,7 @@
   }
 }
 
-.UploadList-error-text {
+.errorText {
   a{
     font-size: @font-size-small;
   }
@@ -54,24 +53,26 @@
   }
 }
 
-.UploadList {
+.main {
+  composes: scroll from '../core/mixins.less';
   padding-top: 20px;
-  .scroll();
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
-.UploadList--onlyme {
+.onlyme {
+  composes: main;
   max-height: @base-height + @groups-dropdown-height;
 }
 
-.UploadList--selectuser {
+.selectuser {
+  composes: main;
   max-height: @base-height;
 }
 
-.UploadList-item {
+.item {
   padding: 15px 0;
   border-bottom: 1px solid @gray-light;
   display: flex;
@@ -79,7 +80,7 @@
   flex-shrink: 0;
 }
 
-.UploadList-item:last-child {
+.item:last-child {
   padding-bottom: 20px;
   border-bottom: 0;
 }
