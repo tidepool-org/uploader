@@ -14,46 +14,46 @@
 */
 
 @import '../core/variables.less';
-@import '../core/buttons.less';
-@import '../core/mixins.less';
 @import '../core/forms.less';
+@import '../core/buttons.less';
 
-.Upload {
+.main {
   display: flex;
   flex-flow: row wrap;
 }
 
-.Upload-left,
-.Upload-right {
+.column {
   display: flex;
   // Same width, and stretch
   flex-direction: column;
   flex: 1 0px;
 }
 
-.Upload-left {
+.left {
+  composes: column;
   padding-right: 5px;
 }
-.Upload-right {
+.right {
+  composes: column;
   padding-left: 5px;
 }
 
-.Upload-name {
+.name {
   font-weight: bold;
 }
 
-.Upload-detail {
+.detail {
   color: @gray-text;
 }
 
-.Upload-statusSection {
+.statusSection {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
-.Upload-status {
+.status {
   display: flex;
   flex-flow: row;
   flex-shrink: 1;
@@ -69,7 +69,7 @@
   }
 }
 
-.Upload-blockMode {
+.blockMode {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -78,57 +78,46 @@
   margin: 0px;
 }
 
-.Upload-blockMode--preparing {
-  composes: Upload-blockMode;
+.preparing {
+  composes: blockMode;
   color: @purple-light;
 }
 
-.Upload-status--error {
-  composes: Upload-status;
-  padding-right: 5px;
-  color: @red;
+.reset {
+  composes: btn from '../core/buttons.less';
 }
 
-.Upload-status--error--debug {
-  composes: Upload-status--error;
-  font-size: 10px;
+.resetSuccess, .resetError {
+  composes: reset;
+  composes: btn-secondary from '../core/buttons.less';
 }
 
-.Upload-reset > a  {
-  &:extend(.btn all);
-}
-
-.Upload-reset--success > a {
-  &:extend(.btn-secondary all);
-}
-
-.Upload-reset--error > a  {
-  &:extend(.btn-secondary all);
-}
-
-.Upload-progress {
+.progress {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
 }
 
-.Upload-form {
-  .box-flex();
+.form {
+  composes: box-flex from '../core/mixins.less';
 }
 
-.Upload-input {
+.inputWrapper {
   margin-bottom: 15px;
 }
 
-.Upload-button {
+.input {
+  composes: form-control from '../core/forms.less';
+}
+
+.buttonWrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
 }
 
-.Upload-button--button {
-  composes: btn;
-  composes: btn-primary;
+.button {
+  composes: btn btn-primary from '../core/buttons.less';
 }
 
 input[type=file] {
@@ -139,7 +128,7 @@ input[type=file] {
   }
 }
 
-.Upload-inputWrapper {
+.inputWrapper {
   width: 116px;
   position: relative;
   left: 111px;
@@ -148,13 +137,16 @@ input[type=file] {
 }
 
 // hide Chrome-default filepicker button
-.Upload-fileinput::-webkit-file-upload-button {
+.fileinput::-webkit-file-upload-button {
   visibility: hidden;
   width: 0;
   height: 0;
   position: absolute;
 }
-.Upload-fileinput::before {
+
+//TODO: move this to a <label> so we can use composes
+.fileinput::before {
+  //composes: btn btn-primary from '../core/buttons.less';
   visibility: visible;
   content: 'Choose file';
   .btn;
@@ -164,20 +156,16 @@ input[type=file] {
 // this is some shame.css right here
 // this style is part of the btn-primary mixin
 // but neither the selector nor the transparency work with the file input
-.Upload-fileinput[disabled]::before,
-.Upload-fileinput[disabled]:hover::before,
-.Upload-fileinput[disabled]:focus::before,
-.Upload-fileinput[disabled]:active::before {
+.fileinput[disabled]::before,
+.fileinput[disabled]:hover::before,
+.fileinput[disabled]:focus::before,
+.fileinput[disabled]:active::before {
   cursor: not-allowed;
   background-color: rgb(211, 208, 218);
 }
 
-.Upload-fileinput:hover::before,
-.Upload-fileinput:focus::before,
-.Upload-fileinput:active::before {
+.fileinput:hover::before,
+.fileinput:focus::before,
+.fileinput:active::before {
   background-color: @purple-light;
-}
-
-.Upload-helpText {
-  padding-bottom: 10px;
 }
