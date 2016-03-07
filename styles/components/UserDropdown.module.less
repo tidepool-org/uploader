@@ -1,6 +1,6 @@
 @import '../core/variables.less';
 
-.UserDropdown-uploadGroup {
+.uploadGroup {
   margin: 20px 40px 10px 40px;
 
   select {
@@ -8,22 +8,22 @@
   }
 }
 
-.UserDropdown-uploadGroup--label {
+.label {
   font-size: @font-size-large;
 }
 
-.UserDropdown-uploadGroup--list {
+.list {
   margin-top: -30px;
 }
 
-.UserDropdown--settings {
-  composes: UserDropdown-uploadGroup--list;
+.settings {
+  composes: list;
   margin-left: 150px;
   width: 260px;
 }
 
-.UserDropdown--main {
-  composes: UserDropdown-uploadGroup--list;
+.main {
+  composes: list;
   margin-left: 130px;
   width: 280px;
 }
