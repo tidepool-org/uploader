@@ -267,6 +267,33 @@ describe('animasSimulator.js', function() {
         expect(simulator.getCrudEvents()).deep.equals([resume.done()]);
       });
 
+      it('generates annotation for out-of-sequence events', function() {
+
+        var suspend2 = {
+          time: '2014-09-25T03:00:00.000Z',
+          deviceTime: '2014-09-25T03:00:00',
+          timezoneOffset: 0,
+          conversionOffset: 0,
+          deviceId: 'animas12345',
+          type: 'deviceEvent',
+          subType: 'status',
+          status: 'suspended',
+          reason: {suspended: 'automatic'},
+          index: 3
+        };
+
+        suspend.index = 1;
+        resume.set('index', 2);
+        simulator.suspend(suspend);
+        simulator.resume(resume);
+        simulator.suspend(suspend2);
+
+        var expectedResume = _.cloneDeep(resume);
+        expectedResume.annotations = [{code: 'animas/out-of-sequence'}];
+
+        expect(simulator.getCrudEvents()).deep.equals([suspend, expectedResume.done(), suspend2]);
+      });
+
       it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
         var suspend2 = {
           time: '2014-09-25T01:05:00.000Z',
@@ -389,6 +416,22 @@ describe('animasSimulator.js', function() {
       simulator.basal(basal1);
       expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal]);
 
+    });
+
+    it('generates annotation for out-of-sequence events', function() {
+      basal1.set('index', 1);
+      basal2.set('index', 3);
+      basal3.set('index', 2);
+
+      var expectedFirstBasal = _.cloneDeep(basal1);
+      expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
+      var expectedSecondBasal = _.cloneDeep(basal2);
+      expectedSecondBasal = expectedSecondBasal.set('duration', 1800000).done();
+      expectedSecondBasal.annotations = [{code: 'animas/out-of-sequence'}];
+      simulator.basal(basal1);
+      simulator.basal(basal2);
+      simulator.basal(basal3);
+      expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
     });
 
     it('temp basal', function() {
