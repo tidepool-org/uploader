@@ -434,6 +434,65 @@ describe('animasSimulator.js', function() {
       expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
     });
 
+    it('sets suspended basal', function() {
+      var suspend = {
+        time: '2014-09-25T02:00:00.000Z',
+        deviceTime: '2014-09-25T02:00:00',
+        timezoneOffset: 0,
+        conversionOffset: 0,
+        deviceId: 'animas12345',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: {suspended: 'automatic'}
+      };
+
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T02:00:00.000Z')
+        .with_deviceTime('2014-09-25T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_scheduleName('Alice')
+        .with_rate(0);
+
+      var resume = builder.makeDeviceEventResume()
+        .with_time('2014-09-25T02:10:00.000Z')
+        .with_deviceTime('2014-09-25T02:10:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_status('resumed')
+        .with_reason({resumed: 'manual'});
+
+      simulator.suspend(suspend);
+      simulator.basal(basal);
+      simulator.resume(resume);
+      simulator.basal(basal2);
+
+      var expectedSuspendedBasal = _.cloneDeep(basal);
+      expectedSuspendedBasal = expectedSuspendedBasal.set('duration', 3600000)
+                                                     .set('deliveryType', 'suspend')
+                                                     .done();
+      expect(simulator.getCrudEvents()).deep.equals([suspend,resume.done(),expectedSuspendedBasal]);
+
+    });
+
+    it('annotates possible suspended basal', function() {
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T02:00:00.000Z')
+        .with_deviceTime('2014-09-25T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_scheduleName('Alice')
+        .with_rate(0);
+
+        var expectedBasal = _.cloneDeep(basal);
+        expectedBasal = expectedBasal.set('duration', 3600000).done();
+        expectedBasal.annotations = [{code: 'animas/basal/possible-suspend'}];
+        simulator.basal(basal);
+        simulator.basal(basal2);
+        expect(simulator.getCrudEvents()).deep.equals([expectedBasal]);
+    });
+
     it('temp basal', function() {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
