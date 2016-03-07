@@ -14,10 +14,9 @@
 */
 
 @import '../core/variables.less';
-@import '../core/buttons.less';
 
-.ViewData-button {
-  composes: btn btn-primary;
+.button {
+  composes: btn btn-primary from '../core/buttons.less';
   font-size: @font-size-large;
   padding: 5px 0px;
   width: 150px;
