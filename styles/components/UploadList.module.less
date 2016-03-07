@@ -54,10 +54,9 @@
 }
 
 .main {
-  composes: scroll from '../core/mixins.less';
+  composes: scroll from '../core/layout.module.less';
+  composes: flexColumn from '../core/layout.module.less';
   padding-top: 20px;
-  display: flex;
-  flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -73,10 +72,9 @@
 }
 
 .item {
+  composes: flexColumn from '../core/layout.module.less';
   padding: 15px 0;
   border-bottom: 1px solid @gray-light;
-  display: flex;
-  flex-direction: column;
   flex-shrink: 0;
 }
 

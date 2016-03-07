@@ -16,13 +16,12 @@
 @import '../core/variables.less';
 
 .form {
-  composes: box-flex from '../core/mixins.less';
+  composes: box-flex from '../core/layout.module.less';
 }
 
 .inputWrap {
+  composes: flexColumn from '../core/layout.module.less';
   margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
 }
 
 .input {
@@ -30,15 +29,13 @@
 }
 
 .actions {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
   justify-content: space-between;
   margin-top: 5px;
 }
 
 .remember {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
   align-items: center;
 
   & > input[type="checkbox"] {
@@ -76,8 +73,7 @@
 }
 
 .error {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
   justify-content: flex-end;
   color: @red;
   margin-top: 10px;

@@ -18,7 +18,7 @@
 @form-height: 200px;
 
 .main {
-  composes: center-container from '../core/mixins.less';
+  composes: center-container from '../core/layout.module.less';
 }
 
 .headline {
@@ -28,7 +28,7 @@
 }
 
 .form {
-  composes: box-flex scroll from '../core/mixins.less';
+  composes: box-flex scroll from '../core/layout.module.less';
   margin: 0px auto 20px auto;
 }
 
@@ -41,8 +41,7 @@
 }
 
 .checkbox {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
   align-items: center;
 
   & > input[type="checkbox"] {

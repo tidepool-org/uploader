@@ -18,14 +18,12 @@
 @import '../core/buttons.less';
 
 .main {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
 }
 
 .column {
-  display: flex;
+  composes: flexColumn from '../core/layout.module.less';
   // Same width, and stretch
-  flex-direction: column;
   flex: 1 0px;
 }
 
@@ -47,15 +45,13 @@
 }
 
 .statusSection {
-  display: flex;
-  flex-flow: row;
+  composes: flexRow from '../core/layout.module.less';
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
 .status {
-  display: flex;
-  flex-flow: row;
+  composes: flexRow from '../core/layout.module.less';
   flex-shrink: 1;
   // Reset button height
   min-height: 24px;
@@ -93,16 +89,16 @@
 }
 
 .progress {
-  display: flex;
+  composes: flex from '../core/layout.module.less';
   justify-content: center;
   margin-bottom: 10px;
 }
 
 .form {
-  composes: box-flex from '../core/mixins.less';
+  composes: box-flex from '../core/layout.module.less';
 }
 
-.inputWrapper {
+.textInputWrapper {
   margin-bottom: 15px;
 }
 
@@ -111,8 +107,7 @@
 }
 
 .buttonWrap {
-  display: flex;
-  flex-flow: row wrap;
+  composes: flexRowWrap from '../core/layout.module.less';
   justify-content: flex-end;
 }
 

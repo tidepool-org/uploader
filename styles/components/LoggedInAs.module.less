@@ -25,15 +25,13 @@
 };
 
 .wrapper {
-  display: flex;
-  flex-direction: column;
+  composes: flexColumn from '../core/layout.module.less';
 }
 
 .main {
+  composes: flexRowWrap from '../core/layout.module.less';
   composes: interactive;
-
-  display: flex;
-  flex-flow: row wrap;
+  
   justify-content: flex-end;
   margin-top: 20px;
 }
