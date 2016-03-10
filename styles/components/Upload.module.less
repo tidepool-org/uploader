@@ -14,8 +14,7 @@
 */
 
 @import '../core/variables.less';
-@import '../core/forms.less';
-@import '../core/buttons.less';
+
 
 .main {
   composes: flexRowWrap from '../core/layout.module.less';
@@ -139,28 +138,14 @@ input[type=file] {
   position: absolute;
 }
 
-//TODO: move this to a <label> so we can use composes
 .fileinput::before {
-  //composes: btn btn-primary from '../core/buttons.less';
   visibility: visible;
+  color: #fff;
   content: 'Choose file';
-  .btn;
-  .btn-primary;
+  height: 25px;
 }
 
-// this is some shame.css right here
-// this style is part of the btn-primary mixin
-// but neither the selector nor the transparency work with the file input
-.fileinput[disabled]::before,
-.fileinput[disabled]:hover::before,
-.fileinput[disabled]:focus::before,
-.fileinput[disabled]:active::before {
-  cursor: not-allowed;
-  background-color: rgb(211, 208, 218);
-}
-
-.fileinput:hover::before,
-.fileinput:focus::before,
-.fileinput:active::before {
-  background-color: @purple-light;
+.fileinput {
+  composes: btn btn-primary from '../core/buttons.less';
+  color: transparent;
 }
