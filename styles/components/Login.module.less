@@ -15,6 +15,10 @@
 
 @import '../core/variables.less';
 
+.link {
+  composes: link from '../core/typography.module.less';
+}
+
 .form {
   composes: boxFlex from '../core/layout.module.less';
 }

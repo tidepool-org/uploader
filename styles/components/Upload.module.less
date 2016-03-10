@@ -85,8 +85,7 @@
 }
 
 .resetSuccess, .resetError {
-  composes: reset;
-  composes: btnSecondary from '../core/buttons.less';
+  composes: btn btnSecondary from '../core/buttons.less';
 }
 
 .progress {
@@ -151,4 +150,8 @@ input[type=file] {
 .fileinput {
   composes: btn btnPrimary from '../core/buttons.less';
   color: transparent;
+}
+
+.dataDownloadLink {
+  composes: link from '../core/typography.module.less';
 }

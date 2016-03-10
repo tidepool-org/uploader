@@ -62,13 +62,16 @@
 .detail {
   color: @gray-text;
   font-size: @font-size-small;
-  a {
-    color: @gray-text;
-  }
-  a:hover {
-    color: @purple-light;
-  }
   margin-left: 33px;
   margin-top: -30px;
   margin-bottom:10px;
+}
+
+.driverLink {
+  composes: link from '../core/typography.module.less';
+  color: @gray-text;
+  text-decoration: none;
+  :hover {
+    color: @purple-light;
+  }
 }

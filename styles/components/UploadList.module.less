@@ -34,21 +34,22 @@
   display: inline;
 }
 
-.errorMessageLink {
+.errorMessageLinkWrap {
   display: inline;
-  a {
-    color: @purple-dark;
-  }
-  a:hover {
+}
+
+.errorMessageLink {
+  composes: link from '../core/typography.module.less';
+  color: @purple-dark;
+  :hover {
     color: @purple-light;
   }
 }
 
-.errorText {
-  a{
-    font-size: @font-size-small;
-  }
-  a:hover {
+.errorTextLink {
+  composes: link from '../core/typography.module.less';
+  font-size: @font-size-small;
+  :hover {
     color: @purple-light;
   }
 }
