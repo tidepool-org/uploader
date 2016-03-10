@@ -15,12 +15,16 @@
 
 .App {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 // Header
 // ====================================
 
 .App-header {
+  display: flex;
+  flex-direction: column;
   padding: 0 25px;
   background: url(/images/T_icon_transparent.png) center center / 100px 100px no-repeat;
 
@@ -35,6 +39,7 @@
   margin-right: auto;
   margin-bottom: 20px;
   height: 470px;
+  box-sizing: border-box;
 }
 
 .App--login .App-page {
@@ -51,7 +56,13 @@
   padding: 15px (30px - @App-mainPageBorder) 25px;
 }
 
+.App-main-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .App-signup {
+  display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 20px;
@@ -77,6 +88,7 @@
   margin-bottom: 20px;
   background: url(/images/tidepool_logo_transparent.png) 50px 5px no-repeat;
   display: flex;
+  flex-direction: column;
   align-items: flex-end;
 
   > div {

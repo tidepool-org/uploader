@@ -55,6 +55,10 @@
 .UploadList {
   padding-top: 20px;
   .scroll();
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .UploadList--onlyme {
@@ -68,6 +72,9 @@
 .UploadList-item {
   padding: 15px 0;
   border-bottom: 1px solid @gray-light;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .UploadList-item:last-child {

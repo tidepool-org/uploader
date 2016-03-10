@@ -26,7 +26,8 @@ import * as metrics from '../../../../lib/redux/constants/metrics';
 import { steps } from '../../../../lib/redux/constants/otherConstants';
 
 import * as syncActions from '../../../../lib/redux/actions/sync';
-import { errorText, UnsupportedError } from '../../../../lib/redux/utils/errors';
+import { UnsupportedError } from '../../../../lib/redux/utils/errors';
+import errorText from '../../../../lib/redux/constants/errors';
 
 describe('Synchronous Actions', () => {
   describe('addTargetDevice', () => {
