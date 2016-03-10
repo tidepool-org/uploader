@@ -18,6 +18,7 @@
 @mainPageBorder: 1px;
 
 .app {
+  composes: base from '../core/typography.module.less';
   composes: flexColumn from '../core/layout.module.less';
   height: 100%;
 }
@@ -95,16 +96,17 @@
     text-align: center;
     width: 230px;
   }
+}
 
-  a {
+.footerLink {
+  composes: link from '../core/typography.module.less';
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: @blue;
     text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
   }
 }
 

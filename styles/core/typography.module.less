@@ -1,0 +1,19 @@
+@import 'variables.less';
+
+.base {
+  font-family: @font-family-base;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  color: @text-color;
+}
+
+.link {
+  color: @link-color;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    color: @link-hover-color;
+    text-decoration: underline;
+  }
+}
