@@ -17,3 +17,41 @@
     text-decoration: underline;
   }
 }
+
+.invertLink {
+  composes: link;
+  color: @link-hover-color;
+
+  &:hover,
+  &:focus {
+    color: @link-color;
+  }
+}
+
+.large {
+  font-size: 20px;
+}
+
+.medium {
+  font-size: 16px;
+}
+
+.small {
+  font-size: 14px;
+}
+
+.tiny {
+  font-size: 12px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.lightGray {
+  color: @light-gray;
+}
+
+.gray {
+  color: @medium-gray;
+}

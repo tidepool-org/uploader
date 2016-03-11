@@ -38,11 +38,11 @@
 }
 
 .name {
-  font-weight: bold;
+  composes: small bold from '../core/typography.module.less';
 }
 
 .detail {
-  color: @gray-text;
+  composes: small gray from '../core/typography.module.less';
 }
 
 .statusSection {
