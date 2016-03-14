@@ -22,14 +22,13 @@
 }
 
 .headline {
+  composes: large from '../core/typography.module.less';
   width: 250px;
-  margin: 20px auto 20px auto;
-  text-align: center;
 }
 
 .form {
   composes: boxFlex scroll from '../core/layout.module.less';
-  margin: 0px auto 20px auto;
+  margin-bottom: 20px;
 }
 
 .onlyme {
@@ -46,30 +45,39 @@
 
   & > input[type="checkbox"] {
     margin: 0;
-    margin-right: 5px;
+    margin-right: 25px;
+    width: 15px;
+    height: 15px;
   }
 
   margin-left: 15px;
   margin-bottom: 30px;
 }
 
+.label {
+  composes: small bold from '../core/typography.module.less';
+}
+
+.buttonWrap {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+}
+
 .button {
   composes: btn btnPrimary from '../core/buttons.module.less';
   width: 150px;
-  margin: 0px auto 5px auto;
+  margin-bottom: 5px;
 }
 
 .detail {
-  color: @gray-text;
-  font-size: @font-size-small;
-  margin-left: 33px;
+  composes: tiny gray from '../core/typography.module.less';
+  margin-left: 55px;
   margin-top: -30px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
 .driverLink {
-  composes: link from '../core/typography.module.less';
-  color: @gray-text;
+  composes: link gray from '../core/typography.module.less';
   text-decoration: none;
   :hover {
     color: @purple-light;
