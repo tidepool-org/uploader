@@ -17,6 +17,11 @@
 
 @base-height: 305px;
 
+.headline {
+  composes: large from '../core/typography.module.less';
+  width: 250px;
+}
+
 .errorItem{
   padding-top: 10px;
 }
@@ -57,7 +62,6 @@
 .main {
   composes: scroll from '../core/layout.module.less';
   composes: flexColumn from '../core/layout.module.less';
-  padding-top: 20px;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -75,7 +79,6 @@
 .item {
   composes: flexColumn from '../core/layout.module.less';
   padding: 15px 0;
-  border-bottom: 1px solid @gray-light;
   flex-shrink: 0;
 }
 

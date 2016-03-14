@@ -125,11 +125,11 @@ input[type=file] {
 }
 
 .inputWrapper {
-  width: 116px;
-  position: relative;
-  left: 111px;
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
   overflow: hidden;
   margin-bottom: 15px;
+
 }
 
 // hide Chrome-default filepicker button
@@ -144,12 +144,15 @@ input[type=file] {
   visibility: visible;
   color: #fff;
   content: 'Choose file';
-  height: 25px;
+  margin-left: 21px;
+  vertical-align: middle;
 }
 
 .fileinput {
   composes: btn btnPrimary from '../core/buttons.module.less';
+  padding: 0px;
   color: transparent;
+  width: 116px;
 }
 
 .dataDownloadLink {
