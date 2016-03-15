@@ -49,30 +49,20 @@
 }
 
 .button {
-  composes: btn from '../core/buttons.module.less';
-
-  background-color: @blue;
-  color: #fff;
-
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: fade(@blue, 75%);
-  }
+  composes: btn btnPrimary from '../core/buttons.module.less';
 }
 
 .forgot {
-  font-size: 11px;
+  composes: tiny from '../core/typography.module.less';
+}
 
-  a {
+.forgotLink {
+  composes: link from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
     text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
   }
 }
 
