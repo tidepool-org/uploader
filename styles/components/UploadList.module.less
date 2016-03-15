@@ -45,18 +45,10 @@
 
 .errorMessageLink {
   composes: link from '../core/typography.module.less';
-  color: @purple-dark;
-  :hover {
-    color: @purple-light;
-  }
 }
 
 .errorTextLink {
-  composes: link from '../core/typography.module.less';
-  font-size: @font-size-small;
-  :hover {
-    color: @purple-light;
-  }
+  composes: link tiny from '../core/typography.module.less';
 }
 
 .main {

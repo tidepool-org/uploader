@@ -38,7 +38,7 @@ a.btn {
   font-size: inherit;
   line-height: (@btn-height - 2*@btn-border-size);
   padding: 0 20px;
-  min-width: 120px;
+  min-width: 124px;
 
   &:hover,
   &:focus,
@@ -61,19 +61,19 @@ a.btn {
 // Main action button style
 .btnPrimary,
 a.btnPrimary {
-  background-color: @medium-purple;
+  background-color: @purple-medium;
   color: #fff;
 
   &:hover,
   &:focus,
   &:active {
-    background-color: @dark-purple;
+    background-color: @purple-dark;
   }
 
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
-    background-color: fade(@medium-purple, 20%);
+    background-color: fade(@purple-medium, 20%);
   }
 }
 
@@ -81,11 +81,11 @@ a.btnPrimary {
 a.btnSecondary {
   color: @text-color;
   background-color: #fff;
-  border-color: fade(@medium-purple, 50%);
+  border-color: fade(@purple-medium, 50%);
 
   &:hover,
   &:focus,
   &:active {
-    border-color: @medium-purple;
+    border-color: @purple-medium;
   }
 }

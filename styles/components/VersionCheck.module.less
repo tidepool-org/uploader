@@ -48,12 +48,10 @@
 
 .link {
   composes: link from '../core/typography.module.less';
-  color: @purple-light;
 
   &:hover,
   &:focus,
   &:active {
-    color: @purple-medium;
     text-decoration: none;
   }
 }
@@ -80,6 +78,6 @@
 
 .errorText {
   composes: purple-centered;
+  composes: tiny from '../core/typography.module.less';
   margin: 0;
-  font-size: @font-size-small;
 }
