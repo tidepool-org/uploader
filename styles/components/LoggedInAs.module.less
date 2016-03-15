@@ -53,7 +53,10 @@
 .downArrow {
   composes: icon-arrow-down from '../core/icons.less';
   font-size: 5px;
-  padding-left: 5px;
+  padding-left: 10px;
+  &::before {
+    vertical-align: -webkit-baseline-middle;
+  }
 }
 
 .editIcon {
