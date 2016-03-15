@@ -39,6 +39,7 @@ module.exports = {
   // the defaults for these need to be pointing to prod
   API_URL: process.env.API_URL || 'https://api.tidepool.org',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.org',
+  DATASERVICES_URL: process.env.DATASERVICES_URL || 'https://dataservices.tidepool.org',
   BLIP_URL: process.env.BLIP_URL || 'https://blip.tidepool.org',
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
   DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'

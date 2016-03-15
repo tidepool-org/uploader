@@ -79,21 +79,25 @@ function setServer(window, info) {
     Local: {
       API_URL: 'http://localhost:8009',
       UPLOAD_URL: 'http://localhost:9122',
+      DATASERVICES_URL: 'http://localhost:8077',
       BLIP_URL: 'http://localhost:3000'
     },
     Development: {
       API_URL: 'https://dev-api.tidepool.org',
       UPLOAD_URL: 'https://dev-uploads.tidepool.org',
+      DATASERVICES_URL: 'https://dev-dataservices.tidepool.org',
       BLIP_URL: 'https://dev-blip.tidepool.org'
     },
     Staging: {
       API_URL: 'https://stg-api.tidepool.org',
       UPLOAD_URL: 'https://stg-uploads.tidepool.org',
+      DATASERVICES_URL: 'https://stg-dataservices.tidepool.org',
       BLIP_URL: 'https://stg-blip.tidepool.org'
     },
     Production: {
       API_URL: 'https://api.tidepool.org',
       UPLOAD_URL: 'https://uploads.tidepool.org',
+      DATASERVICES_URL: 'https://dataservices.tidepool.org',
       BLIP_URL: 'https://blip.tidepool.org'
     }
   };

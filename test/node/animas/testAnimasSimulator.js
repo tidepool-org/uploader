@@ -264,12 +264,12 @@ describe('animasSimulator.js', function() {
 
       it('a suspend passes through', function() {
         simulator.suspend(suspend);
-        expect(simulator.getCrudEvents()).deep.equals([suspend]);
+        expect(simulator.getDataServicesEvents()).deep.equals([suspend]);
       });
 
       it('a resume passes through', function() {
         simulator.resume(resume);
-        expect(simulator.getCrudEvents()).deep.equals([resume.done()]);
+        expect(simulator.getDataServicesEvents()).deep.equals([resume.done()]);
       });
 
       it('generates annotation for out-of-sequence events', function() {
@@ -296,7 +296,7 @@ describe('animasSimulator.js', function() {
         var expectedResume = _.cloneDeep(resume);
         expectedResume.annotations = [{code: 'animas/out-of-sequence'}];
 
-        expect(simulator.getCrudEvents()).deep.equals([suspend, expectedResume.done(), suspend2]);
+        expect(simulator.getDataServicesEvents()).deep.equals([suspend, expectedResume.done(), suspend2]);
       });
 
       it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
@@ -314,7 +314,7 @@ describe('animasSimulator.js', function() {
         simulator.suspend(suspend);
         simulator.suspend(suspend2);
         simulator.resume(resume);
-        expect(simulator.getCrudEvents()).deep.equals([suspend, resume.done()]);
+        expect(simulator.getDataServicesEvents()).deep.equals([suspend, resume.done()]);
       });
     });
   });
@@ -402,7 +402,7 @@ describe('animasSimulator.js', function() {
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       simulator.basal(basal1);
       simulator.basal(basal2);
-      expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal]);
+      expect(simulator.getDataServicesEvents()).deep.equals([expectedFirstBasal]);
     });
 
     it('limits duration to five days for flat-rate basals', function() {
@@ -419,7 +419,7 @@ describe('animasSimulator.js', function() {
       expectedFirstBasal.annotations = [{code: 'animas/basal/flat-rate'}];
       simulator.basal(basal);
       simulator.basal(basal1);
-      expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal]);
+      expect(simulator.getDataServicesEvents()).deep.equals([expectedFirstBasal]);
 
     });
 
@@ -436,7 +436,7 @@ describe('animasSimulator.js', function() {
       simulator.basal(basal1);
       simulator.basal(basal2);
       simulator.basal(basal3);
-      expect(simulator.getCrudEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
+      expect(simulator.getDataServicesEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
     });
 
     it('sets suspended basal', function() {
@@ -477,7 +477,7 @@ describe('animasSimulator.js', function() {
       expectedSuspendedBasal = expectedSuspendedBasal.set('duration', 3599000)
                                                      .set('deliveryType', 'suspend')
                                                      .done();
-      expect(simulator.getCrudEvents()).deep.equals([suspend,resume.done(),expectedSuspendedBasal]);
+      expect(simulator.getDataServicesEvents()).deep.equals([suspend,resume.done(),expectedSuspendedBasal]);
 
     });
 
@@ -495,7 +495,7 @@ describe('animasSimulator.js', function() {
         expectedBasal.annotations = [{code: 'animas/basal/possible-suspend'}];
         simulator.basal(basal);
         simulator.basal(basal2);
-        expect(simulator.getCrudEvents()).deep.equals([expectedBasal]);
+        expect(simulator.getDataServicesEvents()).deep.equals([expectedBasal]);
     });
 
     it('temp basal', function() {
@@ -526,7 +526,7 @@ describe('animasSimulator.js', function() {
       simulator.basal(suppressed);
       simulator.basal(tempBasal);
       simulator.basal(basal2);
-      expect(simulator.getCrudEvents()).deep.equals([
+      expect(simulator.getDataServicesEvents()).deep.equals([
         suppressed.done(),
         expectedTempBasal
       ]);
