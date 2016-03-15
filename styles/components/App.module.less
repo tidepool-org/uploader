@@ -68,21 +68,21 @@
   composes: flexRow from '../core/layout.module.less';
   justify-content: flex-end;
   margin-top: 20px;
+}
 
-  a {
+.signupLink {
+  composes: link from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
     text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @gray-text;
-      text-decoration: none;
-    }
   }
+}
 
-  i {
-    font-style: normal;
-  }
+.signupIcon {
+  composes: icon-add from '../core/icons.less';
+  font-style: normal;
 }
 
 .footer {
