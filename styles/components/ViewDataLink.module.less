@@ -15,10 +15,14 @@
 
 @import '../core/variables.less';
 
+.buttonWrap {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+}
+
 .button {
   composes: btn btnPrimary from '../core/buttons.module.less';
   font-size: @font-size-large;
   padding: 5px 0px;
-  width: 150px;
   margin: 10px auto;
 }
