@@ -532,4 +532,72 @@ describe('animasSimulator.js', function() {
       ]);
     });
   });
+
+  describe('event interplay', function() {
+    it('basal is suspended by alarm', function() {
+
+      var alarm = {
+        time: '2014-09-25T01:00:00.000Z',
+        deviceTime: '2014-09-25T01:00:00',
+        timezoneOffset: 0,
+        conversionOffset: 0,
+        deviceId: 'animas12345',
+        type: 'deviceEvent',
+        subType: 'alarm',
+        alarmType: 'auto_off'
+      };
+
+      var basal1 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T02:00:00.000Z')
+        .with_deviceTime('2014-09-25T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(0);
+      basal1.deviceId = 'animas12345';
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T03:00:00.000Z')
+        .with_deviceTime('2014-09-25T03:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.2);
+      basal2.deviceId = 'animas12345';
+
+      var expectedSuspend = {
+        time: '2014-09-25T02:00:01.000Z',
+        deviceTime: '2014-09-25T02:00:01',
+        timezoneOffset: 0,
+        conversionOffset: 0,
+        deviceId: 'animas12345',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: {suspended: 'automatic'},
+        payload: {cause: 'auto_off'}
+      };
+      var expectedResume = builder.makeDeviceEventResume()
+        .with_time('2014-09-25T03:00:01.000Z')
+        .with_deviceTime('2014-09-25T03:00:01')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_status('resumed')
+        .with_reason({resumed: 'automatic'})
+        .done();
+      expectedResume.deviceId = 'animas12345';
+
+      simulator.alarm(alarm);
+      simulator.basal(basal1);
+      simulator.basal(basal2);
+
+      var expectedBasal = _.cloneDeep(basal1);
+      expectedBasal = expectedBasal.done();
+      expectedBasal.deliveryType ='suspend';
+
+      expect(simulator.getDataServicesEvents()).deep.equals([
+        expectedSuspend,
+        expectedBasal,
+        expectedResume
+      ]);
+    });
+  });
 });
