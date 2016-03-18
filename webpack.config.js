@@ -19,7 +19,7 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) {
+if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
