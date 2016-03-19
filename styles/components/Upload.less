@@ -14,12 +14,15 @@
 */
 
 .Upload {
+  display: flex;
   flex-flow: row wrap;
 }
 
 .Upload-left,
 .Upload-right {
+  display: flex;
   // Same width, and stretch
+  flex-direction: column;
   flex: 1 0px;
 }
 
@@ -39,12 +42,14 @@
 }
 
 .Upload-statusSection {
+  display: flex;
   flex-flow: row;
   justify-content: space-between;
   margin-bottom: 5px;
 }
 
 .Upload-status {
+  display: flex;
   flex-flow: row;
   flex-shrink: 1;
   // Reset button height
@@ -94,6 +99,7 @@
 }
 
 .Upload-progress {
+  display: flex;
   justify-content: center;
   margin-bottom: 10px;
 }
@@ -107,6 +113,7 @@
 }
 
 .Upload-button {
+  display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;
 }
@@ -134,18 +141,28 @@ input[type=file] {
   height: 0;
   position: absolute;
 }
-// replace with a button consistent with rest of app
 .Upload-fileinput::before {
   visibility: visible;
   content: 'Choose file';
   .btn;
-  .btn-secondary;
+  .btn-primary;
+}
+
+// this is some shame.css right here
+// this style is part of the btn-primary mixin
+// but neither the selector nor the transparency work with the file input
+.Upload-fileinput[disabled]::before,
+.Upload-fileinput[disabled]:hover::before,
+.Upload-fileinput[disabled]:focus::before,
+.Upload-fileinput[disabled]:active::before {
+  cursor: not-allowed;
+  background-color: rgb(211, 208, 218);
 }
 
 .Upload-fileinput:hover::before,
 .Upload-fileinput:focus::before,
 .Upload-fileinput:active::before {
-  border-color: @purple-light;
+  background-color: @purple-light;
 }
 
 .Upload-helpText {
