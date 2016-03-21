@@ -28,10 +28,10 @@
 
 .header {
   composes: flexColumn from '../core/layout.module.less';
-  padding: 0 25px;
   background: url(/images/T_icon_transparent.png) center center / 100px 100px no-repeat;
-
   min-height: 150px;
+  width: 550px;
+  margin: 0px auto;
 }
 
 // Page
@@ -56,7 +56,7 @@
   background-color: rgba(255, 255, 255, 0.75);
   border: @mainPageBorder solid @gray-light;
   border-radius: 2px;
-  padding: 15px (30px - @mainPageBorder) 25px;
+  padding: 15px (15px - @mainPageBorder) 25px (30px - @mainPageBorder);
   box-sizing: border-box;
 }
 
@@ -97,8 +97,9 @@
 
 .footerRow {
   composes: flexRow from '../core/layout.module.less';
-  width: 100%;
-  justify-content: space-around;
+  width: 550px;
+  margin: 0px auto;
+  justify-content: space-between;
 }
 
 .footerLink {

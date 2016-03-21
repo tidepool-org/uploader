@@ -26,6 +26,7 @@
 
 .wrapper {
   composes: flexColumn from '../core/layout.module.less';
+  margin-right: 5px;
 }
 
 .main {
@@ -70,12 +71,12 @@
 .dropdown {
   border: 1px solid @gray-light;
   cursor: default;
-  position: absolute;
+  position: relative;
   background: white;
-  right: 7px;
+  top: 5px;
+  left: 381px;
   z-index: 100;
   width: 180px;
-  top: 45px;
 
   > ul {
     list-style: none;

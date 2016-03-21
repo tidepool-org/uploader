@@ -18,10 +18,11 @@
 .buttonWrap {
   composes: flexRow from '../core/layout.module.less';
   flex-direction: row-reverse;
+  padding-right: 23px;
 }
 
 .button {
-  composes: btn btnPrimary from '../core/buttons.module.less';
+  composes: btn btnSecondary from '../core/buttons.module.less';
   font-size: @font-size-large;
   padding: 5px 0px;
   margin: 10px auto;
