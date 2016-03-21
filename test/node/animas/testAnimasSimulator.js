@@ -243,17 +243,13 @@ describe('animasSimulator.js', function() {
     });
 
     describe('status', function() {
-      var suspend = {
-        time: '2014-09-25T01:00:00.000Z',
-        deviceTime: '2014-09-25T01:00:00',
-        timezoneOffset: 0,
-        conversionOffset: 0,
-        deviceId: 'animas12345',
-        type: 'deviceEvent',
-        subType: 'status',
-        status: 'suspended',
-        reason: {suspended: 'automatic'}
-      };
+      var suspend = builder.makeDeviceEventSuspend()
+        .with_time('2014-09-25T01:00:00.000Z')
+        .with_deviceTime('2014-09-25T01:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_status('suspended')
+        .with_reason({suspended: 'manual'});
       var resume = builder.makeDeviceEventResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -262,60 +258,26 @@ describe('animasSimulator.js', function() {
         .with_status('resumed')
         .with_reason({resumed: 'manual'});
 
-      it('a suspend passes through', function() {
+      it('a single suspend does not pass through', function() {
         simulator.suspend(suspend);
-        expect(simulator.getDataServicesEvents()).deep.equals([suspend]);
+        expect(simulator.getDataServicesEvents()).deep.equals([]);
       });
 
-      it('a resume passes through', function() {
+      it('a single resume does not pass through', function() {
         simulator.resume(resume);
-        expect(simulator.getDataServicesEvents()).deep.equals([resume.done()]);
+        expect(simulator.getDataServicesEvents()).deep.equals([]);
       });
 
-      it('generates annotation for out-of-sequence events', function() {
-
-        var suspend2 = {
-          time: '2014-09-25T03:00:00.000Z',
-          deviceTime: '2014-09-25T03:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'animas12345',
-          type: 'deviceEvent',
-          subType: 'status',
-          status: 'suspended',
-          reason: {suspended: 'automatic'},
-          index: 3
-        };
-
-        suspend.index = 1;
-        resume.set('index', 2);
+      it('a suspend and resume gets combined', function() {
         simulator.suspend(suspend);
         simulator.resume(resume);
-        simulator.suspend(suspend2);
 
-        var expectedResume = _.cloneDeep(resume);
-        expectedResume.annotations = [{code: 'animas/out-of-sequence'}];
-
-        expect(simulator.getDataServicesEvents()).deep.equals([suspend, expectedResume.done(), suspend2]);
+        var expectedSuspendResume = _.cloneDeep(suspend);
+        expectedSuspendResume.duration = 3600000;
+        expectedSuspendResume.reason.resumed = 'manual';
+        expect(simulator.getDataServicesEvents()).deep.equals([expectedSuspendResume.done()]);
       });
 
-      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
-        var suspend2 = {
-          time: '2014-09-25T01:05:00.000Z',
-          deviceTime: '2014-09-25T01:05:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'animas12345',
-          type: 'deviceEvent',
-          subType: 'status',
-          status: 'suspended',
-          reason: {suspended: 'automatic'}
-        };
-        simulator.suspend(suspend);
-        simulator.suspend(suspend2);
-        simulator.resume(resume);
-        expect(simulator.getDataServicesEvents()).deep.equals([suspend, resume.done()]);
-      });
     });
   });
 
@@ -440,17 +402,13 @@ describe('animasSimulator.js', function() {
     });
 
     it('sets suspended basal', function() {
-      var suspend = {
-        time: '2014-09-25T02:00:00.000Z',
-        deviceTime: '2014-09-25T02:00:00',
-        timezoneOffset: 0,
-        conversionOffset: 0,
-        deviceId: 'animas12345',
-        type: 'deviceEvent',
-        subType: 'status',
-        status: 'suspended',
-        reason: {suspended: 'automatic'}
-      };
+      var suspend = builder.makeDeviceEventSuspend()
+        .with_time('2014-09-25T02:00:00.000Z')
+        .with_deviceTime('2014-09-25T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_status('suspended')
+        .with_reason({resumed: 'automatic'});
 
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-25T02:00:01.000Z')
@@ -474,10 +432,13 @@ describe('animasSimulator.js', function() {
       simulator.basal(basal2);
 
       var expectedSuspendedBasal = _.cloneDeep(basal);
-      expectedSuspendedBasal = expectedSuspendedBasal.set('duration', 3599000)
-                                                     .set('deliveryType', 'suspend')
-                                                     .done();
-      expect(simulator.getDataServicesEvents()).deep.equals([suspend,resume.done(),expectedSuspendedBasal]);
+      expectedSuspendedBasal.duration = 3599000;
+      expectedSuspendedBasal.deliveryType = 'suspend';
+
+      var expectedSuspendResume = _.cloneDeep(suspend);
+      expectedSuspendResume.duration = 600000;
+      expectedSuspendResume.reason.resumed = 'manual';
+      expect(simulator.getDataServicesEvents()).deep.equals([expectedSuspendResume.done(),expectedSuspendedBasal.done()]);
 
     });
 
