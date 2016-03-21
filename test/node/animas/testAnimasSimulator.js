@@ -576,6 +576,7 @@ describe('animasSimulator.js', function() {
         payload: {cause: 'auto_off'},
         duration: 3600000
       };
+      expectedSuspendResume.annotations = [{code: 'animas/status/fabricated-from-alarm'}];
 
       simulator.alarm(alarm);
       simulator.basal(basal1);
