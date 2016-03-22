@@ -295,6 +295,9 @@ describe('animasSimulator.js', function() {
 
         var expectedResume = _.cloneDeep(resume);
         expectedResume.annotations = [{code: 'animas/out-of-sequence'}];
+        delete expectedResume.index;
+        delete suspend.index;
+        delete resume.index;
 
         expect(simulator.getDataServicesEvents()).deep.equals([suspend, expectedResume.done(), suspend2]);
       });
@@ -436,6 +439,8 @@ describe('animasSimulator.js', function() {
       simulator.basal(basal1);
       simulator.basal(basal2);
       simulator.basal(basal3);
+      delete expectedFirstBasal.index;
+      delete expectedSecondBasal.index;
       expect(simulator.getDataServicesEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
     });
 
