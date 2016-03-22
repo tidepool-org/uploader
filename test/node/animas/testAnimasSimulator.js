@@ -278,6 +278,47 @@ describe('animasSimulator.js', function() {
         expect(simulator.getDataServicesEvents()).deep.equals([expectedSuspendResume.done()]);
       });
 
+      it('generates annotation for out-of-sequence events', function() {
+
+        var suspend2 = builder.makeDeviceEventSuspend()
+          .with_time('2014-09-25T03:00:00.000Z')
+          .with_deviceTime('2014-09-25T03:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_reason({suspended: 'manual'});
+        var resume2 = builder.makeDeviceEventResume()
+          .with_time('2014-09-25T04:00:00.000Z')
+          .with_deviceTime('2014-09-25T04:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('resumed')
+          .with_reason({resumed: 'manual'});
+
+        suspend.index = 4;
+        resume.set('index', 4);
+        suspend2.index = 5;
+        resume2.index = 5;
+
+        var expectedSuspendResume = _.cloneDeep(suspend);
+        expectedSuspendResume.duration = 3600000;
+        expectedSuspendResume.reason.resumed = 'manual';
+
+        var expectedSuspendResume2 = _.cloneDeep(suspend2);
+        expectedSuspendResume2.duration = 3600000;
+        expectedSuspendResume2.reason.resumed = 'manual';
+        expectedSuspendResume2 = expectedSuspendResume2.done();
+        expectedSuspendResume2.annotations = [{code: 'animas/out-of-sequence'}];
+
+        simulator.suspend(suspend);
+        simulator.resume(resume);
+        simulator.suspend(suspend2);
+        simulator.resume(resume2);
+
+        var events = simulator.getDataServicesEvents();
+        expect(events).deep.equals([expectedSuspendResume.done(), expectedSuspendResume2]);
+      });
+
     });
   });
 
