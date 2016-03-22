@@ -46,6 +46,7 @@
     "d3": "3.5.14",
     "eslint": "1.10.3",
     "eslint-plugin-react": "3.16.1",
+    "express": "4.13.4",
     "flux-standard-action": "0.6.0",
     "json-loader": "0.5.4",
     "karma": "0.13.19",
