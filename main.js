@@ -58,8 +58,24 @@ var contextMenus = [
   },
   {
     type: 'radio',
+    id: 'Clinic',
+    title: 'Clinic',
+    contexts: contexts,
+    parentId: 'MENUROOT',
+    checked: false
+  },
+  {
+    type: 'radio',
     id: 'Staging',
     title: 'Staging',
+    contexts: contexts,
+    parentId: 'MENUROOT',
+    checked: false
+  },
+  {
+    type: 'radio',
+    id: 'Integration',
+    title: 'Integration',
     contexts: contexts,
     parentId: 'MENUROOT',
     checked: false
@@ -88,11 +104,21 @@ function setServer(window, info) {
       DATASERVICES_URL: 'https://dev-dataservices.tidepool.org',
       BLIP_URL: 'https://dev-blip.tidepool.org'
     },
+    Clinic: {
+      API_URL: 'https://dev-clinic-api.tidepool.org',
+      UPLOAD_URL: 'https://dev-clinic-uploads.tidepool.org',
+      BLIP_URL: 'https://dev-clinic-blip.tidepool.org'
+    },
     Staging: {
       API_URL: 'https://stg-api.tidepool.org',
       UPLOAD_URL: 'https://stg-uploads.tidepool.org',
       DATASERVICES_URL: 'https://stg-dataservices.tidepool.org',
       BLIP_URL: 'https://stg-blip.tidepool.org'
+    },
+    Integration: {
+      API_URL: 'https://int-api.tidepool.org',
+      UPLOAD_URL: 'https://int-uploads.tidepool.org',
+      BLIP_URL: 'https://int-blip.tidepool.org'
     },
     Production: {
       API_URL: 'https://api.tidepool.org',
