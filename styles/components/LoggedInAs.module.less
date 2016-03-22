@@ -37,6 +37,13 @@
   margin-top: 20px;
 }
 
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 195px;
+  text-overflow: ellipsis;
+}
+
 .link {
   composes: invertLink from '../core/typography.module.less';
   composes: interactive;
