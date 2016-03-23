@@ -121,7 +121,7 @@
         },
         {
           "deviceName": "BayerContourNextLink24",
-          "driverId": "BayerContourNextLink24",
+          "driverId": "BayerContourNextLink",
           "mode": "HID",
           "vendorId": 6777,
           "productId": 25104
