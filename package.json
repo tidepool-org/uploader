@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.254.3",
+  "version": "0.254.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
