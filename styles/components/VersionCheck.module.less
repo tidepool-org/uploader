@@ -20,13 +20,18 @@
 .failed {
   composes: main;
   composes: mostlyOpaqueBackground;
-  background: url(/images/unhappy_meter.png) center center / 69px 166px no-repeat;
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/unhappy_meter.png);
+  background-position: center center;
+  background-size: 69px 166px;
+  background-repeat: no-repeat;
 }
 
 .offline {
   composes: main;
   composes: mostlyOpaqueBackground;
-  background: url(/images/unhappy_device.png);
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/unhappy_device.png);
   background-position: 50% 60%;
   background-size: 105px 237px;
   background-repeat: no-repeat;
@@ -35,13 +40,15 @@
 .outdated {
   composes: main;
   composes: mostlyOpaqueBackground;
-  background: url(/images/happy_device.png);
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/happy_device.png);
   background-position: 50% 60%;
   background-size: 156px 213px;
   background-repeat: no-repeat;
 }
 
 .text {
+  composes: flexColumn from '../core/layout.module.less';
   min-height: 425px;
   justify-content: center;
 }
