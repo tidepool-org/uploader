@@ -15,3 +15,22 @@ Whenever a `.module.less` file is `require`d, it will be passed through the CSS 
 ```
 
 In general, all of the components will have a `.module.less` as the styles are `require`d from within the JavaScript of the component. The files under `/styles/core` are a slightly mixed bag as they aren't generally `require`d individually from a JavaScript file (excepting `main.less`). The files in `/core` marked as modules don't use any module-incompatible LESS syntax features and are intended to be used as single-responsibility modules solely through the `composes` keyword from other `.module.less` files. The plain `.less` files can be used through `composes`, but for one reason or another require the ability to be used in a global context in addition to a scoped context and therefore cannot be exclusively loaded by the Webpack CSS module loader.
+
+### Concerning classnames
+When creating names for classes in a CSS module, it's good to keep in mind the final use for the file. If one is going to be `require`ing the file for inclusion in a JavaScript module, then a good practice is to keep all the names camelCase in order to ease addressing them in React/JSX components. For example,
+```css
+.classOne {
+  color: #BADA55;
+}
+.class-two {
+  color: #C0FFEE;
+}
+```
+In order to use these class names in JSX it would look something like this:
+```JavaScript
+<div className={styles.classOne}>One</div>
+<div className={styles['class-two']}>Two</div>
+```
+where the first is less cumbersome.
+
+If the module that you're creating will be a single-responsibility module (like `typography` or `layout`) and will only ever have it's class names referenced by external `composes` from other modules, then the advantage of the JSX syntax simplicity isn't present. If there's some reason to not use camelCase (e.g. legacy code or third party dependency) then it may make more sense to use another naming scheme. In general, for consistency, default to camelCase when possible.
