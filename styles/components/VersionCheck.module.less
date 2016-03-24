@@ -1,0 +1,90 @@
+@import '../core/variables.less';
+
+.purpleCentered {
+  color: @purple-dark;
+  text-align: center;
+}
+
+.mostlyOpaqueBackground {
+  background-color: rgba(255, 255, 255, 0.925);
+}
+
+.main {
+  position: absolute;
+  top: 0; left: 0;
+
+  width: 100%;
+  height: @app-height;
+}
+
+.failed {
+  composes: main;
+  composes: mostlyOpaqueBackground;
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/unhappy_meter.png);
+  background-position: center center;
+  background-size: 69px 166px;
+  background-repeat: no-repeat;
+}
+
+.offline {
+  composes: main;
+  composes: mostlyOpaqueBackground;
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/unhappy_device.png);
+  background-position: 50% 60%;
+  background-size: 105px 237px;
+  background-repeat: no-repeat;
+}
+
+.outdated {
+  composes: main;
+  composes: mostlyOpaqueBackground;
+  composes: flexColumn from '../core/layout.module.less';
+  background-image: url(/images/happy_device.png);
+  background-position: 50% 60%;
+  background-size: 156px 213px;
+  background-repeat: no-repeat;
+}
+
+.text {
+  composes: flexColumn from '../core/layout.module.less';
+  min-height: 425px;
+  justify-content: center;
+}
+
+.link {
+  composes: link from '../core/typography.module.less';
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.paragraph {
+  composes: purpleCentered;
+  margin: 0;
+  font-size: @font-size-large;
+  font-weight: bold;
+}
+
+.mostImportant {
+  composes: paragraph;
+  margin-top: 20px;
+}
+
+.error {
+  position: absolute;
+  top: 600px; left: 0px;
+
+  width: 100%;
+  min-height: 80px;
+}
+
+.errorText {
+  composes: purpleCentered;
+  composes: tiny from '../core/typography.module.less';
+  margin: 0;
+}

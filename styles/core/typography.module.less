@@ -1,0 +1,61 @@
+@import 'variables.less';
+
+.base {
+  font-family: @font-family-base;
+  font-size: @font-size-small;
+  line-height: @line-height-small;
+  color: @text-color;
+}
+
+.link {
+  color: @link-color;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    color: @link-hover-color;
+    text-decoration: underline;
+  }
+}
+
+.invertLink {
+  composes: link;
+  color: @link-hover-color;
+
+  &:hover,
+  &:focus {
+    color: @link-color;
+  }
+}
+
+.large {
+  font-size: @font-size-large;
+  line-height: @line-height-large;
+}
+
+.medium {
+  font-size: @font-size-medium;
+  line-height: @line-height-medium;
+}
+
+.small {
+  font-size: @font-size-small;
+  line-height: @line-height-small;
+}
+
+.tiny {
+  font-size: @font-size-tiny;
+  line-height: @line-height-tiny;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.lightGray {
+  color: @gray-light;
+}
+
+.gray {
+  color: @gray-medium;
+}

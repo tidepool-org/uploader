@@ -13,71 +13,71 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-@base-height: 305px;
+@import '../core/variables.less';
 
+@base-height: 260px;
 
-.UploadList-error-item{
+.headline {
+  composes: large from '../core/typography.module.less';
+  width: 250px;
+  font-weight: normal;
+  margin-top: 10px;
+}
+
+.errorItem{
   padding-top: 10px;
 }
 
-.UploadList-error-message {
+.errorMessage {
   color: @red;
   display: inline;
 }
 
-.UploadList-error-message-wrapper {
+.errorMessageWrapper {
   display: inline;
 }
 
-.UploadList-error-message-friendly {
+.errorMessageFriendly{
   display: inline;
 }
 
-.UploadList-error-message-link {
+.errorMessageLinkWrap {
   display: inline;
-  a {
-    color: @purple-dark;
-  }
-  a:hover {
-    color: @purple-light;
-  }
 }
 
-.UploadList-error-text {
-  a{
-    font-size: @font-size-small;
-  }
-  a:hover {
-    color: @purple-light;
-  }
+.errorMessageLink {
+  composes: link from '../core/typography.module.less';
 }
 
-.UploadList {
-  padding-top: 20px;
-  .scroll();
-  display: flex;
-  flex-direction: column;
+.errorTextLink {
+  composes: link tiny from '../core/typography.module.less';
+}
+
+.main {
+  composes: scroll from '../core/layout.module.less';
+  composes: flexColumn from '../core/layout.module.less';
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
-.UploadList--onlyme {
+.onlyme {
+  composes: main;
   max-height: @base-height + @groups-dropdown-height;
+  margin-bottom: 10px;
 }
 
-.UploadList--selectuser {
+.selectuser {
+  composes: main;
   max-height: @base-height;
 }
 
-.UploadList-item {
+.item {
+  composes: flexColumn from '../core/layout.module.less';
   padding: 15px 0;
-  border-bottom: 1px solid @gray-light;
-  display: flex;
-  flex-direction: column;
   flex-shrink: 0;
 }
 
-.UploadList-item:last-child {
+.item:last-child {
   padding-bottom: 20px;
   border-bottom: 0;
 }
