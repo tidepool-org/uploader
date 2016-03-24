@@ -1,11 +1,11 @@
 @import '../core/variables.less';
 
-.purple-centered {
+.purpleCentered {
   color: @purple-dark;
   text-align: center;
 }
 
-.mostly-opaque-background {
+.mostlyOpaqueBackground {
   background-color: rgba(255, 255, 255, 0.925);
 }
 
@@ -19,13 +19,13 @@
 
 .failed {
   composes: main;
-  composes: mostly-opaque-background;
+  composes: mostlyOpaqueBackground;
   background: url(/images/unhappy_meter.png) center center / 69px 166px no-repeat;
 }
 
 .offline {
   composes: main;
-  composes: mostly-opaque-background;
+  composes: mostlyOpaqueBackground;
   background: url(/images/unhappy_device.png);
   background-position: 50% 60%;
   background-size: 105px 237px;
@@ -34,7 +34,7 @@
 
 .outdated {
   composes: main;
-  composes: mostly-opaque-background;
+  composes: mostlyOpaqueBackground;
   background: url(/images/happy_device.png);
   background-position: 50% 60%;
   background-size: 156px 213px;
@@ -57,7 +57,7 @@
 }
 
 .paragraph {
-  composes: purple-centered;
+  composes: purpleCentered;
   margin: 0;
   font-size: @font-size-large;
   font-weight: bold;
@@ -77,7 +77,7 @@
 }
 
 .errorText {
-  composes: purple-centered;
+  composes: purpleCentered;
   composes: tiny from '../core/typography.module.less';
   margin: 0;
 }
