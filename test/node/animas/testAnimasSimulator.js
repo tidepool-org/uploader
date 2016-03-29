@@ -251,6 +251,8 @@ describe('animasSimulator.js', function() {
         .with_status('suspended')
         .with_reason({suspended: 'manual'})
         .done();
+      suspend.annotations = [{code: 'status/incomplete-tuple'}];
+      
       var suspendresume = builder.makeDeviceEventSuspendResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -261,7 +263,7 @@ describe('animasSimulator.js', function() {
         .with_reason({suspended: 'manual', resumed: 'manual'})
         .done();
 
-      it('a single suspend passes through', function() {
+      it('a single suspend with annotation passes through', function() {
         simulator.suspend(suspend);
         expect(simulator.getDataServicesEvents()).deep.equals([suspend]);
       });
