@@ -110,7 +110,7 @@ Assuming you've already merged any changes to master and are on master locally..
 1. Push the new tag commit and tag up to GitHub with `git push origin master` and `git push origin --tags`.
 1. Checkout your new tag, using `git checkout tags/<tag_name>`.
 1. Remove your node modules with `rm -rf node_modules/`. (This may not always be necessary, but it's good to be safe in case anything has changed.)
-1. Make sure you are using node v0.12.0 and install fresh dependencies with `npm install`.
+1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
 1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
 1. Follow instructions in secrets for actually publishing to the Chrome store.
 1. Fill out the release notes for the tag on GitHub. If the tag is known to *not* be a release candidate, mark it as a pre-release.

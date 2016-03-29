@@ -16,22 +16,24 @@
 // Adapted from:
 // http://css-tricks.com/css3-progress-bars/
 
-.LoadingBar {
-  border: 1px solid @gray-border;
+@import '../core/variables.less';
+
+.loadingBar {
+  border: 1px solid @gray-light;
   color: #fff;
   width: 100%;
 }
 
-.LoadingBar-fill {
+.fill {
   display: block;
   width: 100%;
   height: 100%;
-  background-color: @blue;
+  background-color: @purple-medium;
   position: relative;
   overflow: hidden;
 }
 
-.LoadingBar-fill:after {
+.fill:after {
   content: "";
   position: absolute;
   top: 0;
@@ -47,11 +49,11 @@
   );
   z-index: 1;
   -webkit-background-size: 50px 50px;
-  -webkit-animation: LoadingBar-animation 2s linear infinite;
+  -webkit-animation: animation 2s linear infinite;
   overflow: hidden;
 }
 
-@-webkit-keyframes LoadingBar-animation {
+@-webkit-keyframes animation {
   0% {
     background-position: 0 0;
   }

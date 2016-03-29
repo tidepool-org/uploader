@@ -13,16 +13,18 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.DevTools-container {
-  width: 100%;
-  height: 100%;
+@import '../core/variables.less';
+
+.buttonWrap {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+  padding-right: 23px;
+  padding-top: 10px;
 }
 
-.DevTools * {
-  div {
-    display: block;
-  }
-  span {
-    display: inline;
-  }
+.button {
+  composes: btn btnSecondary from '../core/buttons.module.less';
+  font-size: @font-size-large;
+  padding: 5px 0px;
+  margin: 10px auto;
 }
