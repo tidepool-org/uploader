@@ -56,10 +56,7 @@ var config = {
   ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
-  resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
-  node: {
-    fs: 'empty'
-  }
+  resolveLoader: { fallback: path.join(__dirname, 'node_modules') }
 };
 
 module.exports = config;
