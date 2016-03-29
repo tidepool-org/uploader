@@ -13,16 +13,14 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import 'variables.less';
+
 // Body reset
 // ====================================
 
 body {
   padding: 0;
   margin: 0;
-  font-family: @font-family-base;
-  font-size: @font-size-base;
-  line-height: @line-height-base;
-  color: @text-color;
   background-color: @body-bg;
 }
 
@@ -43,19 +41,6 @@ textarea {
   line-height: inherit;
 }
 
-// Links
-// ====================================
-
-a {
-  color: @link-color;
-  text-decoration: underline;
-
-  &:hover,
-  &:focus {
-    color: @link-hover-color;
-    text-decoration: underline;
-  }
-}
 
 // Images
 // ====================================

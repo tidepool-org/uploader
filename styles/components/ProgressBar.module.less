@@ -13,13 +13,15 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.ProgressBar {
-  border: 1px solid @gray-border;
+@import '../core/variables.less';
+
+.progressBar {
+  border: 1px solid @gray-light;
   color: #fff;
   width: 100%;
 }
 
-.ProgressBar-fill {
-  background-color: @blue;
+.fill {
+  background-color: @purple-medium;
   transition: width 200ms;
 }

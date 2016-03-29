@@ -13,26 +13,34 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.Login-input {
+@import '../core/variables.less';
+
+.link {
+  composes: link from '../core/typography.module.less';
+}
+
+.form {
+  composes: boxFlex from '../core/layout.module.less';
+  border-color: @purple-light;
+}
+
+.inputWrap {
+  composes: flexColumn from '../core/layout.module.less';
   margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
 }
 
-.Login-form {
-  .box-flex();
+.input {
+  composes: form-control from '../core/forms.less';
 }
 
-.Login-actions {
-  display: flex;
-  flex-flow: row wrap;
+.actions {
+  composes: flexRowWrap from '../core/layout.module.less';
   justify-content: space-between;
   margin-top: 5px;
 }
 
-.Login-remember {
-  display: flex;
-  flex-flow: row wrap;
+.remember {
+  composes: flexRowWrap from '../core/layout.module.less';
   align-items: center;
 
   & > input[type="checkbox"] {
@@ -41,37 +49,26 @@
   }
 }
 
-.Login-button {
-  &:extend(.btn all);
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
 
-  background-color: @blue;
-  color: #fff;
+.forgot {
+  composes: tiny from '../core/typography.module.less';
+}
 
+.forgotLink {
+  composes: invertLink from '../core/typography.module.less';
+  text-decoration: none;
   &:hover,
   &:focus,
   &:active {
-    background-color: fade(@blue, 75%);
-  }
-}
-
-.Login-forgot {
-  font-size: 11px;
-
-  a {
     text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: @blue;
-      text-decoration: none;
-    }
   }
 }
 
-.Login-error {
-  display: flex;
-  flex-flow: row wrap;
+.error {
+  composes: flexRowWrap from '../core/layout.module.less';
   justify-content: flex-end;
   color: @red;
   margin-top: 10px;
