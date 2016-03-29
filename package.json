@@ -37,11 +37,11 @@
     "tidepool-platform-client": "0.23.0"
   },
   "devDependencies": {
-    "babel-core": "5.8.34",
-    "babel-eslint": "6.0.0",
+    "babel-core": "5.8.38",
+    "babel-eslint": "5.0.1",
     "babel-loader": "5.3.3",
     "babel-plugin-rewire": "0.1.22",
-    "babel-runtime": "6.6.1",
+    "babel-runtime": "5.8.38",
     "chai": "3.5.0",
     "css-loader": "0.23.1",
     "d3": "3.5.16",
