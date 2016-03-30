@@ -84,7 +84,6 @@ describe('animasSimulator.js', function() {
 
       var expectedSecond = _.cloneDeep(linked);
       expectedSecond.time = '2014-09-25T01:08:01.000Z';
-      expectedSecond.deviceTime = '2014-09-25T01:08:01';
 
       expect(simulator.getEvents()).deep.equals([linked, expectedSecond]);
     });
@@ -252,7 +251,7 @@ describe('animasSimulator.js', function() {
         .with_reason({suspended: 'manual'})
         .done();
       suspend.annotations = [{code: 'status/incomplete-tuple'}];
-      
+
       var suspendresume = builder.makeDeviceEventSuspendResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -537,7 +536,7 @@ describe('animasSimulator.js', function() {
 
       var expectedSuspendResume = {
         time: '2014-09-25T02:00:01.000Z',
-        deviceTime: '2014-09-25T02:00:01',
+        deviceTime: '2014-09-25T02:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
         deviceId: 'animas12345',
