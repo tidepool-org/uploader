@@ -13,45 +13,45 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Form controls
-// ====================================
+@import 'variables.less';
 
-@form-control-border-size:   2px;
-@form-control-height:        (30px + 2*@form-control-border-size);
-@form-control-border-color:  @purple-light;
 
-.form-control {
-  display: block;
-
-  font-size: @font-size-base;
-  height: @form-control-height;
-  line-height: (@line-height-base - 2*@form-control-border-size);
-  vertical-align: middle;
-
-  padding: 0 15px;
-
+.form-control-border {
   border: @form-control-border-size solid fade(@form-control-border-color, 50%);
   border-radius: 0px;
-  background: #fff;
-  color: @text-color;
 
   &:hover {
-    border-color: @form-control-border-color;
+    border-color: @purple-light;
   }
 
   &:focus {
     // Disable default WebKit focus style
     outline: 0;
-    border-color: @form-control-border-color;
+    border-color: @purple-medium;
   }
 
   &:disabled {
     border-color: fade(@form-control-border-color, 70%);
     cursor: not-allowed;
   }
+}
+
+.form-control {
+  display: block;
+
+  font-size: @font-size-medium;
+  height: @form-control-height;
+  line-height: (@line-height-medium);
+  vertical-align: middle;
+
+  padding: 0 15px;
+
+  .form-control-border();
+  background: #fff;
+  color: @text-color;
 
   textarea& {
     height: auto;
-    line-height: @line-height-base;
+    line-height: @line-height-medium;
   }
 }

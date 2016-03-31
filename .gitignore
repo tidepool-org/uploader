@@ -11,14 +11,17 @@ pids
 logs
 results
 config/*
-!config/mock.sh
+!config/device-debug.sh
 !config/local.sh
+!config/ui-debug.sh
 build
 dist
 dist.zip
 
 test/carelink/overlaps/test-account.csv
+test/node/carelink/overlaps/test-account.csv
 test/carelink/testRemoveOverlapsFullTestFile.js
+test/node/carelink/testRemoveOverlapsFullTestFile.js
 
 tmp
 npm-debug.log
@@ -29,3 +32,6 @@ bower_components
 .idea
 *.iml
 .com.apple.timemachine.*
+
+_book/
+web/

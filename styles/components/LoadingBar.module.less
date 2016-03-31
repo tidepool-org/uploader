@@ -1,0 +1,63 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+// Adapted from:
+// http://css-tricks.com/css3-progress-bars/
+
+@import '../core/variables.less';
+
+.loadingBar {
+  border: 1px solid @gray-light;
+  color: #fff;
+  width: 100%;
+}
+
+.fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: @purple-medium;
+  position: relative;
+  overflow: hidden;
+}
+
+.fill:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+    color-stop(.25, rgba(255, 255, 255, .2)),
+    color-stop(.25, transparent), color-stop(.5, transparent),
+    color-stop(.5, rgba(255, 255, 255, .2)),
+    color-stop(.75, rgba(255, 255, 255, .2)),
+    color-stop(.75, transparent), to(transparent)
+  );
+  z-index: 1;
+  -webkit-background-size: 50px 50px;
+  -webkit-animation: animation 2s linear infinite;
+  overflow: hidden;
+}
+
+@-webkit-keyframes animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}

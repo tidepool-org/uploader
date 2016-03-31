@@ -1,0 +1,123 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+@mainPageBorder: 1px;
+
+.app {
+  composes: base from '../core/typography.module.less';
+  composes: flexColumn from '../core/layout.module.less';
+  height: 100%;
+}
+
+// Header
+// ====================================
+
+.header {
+  composes: flexColumn from '../core/layout.module.less';
+  background: url(/images/T_icon_transparent.png) center center / 100px 100px no-repeat;
+  min-height: 150px;
+  width: 550px;
+  margin: 0px auto;
+}
+
+// Page
+// ====================================
+
+.page {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  height: 470px;
+  box-sizing: border-box;
+}
+
+.loginPage {
+  composes: page;
+  width: 300px;
+}
+
+.loading {
+  composes: loginPage;
+  text-align: center;
+}
+
+.mainPage, .settingsPage {
+  composes: page;
+  width: 550px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: @mainPageBorder solid @gray-light;
+  border-radius: 2px;
+  padding: 15px (15px - @mainPageBorder) 25px (30px - @mainPageBorder);
+  box-sizing: border-box;
+}
+
+.mainWrap {
+  composes: flexColumn from '../core/layout.module.less';
+}
+
+.signup {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.signupLink {
+  composes: invertLink from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.signupIcon {
+  composes: icon-add from '../core/icons.module.less';
+  font-style: normal;
+}
+
+.footer {
+  composes: flexColumn from '../core/layout.module.less';
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background-image: url(/images/tidepool_logo_transparent.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  align-items: flex-end;
+}
+
+.footerRow {
+  composes: flexRow from '../core/layout.module.less';
+  width: 550px;
+  margin: 0px auto;
+  justify-content: space-between;
+}
+
+.footerLink {
+  composes: invertLink from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.version {
+  composes: lightGray from '../core/typography.module.less';
+  flex-basis: 40%;
+}

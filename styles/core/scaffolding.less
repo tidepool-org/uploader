@@ -13,12 +13,7 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-// Box model and layout
-// ====================================
-
-div, span {
-  .box-flex();
-}
+@import 'variables.less';
 
 // Body reset
 // ====================================
@@ -26,11 +21,11 @@ div, span {
 body {
   padding: 0;
   margin: 0;
-  font-family: @font-family-base;
-  font-size: @font-size-base;
-  line-height: @line-height-base;
-  color: @text-color;
   background-color: @body-bg;
+}
+
+#app {
+  height: @app-height;
 }
 
 // Inputs
@@ -46,19 +41,6 @@ textarea {
   line-height: inherit;
 }
 
-// Links
-// ====================================
-
-a {
-  color: @link-color;
-  text-decoration: underline;
-
-  &:hover,
-  &:focus {
-    color: @link-hover-color;
-    text-decoration: underline;
-  }
-}
 
 // Images
 // ====================================

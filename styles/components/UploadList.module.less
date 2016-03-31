@@ -1,0 +1,83 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+@base-height: 260px;
+
+.headline {
+  composes: large from '../core/typography.module.less';
+  width: 250px;
+  font-weight: normal;
+  margin-top: 10px;
+}
+
+.errorItem{
+  padding-top: 10px;
+}
+
+.errorMessage {
+  color: @red;
+  display: inline;
+}
+
+.errorMessageWrapper {
+  display: inline;
+}
+
+.errorMessageFriendly{
+  display: inline;
+}
+
+.errorMessageLinkWrap {
+  display: inline;
+}
+
+.errorMessageLink {
+  composes: link from '../core/typography.module.less';
+}
+
+.errorTextLink {
+  composes: link tiny from '../core/typography.module.less';
+}
+
+.main {
+  composes: scroll from '../core/layout.module.less';
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.onlyme {
+  composes: main;
+  max-height: @base-height + @groups-dropdown-height;
+  margin-bottom: 10px;
+}
+
+.selectuser {
+  composes: main;
+  max-height: @base-height;
+}
+
+.item {
+  composes: flexColumn from '../core/layout.module.less';
+  padding: 15px 0;
+  flex-shrink: 0;
+}
+
+.item:last-child {
+  padding-bottom: 20px;
+  border-bottom: 0;
+}

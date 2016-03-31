@@ -1,0 +1,42 @@
+{
+  "user": {
+    "userid": "ad7f18a8",
+    "username": "ik@foobar.com",
+    "termsAccepted": "2015-12-05T12:57:51-08:00",
+    "emails": [
+      "ik@foobar.com"
+    ]
+  },
+  "profile": {
+    "fullName": "Tillie Andrews",
+    "patient": {
+      "about": "Ti agopovtu tadbuhto map bacosub.",
+      "birthday": "1974-10-30",
+      "diagnosisDate": "1986-11-06"
+    }
+  },
+  "memberships": [
+    {
+      "userid": "ad7f18a8",
+      "profile": {
+        "fullName": "Tillie Andrews",
+        "patient": {
+          "about": "Ti agopovtu tadbuhto map bacosub.",
+          "birthday": "1974-10-30",
+          "diagnosisDate": "1986-11-06"
+        }
+      }
+    },
+    {
+      "userid": "2166340f",
+      "profile": {
+        "fullName": "George Taylor",
+        "patient": {
+          "about": "",
+          "birthday": "1977-10-12",
+          "diagnosisDate": "1989-10-14"
+        }
+      }
+    }
+  ]
+}

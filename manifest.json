@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.215.0",
+  "version": "0.258.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -23,7 +23,7 @@
   },
   "permissions": [
     "http://localhost/",
-    "https://*.tidepool.io/",
+    "https://*.tidepool.org/",
     "contextMenus",
     "fileSystem",
     "system.storage",
@@ -34,8 +34,8 @@
     {
       "usbDevices": [
         {
-          "deviceName": "Dexcom G4 CGM",
-          "driverId": "DexcomG4",
+          "deviceName": "Dexcom CGM",
+          "driverId": "Dexcom",
           "macPortPattern": "/dev/cu\\.(usb|dex).+",
           "mode": "serial",
           "vendorId": 8867,
@@ -64,6 +64,16 @@
           "productId": 2
         },
         {
+          "deviceName": "Tandem",
+          "driverId": "Tandem",
+          "mode": "serial",
+          "vendorId": 1155,
+          "productId": 22336,
+          "bitrate": 921600,
+          "sendTimeout": 50,
+          "receiveTimeout": 50
+        },
+        {
           "deviceName": "OneTouchUltra2 w/FTDI cable",
           "driverId": "OneTouchUltra2",
           "bitrate": 9600,
@@ -81,6 +91,22 @@
           "vendorId": 4292,
           "productId": 34215
         },
+          "deviceName": "FreeStyle Lite",
+          "driverId": "AbbottFreeStyleLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13328
+        },
+        {
+          "deviceName": "FreeStyle Freedom Lite",
+          "driverId": "AbbottFreeStyleFreedomLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 6753,
+          "productId": 13328
+>>>>>>> master
+        },
         {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
@@ -94,6 +120,20 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 29712
+        },
+        {
+          "deviceName": "BayerContourNextLink",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25088
+        },
+        {
+          "deviceName": "BayerContourNextLink24",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25104
         },
         {
           "deviceName": "BayerContourUsb",

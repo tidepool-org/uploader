@@ -1,11 +1,4 @@
-// jebeck's additions
-
-// because we're setting display: flex on every div
-// and it turns out that interferes with text-overflow :(
-.Select-placeholder {
-  display: block;
-}
-
+@import 'forms.less';
 
 /**
  * React Select
@@ -17,19 +10,32 @@
 .Select {
   position: relative;
 }
-.Select-control {
-  position: relative;
-  overflow: hidden;
-  background-color: white;
-  border: 1px solid #cccccc;
-  border-color: #d9d9d9 #cccccc #b3b3b3;
-  border-radius: 4px;
+.Select,
+.Select div,
+.Select input,
+.Select span {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  color: #333333;
+}
+.Select.is-disabled > .Select-control {
+  background-color: #f6f6f6;
+}
+.Select.is-disabled .Select-arrow-zone {
   cursor: default;
+  pointer-events: none;
+}
+.Select-control {
+  background-color: #fff;
+  .form-control-border();
+  color: #333;
+  cursor: default;
+  display: table;
+  height: 36px;
   outline: none;
-  padding: 8px 52px 8px 10px;
-  transition: all 200ms ease;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 .Select-control:hover {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
@@ -40,44 +46,67 @@
 .is-open > .Select-control {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  background: white;
-  border-color: #b3b3b3 #cccccc #d9d9d9;
+  background: #fff;
+  border-color: @purple-medium;
 }
 .is-open > .Select-control > .Select-arrow {
-  border-color: transparent transparent #999999;
+  border-color: transparent transparent #999;
   border-width: 0 5px 5px;
 }
 .is-searchable.is-focused:not(.is-open) > .Select-control {
   cursor: text;
 }
-.is-focused:not(.is-open) > .Select-control {
-  border-color: #0088cc #0099e6 #0099e6;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 5px -1px rgba(0, 136, 204, 0.5);
-}
 .Select-placeholder {
-  color: #aaaaaa;
-  padding: 8px 52px 8px 10px;
-  position: absolute;
-  top: 0;
+  bottom: 0;
+  color: #aaa;
   left: 0;
+  line-height: 34px;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .has-value > .Select-control > .Select-placeholder {
-  color: #333333;
+  color: #333;
+}
+.Select-value {
+  color: #aaa;
+  left: 0;
+  padding: 8px 52px 8px 10px;
+  position: absolute;
+  right: -15px;
+  top: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.has-value > .Select-control > .Select-value {
+  color: #333;
+}
+.Select-input {
+  height: 34px;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
 }
 .Select-input > input {
-  cursor: default;
   background: none transparent;
   border: 0 none;
+  box-shadow: none;
+  cursor: default;
+  display: inline-block;
   font-family: inherit;
   font-size: inherit;
+  height: 34px;
   margin: 0;
-  padding: 0;
   outline: none;
-  display: inline-block;
+  padding: 0;
   -webkit-appearance: none;
 }
 .is-focused .Select-input > input {
@@ -86,60 +115,93 @@
 .Select-control:not(.is-searchable) > .Select-input {
   outline: none;
 }
+.Select-loading-zone {
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 16px;
+}
 .Select-loading {
-  -webkit-animation: spin 400ms infinite linear;
-  -o-animation: spin 400ms infinite linear;
-  animation: spin 400ms infinite linear;
+  -webkit-animation: Select-animation-spin 400ms infinite linear;
+  -o-animation: Select-animation-spin 400ms infinite linear;
+  animation: Select-animation-spin 400ms infinite linear;
   width: 16px;
   height: 16px;
   box-sizing: border-box;
   border-radius: 50%;
-  border: 2px solid #cccccc;
-  border-right-color: #333333;
+  border: 2px solid #ccc;
+  border-right-color: #333;
   display: inline-block;
   position: relative;
-  margin-top: -8px;
-  position: absolute;
-  right: 30px;
-  top: 50%;
+  vertical-align: middle;
 }
-.has-value > .Select-control > .Select-loading {
-  right: 46px;
+.Select-clear-zone {
+  -webkit-animation: Select-animation-fadeIn 200ms;
+  -o-animation: Select-animation-fadeIn 200ms;
+  animation: Select-animation-fadeIn 200ms;
+  color: #999;
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 17px;
+}
+.Select-clear-zone:hover {
+  color: #D0021B;
 }
 .Select-clear {
-  color: #999999;
-  cursor: pointer;
   display: inline-block;
-  font-size: 16px;
-  padding: 6px 10px;
-  position: absolute;
-  right: 17px;
-  top: 0;
+  font-size: 18px;
+  line-height: 1;
 }
-.Select-clear:hover {
-  color: #c0392b;
+.Select--multi .Select-clear-zone {
+  width: 17px;
 }
-.Select-clear > span {
-  font-size: 1.1em;
+.Select-arrow-zone {
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 25px;
+  padding-right: 5px;
 }
 .Select-arrow {
-  border-color: #999999 transparent transparent;
+  border-color: #999 transparent transparent;
   border-style: solid;
-  border-width: 5px 5px 0;
-  content: " ";
-  display: block;
+  border-width: 5px 5px 2.5px;
+  display: inline-block;
   height: 0;
-  margin-top: -ceil(2.5px);
-  position: absolute;
-  right: 10px;
-  top: 14px;
   width: 0;
+}
+.is-open .Select-arrow,
+.Select-arrow-zone:hover > .Select-arrow {
+  border-top-color: #666;
+}
+@-webkit-keyframes Select-animation-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes Select-animation-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .Select-menu-outer {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-  background-color: white;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border-top-color: #e6e6e6;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
@@ -168,32 +230,39 @@
 }
 .Select-option.is-focused {
   background-color: #f2f9fc;
-  color: #333333;
+  color: #333;
 }
-.Select-noresults {
+.Select-option.is-disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+.Select-noresults,
+.Select-search-prompt,
+.Select-searching {
   box-sizing: border-box;
   color: #999999;
   cursor: default;
   display: block;
   padding: 8px 10px;
 }
-.Select.is-multi .Select-control {
-  padding: 2px 52px 2px 3px;
-}
-.Select.is-multi .Select-input {
+.Select--multi .Select-input {
   vertical-align: middle;
-  border: 1px solid transparent;
-  margin: 2px;
-  padding: 3px 0;
+  margin-left: 10px;
+  padding: 0;
+}
+.Select--multi.has-value .Select-input {
+  margin-left: 5px;
 }
 .Select-item {
   background-color: #f2f9fc;
   border-radius: 2px;
   border: 1px solid #c9e6f2;
-  color: #0088cc;
+  color: #08c;
   display: inline-block;
-  font-size: 1em;
-  margin: 2px;
+  font-size: 0.9em;
+  margin-left: 5px;
+  margin-top: 5px;
+  vertical-align: top;
 }
 .Select-item-icon,
 .Select-item-label {
@@ -201,13 +270,13 @@
   vertical-align: middle;
 }
 .Select-item-label {
-  cursor: default;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
-  padding: 3px 5px;
+  cursor: default;
+  padding: 2px 5px;
 }
 .Select-item-label .Select-item-label__a {
-  color: #0088cc;
+  color: #08c;
   cursor: pointer;
 }
 .Select-item-icon {
@@ -215,7 +284,7 @@
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
   border-right: 1px solid #c9e6f2;
-  padding: 2px 5px 4px;
+  padding: 1px 5px 3px;
 }
 .Select-item-icon:hover,
 .Select-item-icon:focus {
@@ -225,12 +294,26 @@
 .Select-item-icon:active {
   background-color: #c9e6f2;
 }
-@keyframes spin {
+.Select--multi.is-disabled .Select-item {
+  background-color: #f2f2f2;
+  border: 1px solid #d9d9d9;
+  color: #888;
+}
+.Select--multi.is-disabled .Select-item-icon {
+  cursor: not-allowed;
+  border-right: 1px solid #d9d9d9;
+}
+.Select--multi.is-disabled .Select-item-icon:hover,
+.Select--multi.is-disabled .Select-item-icon:focus,
+.Select--multi.is-disabled .Select-item-icon:active {
+  background-color: #f2f2f2;
+}
+@keyframes Select-animation-spin {
   to {
     transform: rotate(1turn);
   }
 }
-@-webkit-keyframes spin {
+@-webkit-keyframes Select-animation-spin {
   to {
     -webkit-transform: rotate(1turn);
   }

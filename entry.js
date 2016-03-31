@@ -15,15 +15,23 @@
  * == BSD2 LICENSE ==
  */
 
+/* global chrome */
+
 require('./styles/main.less');
 
+var _ = require('lodash');
 var React = require('react');
+var ReactDOM = require('react-dom');
 window.React = React;
 var config = require('./lib/config');
 window.DEBUG = config.DEBUG;
 // Important: need to require App after setting `window.DEBUG` to enable logging
-var App = require('./lib/components/App.jsx');
+var Root = require('./lib/containers/root/Root');
 
-window.app = React.render(
-  React.createElement(App), document.body
-);
+chrome.runtime.getPlatformInfo(function (platformInfo) {
+  if (!_.isEmpty(platformInfo.os)) {
+    ReactDOM.render(
+      React.createElement(Root, {os: platformInfo.os}), document.getElementById('app')
+    );
+  }
+});
