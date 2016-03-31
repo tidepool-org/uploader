@@ -23,7 +23,7 @@
 - `[ ]` ketone out-of-range value thresholds
 
 ## Notes
-- Units of sbmg values are available in data protocol, but always reported in mg/dL
+- Units of smbg values are available in data protocol, but always reported in mg/dL
 
 ### No Tidepool Data Model Yet
 
