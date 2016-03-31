@@ -91,6 +91,7 @@
           "vendorId": 4292,
           "productId": 34215
         },
+        {
           "deviceName": "FreeStyle Lite",
           "driverId": "AbbottFreeStyleLite",
           "bitrate": 19200,
@@ -105,7 +106,6 @@
           "mode": "FTDI",
           "vendorId": 6753,
           "productId": 13328
->>>>>>> master
         },
         {
           "deviceName": "BayerContourNext",
