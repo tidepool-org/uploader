@@ -14,7 +14,7 @@
 
 - `[x]` smbg values
 - `[-]` units of smbg values (read from device, not hard-coded)
-- `[?]` out-of-range values (LO or HI)
+- `[x]` out-of-range values (LO or HI)
 - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
 - `[ ]` blood ketone values
@@ -24,6 +24,7 @@
 
 ## Notes
 - Units of smbg values are available in data protocol, but always reported in mg/dL
+- HI/LO values are not described in spec, but user manual states that values above 600 and below 20 mg/dL are out-of-range, and are annotated as such
 
 ### No Tidepool Data Model Yet
 
