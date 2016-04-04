@@ -22,15 +22,23 @@
 }
 
 .timezone {
+  composes: flexRowWrap from '../core/layout.module.less';
   margin: 10px 0px 7px 0px;
 }
 
 .label {
-  font-size: @font-size-large;
+  composes: small gray from '../core/typography.module.less';
+  vertical-align: middle;
 }
 
 .list {
-  margin-top: -27px;
-  margin-left: 227px;
+  margin-top: -10px;
+  margin-left: 15px;
   width: 260px;
+}
+
+.timeDetail {
+  composes: tiny gray from '../core/typography.module.less';
+  margin-top: 10px;
+  flex-basis: 100%;
 }
