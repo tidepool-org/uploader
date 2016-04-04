@@ -204,7 +204,10 @@ describe('uploads', () => {
     it('should handle READ_FILE_ABORTED', () => {
       const err = new Error('Wrong file ext!');
       let initialState = {
-        [userId]: {[deviceKey]: {choosingFile: true, history: []}}
+        [userId]: {
+          a_pump: {disabled: true, history: [1,2]},
+          [deviceKey]: {choosingFile: true, history: []}
+        }
       };
       let result = uploads.uploadsByUser(initialState, {
         type: actionTypes.READ_FILE_ABORTED,
@@ -212,13 +215,19 @@ describe('uploads', () => {
         payload: err
       });
       expect(result).to.deep.equal({
-        [userId]: {[deviceKey]: {
-          choosingFile: false,
-          completed: true,
-          error: err,
-          failed: true,
-          history: []
-        }}
+        [userId]: {
+          a_pump: {
+            disabled: false,
+            history: [1,2]
+          },
+          [deviceKey]: {
+            choosingFile: false,
+            completed: true,
+            error: err,
+            failed: true,
+            history: []
+          }
+        }
       });
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === result).to.be.false;
