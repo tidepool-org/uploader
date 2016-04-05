@@ -34,7 +34,7 @@
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
     "sundial": "1.5.1",
-    "tidepool-platform-client": "0.22.0"
+    "tidepool-platform-client": "tidepool-org/platform-client#gniezen/data-services"
   },
   "devDependencies": {
     "babel-core": "5.8.34",
@@ -47,6 +47,7 @@
     "d3": "3.5.14",
     "eslint": "1.10.3",
     "eslint-plugin-react": "3.16.1",
+    "express": "4.13.4",
     "flux-standard-action": "0.6.0",
     "json-loader": "0.5.4",
     "karma": "0.13.19",
