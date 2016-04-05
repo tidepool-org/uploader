@@ -83,6 +83,15 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "OneTouchVerioIQ",
+          "driverId": "OneTouchVerioIQ",
+          "macPortPattern": "/dev/cu\\.SLAB.+",
+          "bitrate": 38400,
+          "mode": "serial",
+          "vendorId": 4292,
+          "productId": 34215
+        },
+        {
           "deviceName": "FreeStyle Lite",
           "driverId": "AbbottFreeStyleLite",
           "bitrate": 19200,
