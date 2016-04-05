@@ -134,8 +134,8 @@
           "productId": 24578
         },
         {
-          "deviceName": "Animas OneTouch Ping",
-          "driverId": "AnimasPing",
+          "deviceName": "Animas",
+          "driverId": "Animas",
           "mode": "serial",
           "bitrate": 9600,
           "ctsFlowControl": true,
