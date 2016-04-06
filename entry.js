@@ -26,7 +26,7 @@ window.React = React;
 var config = require('./lib/config');
 window.DEBUG = config.DEBUG;
 // Important: need to require App after setting `window.DEBUG` to enable logging
-var Root = require('./lib/containers/root/Root');
+var Root = require('./lib/redux/containers/Root');
 
 chrome.runtime.getPlatformInfo(function (platformInfo) {
   if (!_.isEmpty(platformInfo.os)) {
