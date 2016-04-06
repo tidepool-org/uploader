@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.258.0",
+  "version": "0.259.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -83,6 +83,15 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "OneTouchVerioIQ",
+          "driverId": "OneTouchVerioIQ",
+          "macPortPattern": "/dev/cu\\.SLAB.+",
+          "bitrate": 38400,
+          "mode": "serial",
+          "vendorId": 4292,
+          "productId": 34215
+        },
+        {
           "deviceName": "FreeStyle Lite",
           "driverId": "AbbottFreeStyleLite",
           "bitrate": 19200,
@@ -134,8 +143,8 @@
           "productId": 24578
         },
         {
-          "deviceName": "Animas OneTouch Ping",
-          "driverId": "AnimasPing",
+          "deviceName": "Animas",
+          "driverId": "Animas",
           "mode": "serial",
           "bitrate": 9600,
           "ctsFlowControl": true,
