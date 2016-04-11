@@ -26,7 +26,8 @@ import * as actionSources from '../../../../lib/redux/constants/actionSources';
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as metrics from '../../../../lib/redux/constants/metrics';
 import { pages, steps, urls } from '../../../../lib/redux/constants/otherConstants';
-import { errorText, UnsupportedError } from '../../../../lib/redux/utils/errors';
+import { UnsupportedError } from '../../../../lib/redux/utils/errors';
+import errorText from '../../../../lib/redux/constants/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
 import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
@@ -52,6 +53,18 @@ describe('Asynchronous Actions', () => {
     // very important to do this in an afterEach than in each test when __Rewire__ is used
     // if you try to reset within each test you'll make it impossible for tests to fail!
     asyncActions.__ResetDependency__('services');
+  });
+
+  describe('doAppInit [hot reload, app already initialized]', () => {
+    it('should dispatch no actions!', (done) => {
+      const expectedActions = [];
+      const store = mockStore({working: {initializingApp: false}}, expectedActions, done.fail);
+      store.dispatch(asyncActions.doAppInit({}, {}));
+      // somewhat hacky solution to testing for no actions
+      // discussed here: https://github.com/arnaudbenard/redux-mock-store/issues/17
+      // happy to live with the hack since this is only for hot-reloading anyway
+      setTimeout(() => done(), 1000);
+    });
   });
 
   describe('doAppInit [no session token in local storage]', () => {
@@ -125,7 +138,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({working: {initializingApp: true}}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });
@@ -222,7 +235,8 @@ describe('Asynchronous Actions', () => {
         semver: config.version
       });
       const state = {
-        uploadTargetUser: pwd.user.userid
+        uploadTargetUser: pwd.user.userid,
+        working: {initializingApp: true}
       };
       const store = mockStore(state, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
@@ -276,7 +290,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({}, expectedActions, done);
+      const store = mockStore({working: {initializingApp: true}}, expectedActions, done);
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
     });
   });

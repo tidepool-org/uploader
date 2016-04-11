@@ -13,6 +13,8 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import 'variables.less';
+
 @btn-border-size: 2px;
 @btn-height: (30px + 2*@btn-border-size);
 
@@ -35,7 +37,8 @@ a.btn {
 
   font-size: inherit;
   line-height: (@btn-height - 2*@btn-border-size);
-  padding: 0 20px;
+  padding: 0;
+  min-width: 124px;
 
   &:hover,
   &:focus,
@@ -52,33 +55,37 @@ a.btn {
   }
 }
 
+a.btn {
+  min-width: 120px;
+}
+
 // Button styles
 // ====================================
 
 // Main action button style
-.btn-primary,
-a.btn-primary {
-  background-color: @purple-dark;
+.btnPrimary,
+a.btnPrimary {
+  background-color: @purple-medium;
   color: #fff;
 
   &:hover,
   &:focus,
   &:active {
-    background-color: @purple-light;
+    background-color: @purple-dark;
   }
 
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
-    background-color: fade(@purple-dark, 30%);
+    background-color: fade(@purple-medium, 20%);
   }
 }
 
-.btn-secondary,
-a.btn-secondary {
+.btnSecondary,
+a.btnSecondary {
   color: @text-color;
-  background-color: #fff;
-  border-color: fade(@purple-light, 50%);
+  background-color: @gray-background;
+  border-color: @gray-light;
 
   &:hover,
   &:focus,

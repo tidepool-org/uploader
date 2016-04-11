@@ -451,11 +451,14 @@ describe('users', () => {
 
     it('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to only one]', () => {
       const profile = {a: 1};
-      const memberships = [{userid: 'd4e5f6'}];
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
       expect(users.uploadTargetUser(undefined, {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { user, profile, memberships }
-      })).to.equal(memberships[0].userid);
+      })).to.equal(memberships[1].userid);
     });
 
     it('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]', () => {
@@ -491,11 +494,14 @@ describe('users', () => {
 
     it('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to only one]', () => {
       const profile = {a: 1};
-      const memberships = [{userid: 'd4e5f6'}];
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
       expect(users.uploadTargetUser(undefined, {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { user, profile, memberships }
-      })).to.equal(memberships[0].userid);
+      })).to.equal(memberships[1].userid);
     });
 
     it('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to > 1]', () => {

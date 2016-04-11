@@ -1,6 +1,7 @@
 var path = require('path');
 var _ = require('lodash');
 var webpack = require('webpack');
+var WriteFilePlugin = require('write-file-webpack-plugin');
 
 var definePlugin = new webpack.DefinePlugin({
   // this first as advised to get the correct production build of redux
@@ -18,7 +19,7 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) {
+if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
@@ -30,24 +31,35 @@ if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) 
 
 var config = {
   entry: './entry.js',
+  devtool: '#cheap-module-source-map',
+  devServer: {
+    outputPath: path.join(__dirname, '/build'),
+    publicPath: '/build/'
+  },
   output: {
     path: path.join(__dirname, '/build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/build/',
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /(node_modules)/, loader: 'babel-loader' },
-      { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel-loader' },
-      { test: /\.less$/, loader: 'style!css!less' },
+      { test: /\.js$/, exclude: /(node_modules)/, loaders: ['react-hot', 'babel-loader'] },
+      { test: /\.jsx$/, exclude: /(node_modules)/, loaders: ['react-hot', 'babel-loader'] },
+      { test: /\.module\.less$/, loader: 'style?sourceMap!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less?sourceMap' },
+      { test: /^((?!module).)*\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]
   },
   plugins: [
-    definePlugin
+    definePlugin,
+    new WriteFilePlugin()
   ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
-  resolveLoader: { fallback: path.join(__dirname, 'node_modules') }
+  resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
+  node: {
+    fs: 'empty'
+  }
 };
 
 module.exports = config;

@@ -16,16 +16,15 @@
 // Colors
 // ====================================
 
-@purple-dark:            rgb(40, 23, 71);
-@purple-medium:          rgb(123, 108, 147);
-@purple-light:           rgb(100, 118, 255);
-@blue:                   rgb(98, 124, 255);
+@purple-light:           rgba(96, 120, 255, 0.2); // button disabled
+@purple-medium:          #6078ff; // button normal, focus form border
+@purple-dark:            #291448; // button hover, normal text
+
 @red:                    rgb(247, 45, 45);
 
-@gray-text:              #9b9b9b;
-@gray-background:        #f7fafa;
-@gray-border:            #d8d8d8;
-@gray-light:             #e6e6e5;
+@gray-light:             #bcbec0; // sec button border, form border disabled
+@gray-medium:            #989897; // text disabled
+@gray-background:        #f7fafa; // secondary botton fill
 
 // Scaffolding
 // ====================================
@@ -33,17 +32,26 @@
 @body-bg:                @gray-background;
 @text-color:             @purple-dark;
 
-@link-color:             @purple-dark;
+@link-color:             @purple-medium;
 @link-hover-color:       @purple-dark;
 
 // Typography
 // ====================================
 
 @font-family-base:       "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-@font-size-small:        12px;
-@font-size-base:         14px;
-@line-height-base:       20px;
-@font-size-large:        16px;
+
+@font-size-tiny:         12px;
+@line-height-tiny:       17px;
+
+@font-size-small:        14px;
+@line-height-small:      19px;
+
+@font-size-medium:         16px;
+@line-height-medium:       22px;
+
+@font-size-large:        20px;
+@line-height-large:      27px;
+
 
 // Dimensions
 // ====================================
@@ -52,3 +60,11 @@
 // defined as the app height in main.js
 @app-height: 710px;
 @groups-dropdown-height: 72px;
+
+
+// Form controls
+// ====================================
+
+@form-control-border-size:   2px;
+@form-control-height:        (30px + 2*@form-control-border-size);
+@form-control-border-color:  @gray-light;
