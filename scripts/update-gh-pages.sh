@@ -7,7 +7,7 @@ echo ""
 ./node_modules/.bin/gitbook build
 
 echo ""
-echo "### Syncing docs static webiste to web/ directory... ###"
+echo "### Syncing docs static website to web/ directory... ###"
 echo ""
 
 rsync -rv --delete-before --exclude '.git/' _book/ web/
