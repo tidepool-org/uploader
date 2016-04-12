@@ -18,6 +18,7 @@
 /*eslint-env mocha*/
 
 import _ from 'lodash';
+import mutationTracker from 'object-invariant-test-helper';
 
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import { pages, steps } from '../../../../lib/redux/constants/otherConstants';
@@ -51,15 +52,16 @@ describe('misc reducers', () => {
       });
       let expectedResult = _.pick(devices, filterDevicesFn('mac'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // because we do currently have devices unavailable on Mac
-      expect(Object.keys(actualResult).length).to.be.lessThan(Object.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
+      const tracked = mutationTracker.trackObj(prevState);
       let resultState = misc.devices(prevState, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'mac'}
       });
-      expect(prevState === resultState).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      // because we do currently have devices unavailable on Mac
+      expect(Object.keys(actualResult).length).to.be.lessThan(Object.keys(devices).length);
     });
 
     it('should handle HIDE_UNAVAILABLE_DEVICES [win]', () => {
@@ -73,11 +75,12 @@ describe('misc reducers', () => {
       expect(Object.keys(actualResult).length).to.equal(Object.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
+      const tracked = mutationTracker.trackObj(prevState);
       let resultState = misc.devices(prevState, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'win'}
       });
-      expect(prevState === resultState).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
   });
 
@@ -190,11 +193,12 @@ describe('misc reducers', () => {
       }).viewDataLink).to.equal(VIEW_DATA_LINK);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
       let finalState = misc.blipUrls(initialState, {
         type: actionTypes.SET_BLIP_VIEW_DATA_URL,
         payload: actionPayload
       });
-      expect(initialState === finalState).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     it('should handle SET_FORGOT_PASSWORD_URL', () => {
@@ -206,11 +210,12 @@ describe('misc reducers', () => {
       }).forgotPassword).to.equal(FORGOT_PWD);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
       let finalState = misc.blipUrls(initialState, {
         type: actionTypes.SET_FORGOT_PASSWORD_URL,
         payload: actionPayload
       });
-      expect(initialState === finalState).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     it('should handle SET_SIGNUP_URL', () => {
@@ -222,11 +227,12 @@ describe('misc reducers', () => {
       }).signUp).to.equal(SIGN_UP);
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
       let finalState = misc.blipUrls(initialState, {
         type: actionTypes.SET_SIGNUP_URL,
         payload: actionPayload
       });
-      expect(initialState === finalState).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
   });
 
