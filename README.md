@@ -100,6 +100,11 @@ Aside from the (fairly minimal) JavaScript code style options we *enforce* throu
 
 **NB: Please keep ES5 and ES6/ES2015 code distinct. Do *NOT* use ES6/ES2105 features in ES5 modules (most easily recognizable by the use of `require` rather than `import`).**
 
+## Docs
+
+Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.io/](http://developer.tidepool.io/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
+
+See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
 
 ## Publishing (to the devel/staging testing & development Chrome store account or production)
 

@@ -8,4 +8,5 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [CareLink (insulin pump data)](carelinkPumpData.md)
    * [Dexcom CGM](dexcom.md)
    * [Insulet OmniPod Insulin Delivery System](insuletOmniPod.md)
+   * [OneTouch VerioIQ (BGM)](oneTouchVerioIQ.md)
    * [Tandem Insulin Pumps](tandem.md)
