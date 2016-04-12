@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Bayer Contour Next | Tidepool Uploader</title>
+        <title>OneTouch VerioIQ | Tidepool Uploader</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -37,10 +37,10 @@
         
     
     
-    <link rel="next" href="../../../lib/drivers/docs/dexcom.html" />
+    <link rel="next" href="../../../lib/drivers/docs/insuletOmniPod.html" />
     
     
-    <link rel="prev" href="../../../lib/drivers/docs/animasPingAndVibe.html" />
+    <link rel="prev" href="../../../lib/drivers/docs/carelinkPumpData.html" />
     
 
         
@@ -49,9 +49,9 @@
         
         
     <div class="book"
-        data-level="4.4"
-        data-chapter-title="Bayer Contour Next"
-        data-filepath="lib/drivers/docs/bayerContourNext.md"
+        data-level="4.8"
+        data-chapter-title="OneTouch VerioIQ"
+        data-filepath="lib/drivers/docs/oneTouchVerioIQ.md"
         data-basepath="../../.."
         data-revision="Mon Apr 11 2016 17:17:39 GMT-0700 (PDT)"
         data-innerlanguage="">
@@ -290,7 +290,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="4.4" data-path="lib/drivers/docs/bayerContourNext.html">
+        <li class="chapter " data-level="4.4" data-path="lib/drivers/docs/bayerContourNext.html">
             
                 
                     <a href="../../../lib/drivers/docs/bayerContourNext.html">
@@ -350,7 +350,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4.8" data-path="lib/drivers/docs/oneTouchVerioIQ.html">
+        <li class="chapter active" data-level="4.8" data-path="lib/drivers/docs/oneTouchVerioIQ.html">
             
                 
                     <a href="../../../lib/drivers/docs/oneTouchVerioIQ.html">
@@ -514,13 +514,7 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="bayer-contour-next">Bayer Contour Next</h1>
-<p>Supported devices:</p>
-<ul>
-<li>Bayer Contour Next</li>
-<li>Bayer Contour Next USB</li>
-<li>Bayer Contour USB</li>
-</ul>
+                        <h1 id="lifescan-onetouch-verioiq">LifeScan OneTouch VerioIQ</h1>
 <h2 id="checklist-for-blood-glucose-meter-implementation">Checklist for Blood Glucose Meter Implementation</h2>
 <p>(Key:</p>
 <ul>
@@ -533,14 +527,19 @@
 <h3 id="required-if-present">Required if Present</h3>
 <ul>
 <li><code>[x]</code> smbg values</li>
-<li><code>[x]</code> units of smbg values (read from device, not hard-coded)</li>
+<li><code>[-]</code> units of smbg values (read from device, not hard-coded)</li>
 <li><code>[x]</code> out-of-range values (LO or HI)</li>
-<li><code>[x]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
+<li><code>[ ]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
 <li><code>[ ]</code> date &amp; time settings changes</li>
 <li><code>[ ]</code> blood ketone values</li>
 <li><code>[ ]</code> units of blood ketone values (read from device, not hard-coded)</li>
 <li><code>[ ]</code> ketone out-of-range values</li>
 <li><code>[ ]</code> ketone out-of-range value thresholds</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Units of smbg values are available in data protocol, but always reported in mg/dL</li>
+<li>HI/LO values are not described in spec, but user manual states that values above 600 and below 20 mg/dL are out-of-range, and are annotated as such</li>
 </ul>
 <h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
 <ul>
@@ -558,10 +557,10 @@
         </div>
 
         
-        <a href="../../../lib/drivers/docs/animasPingAndVibe.html" class="navigation navigation-prev " aria-label="Previous page: Animas Ping and Vibe Insulin Pumps"><i class="fa fa-angle-left"></i></a>
+        <a href="../../../lib/drivers/docs/carelinkPumpData.html" class="navigation navigation-prev " aria-label="Previous page: CareLink (insulin pump data)"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../../../lib/drivers/docs/dexcom.html" class="navigation navigation-next " aria-label="Next page: Dexcom CGM"><i class="fa fa-angle-right"></i></a>
+        <a href="../../../lib/drivers/docs/insuletOmniPod.html" class="navigation navigation-next " aria-label="Next page: Insulet OmniPod"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
