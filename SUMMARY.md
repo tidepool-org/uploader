@@ -24,6 +24,7 @@
    * [Tandem Insulin Pumps](lib/drivers/docs/tandem.md)
 
 * [miscellaneous](docs/misc/README.md)
+   * [use of CSS modules](docs/misc/CSSModules.md)
    * [PWD "simulators"](docs/misc/PWDSimulators.md)
    * [challenges of flat basal profiles](docs/misc/FlatRateBasals.md)
    * [2015.06 CareLink CSV updates](docs/misc/2015.06.29CareLinkCSVChanges.md)
