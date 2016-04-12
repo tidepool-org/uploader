@@ -113,4 +113,4 @@ Assuming you've already merged any changes to master and are on master locally..
 1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
 1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
 1. Follow instructions in secrets for actually publishing to the Chrome store.
-1. Fill out the release notes for the tag on GitHub. If the tag is known to *not* be a release candidate, mark it as a pre-release.
+1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. If the tag is known to *not* be a release candidate, mark it as a pre-release.
