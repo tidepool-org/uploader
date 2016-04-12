@@ -20,6 +20,7 @@
    * [Dexcom CGM](lib/drivers/docs/dexcom.md)
    * [CareLink (CGM data)](lib/drivers/docs/carelinkCGM.md)
    * [CareLink (insulin pump data)](lib/drivers/docs/carelinkPumpData.md)
+   * [OneTouch VerioIQ](lib/drivers/docs/oneTouchVerioIQ.md)
    * [Insulet OmniPod](lib/drivers/docs/insuletOmniPod.md)
    * [Tandem Insulin Pumps](lib/drivers/docs/tandem.md)
 
