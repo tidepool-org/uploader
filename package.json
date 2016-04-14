@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.259.0",
+  "version": "0.260.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -33,7 +33,7 @@
     "redux-thunk": "2.0.1",
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
-    "sundial": "1.5.1",
+    "sundial": "1.6.0",
     "tidepool-platform-client": "0.23.0"
   },
   "devDependencies": {
