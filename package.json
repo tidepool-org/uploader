@@ -14,7 +14,9 @@
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "start-hot": "bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
     "build": "bash ./scripts/build.sh",
-    "lint": "./node_modules/.bin/eslint lib test"
+    "lint": "./node_modules/.bin/eslint lib test",
+    "build-docs": "./scripts/update-gh-pages.sh",
+    "serve-docs": "./node_modules/.bin/gitbook serve"
   },
   "dependencies": {
     "async": "1.5.2",
@@ -49,6 +51,7 @@
     "express": "4.13.4",
     "eslint-plugin-react": "4.2.3",
     "flux-standard-action": "0.6.1",
+    "gitbook-cli": "1.0.1",
     "json-loader": "0.5.4",
     "karma": "0.13.22",
     "karma-chai": "0.1.0",

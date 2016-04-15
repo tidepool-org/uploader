@@ -100,6 +100,11 @@ Aside from the (fairly minimal) JavaScript code style options we *enforce* throu
 
 **NB: Please keep ES5 and ES6/ES2015 code distinct. Do *NOT* use ES6/ES2105 features in ES5 modules (most easily recognizable by the use of `require` rather than `import`).**
 
+## Docs
+
+Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.io/](http://developer.tidepool.io/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
+
+See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
 
 ## Publishing (to the devel/staging testing & development Chrome store account or production)
 
@@ -113,4 +118,4 @@ Assuming you've already merged any changes to master and are on master locally..
 1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
 1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
 1. Follow instructions in secrets for actually publishing to the Chrome store.
-1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. If the tag is known to *not* be a release candidate, mark it as a pre-release.
+1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. This is so that if you built for the development Chrome store, you can then distribute the same `dist.zip` to the production Chrome store without having to rebuild everything. If the tag is known to *not* be a release candidate, mark it as a pre-release.
