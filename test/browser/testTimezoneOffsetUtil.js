@@ -16,10 +16,11 @@
  */
 
 /*eslint-env mocha*/
+/* global chai */
 
 var _ = require('lodash');
 var d3 = require('d3');
-var expect = require('salinity').expect;
+var expect = chai.expect;
 
 var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
