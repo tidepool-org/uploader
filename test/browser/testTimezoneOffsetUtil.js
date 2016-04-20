@@ -19,7 +19,7 @@
 
 var _ = require('lodash');
 var d3 = require('d3');
-var expect = require('salinity').expect;
+var expect = chai.expect;
 
 var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
@@ -550,6 +550,19 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(fn).to.throw('Date must be provided!');
     });
 
+    it('properly recognizes 0 as an index and passes it to `lookup` function', function(){
+      var stubLookup = sinon.spy(noChangesUtil, 'lookup');
+      var obj = {
+        type: 'foo',
+        index: 0
+      };
+      var dt = new Date('2015-04-03T11:30:00');
+      expect(stubLookup.callCount).to.equal(0);
+      noChangesUtil.fillInUTCInfo(obj, dt);
+      expect(stubLookup.callCount).to.equal(1);
+      expect(stubLookup.calledWith(dt, 0)).to.be.true;
+    });
+
     it('mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', function(){
       var obj = {
         type: 'foo',
@@ -583,96 +596,96 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 });
 
-// describe('TimezoneOffsetUtil in practice', function(){
-//   it('applies a timezone across-the-board when no `changes` provided', function(){
-//     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-//     var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
-//     // Hawaii doesn't use Daylight Savings Time
-//     var util = new TZOUtil('Pacific/Honolulu', '2015-06-01T00:00:00.000Z', []);
-//     for (var i = 0; i < data.length; ++i) {
-//       var datum = data[i], date = dates[i];
-//       util.fillInUTCInfo(datum, date);
-//     }
-//     expect(_.pluck(data, 'timezoneOffset')[0]).to.equal(-600);
-//   });
+describe('TimezoneOffsetUtil in practice', function(){
+  it('applies a timezone across-the-board when no `changes` provided', function(){
+    var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
+    var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
+    // Hawaii doesn't use Daylight Savings Time
+    var util = new TZOUtil('Pacific/Honolulu', '2015-06-01T00:00:00.000Z', []);
+    for (var i = 0; i < data.length; ++i) {
+      var datum = data[i], date = dates[i];
+      util.fillInUTCInfo(datum, date);
+    }
+    expect(_.pluck(data, 'timezoneOffset')[0]).to.equal(-600);
+  });
 
-//   it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
-//     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-//     var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
-//     // US/Mountain *does* use Daylight Savings Time
-//     var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', []);
-//     for (var i = 0; i < data.length; ++i) {
-//       var datum = data[i], date = dates[i];
-//       util.fillInUTCInfo(datum, date);
-//     }
-//     var offsets = _.uniq(_.pluck(data, 'timezoneOffset'));
-//     expect(offsets.length).to.equal(2);
-//     expect(offsets).to.deep.equal([-420, -360]);
-//   });
+  it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
+    var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
+    var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
+    // US/Mountain *does* use Daylight Savings Time
+    var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', []);
+    for (var i = 0; i < data.length; ++i) {
+      var datum = data[i], date = dates[i];
+      util.fillInUTCInfo(datum, date);
+    }
+    var offsets = _.uniq(_.pluck(data, 'timezoneOffset'));
+    expect(offsets.length).to.equal(2);
+    expect(offsets).to.deep.equal([-420, -360]);
+  });
   
-//   it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
-//     this.timeout(5000);
-//     setTimeout(function() {
-//       var data = [], index = 0;
-//       var datetimesHomeAgain = d3.time.minute.utc.range(
-//         new Date('2015-04-19T05:05:00'),
-//         new Date('2015-05-01T00:00:00'),
-//         5
-//       );
-//       var datetimesInNZ = d3.time.minute.utc.range(
-//         new Date('2015-04-10T19:05:00'),
-//         new Date('2015-04-20T00:05:00'),
-//         5
-//       );
-//       var datetimesBeforeTrip = d3.time.minute.utc.range(
-//         new Date('2015-04-01T00:00:00'),
-//         new Date('2015-04-10T00:05:00'),
-//         5
-//       );
-//       var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
-//       _.each(datetimes, function(dt) {
-//         data.push({
-//           type: 'foo',
-//           index: index,
-//           deviceTime: dt.toISOString().slice(0,-5)
-//         });
-//         index += 2;
-//       });
-//       var fromNZ = builder.makeDeviceEventTimeChange()
-//         .with_change({
-//           from: '2015-04-20T00:02:30',
-//           to: '2015-04-19T05:03:00'
-//         })
-//         .with_deviceTime('2015-04-20T00:00:00')
-//         .set('jsDate', new Date('2015-04-20T00:00:00'))
-//         .set('index', 10489);
-//       var toNZ = builder.makeDeviceEventTimeChange()
-//         .with_change({
-//           from: '2015-04-10T00:02:30',
-//           to: '2015-04-10T19:02:00'
-//         })
-//         .with_deviceTime('2015-04-10T00:02:30')
-//         .set('jsDate', new Date('2015-04-10T00:02:30'))
-//         .set('index', 5185);
-//       var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [toNZ, fromNZ]);
-//       for (var i = 0; i < data.length; ++i) {
-//         var datum = data[i], date = datetimes[i];
-//         util.fillInUTCInfo(datum, date);
-//       }
-//       var byTime = _.sortBy(data, function(d) { return d.time; });
-//       var byIndex = _.sortBy(data, function(d) { return d.index; });
-//       expect(byTime).to.deep.equal(byIndex);
-//       var deviceTimes = _.pluck(data, 'deviceTime');
-//       var uniqDeviceTimes = _.uniq(deviceTimes);
-//       // given the time changes involved, device times are *not*
-//       // expected to be unique, hence the length of arrays should vary
-//       expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
-//       var times = _.pluck(data, 'time');
-//       var uniqTimes = _.uniq(times);
-//       // but UTC times should *always* be unique, even with travel!
-//       // so the length of arrays should stay the same, even when reducing to unique
-//       expect(times.length).to.equal(uniqTimes.length);
-//       done();
-//     }, 50);
-//   });
-// });
+  it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
+    this.timeout(5000);
+    setTimeout(function() {
+      var data = [], index = 0;
+      var datetimesHomeAgain = d3.time.minute.utc.range(
+        new Date('2015-04-19T05:05:00'),
+        new Date('2015-05-01T00:00:00'),
+        5
+      );
+      var datetimesInNZ = d3.time.minute.utc.range(
+        new Date('2015-04-10T19:05:00'),
+        new Date('2015-04-20T00:05:00'),
+        5
+      );
+      var datetimesBeforeTrip = d3.time.minute.utc.range(
+        new Date('2015-04-01T00:00:00'),
+        new Date('2015-04-10T00:05:00'),
+        5
+      );
+      var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
+      _.each(datetimes, function(dt) {
+        data.push({
+          type: 'foo',
+          index: index,
+          deviceTime: dt.toISOString().slice(0,-5)
+        });
+        index += 2;
+      });
+      var fromNZ = builder.makeDeviceEventTimeChange()
+        .with_change({
+          from: '2015-04-20T00:02:30',
+          to: '2015-04-19T05:03:00'
+        })
+        .with_deviceTime('2015-04-20T00:00:00')
+        .set('jsDate', new Date('2015-04-20T00:00:00'))
+        .set('index', 10489);
+      var toNZ = builder.makeDeviceEventTimeChange()
+        .with_change({
+          from: '2015-04-10T00:02:30',
+          to: '2015-04-10T19:02:00'
+        })
+        .with_deviceTime('2015-04-10T00:02:30')
+        .set('jsDate', new Date('2015-04-10T00:02:30'))
+        .set('index', 5185);
+      var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [toNZ, fromNZ]);
+      for (var i = 0; i < data.length; ++i) {
+        var datum = data[i], date = datetimes[i];
+        util.fillInUTCInfo(datum, date);
+      }
+      var byTime = _.sortBy(data, function(d) { return d.time; });
+      var byIndex = _.sortBy(data, function(d) { return d.index; });
+      expect(byTime).to.deep.equal(byIndex);
+      var deviceTimes = _.pluck(data, 'deviceTime');
+      var uniqDeviceTimes = _.uniq(deviceTimes);
+      // given the time changes involved, device times are *not*
+      // expected to be unique, hence the length of arrays should vary
+      expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
+      var times = _.pluck(data, 'time');
+      var uniqTimes = _.uniq(times);
+      // but UTC times should *always* be unique, even with travel!
+      // so the length of arrays should stay the same, even when reducing to unique
+      expect(times.length).to.equal(uniqTimes.length);
+      done();
+    }, 50);
+  });
+});
