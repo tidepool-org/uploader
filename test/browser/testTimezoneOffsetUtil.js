@@ -551,6 +551,19 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(fn).to.throw('Date must be provided!');
     });
 
+    it('properly recognizes 0 as an index and passes it to `lookup` function', function(){
+      var stubLookup = sinon.spy(noChangesUtil, 'lookup');
+      var obj = {
+        type: 'foo',
+        index: 0
+      };
+      var dt = new Date('2015-04-03T11:30:00');
+      expect(stubLookup.callCount).to.equal(0);
+      noChangesUtil.fillInUTCInfo(obj, dt);
+      expect(stubLookup.callCount).to.equal(1);
+      expect(stubLookup.calledWith(dt, 0)).to.be.true;
+    });
+
     it('mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', function(){
       var obj = {
         type: 'foo',
