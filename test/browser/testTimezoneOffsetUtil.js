@@ -16,7 +16,6 @@
  */
 
 /*eslint-env mocha*/
-/* global chai */
 
 var _ = require('lodash');
 var d3 = require('d3');
