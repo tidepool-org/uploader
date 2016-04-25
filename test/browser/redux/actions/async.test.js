@@ -1772,8 +1772,7 @@ describe('Asynchronous Actions', () => {
       });
     });
   });
-// TODO: need a lot more test cases for this set - if state is already present,
-// etc etc
+
   describe('retrieveTargetsFromStorage', () => {
     const url = 'http://acme-blip.com/patients/abc123/data';
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
@@ -1940,7 +1939,7 @@ describe('Asynchronous Actions', () => {
       });
     });
 
-    describe('no targets retrieved from local storage, user targeted for upload is all set to upload', () => {
+    describe('no targets retrieved from local storage, targets exist in state and user targeted for upload is all set to upload', () => {
       it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', (done) => {
         const devicesByUser = {
           abc123: ['carelink'],
