@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -1573,17 +1573,66 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('putTargetsInStorage', () => {
+  describe('addTargetDevice', () => {
+    it('should dispatch ADD_TARGET_DEVICE, SET_UPLOADS', (done) => {
+      const DEVICE = 'a_pump', ID = 'abc123';
+      const expectedActions = [
+        {
+          type: actionTypes.ADD_TARGET_DEVICE,
+          payload: {userId: ID, deviceKey: DEVICE},
+          meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
+        },
+        {
+          type: actionTypes.SET_UPLOADS,
+          payload: { devicesByUser: { abc123: [ DEVICE, 'a_bg_meter' ] } },
+          meta: { source: actionSources[actionTypes.SET_UPLOADS] }
+        }
+      ];
+      const state = {
+        targetDevices: {
+          abc123: [ DEVICE, 'a_bg_meter']
+        },
+        uploadTargetUser: 'abc123'
+      };
+      const store = mockStore(state, expectedActions, done);
+      store.dispatch(asyncActions.addTargetDevice(ID, DEVICE));
+    });
+  });
+
+  describe('removeTargetDevice', () => {
+    it('should dispatch REMOVE_TARGET_DEVICE, SET_UPLOADS', (done) => {
+      const DEVICE = 'a_pump', ID = 'abc123';
+      const expectedActions = [
+        {
+          type: actionTypes.REMOVE_TARGET_DEVICE,
+          payload: {userId: ID, deviceKey: DEVICE},
+          meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
+        },
+        {
+          type: actionTypes.SET_UPLOADS,
+          payload: { devicesByUser: { abc123: [ 'a_bg_meter' ] } },
+          meta: { source: actionSources[actionTypes.SET_UPLOADS] }
+        }
+      ];
+      const state = {
+        targetDevices: {
+          abc123: [ 'a_bg_meter']
+        },
+        uploadTargetUser: 'abc123'
+      };
+      const store = mockStore(state, expectedActions, done);
+      store.dispatch(asyncActions.removeTargetDevice(ID, DEVICE));
+    });
+  });
+
+  describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch SET_UPLOADS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
           {
-            type: actionTypes.RETRIEVING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.STORING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
+            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1607,20 +1656,17 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
-        store.dispatch(asyncActions.putTargetsInStorage());
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
       });
     });
 
     describe('existing targets in local storage', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch SET_UPLOADS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
           {
-            type: actionTypes.RETRIEVING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.STORING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
+            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1639,7 +1685,8 @@ describe('Asynchronous Actions', () => {
                 {key: 'a_pump', timezone: 'US/Eastern'},
                 {key: 'a_cgm', timezone: 'US/Eastern'}
               ]
-            }; }
+            }; },
+            removeItem: (item) => null
           }
         });
         const state = {
@@ -1652,16 +1699,86 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
-        store.dispatch(asyncActions.putTargetsInStorage());
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
       });
     });
   });
 
+  describe('setUploadsFromTargets', () => {
+    describe('no targets in local storage', () => {
+      it('should dispatch SET_UPLOADS', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
+            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setUploadsFromTargets());
+      });
+    });
+
+    describe('existing targets in local storage', () => {
+      it('should dispatch SET_UPLOADS', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
+            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            setItem: () => { return {
+              abc123: [
+                {key: 'a_pump', timezone: 'US/Central'}
+              ],
+              def456: [
+                {key: 'a_pump', timezone: 'US/Eastern'},
+                {key: 'a_cgm', timezone: 'US/Eastern'}
+              ]
+            }; },
+            removeItem: (item) => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setUploadsFromTargets());
+      });
+    });
+  });
+// TODO: need a lot more test cases for this set - if state is already present,
+// etc etc
   describe('retrieveTargetsFromStorage', () => {
     const url = 'http://acme-blip.com/patients/abc123/data';
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
-    describe('no targets retrieved from local storage', () => {
-      it('should dispatch SET_PAGE (redirect to settings page)', (done) => {
+    describe('no targets retrieved from local storage, no targets exist in state', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page)', (done) => {
         const expectedActions = [
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
@@ -1675,10 +1792,200 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           localStore: {
-            getItem: () => null
+            getItem: () => null,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state but no user targeted for upload by default', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page for user selection)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: null,
+          targetDevices: {
+            'abc123': ['carelink']
+          }
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state but user targeted for upload is missing timezone', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to main page for timezone selection)', (done) => {
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink'],
+            def456: ['dexcom', 'omnipod']
+          }
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state but user targeted has no supported devices', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', (done) => {
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, user targeted for upload is all set to upload', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', (done) => {
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser
+        }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
     });
@@ -1719,7 +2026,8 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1737,7 +2045,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for timezone selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -1766,7 +2074,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
+            payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
@@ -1775,7 +2083,8 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1791,7 +2100,10 @@ describe('Asynchronous Actions', () => {
           },
           loggedInUser: 'ghi789',
           targetsForUpload: ['abc123', 'def456'],
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            'abc123': ['carelink']
+          }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
@@ -1836,7 +2148,8 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1896,7 +2209,8 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1911,7 +2225,8 @@ describe('Asynchronous Actions', () => {
             omnipod: {}
           },
           loggedInUser: 'ghi789',
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
