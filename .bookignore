@@ -4,9 +4,9 @@ dist/
 fonts/
 images/
 lib/**/*.js
-lib/**/*.jsx
 lib/carelink/
 lib/components/
+lib/containers/
 lib/core/
 lib/dexcom/
 lib/insulet/
@@ -18,9 +18,11 @@ scripts/
 styles/
 test/
 **/*.js
+.babelrc
 .eslintrc
 .travis.yml
 description.txt
 LICENSE
 manifest.json
 package.json
+update-gh-pages.sh

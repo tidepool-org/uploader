@@ -20,10 +20,12 @@
    * [Dexcom CGM](lib/drivers/docs/dexcom.md)
    * [CareLink (CGM data)](lib/drivers/docs/carelinkCGM.md)
    * [CareLink (insulin pump data)](lib/drivers/docs/carelinkPumpData.md)
+   * [OneTouch VerioIQ](lib/drivers/docs/oneTouchVerioIQ.md)
    * [Insulet OmniPod](lib/drivers/docs/insuletOmniPod.md)
    * [Tandem Insulin Pumps](lib/drivers/docs/tandem.md)
 
 * [miscellaneous](docs/misc/README.md)
+   * [use of CSS modules](docs/misc/CSSModules.md)
    * [PWD "simulators"](docs/misc/PWDSimulators.md)
    * [challenges of flat basal profiles](docs/misc/FlatRateBasals.md)
    * [2015.06 CareLink CSV updates](docs/misc/2015.06.29CareLinkCSVChanges.md)
