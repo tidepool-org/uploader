@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.258.0",
+  "version": "0.263.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -14,7 +14,9 @@
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "start-hot": "bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
     "build": "bash ./scripts/build.sh",
-    "lint": "./node_modules/.bin/eslint lib test"
+    "lint": "./node_modules/.bin/eslint lib test",
+    "build-docs": "./scripts/update-gh-pages.sh",
+    "serve-docs": "./node_modules/.bin/gitbook serve"
   },
   "dependencies": {
     "async": "1.5.2",
@@ -34,7 +36,7 @@
     "redux-thunk": "2.0.1",
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
-    "sundial": "1.5.1",
+    "sundial": "1.6.0",
     "tidepool-platform-client": "0.23.0"
   },
   "devDependencies": {
@@ -49,6 +51,7 @@
     "eslint": "1.10.3",
     "eslint-plugin-react": "4.2.3",
     "flux-standard-action": "0.6.1",
+    "gitbook-cli": "1.0.1",
     "json-loader": "0.5.4",
     "karma": "0.13.22",
     "karma-chai": "0.1.0",
@@ -56,11 +59,13 @@
     "karma-mocha": "0.2.2",
     "karma-mocha-reporter": "2.0.0",
     "karma-phantomjs-launcher": "1.0.0",
+    "karma-sinon": "1.0.4",
     "karma-webpack": "1.7.0",
     "less": "2.6.1",
     "less-loader": "2.2.3",
     "merge-stream": "1.0.0",
     "mocha": "2.4.5",
+    "object-invariant-test-helper": "0.1.1",
     "phantomjs-prebuilt": "2.1.7",
     "proxyquire": "1.7.4",
     "react-addons-test-utils": "0.14.7",
@@ -71,6 +76,7 @@
     "redux-logger": "2.6.1",
     "redux-mock-store": "0.0.6",
     "salinity": "0.0.8",
+    "sinon": "1.17.3",
     "style-loader": "0.13.1",
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1",

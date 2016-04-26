@@ -8,7 +8,7 @@ module.exports = function (config) {
     browserNoActivityTimeout: 60000, // We need to accept that Webpack may take a while to build!
     singleRun: true,
     colors: true,
-    frameworks: [ 'mocha', 'chai' ], // Mocha is our testing framework of choice
+    frameworks: [ 'mocha', 'chai', 'sinon' ], // Mocha is our testing framework of choice
     files: [
       'browser.tests.js'
     ],

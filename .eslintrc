@@ -13,11 +13,13 @@
     "node": true
   },
   "globals": {
+    "chai": false,
+    "console": false,
+    "define": false,
     "expect": false,
     "process": false,
     "require": false,
-    "define": false,
-    "console": false,
+    "sinon": false,
     "__MOCK__": false,
     "__MOCK_PARAMS__": false,
     "__UPLOAD_API__": false,
