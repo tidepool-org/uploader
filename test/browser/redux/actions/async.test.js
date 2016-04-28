@@ -162,7 +162,7 @@ describe('Asynchronous Actions', () => {
           },
           user: {
             account: (cb) => { cb(null, pwd.user); },
-            profile: (cb) => { cb(null, pwd.profile); },
+            loggedInProfile: (cb) => { cb(null, pwd.profile); },
             getUploadGroups: (cb) => { cb(null, pwd.memberships); }
           }
         },
@@ -323,7 +323,7 @@ describe('Asynchronous Actions', () => {
         api: {
           user: {
             login: (creds, opts, cb) => cb(null, userObj),
-            profile: (cb) => cb(null, profile),
+            loggedInProfile: (cb) => cb(null, profile),
             getUploadGroups: (cb) => cb(null, memberships)
           }
         },
