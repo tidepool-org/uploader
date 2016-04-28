@@ -1573,67 +1573,10 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('addTargetDevice', () => {
-    it('should dispatch ADD_TARGET_DEVICE, SET_UPLOADS', (done) => {
-      const DEVICE = 'a_pump', ID = 'abc123';
-      const expectedActions = [
-        {
-          type: actionTypes.ADD_TARGET_DEVICE,
-          payload: {userId: ID, deviceKey: DEVICE},
-          meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
-        },
-        {
-          type: actionTypes.SET_UPLOADS,
-          payload: { devicesByUser: { abc123: [ DEVICE, 'a_bg_meter' ] } },
-          meta: { source: actionSources[actionTypes.SET_UPLOADS] }
-        }
-      ];
-      const state = {
-        targetDevices: {
-          abc123: [ DEVICE, 'a_bg_meter']
-        },
-        uploadTargetUser: 'abc123'
-      };
-      const store = mockStore(state, expectedActions, done);
-      store.dispatch(asyncActions.addTargetDevice(ID, DEVICE));
-    });
-  });
-
-  describe('removeTargetDevice', () => {
-    it('should dispatch REMOVE_TARGET_DEVICE, SET_UPLOADS', (done) => {
-      const DEVICE = 'a_pump', ID = 'abc123';
-      const expectedActions = [
-        {
-          type: actionTypes.REMOVE_TARGET_DEVICE,
-          payload: {userId: ID, deviceKey: DEVICE},
-          meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
-        },
-        {
-          type: actionTypes.SET_UPLOADS,
-          payload: { devicesByUser: { abc123: [ 'a_bg_meter' ] } },
-          meta: { source: actionSources[actionTypes.SET_UPLOADS] }
-        }
-      ];
-      const state = {
-        targetDevices: {
-          abc123: [ 'a_bg_meter']
-        },
-        uploadTargetUser: 'abc123'
-      };
-      const store = mockStore(state, expectedActions, done);
-      store.dispatch(asyncActions.removeTargetDevice(ID, DEVICE));
-    });
-  });
-
   describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
-      it('should dispatch SET_UPLOADS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
-          {
-            type: actionTypes.SET_UPLOADS,
-            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
-            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
-          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
@@ -1661,13 +1604,8 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('existing targets in local storage', () => {
-      it('should dispatch SET_UPLOADS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
-          {
-            type: actionTypes.SET_UPLOADS,
-            payload: { devicesByUser: { abc123: [ 'a_pump', 'a_bg_meter' ] } },
-            meta: { source: actionSources[actionTypes.SET_UPLOADS] }
-          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
