@@ -1572,11 +1572,20 @@ describe('Asynchronous Actions', () => {
       });
     });
   });
-
+  // TODO: need to test cases where the updateprofile API endpoints fail,
+  // and need tests for setTargetTimezone async action with and without API failures
   describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
-      it('should dispatch SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
@@ -1584,6 +1593,12 @@ describe('Asynchronous Actions', () => {
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => { cb(null, {'some':'stuff'});},
+              updateProfile: (user, update, cb) => { cb(null, {'some':'stuff'});}
+            }
+          },
           localStore: {
             getItem: () => null,
             setItem: () => null
@@ -1604,8 +1619,16 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('existing targets in local storage', () => {
-      it('should dispatch SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
@@ -1613,6 +1636,12 @@ describe('Asynchronous Actions', () => {
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => { cb(null, {'some':'stuff'});},
+              updateProfile: (user, update, cb) => { cb(null, {'some':'stuff'});}
+            }
+          },
           localStore: {
             getItem: () => null,
             setItem: () => { return {
