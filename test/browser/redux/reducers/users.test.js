@@ -121,6 +121,27 @@ describe('users', () => {
     });
   });
 
+  describe('updateProfileErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle UPDATE_PROFILE_FAILURE', () => {
+      const errMsg = 'Update profile error!';
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
