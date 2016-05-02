@@ -124,7 +124,7 @@ describe('users', () => {
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetDevices:['a_cgm', 'a_meter']}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -194,7 +194,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -236,7 +236,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -284,7 +284,7 @@ describe('users', () => {
   describe('targetTimezones', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetTimezone: 'US/Mountain'}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -296,7 +296,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
@@ -338,7 +338,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
