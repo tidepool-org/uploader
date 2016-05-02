@@ -28,6 +28,12 @@ If no user is (yet) logged in, the value of `loggedInUser` is `null`.
 
 If there has not (yet) been a login attempt or login proceeded without error, the value of `loginErrorMessage` is `null`.
 
+#### `updateProfileErrorMessage`
+
+*The property `updateProfileErrorMessage` encodes the error message if there is an error on an attempt to update the user's profile information.*
+
+If there has not (yet) been an error updating profile information or profile information update proceeded without error, the value of `updateProfileErrorMessage` is `null`.
+
 #### `targetDevices`
 
 *The property `targetDevices` is an object keyed by the user IDs of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable). The information stored under each `userId` is an array of the `deviceKey`s selected for that user as potential sources of data to upload to the Tidepool cloud.*
