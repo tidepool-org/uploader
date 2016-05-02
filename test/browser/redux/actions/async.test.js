@@ -30,7 +30,7 @@ import { UnsupportedError } from '../../../../lib/redux/utils/errors';
 import errorText from '../../../../lib/redux/constants/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
+import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage } from '../../../../lib/redux/utils/errors';
 
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
@@ -1572,8 +1572,7 @@ describe('Asynchronous Actions', () => {
       });
     });
   });
-  // TODO: need to test cases where the updateprofile API endpoints fail,
-  // and need tests for setTargetTimezone async action with and without API failures
+
   describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
@@ -1584,7 +1583,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
-            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1595,8 +1594,26 @@ describe('Asynchronous Actions', () => {
         asyncActions.__Rewire__('services', {
           api: {
             user: {
-              profile: (cb) => { cb(null, {'some':'stuff'});},
-              updateProfile: (user, update, cb) => { cb(null, {'some':'stuff'});}
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              }
             }
           },
           localStore: {
@@ -1627,7 +1644,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
-            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1638,8 +1655,26 @@ describe('Asynchronous Actions', () => {
         asyncActions.__Rewire__('services', {
           api: {
             user: {
-              profile: (cb) => { cb(null, {'some':'stuff'});},
-              updateProfile: (user, update, cb) => { cb(null, {'some':'stuff'});}
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              }
             }
           },
           localStore: {
@@ -1667,6 +1702,173 @@ describe('Asynchronous Actions', () => {
         };
         const store = mockStore(state, expectedActions, done);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+
+    describe('profile API endpoint failure', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_FAILURE,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]},
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(getUpdateProfileErrorMessage());
+              }
+            }
+          },
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+  });
+
+  describe('setTargetTimezone', () => {
+    describe('update profile success', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
+                    'targetTimezone': 'US/Central'
+                  }
+                });
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+      });
+    });
+
+    describe('update profile failure', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_FAILURE,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]},
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(getUpdateProfileErrorMessage());
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
       });
     });
   });
