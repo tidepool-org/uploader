@@ -1881,58 +1881,6 @@ describe('Asynchronous Actions', () => {
       });
     });
 
-    describe('no targets retrieved from local storage, targets exist in state but user targeted for upload is missing timezone', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to main page for timezone selection)', (done) => {
-        const devicesByUser = {
-          abc123: ['carelink'],
-          def456: ['dexcom', 'omnipod']
-        };
-        const expectedActions = [
-          {
-            type: actionTypes.RETRIEVING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
-          },
-          {
-            type: actionTypes.SET_UPLOADS,
-            payload: { devicesByUser },
-            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
-          }
-        ];
-        asyncActions.__Rewire__('services', {
-          localStore: {
-            getItem: () => null,
-            removeItem: (item) => null
-          }
-        });
-        const state = {
-          allUsers: {
-            ghi789: {},
-            abc123: {},
-            def456: {},
-          },
-          devices: {
-            carelink: {},
-            dexcom: {},
-            omnipod: {}
-          },
-          loggedInUser: 'ghi789',
-          targetsForUpload: ['abc123', 'def456'],
-          uploadTargetUser: 'abc123',
-          targetDevices: {
-            abc123: ['carelink'],
-            def456: ['dexcom', 'omnipod']
-          }
-        };
-        const store = mockStore(state, expectedActions, done);
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
-      });
-    });
-
     describe('no targets retrieved from local storage, targets exist in state but user targeted has no supported devices', () => {
       it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', (done) => {
         const devicesByUser = {
