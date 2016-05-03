@@ -697,6 +697,7 @@ describe('uploads', () => {
       });
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === result).to.be.false;
+      expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
     });
 
     it('should handle LOGIN_SUCCESS', () => {
