@@ -2144,7 +2144,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -2172,6 +2172,14 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2179,6 +2187,28 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           api: {
+            user: {
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              }
+            },
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
@@ -2202,6 +2232,9 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123',
           targetDevices: {
             'abc123': ['carelink']
+          },
+          targetTimezones: {
+            'abc123': 'US/Mountain'
           }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
@@ -2270,7 +2303,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is all set to upload', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', (done) => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -2298,6 +2331,14 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2305,6 +2346,28 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           api: {
+            user: {
+              profile: (cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, {
+                  fullName: 'Joe',
+                  patient: {
+                    'birthday': '1980-03-05',
+                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
+                    'targetTimezone': 'Europe/Budapest'
+                  }
+                });
+              }
+            },
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
@@ -2325,7 +2388,10 @@ describe('Asynchronous Actions', () => {
           },
           loggedInUser: 'ghi789',
           uploadTargetUser: 'abc123',
-          targetDevices: devicesByUser
+          targetDevices: devicesByUser,
+          targetTimezones: {
+            'abc123': 'US/Mountain'
+          }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
