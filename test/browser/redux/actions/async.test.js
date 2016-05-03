@@ -1873,7 +1873,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: null,
           targetDevices: {
-            'abc123': ['carelink']
+            abc123: ['carelink']
           }
         };
         const store = mockStore(state, expectedActions, done);
@@ -2109,10 +2109,10 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123',
           targetDevices: {
-            'abc123': ['carelink']
+            abc123: ['carelink']
           },
           targetTimezones: {
-            'abc123': 'US/Mountain'
+            abc123: 'US/Mountain'
           }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
@@ -2254,7 +2254,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123',
           targetDevices: devicesByUser,
           targetTimezones: {
-            'abc123': 'US/Mountain'
+            abc123: 'US/Mountain'
           }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
