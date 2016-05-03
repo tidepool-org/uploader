@@ -1595,24 +1595,10 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               }
             }
           },
@@ -1656,24 +1642,10 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               }
             }
           },
@@ -1728,14 +1700,7 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
                 cb(getUpdateProfileErrorMessage());
@@ -1784,24 +1749,10 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
-                    'targetTimezone': 'US/Central'
-                  }
-                });
+                cb(null);
               }
             }
           }
@@ -1843,14 +1794,7 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
                 cb(getUpdateProfileErrorMessage());
@@ -2189,24 +2133,10 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               }
             },
             makeBlipUrl: blipUrlMaker
@@ -2348,24 +2278,10 @@ describe('Asynchronous Actions', () => {
           api: {
             user: {
               profile: (cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null, {
-                  fullName: 'Joe',
-                  patient: {
-                    'birthday': '1980-03-05',
-                    'targetDevices': ['a_pump', 'a_bg_meter', 'a_cgm'],
-                    'targetTimezone': 'Europe/Budapest'
-                  }
-                });
+                cb(null);
               }
             },
             makeBlipUrl: blipUrlMaker
