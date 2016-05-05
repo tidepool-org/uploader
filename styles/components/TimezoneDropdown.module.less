@@ -14,6 +14,7 @@
 */
 
 @import '../core/variables.less';
+@import '../core/icons.module.less';
 
 .timezoneDropdown {
   border-bottom: 1px solid @gray-light;
@@ -48,4 +49,12 @@
   margin-top: 0px;
   margin-bottom: 20px;
   color: red;
+}
+
+.iconClose {
+  composes: icon-close from '../core/icons.module.less';
+}
+
+.iconClose:hover {
+  color: #999;
 }

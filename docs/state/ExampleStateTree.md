@@ -229,6 +229,7 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
   "loggedInUser": "4fdc9dd8b4",
   "loginErrorMessage": null,
   "updateProfileErrorMessage": null,
+  "updateProfileErrorDismissed": null,
   "targetDevices": {
     "77541c89ba": ["omnipod", "dexcom"],
     "a6328f570d": ["tandem"],
