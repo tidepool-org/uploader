@@ -142,6 +142,24 @@ describe('users', () => {
     });
   });
 
+  describe('updateProfileErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle DISMISS_UPDATE_PROFILE_ERROR', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_UPDATE_PROFILE_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
