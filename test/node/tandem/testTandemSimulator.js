@@ -436,87 +436,61 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    var suppressed = builder.makeScheduledBasal()
-      .with_time('2014-09-25T01:05:00.000Z')
-      .with_deviceTime('2014-09-25T01:05:00')
-      .with_timezoneOffset(0)
-      .with_conversionOffset(0)
-      .with_rate(1.3)
-      .with_duration(2000000)
-      .set('deviceId','tandem12345');
-    var tempBasalStart = {
-          type: 'temp-basal',
-          subType: 'start',
-          percent: 0.65,
-          duration: 1500000,
-          time: '2014-09-25T01:10:00.000Z',
-          deviceTime: '2014-09-25T01:10:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          index: 1
-        };
-    var tempBasalStop = {
-          type: 'temp-basal',
-          subType: 'stop',
-          time_left: 0
-        };
-
-    var expectedTempBasal = builder.makeTempBasal()
-      .with_time('2014-09-25T01:10:00.000Z')
-      .with_deviceTime('2014-09-25T01:10:00')
-      .with_timezoneOffset(0)
-      .with_conversionOffset(0)
-      .with_duration(6600000)
-      .with_previous(suppressed.done())
-      .set('suppressed',{
-                  type: 'basal',
-                  deliveryType: 'scheduled',
-                  rate: 1.3
-                })
-      .set('percent', 0.65)
-      .set('deviceId', 'tandem12345')
-      .with_payload({'logIndices':1, duration: 1500000})
-      .done();
-    expectedTempBasal.annotations = [{code: 'tandem/basal/temp-without-rate-change'}];
-
     it('temp basal without basal rate change', function() {
+      var suppressed = builder.makeScheduledBasal()
+        .with_time('2014-09-25T01:05:00.000Z')
+        .with_deviceTime('2014-09-25T01:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3)
+        .with_duration(2000000)
+        .set('deviceId','tandem12345');
+      var tempBasalStart = {
+            type: 'temp-basal',
+            subType: 'start',
+            percent: 0.65,
+            duration: 1500000,
+            time: '2014-09-25T01:10:00.000Z',
+            deviceTime: '2014-09-25T01:10:00',
+            timezoneOffset: 0,
+            conversionOffset: 0,
+            index: 1
+          };
+      var tempBasalStop = {
+            type: 'temp-basal',
+            subType: 'stop',
+            time_left: 0
+          };
+
+      var expectedTempBasal = builder.makeTempBasal()
+        .with_time('2014-09-25T01:10:00.000Z')
+        .with_deviceTime('2014-09-25T01:10:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_duration(6600000)
+        .with_previous(suppressed.done())
+        .set('suppressed',{
+                    type: 'basal',
+                    deliveryType: 'scheduled',
+                    rate: 1.3
+                  })
+        .set('percent', 0.65)
+        .set('deviceId', 'tandem12345')
+        .with_payload({'logIndices':1, duration: 1500000})
+        .done();
+      expectedTempBasal.annotations = [{code: 'tandem/basal/temp-without-rate-change'}];
+      
       // temp_rate_end basal rate change occurs before temp basal stop
       simulator.basal(suppressed);
       simulator.tempBasal(tempBasalStart);
-      simulator.basal(basal2);
       simulator.tempBasal(tempBasalStop);
+      simulator.basal(basal2);
       simulator.basal(basal3);
 
       expect(simulator.getEvents()).deep.equals([
         suppressed.done(),
         expectedTempBasal,
         basal2.done()
-      ]);
-    });
-
-    it('temp basal without basal rate change; cancelled early', function() {
-      // temp_rate_end basal rate change occurs after temp basal stop
-      tempBasalStop.time_left = 500000;
-      expectedTempBasal.duration = 7900000;
-
-      var basalResume = builder.makeScheduledBasal()
-        .with_time('2014-09-25T03:21:40.000Z')
-        .with_deviceTime('2014-09-25T03:21:40')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_scheduleName('Alice')
-        .with_rate(0.90);
-
-      simulator.basal(suppressed);
-      simulator.tempBasal(tempBasalStart);
-      simulator.tempBasal(tempBasalStop);
-      simulator.basal(basalResume);
-      simulator.basal(basal3);
-
-      expect(simulator.getEvents()).deep.equals([
-        suppressed.done(),
-        expectedTempBasal,
-        basalResume.done()
       ]);
     });
 
