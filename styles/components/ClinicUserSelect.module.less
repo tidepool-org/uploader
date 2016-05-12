@@ -16,15 +16,46 @@
 @import '../core/variables.less';
 @import '../core/icons.module.less';
 
+.wrap {
+  composes: flexRow from '../core/layout.module.less';
+  width:100%;
+  height: @usable-page-height;
+  justify-content: center;
+}
+
+.wrapInner {
+  composes: flexColumn from '../core/layout.module.less';
+  width:450px;
+}
+
+.headerWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  padding-bottom:20px;
+  padding-top:20px;
+}
+
+.header {
+  composes: medium from '../core/typography.module.less';
+}
+
+.addLink {
+  composes: medium link from '../core/typography.module.less';
+  text-decoration: none;
+  align-self: flex-end;
+}
+
+.addIcon {
+  composes: icon-add from '../core/icons.module.less';
+  margin-right: 10px;
+}
+
 .timezoneDropdown {
-  border-bottom: 1px solid @gray-light;
   padding-bottom: 10px;
-  margin-right: 18px;
 }
 
 .timezone {
   composes: flexRowWrap from '../core/layout.module.less';
-  margin: 10px 0px 7px 0px;
 }
 
 .label {
@@ -33,19 +64,12 @@
 }
 
 .list {
-  margin-top: -10px;
-  margin-left: 15px;
-  width: 260px;
-}
-
-.timeDetail {
-  composes: tiny gray from '../core/typography.module.less';
-  margin-top: 10px;
-  flex-basis: 100%;
+  //margin-top: -10px;
+  //margin-left: 15px;
+  width: 100%;
 }
 
 .error {
-  composes: timeDetail;
   margin-top: 0px;
   margin-bottom: 20px;
   color: red;
