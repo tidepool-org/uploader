@@ -17,9 +17,10 @@
 @import '../core/icons.module.less';
 
 .timezoneDropdown {
-  border-bottom: 1px solid @gray-light;
+  composes: whiteBox from '../core/layout.module.less';
+  border-bottom: none;
   padding-bottom: 10px;
-  margin-right: 18px;
+  margin-bottom: 0px;
 }
 
 .clinic {
@@ -29,6 +30,10 @@
   .timezone {
     margin-bottom: 0px;
   }
+}
+
+.userDropdownShowing {
+  border-top: none;
 }
 
 .timezone {
