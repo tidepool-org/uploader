@@ -31,7 +31,6 @@
 
 .form {
   composes: boxFlex scroll from '../core/layout.module.less';
-  margin-bottom: 10px;
 }
 
 .onlyme {
@@ -44,7 +43,7 @@
 
 // todo also inclde height of the clinic user box
 .clinic {
-  max-height: @usable-page-height - @font-size-large*3 - @changePerson-link-height - @btn-height;
+  max-height: @usable-page-height - @font-size-large*3 - @changePerson-link-height - @btn-height - @clinic-user-block-height;
 }
 
 .checkbox {
@@ -67,7 +66,7 @@
 }
 
 .buttonWrap {
-  composes: flexRow from '../core/layout.module.less';
+  composes: flexRow pageRow from '../core/layout.module.less';
   flex-direction: row-reverse;
 }
 
