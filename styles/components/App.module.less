@@ -15,8 +15,6 @@
 
 @import '../core/variables.less';
 
-@mainPageBorder: 1px;
-
 .app {
   composes: base from '../core/typography.module.less';
   composes: flexColumn from '../core/layout.module.less';
@@ -55,7 +53,7 @@
   text-align: center;
 }
 
-.mainPage, .settingsPage {
+.mainPage/*, .settingsPage*/ {
   composes: page;
   width: 550px;
   background-color: rgba(255, 255, 255, 0.75);
@@ -67,6 +65,16 @@
 
 .mainWrap {
   composes: flexColumn from '../core/layout.module.less';
+}
+
+.changePerson {
+  composes: link tiny from '../core/typography.module.less';
+  composes: pageRow from '../core/layout.module.less';
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 .signup {

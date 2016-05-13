@@ -1,0 +1,39 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+.main {
+  composes: whiteBox flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  padding: 20px 25px;
+  margin-bottom:0px;
+  border-bottom: none;
+}
+
+.nameWrap {
+  composes: flexRow from '../core/layout.module.less';
+}
+
+.name {
+  composes: large from '../core/typography.module.less';
+  padding-right: 25px;
+}
+
+.birthday {
+  composes: large from '../core/typography.module.less';
+}
+
+.edit {
+  composes: link small from '../core/typography.module.less';
+}

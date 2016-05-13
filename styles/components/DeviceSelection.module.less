@@ -18,6 +18,7 @@
 @form-height: 200px;
 
 .main {
+  composes: whiteBox from '../core/layout.module.less';
   composes: centerContainer from '../core/layout.module.less';
 }
 
@@ -25,6 +26,7 @@
   composes: large from '../core/typography.module.less';
   font-weight: normal;
   width: 250px;
+  margin-top:10px;
 }
 
 .form {
@@ -38,6 +40,11 @@
 
 .groups {
   max-height: @usable-page-height - @font-size-large*3 - @groups-dropdown-height - @btn-height;
+}
+
+// todo also inclde height of the clinic user box
+.clinic {
+  max-height: @usable-page-height - @font-size-large*3 - @changePerson-link-height - @btn-height;
 }
 
 .checkbox {
