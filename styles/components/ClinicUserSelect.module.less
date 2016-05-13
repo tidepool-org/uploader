@@ -50,22 +50,8 @@
   margin-right: 10px;
 }
 
-.timezoneDropdown {
+.clinicUserDropdown {
   padding-bottom: 10px;
-}
-
-.timezone {
-  composes: flexRowWrap from '../core/layout.module.less';
-}
-
-.label {
-  composes: small gray from '../core/typography.module.less';
-  vertical-align: middle;
-}
-
-.list {
-  //margin-top: -10px;
-  //margin-left: 15px;
   width: 100%;
 }
 
@@ -75,10 +61,23 @@
   color: red;
 }
 
-.iconClose {
-  composes: icon-close from '../core/icons.module.less';
-}
-
-.iconClose:hover {
-  color: #999;
+.Select {
+  composes: Select from '../core/select.less';
+  :global .Select-control {
+    height: 50px;
+  }
+  :global .Select-placeholder {
+    top: 5px;
+    left: 25px;
+  }
+  :global .Select-input {
+    padding-top: 5px;
+    padding-left: 33px;
+  }
+  :global .Select-arrow-zone {
+    padding-right: 50px;
+  }
+  :global .Select-arrow {
+    
+  }
 }
