@@ -36,7 +36,7 @@
 }
 
 .header {
-  composes: medium from '../core/typography.module.less';
+  composes: large from '../core/typography.module.less';
 }
 
 .addLink {
@@ -67,6 +67,7 @@
     height: 50px;
   }
   :global .Select-placeholder {
+    font-size: @font-size-medium;
     top: 5px;
     left: 25px;
   }
@@ -75,9 +76,15 @@
     padding-left: 33px;
   }
   :global .Select-arrow-zone {
-    padding-right: 50px;
+    padding-right: 70px;
   }
   :global .Select-arrow {
-    
+    border:none;
+    &::before{
+      display: inline-block;
+      font-size: 40px;
+      content: '\026B2'; // '⚲'
+      transform: rotate(-45deg);
+    }
   }
 }
