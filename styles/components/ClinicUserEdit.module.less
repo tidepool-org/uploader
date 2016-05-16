@@ -1,0 +1,109 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.link {
+  composes: link from '../core/typography.module.less';
+}
+
+.main {
+  composes: boxFlex from '../core/layout.module.less';
+  align-items: center;
+}
+
+.header {
+  composes: boxFlex from '../core/layout.module.less';
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.title {
+  composes: large bold from '../core/typography.module.less';
+  margin-bottom: 5px;
+}
+
+.accountName {
+  composes: medium from '../core/typography.module.less';
+  color: @link-color;
+}
+
+.form {
+  composes: boxFlex from '../core/layout.module.less';
+  border-color: @purple-light;
+  width: 320px;
+}
+
+.inputWrap {
+  composes: flexColumn from '../core/layout.module.less';
+  margin-bottom: 15px;
+}
+
+.inputLabel {
+  composes: gray medium from '../core/typography.module.less';
+  margin-bottom: 10px;
+}
+
+.input {
+  composes: form-control from '../core/forms.less';
+}
+
+.dateInput {
+  composes: input;
+  width: 20%;
+  padding: 0px 15px;
+}
+
+.monthInput {
+  composes: dateInput;
+  border: none;
+  outline: @form-control-border-size solid fade(@form-control-border-color, 50%);
+  outline-offset: -1px;
+  padding: 1px;
+  width: 30%;
+  height: 36px;
+  &:hover {
+    outline-color: @purple-light;
+  }
+
+  &:focus {
+    outline-color: @purple-medium;
+  }
+}
+
+.bdayWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin-top: 5px;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
+
+.error {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: flex-end;
+  color: @red;
+  margin-top: 10px;
+}
