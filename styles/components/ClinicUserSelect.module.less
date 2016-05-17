@@ -70,6 +70,18 @@
   composes: btn btnPrimary from '../core/buttons.module.less';
 }
 
+.optionLabelWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+}
+
+.optionLabelName {
+  white-space: nowrap;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .Select {
   composes: Select from '../core/select.less';
   :global .Select-control {
@@ -87,6 +99,7 @@
   }
   :global .Select-option {
     padding-left: 33px;
+    padding-right: 33px;
     font-size: @font-size-medium;
     color: @text-color;
   }
@@ -98,8 +111,10 @@
     color: white;
   }
   :global(.Select-control .Select-value) {
+    font-size: @font-size-medium;
     padding-top: 5px;
     padding-left: 33px;
+    padding-right: 83px;
   }
   :global .Select-arrow-zone {
     padding-right: 70px;

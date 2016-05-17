@@ -23,11 +23,16 @@
 
 .nameWrap {
   composes: flexRow from '../core/layout.module.less';
+  align-items: center;
 }
 
 .name {
   composes: large from '../core/typography.module.less';
   padding-right: 25px;
+  max-width:50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .birthday {
@@ -36,4 +41,5 @@
 
 .edit {
   composes: link small from '../core/typography.module.less';
+  padding-left: 15px;
 }
