@@ -61,6 +61,15 @@
   color: red;
 }
 
+.buttonRow {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
+
 .Select {
   composes: Select from '../core/select.less';
   :global .Select-control {
@@ -72,10 +81,23 @@
     left: 25px;
   }
   :global .Select-input {
+    font-size: @font-size-medium;
     padding-top: 5px;
     padding-left: 33px;
   }
-  :global( .Select-control .Select-value) {
+  :global .Select-option {
+    padding-left: 33px;
+    font-size: @font-size-medium;
+    color: @text-color;
+  }
+  :global(.Select-option.is-selected){
+
+  }
+  :global(.Select-option.is-focused){
+    background-color: @purple-medium;
+    color: white;
+  }
+  :global(.Select-control .Select-value) {
     padding-top: 5px;
     padding-left: 33px;
   }
