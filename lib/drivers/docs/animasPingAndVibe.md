@@ -38,27 +38,27 @@ Device-specific? (Add any device-specific notes/additions here.)
 - Flat-rate basals are terminated after five days.
 - To calculate percentages for temp basals, you need to know the active basal schedule at the time. It's not enough to look at the previous or next basal, as those may be zero/suspended. The Animas data model does not tell us which scheduled basal is being suppressed, and also does not provide a history of active basal schedules.
 - A basal is categorized as suspended basal if its rate is zero and its start falls within a suspend/resume event. As only the 30 most recent suspend/resume events are stored, we can't be sure if older basals with zero rate are suspends or not.
-- As device needs to be suspended before uploading, we always have the final (most recent) basal and its duration.
+- As the device needs to be suspended before uploading, we always have the final (most recent) basal and its duration.
 
 #### Boluses
 
   - `[x]` normal bolus
     - `[x]` amount of insulin delivered
     - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
-  - `[x]` extended bolus
-    - `[x]` amount of insulin delivered
-    - `[x]` duration of insulin delivery
-    - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
-    - `[x]` duration of insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
-    - `[?]` extended bolus that crosses midnight is split into two records
+  - `[ ]` extended bolus
+    - `[ ]` amount of insulin delivered
+    - `[ ]` duration of insulin delivery
+    - `[ ]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
+    - `[ ]` duration of insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
+    - `[ ]` extended bolus that crosses midnight is split into two records
   - `[x]` combo/dual bolus
     - `[ ]` amount of insulin delivered - immediate (normal)
     - `[ ]` amount of insulin delivered - extended
     - `[x]` duration of extended insulin delivery
     - `[ ]` amount of immediate insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
-    - `[?]` amount of extended insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
+    - `[ ]` amount of extended insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
     - `[ ]` duration of extended insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
-    - `[?]` extended portion of combo bolus that crosses midnight is split into two records
+    - `*[?]` extended portion of combo bolus that crosses midnight is split into two records
   - bolus cancellations/interruptions
     - `[ ]` represented by a separate event in the device's data log OR
     - `[x]` result in modifications to a bolus event in the device's data log
@@ -70,7 +70,9 @@ No Tidepool data model yet:
     - `[-]` agent/reason for bolus cancellation
 
 Device-specific? (Add any device-specific notes/additions here.)
-- Combo boluses will appear with a 50:50 split, as the Animas data model does not include the split between the immediate and extended portions
+- With combo boluses only the total amount delivered is available. As such, all immediate and extended portions will appear with a 50:50 split.
+- When a combo bolus is cancelled, we also show the total amount delivered as a 50:50 split between immediate and extended portions, since the individual amounts are not provided.
+- If a combo bolus is cancelled, we don't know the actual duration, so it is set to zero and annotated with  `animas/bolus/unknown-duration`
 
 #### CBG
 
@@ -87,11 +89,11 @@ Device-specific? (Add any device-specific notes/additions here.)
         - `[x]` needed to infer a suspend (stoppage of all insulin delivery)
     - `[x]` occlusion
         - `[x]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` no delivery
-        - `[?]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `*[-]` no delivery
+        - `*[-]` needed to infer a suspend (stoppage of all insulin delivery)
     - `[x]]` auto-off
         - `[x]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[?]` over limit (i.e., max bolus exceeded through override)
+    - `[ ]` over limit (i.e., max bolus exceeded through override)
     - `[x]` other alarm types (details to be provided in `payload` object)
   - `[x]` prime events
     - `[x]` prime target = tubing
@@ -116,22 +118,25 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 - Animas does not generate suspend/resume events for alarms, so we check if an alarm occurred recently or at the same time. If so, we mark the basal as suspended and generate a new suspend event.
 - For a successful reservoir change, it looks like either one or two events are generated: a prime event and an optional cannula bolus event, each with a specified delivered amount. As such, we record the prime event as a reservoir change (delivery is not possible on pump without tubing priming)
+- Animas does not provide time change events, which means UTC bootstrapping is not possible
 
 #### SMBG
 
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
-  - `[?]` units of value (read from device, not hard-coded)
-  - `[?]` out-of-range values (LO or HI)
+  - `[x]` units of value (read from device, not hard-coded)
+  - `[ ]` out-of-range values (LO or HI)
   - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
 No Tidepool data model yet:
 
-  - `[ ]` meal tag (i.e., pre- or post-meal)
-  - `[ ]` other/freeform tags
+  - `[-]` meal tag (i.e., pre- or post-meal)
+  - `[-]` other/freeform tags
   - `[ ]` categorization of value according to BG target(s) from settings
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+- Glucose values from meter as are always in mg/dL, as the field used only accepts values 0-1023.
 
 #### Settings
 
