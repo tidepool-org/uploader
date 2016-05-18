@@ -182,10 +182,10 @@ No Tidepool data model yet:
     - `[ ]` temp basal type (`manual` or `percentage`)
     - `[-]` max basal (as a u/hr rate)
   - bolus features:
-    - `[?]` bolus "wizard"/calculator enabled
+    - `[-]` bolus "wizard"/calculator enabled
     - `[-]` bolus increment for non-"quick"/manual boluses
     - `[-]` extended boluses enabled
-    - `[?]` extended bolus type (`manual` or `percentage`)
+    - `[ ]` extended bolus type (`manual` or `percentage`)
     - `[ ]` min BG to allow calculation of bolus delivery
     - `[?]` reverse correction enabled
     - `[-]` max bolus
@@ -227,7 +227,7 @@ Some settings are available in *both* mg/dL and mmol/L; we'll have to decide whi
     - `[ ]` shape `{target: 100}` OR
     - `[x]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
-  - `[?]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
+  - `[x]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
   - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
 Device-specific? (Add any device-specific notes/additions here.)
@@ -241,6 +241,8 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` date & time settings changes
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+- Animas does not provide time change events, which means UTC bootstrapping is not possible. Log indexes are ephemeral and specific to a record type.
 
 ### No Tidepool Data Model Yet
 
