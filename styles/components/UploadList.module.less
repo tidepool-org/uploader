@@ -21,6 +21,10 @@
   composes: whiteBox from '../core/layout.module.less';
 }
 
+.wrapNoTZ {
+  composes: gray from '../core/typography.module.less';
+}
+
 .headlineWrap {
   composes: flexRow from '../core/layout.module.less';
   align-items: flex-end;
@@ -33,8 +37,9 @@
 }
 
 .chooseDeviceLink {
-  composes: tiny link from '../core/typography.module.less';
-  margin-left: 10px;
+  composes: small link from '../core/typography.module.less';
+  margin-left: auto;
+  margin-right: 15px;
   margin-bottom: 2px;
   text-decoration: none;
   &:hover {

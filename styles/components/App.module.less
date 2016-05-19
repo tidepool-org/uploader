@@ -26,8 +26,12 @@
 
 .header {
   composes: flexColumn from '../core/layout.module.less';
-  background: url(/images/T_icon_transparent.png) center center / 75px 75px no-repeat;
+  background-image: url(/images/T_icon_transparent.png);
+  background-position: center 25px;
+  background-size: 75px 75px;
+  background-repeat: no-repeat;
   min-height: 100px;
+  padding-bottom: 10px;
   width: 550px;
   margin: 0px auto;
 }
@@ -100,12 +104,11 @@
 
 .footer {
   composes: flexColumn from '../core/layout.module.less';
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: auto;
+  margin-bottom: 30px;
   background-image: url(/images/tidepool_logo_transparent.png);
   background-position: center center;
   background-repeat: no-repeat;
-  align-items: flex-end;
 }
 
 .footerRow {
@@ -113,6 +116,7 @@
   width: 550px;
   margin: 0px auto;
   justify-content: space-between;
+  align-self: flex-end;
 }
 
 .footerLink {

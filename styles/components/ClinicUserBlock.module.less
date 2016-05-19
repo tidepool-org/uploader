@@ -23,7 +23,8 @@
 
 .nameWrap {
   composes: flexRow from '../core/layout.module.less';
-  align-items: center;
+  align-items: flex-end;
+  width: 100%
 }
 
 .name {
@@ -43,6 +44,7 @@
   composes: link small from '../core/typography.module.less';
   padding-left: 15px;
   text-decoration: none;
+  margin-left: auto;
   &:hover {
     text-decoration: none;
     cursor: pointer;

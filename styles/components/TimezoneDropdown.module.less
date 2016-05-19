@@ -51,8 +51,15 @@
   width: 260px;
 }
 
+.listNoValue {
+  :global(.Select-control){
+    border-color: @purple-medium;
+  }
+}
+
 .timeDetail {
-  composes: tiny gray from '../core/typography.module.less';
+  composes: tiny from '../core/typography.module.less';
+  color: @purple-medium;
   margin-top: 10px;
   flex-basis: 100%;
 }
