@@ -367,6 +367,53 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('doLogin [verified clinic account]', () => {
+    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS and SET_PAGE (CLINIC_USER_SELECT) actions', (done) => {
+      // NB: this is not what these objects actually look like
+      // actual shape is irrelevant to testing action creators
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const expectedActions = [
+        {
+          type: actionTypes.LOGIN_REQUEST,
+          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile, memberships
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.CLINIC_USER_SELECT},
+          meta: {source: actionSources.USER}
+        }
+      ];
+      asyncActions.__Rewire__('services', {
+        api: {
+          user: {
+            login: (creds, opts, cb) => cb(null, userObj),
+            loggedInProfile: (cb) => cb(null, profile),
+            getUploadGroups: (cb) => cb(null, memberships)
+          }
+        },
+        log: _.noop
+      });
+      const store = mockStore({}, expectedActions, done);
+      store.dispatch(asyncActions.doLogin(
+        {username: 'jane.doe@me.com', password: 'password'},
+        {remember: false}
+      ));
+    });
+  });
+
   describe('doLogout [no error]', () => {
     it('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', (done) => {
       const expectedActions = [
@@ -1723,6 +1770,172 @@ describe('Asynchronous Actions', () => {
         };
         const store = mockStore(state, expectedActions, done);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+  });
+
+  describe('clickEditUserNext', () => {
+    describe('update profile success, user has devices selected', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_ALL_USERS, SET_PAGE (main)', (done) => {
+        const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+        const profile = {fullName: 'Jane Doe'};
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_ALL_USERS,
+            payload: {
+              user: userObj.user,
+              profile, memberships
+            },
+            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              account: (cb) => cb(null, userObj.user),
+              loggedInProfile: (cb) => cb(null, profile),
+              getUploadGroups: (cb) => cb(null, memberships),
+              updateProfile: (user, update, cb) => cb(null)
+            }
+          }
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {roles: ['clinic']},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          targetDevices: {
+            def456: ['dexcom']
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                devices: ['dexcom'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          loggedInUser: 'abc123',
+          uploadTargetUser: 'def456'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickEditUserNext(profile));
+      });
+    });
+    describe('update profile success, user doesn\'t have devices selected', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_ALL_USERS, SET_PAGE (settings)', (done) => {
+        const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+        const profile = {fullName: 'Jane Doe'};
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_ALL_USERS,
+            payload: {
+              user: userObj.user,
+              profile, memberships
+            },
+            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              account: (cb) => cb(null, userObj.user),
+              loggedInProfile: (cb) => cb(null, profile),
+              getUploadGroups: (cb) => cb(null, memberships),
+              updateProfile: (user, update, cb) => cb(null)
+            }
+          },
+          log: _.noop
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'def456'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickEditUserNext(profile));
+      });
+    });
+    describe('update profile failure', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE ', (done) => {
+        const profile = {fullName: 'Jane Doe'};
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_FAILURE,
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              updateProfile: (user, update, cb) => cb('error')
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.clickEditUserNext(profile));
       });
     });
   });
