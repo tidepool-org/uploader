@@ -30,7 +30,7 @@ import { UnsupportedError } from '../../../../lib/redux/utils/errors';
 import errorText from '../../../../lib/redux/constants/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage } from '../../../../lib/redux/utils/errors';
+import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../../../lib/redux/utils/errors';
 
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
@@ -2475,6 +2475,84 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('createCustodialAccount', () => {
+    describe('create account success', () => {
+      it('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_ALL_USERS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', (done) => {
+        const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+        const profile = {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }};
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+        const newUser = { userid: 'jkl012' };
+        const expectedActions = [
+          {
+            type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
+            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST]}
+          },
+          {
+            type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_ALL_USERS,
+            payload: {
+              user: userObj.user,
+              profile, memberships
+            },
+            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
+          },
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId: newUser.userid },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              account: (cb) => cb(null, userObj.user),
+              loggedInProfile: (cb) => cb(null, profile),
+              getUploadGroups: (cb) => cb(null, memberships),
+              createCustodialAccount: (profile, cb) => cb(null, newUser)
+            }
+          }
+        });
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.createCustodialAccount(profile));
+      });
+    });
+    describe('create account failure', () => {
+      it('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_FAILURE ', (done) => {
+        const profile = {fullName: 'Jane Doe'};
+        const expectedActions = [
+          {
+            type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
+            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST]}
+          },
+          {
+            type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
+            payload: new Error(getCreateCustodialAccountErrorMessage()),
+            error: true,
+            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              createCustodialAccount: (profile, cb) => cb('error')
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.createCustodialAccount(profile));
+      });
+    });
+  });
+
   describe('setUploadTargetUserAndMaybeRedirect', () => {
     const userId = 'abc123', url = 'http://acme-blip.com/patients/abc123/data';
     const apiRewire = {
@@ -2499,6 +2577,53 @@ describe('Asynchronous Actions', () => {
         asyncActions.__Rewire__('services', apiRewire);
         const store = mockStore({
           users: {
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+      });
+    });
+
+    describe('new target user has selected devices and timezone, logged in as clinic', () => {
+      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, SET_PAGE (main)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+            payload: { url },
+            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', apiRewire);
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: ['a_pump']
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
             abc123: {
               targets: {
                 devices: ['a_pump'],
@@ -2584,6 +2709,27 @@ describe('Asynchronous Actions', () => {
           }
         }, expectedActions, done);
         store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+      });
+    });
+  });
+
+  describe('clickAddNewUser', () => {
+    describe('link clicked', () => {
+      it('should dispatch SET_UPLOAD_TARGET_USER and SET_PAGE (CLINIC_USER_EDIT)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId: null },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.CLINIC_USER_EDIT},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.clickAddNewUser());
       });
     });
   });
