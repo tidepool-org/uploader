@@ -62,6 +62,20 @@ describe('users', () => {
       expect(initialState === users.allUsers(initialState, action)).to.be.false;
     });
 
+    it('should handle SET_ALL_USERS', () => {
+      const action = {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        a1b2c3: {email: user.email, fullName: profile.fullName},
+        d4e5f6: {b: 2}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
     it('should handle LOGOUT_REQUEST', () => {
       let initialState = {foo: 'bar'};
       let result = users.allUsers(initialState, {
@@ -469,6 +483,14 @@ describe('users', () => {
       const profile = {a: 1};
       expect(users.targetUsersForUpload(undefined, {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: { user, profile, memberships }
+      })).to.deep.equal(['d4e5f6']);
+    });
+
+    it('should handle SET_ALL_USERS', () => {
+      const profile = {a: 1};
+      expect(users.targetUsersForUpload(undefined, {
+        type: actionTypes.SET_ALL_USERS,
         payload: { user, profile, memberships }
       })).to.deep.equal(['d4e5f6']);
     });
