@@ -646,6 +646,113 @@ describe('uploads', () => {
       expect(initialState.a1b2c3.a_cgm.history === result.a1b2c3.a_cgm.history).to.be.false;
       expect(initialState.a1b2c3.a_cgm.history[0] === result.a1b2c3.a_cgm.history[0]).to.be.false;
     });
+
+    it('should handle ADD_TARGET_DEVICE', () => {
+      let initialState = {
+        a1b2c3: {
+          a_meter: {history: [1]},
+          a_cgm: {completed: true, history: [1,2,3]}
+        }
+      };
+      const actionPayload = {
+        userId: 'd4e5f6',
+        deviceKey: 'another_pump'
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.ADD_TARGET_DEVICE,
+        payload: actionPayload
+      });
+      expect(result).to.deep.equal({
+        a1b2c3: {
+          a_meter: {history: [1]},
+          a_cgm: {completed: true, history: [1,2,3]}
+        },
+        d4e5f6: {
+          another_pump: {history: []}
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
+
+    it('should handle REMOVE_TARGET_DEVICE', () => {
+      let initialState = {
+        a1b2c3: {
+          a_meter: {history: [1]},
+          a_cgm: {completed: true, history: [1,2,3]}
+        }
+      };
+      const actionPayload = {
+        userId: 'a1b2c3',
+        deviceKey: 'a_meter'
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.REMOVE_TARGET_DEVICE,
+        payload: actionPayload
+      });
+      expect(result).to.deep.equal({
+        a1b2c3: {
+          a_cgm: {completed: true, history: [1,2,3]}
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+      expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
+    });
+
+    it('should handle LOGIN_SUCCESS', () => {
+      let initialState = {};
+      const actionPayload = {
+        memberships: [
+          {profile: {
+            fullName: 'Joe',
+            patient: {
+              targetDevices: ['a_meter', 'a_cgm']
+            }
+          }, userid: 'abc123'}
+        ]
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: actionPayload
+      });
+      expect(result).to.deep.equal({
+        abc123: {
+          a_cgm: {history:[]},
+          a_meter: {history:[]}
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
+
+    it('should handle SET_USER_INFO_FROM_TOKEN', () => {
+      let initialState = {};
+      const actionPayload = {
+        memberships: [
+          {profile: {
+            fullName: 'Joe',
+            patient: {
+              targetDevices: ['a_meter', 'a_cgm']
+            }
+          }, userid: 'abc123'}
+        ]
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: actionPayload
+      });
+      expect(result).to.deep.equal({
+        abc123: {
+          a_cgm: {history:[]},
+          a_meter: {history:[]}
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
+
+
   });
 
   describe('uploadTargetDevice', () => {
