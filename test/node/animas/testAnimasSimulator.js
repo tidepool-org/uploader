@@ -298,9 +298,9 @@ describe('animasSimulator.js', function() {
     });
   });
 
-  /* TODO:
   describe('settings', function() {
     var settings = {
+      type: 'pumpSettings',
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
       activeSchedule: 'billy',
@@ -314,33 +314,20 @@ describe('animasSimulator.js', function() {
           { start: 0, rate: 0.0}
         ]
       },
-      carbSchedules: {
-        'billy': [
+      carbRatio: [
           { start: 0, amount: 1.0 },
-          { start: 21600000, amount: 1.1 }
-        ],
-        'bob': [
+          { start: 21600000, amount: 1.1 },
           { start: 0, amount: 0.0}
-        ]
-      },
-      sensitivitySchedules: {
-        'billy': [
+      ],
+      insulinSensitivity: [
           { start: 0, amount: 1.0 },
-          { start: 21600000, amount: 1.1 }
-        ],
-        'bob': [
+          { start: 21600000, amount: 1.1 },
           { start: 0, amount: 0.0}
-        ]
-      },
-      targetSchedules: {
-        'billy': [
-          { start: 0, target: 100 },
-          { start: 21600000, target: 110 }
-        ],
-        'bob': [
-          { start: 0, target: 105}
-        ]
-      },
+      ],
+      bgTarget: [
+          { start: 0, target: 100, range: 15 },
+          { start: 21600000, target: 110, range: 15 }
+      ],
       timezoneOffset: 0,
       conversionOffset: 0
     };
@@ -351,7 +338,6 @@ describe('animasSimulator.js', function() {
     });
 
   });
-  */
 
   describe('basal', function() {
     var basal1 = builder.makeScheduledBasal()
