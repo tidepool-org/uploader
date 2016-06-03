@@ -633,9 +633,9 @@ describe('objectBuilder.js', function(){
       expect(upload.timeProcessing).to.equal(REQUIRED);
       expect(upload.version).to.equal(REQUIRED);
       expect(upload.timezone).to.equal(REQUIRED);
-      expect(upload.guid).to.equal(REQUIRED);
-      expect(upload.uploadId).to.equal(REQUIRED);
-      expect(upload.byUser).to.equal(REQUIRED);
+      expect(upload.guid).to.equal(OPTIONAL);
+      expect(upload.uploadId).to.equal(OPTIONAL);
+      expect(upload.byUser).to.equal(OPTIONAL);
       expect(upload.deviceTags).to.equal(REQUIRED);
       expect(upload.deviceManufacturers).to.equal(REQUIRED);
       expect(upload.deviceModel).to.equal(REQUIRED);
