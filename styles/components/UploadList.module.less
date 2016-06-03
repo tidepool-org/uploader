@@ -15,7 +15,7 @@
 
 @import '../core/variables.less';
 
-@base-height: 260px;
+@base-height: 188px;
 
 .headline {
   composes: large from '../core/typography.module.less';
@@ -62,13 +62,18 @@
 
 .onlyme {
   composes: main;
-  max-height: @base-height + @groups-dropdown-height;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height;
   margin-bottom: 10px;
+}
+
+.profileError {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-error-dropdown-height - @btn-height;
 }
 
 .selectuser {
   composes: main;
-  max-height: @base-height;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height - @groups-dropdown-height;
 }
 
 .item {

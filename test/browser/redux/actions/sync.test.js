@@ -925,22 +925,7 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('for retrieveTargetsFromStorage & putUsersTargetsInStorage', () => {
-    describe('putUsersTargetsInStorage', () => {
-      it('should be an FSA', () => {
-        let action = syncActions.putUsersTargetsInStorage();
-
-        expect(isFSA(action)).to.be.true;
-      });
-
-      it('should create an action to announce the side effet of storing users\' targets locally', () => {
-        const expectedAction = {
-          type: actionTypes.STORING_USERS_TARGETS,
-          meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
-        };
-        expect(syncActions.putUsersTargetsInStorage()).to.deep.equal(expectedAction);
-      });
-    });
+  describe('for retrieveTargetsFromStorage', () => {
 
     describe('retrieveUsersTargetsFromStorage', () => {
       it('should be an FSA', () => {

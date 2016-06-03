@@ -121,10 +121,49 @@ describe('users', () => {
     });
   });
 
+  describe('updateProfileErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle UPDATE_PROFILE_FAILURE', () => {
+      const errMsg = 'Update profile error!';
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
+  describe('updateProfileErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle DISMISS_UPDATE_PROFILE_ERROR', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_UPDATE_PROFILE_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetDevices:['a_cgm', 'a_meter']}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -194,7 +233,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -236,7 +275,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -284,7 +323,7 @@ describe('users', () => {
   describe('targetTimezones', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetTimezone: 'US/Mountain'}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -296,7 +335,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
@@ -338,7 +377,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
