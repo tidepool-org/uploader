@@ -12,16 +12,18 @@
 
 #### CBG
 
-  - `[ ]` cbg values
+  - `[x]` cbg values
   - `[ ]` units of cbg values (read from device, not hard-coded)
-  - `[ ]` out-of-range values (LO or HI)
-  - `[ ]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
+  - `[x]` out-of-range values (LO or HI)
+  - `[x]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
+A status flag indicates if glucose reading was in response to calibration, which we store in payload with `{calibration_response : true}`.
+
 #### Device Events
-  - `[ ]` calibrations
-    - `[ ]` calibration value
+  - `[x]` calibrations
+    - `[x]` calibration value
     - `[ ]` units of calibration value (read from device, not hard-coded)
   - `[ ]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
     - `[ ]` device display time `from` (before change) and `to` (result of change)
@@ -31,29 +33,31 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
+Calibration events contain three additional timestamps (`timestamp`, `current_time` and `calibration_timestamp`) as well as a `calibration_reading` (which should match the manual SMBG value), which we store in payload.
+
 #### Settings
 
   - `[ ]` units preference for BG display
   - `[ ]` units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)
-  - `[ ]` transmitter ID
-  - `[ ]` low alert settings
-    - `[ ]` enabled
-    - `[ ]` level/threshold
-    - `[ ]` snooze threshold
-  - `[ ]` high alert settings
-    - `[ ]` enabled
-    - `[ ]` level/threshold
-    - `[ ]` snooze threshold
-  - `[ ]` rate-of-change alerts
-    - `[ ]` fall rate alert
-        - `[ ]` enabled
-        - `[ ]` rate threshold for alerting
-    - `[ ]` rise rate alert
-        - `[ ]` enabled
-        - `[ ]` rate threshold for alerting
-  - `[ ]` out-of-range alerts
-    - `[ ]` enabled
-    - `[ ]` snooze time between alerts
+  - `[-]` transmitter ID
+  - `[-]` low alert settings
+    - `[-]` enabled
+    - `[-]` level/threshold
+    - `[-]` snooze threshold
+  - `[-]` high alert settings
+    - `[-]` enabled
+    - `[-]` level/threshold
+    - `[-]` snooze threshold
+  - `[-]` rate-of-change alerts
+    - `[-]` fall rate alert
+        - `[-]` enabled
+        - `[-]` rate threshold for alerting
+    - `[-]` rise rate alert
+        - `[-]` enabled
+        - `[-]` rate threshold for alerting
+  - `[-]` out-of-range alerts
+    - `[-]` enabled
+    - `[-]` snooze time between alerts
   - `[ ]` predictive alerts
     - `[ ]` low prediction
         - `[ ]` enabled
@@ -61,7 +65,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` high prediction
         - `[ ]` enabled
         - `[ ]` time sensitivity (minutes to predicted high for alerting)
-  - `[ ]` calibration alerts/reminders
+  - `[-]` calibration alerts/reminders
     - `[ ]` pre-reminder
     - `[ ]` overdue alert
 
@@ -76,11 +80,11 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 #### "Bootstrapping" to UTC
 
-  - `[ ]` index
+  - `[x]` index
     - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
-    - `[ ]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
+    - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
-  - `[ ]` date & time settings changes
+  - `[x]` date & time settings changes
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -91,4 +95,3 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` activity/exercise
   - `[ ]` food (e.g., Dexcom allows logging carb events)
   - `[ ]` notes/other events
-  - `[-]` CGM alerts/alarms
