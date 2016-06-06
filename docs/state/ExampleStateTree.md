@@ -230,6 +230,7 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
   "loginErrorMessage": null,
   "updateProfileErrorMessage": null,
   "updateProfileErrorDismissed": null,
+  "createCustodialAccountErrorMessage": null,
   "targetDevices": {
     "77541c89ba": ["omnipod", "dexcom"],
     "a6328f570d": ["tandem"],

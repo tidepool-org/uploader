@@ -174,6 +174,27 @@ describe('users', () => {
     });
   });
 
+  describe('createCustodialAccountErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_FAILURE', () => {
+      const errMsg = 'Could not create account!';
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.null;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},

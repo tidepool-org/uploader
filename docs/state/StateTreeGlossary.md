@@ -40,6 +40,12 @@ If there has not (yet) been an error updating profile information or profile inf
 
 If the user has not dismissed the error or if there has been no error to dismiss, the value of `updateProfileErrorDismissed` is `null`. If the user has dismissed an existing error, the value is `true`.
 
+#### `createCustodialAccountErrorMessage`
+
+*The property `createCustodialAccountErrorMessage` encodes the error message if there is an error on an attempt to create a new custodial account.*
+
+If there has not (yet) been an error creating a custodial account or account creation proceeded without error, the value of `createCustodialAccountErrorMessage` is `null`.
+
 #### `targetDevices`
 
 *The property `targetDevices` is an object keyed by the user IDs of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable). The information stored under each `userId` is an array of the `deviceKey`s selected for that user as potential sources of data to upload to the Tidepool cloud.*
