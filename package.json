@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.260.1",
+  "version": "0.266.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -36,7 +36,7 @@
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#darinkrauss/platform-endpoints"
+    "tidepool-platform-client": "0.24.0"
   },
   "devDependencies": {
     "babel-core": "5.8.38",
@@ -59,6 +59,7 @@
     "karma-mocha": "0.2.2",
     "karma-mocha-reporter": "2.0.0",
     "karma-phantomjs-launcher": "1.0.0",
+    "karma-sinon": "1.0.4",
     "karma-webpack": "1.7.0",
     "less": "2.6.1",
     "less-loader": "2.2.3",
@@ -75,6 +76,7 @@
     "redux-logger": "2.6.1",
     "redux-mock-store": "0.0.6",
     "salinity": "0.0.8",
+    "sinon": "1.17.3",
     "style-loader": "0.13.1",
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1",
