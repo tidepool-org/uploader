@@ -57,7 +57,8 @@ Calibration events contain three additional timestamps (`timestamp`, `current_ti
         - `[-]` rate threshold for alerting
   - `[-]` out-of-range alerts
     - `[-]` enabled
-    - `[-]` snooze time between alerts
+    - `[-]` threshold
+    - `[ ]` snooze time between alerts
   - `[ ]` predictive alerts
     - `[ ]` low prediction
         - `[ ]` enabled
@@ -65,7 +66,7 @@ Calibration events contain three additional timestamps (`timestamp`, `current_ti
     - `[ ]` high prediction
         - `[ ]` enabled
         - `[ ]` time sensitivity (minutes to predicted high for alerting)
-  - `[-]` calibration alerts/reminders
+  - `[ ]` calibration alerts/reminders
     - `[ ]` pre-reminder
     - `[ ]` overdue alert
 
