@@ -1772,6 +1772,53 @@ describe('Asynchronous Actions', () => {
         store.dispatch(asyncActions.clickDeviceSelectionDone());
       });
     });
+
+    describe('profile API endpoint failure (unauthorized)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            }
+          },
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
   });
 
   describe('clickEditUserNext', () => {
@@ -2011,6 +2058,49 @@ describe('Asynchronous Actions', () => {
               },
               updateProfile: (user, update, cb) => {
                 cb(getUpdateProfileErrorMessage());
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+      });
+    });
+
+    describe('update profile failure (unauthorized)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
               }
             }
           }
@@ -2332,6 +2422,90 @@ describe('Asynchronous Actions', () => {
       });
     });
 
+    describe('targets retrieved, user targeted for upload is missing timezone, update profile unauthorized error', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: { page: pages.MAIN },
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink']
+          },
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
     describe('targets retrieved, user targeted for upload has no supported devices', () => {
       it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for device selection)', (done) => {
         const targets = {
@@ -2443,6 +2617,87 @@ describe('Asynchronous Actions', () => {
               },
               updateProfile: (user, update, cb) => {
                 cb(null);
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser,
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload is all set to upload, update profile unauthorized error', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
               }
             },
             makeBlipUrl: blipUrlMaker
