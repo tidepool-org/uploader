@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -30,7 +30,7 @@ import { UnsupportedError } from '../../../../lib/redux/utils/errors';
 import errorText from '../../../../lib/redux/constants/errors';
 
 import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage } from '../../../../lib/redux/utils/errors';
+import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage } from '../../../../lib/redux/utils/errors';
 
 let pwd = require('../../fixtures/pwd.json');
 let nonpwd = require('../../fixtures/nonpwd.json');
@@ -162,7 +162,7 @@ describe('Asynchronous Actions', () => {
           },
           user: {
             account: (cb) => { cb(null, pwd.user); },
-            profile: (cb) => { cb(null, pwd.profile); },
+            loggedInProfile: (cb) => { cb(null, pwd.profile); },
             getUploadGroups: (cb) => { cb(null, pwd.memberships); }
           }
         },
@@ -323,7 +323,7 @@ describe('Asynchronous Actions', () => {
         api: {
           user: {
             login: (creds, opts, cb) => cb(null, userObj),
-            profile: (cb) => cb(null, profile),
+            loggedInProfile: (cb) => cb(null, profile),
             getUploadGroups: (cb) => cb(null, memberships)
           }
         },
@@ -1573,17 +1573,17 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('putTargetsInStorage', () => {
+  describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
           {
-            type: actionTypes.RETRIEVING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
           },
           {
-            type: actionTypes.STORING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1592,6 +1592,16 @@ describe('Asynchronous Actions', () => {
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null);
+              }
+            }
+          },
           localStore: {
             getItem: () => null,
             setItem: () => null
@@ -1607,20 +1617,20 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
-        store.dispatch(asyncActions.putTargetsInStorage());
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
       });
     });
 
     describe('existing targets in local storage', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, STORING_USERS_TARGETS, SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
         const expectedActions = [
           {
-            type: actionTypes.RETRIEVING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
           },
           {
-            type: actionTypes.STORING_USERS_TARGETS,
-            meta: {source: actionSources[actionTypes.STORING_USERS_TARGETS]}
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1629,6 +1639,16 @@ describe('Asynchronous Actions', () => {
           }
         ];
         asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null);
+              }
+            }
+          },
           localStore: {
             getItem: () => null,
             setItem: () => { return {
@@ -1639,7 +1659,8 @@ describe('Asynchronous Actions', () => {
                 {key: 'a_pump', timezone: 'US/Eastern'},
                 {key: 'a_cgm', timezone: 'US/Eastern'}
               ]
-            }; }
+            }; },
+            removeItem: (item) => null
           }
         });
         const state = {
@@ -1652,7 +1673,236 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state, expectedActions, done);
-        store.dispatch(asyncActions.putTargetsInStorage());
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+
+    describe('profile API endpoint failure', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_FAILURE,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]},
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(getUpdateProfileErrorMessage());
+              }
+            }
+          },
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+
+    describe('profile API endpoint failure (unauthorized)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            }
+          },
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.clickDeviceSelectionDone());
+      });
+    });
+  });
+
+  describe('setTargetTimezone', () => {
+    describe('update profile success', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null);
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+      });
+    });
+
+    describe('update profile failure', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_FAILURE,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]},
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(getUpdateProfileErrorMessage());
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+      });
+    });
+
+    describe('update profile failure (unauthorized)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
+          },
+          {
+            type: actionTypes.SET_TARGET_TIMEZONE,
+            payload: {userId:'abc123',timezoneName:'US/Central'},
+            meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            }
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123'
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
       });
     });
   });
@@ -1660,8 +1910,8 @@ describe('Asynchronous Actions', () => {
   describe('retrieveTargetsFromStorage', () => {
     const url = 'http://acme-blip.com/patients/abc123/data';
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
-    describe('no targets retrieved from local storage', () => {
-      it('should dispatch SET_PAGE (redirect to settings page)', (done) => {
+    describe('no targets retrieved from local storage, no targets exist in state', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page)', (done) => {
         const expectedActions = [
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
@@ -1675,10 +1925,148 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           localStore: {
-            getItem: () => null
+            getItem: () => null,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({}, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state but no user targeted for upload by default', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page for user selection)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: null,
+          targetDevices: {
+            abc123: ['carelink']
+          }
+        };
+        const store = mockStore(state, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state but user targeted has no supported devices', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', (done) => {
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('no targets retrieved from local storage, targets exist in state and user targeted for upload is all set to upload', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', (done) => {
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => null,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser
+        }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
     });
@@ -1719,7 +2107,8 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1737,7 +2126,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for timezone selection)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -1765,17 +2154,34 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
             type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
+            payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         asyncActions.__Rewire__('services', {
           api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null);
+              }
+            },
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1791,7 +2197,97 @@ describe('Asynchronous Actions', () => {
           },
           loggedInUser: 'ghi789',
           targetsForUpload: ['abc123', 'def456'],
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink']
+          },
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload is missing timezone, update profile unauthorized error', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: { page: pages.MAIN },
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink']
+          },
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
@@ -1836,7 +2332,8 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1858,7 +2355,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is all set to upload', () => {
-      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to main page)', (done) => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', (done) => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -1886,6 +2383,14 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -1893,10 +2398,19 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', {
           api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null);
+              }
+            },
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => targets
+            getItem: () => targets,
+            removeItem: (item) => null
           }
         });
         const store = mockStore({
@@ -1911,7 +2425,92 @@ describe('Asynchronous Actions', () => {
             omnipod: {}
           },
           loggedInUser: 'ghi789',
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser,
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+      });
+    });
+
+    describe('targets retrieved, user targeted for upload is all set to upload, update profile unauthorized error', () => {
+      it('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', (done) => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.RETRIEVING_USERS_TARGETS,
+            meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: actionTypes.SET_USERS_TARGETS,
+            payload: { targets },
+            meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb({status:401, body:null});
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser,
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
         }, expectedActions, done);
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
       });
