@@ -197,7 +197,7 @@ describe('users', () => {
 
   describe('createCustodialAccountErrorDismissed', () => {
     it('should return the initial state', () => {
-      expect(users.createCustodialAccountErrorDismissed(undefined, {})).to.be.null;
+      expect(users.createCustodialAccountErrorDismissed(undefined, {})).to.be.false;
     });
 
     it('should handle DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR', () => {
@@ -209,7 +209,7 @@ describe('users', () => {
     it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
       expect(users.createCustodialAccountErrorDismissed(undefined, {
         type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
-      })).to.be.null;
+      })).to.be.false;
     });
   });
 
