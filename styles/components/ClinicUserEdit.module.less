@@ -14,6 +14,8 @@
 */
 
 @import '../core/variables.less';
+@import '../core/icons.module.less';
+
 
 .link {
   composes: link from '../core/typography.module.less';
@@ -118,4 +120,12 @@
   margin-top: 10px;
   background-color: @red;
   padding: 5px 10px;
+}
+
+.iconClose {
+  composes: icon-close from '../core/icons.module.less';
+}
+
+.iconClose:hover {
+  color: #999;
 }

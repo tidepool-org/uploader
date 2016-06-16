@@ -195,6 +195,24 @@ describe('users', () => {
     });
   });
 
+  describe('createCustodialAccountErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.null;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
