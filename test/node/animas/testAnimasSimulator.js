@@ -223,23 +223,6 @@ describe('animasSimulator.js', function() {
       });
     });
 
-    describe('changeReservoir', function() {
-      var val = {
-        time: '2014-09-25T01:00:00.000Z',
-        deviceTime: '2014-09-25T01:00:00',
-        timezoneOffset: 0,
-        conversionOffset: 0,
-        deviceId: 'animas12345',
-        type: 'deviceEvent',
-        subType: 'reservoirChange'
-      };
-
-      it('passes through', function() {
-        simulator.changeReservoir(val);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
-    });
-
     describe('status', function() {
       var suspend = builder.makeDeviceEventSuspend()
         .with_time('2014-09-25T01:00:00.000Z')
