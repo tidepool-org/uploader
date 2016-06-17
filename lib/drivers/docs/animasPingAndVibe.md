@@ -100,7 +100,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` prime target = cannula
     - `[ ]` prime targets not differentiated
     - `[x]` prime volume in units of insulin
-  - `[x]` reservoir change (or reservoir rewind)
+  - `[ ]` reservoir change (or reservoir rewind)
     - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
   - `[x]` status events (i.e., suspend & resume)
     - `[ ]` suspensions of insulin delivery are represented as (interval) events with a duration OR
@@ -117,7 +117,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 Device-specific? (Add any device-specific notes/additions here.)
 
 - Animas does not generate suspend/resume events for alarms, so we check if an alarm occurred recently or at the same time. If so, we mark the basal as suspended and generate a new suspend event.
-- For a successful reservoir change, it looks like either one or two events are generated: a prime event and an optional cannula bolus event, each with a specified delivered amount. As such, we record the prime event as a reservoir change (delivery is not possible on pump without tubing priming)
+- Animas only provides data on prime events (tubing/cannula), each with a specified delivered amount. It's possible to change tubing or prime without changing the reservoir. As such we cannot determine when reservoir changes/rewinds happen. 
 - Animas does not provide time change events, which means UTC bootstrapping is not possible
 
 #### SMBG
