@@ -71,6 +71,12 @@
   }
 }
 
+.linkDisabled {
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
 .signup {
   composes: flexRow from '../core/layout.module.less';
   justify-content: flex-end;
