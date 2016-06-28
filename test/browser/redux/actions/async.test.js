@@ -2732,11 +2732,11 @@ describe('Asynchronous Actions', () => {
 
   describe('createCustodialAccount', () => {
     describe('create account success', () => {
-      it('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_ALL_USERS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', (done) => {
+      it('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', (done) => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
-        const newUser = { userid: 'jkl012' };
+        const newUser = { userid: 'jkl012', profile: profile };
         const expectedActions = [
           {
             type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
@@ -2744,15 +2744,10 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
-            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS]}
-          },
-          {
-            type: actionTypes.SET_ALL_USERS,
             payload: {
-              user: userObj.user,
-              profile, memberships
+              account: newUser
             },
-            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
+            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS]}
           },
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,

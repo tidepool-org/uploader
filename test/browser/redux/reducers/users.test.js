@@ -30,6 +30,7 @@ describe('users', () => {
       {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
       {userid: 'd4e5f6', profile: {b: 2}}
     ];
+    const account = {userid: 'jkl012', profile: {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }}};
     it('should return the initial state', () => {
       expect(users.allUsers(undefined, {})).to.deep.equal({});
     });
@@ -70,6 +71,19 @@ describe('users', () => {
       expect(users.allUsers(undefined, action)).to.deep.equal({
         a1b2c3: {email: user.email, fullName: profile.fullName},
         d4e5f6: {b: 2}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        jkl012: account.profile
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
@@ -532,6 +546,17 @@ describe('users', () => {
         type: actionTypes.SET_ALL_USERS,
         payload: { user, profile, memberships }
       })).to.deep.equal(['d4e5f6']);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account: user }
+      };
+      expect(users.targetUsersForUpload(undefined, action)).to.deep.equal(['a1b2c3']);
+      let initialState = [];
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.targetUsersForUpload(initialState, action)).to.be.false;
     });
   });
 
