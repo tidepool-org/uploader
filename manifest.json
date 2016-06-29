@@ -108,6 +108,22 @@
           "productId": 13328
         },
         {
+          "deviceName": "FreeStyle Lite (with FTDI cable)",
+          "driverId": "AbbottFreeStyleLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 403,
+          "productId": 6001
+        },
+        {
+          "deviceName": "FreeStyle Freedom Lite (with FTDI cable)",
+          "driverId": "AbbottFreeStyleFreedomLite",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 403,
+          "productId": 6001
+        },
+        {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
           "mode": "HID",
