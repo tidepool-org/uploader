@@ -2878,7 +2878,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('new target user has not selected timezone', () => {
-      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', (done) => {
+      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL', (done) => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -2889,11 +2889,6 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_BLIP_VIEW_DATA_URL,
             payload: { url },
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         asyncActions.__Rewire__('services', apiRewire);
