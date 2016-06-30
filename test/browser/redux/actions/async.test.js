@@ -2839,53 +2839,6 @@ describe('Asynchronous Actions', () => {
       });
     });
 
-    describe('new target user has selected devices and timezone, logged in as clinic', () => {
-      it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, SET_PAGE (main)', (done) => {
-        const expectedActions = [
-          {
-            type: actionTypes.SET_UPLOAD_TARGET_USER,
-            payload: { userId },
-            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
-          },
-          {
-            type: actionTypes.SET_BLIP_VIEW_DATA_URL,
-            payload: { url },
-            meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
-          }
-        ];
-        asyncActions.__Rewire__('services', apiRewire);
-        const store = mockStore({
-          loggedInUser: 'def456',
-          allUsers: {
-            ghi789: {},
-            abc123: {},
-            def456: {roles: ['clinic']},
-          },
-          targetDevices: {
-            abc123: ['a_pump']
-          },
-          devices: {
-            a_pump: true
-          },
-          users: {
-            def456: {},
-            abc123: {
-              targets: {
-                devices: ['a_pump'],
-                timezone: 'Europe/London'
-              }
-            }
-          }
-        }, expectedActions, done);
-        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
-      });
-    });
-
     describe('new target user has not selected devices', () => {
       it('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', (done) => {
         const expectedActions = [
@@ -2959,6 +2912,112 @@ describe('Asynchronous Actions', () => {
           }
         }, expectedActions, done);
         store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+      });
+    });
+  });
+
+  describe('checkUploadTargetUserAndMaybeRedirect', () => {
+    const userId = 'abc123';
+    describe('target user has selected devices', () => {
+      it('should dispatch SET_PAGE (main)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.MAIN},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: ['a_pump']
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'abc123'
+        }, expectedActions, done);
+        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+      });
+    });
+    describe('target user has not selected devices', () => {
+      it('should dispatch SET_PAGE (settings)', (done) => {
+        const expectedActions = [
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: []
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'abc123'
+        }, expectedActions, done);
+        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+      });
+    });
+    describe('no target user selected', () => {
+      it('should dispatch no actions', (done) => {
+        const expectedActions = [];
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: []
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          }
+        }, expectedActions, done);
+        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+        setTimeout(() => done(), 1000);
       });
     });
   });
