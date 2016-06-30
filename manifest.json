@@ -109,7 +109,7 @@
         },
         {
           "deviceName": "FreeStyle Lite (with FTDI cable)",
-          "driverId": "AbbottFreeStyleLite",
+          "driverId": "AbbottFreeStyleLiteFTDI",
           "bitrate": 19200,
           "mode": "FTDI",
           "vendorId": 403,
@@ -117,7 +117,7 @@
         },
         {
           "deviceName": "FreeStyle Freedom Lite (with FTDI cable)",
-          "driverId": "AbbottFreeStyleFreedomLite",
+          "driverId": "AbbottFreeStyleFreedomLiteFTDI",
           "bitrate": 19200,
           "mode": "FTDI",
           "vendorId": 403,
