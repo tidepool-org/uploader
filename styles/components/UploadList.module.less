@@ -19,6 +19,7 @@
 
 .wrap {
   composes: whiteBox from '../core/layout.module.less';
+  padding-bottom: 0px;
 }
 
 .wrapNoTZ {
@@ -93,7 +94,6 @@
 .onlyme {
   composes: main;
   max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height;
-  margin-bottom: 10px;
 }
 
 .profileError {
@@ -108,7 +108,7 @@
 
 .clinic {
   composes: main;
-  max-height: @usable-page-height - @font-size-large*3 - @btn-height - @clinic-user-block-timezone-height;
+  max-height: @usable-page-height - @font-size-large*3 - @btn-height - @clinic-user-block-timezone-height + 30px;
 }
 
 .item {

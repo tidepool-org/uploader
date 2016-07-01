@@ -48,17 +48,18 @@
 .list {
   margin-top: -10px;
   margin-left: 15px;
-  width: 260px;
+  width: 260px;  
 }
 
 .listNoValue {
   :global(.Select-control){
     border-color: @purple-medium;
+    box-shadow: 0 0 10px @purple-medium;
   }
 }
 
 .timeDetail {
-  composes: tiny from '../core/typography.module.less';
+  composes: small from '../core/typography.module.less';
   color: @purple-dark;
   margin-top: 10px;
   flex-basis: 100%;
