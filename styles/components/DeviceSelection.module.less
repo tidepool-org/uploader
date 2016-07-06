@@ -18,6 +18,7 @@
 @form-height: 200px;
 
 .main {
+  composes: whiteBox from '../core/layout.module.less';
   composes: centerContainer from '../core/layout.module.less';
 }
 
@@ -25,11 +26,11 @@
   composes: large from '../core/typography.module.less';
   font-weight: normal;
   width: 250px;
+  margin-top:10px;
 }
 
 .form {
   composes: boxFlex scroll from '../core/layout.module.less';
-  margin-bottom: 10px;
 }
 
 .onlyme {
@@ -38,6 +39,10 @@
 
 .groups {
   max-height: @usable-page-height - @font-size-large*3 - @groups-dropdown-height - @btn-height;
+}
+
+.clinic {
+  max-height: @usable-page-height - @font-size-large*3 - @changePerson-link-height - @btn-height - @clinic-user-block-height;
 }
 
 .checkbox {
@@ -60,14 +65,13 @@
 }
 
 .buttonWrap {
-  composes: flexRow from '../core/layout.module.less';
+  composes: flexRow pageRow from '../core/layout.module.less';
   flex-direction: row-reverse;
 }
 
 .button {
   composes: btn btnPrimary from '../core/buttons.module.less';
   margin-bottom: 7px;
-  margin-right: 23px;
 }
 
 .detail {
