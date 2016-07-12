@@ -138,8 +138,16 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({working: {initializingApp: true}}, expectedActions, done);
+      const store = mockStore({working: {initializingApp: true}});
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
+
+      // See: https://github.com/arnaudbenard/redux-mock-store/issues/31
+      setTimeout(() => {
+        const actions = store.getActions();
+
+        expect(actions).to.deep.equal(expectedActions);
+        done();
+      }, 10);
     });
   });
 
