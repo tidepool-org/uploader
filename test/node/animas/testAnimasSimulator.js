@@ -419,23 +419,6 @@ describe('animasSimulator.js', function() {
 
     });
 
-    it('annotates possible suspended basal', function() {
-      var basal = builder.makeScheduledBasal()
-        .with_time('2014-09-25T02:00:00.000Z')
-        .with_deviceTime('2014-09-25T02:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_scheduleName('Alice')
-        .with_rate(0);
-
-        var expectedBasal = _.cloneDeep(basal);
-        expectedBasal = expectedBasal.set('duration', 3600000).done();
-        expectedBasal.annotations = [{code: 'animas/basal/possible-suspend'}];
-        simulator.basal(basal);
-        simulator.basal(basal2);
-        expect(simulator.getEvents()).deep.equals([expectedBasal]);
-    });
-
     it('temp basal', function() {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
