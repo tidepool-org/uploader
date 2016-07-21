@@ -30,6 +30,7 @@ describe('users', () => {
       {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
       {userid: 'd4e5f6', profile: {b: 2}}
     ];
+    const account = {userid: 'jkl012', profile: {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }}};
     it('should return the initial state', () => {
       expect(users.allUsers(undefined, {})).to.deep.equal({});
     });
@@ -56,6 +57,33 @@ describe('users', () => {
       expect(users.allUsers(undefined, action)).to.deep.equal({
         a1b2c3: {email: user.email, fullName: profile.fullName},
         d4e5f6: {b: 2}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle SET_ALL_USERS', () => {
+      const action = {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        a1b2c3: {email: user.email, fullName: profile.fullName},
+        d4e5f6: {b: 2}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        jkl012: account.profile
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
@@ -157,6 +185,45 @@ describe('users', () => {
       expect(users.updateProfileErrorDismissed(undefined, {
         type: actionTypes.UPDATE_PROFILE_REQUEST
       })).to.be.null;
+    });
+  });
+
+  describe('createCustodialAccountErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_FAILURE', () => {
+      const errMsg = 'Could not create account!';
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.null;
+    });
+  });
+
+  describe('createCustodialAccountErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {})).to.be.false;
+    });
+
+    it('should handle DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.false;
     });
   });
 
@@ -471,6 +538,25 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { user, profile, memberships }
       })).to.deep.equal(['d4e5f6']);
+    });
+
+    it('should handle SET_ALL_USERS', () => {
+      const profile = {a: 1};
+      expect(users.targetUsersForUpload(undefined, {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      })).to.deep.equal(['d4e5f6']);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account: user }
+      };
+      expect(users.targetUsersForUpload(undefined, action)).to.deep.equal(['a1b2c3']);
+      let initialState = [];
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.targetUsersForUpload(initialState, action)).to.be.false;
     });
   });
 
