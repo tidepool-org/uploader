@@ -319,14 +319,26 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
+        },
+        {
+          type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+          payload: {url: `http://www.acme.com/patients/${userObj.user.userid}/data`},
+          meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+        },
+        {
+          type: actionTypes.RETRIEVING_USERS_TARGETS,
+          meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.SETTINGS},
+          meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
       asyncActions.__Rewire__('services', {
         api: {
           user: {
-            login: (creds, opts, cb) => cb(null, userObj),
-            loggedInProfile: (cb) => cb(null, profile),
-            getUploadGroups: (cb) => cb(null, memberships)
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
           },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
@@ -338,17 +350,15 @@ describe('Asynchronous Actions', () => {
           setItem: () => null
         }
       });
-      const store = mockStore({});
-      // CM: I found this pattern useful to see what actions are actually getting dispatched
-      store.subscribe(function(){
-        var actions = store.getActions();
-        console.log(actions.length && actions[actions.length - 1]);
+      const store = mockStore({
+        uploadTargetUser: userObj.user.userid,
       });
       store.dispatch(asyncActions.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
       const actions = store.getActions();
+      console.log(actions, expectedActions, store.getState());
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -370,8 +380,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           user: {
-            login: (creds, opts, cb) => cb(getLoginErrorMessage()),
-            getUploadGroups: (cb) => cb(null, [])
+            loginExtended: (creds, opts, cb) => cb(getLoginErrorMessage())
           }
         },
         localStore: {
@@ -421,9 +430,7 @@ describe('Asynchronous Actions', () => {
       asyncActions.__Rewire__('services', {
         api: {
           user: {
-            login: (creds, opts, cb) => cb(null, userObj),
-            loggedInProfile: (cb) => cb(null, profile),
-            getUploadGroups: (cb) => cb(null, memberships)
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
           }
         },
         log: _.noop
