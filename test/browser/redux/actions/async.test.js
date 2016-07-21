@@ -161,9 +161,7 @@ describe('Asynchronous Actions', () => {
             getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
           },
           user: {
-            account: (cb) => { cb(null, pwd.user); },
-            loggedInProfile: (cb) => { cb(null, pwd.profile); },
-            getUploadGroups: (cb) => { cb(null, pwd.memberships); }
+            initializationInfo: (cb) => { cb(null, [pwd.user, pwd.profile, pwd.memberships] ); }
           }
         },
         carelink: {
