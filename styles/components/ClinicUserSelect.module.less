@@ -1,0 +1,146 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+@import '../core/icons.module.less';
+
+.wrap {
+  composes: flexRow from '../core/layout.module.less';
+  width:100%;
+  height: @usable-page-height;
+  justify-content: center;
+}
+
+.wrapInner {
+  composes: flexColumn from '../core/layout.module.less';
+  width:450px;
+}
+
+.headerWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  padding-bottom:20px;
+  padding-top:20px;
+}
+
+.header {
+  composes: large from '../core/typography.module.less';
+}
+
+.addLink {
+  composes: medium link from '../core/typography.module.less';
+  text-decoration: none;
+  align-self: flex-end;
+  &:hover{
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.addIcon {
+  composes: icon-add from '../core/icons.module.less';
+  margin-right: 10px;
+}
+
+.valueSelected {
+  composes: gray from '../core/typography.module.less';
+}
+
+.clinicUserDropdown {
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.error {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  color: red;
+}
+
+.buttonRow {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
+
+.optionLabelWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+}
+
+.optionLabelName {
+  white-space: nowrap;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Select {
+  composes: Select from '../core/select.less';
+  :global .Select-control {
+    height: 50px;
+  }
+  :global .Select-placeholder {
+    font-size: @font-size-medium;
+    top: 5px;
+    left: 38px;
+  }
+  :global .Select-input {
+    font-size: @font-size-medium;
+    padding-top: 5px;
+    padding-left: 43px;
+  }
+  :global .Select-option {
+    padding-left: 43px;
+    padding-right: 33px;
+    font-size: @font-size-medium;
+    color: @text-color;
+  }
+  :global(.Select-option.is-selected){
+
+  }
+  :global(.Select-option.is-focused){
+    background-color: @purple-medium;
+    color: white;
+  }
+  :global(.Select-menu-outer){
+    border-width: 2px;
+  }
+  :global(.Select-control .Select-value) {
+    font-size: @font-size-medium;
+    padding-top: 5px;
+    padding-left: 43px;
+    padding-right: 43px;
+  }
+  :global .Select-arrow-zone {
+    padding-right: 70px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: @gray-light;
+  }
+  :global .Select-arrow {
+    border:none;
+    &::before{
+      display: inline-block;
+      font-size: 40px;
+      content: '\026B2'; // '⚲'
+      transform: rotate(-45deg);
+    }
+  }
+}

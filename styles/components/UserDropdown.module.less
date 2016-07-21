@@ -1,8 +1,11 @@
 @import '../core/variables.less';
 
 .uploadGroup {
-  margin: 20px 0px;
-
+  composes: whiteBox flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  margin-bottom: 0px;
+  border-bottom: 0px;
+  padding: 15px 15px 15px 29px;
   select {
     font-size: 20px;
   }
@@ -10,20 +13,19 @@
 
 .label {
   font-size: @font-size-large;
+  margin-top: 10px;
 }
 
 .list {
-  margin-top: -30px;
+  margin-top: 0px;
 }
 
 .settings {
   composes: list;
-  margin-left: 227px;
   width: 260px;
 }
 
 .main {
   composes: list;
-  margin-left: 200px;
   width: 280px;
 }

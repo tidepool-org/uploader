@@ -56,14 +56,20 @@
 // Dimensions
 // ====================================
 
+@mainPageBorder: 1px;
 
 // defined as the app height in main.js
 @app-height: 710px;
-@page-height: 470px;
-@usable-page-height: 410px;
+@header-height: 110px;
+@footer-height: 50px;
+@page-height: @app-height - @header-height - @footer-height;
+@usable-page-height: @page-height - 100px;
 @groups-dropdown-height: 67px;
-@timezone-dropdown-height: 83px;
+@timezone-dropdown-height: 85px;
 @timezone-error-dropdown-height: 107px;
+@changePerson-link-height: 32px;
+@clinic-user-block-height: 68px;
+@clinic-user-block-timezone-height: 143px;
 
 
 // Form controls
