@@ -358,7 +358,6 @@ describe('Asynchronous Actions', () => {
         {remember: false}
       ));
       const actions = store.getActions();
-      console.log(actions, expectedActions, store.getState());
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1690,6 +1689,12 @@ describe('Asynchronous Actions', () => {
   describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -1697,6 +1702,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -1712,7 +1718,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null);
+                cb(null, profile);
               }
             }
           },
@@ -1728,7 +1734,10 @@ describe('Asynchronous Actions', () => {
           targetTimezones: {
             abc123: 'Europe/Budapest'
           },
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          }
         };
         const store = mockStore(state);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
@@ -1739,6 +1748,12 @@ describe('Asynchronous Actions', () => {
 
     describe('existing targets in local storage', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -1746,6 +1761,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -1761,7 +1777,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null);
+                cb(null, profile);
               }
             }
           },
@@ -1786,7 +1802,10 @@ describe('Asynchronous Actions', () => {
           targetTimezones: {
             abc123: 'Europe/Budapest'
           },
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          }
         };
         const store = mockStore(state);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
@@ -1797,6 +1816,7 @@ describe('Asynchronous Actions', () => {
 
     describe('profile API endpoint failure', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_PAGE (redirect to main page)', () => {
+        const err = new Error(getUpdateProfileErrorMessage());
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -1805,7 +1825,7 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.UPDATE_PROFILE_FAILURE,
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]},
-            payload: new Error(getUpdateProfileErrorMessage()),
+            payload: err,
             error: true
           },
           {
@@ -1821,7 +1841,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(getUpdateProfileErrorMessage());
+                cb(err);
               }
             }
           },
@@ -1848,6 +1868,12 @@ describe('Asynchronous Actions', () => {
 
     describe('profile API endpoint failure (unauthorized)', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -1855,6 +1881,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -1886,7 +1913,10 @@ describe('Asynchronous Actions', () => {
           targetTimezones: {
             abc123: 'Europe/Budapest'
           },
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          }
         };
         const store = mockStore(state);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
@@ -1909,15 +1939,8 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'def456', profile: {}},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
-          },
-          {
-            type: actionTypes.SET_ALL_USERS,
-            payload: {
-              user: userObj.user,
-              profile, memberships
-            },
-            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1931,7 +1954,7 @@ describe('Asynchronous Actions', () => {
               account: (cb) => cb(null, userObj.user),
               loggedInProfile: (cb) => cb(null, profile),
               getUploadGroups: (cb) => cb(null, memberships),
-              updateProfile: (user, update, cb) => cb(null)
+              updateProfile: (user, update, cb) => cb(null, {})
             }
           }
         });
@@ -1981,15 +2004,8 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'def456', profile: {}},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
-          },
-          {
-            type: actionTypes.SET_ALL_USERS,
-            payload: {
-              user: userObj.user,
-              profile, memberships
-            },
-            meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2003,7 +2019,7 @@ describe('Asynchronous Actions', () => {
               account: (cb) => cb(null, userObj.user),
               loggedInProfile: (cb) => cb(null, profile),
               getUploadGroups: (cb) => cb(null, memberships),
-              updateProfile: (user, update, cb) => cb(null)
+              updateProfile: (user, update, cb) => cb(null, {})
             }
           },
           log: _.noop
@@ -2071,6 +2087,12 @@ describe('Asynchronous Actions', () => {
   describe('setTargetTimezone', () => {
     describe('update profile success', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -2078,6 +2100,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -2093,7 +2116,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null);
+                cb(null, profile);
               }
             }
           }
@@ -2105,7 +2128,10 @@ describe('Asynchronous Actions', () => {
           targetTimezones: {
             abc123: 'Europe/Budapest'
           },
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          }
         };
         const store = mockStore(state);
         store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
@@ -2163,6 +2189,12 @@ describe('Asynchronous Actions', () => {
 
     describe('update profile failure (unauthorized)', () => {
       it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -2170,6 +2202,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
           },
           {
@@ -2197,7 +2230,10 @@ describe('Asynchronous Actions', () => {
           targetTimezones: {
             abc123: 'Europe/Budapest'
           },
-          uploadTargetUser: 'abc123'
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          }
         };
         const store = mockStore(state);
         store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
@@ -2210,6 +2246,12 @@ describe('Asynchronous Actions', () => {
   describe('retrieveTargetsFromStorage', () => {
     const url = 'http://acme-blip.com/patients/abc123/data';
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
+    const profile = {
+      fullName: 'John',
+      patient: {
+        birthday: '1990-08-08'
+      }
+    };
     describe('no targets retrieved from local storage, no targets exist in state', () => {
       it('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page)', () => {
         const expectedActions = [
@@ -2469,7 +2511,8 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
-            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+            payload: {userId: 'abc123', profile: profile},
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2497,7 +2540,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: {},
+            abc123: profile,
             def456: {},
           },
           devices: {
@@ -2555,6 +2598,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -2583,7 +2627,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: {},
+            abc123: profile,
             def456: {},
           },
           devices: {
@@ -2704,6 +2748,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -2719,7 +2764,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null);
+                cb(null, profile);
               }
             },
             makeBlipUrl: blipUrlMaker
@@ -2732,7 +2777,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: {},
+            abc123: profile,
             def456: {},
           },
           devices: {
@@ -2787,6 +2832,7 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
@@ -2815,7 +2861,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: {},
+            abc123: profile,
             def456: {},
           },
           devices: {
@@ -2937,6 +2983,12 @@ describe('Asynchronous Actions', () => {
         ];
         asyncActions.__Rewire__('services', apiRewire);
         const store = mockStore({
+          devices: {
+            a_pump: {}
+          },
+          targetDevices: {
+            abc123: ['a_pump']
+          },
           users: {
             abc123: {
               targets: {
@@ -3012,6 +3064,9 @@ describe('Asynchronous Actions', () => {
             carelink: {},
             dexcom: {},
             omnipod: {}
+          },
+          targetDevices: {
+            abc123: ['carelink']
           },
           users: {
             abc123: {

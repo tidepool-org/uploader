@@ -90,6 +90,19 @@ describe('users', () => {
       expect(initialState === users.allUsers(initialState, action)).to.be.false;
     });
 
+    it('should handle UPDATE_PROFILE_SUCCESS', () => {
+      const action = {
+        type: actionTypes.UPDATE_PROFILE_SUCCESS,
+        payload: { profile, userId: 'a1b2c3' }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        a1b2c3: profile
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
     it('should handle LOGOUT_REQUEST', () => {
       let initialState = {foo: 'bar'};
       let result = users.allUsers(initialState, {
