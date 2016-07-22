@@ -17,11 +17,42 @@
 
 @base-height: 188px;
 
+.wrap {
+  composes: whiteBox from '../core/layout.module.less';
+  padding-bottom: 0px;
+}
+
+.wrapNoTZ {
+  composes: gray from '../core/typography.module.less';
+}
+
+.headlineWrap {
+  composes: flexRow from '../core/layout.module.less';
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
 .headline {
   composes: large from '../core/typography.module.less';
-  width: 250px;
   font-weight: normal;
-  margin-top: 10px;
+}
+
+.chooseDeviceLink {
+  composes: small link from '../core/typography.module.less';
+  margin-left: auto;
+  margin-right: 15px;
+  margin-bottom: 2px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    cursor:pointer;
+  }
+}
+
+.linkDisabled {
+  &:hover {
+    cursor: not-allowed;
+  }
 }
 
 .errorItem{
@@ -63,7 +94,6 @@
 .onlyme {
   composes: main;
   max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height;
-  margin-bottom: 10px;
 }
 
 .profileError {
@@ -74,6 +104,11 @@
 .selectuser {
   composes: main;
   max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height - @groups-dropdown-height;
+}
+
+.clinic {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @btn-height - @clinic-user-block-timezone-height + 30px;
 }
 
 .item {

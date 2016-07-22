@@ -15,8 +15,6 @@
 
 @import '../core/variables.less';
 
-@mainPageBorder: 1px;
-
 .app {
   composes: base from '../core/typography.module.less';
   composes: flexColumn from '../core/layout.module.less';
@@ -28,8 +26,12 @@
 
 .header {
   composes: flexColumn from '../core/layout.module.less';
-  background: url(/images/T_icon_transparent.png) center center / 100px 100px no-repeat;
-  min-height: 150px;
+  background-image: url(/images/T_icon_transparent.png);
+  background-position: center 25px;
+  background-size: 75px 75px;
+  background-repeat: no-repeat;
+  min-height: 100px;
+  padding-bottom: 10px;
   width: 550px;
   margin: 0px auto;
 }
@@ -55,18 +57,24 @@
   text-align: center;
 }
 
-.mainPage, .settingsPage {
-  composes: page;
-  width: 550px;
-  background-color: rgba(255, 255, 255, 0.75);
-  border: @mainPageBorder solid @gray-light;
-  border-radius: 2px;
-  padding: 15px (15px - @mainPageBorder) 25px (30px - @mainPageBorder);
-  box-sizing: border-box;
-}
-
 .mainWrap {
   composes: flexColumn from '../core/layout.module.less';
+}
+
+.changePerson {
+  composes: link small from '../core/typography.module.less';
+  composes: pageRow from '../core/layout.module.less';
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.linkDisabled {
+  &:hover {
+    cursor: not-allowed;
+  }
 }
 
 .signup {
@@ -92,12 +100,11 @@
 
 .footer {
   composes: flexColumn from '../core/layout.module.less';
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: auto;
+  margin-bottom: 30px;
   background-image: url(/images/tidepool_logo_transparent.png);
   background-position: center center;
   background-repeat: no-repeat;
-  align-items: flex-end;
 }
 
 .footerRow {
@@ -105,6 +112,7 @@
   width: 550px;
   margin: 0px auto;
   justify-content: space-between;
+  align-self: flex-end;
 }
 
 .footerLink {

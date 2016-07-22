@@ -17,9 +17,22 @@
 @import '../core/icons.module.less';
 
 .timezoneDropdown {
-  border-bottom: 1px solid @gray-light;
+  composes: whiteBox from '../core/layout.module.less';
+  border-bottom: none;
   padding-bottom: 10px;
-  margin-right: 18px;
+  margin-bottom: 0px;
+}
+
+.clinic {
+  padding: 10px 0 0 0;
+  border: none;
+  .timezone {
+    margin-bottom: 0px;
+  }
+}
+
+.userDropdownShowing {
+  border-top: none;
 }
 
 .timezone {
@@ -35,11 +48,19 @@
 .list {
   margin-top: -10px;
   margin-left: 15px;
-  width: 260px;
+  width: 260px;  
+}
+
+.listNoValue {
+  :global(.Select-control){
+    border-color: @purple-medium;
+    box-shadow: 0 0 10px @purple-medium;
+  }
 }
 
 .timeDetail {
-  composes: tiny gray from '../core/typography.module.less';
+  composes: small from '../core/typography.module.less';
+  color: @purple-dark;
   margin-top: 10px;
   flex-basis: 100%;
 }
