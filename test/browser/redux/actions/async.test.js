@@ -298,7 +298,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doLogin [no error]', () => {
-    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS actions', () => {
+    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE (SETTINGS) actions', () => {
       // NB: this is not what these objects actually look like
       // actual shape is irrelevant to testing action creators
       const userObj = {user: {userid: 'abc123'}};
@@ -1928,7 +1928,7 @@ describe('Asynchronous Actions', () => {
 
   describe('clickEditUserNext', () => {
     describe('update profile success, user has devices selected', () => {
-      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_ALL_USERS, SET_PAGE (main)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (main)', () => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe'};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
@@ -1993,7 +1993,7 @@ describe('Asynchronous Actions', () => {
       });
     });
     describe('update profile success, user doesn\'t have devices selected', () => {
-      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_ALL_USERS, SET_PAGE (settings)', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings)', () => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe'};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
