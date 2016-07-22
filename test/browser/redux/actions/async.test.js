@@ -2527,7 +2527,7 @@ describe('Asynchronous Actions', () => {
                 cb(null);
               },
               updateProfile: (user, update, cb) => {
-                cb(null);
+                cb(null, profile);
               }
             },
             makeBlipUrl: blipUrlMaker
