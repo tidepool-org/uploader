@@ -493,7 +493,7 @@ describe('animasSimulator.js', function() {
         type: 'deviceEvent',
         subType: 'status',
         status: 'suspended',
-        reason: {suspended: 'automatic', resumed: 'automatic'},
+        reason: {suspended: 'automatic', resumed: 'manual'},
         payload: {cause: 'auto_off'},
         duration: 3600000
       };
@@ -506,11 +506,14 @@ describe('animasSimulator.js', function() {
       var expectedBasal = _.cloneDeep(basal1);
       expectedBasal = expectedBasal.done();
       expectedBasal.deliveryType ='suspend';
+      expectedBasal.annotations = [{code: 'animas/basal/marked-suspended-from-alarm'}];
+
+      var expectedAlarm = _.cloneDeep(alarm);
+      expectedAlarm.status = expectedSuspendResume;
 
       expect(simulator.getEvents()).deep.equals([
-        alarm,
-        expectedBasal,
-        expectedSuspendResume,
+        expectedAlarm,
+        expectedBasal
       ]);
     });
   });
