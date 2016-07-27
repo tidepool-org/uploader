@@ -18,6 +18,7 @@
 /*eslint-env mocha*/
 
 import _ from 'lodash';
+import mutationTracker from 'object-invariant-test-helper';
 
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as users from '../../../../lib/redux/reducers/users';
@@ -95,12 +96,12 @@ describe('users', () => {
         type: actionTypes.UPDATE_PROFILE_SUCCESS,
         payload: { profile, userId: 'a1b2c3' }
       };
-      expect(users.allUsers(undefined, action)).to.deep.equal({
+      let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
+      expect(users.allUsers(initialState, action)).to.deep.equal({
         a1b2c3: profile
       });
-      let initialState = {};
-      // test to be sure not *mutating* state object but rather returning new!
-      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     it('should handle LOGOUT_REQUEST', () => {
