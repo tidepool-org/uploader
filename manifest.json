@@ -36,7 +36,6 @@
         {
           "deviceName": "Dexcom CGM",
           "driverId": "Dexcom",
-          "macPortPattern": "/dev/cu\\.(usb|dex).+",
           "mode": "serial",
           "vendorId": 8867,
           "productId": 71
@@ -85,7 +84,6 @@
         {
           "deviceName": "OneTouchVerioIQ",
           "driverId": "OneTouchVerioIQ",
-          "macPortPattern": "/dev/cu\\.SLAB.+",
           "bitrate": 38400,
           "mode": "serial",
           "vendorId": 4292,
