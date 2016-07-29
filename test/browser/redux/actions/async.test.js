@@ -417,13 +417,16 @@ describe('Asynchronous Actions', () => {
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: {eventName: metrics.LOGIN_SUCCESS}
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
         },
         {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.CLINIC_USER_SELECT},
-          meta: {source: actionSources.USER}
+          meta: {
+            source: actionSources.USER,
+            metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}
+          }
         }
       ];
       asyncActions.__Rewire__('services', {
@@ -1851,6 +1854,9 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
+          allUsers: {
+            abc123: {}
+          },
           targetDevices: {
             abc123: ['a_pump', 'a_bg_meter']
           },
@@ -2172,6 +2178,9 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
+          allUsers: {
+            abc123: {}
+          },
           targetDevices: {
             abc123: ['a_pump', 'a_bg_meter']
           },
@@ -2900,7 +2909,10 @@ describe('Asynchronous Actions', () => {
             payload: {
               account: newUser
             },
-            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS]}
+            meta: {
+              source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS],
+              metric: {eventName: metrics.CLINIC_ADD_NEW_PATIENT}
+            }
           },
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -3091,7 +3103,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_NEXT}
+            }
           }
         ];
         const store = mockStore({
@@ -3129,7 +3144,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_NEXT}
+            }
           }
         ];
         const store = mockStore({
@@ -3206,7 +3224,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.CLINIC_USER_EDIT},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_ADD}
+            }
           }
         ];
         const store = mockStore({});
