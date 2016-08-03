@@ -233,6 +233,7 @@ describe('Asynchronous Actions', () => {
         semver: config.version
       });
       const state = {
+        allUsers: {[pwd.user.userid]: pwd.user},
         uploadTargetUser: pwd.user.userid,
         working: {initializingApp: true}
       };
@@ -351,6 +352,7 @@ describe('Asynchronous Actions', () => {
         }
       });
       const store = mockStore({
+        allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
       });
       store.dispatch(asyncActions.doLogin(
@@ -2271,7 +2273,7 @@ describe('Asynchronous Actions', () => {
             removeItem: (item) => null
           }
         });
-        const store = mockStore({});
+        const store = mockStore({allUsers: {'abc123':{}}});
         store.dispatch(asyncActions.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
