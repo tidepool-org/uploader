@@ -22,7 +22,6 @@ var expect = require('salinity').expect;
 var serialDevice = require('../../lib/serialDevice.js');
 
 /*
-setPattern: setPattern,
 setBitrate: setBitrate,
 connect: connect,
 disconnect: disconnect,
@@ -36,7 +35,6 @@ hasAvailablePacket: hasAvailablePacket,
 peekPacket: peekPacket,
 nextPacket: nextPacket,
 flush: flush,
-emitLog: emitLog
 */
 
 
@@ -49,11 +47,6 @@ describe('serialDevice.js', function(){
     device = serialDevice(config);
   });
 
-  describe('setPattern', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('setPattern');
-    });
-  });
   describe('setBitrate', function(){
     it('exists', function(){
       expect(device).itself.to.respondTo('setBitrate');
@@ -112,11 +105,6 @@ describe('serialDevice.js', function(){
   describe('flush', function(){
     it('exists', function(){
       expect(device).itself.to.respondTo('flush');
-    });
-  });
-  describe('emitLog', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('emitLog');
     });
   });
 });
