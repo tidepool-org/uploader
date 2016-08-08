@@ -166,6 +166,13 @@
           "receiveTimeout": 500,
           "vendorId": 1659,
           "productId": 8963
+        },
+        {
+          "deviceName": "Medtronic",
+          "driverId": "Medtronic",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25088
         }
       ]
     }
