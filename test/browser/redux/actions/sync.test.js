@@ -68,6 +68,90 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('clinicAddMrn', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.clinicAddMrn();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to report a clinic adding an MRN to a patient', () => {
+      const expectedAction = {
+        type: actionTypes.CLINIC_ADD_MRN,
+        meta: {
+          source: actionSources[actionTypes.CLINIC_ADD_MRN],
+          metric: {eventName: metrics.CLINIC_ADD_MRN}
+        }
+      };
+
+      expect(syncActions.clinicAddMrn()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('clinicAddEmail', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.clinicAddEmail();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to report a clinic adding an email to a patient', () => {
+      const expectedAction = {
+        type: actionTypes.CLINIC_ADD_EMAIL,
+        meta: {
+          source: actionSources[actionTypes.CLINIC_ADD_EMAIL],
+          metric: {eventName: metrics.CLINIC_ADD_EMAIL}
+        }
+      };
+
+      expect(syncActions.clinicAddEmail()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('clinicAddDevice', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.clinicAddDevice();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to report a clinic adding a device', () => {
+      const expectedAction = {
+        type: actionTypes.CLINIC_DEVICE_STORED,
+        meta: {
+          source: actionSources[actionTypes.CLINIC_DEVICE_STORED],
+          metric: {eventName: metrics.CLINIC_DEVICE_STORED + ' - ' + 'device'}
+        }
+      };
+
+      expect(syncActions.clinicAddDevice('device')).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('clinicInvalidDate', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.clinicInvalidDate({year:'error'});
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to report a clinic setting an invalid date', () => {
+      const expectedAction = {
+        type: actionTypes.CLINIC_ADD_INVALID_DATE,
+        meta: {
+          source: actionSources[actionTypes.CLINIC_ADD_INVALID_DATE],
+          metric: {eventName: metrics.CLINIC_ADD_INVALID_DATE}
+        }
+      };
+
+      expect(syncActions.clinicInvalidDate({year:'error'})).to.deep.equal(expectedAction);
+    });
+
+    it('should not creat an action to report no error', () => {
+      expect(syncActions.clinicInvalidDate()).to.be.undefined;
+    });
+  });
+
   describe('hideUnavailableDevices', () => {
     const OS = 'test';
     it('should be an FSA', () => {
