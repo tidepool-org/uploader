@@ -600,6 +600,19 @@ describe('users', () => {
       })).to.equal(memberships[1].userid);
     });
 
+    it('should handle LOGIN_SUCCESS [loggedInUser is clinic, can upload to only one]', () => {
+      const user = {userid: 'a1b2c3', roles: ['clinic']};
+      const profile = {a: 1};
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      })).to.be.null;
+    });
+
     it('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]', () => {
       const profile = {a: 1};
       const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
