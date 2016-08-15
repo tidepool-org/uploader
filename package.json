@@ -37,7 +37,7 @@
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.26.0"
+    "tidepool-platform-client": "0.27.0"
   },
   "devDependencies": {
     "babel-core": "5.8.38",
