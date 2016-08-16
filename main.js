@@ -178,6 +178,8 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
       minHeight: height
     }
   }, function(createdWindow) {
+    /*
+    FIXME
     for (var i=0; i<contextMenus.length; ++i) {
       // In version 42 of Chrome, the create call throws an exception when the
       // app is reloaded after being closed (but Chrome itself continues to run).
@@ -203,9 +205,10 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
 
     var menucb = setServer.bind(null, createdWindow.contentWindow);
     chrome.contextMenus.onClicked.addListener(menucb);
+    */
 
     createdWindow.show();
-    createdWindow.contentWindow.localSave = function() {};
-    createdWindow.contentWindow.localLoad = function() {};
+    //createdWindow.contentWindow.localSave = function() {};
+    //createdWindow.contentWindow.localLoad = function() {};
   });
 });
