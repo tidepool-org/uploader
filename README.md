@@ -82,7 +82,7 @@ $ npm run node-tests
 To run just the UI tests in PhantomJS with webpack & Karma watching all files for changes and both rebundling the app and re-running the tests on every change, use:
 
 ```bash
-$ npm run karma-watch
+$ npm run test-watch
 ```
 
 
