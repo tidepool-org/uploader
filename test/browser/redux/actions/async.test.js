@@ -419,13 +419,16 @@ describe('Asynchronous Actions', () => {
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: {eventName: metrics.LOGIN_SUCCESS}
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
         },
         {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.CLINIC_USER_SELECT},
-          meta: {source: actionSources.USER}
+          meta: {
+            source: actionSources.USER,
+            metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}
+          }
         }
       ];
       asyncActions.__Rewire__('services', {
@@ -1853,6 +1856,9 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
+          allUsers: {
+            abc123: {}
+          },
           targetDevices: {
             abc123: ['a_pump', 'a_bg_meter']
           },
@@ -2084,6 +2090,49 @@ describe('Asynchronous Actions', () => {
         expect(actions).to.deep.equal(expectedActions);
       });
     });
+    describe('update profile failure, unauthorized', () => {
+      it('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings) ', () => {
+        const profile = {fullName: 'Jane Doe'};
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_PROFILE_REQUEST,
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+          },
+          {
+            type: actionTypes.UPDATE_PROFILE_SUCCESS,
+            payload: {userId: 'def456', profile},
+            meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: actionTypes.SET_PAGE,
+            payload: {page: pages.SETTINGS},
+            meta: {source: actionSources[actionTypes.SET_PAGE]}
+          }
+        ];
+        asyncActions.__Rewire__('services', {
+          api: {
+            user: {
+              updateProfile: (user, update, cb) => cb({status:401})
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({
+          allUsers: {
+            def456: {}
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          uploadTargetUser:'def456'
+        });
+        store.dispatch(asyncActions.clickEditUserNext(profile));
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
   });
 
   describe('setTargetTimezone', () => {
@@ -2174,6 +2223,9 @@ describe('Asynchronous Actions', () => {
           }
         });
         const state = {
+          allUsers: {
+            abc123: {}
+          },
           targetDevices: {
             abc123: ['a_pump', 'a_bg_meter']
           },
@@ -2902,7 +2954,10 @@ describe('Asynchronous Actions', () => {
             payload: {
               account: newUser
             },
-            meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS]}
+            meta: {
+              source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS],
+              metric: {eventName: metrics.CLINIC_ADD_NEW_PATIENT}
+            }
           },
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -3093,7 +3148,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_NEXT}
+            }
           }
         ];
         const store = mockStore({
@@ -3131,7 +3189,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_NEXT}
+            }
           }
         ];
         const store = mockStore({
@@ -3208,7 +3269,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.CLINIC_USER_EDIT},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CLINIC_ADD}
+            }
           }
         ];
         const store = mockStore({});

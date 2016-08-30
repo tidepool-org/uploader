@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.279.0",
+  "version": "0.286.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -10,7 +10,7 @@
     "test": "mocha test/node/ && mocha test/node/**/*.js && ./node_modules/karma/bin/karma start",
     "browser-tests": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome",
     "node-tests": "mocha test/node/ && mocha test/node/**/*.js",
-    "karma-watch": "./node_modules/karma/bin/karma start --no-single-run",
+    "test-watch": "./node_modules/karma/bin/karma start --no-single-run",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "start-hot": "bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
     "build": "bash ./scripts/build.sh",
@@ -32,11 +32,12 @@
     "react-redux": "4.4.1",
     "react-select": "1.0.0-beta11",
     "redux": "3.3.1",
+    "redux-form": "5.3.1",
     "redux-thunk": "2.0.1",
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.26.0"
+    "tidepool-platform-client": "0.27.0"
   },
   "devDependencies": {
     "babel-core": "5.8.38",
