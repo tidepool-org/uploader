@@ -22,9 +22,9 @@ var expect = require('salinity').expect;
 var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
-var common = require('../../lib/commonSimulations');
+var common = require('../../lib/commonFunctions');
 
-describe('commonSimulations.js', function(){
+describe('commonFunctions.js', function(){
 
   describe('finalScheduledBasal', function(){
 
