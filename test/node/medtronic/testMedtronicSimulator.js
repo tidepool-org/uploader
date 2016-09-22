@@ -384,8 +384,18 @@ describe('medtronicSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
 
     });
+*/
 
-    it('sets suspended basal', function() {
+    it('sets suppressed info for suspended basal', function() {
+
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T01:00:00.000Z')
+        .with_deviceTime('2014-09-25T01:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_scheduleName('Alice')
+        .with_rate(1);
+
       var suspendResume = builder.makeDeviceEventSuspendResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -396,25 +406,42 @@ describe('medtronicSimulator.js', function() {
         .with_reason({resumed: 'automatic'})
         .done();
 
-      var basal = builder.makeScheduledBasal()
+      var suspendedBasal = builder.makeSuspendBasal()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
         .with_timezoneOffset(0)
+        .with_conversionOffset(0);
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T03:00:00.000Z')
+        .with_deviceTime('2014-09-25T03:00:00')
+        .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_scheduleName('Alice')
-        .with_rate(0);
+        .with_rate(2);
 
-      simulator.suspend(suspendResume);
+      var expectedSuspendedBasal = _.cloneDeep(suspendedBasal);
+      var suppressed = {
+        type: 'basal',
+        deliveryType: 'scheduled',
+        rate: 1
+      };
+      expectedSuspendedBasal.duration = 3600000;
+      expectedSuspendedBasal.set('suppressed', suppressed);
+
       simulator.basal(basal);
+      simulator.suspendResume(suspendResume);
+      simulator.basal(suspendedBasal);
       simulator.basal(basal2);
 
-      var expectedSuspendedBasal = _.cloneDeep(basal);
-      expectedSuspendedBasal.deliveryType = 'suspend';
-
-      expect(simulator.getEvents()).deep.equals([suspendResume,expectedSuspendedBasal.done()]);
+      expect(simulator.getEvents()).deep.equals([
+        basal.done(),
+        suspendResume,
+        expectedSuspendedBasal.done(),
+      ]);
 
     });
-*/
+
     describe('temp basal', function() {
 
       var basal1 = null, tempBasal = null, basal2 = null;
