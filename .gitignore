@@ -31,6 +31,7 @@ bower_components
 .idea
 *.iml
 .com.apple.timemachine.*
+.tern-project
 
 _book/
 web/
