@@ -366,7 +366,7 @@ describe('medtronicSimulator.js', function() {
       simulator.basal(basal2);
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
     });
-/*
+
     it('limits duration to five days for flat-rate basals', function() {
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-01T02:00:00.000Z') // more than five days before basal1
@@ -378,13 +378,13 @@ describe('medtronicSimulator.js', function() {
 
       var expectedFirstBasal = _.cloneDeep(basal);
       expectedFirstBasal = expectedFirstBasal.set('duration', 432000000).done();
-      expectedFirstBasal.annotations = [{code: 'animas/basal/flat-rate'}];
+      expectedFirstBasal.annotations = [{code: 'medtronic/basal/flat-rate'}];
       simulator.basal(basal);
       simulator.basal(basal1);
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
 
     });
-*/
+
 
     it('sets suppressed info for suspended basal', function() {
 
