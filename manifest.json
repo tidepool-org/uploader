@@ -143,6 +143,13 @@
           "productId": 25088
         },
         {
+          "deviceName": "BayerContourNextLinkMmol",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25344
+        },
+        {
           "deviceName": "BayerContourNextLink24",
           "driverId": "BayerContourNextLink",
           "mode": "HID",
