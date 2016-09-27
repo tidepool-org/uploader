@@ -236,62 +236,6 @@ describe('medtronicSimulator.js', function() {
       });
     });
 
-    describe('status', function() {
-      var suspend = builder.makeDeviceEventSuspend()
-        .with_time('2014-09-25T01:00:00.000Z')
-        .with_deviceTime('2014-09-25T01:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_status('suspended')
-        .with_reason({suspended: 'manual'})
-        .done();
-      suspend.annotations = [{code: 'status/incomplete-tuple'}];
-
-      var suspendresume = builder.makeDeviceEventSuspendResume()
-        .with_time('2014-09-25T02:00:00.000Z')
-        .with_deviceTime('2014-09-25T02:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_status('resumed')
-        .with_duration(3600000)
-        .with_reason({suspended: 'manual', resumed: 'manual'})
-        .done();
-
-      it('a single suspend with annotation passes through', function() {
-        simulator.suspend(suspend);
-        expect(simulator.getEvents()).deep.equals([suspend]);
-      });
-
-      it('a combined suspend/resume passes through', function() {
-        simulator.suspend(suspendresume);
-        expect(simulator.getEvents()).deep.equals([suspendresume]);
-      });
-
-      it('generates annotation for out-of-sequence events', function() {
-        var suspendresume2 = builder.makeDeviceEventSuspendResume()
-          .with_time('2014-09-25T04:00:00.000Z')
-          .with_deviceTime('2014-09-25T04:00:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .with_status('resumed')
-          .with_duration(3600000)
-          .with_reason({suspended: 'manual', resumed: 'manual'})
-          .done();
-
-        suspendresume.index = 4;
-        suspendresume2.index = 5;
-
-        var expectedSuspendResume2 = _.cloneDeep(suspendresume2);
-        delete expectedSuspendResume2.index;
-        expectedSuspendResume2.annotations = [{code: 'animas/out-of-sequence'}];
-
-        simulator.suspend(suspendresume);
-        simulator.suspend(suspendresume2);
-
-        expect(simulator.getEvents()).deep.equals([suspendresume, expectedSuspendResume2]);
-      });
-
-    });
   });
   */
 
