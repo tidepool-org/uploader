@@ -20,7 +20,7 @@ test/node/carelink/overlaps/test-account.csv
 test/carelink/testRemoveOverlapsFullTestFile.js
 test/node/carelink/testRemoveOverlapsFullTestFile.js
 
-lib/medtronic/cli/medtronicPages.json
+lib/medtronic/cli/*.json
 
 tmp
 npm-debug.log
