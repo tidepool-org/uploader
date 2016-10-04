@@ -388,7 +388,7 @@ describe('medtronicSimulator.js', function() {
 
     describe('temp basal', function() {
 
-      var basal1 = null, tempBasal = null, basal2 = null;
+      var basal1 = null, tempBasal = null, basal2 = null, settings= null, tempBasalOverMidnight = null;
       beforeEach( function() {
         basal1 = builder.makeScheduledBasal()
           .with_time('2014-09-25T17:05:00.000Z')
@@ -407,13 +407,48 @@ describe('medtronicSimulator.js', function() {
           .with_rate(1.0)
           .set('index',1);
         basal2 = builder.makeScheduledBasal()
-          .with_time('2014-09-25T17:40:00.000Z')
-          .with_deviceTime('2014-09-25T18:40:00')
+          .with_time('2014-09-26T17:10:50.000Z')
+          .with_deviceTime('2014-09-26T18:40:00')
           .with_timezoneOffset(60)
           .with_conversionOffset(0)
           .with_rate(2)
           .with_duration(1800000)
           .set('index',2);
+        settings = {
+          type: 'pumpSettings',
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T02:00:00',
+          timezoneOffset: 60,
+          conversionOffset: 0,
+          activeSchedule: 'standard',
+          units: { 'bg': 'mg/dL' },
+          basalSchedules: {
+            standard: [
+              {
+                start: 0,
+                rate: 0.2
+              },
+              {
+                start: 10800000,
+                rate: 0.375
+              },
+              {
+                start: 65450000,
+                rate: 0.475
+              }
+            ]
+          }
+        };
+
+        tempBasalOverMidnight = builder.makeTempBasal()
+          .with_time('2014-09-25T22:10:00.000Z')
+          .with_deviceTime('2014-09-25T23:10:00')
+          .with_timezoneOffset(60)
+          .with_conversionOffset(0)
+          .with_duration(7200000)
+          .with_rate(1.0)
+          .set('index',1);
+        tempBasalOverMidnight.jsDate = new Date(tempBasalOverMidnight.deviceTime);
       });
 
       it('adds supressed info', function() {
@@ -439,31 +474,6 @@ describe('medtronicSimulator.js', function() {
       });
 
       it('checks for schedule change', function() {
-        var settings = {
-          type: 'pumpSettings',
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T02:00:00',
-          timezoneOffset: 60,
-          conversionOffset: 0,
-          activeSchedule: 'standard',
-          units: { 'bg': 'mg/dL' },
-          basalSchedules: {
-      			standard: [
-      				{
-      					start: 0,
-      					rate: 0.2
-      				},
-      				{
-      					start: 10800000,
-      					rate: 0.375
-      				},
-      				{
-      					start: 65450000,
-      					rate: 0.475
-      				}
-			      ]
-          }
-        };
 
         tempBasal.jsDate = new Date(tempBasal.deviceTime);
 
@@ -472,21 +482,21 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(tempBasal);
         simulator.basal(basal2);
 
-        var expectedTempBasal1 = _.clone(tempBasal.done());
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
         expectedTempBasal1.duration = 50000;
-        expectedTempBasal1.expectedDuration =1800000;
+        expectedTempBasal1.payload.duration = 1800000;
         delete expectedTempBasal1.index;
         delete expectedTempBasal1.jsDate;
 
-        var expectedTempBasal2 = _.clone(expectedTempBasal1);
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
         expectedTempBasal2.clockDriftOffset = 0;
         expectedTempBasal2.duration = 1750000;
         expectedTempBasal2.time = '2014-09-25T17:10:50.000Z';
         expectedTempBasal2.deviceTime = '2014-09-25T18:10:50';
         expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.475;
-        delete expectedTempBasal2.expectedDuration;
+        delete expectedTempBasal2.payload.duration;
 
         delete basal1.index;
         delete basal1.jsDate;
@@ -498,6 +508,66 @@ describe('medtronicSimulator.js', function() {
           expectedTempBasal2
         ]);
       });
+
+      it('checks for schedule change over midnight', function() {
+
+        simulator.pumpSettings(settings);
+        simulator.basal(basal1);
+        simulator.basal(tempBasalOverMidnight);
+        simulator.basal(basal2);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasalOverMidnight.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 3000000;
+        expectedTempBasal1.payload.duration = 7200000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.clockDriftOffset = 0;
+        expectedTempBasal2.duration = 4200000;
+        expectedTempBasal2.time = '2014-09-25T23:00:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
+        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.rate = 0.2;
+        delete expectedTempBasal2.payload.duration;
+
+        delete basal1.index;
+        delete basal1.jsDate;
+
+        expect(simulator.getEvents()).deep.equals([
+          settings,
+          basal1.done(),
+          expectedTempBasal1,
+          expectedTempBasal2
+        ]);
+      });
+
+      it('checks temp basal over midnight without schedule change', function() {
+
+        settings.basalSchedules.standard[0].start = 7200000; // only change at 2am
+
+        simulator.pumpSettings(settings);
+        simulator.basal(basal1);
+        simulator.basal(tempBasalOverMidnight);
+        simulator.basal(basal2);
+
+        var expectedTempBasal = _.cloneDeep(tempBasalOverMidnight.done());
+        expectedTempBasal.suppressed.rate = 1.3;
+        expectedTempBasal.duration = 7200000;
+        delete expectedTempBasal.index;
+        delete expectedTempBasal.jsDate;
+
+        delete basal1.index;
+        delete basal1.jsDate;
+
+        expect(simulator.getEvents()).deep.equals([
+          settings,
+          basal1.done(),
+          expectedTempBasal
+        ]);
+      });
+
     });
 
   });
