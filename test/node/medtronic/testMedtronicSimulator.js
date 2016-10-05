@@ -543,20 +543,30 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('checks temp basal over midnight without schedule change', function() {
+      it('checks temp basal schedule change that only happens after midnight', function() {
 
-        settings.basalSchedules.standard[0].start = 7200000; // only change at 2am
+        settings.basalSchedules.standard[0].rate = 1.3; // scheduled rate does not change at midnight
+        settings.basalSchedules.standard[1].start = 3600000; // schedule only changes at 1am
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
         simulator.basal(tempBasalOverMidnight);
         simulator.basal(basal2);
 
-        var expectedTempBasal = _.cloneDeep(tempBasalOverMidnight.done());
-        expectedTempBasal.suppressed.rate = 1.3;
-        expectedTempBasal.duration = 7200000;
-        delete expectedTempBasal.index;
-        delete expectedTempBasal.jsDate;
+        var expectedTempBasal1 = _.cloneDeep(tempBasalOverMidnight.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 6600000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.clockDriftOffset = 0;
+        expectedTempBasal2.duration = 600000;
+        expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-26T01:00:00';
+        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.rate = 0.375;
+        delete expectedTempBasal2.payload.duration;
 
         delete basal1.index;
         delete basal1.jsDate;
@@ -564,7 +574,8 @@ describe('medtronicSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([
           settings,
           basal1.done(),
-          expectedTempBasal
+          expectedTempBasal1,
+          expectedTempBasal2
         ]);
       });
 
