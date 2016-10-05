@@ -135,14 +135,6 @@ describe('commonFunctions.js', function(){
       console.log(basal);
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
-
-    it('checks that rounding does not result in more than 24 hours', function(){
-      basal.with_time('2015-11-05T23:59:00.000Z')
-           .with_timezoneOffset(60)
-           .with_conversionOffset(420000);
-      console.log(basal);
-      expect(common.computeMillisInCurrentDay(basal)).to.equal(3600000);
-    });
   });
 
 });

@@ -143,7 +143,7 @@ describe('medtronicSimulator.js', function() {
         deviceTime: '2014-09-25T01:00:00',
         timezoneOffset: 0,
         conversionOffset: 0,
-        deviceId: 'animas12345',
+        deviceId: 'medtronic12345',
         normal: 1.3,
         extended: 1.4,
         duration: 0,
@@ -225,7 +225,7 @@ describe('medtronicSimulator.js', function() {
           deviceTime: '2014-09-25T01:00:00',
           timezoneOffset: 0,
           conversionOffset: 0,
-          deviceId: 'animas12345',
+          deviceId: 'medtronic12345',
           type: 'deviceEvent',
           subType: 'alarm',
           alarmType: 'low_insulin'
