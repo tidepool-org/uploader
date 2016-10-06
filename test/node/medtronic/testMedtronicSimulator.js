@@ -202,14 +202,7 @@ describe('medtronicSimulator.js', function() {
       expectedWizard.bolus = bolus;
     });
 
-    it('bolus record gets added to wizard when it is first', function() {
-      simulator.bolus(bolus);
-      simulator.wizard(wizard);
-
-      expect(simulator.getEvents()).deep.equals([bolus,expectedWizard.done()]);
-    });
-
-    it('bolus record gets added to wizard when it is last', function() {
+    it('bolus record gets added to wizard', function() {
       simulator.wizard(wizard);
       simulator.bolus(bolus);
       expect(simulator.getEvents()).deep.equals([expectedWizard.done(),bolus]);
