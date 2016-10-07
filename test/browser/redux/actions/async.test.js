@@ -399,6 +399,63 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('doLogin [with no DSA error]', () => {
+    it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE (DataStorageCheck) actions', () => {
+      // NB: this is not what these objects actually look like
+      // actual shape is irrelevant to testing action creators
+      const userObj = {user: {userid: 'abc123'}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [];
+      const expectedActions = [
+        {
+          type: actionTypes.LOGIN_REQUEST,
+          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile, memberships
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.SET_PAGE,
+          payload: {page: pages.DATA_STORAGE_CHECK},
+          meta: {source: actionSources[actionTypes.SET_PAGE]}
+        }
+      ];
+      asyncActions.__Rewire__('services', {
+        api: {
+          user: {
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
+          },
+          makeBlipUrl: (path) => {
+            return 'http://www.acme.com' + path;
+          }
+        },
+        log: _.noop,
+        localStore: {
+          getItem: () => null,
+          setItem: () => null
+        }
+      });
+      const store = mockStore({
+        allUsers: {[userObj.user.userid]:userObj.user},
+        uploadTargetUser: userObj.user.userid,
+      });
+      store.dispatch(asyncActions.doLogin(
+        {username: 'jane.doe@me.com', password: 'password'},
+        {remember: false}
+      ));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
   describe('doLogin [verified clinic account]', () => {
     it('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS and SET_PAGE (CLINIC_USER_SELECT) actions', () => {
       // NB: this is not what these objects actually look like
