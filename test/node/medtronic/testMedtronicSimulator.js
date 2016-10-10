@@ -618,7 +618,7 @@ describe('medtronicSimulator.js', function() {
         payload: {cause: 'auto_off'},
         duration: 3600000
       };
-      expectedSuspendResume.annotations = [{code: 'medtronic/status/fabricated-from-alarm'}];
+      expectedSuspendResume.annotations = [{code: 'medtronic/status/fabricated-from-device-event'}];
 
       simulator.basal(basal1);
       simulator.alarm(alarm);
