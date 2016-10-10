@@ -425,7 +425,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_PAGE,
-          payload: {page: pages.DATA_STORAGE_CHECK},
+          payload: {page: pages.NO_UPLOAD_TARGETS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
