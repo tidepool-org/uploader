@@ -354,6 +354,7 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
+        targetUsersForUpload: ['def456', 'ghi789'],
       });
       store.dispatch(asyncActions.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -446,6 +447,7 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
+        targetUsersForUpload: [],
       });
       store.dispatch(asyncActions.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -496,7 +498,9 @@ describe('Asynchronous Actions', () => {
         },
         log: _.noop
       });
-      const store = mockStore({});
+      const store = mockStore({
+        targetUsersForUpload: ['def456', 'ghi789'],
+      });
       store.dispatch(asyncActions.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
