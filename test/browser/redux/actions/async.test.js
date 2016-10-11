@@ -66,7 +66,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doAppInit [no session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_PAGE, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS actions', () => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_NEW_PATIENT_URL, SET_PAGE, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
@@ -116,6 +116,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
         },
         {
+          type: actionTypes.SET_NEW_PATIENT_URL,
+          payload: {url: 'http://www.acme.com/patients/new'},
+          meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -144,7 +149,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doAppInit [with session token in local storage]', () => {
-    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE actions', () => {
+    it('should dispatch SET_VERSION, INIT_APP_REQUEST, SET_OS, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_NEW_PATIENT_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, SET_BLIP_VIEW_DATA_URL, RETRIEVING_USERS_TARGETS, SET_PAGE actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
@@ -196,6 +201,11 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.SET_SIGNUP_URL,
           payload: {url: 'http://www.acme.com/signup'},
           meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+        },
+        {
+          type: actionTypes.SET_NEW_PATIENT_URL,
+          payload: {url: 'http://www.acme.com/patients/new'},
+          meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
           type: actionTypes.INIT_APP_SUCCESS,
