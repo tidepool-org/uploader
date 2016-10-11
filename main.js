@@ -58,14 +58,6 @@ var contextMenus = [
   },
   {
     type: 'radio',
-    id: 'Clinic',
-    title: 'Clinic',
-    contexts: contexts,
-    parentId: 'MENUROOT',
-    checked: false
-  },
-  {
-    type: 'radio',
     id: 'Staging',
     title: 'Staging',
     contexts: contexts,
@@ -101,31 +93,25 @@ function setServer(window, info) {
     Development: {
       API_URL: 'https://dev-api.tidepool.org',
       UPLOAD_URL: 'https://dev-uploads.tidepool.org',
-      DATA_URL: 'https://dev-api.tidepool.org/platform',
+      DATA_URL: 'https://dev-api.tidepool.org/dataservices',
       BLIP_URL: 'https://dev-blip.tidepool.org'
-    },
-    Clinic: {
-      API_URL: 'https://dev-clinic-api.tidepool.org',
-      UPLOAD_URL: 'https://dev-clinic-uploads.tidepool.org',
-      DATA_URL: 'https://dev-clinic-api.tidepool.org/platform',
-      BLIP_URL: 'https://dev-clinic-blip.tidepool.org'
     },
     Staging: {
       API_URL: 'https://stg-api.tidepool.org',
       UPLOAD_URL: 'https://stg-uploads.tidepool.org',
-      DATA_URL: 'https://stg-api.tidepool.org/platform',
+      DATA_URL: 'https://stg-api.tidepool.org/dataservices',
       BLIP_URL: 'https://stg-blip.tidepool.org'
     },
     Integration: {
       API_URL: 'https://int-api.tidepool.org',
       UPLOAD_URL: 'https://int-uploads.tidepool.org',
-      DATA_URL: 'https://int-api.tidepool.org/platform',
+      DATA_URL: 'https://int-api.tidepool.org/dataservices',
       BLIP_URL: 'https://int-blip.tidepool.org'
     },
     Production: {
       API_URL: 'https://api.tidepool.org',
       UPLOAD_URL: 'https://uploads.tidepool.org',
-      DATA_URL: 'https://api.tidepool.org/platform',
+      DATA_URL: 'https://api.tidepool.org/dataservices',
       BLIP_URL: 'https://blip.tidepool.org'
     }
   };
