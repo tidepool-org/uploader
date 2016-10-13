@@ -408,7 +408,7 @@ describe('medtronicSimulator.js', function() {
           .set('index',1);
         basal2 = builder.makeScheduledBasal()
           .with_time('2014-09-26T17:10:50.000Z')
-          .with_deviceTime('2014-09-26T18:40:00')
+          .with_deviceTime('2014-09-26T18:10:50')
           .with_timezoneOffset(60)
           .with_conversionOffset(0)
           .with_rate(2)
@@ -490,7 +490,6 @@ describe('medtronicSimulator.js', function() {
         delete expectedTempBasal1.jsDate;
 
         var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
-        expectedTempBasal2.clockDriftOffset = 0;
         expectedTempBasal2.duration = 1750000;
         expectedTempBasal2.time = '2014-09-25T17:10:50.000Z';
         expectedTempBasal2.deviceTime = '2014-09-25T18:10:50';
@@ -524,7 +523,6 @@ describe('medtronicSimulator.js', function() {
         delete expectedTempBasal1.jsDate;
 
         var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
-        expectedTempBasal2.clockDriftOffset = 0;
         expectedTempBasal2.duration = 4200000;
         expectedTempBasal2.time = '2014-09-25T23:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
@@ -560,7 +558,6 @@ describe('medtronicSimulator.js', function() {
         delete expectedTempBasal1.jsDate;
 
         var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
-        expectedTempBasal2.clockDriftOffset = 0;
         expectedTempBasal2.duration = 600000;
         expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T01:00:00';
@@ -579,6 +576,78 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('restarts temp basal after resume', function() {
+
+        var suspendResume = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T17:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(60)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(600000)
+          .with_reason({resumed: 'manual'})
+          .set('index', 1234)
+          .set('resumeIndex', 1235)
+          .done();
+
+        var suspendedBasal = builder.makeSuspendBasal()
+          .with_time('2014-09-25T17:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1234);
+
+        var basal3 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T17:40:00.000Z')
+            .with_deviceTime('2014-09-25T18:40:00')
+            .with_timezoneOffset(60)
+            .with_conversionOffset(0)
+            .with_rate(2);
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.basal(basal3);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 600000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedSuspendedBasal = _.cloneDeep(suspendedBasal);
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'temp',
+          rate: 1,
+          suppressed : {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3
+          }
+        };
+        expectedSuspendedBasal.duration = 600000;
+        expectedSuspendedBasal.set('suppressed', suppressed);
+        delete expectedSuspendedBasal.index;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.duration = 600000;
+        expectedTempBasal2.time = '2014-09-25T17:30:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-25T18:30:00';
+        delete expectedTempBasal2.payload;
+        delete expectedTempBasal2.expectedDuration;
+
+        delete basal1.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedTempBasal1,
+          suspendResume,
+          expectedSuspendedBasal.done(),
+          expectedTempBasal2
+        ]);
+      });
     });
 
   });
