@@ -29,6 +29,16 @@
   margin: 0 auto;
 }
 
+.link {
+  composes: link from '../core/typography.module.less';
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
 .linkCentered {
   text-align: center;
 }
