@@ -653,8 +653,6 @@ describe('medtronicSimulator.js', function() {
 
         delete basal1.index;
 
-        console.log("GETEVENTS:", simulator.getEvents());
-
         expect(simulator.getEvents()).deep.equals([
           settings,
           basal1.done(),
