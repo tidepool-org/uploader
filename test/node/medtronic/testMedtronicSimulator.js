@@ -202,14 +202,7 @@ describe('medtronicSimulator.js', function() {
       expectedWizard.bolus = bolus;
     });
 
-    it('bolus record gets added to wizard when it is first', function() {
-      simulator.bolus(bolus);
-      simulator.wizard(wizard);
-
-      expect(simulator.getEvents()).deep.equals([bolus,expectedWizard.done()]);
-    });
-
-    it('bolus record gets added to wizard when it is last', function() {
+    it('bolus record gets added to wizard', function() {
       simulator.wizard(wizard);
       simulator.bolus(bolus);
       expect(simulator.getEvents()).deep.equals([expectedWizard.done(),bolus]);
@@ -665,5 +658,72 @@ describe('medtronicSimulator.js', function() {
       });
     });
 
+  });
+
+  describe('device event', function() {
+    it('basal is suspended by alarm', function() {
+
+      var basal1 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T01:00:00.000Z')
+        .with_deviceTime('2014-09-25T01:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.0);
+
+      var alarm = {
+        time: '2014-09-25T02:00:00.000Z',
+        deviceTime: '2014-09-25T02:00:00',
+        timezoneOffset: 0,
+        conversionOffset: 0,
+        deviceId: 'medtronic12345',
+        type: 'deviceEvent',
+        subType: 'alarm',
+        alarmType: 'auto_off'
+      };
+
+      var basal2 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T03:00:00.000Z')
+        .with_deviceTime('2014-09-25T03:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.2);
+      basal2.deviceId = 'medtronic12345';
+
+      var expectedSuspendResume = {
+        time: '2014-09-25T02:00:00.000Z',
+        deviceTime: '2014-09-25T02:00:00',
+        timezoneOffset: 0,
+        conversionOffset: 0,
+        deviceId: 'medtronic12345',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: {suspended: 'automatic', resumed: 'manual'},
+        payload: {cause: 'auto_off'},
+        duration: 3600000
+      };
+      expectedSuspendResume.annotations = [{code: 'medtronic/status/fabricated-from-device-event'}];
+
+      simulator.basal(basal1);
+      simulator.alarm(alarm);
+      simulator.basal(basal2);
+
+      var expectedBasal = builder.makeSuspendBasal()
+        .with_time('2014-09-25T02:00:00.000Z')
+        .with_deviceTime('2014-09-25T02:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_duration(3600000)
+        .done();
+
+      var expectedAlarm = _.cloneDeep(alarm);
+      expectedAlarm.status = expectedSuspendResume;
+
+      expect(simulator.getEvents()).deep.equals([
+        basal1.done(),
+        expectedAlarm,
+        expectedBasal
+      ]);
+    });
   });
 });
