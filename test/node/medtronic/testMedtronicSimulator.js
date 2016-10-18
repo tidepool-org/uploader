@@ -667,6 +667,76 @@ describe('medtronicSimulator.js', function() {
           expectedTempBasal2
         ]);
       });
+
+      it('ends during suspend', function() {
+
+        var suspendResume = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(600000)
+          .with_reason({resumed: 'manual'})
+          .set('index', 1234)
+          .set('resumeIndex', 1235)
+          .done();
+
+        var suspendedBasal = builder.makeSuspendBasal()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1234);
+
+        var basal3 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T18:30:00.000Z')
+            .with_deviceTime('2014-09-25T18:30:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
+
+        tempBasal.duration = 30000; //end in middle of suspend
+
+        simulator.pumpSettings(settings);
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.basal(basal3);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 30000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedSuspendedBasal1 = _.cloneDeep(suspendedBasal);
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'temp',
+          rate: 1,
+          suppressed : {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3,
+            scheduleName: 'standard'
+          }
+        };
+        expectedSuspendedBasal1.duration = 600000;
+        expectedSuspendedBasal1.set('suppressed', suppressed);
+        delete expectedSuspendedBasal1.index;
+
+        delete basal1.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          settings,
+          basal1.done(),
+          expectedTempBasal1,
+          suspendResume,
+          expectedSuspendedBasal1.done()
+        ]);
+      });
     });
 
   });
