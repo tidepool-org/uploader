@@ -111,4 +111,30 @@ describe('commonFunctions.js', function(){
       expect(finalBasal.duration).to.equal(0);
     });
   });
+
+  describe('computeMillisInCurrentDay', function(){
+
+    var basal;
+    beforeEach(function(){
+      basal = builder.makeScheduledBasal()
+        .with_deviceTime('2015-11-05T17:00:00')
+        .with_time('2015-11-05T17:00:00.000Z')
+        .with_rate(0.3)
+        .with_scheduleName('Test')
+        .with_conversionOffset(0)
+        .with_timezoneOffset(0);
+    });
+
+    it('returns milliseconds in current day', function(){
+      expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
+    });
+
+    it('rounds to nearest 15 minutes for clock skew', function(){
+      basal.with_time('2015-11-05T17:05:00.000Z')
+           .with_conversionOffset(420000);
+      console.log(basal);
+      expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
+    });
+  });
+
 });
