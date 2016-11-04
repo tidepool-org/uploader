@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.289.0",
+  "version": "0.289.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -48,6 +48,7 @@
     "chai": "3.5.0",
     "css-loader": "0.23.1",
     "d3": "3.5.16",
+    "difflet": "1.0.1",
     "eslint": "1.10.3",
     "eslint-plugin-react": "4.2.3",
     "express": "4.13.4",
