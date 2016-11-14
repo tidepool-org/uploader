@@ -102,7 +102,7 @@ Device-specific? (Add any device-specific notes/additions here.)
   - calibrations: see [the CGM checklist](CGMChecklist.md) instead
   - `[x]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
     - `[x]` device display time `from` (before change) and `to` (result of change)
-    - `[?]` agent of change (`automatic` or `manual`)
+    - `[ ]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
 
@@ -184,6 +184,7 @@ No Tidepool data model yet:
 Device-specific? (Add any device-specific notes/additions here.)
 
   - `[-]` various linked meter settings
+  - `[-]` both `grams` and `exchanges` are possible units for carb ratios
 
 #### Wizard
 
