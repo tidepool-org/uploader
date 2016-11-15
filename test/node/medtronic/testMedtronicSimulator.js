@@ -361,7 +361,8 @@ describe('medtronicSimulator.js', function() {
       var suppressed = {
         type: 'basal',
         deliveryType: 'scheduled',
-        rate: 1
+        rate: 1,
+        scheduleName: 'Alice'
       };
       expectedSuspendedBasal.duration = 3600000;
       expectedSuspendedBasal.set('suppressed', suppressed);
@@ -444,7 +445,7 @@ describe('medtronicSimulator.js', function() {
         tempBasalOverMidnight.jsDate = new Date(tempBasalOverMidnight.deviceTime);
       });
 
-      it('adds supressed info', function() {
+      it('adds suppressed info', function() {
 
         var expectedTempBasal = tempBasal.set('suppressed',{
           type: 'basal',
