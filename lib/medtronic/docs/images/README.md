@@ -6,3 +6,7 @@ To generate an .svg image from a .diag file, type the following in the console:
 
 	packetdiag -T SVG <file_name.diag>
 
+
+On Mac: To convert an .svg file into a .png file, first do `brew install librsvg`, and then:
+
+	rsvg-convert -h <image_height> <filename>.svg > <filename>.png
