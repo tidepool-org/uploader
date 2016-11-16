@@ -3,7 +3,8 @@
   node_height = 72
 
   0-7: carbInput (low)
-  8-11: ??
+  8-9: BG units [rotate=270]
+  10-11: ??
   12-13: carbInput\n (high) [rotate=270]
   14-15: bgInput\n (high) [rotate=270]
   16-20: ??
