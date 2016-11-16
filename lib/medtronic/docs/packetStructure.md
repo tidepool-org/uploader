@@ -2,8 +2,8 @@
 
 ### Head
 
-![bolus wizard head](images/wizard_head.svg)
+![bolus wizard head](images/wizard_head.png)
 
 ### Body
 
-![bolus wizard body](images/wizard_body.svg)
+![bolus wizard body](images/wizard_body.png)
