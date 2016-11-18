@@ -22,11 +22,11 @@
 
   32-39: insulinSensitivity
   40-47: bgTarget.low
-  48-55: recommended.correction
+  48-55: recommended.correction (low)
   56-71: recommended.carb
 
-  72-73: ??
-  74-75: correction\ntwo's comp\ncheck [rotate=270]
+  72: ??
+  73-75: recommend\ned.correction\n (high) [rotate=270]
   76-79: ??
   80-95: insulinOnBoard
   96-111: recommended.net
@@ -136,28 +136,28 @@
   <path d="M 640 152 L 640 224" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 640 224 L 448 224" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 448 224 L 448 152" fill="none" stroke="rgb(0,0,0)" />
-  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="126" x="544" y="193">recommended.correction</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="159" x="544" y="194">recommended.correction (low)</text>
   <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="64" y="224" />
   <path d="M 64 224 L 256 224" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 256 224 L 256 296" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 256 296 L 64 296" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 64 296 L 64 224" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="98" x="160" y="265">recommended.carb</text>
-  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="256" y="224" />
-  <path d="M 256 224 L 304 224" fill="none" stroke="rgb(0,0,0)" />
-  <path d="M 304 224 L 304 296" fill="none" stroke="rgb(0,0,0)" />
-  <path d="M 304 296 L 256 296" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="256" y="224" />
+  <path d="M 256 224 L 280 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 224 L 280 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 296 L 256 296" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 256 296 L 256 224" fill="none" stroke="rgb(0,0,0)" />
-  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="280" y="265">??</text>
-  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="304" y="224" />
-  <path d="M 304 224 L 352 224" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="268" y="265">??</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="72" x="280" y="224" />
+  <path d="M 280 224 L 352 224" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 352 224 L 352 296" fill="none" stroke="rgb(0,0,0)" />
-  <path d="M 352 296 L 304 296" fill="none" stroke="rgb(0,0,0)" />
-  <path d="M 304 296 L 304 224" fill="none" stroke="rgb(0,0,0)" />
-  <g transform="rotate(270,304,296)">
-    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="50" x="340" y="312">correction</text>
-    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="60" x="340" y="326">two's comp</text>
-    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="30" x="340" y="338">check</text>
+  <path d="M 352 296 L 280 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 296 L 280 224" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,280,296)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="60" x="316" y="324">recommend</text>
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="316" y="336">ed.correction</text>
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="32" x="316" y="350">(high)</text>
   </g>
   <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="96" x="352" y="224" />
   <path d="M 352 224 L 448 224" fill="none" stroke="rgb(0,0,0)" />
