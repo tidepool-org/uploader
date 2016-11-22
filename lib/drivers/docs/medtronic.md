@@ -112,8 +112,8 @@ Device-specific? (Add any device-specific notes/additions here.)
 
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
-  - `*[?]` units of value (read from device, not hard-coded)
-  - `*[?]` out-of-range values (LO or HI)
+  - `*[x]` units of value (read from device, not hard-coded)
+  - `[ ]` out-of-range values (LO or HI)
   - `[?]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
 No Tidepool data model yet:
@@ -123,6 +123,11 @@ No Tidepool data model yet:
   - `[ ]` categorization of value according to BG target(s) from settings
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+- Bayer meters don't send LO/HI values (or calibrations) to the pump
+
+- Records from mg/dL meters are always in mg/dL. If pump is set to mmol/L, the smbg record will be mg/dL and wizard record will be mmol/L.
+- mmol/L meters do not connect to 523/530G. A mmol/L "native" pump (like the Paradigm Veo) is needed to test what happens if mmol/L meter readings are uploaded.
 
 #### Settings
 
