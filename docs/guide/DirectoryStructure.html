@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Glossary of state tree terms | Tidepool Uploader</title>
+        <title>App &amp; directory structure | Tidepool Uploader</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -37,10 +37,10 @@
         
     
     
-    <link rel="next" href="../../docs/state/CustomMiddleware.html" />
+    <link rel="next" href="../../docs/guide/Architecture.html" />
     
     
-    <link rel="prev" href="../../docs/state/ExampleStateTree.html" />
+    <link rel="prev" href="../../docs/guide/FeatureOverview.html" />
     
 
         
@@ -49,9 +49,9 @@
         
         
     <div class="book"
-        data-level="1.5.2"
-        data-chapter-title="Glossary of state tree terms"
-        data-filepath="docs/state/StateTreeGlossary.md"
+        data-level="1.2"
+        data-chapter-title="App &amp; directory structure"
+        data-filepath="docs/guide/DirectoryStructure.md"
         data-basepath="../.."
         data-revision="Mon Nov 21 2016 17:49:45 GMT-0800 (PST)"
         data-innerlanguage="">
@@ -113,7 +113,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="docs/guide/DirectoryStructure.html">
+        <li class="chapter active" data-level="1.2" data-path="docs/guide/DirectoryStructure.html">
             
                 
                     <a href="../../docs/guide/DirectoryStructure.html">
@@ -189,7 +189,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.2" data-path="docs/state/StateTreeGlossary.html">
+        <li class="chapter " data-level="1.5.2" data-path="docs/state/StateTreeGlossary.html">
             
                 
                     <a href="../../docs/state/StateTreeGlossary.html">
@@ -625,83 +625,8 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="glossary-of-terms-in-the-tidepool-uploaders-state-tree">Glossary of Terms in the Tidepool Uploader&apos;s State Tree</h2>
-<h3 id="preliminary">Preliminary</h3>
-<blockquote>
-<p><strong>PWD</strong>: Person With Diabetes (or, conveniently enough for us at Tidepool, Person With Data). Used as a shorthand for a user that has a Tidepool account <em>with</em> data storage, as opposed to a Tidepool user (such as a clinic worker, diabetes educator, endocrinologist etc.) whose account is not set up for data storage.</p>
-</blockquote>
-<h3 id="userrelated-state">User-Related State</h3>
-<p>All the state that is driven by user information and/or the login process is handled in the reducers in <code>lib/redux/reducers/users.js</code>.</p>
-<h4 id="allusers"><code>allUsers</code></h4>
-<p><em>The <code>allUsers</code> property is an object keyed by the user IDs of the logged-in user as well as all the PWDs the logged-in user has permissions to upload for. The information stored under each <code>userID</code> is all the account and profile information accessible to the logged-in user for that user.</em></p>
-<p>In essence, the <code>allUsers</code> object is where all user information accessible to the logged-in user is stored. Keeping all this information in one place keyed by <code>userId</code> allows us to only reference users by <code>userId</code> elsewhere in the state tree, thus maintaining a &quot;normalized&quot; state tree with a single source of truth for user-related information. (Cf. Dan Abramov&apos;s presentation of the &quot;normalization&quot; problem in the README for his <a href="https://github.com/gaearon/normalizr#the-problem" target="_blank">normalizr library</a>.) Whenever a component needs additional information (that is, beyond <code>userId</code>) about a user, that information can be retrieved via lookup under the <code>userId</code>.</p>
-<p>Examples of properties that may be encoded in <code>allUsers</code> for a particular user include <code>fullName</code>, <code>emails</code>, a <code>patient</code> object that itself includes the PWD&apos;s <code>birthday</code> and <code>diagnosisData</code>. Also see the <a href="ExampleStateTree.html">example state tree</a> for full examples.</p>
-<h4 id="loggedinuser"><code>loggedInUser</code></h4>
-<p><em>The property <code>loggedInUser</code> encodes the <code>userID</code> of the currently logged-in user.</em></p>
-<p>If no user is (yet) logged in, the value of <code>loggedInUser</code> is <code>null</code>.</p>
-<h4 id="loginerrormessage"><code>loginErrorMessage</code></h4>
-<p><em>The property <code>loginErrorMessage</code> encodes the error message if there is an error on an attempt to log in.</em></p>
-<p>If there has not (yet) been a login attempt or login proceeded without error, the value of <code>loginErrorMessage</code> is <code>null</code>.</p>
-<h4 id="updateprofileerrormessage"><code>updateProfileErrorMessage</code></h4>
-<p><em>The property <code>updateProfileErrorMessage</code> encodes the error message if there is an error on an attempt to update the user&apos;s profile information.</em></p>
-<p>If there has not (yet) been an error updating profile information or profile information update proceeded without error, the value of <code>updateProfileErrorMessage</code> is <code>null</code>.</p>
-<h4 id="updateprofileerrordismissed"><code>updateProfileErrorDismissed</code></h4>
-<p><em>The property <code>updateProfileErrorDismissed</code>  is a flag indicating whether the user has dismissed the displayed <code>uploadProfileErrorMessage</code>. </em></p>
-<p>If the user has not dismissed the error or if there has been no error to dismiss, the value of <code>updateProfileErrorDismissed</code> is <code>null</code>. If the user has dismissed an existing error, the value is <code>true</code>.</p>
-<h4 id="createcustodialaccounterrormessage"><code>createCustodialAccountErrorMessage</code></h4>
-<p><em>The property <code>createCustodialAccountErrorMessage</code> encodes the error message if there is an error on an attempt to create a new custodial account.</em></p>
-<p>If there has not (yet) been an error creating a custodial account or account creation proceeded without error, the value of <code>createCustodialAccountErrorMessage</code> is <code>null</code>.</p>
-<h4 id="createcustodialaccounterrordismissed"><code>createCustodialAccountErrorDismissed</code></h4>
-<p><em>The property <code>createCustodialAccountErrorDismissed</code>  is a flag indicating whether the user has dismissed the displayed <code>createCustodialAccountErrorMessage</code>. </em></p>
-<p>If the user has not dismissed the error or if there has been no error to dismiss, the value of <code>createCustodialAccountErrorDismissed</code> is <code>false</code>. If the user has dismissed an existing error, the value is <code>true</code>.</p>
-<h4 id="targetdevices"><code>targetDevices</code></h4>
-<p><em>The property <code>targetDevices</code> is an object keyed by the user IDs of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable). The information stored under each <code>userId</code> is an array of the <code>deviceKey</code>s selected for that user as potential sources of data to upload to the Tidepool cloud.</em></p>
-<h4 id="targettimezones"><code>targetTimezones</code></h4>
-<p><em>The property <code>targetTimezones</code> is an object keyed by the user IDs of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable). The information stored under each <code>userId</code> is a string timezone name (from the <a href="http://www.iana.org/time-zones" target="_blank">IANA Time Zone Database</a> by way of the <a href="http://momentjs.com/timezone/" target="_blank">Moment Timezone</a> JavaScript library).</em></p>
-<p>In the future we plan to support the possibility of selecting a timezone for each device a user has selected as a source of data to upload to Tidepool. When we introduce such support, we will change the value of the information stored under each <code>userId</code> in <code>targetTimezones</code> to an object keyed by the <code>deviceKey</code>s selected by the user.</p>
-<h4 id="targetusersforupload"><code>targetUsersForUpload</code></h4>
-<p><em>The property <code>targetUsersForUpload</code> is an array consisting of the <code>userId</code>s of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable).</em></p>
-<p>This array drives the user selection dropdown menu that provides the interface for setting and changing the <code>uploadTargetUser</code>.</p>
-<h4 id="uploadtargetuser"><code>uploadTargetUser</code></h4>
-<p><em>The propery <code>uploadTargetUser</code> encodes the <code>userId</code> (for lookup in the <a href="#-allusers"><code>allUsers</code></a> branch of the state tree) of the PWD currently selected as the target for data upload.</em></p>
-<p>The combination of <code>uploadTargetUser</code> and <code>uploadTargetDevice</code> provides the path into <code>uploadsByUser</code> to the upload currently in progress, if any.</p>
-<hr>
-<h3 id="current-uploadrelated-state">(Current) Upload-Related State</h3>
-<p>All the state that is driven by the current (i.e., in progress) or recent upload(s) is handled in the reducers in <code>lib/redux/reducers/uploads.js</code>.</p>
-<h4 id="uploadprogress"><code>uploadProgress</code></h4>
-<p><em>The <code>uploadProgress</code> property is an object with two keys: <code>percentage</code> to record the percentage towards completion of the current upload in progress and <code>step</code> to encode the current step in the upload sequence (e.g., device detection, device read, POSTing data to the Tidepool data ingestion API).</em></p>
-<p>When there is not an upload in progress, the value of <code>uploadProgress</code> is <code>null</code>.</p>
-<h4 id="uploadsbyuser"><code>uploadsByUser</code></h4>
-<p><em>The <code>uploadsByUser</code> property is an object keyed by the user IDs of all the PWDs the logged-in user has permissions to upload for (including the logged-in user, if applicable). Within each user ID is another object keyed by the devices that user has selected to upload data from, if any. The information stored at each userId, deviceKey path is semi-ephemeral information about the state of current and recent uploads.</em></p>
-<p>One example of a property that is encoded in the object at the termination of each <code>userId</code>, <code>deviceKey</code> path is the <code>history</code> of the user&apos;s uploading for that device, which is an array of objects with up to a maximum of <code>start</code> and <code>finish</code> timestamps and a boolean <code>error</code> to encode whether the upload was successful. Other examples are additional boolean flags regarding the upload&apos;s state: <code>completed</code>, <code>failed</code>, <code>successful</code>, and <code>uploading</code>. If an upload failed due to an error, the error object itself is included in an <code>error</code> field. For block-mode devices, there are additional flags and fields such as boolean flags for <code>choosingFile</code> and <code>readingFile</code> and <code>file</code> object encoding the <code>name</code> and <code>data</code> from a selected file.</p>
-<h4 id="uploadtargetdevice"><code>uploadTargetDevice</code></h4>
-<p><em>The property <code>uploadTargetDevice</code> encodes the <code>key</code> (for lookup in the <a href="#-devices"><code>devices</code></a> branch of the state tree) of the device currently being uploaded when an upload is in progress.</em></p>
-<p>When an upload is <em>not</em> in progress, the value of <code>uploadTargetDevice</code> is <code>null</code>. The combination of <code>uploadTargetUser</code> and <code>uploadTargetDevice</code> provides the path into <code>uploadsByUser</code> to the upload currently in progress, if any.</p>
-<hr>
-<h3 id="all-other-app-state">All Other App State</h3>
-<p>All other app state is handled in the reducers in <code>lib/redux/reducers/misc.js</code>.</p>
-<h4 id="blipurls"><code>blipUrls</code></h4>
-<p><em>The property <code>blipUrls</code> is an object with three properties: <code>forgotPassword</code>, <code>signUp</code>, and <code>viewDataLink</code>, all URLs for Tidepool&apos;s webapp blip.</em></p>
-<p>The <code>forgotPassword</code> and <code>signUp</code> links are built as part of the app initialization step for the configured or chosen server environment (the default is production).</p>
-<p>The <code>viewDataLink</code> is built every time the <code>uploadTargetUser</code> is chosen or changed.</p>
-<p><strong>NB:</strong> Storing these URLs as state is not ideal. Both the forgot password and sign-up URLs are essentially <em>derived</em> state - derived from a combination of route paths (e.g., <code>/signup</code>), which are constants, and a single piece of state - the server environment. The <code>viewDataLink</code> is also derived state from a combination of route paths, the server environment, and the <code>uploadTargetUser</code>. For now, we are keeping these URLs in the state tree because we do <em>not</em> represent the server environment in the state tree. We don&apos;t represent the server environment in the state tree because we have code running separately from the main application (in the Chrome App&apos;s &quot;background page&quot;) that provides a hidden interface (for internal Tidepool use) for changing the server environment.</p>
-<h4 id="devices"><code>devices</code></h4>
-<p><em>The <code>devices</code> property on the state tree is an object keyed by the <code>id</code> of each device (or data source) supported by the Tidepool Uploader.</em></p>
-<p> <code>devices</code> <em>almost</em> does not belong in the state tree at all, because it is <em>almost</em> a constant. However, it is subject to filtering based on operating system; this filtering happens as part of the app initialization step when a user launches the Tidepool Uploader. The property <code>enabled</code> - itself an object with <code>mac</code> and <code>win</code> as its keys - encodes the devices Tidepool currently support on each platform. Similarly, the property <code>showDriverLink</code> encodes, for each device, whether the <a href="http://tidepool.org/downloads/" target="_blank">Tidepool USB driver</a> is required in order to upload the device on each platform.</p>
-<p>The properties of each &quot;device&quot; in <code>devices</code> should be fairly self-explanatory. For example, the <code>instructions</code> property stores the text that appears in the UI under each device name to give the user some indication of how to proceed (e.g., what type of cable is required to connect a particular device).</p>
-<h4 id="dropdown"><code>dropdown</code></h4>
-<p><em>The Tidepool Uploader inclues a dropdown menu, which is accessible after logging in by clicking on the area where the logged-in user&apos;s name is displayed in the upper-right corner. The property <code>dropdown</code> in the state tree encodes whether this menu is currently in its open (dropped-down) state (<code>true</code>) or closed and hidden (<code>false</code>).</em></p>
-<h4 id="page"><code>page</code></h4>
-<p><em>The property <code>page</code> encodes the current &quot;page&quot; of the application that is active. Possible values are, for example, <code>SETTINGS</code> for the device selection &quot;page&quot; and <code>MAIN</code> for the main upload interface shown in <a href="ExampleStateTree.html">the app snapshot</a>.</em></p>
-<p>Since the Tidepool Uploader is a Chrome App that runs <em>outside</em> of the browser environment and thus does not have URL-based navigation, we use the simple <code>page</code> variable and nothing more to record the state that in a browser-based single-page app might be managed by a larger, more robust routing solution such as <a href="https://github.com/rackt/react-router" target="_blank">React Router</a>. As the functionality in the uploader grows - and especially if the addition of <em>back</em> and <em>forward</em> navigation buttons is planned - we may revisit this decision and bring in a more featureful single-page app routing solution.</p>
-<h4 id="unsupported"><code>unsupported</code></h4>
-<p><em>The propery <code>unsupported</code> encodes whether the running version of the Tidepool Uploader is outdated from the perspective of Tidepool&apos;s data ingestion API. <strong>This property defaults to true</strong>; in other words, any instance of the uploader is assumed to be outdated and unsupported until it proves itself otherwise.</em></p>
-<p>To ensure the highest possible standards of data quality, it is very important for us at Tidepool to prevent uploaders that have been succeeded by newer versions from uploading to the Tidepool cloud. To this end, we have implemented an &quot;info&quot; endpoint on our data ingestion API that responds with (among other things) the minimum version of the Tidepool Uploader that the data ingestion API will accept data from.</p>
-<h4 id="working"><code>working</code></h4>
-<p><em>The <code>working</code> property is an object with a small handful of keys that record the app&apos;s current state with respect to certain asynchronous actions.</em></p>
-<p>The properties <code>initializingApp</code> (which defaults to <code>true</code>) and <code>checkingVersion</code> serve to prevent rendering the warning message about the Tidepool Uploader being unsupported before the application has finished checking against the Tidepool data ingestion API to determine whether it is outdated and unsupported. (See <a href="#-unsupported">unsupported</a> above, taking care to note that <code>unsupported</code> defaults to <code>true</code>, so without some other indicator(s) of the app&apos;s state with respect to validation of the current version against the Tidepool data ingestion API, the &quot;uploader unsupported&quot; warning message would render immediately.)</p>
-<p>The property <code>fetchingUserInfo</code> is used to render a &quot;Logging in...&quot; message after a user&apos;s credentials have been submitted but the uploader is still waiting for a (complete) response from the Tidepool platform with the logged-in user&apos;s information.</p>
-<p>Finally, the property <code>uploading</code> is used to disable certain UI features while an upload is in progress. When <code>uploading</code> is true, the dropdown menu for selecting the <code>uploadTargetUser</code> as well as the link to &quot;Choose devices&quot; in the dropdown menu are disabled until the current upload is completed, as changing the target user for upload and/or the devices chosen for upload while an upload is in progress for a particular user and device is not supported behavior.</p>
+                        <h3 id="app--directory-structure">App &amp; directory structure</h3>
+<p>Coming soon!</p>
 
                     
                     </section>
@@ -712,10 +637,10 @@
         </div>
 
         
-        <a href="../../docs/state/ExampleStateTree.html" class="navigation navigation-prev " aria-label="Previous page: Example state tree"><i class="fa fa-angle-left"></i></a>
+        <a href="../../docs/guide/FeatureOverview.html" class="navigation navigation-prev " aria-label="Previous page: Overview of features"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../../docs/state/CustomMiddleware.html" class="navigation navigation-next " aria-label="Next page: Custom middleware"><i class="fa fa-angle-right"></i></a>
+        <a href="../../docs/guide/Architecture.html" class="navigation navigation-next " aria-label="Next page: Architecture"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

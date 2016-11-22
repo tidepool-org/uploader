@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Abbott FreeStyle | Tidepool Uploader</title>
+        <title>Animas Vibe CGM | Tidepool Uploader</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -37,10 +37,10 @@
         
     
     
-    <link rel="next" href="../../../lib/drivers/docs/abbottPrecisionXtra.html" />
+    <link rel="next" href="../../../lib/drivers/docs/animasPingAndVibe.html" />
     
     
-    <link rel="prev" href="../../../lib/drivers/docs/index.html" />
+    <link rel="prev" href="../../../lib/drivers/docs/abbottPrecisionXtra.html" />
     
 
         
@@ -49,9 +49,9 @@
         
         
     <div class="book"
-        data-level="3.1"
-        data-chapter-title="Abbott FreeStyle"
-        data-filepath="lib/drivers/docs/abbottFreeStyleLite.md"
+        data-level="3.3"
+        data-chapter-title="Animas Vibe CGM"
+        data-filepath="lib/drivers/docs/animasCGM.md"
         data-basepath="../../.."
         data-revision="Mon Nov 21 2016 17:49:45 GMT-0800 (PST)"
         data-innerlanguage="">
@@ -311,7 +311,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="3.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
+        <li class="chapter " data-level="3.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
             
                 
                     <a href="../../../lib/drivers/docs/abbottFreeStyleLite.html">
@@ -341,7 +341,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.3" data-path="lib/drivers/docs/animasCGM.html">
+        <li class="chapter active" data-level="3.3" data-path="lib/drivers/docs/animasCGM.html">
             
                 
                     <a href="../../../lib/drivers/docs/animasCGM.html">
@@ -625,8 +625,8 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="abbott-freestyle-lite-meter">Abbott FreeStyle Lite Meter</h1>
-<h2 id="checklist-for-blood-glucose-meter-implementation">Checklist for Blood Glucose Meter Implementation</h2>
+                        <h1 id="animas-vibe">Animas Vibe</h1>
+<h2 id="checklist-for-cgm-implementation">Checklist for CGM Implementation</h2>
 <p>(Key:</p>
 <ul>
 <li><code>[x]</code> available in data protocol/documented in spec and implemented</li>
@@ -636,22 +636,110 @@
 <li><code>[ ]</code> unavailable in data protocol and/or not documented in spec and not yet implemented)</li>
 </ul>
 <h3 id="required-if-present">Required if Present</h3>
+<h4 id="cbg">CBG</h4>
 <ul>
-<li><code>[x]</code> smbg values</li>
-<li><code>*[?]</code> units of smbg values (read from device, not hard-coded)</li>
+<li><code>[x]</code> cbg values</li>
+<li><code>[ ]</code> units of cbg values (read from device, not hard-coded)</li>
 <li><code>[x]</code> out-of-range values (LO or HI)</li>
-<li><code>*[?]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
-<li><code>[?]</code> date &amp; time settings changes</li>
-<li><code>[ ]</code> blood ketone values</li>
-<li><code>[ ]</code> units of blood ketone values (read from device, not hard-coded)</li>
-<li><code>[ ]</code> ketone out-of-range values</li>
-<li><code>[ ]</code> ketone out-of-range value thresholds</li>
+<li><code>[ ]</code> out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)</li>
 </ul>
-<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h4 id="device-events">Device Events</h4>
 <ul>
-<li><code>[x]</code> control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded</li>
-<li><code>[ ]</code> device settings, other than date &amp; time (e.g., target blood glucose range)</li>
-<li><code>[ ]</code> tag/note (e.g., pre- vs. post-meal)</li>
+<li><code>[x]</code> calibrations<ul>
+<li><code>[x]</code> calibration value</li>
+<li><code>[ ]</code> units of calibration value (read from device, not hard-coded)</li>
+</ul>
+</li>
+<li><code>*[-]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
+<li><code>[ ]</code> device display time <code>from</code> (before change) and <code>to</code> (result of change)</li>
+<li><code>[ ]</code> agent of change (<code>automatic</code> or <code>manual</code>)</li>
+<li><code>[ ]</code> timezone</li>
+<li><code>[ ]</code> reason for change (read from device)</li>
+</ul>
+</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h4 id="settings">Settings</h4>
+<ul>
+<li><code>[ ]</code> units preference for BG display</li>
+<li><code>[ ]</code> units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)</li>
+<li><code>*[-]</code> transmitter ID</li>
+<li><code>*[-]</code> low alert settings<ul>
+<li><code>*[-]</code> enabled</li>
+<li><code>*[-]</code> level/threshold</li>
+<li><code>*[-]</code> snooze threshold</li>
+</ul>
+</li>
+<li><code>*[-]</code> high alert settings<ul>
+<li><code>*[-]</code> enabled</li>
+<li><code>*[-]</code> level/threshold</li>
+<li><code>*[-]</code> snooze threshold</li>
+</ul>
+</li>
+<li><code>*[-]</code> rate-of-change alerts<ul>
+<li><code>*[-]</code> fall rate alert<ul>
+<li><code>*[-]</code> enabled</li>
+<li><code>*[-]</code> rate threshold for alerting</li>
+</ul>
+</li>
+<li><code>*[-]</code> rise rate alert<ul>
+<li><code>*[-]</code> enabled</li>
+<li><code>*[-]</code> rate threshold for alerting</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>*[-]</code> out-of-range alerts<ul>
+<li><code>*[-]</code> enabled</li>
+<li><code>*[-]</code> snooze time between alerts</li>
+</ul>
+</li>
+<li><code>[ ]</code> predictive alerts<ul>
+<li><code>[ ]</code> low prediction<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> time sensitivity (minutes to predicted low for alerting)</li>
+</ul>
+</li>
+<li><code>[ ]</code> high prediction<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> time sensitivity (minutes to predicted high for alerting)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[-]</code> calibration alerts/reminders<ul>
+<li><code>[?]</code> pre-reminder</li>
+<li><code>[?]</code> overdue alert</li>
+</ul>
+</li>
+</ul>
+<p>Settings history:</p>
+<ul>
+<li><code>[ ]</code> device stores all changes to settings OR</li>
+<li><code>[x]</code> device only returns current settings at time of upload</li>
+</ul>
+<p>No Tidepool data model (yet): volume and/or vibrate mode of all alerts (can/should go in <code>payload</code>).</p>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h4 id="bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
+<ul>
+<li><code>[ ]</code> index<ul>
+<li><code>[ ]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
+<li><code>[ ]</code> internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR</li>
+<li><code>[ ]</code> ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time</li>
+</ul>
+</li>
+<li><code>[ ]</code> date &amp; time settings changes</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
+<blockquote>
+<p><strong>NB:</strong> You can and should add to this section if there are other data types documented in the device&apos;s data protocol specification but not part of Tidepool&apos;s data model (yet).</p>
+</blockquote>
+<ul>
+<li><code>[ ]</code> activity/exercise</li>
+<li><code>[ ]</code> food (e.g., Dexcom allows logging carb events)</li>
+<li><code>[ ]</code> notes/other events</li>
 </ul>
 
                     
@@ -663,10 +751,10 @@
         </div>
 
         
-        <a href="../../../lib/drivers/docs/index.html" class="navigation navigation-prev " aria-label="Previous page: checklists"><i class="fa fa-angle-left"></i></a>
+        <a href="../../../lib/drivers/docs/abbottPrecisionXtra.html" class="navigation navigation-prev " aria-label="Previous page: Abbott Precision Xtra"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../../../lib/drivers/docs/abbottPrecisionXtra.html" class="navigation navigation-next " aria-label="Next page: Abbott Precision Xtra"><i class="fa fa-angle-right"></i></a>
+        <a href="../../../lib/drivers/docs/animasPingAndVibe.html" class="navigation navigation-next " aria-label="Next page: Animas Ping and Vibe Insulin Pumps"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
