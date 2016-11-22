@@ -1,11 +1,15 @@
 # Summary
 
-* [application state](docs/state/README.md)
-  * [Example state tree](docs/state/ExampleStateTree.md)
-  * [Glossary of state tree terms](docs/state/StateTreeGlossary.md)
-  * [Custom middleware](docs/state/CustomMiddleware.md)
+* [Tidepool uploader developer guide](docs/StartHere.md)
+  * [Overview of features](docs/guide/FeatureOverview.md)
+  * [App & directory structure](docs/guide/DirectoryStructure.md)
+  * [Architecture](docs/guide/Architecture.md)
+  * [Code style](docs/guide/CodeStyle.md)
+  * [Application state via Redux](docs/state/README.md)
+    * [Example state tree](docs/state/ExampleStateTree.md)
+    * [Glossary of state tree terms](docs/state/StateTreeGlossary.md)
+    * [Custom middleware](docs/state/CustomMiddleware.md)
 
-* ["bootstrapping" to UTC (BtUTC)](docs/BootstrappingToUTC.md)
 
 * [checklist TEMPLATES](docs/checklisttemplates/README.md)
    * [BGM Checklist](docs/checklisttemplates/BGMChecklist.md)
@@ -25,6 +29,7 @@
    * [Tandem Insulin Pumps](lib/drivers/docs/tandem.md)
 
 * [miscellaneous](docs/misc/README.md)
+   * ["bootstrapping" to UTC (BtUTC)](docs/BootstrappingToUTC.md)
    * [use of CSS modules](docs/misc/CSSModules.md)
    * [PWD "simulators"](docs/misc/PWDSimulators.md)
    * [challenges of flat basal profiles](docs/misc/FlatRateBasals.md)
