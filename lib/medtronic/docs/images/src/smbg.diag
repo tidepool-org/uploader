@@ -1,0 +1,13 @@
+{
+	colwidth = 32
+	node_height = 92
+	
+	0-7: 0x0A (packet type)
+	8-15: amount (low)
+	
+	16-31: date/time
+	32-33: amount\n(high) [rotate=270]
+	34-47: date/time
+	48: amount (high) [rotate=270]
+	49-55: date/time
+}

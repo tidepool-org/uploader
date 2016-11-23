@@ -1,7 +1,0 @@
-{
-  colwidth = 32
-  node_height = 72
-
-  0-7: 0x5B (packet type)
-  8-15: bg (low)
-}
