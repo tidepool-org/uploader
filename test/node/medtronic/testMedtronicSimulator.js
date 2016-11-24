@@ -199,13 +199,14 @@ describe('medtronicSimulator.js', function() {
 
       expectedWizard = _.cloneDeep(wizard);
       delete expectedWizard.jsDate;
-      expectedWizard.bolus = bolus;
+      expectedWizard.bolus = _.clone(bolus);
+      delete expectedWizard.bolus.jsDate;
     });
 
     it('bolus record gets added to wizard', function() {
       simulator.wizard(wizard);
       simulator.bolus(bolus);
-      expect(simulator.getEvents()).deep.equals([expectedWizard.done(),bolus]);
+      expect(simulator.getEvents()).deep.equals([expectedWizard.done()]);
     });
   });
 
