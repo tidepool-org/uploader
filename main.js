@@ -158,8 +158,8 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
     innerBounds: {
       width: width,
       height: height,
-      left: Math.round((screenWidth-width)/2),
-      top: Math.round((screenHeight-height)/2),
+      left: Math.max(Math.round((screenWidth-width)/2),0) ,
+      top: Math.max(Math.round((screenHeight-height)/2),0),
       minWidth: width,
       minHeight: height
     }
