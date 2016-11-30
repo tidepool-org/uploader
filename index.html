@@ -51,7 +51,7 @@
         data-chapter-title="Introduction"
         data-filepath="README.md"
         data-basepath="."
-        data-revision="Mon Nov 21 2016 17:49:45 GMT-0800 (PST)"
+        data-revision="Tue Nov 29 2016 21:31:27 GMT-0800 (PST)"
         data-innerlanguage="">
     
 
@@ -645,7 +645,10 @@
 <li>Run <code>npm start</code> (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)</li>
 <li>Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).</li>
 <li>Click &quot;Load Unpacked Extension&quot;.</li>
-<li>Choose the directory where you cloned the repository and click OK.<sup><a href="#fn_a" id="reffn_a">a</a></sup></li>
+<li>Choose the directory where you cloned the repository and click OK.<blockquote>
+<p>You may see a warning from Chrome concerning the inclusion of a key file. (<code>This extension includes the key file &apos;&lt;project_path&gt;/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem</code>) This is due to the loading of all the <code>node_modules</code> and their various internal testing utilities. This isn&apos;t a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored.</p>
+</blockquote>
+</li>
 <li>To run it, you can choose &quot;Launch&quot; from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.</li>
 <li>To open the JavaScript console/Chrome Dev Tools, click on the <code>index.html</code> link in the section of chrome://extensions devoted to the uploader. (Note: this link will only appear after you&apos;ve launched the uploader.)</li>
 <li>React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use &apos;Reload&apos; from chrome://extensions to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the extension. You will definitely need to reload any time you change the manifest.</li>
@@ -708,9 +711,6 @@ $ npm start
 <li>Follow instructions in secrets for actually publishing to the Chrome store.</li>
 <li>Fill out the release notes for the tag on GitHub and attach <code>dist.zip</code> to your notes. This is so that if you built for the development Chrome store, you can then distribute the same <code>dist.zip</code> to the production Chrome store without having to rebuild everything. If the tag is known to <em>not</em> be a release candidate, mark it as a pre-release.</li>
 </ol>
-<blockquote id="fn_a">
-<sup>a</sup>. You may see a warning from Chrome concerning the inclusion of a key file. (<code>This extension includes the key file &apos;&lt;project_path&gt;/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem</code>) This is due to the loading of all the <code>node_modules</code> and their various internal testing utilities. This isn&apos;t a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored.<a href="#reffn_a" title="Jump back to footnote [a] in the text."> &#x21A9;</a>
-</blockquote>
 
                     
                     </section>

@@ -53,7 +53,7 @@
         data-chapter-title="&quot;bootstrapping&quot; to UTC (BtUTC)"
         data-filepath="docs/BootstrappingToUTC.md"
         data-basepath=".."
-        data-revision="Mon Nov 21 2016 17:49:45 GMT-0800 (PST)"
+        data-revision="Tue Nov 29 2016 21:31:27 GMT-0800 (PST)"
         data-innerlanguage="">
     
 
@@ -625,7 +625,8 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="background">Background</h2>
+                        <!-- NB: this markdown file is linked directly from a Tidepool blog post, DON'T MOVE -->
+<h2 id="background">Background</h2>
 <p>At present, no diabetes device that Tidepool knows about represents the date &amp; time at which device events occur in either UTC time or in a way that is anchored to UTC time - i.e., providing timezone and/or offset-from-UTC information. Because we are correlating data from many different sources for each user, we rely on UTC time as the absolute scale on which to place all the time series data ingested by the Tidepool platform.</p>
 <h2 id="timezoneoffsetutil">TimezoneOffsetUtil</h2>
 <p>The module in <code>lib/TimezoneOffsetUtil.js</code> is our best effort to &quot;bootstrap&quot; from device local time (<code>deviceTime</code>) to true UTC from a combination of three sources of information:</p>
