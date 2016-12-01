@@ -1,3 +1,5 @@
+<!-- NB: this markdown file is linked directly from a Tidepool blog post, DON'T MOVE -->
+
 ## Background
 
 At present, no diabetes device that Tidepool knows about represents the date & time at which device events occur in either UTC time or in a way that is anchored to UTC time - i.e., providing timezone and/or offset-from-UTC information. Because we are correlating data from many different sources for each user, we rely on UTC time as the absolute scale on which to place all the time series data ingested by the Tidepool platform.

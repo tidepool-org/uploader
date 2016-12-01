@@ -1,4 +1,6 @@
-## Checklist for Animas CGM Implementation
+# Animas Vibe
+
+## Checklist for CGM Implementation
 
 (Key:
 
