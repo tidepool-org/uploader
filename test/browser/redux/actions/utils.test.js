@@ -19,9 +19,110 @@
 
 import _ from 'lodash';
 
+import configureStore from 'redux-mock-store';
+
+import errorText from '../../../../lib/redux/constants/errors';
 import * as utils from '../../../../lib/redux/actions/utils';
+import { addInfoToError } from '../../../../lib/redux/utils/errors';
 
 describe('utils', () => {
+  describe('makeUploadCb', () => {
+    const dispatch = sinon.spy();
+    afterEach(() => {
+      dispatch.reset();
+    });
+    const errCode = 'E_DEVICE_UPLOAD';
+    const utc = new Date().toISOString();
+    const mockStore = configureStore([])({
+      // just providing the minimum initial state to avoid errors on these tests
+      devices: {
+        foo: {
+          source: {
+            type: 'device',
+            driverId: 'bar'
+          }
+        }
+      },
+      uploadTargetDevice: 'foo',
+      version: '0.100.0'
+    });
+    const { getState } = mockStore;
+    const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
+    it('should return a function', () => {
+      expect(typeof fn).to.equal('function');
+    });
+
+    it('the returned function should use the configured errCode on error if error does not have a code', () => {
+      const err = new Error('Uh oh...');
+      const displayErr = new Error(errorText[errCode]);
+
+      expect(dispatch.callCount).to.equal(0);
+      fn(err);
+      expect(dispatch.callCount).to.equal(1);
+      expect(dispatch.firstCall.args[0]).to.deep.equal({
+        type: 'UPLOAD_FAILURE',
+        error: true,
+        payload: addInfoToError(displayErr, {
+          details: err.message,
+          utc: utc,
+          name: err.name,
+          step: null,
+          datasetId: null,
+          requestTrace: null,
+          code: errCode,
+          version: '0.100.0'
+        }),
+        meta: {
+          source: 'USER_VISIBLE',
+          metric: {
+            eventName: 'Upload Failed bar',
+            properties: {
+              type: 'device',
+              source: 'bar',
+              error: displayErr,
+            }
+          }
+        }
+      });
+    });
+
+    it('the returned function should use the argument error\'s code when present', () => {
+      const err = new Error('Uh oh...');
+      const specificErrCode = 'E_CARELINK_UNSUPPORTED';
+      err.code = specificErrCode;
+      const displayErr = new Error(errorText[specificErrCode]);
+
+      expect(dispatch.callCount).to.equal(0);
+      fn(err);
+      expect(dispatch.callCount).to.equal(1);
+      expect(dispatch.firstCall.args[0]).to.deep.equal({
+        type: 'UPLOAD_FAILURE',
+        error: true,
+        payload: addInfoToError(displayErr, {
+          details: err.message,
+          utc: utc,
+          name: err.name,
+          step: null,
+          datasetId: null,
+          requestTrace: null,
+          code: specificErrCode,
+          version: '0.100.0'
+        }),
+        meta: {
+          source: 'USER_VISIBLE',
+          metric: {
+            eventName: 'Upload Failed bar',
+            properties: {
+              type: 'device',
+              source: 'bar',
+              error: displayErr,
+            }
+          }
+        }
+      });
+    });
+  });
+
   describe('mergeProfileUpdates', () => {
     const profile = {
       emails: ['joe@example.com'],
@@ -104,6 +205,5 @@ describe('utils', () => {
         username: 'joe@example.com'
       });
     });
-
   });
 });
