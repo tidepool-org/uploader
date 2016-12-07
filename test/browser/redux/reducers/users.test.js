@@ -562,6 +562,42 @@ describe('users', () => {
       })).to.deep.equal(['d4e5f6']);
     });
 
+    describe('SET_ALL_USERS', () => {
+      it('should handle when logged in is VCA', () => {
+        const profile = {patient: {b: 2}};
+        const user = {userid: 'x1y2z3', profile: {fullName: 'VCA Foo'}, roles: ['clinic']};
+        const memberships = [
+          {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
+          {userid: 'd4e5f6', profile: {patient: {b: 2}}},
+          user
+        ];
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['a1b2c3','d4e5f6']);
+      });
+      it('should handle non VCA roles', () => {
+        const profile = {patient: {b: 2}};
+        const user = {userid: '888', profile: { patient: {c: 1}}, roles: ['other']};
+        const memberships = [
+          {userid: 'd4e5f6', profile: {patient: {b: 2}}},
+          {userid: 'x1y2z3', profile: {patient: {a: 1}}},
+          user
+        ];
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['d4e5f6', 'x1y2z3', '888']);
+      });
+      it('should handle normal accounts', () => {
+        const profile = {a: 1};
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['d4e5f6']);
+      });
+    });
+
     it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
       const action = {
         type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
