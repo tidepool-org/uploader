@@ -1,9 +1,53 @@
-## Bolus wizard
+## Basals
 
-### Head
+### Scheduled basal
+![basal](images/svg/basal.svg)
 
-![bolus wizard head](images/svg/wizard_head.svg)
+### Temp basal
+![temp basal](images/svg/tempBasal.svg)
 
-### Body
+#### Temp basal duration
+![temp basal duration](images/svg/tempBasalDuration.svg)
 
-![bolus wizard body](images/svg/wizard_body.svg)
+## Boluses
+
+### Manual bolus
+![bolus](images/svg/bolus.svg)
+
+### Wizard bolus
+
+![bolus wizard](images/svg/wizard.svg)
+
+
+## Device events
+
+### Pump alarm
+![pump alarm](images/svg/alarmPump.svg)
+
+### Suspend
+![suspend](images/svg/suspend.svg)
+
+### Prime
+![prime](images/svg/prime.svg)
+
+### Rewind
+![rewind](images/svg/rewind.svg)
+
+
+## SMBG
+
+### Manual
+![smbg](images/svg/smbg.svg)
+
+### Linked
+![linked smbg](images/svg/smbgLinked.svg)
+
+
+## Device settings
+
+### Basal schedules
+
+![basal schedules](images/svg/basalSchedules.svg)
+
+### Wizard settings
+![wizard settings](images/svg/wizardSettings.svg)
