@@ -36,4 +36,4 @@
    * [PWD "simulators"](docs/misc/PWDSimulators.md)
    * [challenges of flat basal profiles](docs/misc/FlatRateBasals.md)
    * [2015.06 CareLink CSV updates](docs/misc/2015.06.29CareLinkCSVChanges.md)
-   * [Medtronic packet diagrams](lib/medtronic/docs/PacketStructure.md)
+   * [Medtronic packet diagrams](lib/medtronic/docs/packetStructure.md)
