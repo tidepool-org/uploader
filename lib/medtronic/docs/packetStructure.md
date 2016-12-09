@@ -1,7 +1,7 @@
 ## Basals
 
 ### Scheduled basal
-![basal](images/png/basal.png)
+![basal](images/svg/basal.svg)
 
 ### Temp basal
 ![temp basal](images/svg/tempBasal.svg)
