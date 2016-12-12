@@ -1,3 +1,7 @@
+# Medtronic packet structure
+
+Below we've documented the structure of the various packets in the Medtronic pump history, matching the fields and record types to our [data model](http://developer.tidepool.io/data-model). Unknown bits are designated with `??`.
+
 ## Basals
 
 ### Scheduled basal
