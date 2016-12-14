@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.289.16",
+  "version": "0.292.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -11,8 +11,9 @@
     "browser-tests": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome",
     "node-tests": "mocha test/node/ && mocha test/node/**/*.js",
     "test-watch": "./node_modules/karma/bin/karma start --no-single-run",
+    "prestart": "rm -rf _book/",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
-    "start-hot": "bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
+    "start-hot": "npm run prestart && bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
     "build": "bash ./scripts/build.sh",
     "lint": "./node_modules/.bin/eslint lib test",
     "build-docs": "./scripts/update-gh-pages.sh",
