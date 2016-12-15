@@ -92,4 +92,102 @@ describe('processData.js', function() {
     });
   });
 
+  describe('cgm', function() {
+    describe('low glucose suspend', function() {
+
+      it('is suspended and resumed by user ', function() {
+
+        var suspend1 = {
+            head: [ 0x1E, 0x02 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T12:15:50.000Z'),
+            index: 1
+        };
+
+        var suspend2 = {
+            head: [ 0x1E, 0x43 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T12:16:07.000Z'),
+            index: 2
+        };
+
+        var suspend3 = {
+            head: [ 0x1E, 0x65 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T12:16:17.000Z'),
+            index: 3
+        };
+
+        var resume1 = {
+            head: [ 0x1F, 0xA6 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T12:17:08.000Z'),
+            index: 4
+        };
+
+        var resume2 = {
+            head: [ 0x1F, 0xC0 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T12:17:10.000Z'),
+            index: 5
+        };
+
+        var expected = {
+          'time': '2016-12-14T12:15:50.000Z',
+          'timezoneOffset': 0,
+          'clockDriftOffset': 0,
+          'conversionOffset': 0,
+          'deviceTime': '2016-12-14T12:15:50',
+          'type': 'deviceEvent',
+          'subType': 'status',
+          'status': 'suspended',
+          'reason': {
+            'suspended': 'automatic',
+            'resumed': 'manual'
+          },
+          'duration': 78000,
+          'index': 1,
+          'resumeIndex': 4,
+          'payload': {
+            'lgs_types': [
+              'Suspend user',
+              'Resume user'
+            ],
+            'logIndices': [
+              1
+            ]
+          }
+        };
+
+        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1,resume2]);
+        expect(result[0]).to.deep.equal(expected);
+      });
+
+/*
+      it('resumes automatically after two hours with no response by user', function () {
+
+      });
+
+      it('resumes automatically after two hours when user suspends', function() {
+
+      });*/
+
+    });
+  });
+
 });
