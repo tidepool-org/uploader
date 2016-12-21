@@ -19,6 +19,8 @@
 
 Device-specific? (Add any device-specific notes/additions here.)
 
+- Medtronic also provides the raw (interstitial) signal, which we store in the payload
+
 #### Device Events
   - `[x]` calibrations
     - `[x]` calibration value
@@ -31,7 +33,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
-While the sensor has its own series of time change records, we only record the time changes from the pump as not to have duplicate data.
+Time change events for the CGM have `cgm` in the payload, while pump time changes have `pump` in the payload.
 
 #### Settings
 
