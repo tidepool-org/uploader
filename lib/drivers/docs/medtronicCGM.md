@@ -14,7 +14,7 @@
 
   - `[x]` cbg values
   - `[?]` units of cbg values (read from device, not hard-coded)
-  - `[ ]` out-of-range values (LO or HI)
+  - `[?]` out-of-range values (LO or HI)
   - `[?]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
 
 Device-specific? (Add any device-specific notes/additions here.)
