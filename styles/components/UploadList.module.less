@@ -1,0 +1,123 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+@base-height: 188px;
+
+.wrap {
+  composes: whiteBox from '../core/layout.module.less';
+  padding-bottom: 0px;
+}
+
+.wrapNoTZ {
+  composes: gray from '../core/typography.module.less';
+}
+
+.headlineWrap {
+  composes: flexRow from '../core/layout.module.less';
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.headline {
+  composes: large from '../core/typography.module.less';
+  font-weight: normal;
+}
+
+.chooseDeviceLink {
+  composes: small link from '../core/typography.module.less';
+  margin-left: auto;
+  margin-right: 15px;
+  margin-bottom: 2px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    cursor:pointer;
+  }
+}
+
+.linkDisabled {
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
+.errorItem{
+  padding-top: 10px;
+}
+
+.errorMessage {
+  color: @red;
+  display: inline;
+}
+
+.errorMessageWrapper {
+  display: inline;
+}
+
+.errorMessageFriendly{
+  display: inline;
+}
+
+.errorMessageLinkWrap {
+  display: inline;
+}
+
+.errorMessageLink {
+  composes: link from '../core/typography.module.less';
+}
+
+.errorTextLink {
+  composes: link tiny from '../core/typography.module.less';
+}
+
+.main {
+  composes: scroll from '../core/layout.module.less';
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.onlyme {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height;
+}
+
+.profileError {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-error-dropdown-height - @btn-height;
+}
+
+.selectuser {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @timezone-dropdown-height - @btn-height - @groups-dropdown-height;
+}
+
+.clinic {
+  composes: main;
+  max-height: @usable-page-height - @font-size-large*3 - @btn-height - @clinic-user-block-timezone-height + 30px;
+}
+
+.item {
+  composes: flexColumn from '../core/layout.module.less';
+  padding: 15px 0;
+  flex-shrink: 0;
+}
+
+.item:last-child {
+  padding-bottom: 20px;
+  border-bottom: 0;
+}

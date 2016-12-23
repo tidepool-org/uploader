@@ -18,6 +18,7 @@
 /*eslint-env mocha*/
 
 import _ from 'lodash';
+import mutationTracker from 'object-invariant-test-helper';
 
 import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
 import * as users from '../../../../lib/redux/reducers/users';
@@ -30,6 +31,7 @@ describe('users', () => {
       {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
       {userid: 'd4e5f6', profile: {b: 2}}
     ];
+    const account = {userid: 'jkl012', profile: {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }}};
     it('should return the initial state', () => {
       expect(users.allUsers(undefined, {})).to.deep.equal({});
     });
@@ -60,6 +62,46 @@ describe('users', () => {
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
       expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle SET_ALL_USERS', () => {
+      const action = {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        a1b2c3: {email: user.email, fullName: profile.fullName},
+        d4e5f6: {b: 2}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account }
+      };
+      expect(users.allUsers(undefined, action)).to.deep.equal({
+        jkl012: account.profile
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    it('should handle UPDATE_PROFILE_SUCCESS', () => {
+      const action = {
+        type: actionTypes.UPDATE_PROFILE_SUCCESS,
+        payload: { profile, userId: 'a1b2c3' }
+      };
+      let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
+      expect(users.allUsers(initialState, action)).to.deep.equal({
+        a1b2c3: profile
+      });
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     it('should handle LOGOUT_REQUEST', () => {
@@ -121,10 +163,88 @@ describe('users', () => {
     });
   });
 
+  describe('updateProfileErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle UPDATE_PROFILE_FAILURE', () => {
+      const errMsg = 'Update profile error!';
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
+  describe('updateProfileErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle DISMISS_UPDATE_PROFILE_ERROR', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_UPDATE_PROFILE_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle UPDATE_PROFILE_REQUEST', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+  });
+
+  describe('createCustodialAccountErrorMessage', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {})).to.be.null;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_FAILURE', () => {
+      const errMsg = 'Could not create account!';
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorMessage(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.null;
+    });
+  });
+
+  describe('createCustodialAccountErrorDismissed', () => {
+    it('should return the initial state', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {})).to.be.false;
+    });
+
+    it('should handle DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR
+      })).to.equal(true);
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      expect(users.createCustodialAccountErrorDismissed(undefined, {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST
+      })).to.be.false;
+    });
+  });
+
   describe('targetDevices', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetDevices:['a_cgm', 'a_meter']}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -194,7 +314,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -236,7 +356,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: [],
+        d4e5f6: ['a_cgm', 'a_meter'],
         g7h8i0: []
       });
     });
@@ -284,7 +404,7 @@ describe('users', () => {
   describe('targetTimezones', () => {
     const memberships = [
       {userid: 'a1b2c3', profile: {foo: 'bar'}},
-      {userid: 'd4e5f6', profile: {patient: {a: 1}}},
+      {userid: 'd4e5f6', profile: {patient: {a: 1, targetTimezone: 'US/Mountain'}}},
       {userid: 'g7h8i0', profile: {patient: {b: 2}}}
     ];
     it('should return the initial state', () => {
@@ -296,7 +416,7 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
@@ -338,7 +458,7 @@ describe('users', () => {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
         payload: { memberships }
       })).to.deep.equal({
-        d4e5f6: null,
+        d4e5f6: 'US/Mountain',
         g7h8i0: null
       });
     });
@@ -433,6 +553,61 @@ describe('users', () => {
         payload: { user, profile, memberships }
       })).to.deep.equal(['d4e5f6']);
     });
+
+    it('should handle SET_ALL_USERS', () => {
+      const profile = {a: 1};
+      expect(users.targetUsersForUpload(undefined, {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      })).to.deep.equal(['d4e5f6']);
+    });
+
+    describe('SET_ALL_USERS', () => {
+      it('should handle when logged in is VCA', () => {
+        const profile = {patient: {b: 2}};
+        const user = {userid: 'x1y2z3', profile: {fullName: 'VCA Foo'}, roles: ['clinic']};
+        const memberships = [
+          {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
+          {userid: 'd4e5f6', profile: {patient: {b: 2}}},
+          user
+        ];
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['a1b2c3','d4e5f6']);
+      });
+      it('should handle non VCA roles', () => {
+        const profile = {patient: {b: 2}};
+        const user = {userid: '888', profile: { patient: {c: 1}}, roles: ['other']};
+        const memberships = [
+          {userid: 'd4e5f6', profile: {patient: {b: 2}}},
+          {userid: 'x1y2z3', profile: {patient: {a: 1}}},
+          user
+        ];
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['d4e5f6', 'x1y2z3', '888']);
+      });
+      it('should handle normal accounts', () => {
+        const profile = {a: 1};
+        expect(users.targetUsersForUpload(undefined, {
+          type: actionTypes.SET_ALL_USERS,
+          payload: { user, profile, memberships }
+        })).to.deep.equal(['d4e5f6']);
+      });
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account: user }
+      };
+      expect(users.targetUsersForUpload(undefined, action)).to.deep.equal(['a1b2c3']);
+      let initialState = [];
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.targetUsersForUpload(initialState, action)).to.be.false;
+    });
   });
 
   describe('uploadTargetUser', () => {
@@ -459,6 +634,19 @@ describe('users', () => {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { user, profile, memberships }
       })).to.equal(memberships[1].userid);
+    });
+
+    it('should handle LOGIN_SUCCESS [loggedInUser is clinic, can upload to only one]', () => {
+      const user = {userid: 'a1b2c3', roles: ['clinic']};
+      const profile = {a: 1};
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      })).to.be.null;
     });
 
     it('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]', () => {

@@ -1,0 +1,134 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.interactive {
+  &:hover,
+  &:focus,
+  &:active {
+    color: @gray-medium;
+    text-decoration: none;
+  }
+};
+
+.wrapper {
+  composes: flexColumn from '../core/layout.module.less';
+  margin-right: 5px;
+}
+
+.main {
+  composes: flexRowWrap from '../core/layout.module.less';
+  composes: interactive;
+
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 195px;
+  text-overflow: ellipsis;
+}
+
+.link {
+  composes: invertLink from '../core/typography.module.less';
+  composes: interactive;
+  text-decoration: none;
+
+  > i {
+    margin-right: 1px;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.downArrow {
+  composes: icon-arrow-down from '../core/icons.module.less';
+  font-size: 5px;
+  padding-left: 10px;
+  &::before {
+    vertical-align: -webkit-baseline-middle;
+  }
+}
+
+.editIcon {
+  composes: icon-edit from '../core/icons.module.less';
+}
+
+.logoutIcon {
+  composes: icon-logout from '../core/icons.module.less';
+}
+
+.dropdown {
+  border: 1px solid @gray-light;
+  cursor: default;
+  position: absolute;
+  background: white;
+  top: 45px;
+  left: 431px;
+  z-index: 100;
+  width: 180px;
+
+  > ul {
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+
+    > li {
+      padding-top: 10px;
+    }
+
+    > li:last-child {
+      padding-bottom: 10px;
+    }
+  }
+
+  i {
+    float: left;
+    padding-right: 6px;
+  }
+
+  a {
+    margin-left: 0;
+  }
+}
+
+.dropdown:after,
+.dropdown:before {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  display: inline-block;
+  border: solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #eee;
+  border-left: 8px solid transparent;
+  border-bottom-color: white;
+  content: '';
+  height: 0;
+  width: 0;
+}
+
+.dropdown:before {
+  top: -16px;
+  border-color: rgba(230,230,229,0);
+  border-bottom-color: @gray-light;
+  border-width: 8px;
+  margin-left: -8px;
+}

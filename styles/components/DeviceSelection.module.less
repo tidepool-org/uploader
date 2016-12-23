@@ -1,0 +1,90 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+@form-height: 200px;
+
+.main {
+  composes: whiteBox from '../core/layout.module.less';
+  composes: centerContainer from '../core/layout.module.less';
+}
+
+.headline {
+  composes: large from '../core/typography.module.less';
+  font-weight: normal;
+  width: 250px;
+  margin-top:10px;
+}
+
+.form {
+  composes: boxFlex scroll from '../core/layout.module.less';
+}
+
+.onlyme {
+  max-height: @usable-page-height - @font-size-large*3 - @btn-height;
+}
+
+.groups {
+  max-height: @usable-page-height - @font-size-large*3 - @groups-dropdown-height - @btn-height;
+}
+
+.clinic {
+  max-height: @usable-page-height - @font-size-large*3 - @changePerson-link-height - @btn-height - @clinic-user-block-height;
+}
+
+.checkbox {
+  composes: flexRowWrap from '../core/layout.module.less';
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 20px;
+    width: 15px;
+    height: 15px;
+  }
+
+  margin-left: 23px;
+  margin-bottom: 30px;
+}
+
+.label {
+  composes: small from '../core/typography.module.less';
+}
+
+.buttonWrap {
+  composes: flexRow pageRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  margin-bottom: 7px;
+}
+
+.detail {
+  composes: tiny gray from '../core/typography.module.less';
+  margin-left: 58px;
+  margin-top: -30px;
+  margin-bottom: 13px;
+}
+
+.driverLink {
+  composes: link gray from '../core/typography.module.less';
+  text-decoration: none;
+  :hover {
+    color: @purple-light;
+  }
+}

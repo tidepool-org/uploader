@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.254.0",
+  "version": "0.298.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -36,7 +36,6 @@
         {
           "deviceName": "Dexcom CGM",
           "driverId": "Dexcom",
-          "macPortPattern": "/dev/cu\\.(usb|dex).+",
           "mode": "serial",
           "vendorId": 8867,
           "productId": 71
@@ -83,6 +82,14 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "OneTouchVerioIQ",
+          "driverId": "OneTouchVerioIQ",
+          "bitrate": 38400,
+          "mode": "serial",
+          "vendorId": 4292,
+          "productId": 34215
+        },
+        {
           "deviceName": "FreeStyle Lite",
           "driverId": "AbbottFreeStyleLite",
           "bitrate": 19200,
@@ -97,6 +104,22 @@
           "mode": "FTDI",
           "vendorId": 6753,
           "productId": 13328
+        },
+        {
+          "deviceName": "FreeStyle Lite (with FTDI cable)",
+          "driverId": "AbbottFreeStyleLiteFTDI",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 403,
+          "productId": 6001
+        },
+        {
+          "deviceName": "FreeStyle Freedom Lite (with FTDI cable)",
+          "driverId": "AbbottFreeStyleFreedomLiteFTDI",
+          "bitrate": 19200,
+          "mode": "FTDI",
+          "vendorId": 403,
+          "productId": 6001
         },
         {
           "deviceName": "BayerContourNext",
@@ -120,11 +143,29 @@
           "productId": 25088
         },
         {
+          "deviceName": "BayerContourNextLink24",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25104
+        },
+        {
           "deviceName": "BayerContourUsb",
           "driverId": "BayerContourUsb",
           "mode": "HID",
           "vendorId": 6777,
           "productId": 24578
+        },
+        {
+          "deviceName": "Animas",
+          "driverId": "Animas",
+          "mode": "serial",
+          "bitrate": 9600,
+          "ctsFlowControl": true,
+          "sendTimeout": 500,
+          "receiveTimeout": 500,
+          "vendorId": 1659,
+          "productId": 8963
         }
       ]
     }

@@ -1,0 +1,81 @@
+/*
+* == BSD2 LICENSE ==
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+* == BSD2 LICENSE ==
+*/
+
+@import './variables.less';
+
+.flex {
+  display: flex;
+}
+
+.flexColumn {
+  composes: flex;
+  flex-direction: column;
+}
+
+.flexRow {
+  composes: flex;
+  flex-direction: row;
+}
+
+.flexRowWrap {
+  composes: flexRow;
+  flex-wrap: wrap;
+}
+
+.boxFlex {
+  composes: flexColumn;
+  box-sizing: border-box;
+  position: relative;
+  border: 0 solid black;
+  margin: 0;
+  padding: 0;
+
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.centerContainer {
+  composes: flexColumn;
+  min-height: 300px;
+  justify-content: center;
+}
+
+.whiteBox {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 550px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: @mainPageBorder solid @gray-light;
+  border-radius: 2px;
+  padding: 15px (15px - @mainPageBorder) 25px (30px - @mainPageBorder);
+  box-sizing: border-box;
+}
+
+.pageRow {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  width: 550px;
+  box-sizing: border-box;
+}
+
+.scroll {
+  // room for scrollbar so it doesn't overlap content
+  padding-right: 15px;
+  overflow-y: scroll;
+}

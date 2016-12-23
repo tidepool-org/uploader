@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -69,7 +69,7 @@ describe('objectBuilder.js', function(){
 
       expect(bk.clockDriftOffset).to.equal(OPTIONAL);
       expect(bk.payload).to.equal(OPTIONAL);
-    });   
+    });
   });
 
   describe('makeCBG', function(){
@@ -182,7 +182,7 @@ describe('objectBuilder.js', function(){
 
       expect(cal.clockDriftOffset).to.equal(OPTIONAL);
       expect(cal.payload).to.equal(OPTIONAL);
-    });   
+    });
   });
 
   describe('makeDeviceEventReservoirChange', function(){
@@ -208,7 +208,7 @@ describe('objectBuilder.js', function(){
       expect(reschange.clockDriftOffset).to.equal(OPTIONAL);
       expect(reschange.status).to.equal(OPTIONAL);
       expect(reschange.payload).to.equal(OPTIONAL);
-    });   
+    });
   });
 
   describe('makedeviceEventResume', function(){
@@ -290,7 +290,7 @@ describe('objectBuilder.js', function(){
 
       expect(timechange.clockDriftOffset).to.equal(OPTIONAL);
       expect(timechange.payload).to.equal(OPTIONAL);
-    });   
+    });
   });
 
   describe('makeDualBolus', function(){
@@ -596,7 +596,6 @@ describe('objectBuilder.js', function(){
       expect(wiz.conversionOffset).to.equal(REQUIRED);
       expect(wiz.deviceTime).to.equal(REQUIRED);
       expect(wiz.insulinOnBoard).to.equal(REQUIRED);
-      expect(wiz.insulinCarbRatio).to.equal(REQUIRED);
       expect(wiz.insulinSensitivity).to.equal(REQUIRED);
       expect(wiz.bgTarget).to.equal(REQUIRED);
       expect(wiz.bolus).to.equal(REQUIRED);
@@ -606,6 +605,7 @@ describe('objectBuilder.js', function(){
       expect(wiz.clockDriftOffset).to.equal(OPTIONAL);
       expect(wiz.bgInput).to.equal(OPTIONAL);
       expect(wiz.carbInput).to.equal(OPTIONAL);
+      expect(wiz.insulinCarbRatio).to.equal(OPTIONAL);
       expect(wiz.payload).to.equal(OPTIONAL);
     });
   });
@@ -633,9 +633,9 @@ describe('objectBuilder.js', function(){
       expect(upload.timeProcessing).to.equal(REQUIRED);
       expect(upload.version).to.equal(REQUIRED);
       expect(upload.timezone).to.equal(REQUIRED);
-      expect(upload.guid).to.equal(REQUIRED);
-      expect(upload.uploadId).to.equal(REQUIRED);
-      expect(upload.byUser).to.equal(REQUIRED);
+      expect(upload.guid).to.equal(OPTIONAL);
+      expect(upload.uploadId).to.equal(OPTIONAL);
+      expect(upload.byUser).to.equal(OPTIONAL);
       expect(upload.deviceTags).to.equal(REQUIRED);
       expect(upload.deviceManufacturers).to.equal(REQUIRED);
       expect(upload.deviceModel).to.equal(REQUIRED);

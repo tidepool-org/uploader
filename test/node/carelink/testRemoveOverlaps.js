@@ -87,4 +87,23 @@ describe('removeOverlapping', function() {
     expect(Object.keys(removeOverlaps(payload))).deep.equals(['53602076']);
     expect(payload.skippedUploads).to.deep.equal(['53602018']);
   });
+
+  it('when unsupported pump model data in file, should return empty object', function() {
+    var input = fs.readFileSync(__dirname + '/overlaps/unsupported.csv', {encoding: 'utf8'}), payload = {};
+    var endOfPreamble = input.indexOf('Index');
+    // Setup the preamble to have everything up to the header line
+    payload.preamble = csv.parse(input.substr(0, endOfPreamble), {});
+    // Store the rest of the data
+    payload.theData = csv.parse(input.substr(endOfPreamble), {
+      header: true,
+      dynamicTyping: true
+    }).data;
+
+    for (var i = 0; i < payload.theData.length; ++i) {
+      convertRawValues(payload.theData[i]);
+      payload.theData[i].csvIndex = payload.theData[i]['Index'];
+    }
+
+    expect(removeOverlaps(payload)).deep.equals({});
+  });
 });

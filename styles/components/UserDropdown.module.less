@@ -1,0 +1,31 @@
+@import '../core/variables.less';
+
+.uploadGroup {
+  composes: whiteBox flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  margin-bottom: 0px;
+  border-bottom: 0px;
+  padding: 15px 15px 15px 29px;
+  select {
+    font-size: 20px;
+  }
+}
+
+.label {
+  font-size: @font-size-large;
+  margin-top: 10px;
+}
+
+.list {
+  margin-top: 0px;
+}
+
+.settings {
+  composes: list;
+  width: 260px;
+}
+
+.main {
+  composes: list;
+  width: 280px;
+}

@@ -19,13 +19,14 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL || !process.env.UPLOAD_URL || !process.env.BLIP_URL)) {
+if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
   console.log('The default right-click server menu may be incorrect.');
   console.log('API_URL =', process.env.API_URL);
   console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
+  console.log('DATA_URL =', process.env.DATA_URL);
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
@@ -45,7 +46,8 @@ var config = {
     loaders: [
       { test: /\.js$/, exclude: /(node_modules)/, loaders: ['react-hot', 'babel-loader'] },
       { test: /\.jsx$/, exclude: /(node_modules)/, loaders: ['react-hot', 'babel-loader'] },
-      { test: /\.less$/, loader: 'style!css!less' },
+      { test: /\.module\.less$/, loader: 'style?sourceMap!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less?sourceMap' },
+      { test: /^((?!module).)*\.less$/, loader: 'style!css!less' },
       { test: /\.json$/, loader: 'json' }
     ]
   },
@@ -55,7 +57,10 @@ var config = {
   ],
   // to fix the 'broken by design' issue with npm link-ing modules
   resolve: { fallback: path.join(__dirname, 'node_modules') },
-  resolveLoader: { fallback: path.join(__dirname, 'node_modules') }
+  resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
+  node: {
+    fs: 'empty'
+  }
 };
 
 module.exports = config;
