@@ -25,6 +25,7 @@
     "blueimp-md5": "2.3.0",
     "classnames": "2.2.3",
     "commander": "2.9.0",
+    "iconv-lite": "^0.4.15",
     "lodash": "3.10.1",
     "node-uuid": "1.4.7",
     "react": "0.14.7",
