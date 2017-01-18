@@ -870,6 +870,37 @@ describe('medtronicSimulator.js', function() {
           expectedSuspendedBasal1.done()
         ]);
       });
+
+      it('has an unknown duration', function() {
+
+        var tempBasalUnknownDuration = builder.makeTempBasal()
+          .with_time('2014-09-25T18:40:00.000Z')
+          .with_deviceTime('2014-09-25T18:40:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(0)
+          .with_rate(3.5);
+        tempBasalUnknownDuration.annotations = [{code: 'basal/unknown-duration'}];
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.basal(tempBasalUnknownDuration);
+        simulator.basal(basal2);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        delete basal1.index;
+        delete basal1.jsDate;
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedTempBasal1,
+          tempBasalUnknownDuration.done()
+        ]);
+      });
+
     });
 
   });
