@@ -1,0 +1,8 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-2: Header [description = "ABC"]
+	3: Payload size [rotate = 270]
+	4-63: Payload [color = "#EBF1DF"]
+}
