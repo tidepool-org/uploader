@@ -234,6 +234,23 @@ describe('misc reducers', () => {
       });
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
+
+    it('should handle SET_NEW_PATIENT_URL', () => {
+      const NEW_PATIENT = 'http://www.acme.com/patients/new';
+      const actionPayload = {url: NEW_PATIENT};
+      expect(misc.blipUrls(undefined, {
+        type: actionTypes.SET_NEW_PATIENT_URL,
+        payload: actionPayload
+      }).newPatient).to.equal(NEW_PATIENT);
+      // test to be sure not *mutating* state object but rather returning new!
+      let initialState = {};
+      const tracked = mutationTracker.trackObj(initialState);
+      let finalState = misc.blipUrls(initialState, {
+        type: actionTypes.SET_NEW_PATIENT_URL,
+        payload: actionPayload
+      });
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
+    });
   });
 
   describe('working', () => {

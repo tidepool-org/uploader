@@ -288,6 +288,24 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('setNewPatientUrl', () => {
+    const URL = 'http://www.acme.com/patients/new';
+    it('should be an FSA', () => {
+      let action = syncActions.setNewPatientUrl(URL);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set the new patient url', () => {
+      const expectedAction = {
+        type: actionTypes.SET_NEW_PATIENT_URL,
+        payload: {url: URL},
+        meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+      };
+      expect(syncActions.setNewPatientUrl(URL)).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('setTargetTimezone', () => {
     const TIMEZONE = 'Europe/Budapest', ID = 'a1b2c3';
     it('should be an FSA', () => {

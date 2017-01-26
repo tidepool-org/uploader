@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.286.9",
+  "version": "0.299.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -141,6 +141,13 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 25088
+        },
+        {
+          "deviceName": "BayerContourNextLinkMmol",
+          "driverId": "BayerContourNextLink",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25344
         },
         {
           "deviceName": "BayerContourNextLink24",

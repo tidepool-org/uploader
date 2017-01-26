@@ -1,9 +1,21 @@
 # Tidepool Uploader
 
-[![Build Status](https://travis-ci.org/tidepool-org/chrome-uploader.png)](https://travis-ci.org/tidepool-org/chrome-uploader)
+[![Build Status](https://img.shields.io/travis/tidepool-org/chrome-uploader/master.svg)](https://travis-ci.org/tidepool-org/chrome-uploader)
 
-This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into the USB port and automatically load the data stored on them up to the Tidepool cloud.
+This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
 
+This README is focused on just the details of getting the uploader running locally. For more detailed information aimed at those working on the development of the uploader, please see the [developer guide](docs/StartHere.md).
+
+#### Table of contents
+
+- [Set Up](#how-to-set-it-up)
+- [Config](#config)
+- [Tests](#tests)
+- [Linting & Code Style](#linting--code-style)
+- [Docs](#docs)
+- [Publishing](#publishing-to-the-develstaging-testing--development-chrome-store-account-or-production)
+
+* * * * *
 
 ## How to set it up
 
@@ -13,13 +25,10 @@ This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts a
 1. Run `npm start` (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
-1. Choose the directory where you cloned the repository and click OK.<sup name="a1">[1](#f1)</sup>
+1. Choose the directory where you cloned the repository and click OK. (You may see a warning from Chrome concerning the inclusion of a key file. (`This extension includes the key file '<project_path>/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem`) This is due to the loading of all the `node_modules` and their various internal testing utilities. This isn't a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored.)
 1. To run it, you can choose "Launch" from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.
 1. To open the JavaScript console/Chrome Dev Tools, click on the `index.html` link in the section of chrome://extensions devoted to the uploader. (Note: this link will only appear after you've launched the uploader.)
 1. React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' from chrome://extensions to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the extension. You will definitely need to reload any time you change the manifest.
-
----
-<b name="f1">1</b> You may see a warning from Chrome concerning the inclusion of a key file. (`This extension includes the key file '<project_path>/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem`) This is due to the loading of all the `node_modules` and their various internal testing utilities. This isn't a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored. [↩](#a1)
 
 ## Config
 
@@ -51,7 +60,6 @@ The environment variable `REDUX_DEV_UI` (boolean) controls whether or not the [r
 ### Local Development w/o Debug Mode(s)
 
 All debug options are turned *off* by default in `config/local.sh`.
-
 
 ## Tests
 
@@ -85,7 +93,6 @@ To run just the UI tests in PhantomJS with webpack & Karma watching all files fo
 $ npm run test-watch
 ```
 
-
 ## Linting & Code Style
 
 We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
@@ -108,12 +115,16 @@ See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.
 
 ## Publishing (to the devel/staging testing & development Chrome store account or production)
 
+When you're ready to merge your pull request, first
+
+1. Use the command `mversion minor -m` to bump the version number and create a tag. (You will need to `npm install -g mversion` if you don't have [mversion](https://github.com/mikaelbr/mversion) installed already.)
+1. Push the new tag commit and tag up to GitHub with `git push origin <branch_name>` and `git push origin --tags`.
+1. Merge your approved pull request.
+
 Assuming you've already merged any changes to master and are on master locally...
 
 1. Start with a fresh Terminal window and `cd` into the chrome-uploader repo. (Alternatively, just make certain you haven't set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)
-1. Use the command `mversion minor -m` to bump the version number and create a tag. (You will need to `npm install -g mversion` if you don't have [mversion](https://github.com/mikaelbr/mversion) installed already.)
-1. Push the new tag commit and tag up to GitHub with `git push origin master` and `git push origin --tags`.
-1. Checkout your new tag, using `git checkout tags/<tag_name>`.
+1. Checkout the tag you wish to build, using `git checkout tags/<tag_name>`.
 1. Remove your node modules with `rm -rf node_modules/`. (This may not always be necessary, but it's good to be safe in case anything has changed.)
 1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
 1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
