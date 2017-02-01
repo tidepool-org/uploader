@@ -8,7 +8,7 @@
   "license": "BSD-2-Clause",
   "scripts": {
     "build-docs": "./scripts/update-gh-pages.sh",
-    "serve-docs": "./node_modules/.bin/gitbook serve"
+    "serve-docs": "./node_modules/.bin/gitbook serve",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --retries 2 --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
     "test-all": "npm run lint && npm run flow && npm run test && npm run build",
     "test-watch": "npm test -- --watch",
@@ -50,7 +50,18 @@
     "semver": "5.1.0",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.28.0"
+    "tidepool-platform-client": "0.28.0",
+    "electron-debug": "^1.1.0",
+    "font-awesome": "^4.7.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.7",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
+    "source-map-support": "^0.4.10"
+  },
   "browserslist": "electron 1.4",
   "build": {
     "productName": "ElectronReact",
@@ -139,7 +150,7 @@
     "style-loader": "0.13.1",
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1",
-    "write-file-webpack-plugin": "3.1.8"
+    "write-file-webpack-plugin": "3.1.8",
     "asar": "^0.13.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
@@ -203,18 +214,6 @@
     "webpack-hot-middleware": "^2.15.0",
     "webpack-merge": "^2.4.0",
     "webpack-validator": "^2.3.0"
-  },
-  "dependencies": {
-    "electron-debug": "^1.1.0",
-    "font-awesome": "^4.7.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-redux": "^5.0.2",
-    "react-router": "^3.0.2",
-    "react-router-redux": "^4.0.7",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.4.10"
   },
   "devEngines": {
     "node": ">=6.x",
