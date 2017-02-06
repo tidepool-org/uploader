@@ -31,7 +31,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 }
 
 var config = {
-  entry: './entry.js',
+  entry: ['babel-polyfill', './entry.js'],
   devtool: '#cheap-module-source-map',
   devServer: {
     outputPath: path.join(__dirname, '/build'),
