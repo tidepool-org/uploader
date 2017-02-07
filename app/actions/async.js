@@ -31,7 +31,7 @@ import * as metrics from '../constants/metrics';
 
 import * as syncActions from './sync';
 import * as actionUtils from './utils';
-import personUtils from '../../core/personUtils';
+import personUtils from '../../lib/core/personUtils';
 
 let services = {};
 let versionInfo = {};

@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 
-import { urls } from '../redux/constants/otherConstants';
+import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/NoUploadTargets.module.less';
 

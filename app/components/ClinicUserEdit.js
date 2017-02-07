@@ -18,10 +18,10 @@
 var React = require('react');
 var _ = require('lodash');
 var sundial = require('sundial');
-var personUtils = require('../core/personUtils');
+var personUtils = require('../../lib/core/personUtils');
 import { reduxForm } from 'redux-form';
 
-var config = require('../config');
+var config = require('../../lib/config');
 
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 

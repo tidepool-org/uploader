@@ -17,7 +17,7 @@
 
 import _ from 'lodash';
 import update from 'react-addons-update';
-import personUtils from '../../core/personUtils';
+import personUtils from '../../../lib/core/personUtils';
 
 import * as actionTypes from '../constants/actionTypes';
 

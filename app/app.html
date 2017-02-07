@@ -16,11 +16,11 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="app"></div>
     <script>
       {
         const script = document.createElement('script');
-        const port = process.env.PORT || 3000;
+        const port = process.env.PORT || 3005;
         script.src = (process.env.HOT)
           ? 'http://localhost:' + port + '/dist/bundle.js'
           : './dist/bundle.js';

@@ -18,9 +18,9 @@
 var _ = require('lodash');
 var React = require('react');
 var Select = require('react-select');
-var personUtils = require('../core/personUtils');
+var personUtils = require('../../lib/core/personUtils');
 
-var pages = require('../redux/constants/otherConstants').pages;
+var pages = require('../constants/otherConstants').pages;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 

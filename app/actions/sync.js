@@ -28,7 +28,7 @@ import { addInfoToError, getAppInitErrorMessage, getLoginErrorMessage, getLogout
 import errorText from '../constants/errors';
 
 import * as actionUtils from './utils';
-import personUtils from '../../core/personUtils';
+import personUtils from '../../lib/core/personUtils';
 
 export function addTargetDevice(userId, deviceKey) {
   return {

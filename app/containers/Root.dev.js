@@ -20,22 +20,19 @@ import { Provider } from 'react-redux';
 
 import configureStore from '../store/configureStore';
 
-import App from '../../pages/App';
-import DevTools from './DevTools';
+import App from './App';
 
-import styles from '../../../styles/components/DevTools.module.less';
+import styles from '../../styles/components/DevTools.module.less';
 
 const { api, store, version } = configureStore();
 
 export default class Root extends Component {
   render() {
+    console.log(api, store, version);
     return (
       <Provider store={store}>
         <div className={styles.container}>
           <App api={api} os={this.props.os} version={version} />
-          <div>
-            <DevTools store={store} />
-          </div>
         </div>
       </Provider>
     );

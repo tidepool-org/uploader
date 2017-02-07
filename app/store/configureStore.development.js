@@ -1,15 +1,27 @@
+/* global __REDUX_DEV_UI__, __REDUX_LOG__ */
+
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { hashHistory } from 'react-router';
 import { routerMiddleware, push } from 'react-router-redux';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
+import { async, sync } from '../actions';
+import api from '../../lib/core/api';
+import config from '../../lib/config';
+import { createErrorLogger } from '../utils/errors';
+import { createMetricsTracker } from '../utils/metrics';
 
-
-
+api.create({
+  apiUrl: config.API_URL,
+  uploadUrl: config.UPLOAD_URL,
+  dataUrl: config.DATA_URL,
+  version: config.version
+});
 
 const actionCreators = {
-
+  ...async,
+  ...sync,
   push,
 };
 
@@ -30,7 +42,14 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
   compose;
 /* eslint-enable no-underscore-dangle */
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, router, logger)
+  applyMiddleware(
+    thunk,
+    router,
+    logger,
+    createLogger(),
+    createErrorLogger(api),
+    createMetricsTracker(api)
+  )
 );
 
 export default function configureStore(initialState) {
@@ -44,3 +63,5 @@ export default function configureStore(initialState) {
 
   return store;
 }
+
+export { api };

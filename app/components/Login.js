@@ -17,7 +17,7 @@
 
 var React = require('react');
 
-var config = require('../config');
+var config = require('../../lib/config');
 
 var styles = require('../../styles/components/Login.module.less');
 

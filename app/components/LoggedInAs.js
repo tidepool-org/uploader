@@ -16,7 +16,6 @@
  */
 var _ = require('lodash');
 var React = require('react');
-var getIn = require('../core/getIn');
 
 var styles = require('../../styles/components/LoggedInAs.module.less');
 
@@ -121,7 +120,7 @@ var LoggedInAs = React.createClass({
   },
 
   getName: function() {
-    return getIn(this.props.user, ['profile', 'fullName']);
+    return _.get(this.props.user, ['profile', 'fullName']);
   },
 
   noopHandler: function(e) {

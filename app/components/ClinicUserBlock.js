@@ -18,7 +18,7 @@
 var _ = require('lodash');
 var React = require('react');
 var sundial = require('sundial');
-var personUtils = require('../core/personUtils');
+var personUtils = require('../../lib/core/personUtils');
 var cx = require('classnames');
 
 var styles = require('../../styles/components/ClinicUserBlock.module.less');

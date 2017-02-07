@@ -19,7 +19,7 @@ var _ = require('lodash');
 var React = require('react');
 var cx = require('classnames');
 
-import { urls } from '../redux/constants/otherConstants';
+import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/DeviceSelection.module.less';
 

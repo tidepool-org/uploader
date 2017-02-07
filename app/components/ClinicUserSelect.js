@@ -20,8 +20,8 @@ var React = require('react');
 var Select = require('react-select');
 var sundial = require('sundial');
 var cx = require('classnames');
-var personUtils = require('../core/personUtils');
-var metrics = require('../redux/constants/metrics');
+var personUtils = require('../../lib/core/personUtils');
+var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
  
