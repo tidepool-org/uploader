@@ -933,6 +933,128 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('has two schedule changes before midnight and extends past midnight', function() {
+        var settings = {
+          type: 'pumpSettings',
+          time: '2017-01-08T02:00:00.000Z',
+          deviceTime: '2017-01-08T02:00:00',
+          timezoneOffset: 0,
+          conversionOffset: 0,
+          activeSchedule: 'standard',
+          units: { 'bg': 'mg/dL' },
+          basalSchedules: {
+            standard: [
+              {
+    						'start': 0,
+    						'rate': 1
+    					},
+              {
+                'start': 64800000,
+                'rate': 0.9
+              },
+              {
+                'start': 72000000,
+                'rate': 0.95
+              },
+              {
+                'start': 79200000,
+                'rate': 1.2
+              }
+            ]
+          }
+        };
+
+        var basal1 = builder.makeSuspendBasal()
+          .with_time('2017-01-08T17:43:40.000Z')
+          .with_deviceTime('2017-01-08T17:43:40')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(28782000)
+          .set('suppressed', {
+    				'type': 'basal',
+    				'deliveryType': 'scheduled',
+    				'rate': 0.9,
+    				'scheduleName': 'standard'
+    			})
+          .set('index', 0);
+
+
+        var expectedBasal1 = _.cloneDeep(basal1);
+        expectedBasal1.duration = 8180000;
+        expectedBasal1.payload = { duration : 28782000, logIndices: [0] };
+
+        var expectedBasal2 = builder.makeSuspendBasal()
+          .with_time('2017-01-08T20:00:00.000Z')
+          .with_deviceTime('2017-01-08T20:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(7200000)
+          .with_payload({duration: 20602000, logIndices: [0]})
+          .set('suppressed', {
+    				'type': 'basal',
+    				'deliveryType': 'scheduled',
+    				'rate': 0.95,
+    				'scheduleName': 'standard'
+    			});
+        expectedBasal2.clockDriftOffset = 0;
+        delete expectedBasal1.index;
+        expectedBasal2.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+
+        var expectedBasal3 = builder.makeSuspendBasal()
+          .with_time('2017-01-08T22:00:00.000Z')
+          .with_deviceTime('2017-01-08T22:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(7200000)
+          .with_payload({duration: 13402000, logIndices: [0]})
+          .set('suppressed', {
+            'type': 'basal',
+            'deliveryType': 'scheduled',
+            'rate': 1.2,
+            'scheduleName': 'standard'
+          });
+        expectedBasal3.clockDriftOffset = 0;
+        expectedBasal3.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+
+        var expectedBasal4 = builder.makeSuspendBasal()
+          .with_time('2017-01-09T00:00:00.000Z')
+          .with_deviceTime('2017-01-09T00:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(6202000)
+          .set('suppressed', {
+            'type': 'basal',
+            'deliveryType': 'scheduled',
+            'rate': 1,
+            'scheduleName': 'standard'
+          });
+          expectedBasal4.clockDriftOffset = 0;
+          expectedBasal4.payload = { logIndices: [0] };
+          expectedBasal4.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+
+        var basal2 = builder.makeScheduledBasal()
+          .with_time('2017-01-09T01:43:22.000Z')
+          .with_deviceTime('2017-01-09T01:43:22')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(415000)
+          .with_rate(1)
+          .with_scheduleName('standard');
+
+        simulator.pumpSettings(settings);
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+
+        expect(simulator.getEvents()).deep.equals([
+          settings,
+          expectedBasal1.done(),
+          expectedBasal2.done(),
+          expectedBasal3.done(),
+          expectedBasal4.done()
+        ]);
+
+      });
+
     });
 
   });
