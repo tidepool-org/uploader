@@ -945,9 +945,9 @@ describe('medtronicSimulator.js', function() {
           basalSchedules: {
             standard: [
               {
-    						'start': 0,
-    						'rate': 1
-    					},
+                'start': 0,
+                'rate': 1
+              },
               {
                 'start': 64800000,
                 'rate': 0.9
