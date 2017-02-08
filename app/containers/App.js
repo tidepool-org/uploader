@@ -58,7 +58,7 @@ import styles from '../../styles/components/App.module.less';
 
 export class App extends Component {
   static propTypes = {
-    api: PropTypes.func.isRequired
+    // api: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -68,8 +68,9 @@ export class App extends Component {
     this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
     this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
     this.handleClickEditUser = this.handleClickEditUser.bind(this);
+    let api = this.props.route.api;
     this.props.async.doAppInit(Object.assign({}, config, {os: props.os}), {
-      api: props.api,
+      api: api,
       carelink,
       device,
       localStore,
