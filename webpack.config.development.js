@@ -9,7 +9,7 @@ import validate from 'webpack-validator';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
