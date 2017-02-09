@@ -15,8 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/* global chrome */
-
 import _ from 'lodash';
 import async from 'async';
 import semver from 'semver';
@@ -95,10 +93,7 @@ export function doAppInit(opts, servicesToInit) {
                 return dispatch(syncActions.initFailure(err));
               }
               // remove env-switching context menu after login
-              if (typeof chrome !== 'undefined') {
-                services.log('Removing Chrome context menu');
-                chrome.contextMenus.removeAll();
-              }
+              // TODO: emplement removal of context menu after login
               dispatch(syncActions.initSuccess());
               dispatch(doVersionCheck());
               dispatch(syncActions.setUserInfoFromToken({
@@ -131,10 +126,7 @@ export function doLogin(creds, opts) {
         return dispatch(syncActions.loginFailure(err.status));
       }
       // remove env-switching context menu after login
-      if (typeof chrome !== 'undefined') {
-        services.log('Removing Chrome context menu');
-        chrome.contextMenus.removeAll();
-      }
+      // TODO: implement removal of env-switching context menu after login
       dispatch(syncActions.loginSuccess({
         user: results[0].user,
         profile: results[1],
