@@ -83,7 +83,8 @@ export class App extends Component {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <div className={styles.header}>{this.renderHeader()}</div>
-        <div className={styles[page.toLowerCase() + 'Page']}>{this.renderPage()}</div>
+        {this.props.children}
+        {/* <div className={styles[page.toLowerCase() + 'Page']}>{this.renderPage()}</div> */}
         <div className={styles.footer}>{this.renderFooter()}</div>
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}

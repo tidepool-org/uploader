@@ -25,6 +25,16 @@ export const pages = {
   CLINIC_USER_EDIT: 'CLINIC_USER_EDIT'
 };
 
+export const pagesMap = {
+  LOADING: '/loading',
+  LOGIN: '/login',
+  MAIN: '/main',
+  NO_UPLOAD_TARGETS: '/no_upload_targets',
+  SETTINGS: '/settings',
+  CLINIC_USER_SELECT: '/clinic_user_select',
+  CLINIC_USER_EDIT: '/clinic_user_edit'
+};
+
 export const paths = {
   FORGOT_PASSWORD: '/request-password-from-uploader',
   SIGNUP: '/signup',
