@@ -4,6 +4,7 @@ import App from './containers/App';
 import MainPage from './containers/MainPage';
 import Login from './components/Login';
 import Loading from './components/Loading';
+import SettingsPage from './containers/SettingsPage';
 import api from '../lib/core/api';
 import config from '../lib/config';
 
@@ -19,6 +20,7 @@ export default (
     <IndexRoute component={Loading} />
     <Route path="login" component={Login}/>
     <Route path="main" component={MainPage}/>
+    <Route path="settings" component={SettingsPage}/>
     {/*<Route path="no_upload_targets" component={}/>
     <Route path="settings" component={}/>
     <Route path="clinic_user_select" component={}/>

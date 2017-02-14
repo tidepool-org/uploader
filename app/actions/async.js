@@ -18,6 +18,7 @@
 import _ from 'lodash';
 import async from 'async';
 import semver from 'semver';
+import os from 'os';
 
 import sundial from 'sundial';
 
@@ -34,7 +35,11 @@ import personUtils from '../../lib/core/personUtils';
 let services = {};
 let versionInfo = {};
 let daysForCareLink = null;
-
+let hostMap = {
+  'darwin': 'mac',
+  'win32' : 'win',
+  'linux': 'linux',
+};
 /*
  * ASYNCHRONOUS ACTION CREATORS
  */
@@ -54,7 +59,7 @@ export function doAppInit(opts, servicesToInit) {
     const { api, carelink, device, localStore, log } = services;
 
     dispatch(syncActions.initRequest());
-    dispatch(syncActions.hideUnavailableDevices(opts.os));
+    dispatch(syncActions.hideUnavailableDevices(hostMap[os.platform()]));
 
     log('Initializing local store.');
     localStore.init(localStore.getInitialState(), function(localStoreResult){

@@ -18,16 +18,22 @@
 var _ = require('lodash');
 var React = require('react');
 var cx = require('classnames');
+var node_os = require('os');
 
 import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/DeviceSelection.module.less';
 
+var hostMap = {
+  'darwin': 'mac',
+  'win32' : 'win',
+  'linux': 'linux',
+};
+
 var DeviceSelection = React.createClass({
   propTypes: {
     disabled: React.PropTypes.bool.isRequired,
     devices: React.PropTypes.object.isRequired,
-    os: React.PropTypes.string.isRequired,
     targetDevices: React.PropTypes.array.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
@@ -65,7 +71,7 @@ var DeviceSelection = React.createClass({
         removeDevice(e.target.value);
       }
     };
-    var os = this.props.os;
+    var os =  hostMap[node_os.platform()];
     var targetDevices = this.props.targetDevices;
 
     var items = _.map(devices, function(device) {
