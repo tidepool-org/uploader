@@ -147,8 +147,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
     _.assign(meta, metric);
   }
   if(pagesMap[page]){
-    console.log(pagesMap[page]);
-    hashHistory.push(pagesMap[page]);
+    setTimeout(()=>{hashHistory.push(pagesMap[page]);}, 0);
   }
   return {
     type: actionTypes.SET_PAGE,
