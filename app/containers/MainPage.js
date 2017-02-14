@@ -1,14 +1,67 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
-import UploadList from '../components/UploadList';
-import styles from '../../styles/components/App.module.less';
-import { pages, urls } from '../constants/otherConstants';
-import cx from 'classnames';
-import * as metrics from '../constants/metrics';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { pages, urls } from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources';
+import * as metrics from '../constants/metrics';
+import actions from '../actions/';
+import ClinicUploadDone from '../components/ClinicUploadDone';
+import cx from 'classnames';
+import React, { Component } from 'react';
+import styles from '../../styles/components/App.module.less';
+import TimezoneDropdown from '../components/TimezoneDropdown';
+import UploadList from '../components/UploadList';
+import ViewDataLink from '../components/ViewDataLink';
 
+const asyncActions = actions.async;
+const syncActions = actions.sync;
 
 export class MainPage extends Component {
+  handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
+    const { setPage, setUploadTargetUser } = this.props.sync;
+    setUploadTargetUser(null);
+    setPage(pages.CLINIC_USER_SELECT, undefined, metric);
+  }
+
+  handleClickChooseDevices(metric) {
+    const { setPage, toggleDropdown } = this.props.sync;
+    // ensure dropdown closes after click
+    setPage(pages.SETTINGS, true, metric);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  }
+
+  renderTimezoneDropdown() {
+    const { uploadTargetUser } = this.props;
+    return (
+      <TimezoneDropdown
+        dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
+        isClinicAccount={this.props.isClinicAccount}
+        isUploadInProgress={this.props.uploadIsInProgress}
+        onTimezoneChange={this.props.async.setTargetTimezone}
+        selectorLabel={'Time zone'}
+        targetId={uploadTargetUser || null}
+        targetTimezone={this.props.selectedTimezone}
+        updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
+        updateProfileErrorMessage={this.props.updateProfileErrorMessage}
+        userDropdownShowing={this.props.showingUserSelectionDropdown} />
+    );
+  }
+
+  renderUploadListDoneButton() {
+    const { isClinicAccount } = this.props;
+    if (isClinicAccount) {
+      return <ClinicUploadDone
+        onClicked= {this.handleClickChangePerson}
+        uploadTargetUser={this.props.uploadTargetUser}
+        uploadsByUser={this.props.uploadsByUser} />;
+    } else {
+      const viewDataLink = _.get(this.props, ['blipUrls', 'viewDataLink'], '');
+      return <ViewDataLink
+        href={viewDataLink}
+        onViewClicked={this.props.sync.clickGoToBlip} />;
+    }
+  }
+
   renderUserDropdown() {
     const { allUsers, page, targetUsersForUpload, uploadTargetUser } = this.props;
     return (
@@ -29,7 +82,13 @@ export class MainPage extends Component {
     });
     return (
       <div className={classes}
-        onClick={this.props.uploadIsInProgress ? this.noopHandler : _.partial(this.handleClickChangePerson, {metric: {eventName: metrics.CLINIC_CHANGE_PERSON}})}>Change Person</div>
+        onClick={this.props.uploadIsInProgress ?
+          this.noopHandler :
+          _.partial(this.handleClickChangePerson, {
+            metric: {
+              eventName: metrics.CLINIC_CHANGE_PERSON
+            }
+          })}>Change Person</div>
     );
   }
 
@@ -40,10 +99,10 @@ export class MainPage extends Component {
     return (
       <ClinicUserBlock
         allUsers={this.props.allUsers}
-        targetId={this.props.uploadTargetUser}
-        timezoneDropdown={timezoneDropdown}
+        isUploadInProgress={this.props.uploadIsInProgress}
         onEditUser={this.handleClickEditUser}
-        isUploadInProgress={this.props.uploadIsInProgress} />
+        targetId={this.props.uploadTargetUser}
+        timezoneDropdown={timezoneDropdown} />
     );
   }
 
@@ -73,18 +132,18 @@ export class MainPage extends Component {
         {clinicUserBlock}
         <UploadList
           disabled={Boolean(this.props.unsupported) || !Boolean(this.props.selectedTimezone)}
-          targetId={this.props.uploadTargetUser}
-          uploads={this.props.activeUploads}
-          userDropdownShowing={this.props.showingUserSelectionDropdown}
+          isClinicAccount={this.props.isClinicAccount}
+          isUploadInProgress={this.props.uploadIsInProgress}
+          onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CLINIC_CHANGE_DEVICES}})}
           onReset={this.props.sync.resetUpload}
           onUpload={this.props.async.doUpload}
           readFile={this.props.async.readFile}
+          targetId={this.props.uploadTargetUser}
+          timezoneIsSelected={Boolean(this.props.selectedTimezone)}
           toggleErrorDetails={this.props.sync.toggleErrorDetails}
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}
-          isClinicAccount={this.props.isClinicAccount}
-          onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CLINIC_CHANGE_DEVICES}})}
-          timezoneIsSelected={Boolean(this.props.selectedTimezone)}
-          isUploadInProgress={this.props.uploadIsInProgress} />
+          uploads={this.props.activeUploads}
+          userDropdownShowing={this.props.showingUserSelectionDropdown} />
         {viewDataLinkButton}
       </div>
     );
@@ -93,9 +152,65 @@ export class MainPage extends Component {
 
 export default connect(
   (state, ownProps) => {
+    function getSelectedTimezone(state) {
+      return _.get(
+        state,
+        ['targetTimezones', state.uploadTargetUser],
+        // fall back to the timezone stored under 'noUserSelected', if any
+        _.get(state, ['targetTimezones', 'noUserSelected'], null)
+      );
+    }
+    function getActiveUploads(state) {
+      const { devices, uploadsByUser, uploadTargetUser } = state;
+      if (uploadTargetUser === null) {
+        return [];
+      }
+      let activeUploads = [];
+      const targetUsersUploads = _.get(uploadsByUser, uploadTargetUser, []);
+      _.map(Object.keys(targetUsersUploads), (deviceKey) => {
+        const upload = uploadsByUser[uploadTargetUser][deviceKey];
+        const device = _.pick(devices[deviceKey], ['instructions', 'key', 'name', 'source']);
+        const progress = upload.uploading ? {progress: state.uploadProgress} :
+          (upload.successful ? {progress: {percentage: 100}} : {});
+        activeUploads.push(_.assign({}, device, upload, progress));
+      });
+      return activeUploads;
+    }
+    function shouldShowUserSelectionDropdown(state) {
+      if (!_.isEmpty(state.targetUsersForUpload) && !isClinicAccount(state)) {
+        // if there's only one potential target for upload but it's *not* the loggedInUser
+        if (state.targetUsersForUpload.length === 1 &&
+          !_.includes(state.targetUsersForUpload, state.loggedInUser)) {
+          return true;
+        }
+        if (state.targetUsersForUpload.length > 1) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function isClinicAccount(state) {
+      return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
+    }
     return {
+      activeUploads: getActiveUploads(state),
+      allUsers: state.allUsers,
+      blipUrls: state.blipUrls,
+      isClinicAccount: isClinicAccount(state),
+      page: state.page,
+      selectedTimezone: getSelectedTimezone(state),
+      showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),
+      targetUsersForUpload: state.targetUsersForUpload,
       unsupported: state.unsupported,
+      updateProfileErrorMessage: state.updateProfileErrorMessage,
+      uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
+    };
+  },
+  (dispatch) => {
+    return {
+      async: bindActionCreators(asyncActions, dispatch),
+      sync: bindActionCreators(syncActions, dispatch)
     };
   }
 )(MainPage);

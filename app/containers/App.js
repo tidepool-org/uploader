@@ -69,7 +69,7 @@ export class App extends Component {
     this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
     this.handleClickEditUser = this.handleClickEditUser.bind(this);
     let api = this.props.route.api;
-    this.props.async.doAppInit(Object.assign({}, config, {os: props.os}), {
+    this.props.async.doAppInit(Object.assign({}, config), {
       api: api,
       carelink,
       device,

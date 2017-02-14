@@ -76,7 +76,7 @@ export function doAppInit(opts, servicesToInit) {
           if (carelinkError) {
             return dispatch(syncActions.initFailure(carelinkError));
           }
-          log(`Initializing api`);
+          log('Initializing api');
           api.init(function(apiError, apiResult){
             if (apiError) {
               return dispatch(syncActions.initFailure(apiError));
