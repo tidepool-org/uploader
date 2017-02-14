@@ -15,35 +15,74 @@
  * == BSD2 LICENSE ==
  */
 
-var React = require('react');
+import React, { Component } from 'react';
+import config from '../../lib/config';
+import styles from '../../styles/components/Login.module.less';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import actions from '../actions/';
+const asyncActions = actions.async;
 
-var config = require('../../lib/config');
-
-var styles = require('../../styles/components/Login.module.less');
-
-var Login = React.createClass({
-  propTypes: {
-    disabled: React.PropTypes.bool.isRequired,
-    errorMessage: React.PropTypes.string,
-    forgotPasswordUrl: React.PropTypes.string.isRequired,
-    isFetching: React.PropTypes.bool.isRequired,
-    onLogin: React.PropTypes.func.isRequired
-  },
-
-  render: function() {
+export class Login extends Component {
+  renderForgotPasswordLink() {
     return (
-      <div>
+      <a className={styles.forgotLink} href={this.props.forgotPasswordUrl} target="_blank">
+        {'Forgot your password?'}
+      </a>
+    );
+  }
+
+  renderButton() {
+    var text = 'Login';
+
+    if (this.props.isFetching) {
+      text = 'Logging in...';
+    }
+
+    return (
+      <button type="submit"
+        className={styles.button}
+        onClick={this.handleLogin.bind(this)}
+        disabled={this.props.isFetching || this.props.disabled}>
+        {text}
+      </button>
+    );
+  }
+
+  handleLogin(e) {
+    e.preventDefault();
+    var username = this.username.value;
+    var password = this.password.value;
+    var remember = this.remember.checked;
+
+    this.props.onLogin(
+      {username: username, password: password},
+      {remember: remember}
+    );
+  }
+
+  renderError() {
+    if (!this.props.errorMessage) {
+      return null;
+    }
+
+    return <span>{this.props.errorMessage}</span>;
+  }
+
+  render() {
+    return (
+      <div className={styles.loginPage}>
         <form className={styles.form}>
           <div className={styles.inputWrap}>
-            <input className={styles.input} ref="username" placeholder="Email"/>
+            <input className={styles.input} ref={(input) => { this.username = input; }} placeholder="Email"/>
           </div>
           <div className={styles.inputWrap}>
-            <input className={styles.input} ref="password" placeholder="Password" type="password"/>
+            <input className={styles.input} ref={(input) => { this.password = input; }} placeholder="Password" type="password"/>
           </div>
           <div className={styles.actions}>
             <div>
               <div className={styles.remember}>
-                <input type="checkbox" ref="remember" id="remember"/>
+                <input type="checkbox" ref={(input) => { this.remember = input; }} id="remember"/>
                 <label htmlFor="remember">Remember me</label>
               </div>
               <div className={styles.forgot}>{this.renderForgotPasswordLink()}</div>
@@ -56,52 +95,29 @@ var Login = React.createClass({
         </form>
       </div>
     );
-  },
-
-  renderForgotPasswordLink: function() {
-    return (
-      <a className={styles.forgotLink} href={this.props.forgotPasswordUrl} target="_blank">
-        {'Forgot your password?'}
-      </a>
-    );
-  },
-
-  renderButton: function() {
-    var text = 'Login';
-
-    if (this.props.isFetching) {
-      text = 'Logging in...';
-    }
-
-    return (
-      <button type="submit"
-        className={styles.button}
-        onClick={this.handleLogin}
-        disabled={this.props.isFetching || this.props.disabled}>
-        {text}
-      </button>
-    );
-  },
-
-  handleLogin: function(e) {
-    e.preventDefault();
-    var username = this.refs.username.value;
-    var password = this.refs.password.value;
-    var remember = this.refs.remember.checked;
-
-    this.props.onLogin(
-      {username: username, password: password},
-      {remember: remember}
-    );
-  },
-
-  renderError: function() {
-    if (!this.props.errorMessage) {
-      return null;
-    }
-
-    return <span>{this.props.errorMessage}</span>;
   }
-});
+};
 
-module.exports = Login;
+Login.propTypes = {
+  disabled: React.PropTypes.bool.isRequired,
+  errorMessage: React.PropTypes.string,
+  forgotPasswordUrl: React.PropTypes.string.isRequired,
+  isFetching: React.PropTypes.bool.isRequired,
+  onLogin: React.PropTypes.func.isRequired
+};
+
+export default connect(
+  (state, ownProps) => {
+    return {
+      disabled: Boolean(state.unsupported),
+      errorMessage: state.loginErrorMessage,
+      forgotPasswordUrl: state.blipUrls.forgotPassword,
+      isFetching: state.working.fetchingUserInfo,
+    };
+  },
+  (dispatch) => {
+    return {
+      onLogin: bindActionCreators(asyncActions.doLogin, dispatch)
+    };
+  }
+)(Login);
