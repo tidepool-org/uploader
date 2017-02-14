@@ -14,7 +14,7 @@ import '../styles/main.less';
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
-
+hashHistory.push('/');
 render(
   <Provider store={store}>
     <Router history={history} routes={routes} />
