@@ -7,3 +7,4 @@ As you're getting ready to develop code in this repository, we recommend startin
 - [architecture](./guide/Architecture.md)
 - [code style](./guide/CodeStyle.md)
 - [application state](./state/README.md)
+- [driver checklists](./checklists/README.md)
