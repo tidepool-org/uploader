@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Loading from './components/Loading';
 import SettingsPage from './containers/SettingsPage';
 import ClinicUserSelectPage from './containers/ClinicUserSelectPage';
+import ClinicUserEditPage from './containers/ClinicUserEditPage';
 import api from '../lib/core/api';
 import config from '../lib/config';
 
@@ -23,8 +24,7 @@ export default (
     <Route path="main" component={MainPage}/>
     <Route path="settings" component={SettingsPage}/>
     <Route path="clinic_user_select" component={ClinicUserSelectPage}/>
-    {/*<Route path="no_upload_targets" component={}/>
-
-    <Route path="clinic_user_edit" component={}/> */}
+    <Route path="clinic_user_edit" component={ClinicUserEditPage}/>
+    {/* <Route path="no_upload_targets" component={}/> */}
   </Route>
 );

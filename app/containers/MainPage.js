@@ -23,6 +23,7 @@ import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
 import actions from '../actions/';
 import ClinicUploadDone from '../components/ClinicUploadDone';
+import ClinicUserBlock from '../components/ClinicUserBlock';
 import cx from 'classnames';
 import React, { Component } from 'react';
 import styles from '../../styles/components/App.module.less';
@@ -34,6 +35,18 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class MainPage extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
+    this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
+    this.handleClickEditUser = this.handleClickEditUser.bind(this);
+  }
+  
+  handleClickEditUser() {
+    const { setPage } = this.props.sync;
+    setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
+  }
+
   handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
     const { setPage, setUploadTargetUser } = this.props.sync;
     setUploadTargetUser(null);
@@ -222,6 +235,7 @@ export default connect(
       updateProfileErrorMessage: state.updateProfileErrorMessage,
       uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
+      uploadsByUser: state.uploadsByUser,
     };
   },
   (dispatch) => {

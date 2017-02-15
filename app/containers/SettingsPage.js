@@ -31,6 +31,23 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class SettingsPage extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
+    this.handleClickEditUser = this.handleClickEditUser.bind(this);
+  }
+
+  handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
+    const { setPage, setUploadTargetUser } = this.props.sync;
+    setUploadTargetUser(null);
+    setPage(pages.CLINIC_USER_SELECT, undefined, metric);
+  }
+
+  handleClickEditUser() {
+    const { setPage } = this.props.sync;
+    setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
+  }
+
   renderChangePersonLink() {
     var classes = cx({
       [styles.changePerson]: true,
@@ -47,12 +64,11 @@ export class SettingsPage extends Component {
   renderClinicUserBlock() {
     const { page, isClinicAccount } = this.props;
     if (!isClinicAccount) return null;
-    let timezoneDropdown = (page === pages.MAIN) ? this.renderTimezoneDropdown() : null;
     return (
       <ClinicUserBlock
         allUsers={this.props.allUsers}
         targetId={this.props.uploadTargetUser}
-        timezoneDropdown={timezoneDropdown}
+        timezoneDropdown={null}
         onEditUser={this.handleClickEditUser}
         isUploadInProgress={this.props.uploadIsInProgress} />
     );
@@ -152,6 +168,7 @@ export default connect(
       showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),
       targetDevices: getSelectedTargetDevices(state),
       targetUsersForUpload: state.targetUsersForUpload,
+      uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
     };
   },
