@@ -75,7 +75,7 @@ export default validate(merge(baseConfig, {
         test: /^((?!module).)*\.less$/,
         loaders: [
           'style-loader',
-          'css-loader',
+          'css-loader?sourceMap',
           'less-loader?sourceMap'
         ]
       },
