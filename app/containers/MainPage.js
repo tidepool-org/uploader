@@ -125,7 +125,7 @@ export class MainPage extends Component {
   renderClinicUserBlock() {
     const { page, isClinicAccount } = this.props;
     if (!isClinicAccount) return null;
-    let timezoneDropdown = (page === pages.MAIN) ? this.renderTimezoneDropdown() : null;
+    let timezoneDropdown = this.renderTimezoneDropdown();
     return (
       <ClinicUserBlock
         allUsers={this.props.allUsers}

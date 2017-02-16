@@ -123,8 +123,8 @@ export class App extends Component {
   }
 
   renderHeader() {
-    const { allUsers, dropdown, isLoggedIn, page } = this.props;
-    if (page === pages.LOADING) {
+    const { allUsers, dropdown, isLoggedIn, page, route } = this.props;
+    if (route.path === '/loading') {
       return null;
     }
 

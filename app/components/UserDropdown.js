@@ -73,7 +73,7 @@ var UserDropdown = React.createClass({
       return null;
     }
 
-    var text = this.props.page === pages.MAIN ?
+    var text = this.props.route.path === '/main' ?
       'Upload data for' : 'Choose devices for';
 
     return (
