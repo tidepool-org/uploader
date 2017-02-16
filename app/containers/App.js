@@ -68,6 +68,9 @@ export class App extends Component {
     this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
     this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
     this.handleClickEditUser = this.handleClickEditUser.bind(this);
+  }
+
+  componentWillMount(){
     let api = this.props.route.api;
     this.props.async.doAppInit(Object.assign({}, config), {
       api: api,
@@ -93,20 +96,22 @@ export class App extends Component {
   }
 
   handleClickChooseDevices(metric) {
-    const { setPage, toggleDropdown } = this.props.sync;
+    const { toggleDropdown } = this.props.sync;
+    const { setPage } = this.props.async;
     // ensure dropdown closes after click
     setPage(pages.SETTINGS, true, metric);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   }
 
   handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
-    const { setPage, setUploadTargetUser } = this.props.sync;
+    const { setUploadTargetUser } = this.props.sync;
+    const { setPage } = this.props.async;
     setUploadTargetUser(null);
     setPage(pages.CLINIC_USER_SELECT, undefined, metric);
   }
 
   handleClickEditUser() {
-    const { setPage } = this.props.sync;
+    const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
   }
 

@@ -38,13 +38,14 @@ export class SettingsPage extends Component {
   }
 
   handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
-    const { setPage, setUploadTargetUser } = this.props.sync;
+    const { setUploadTargetUser } = this.props.sync;
+    const { setPage } = this.props.async;
     setUploadTargetUser(null);
     setPage(pages.CLINIC_USER_SELECT, undefined, metric);
   }
 
   handleClickEditUser() {
-    const { setPage } = this.props.sync;
+    const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
   }
 

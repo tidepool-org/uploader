@@ -18,7 +18,6 @@
 import _ from 'lodash';
 
 import sundial from 'sundial';
-import { hashHistory } from 'react-router';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -145,9 +144,6 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
   const meta = {source: actionSource};
   if (metric) {
     _.assign(meta, metric);
-  }
-  if(pagesMap[page]){
-    setTimeout(()=>{hashHistory.push(pagesMap[page]);}, 0);
   }
   return {
     type: actionTypes.SET_PAGE,

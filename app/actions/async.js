@@ -19,12 +19,13 @@ import _ from 'lodash';
 import async from 'async';
 import semver from 'semver';
 import os from 'os';
+import { push } from 'react-router-redux';
 
 import sundial from 'sundial';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
-import { pages, paths, steps, urls } from '../constants/otherConstants';
+import { pages, pagesMap, paths, steps, urls } from '../constants/otherConstants';
 import errorText from '../constants/errors';
 import * as metrics from '../constants/metrics';
 
@@ -88,7 +89,7 @@ export function doAppInit(opts, servicesToInit) {
             dispatch(syncActions.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
             let session = apiResult;
             if (session === undefined) {
-              dispatch(syncActions.setPage(pages.LOGIN));
+              dispatch(setPage(pages.LOGIN));
               dispatch(syncActions.initSuccess());
               return dispatch(doVersionCheck());
             }
@@ -140,13 +141,13 @@ export function doLogin(creds, opts) {
 
       // detect if a VCA here and redirect to clinic user select screen
       if(personUtils.userHasRole(results[0].user, 'clinic')){
-        return dispatch(syncActions.setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}));
+        return dispatch(setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}));
       }
 
       // detect if a DSA here and redirect to data storage screen
       const { targetUsersForUpload } = getState();
       if (_.isEmpty(targetUsersForUpload)) {
-        return dispatch(syncActions.setPage(pages.NO_UPLOAD_TARGETS));
+        return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
       }
 
       const { uploadTargetUser } = getState();
@@ -167,11 +168,11 @@ export function doLogout() {
     api.user.logout((err) => {
       if (err) {
         dispatch(syncActions.logoutFailure());
-        dispatch(syncActions.setPage(pages.LOGIN, actionSources.USER));
+        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
       else {
         dispatch(syncActions.logoutSuccess());
-        dispatch(syncActions.setPage(pages.LOGIN, actionSources.USER));
+        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
     });
   };
@@ -480,9 +481,9 @@ export function clickDeviceSelectionDone() {
           }
         }
         if (isClinicAccount) {
-          return dispatch(syncActions.setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CLINIC_DEVICES_DONE}}));
+          return dispatch(setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CLINIC_DEVICES_DONE}}));
         }
-        return dispatch(syncActions.setPage(pages.MAIN));
+        return dispatch(setPage(pages.MAIN));
       });
     }
   };
@@ -516,9 +517,9 @@ export function clickEditUserNext(profile) {
           return _.includes(supportedDeviceKeys, key);
         });
         if (_.isEmpty(targetedDevices) || !atLeastOneDeviceSupportedOnSystem) {
-          return dispatch(syncActions.setPage(pages.SETTINGS));
+          return dispatch(setPage(pages.SETTINGS));
         } else {
-          return dispatch(syncActions.setPage(pages.MAIN));
+          return dispatch(setPage(pages.MAIN));
         }
       });
     }
@@ -546,7 +547,7 @@ export function retrieveTargetsFromStorage() {
     const isClinicAccount = personUtils.userHasRole(allUsers[loggedInUser], 'clinic');
 
     if (isClinicAccount) {
-      return dispatch(syncActions.setPage(pages.CLINIC_USER_SELECT, null, /*{metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}*/));
+      return dispatch(setPage(pages.CLINIC_USER_SELECT, null, /*{metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}*/));
     }
     // redirect based on having a supported device if not clinic account
     if (!_.isEmpty(_.get(targetDevices, uploadTargetUser))) {
@@ -600,12 +601,12 @@ export function retrieveTargetsFromStorage() {
       }
 
       if (atLeastOneDeviceSupportedOnSystem) {
-        return dispatch(syncActions.setPage(pages.MAIN));
+        return dispatch(setPage(pages.MAIN));
       } else {
-        return dispatch(syncActions.setPage(pages.SETTINGS));
+        return dispatch(setPage(pages.SETTINGS));
       }
     } else {
-      return dispatch(syncActions.setPage(pages.SETTINGS));
+      return dispatch(setPage(pages.SETTINGS));
     }
   };
 }
@@ -627,7 +628,7 @@ export function createCustodialAccount(profile) {
           dispatch(syncActions.clinicAddEmail());
         }
         dispatch(syncActions.setUploadTargetUser(account.userid));
-        dispatch(syncActions.setPage(pages.SETTINGS));
+        dispatch(setPage(pages.SETTINGS));
       }
     });
   };
@@ -651,7 +652,7 @@ export function setUploadTargetUserAndMaybeRedirect(targetId) {
       return _.includes(supportedDeviceKeys, key);
     });
     if (_.isEmpty(targetedDevices) || !atLeastOneDeviceSupportedOnSystem) {
-      return dispatch(syncActions.setPage(pages.SETTINGS));
+      return dispatch(setPage(pages.SETTINGS));
     }
   };
 }
@@ -668,9 +669,9 @@ export function checkUploadTargetUserAndMaybeRedirect() {
       return _.includes(supportedDeviceKeys, key);
     });
     if (_.isEmpty(targetedDevices) || !atLeastOneDeviceSupportedOnSystem) {
-      return dispatch(syncActions.setPage(pages.SETTINGS, undefined, {metric: {eventName: metrics.CLINIC_NEXT}}));
+      return dispatch(setPage(pages.SETTINGS, undefined, {metric: {eventName: metrics.CLINIC_NEXT}}));
     } else {
-      return dispatch(syncActions.setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CLINIC_NEXT}}));
+      return dispatch(setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CLINIC_NEXT}}));
     }
   };
 }
@@ -678,6 +679,15 @@ export function checkUploadTargetUserAndMaybeRedirect() {
 export function clickAddNewUser(){
   return (dispatch, getState) =>{
     dispatch(syncActions.setUploadTargetUser(null));
-    dispatch(syncActions.setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_ADD}}));
+    dispatch(setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_ADD}}));
+  };
+}
+
+export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
+  return (dispatch, getState) => {
+    if(pagesMap[page]){
+      dispatch(push(pagesMap[page]));
+    }
+    dispatch(syncActions.setPage(page, actionSource, metric));
   };
 }
