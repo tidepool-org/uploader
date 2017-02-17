@@ -41,6 +41,23 @@ export default validate(merge(baseConfig, {
         )
       },
 
+      {
+        test: /\.module\.less$/,
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+            'less-loader']
+        )
+      },
+
+      {
+        test: /^((?!module).)*\.less$/,
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          ['css-loader', 'less-loader']
+        )
+      },
+
       // Fonts
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
