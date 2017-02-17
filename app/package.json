@@ -1,15 +1,15 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "electron-react-boilerplate",
-  "version": "1.0.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "tidepool-uploader",
+  "productName":  "tidepool-uploader",
+  "version": "0.301.0",
+  "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Gerrit Niezen",
+    "email": "gerrit@tidepool.org"
   },
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "dependencies": {
+        "node-hid": "^0.5.4"
   }
 }
