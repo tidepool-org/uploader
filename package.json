@@ -57,8 +57,8 @@
   },
   "browserslist": "electron 1.4",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "TidepoolUploader",
+    "appId": "org.tidepool.TidepoolUploader",
     "category": "public.app-category.tools",
     "dmg": {
       "contents": [
