@@ -18,12 +18,14 @@
 /*eslint-env mocha*/
 
 import _ from 'lodash';
+import sinon from 'sinon';
+import { expect } from 'chai';
 
 import configureStore from 'redux-mock-store';
 
-import errorText from '../../../../lib/redux/constants/errors';
-import * as utils from '../../../../lib/redux/actions/utils';
-import { addInfoToError } from '../../../../lib/redux/utils/errors';
+import errorText from '../../app/constants/errors';
+import * as utils from '../../app/actions/utils';
+import { addInfoToError } from '../../app/utils/errors';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {

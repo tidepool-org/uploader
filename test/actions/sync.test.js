@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -19,15 +19,17 @@
 
 import _ from 'lodash';
 import { isFSA } from 'flux-standard-action';
+import { expect } from 'chai';
 
-import * as actionSources from '../../../../lib/redux/constants/actionSources';
-import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
-import * as metrics from '../../../../lib/redux/constants/metrics';
-import { steps } from '../../../../lib/redux/constants/otherConstants';
+import * as actionSources from '../../app/constants/actionSources';
+import * as actionTypes from '../../app/constants/actionTypes';
+import * as metrics from '../../app/constants/metrics';
+import { steps } from '../../app/constants/otherConstants';
 
-import * as syncActions from '../../../../lib/redux/actions/sync';
-import { UnsupportedError } from '../../../../lib/redux/utils/errors';
-import errorText from '../../../../lib/redux/constants/errors';
+import * as syncActions from '../../app/actions/sync';
+import { __Rewire__, __ResetDependency__ } from '../../app/actions/sync';
+import { UnsupportedError } from '../../app/utils/errors';
+import errorText from '../../app/constants/errors';
 
 describe('Synchronous Actions', () => {
   describe('addTargetDevice', () => {
@@ -541,7 +543,7 @@ describe('Synchronous Actions', () => {
       });
 
       it('should create an action to report a login error', () => {
-        syncActions.__Rewire__('getLoginErrorMessage', () => err);
+        __Rewire__('getLoginErrorMessage', () => err);
         const expectedAction = {
           type: actionTypes.LOGIN_FAILURE,
           error: true,
@@ -549,7 +551,7 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         };
         expect(syncActions.loginFailure(err)).to.deep.equal(expectedAction);
-        syncActions.__ResetDependency__('getLoginErrorMessage');
+        __ResetDependency__('getLoginErrorMessage');
       });
     });
   });
@@ -599,7 +601,7 @@ describe('Synchronous Actions', () => {
       });
 
       it('should create an action to report a logout error', () => {
-        syncActions.__Rewire__('getLogoutErrorMessage', () => err);
+        __Rewire__('getLogoutErrorMessage', () => err);
         const expectedAction = {
           type: actionTypes.LOGOUT_FAILURE,
           error: true,
@@ -607,7 +609,7 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         };
         expect(syncActions.logoutFailure(err)).to.deep.equal(expectedAction);
-        syncActions.__ResetDependency__('getLoginErrorMessage');
+        __ResetDependency__('getLoginErrorMessage');
       });
     });
   });
