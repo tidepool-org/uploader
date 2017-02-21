@@ -19,6 +19,7 @@
 
 var _ = require('lodash');
 var d3 = require('d3');
+var sinon = require('sinon');
 var expect = require('chai').expect;
 
 var builder = require('../../lib/objectBuilder')();

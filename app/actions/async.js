@@ -60,7 +60,7 @@ export function doAppInit(opts, servicesToInit) {
     const { api, carelink, device, localStore, log } = services;
 
     dispatch(syncActions.initRequest());
-    dispatch(syncActions.hideUnavailableDevices(hostMap[os.platform()]));
+    dispatch(syncActions.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
     log('Initializing local store.');
     localStore.init(localStore.getInitialState(), function(localStoreResult){

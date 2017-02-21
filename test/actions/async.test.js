@@ -123,6 +123,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -236,6 +243,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/settings' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.SETTINGS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -343,6 +357,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/settings' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.SETTINGS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -436,6 +457,13 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/no_upload_targets' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.NO_UPLOAD_TARGETS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -494,6 +522,13 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/clinic_user_select' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.CLINIC_USER_SELECT},
           meta: {
@@ -537,6 +572,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources.USER}
@@ -571,6 +613,13 @@ describe('Asynchronous Actions', () => {
           error: true,
           payload: new Error(getLogoutErrorMessage()),
           meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
         },
         {
           type: actionTypes.SET_PAGE,
@@ -1784,6 +1833,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -1841,6 +1897,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -1907,6 +1970,13 @@ describe('Asynchronous Actions', () => {
             error: true
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -1966,6 +2036,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2022,6 +2099,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'def456', profile: {}},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2087,6 +2171,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'def456', profile: {}},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2175,6 +2266,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'def456', profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2387,6 +2485,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2411,6 +2516,13 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
             meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2459,6 +2571,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_UPLOADS,
             payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2511,6 +2630,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_UPLOADS,
             payload: { devicesByUser },
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2577,6 +2703,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2640,6 +2773,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2729,6 +2869,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2807,6 +2954,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -2877,6 +3031,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.UPDATE_PROFILE_SUCCESS,
             payload: {userId: 'abc123', profile: profile},
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -2963,6 +3124,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -3036,6 +3204,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
             payload: { userId: newUser.userid },
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
@@ -3148,6 +3323,13 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -3219,6 +3401,13 @@ describe('Asynchronous Actions', () => {
       it('should dispatch SET_PAGE (main)', () => {
         const expectedActions = [
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {
@@ -3259,6 +3448,13 @@ describe('Asynchronous Actions', () => {
     describe('target user has not selected devices', () => {
       it('should dispatch SET_PAGE (settings)', () => {
         const expectedActions = [
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
@@ -3338,6 +3534,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
             payload: { userId: null },
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/clinic_user_edit' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
