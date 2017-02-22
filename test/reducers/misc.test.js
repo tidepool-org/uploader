@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2015-2016, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -19,17 +19,18 @@
 
 import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
+import { expect } from 'chai';
 
-import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
-import { pages, steps } from '../../../../lib/redux/constants/otherConstants';
-import * as misc from '../../../../lib/redux/reducers/misc';
+import * as actionTypes from '../../app/constants/actionTypes';
+import { pages, steps } from '../../app/constants/otherConstants';
+import * as misc from '../../app/reducers/misc';
 
-import devices from '../../../../lib/redux/reducers/devices';
+import devices from '../../app/reducers/devices';
 
-import { UnsupportedError } from '../../../../lib/redux/utils/errors';
+import { UnsupportedError } from '../../app/utils/errors';
 
-let pwd = require('../../fixtures/pwd.json');
-let nonpwd = require('../../fixtures/nonpwd.json');
+let pwd = require('../browser/fixtures/pwd.json');
+let nonpwd = require('../browser/fixtures/nonpwd.json');
 
 describe('misc reducers', () => {
   describe('devices', () => {

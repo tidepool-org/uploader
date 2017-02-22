@@ -41,6 +41,23 @@ export default validate(merge(baseConfig, {
         )
       },
 
+      {
+        test: /\.module\.less$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'less-loader'
+        ]
+      },
+
+      {
+        test: /^((?!module).)*\.less$/,
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          ['css-loader', 'less-loader']
+        )
+      },
+
       // Fonts
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
@@ -73,7 +90,12 @@ export default validate(merge(baseConfig, {
      * development checks
      */
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
+      __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
+      __REDUX_DEV_UI__: JSON.stringify(JSON.parse(process.env.REDUX_DEV_UI || 'false')),
+      __TEST__: false,
+      'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
 
     /**
@@ -97,5 +119,8 @@ export default validate(merge(baseConfig, {
   ],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-  target: 'electron-renderer'
+  target: 'electron-renderer',
+  node: {
+    __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+  }
 }));

@@ -77,9 +77,9 @@ app.on('ready', async () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Electron',
+      label: 'Tidepool Uploader',
       submenu: [{
-        label: 'About ElectronReact',
+        label: 'About Tidepool Uploader',
         selector: 'orderFrontStandardAboutPanel:'
       }, {
         type: 'separator'
@@ -89,7 +89,7 @@ app.on('ready', async () => {
       }, {
         type: 'separator'
       }, {
-        label: 'Hide ElectronReact',
+        label: 'Hide Tidepool Uploader',
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {

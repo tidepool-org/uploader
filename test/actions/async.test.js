@@ -21,19 +21,21 @@ import _ from 'lodash';
 import { isFSA } from 'flux-standard-action';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { expect } from 'chai';
 
-import * as actionSources from '../../../../lib/redux/constants/actionSources';
-import * as actionTypes from '../../../../lib/redux/constants/actionTypes';
-import * as metrics from '../../../../lib/redux/constants/metrics';
-import { pages, steps, urls } from '../../../../lib/redux/constants/otherConstants';
-import { UnsupportedError } from '../../../../lib/redux/utils/errors';
-import errorText from '../../../../lib/redux/constants/errors';
+import * as actionSources from '../../app/constants/actionSources';
+import * as actionTypes from '../../app/constants/actionTypes';
+import * as metrics from '../../app/constants/metrics';
+import { pages, steps, urls } from '../../app/constants/otherConstants';
+import { UnsupportedError } from '../../app/utils/errors';
+import errorText from '../../app/constants/errors';
 
-import * as asyncActions from '../../../../lib/redux/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../../../lib/redux/utils/errors';
+import * as asyncActions from '../../app/actions/async';
+import { __Rewire__, __ResetDependency__ } from '../../app/actions/async';
+import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../app/utils/errors';
 
-let pwd = require('../../fixtures/pwd.json');
-let nonpwd = require('../../fixtures/nonpwd.json');
+let pwd = require('../browser/fixtures/pwd.json');
+let nonpwd = require('../browser/fixtures/nonpwd.json');
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -52,7 +54,7 @@ describe('Asynchronous Actions', () => {
   afterEach(function() {
     // very important to do this in an afterEach than in each test when __Rewire__ is used
     // if you try to reset within each test you'll make it impossible for tests to fail!
-    asyncActions.__ResetDependency__('services');
+    __ResetDependency__('services');
   });
 
   describe('doAppInit [hot reload, app already initialized]', () => {
@@ -121,6 +123,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
@@ -138,7 +147,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
         }
       ];
-      asyncActions.__Rewire__('versionInfo', {
+      __Rewire__('versionInfo', {
         semver: config.version
       });
       const store = mockStore({working: {initializingApp: true}});
@@ -234,12 +243,19 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/settings' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.SETTINGS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
-      asyncActions.__Rewire__('versionInfo', {
+      __Rewire__('versionInfo', {
         semver: config.version
       });
       const state = {
@@ -298,7 +314,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         }
       ];
-      asyncActions.__Rewire__('versionInfo', {
+      __Rewire__('versionInfo', {
         semver: config.version
       });
       const store = mockStore({working: {initializingApp: true}});
@@ -341,12 +357,19 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/settings' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.SETTINGS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
@@ -389,7 +412,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(getLoginErrorMessage())
@@ -434,12 +457,19 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/no_upload_targets' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.NO_UPLOAD_TARGETS},
           meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
@@ -492,6 +522,13 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/clinic_user_select' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.CLINIC_USER_SELECT},
           meta: {
@@ -500,7 +537,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
@@ -535,12 +572,19 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources.USER}
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             logout: (cb) => cb(null)
@@ -571,12 +615,19 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
         },
         {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ '/login' ],
+            method: 'push'
+          }
+        },
+        {
           type: actionTypes.SET_PAGE,
           payload: {page: pages.LOGIN},
           meta: {source: actionSources.USER}
         }
       ];
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           user: {
             logout: (cb) => cb('Error :(')
@@ -594,7 +645,7 @@ describe('Asynchronous Actions', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_FAILURE, UPLOAD_ABORTED', () => {
       const requiredVersion = '0.99.0';
       const currentVersion = '0.50.0';
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: requiredVersion})
@@ -625,7 +676,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      asyncActions.__Rewire__('versionInfo', {
+      __Rewire__('versionInfo', {
         semver: currentVersion
       });
       const store = mockStore({});
@@ -640,7 +691,7 @@ describe('Asynchronous Actions', () => {
       const initialState = {
         working: {uploading: true}
       };
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -663,7 +714,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      asyncActions.__Rewire__('versionInfo', {
+      __Rewire__('versionInfo', {
         semver: '0.100.0'
       });
       const store = mockStore(initialState);
@@ -716,7 +767,7 @@ describe('Asynchronous Actions', () => {
       err.utc = errProps.utc;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -816,7 +867,7 @@ describe('Asynchronous Actions', () => {
       err.utc = errProps.utc;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -916,7 +967,7 @@ describe('Asynchronous Actions', () => {
       err.utc = errProps.utc;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1019,7 +1070,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.version = errProps.version;
       err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1110,7 +1161,7 @@ describe('Asynchronous Actions', () => {
         version: '0.100.0',
         working: {uploading: false}
       };
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1213,7 +1264,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.version = errProps.version;
       err.debug = `Details: Error! | UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             fetchCarelinkData: (foo, cb) => cb(new Error('Error!')),
@@ -1321,7 +1372,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             fetchCarelinkData: (foo, cb) => cb(null, '302 Moved Temporarily'),
@@ -1432,7 +1483,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.version = errProps.version;
       err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
@@ -1532,7 +1583,7 @@ describe('Asynchronous Actions', () => {
         version: '0.100.0',
         working: {uploading: false}
       };
-      asyncActions.__Rewire__('services', {
+      __Rewire__('services', {
         api: {
           upload: {
             fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
@@ -1649,7 +1700,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             upload: {
               getVersions: (cb) => { cb(err); }
@@ -1678,7 +1729,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             upload: {
               getVersions: (cb) => { cb(err); }
@@ -1714,14 +1765,14 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             upload: {
               getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
             }
           }
         });
-        asyncActions.__Rewire__('versionInfo', {
+        __Rewire__('versionInfo', {
           semver: currentVersion
         });
         const store = mockStore({});
@@ -1744,14 +1795,14 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             upload: {
               getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
             }
           }
         });
-        asyncActions.__Rewire__('versionInfo', {
+        __Rewire__('versionInfo', {
           semver: currentVersion
         });
         const store = mockStore({});
@@ -1782,12 +1833,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -1841,12 +1899,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -1905,12 +1970,19 @@ describe('Asynchronous Actions', () => {
             error: true
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -1964,12 +2036,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2022,12 +2101,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -2087,12 +2173,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -2147,7 +2240,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               updateProfile: (user, update, cb) => cb('error')
@@ -2175,12 +2268,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               updateProfile: (user, update, cb) => cb({status:401})
@@ -2231,7 +2331,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2281,7 +2381,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2336,7 +2436,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2385,12 +2485,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           localStore: {
             getItem: () => null,
             removeItem: (item) => null
@@ -2411,12 +2518,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           localStore: {
             getItem: () => null,
             removeItem: (item) => null
@@ -2459,12 +2573,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             makeBlipUrl: blipUrlMaker
           },
@@ -2511,12 +2632,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_UPLOADS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             makeBlipUrl: blipUrlMaker
           },
@@ -2575,12 +2703,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           localStore: {
             getItem: () => targets,
             removeItem: (item) => null
@@ -2640,12 +2775,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]},
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2727,12 +2869,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: { page: pages.MAIN },
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2805,12 +2954,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             makeBlipUrl: blipUrlMaker
           },
@@ -2877,12 +3033,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -2961,12 +3124,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               profile: (cb) => {
@@ -3036,12 +3206,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -3072,7 +3249,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
           }
         ];
-        asyncActions.__Rewire__('services', {
+        __Rewire__('services', {
           api: {
             user: {
               createCustodialAccount: (profile, cb) => cb('error')
@@ -3109,7 +3286,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           }
         ];
-        asyncActions.__Rewire__('services', apiRewire);
+        __Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
             a_pump: {}
@@ -3146,12 +3323,19 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           },
           {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
+          {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
             meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
-        asyncActions.__Rewire__('services', apiRewire);
+        __Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
             carelink: {},
@@ -3186,7 +3370,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           }
         ];
-        asyncActions.__Rewire__('services', apiRewire);
+        __Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
             carelink: {},
@@ -3216,6 +3400,13 @@ describe('Asynchronous Actions', () => {
     describe('target user has selected devices', () => {
       it('should dispatch SET_PAGE (main)', () => {
         const expectedActions = [
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/main' ],
+              method: 'push'
+            }
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
@@ -3257,6 +3448,13 @@ describe('Asynchronous Actions', () => {
     describe('target user has not selected devices', () => {
       it('should dispatch SET_PAGE (settings)', () => {
         const expectedActions = [
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/settings' ],
+              method: 'push'
+            }
+          },
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.SETTINGS},
@@ -3336,6 +3534,13 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
             payload: { userId: null },
             meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ '/clinic_user_edit' ],
+              method: 'push'
+            }
           },
           {
             type: actionTypes.SET_PAGE,
