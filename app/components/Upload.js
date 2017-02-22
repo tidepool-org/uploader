@@ -43,6 +43,7 @@ export default class Upload extends Component {
       CARELINK_USERNAME: 'CareLink username',
       CARELINK_PASSWORD: 'CareLink password',
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
+      MEDTRONIC_SERIAL_NUMBER: 'Serial number',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
@@ -55,7 +56,9 @@ export default class Upload extends Component {
   };
 
   state = {
-    carelinkFormIncomplete: true
+    carelinkFormIncomplete: true,
+    medtronicFormIncomplete: true,
+    medtronicSerialNumberValue: null
   };
 
   constructor(props) {
@@ -65,6 +68,7 @@ export default class Upload extends Component {
     this.handleUpload = this.handleUpload.bind(this);
     this.onBlockModeInputChange = this.onBlockModeInputChange.bind(this);
     this.onCareLinkInputChange = this.onCareLinkInputChange.bind(this);
+    this.onMedtronicSerialNumberInputChange = this.onMedtronicSerialNumberInputChange.bind(this);
   }
 
   handleCareLinkUpload() {
@@ -76,12 +80,21 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  handleMedtronicUpload() {
+    let options = {
+      serialNumber: this.state.medtronicSerialNumberValue
+    };
+    this.props.onUpload(options);
+  }
+
   handleReset(e) {
     if (e) {
       e.preventDefault();
     }
     this.setState({
-      carelinkFormIncomplete: true
+      carelinkFormIncomplete: true,
+      medtronicFormIncomplete: true,
+      medtronicSerialNumberValue: null
     });
     this.props.onReset();
   }
@@ -94,6 +107,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'source.type', null) === 'carelink') {
       return this.handleCareLinkUpload();
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic') {
+      return this.handleMedtronicUpload();
     }
 
     var options = {};
@@ -119,12 +136,109 @@ export default class Upload extends Component {
     }
   }
 
+  onMedtronicSerialNumberInputChange(e) {
+    const field = e.target;
+    const value = field.value;
+    const chars = value.split('');
+
+    // Check if input is purely numbers.
+    // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
+    let isValid = _.every(chars, function(char, n) {
+      return !isNaN(char);
+    });
+
+    // Don't update field input if non-numeric character is entered.
+    if (!isValid) {
+      return;
+    }
+
+    if (field && value) {
+      if (value.length === 6) {
+        this.setState({
+          medtronicFormIncomplete: false,
+          medtronicSerialNumberValue: value
+        });
+      }
+      else if (value.length < 6) {
+        this.setState({
+          medtronicSerialNumberValue: value,
+          medtronicFormIncomplete: true
+        });
+      }
+    }
+    else {
+      this.setState({
+        medtronicSerialNumberValue: '',
+        medtronicFormIncomplete: true
+      });
+    }
+  }
+
+  getDebugLinks(data) {
+
+    let post_link = null;
+
+    if(Array.isArray(data) || Array.isArray(data.post_records)) {
+
+      let filename = 'uploader-processed-records.json';
+      let jsonData = null;
+      if (Array.isArray(data)) {
+        jsonData = JSON.stringify(data, undefined, 4);
+      } else {
+        jsonData = JSON.stringify(data.post_records, undefined, 4);
+      }
+      let blob = new Blob([jsonData], {type: 'text/json'});
+      let dataHref = URL.createObjectURL(blob);
+      post_link = (
+        <a href={dataHref}
+          className={styles.dataDownloadLink}
+          download={filename}
+          data-downloadurl={['text/json', filename, dataHref].join(':')}>
+          POST data
+        </a>
+      );
+    }
+
+    let binary_link = null;
+    if(Array.isArray(data.pages)) {
+      let filenameBinary = 'binary-blob.json';
+      let blob = { settings:data.settings, pages:data.pages };
+      if(Array.isArray(data.cbg_pages)) {
+        blob.cbg_pages = data.cbg_pages;
+      }
+      if(Array.isArray(data.isig_pages)) {
+        blob.isig_pages = data.isig_pages;
+      }
+      let jsonDataBinary = JSON.stringify(blob, undefined, 4);
+      let blobBinary = new Blob([jsonDataBinary], {type: 'text/json'});
+      let dataHrefBinary = URL.createObjectURL(blobBinary);
+      binary_link = (
+        <a href={dataHrefBinary}
+          className={styles.dataDownloadLink}
+          download={filenameBinary}
+          data-downloadurl={['text/json', filenameBinary, dataHrefBinary].join(':')}>
+          Binary blob
+        </a>
+      );
+    }
+
+    if(post_link || binary_link) {
+      return (
+        <div>
+          {post_link}&nbsp;{binary_link}
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     return (
       <div className={styles.main}>
         <div className={styles.left}>
           {this.renderName()}
           {this.renderInstructions()}
+          {this.renderImage()}
           {this.renderLastUpload()}
         </div>
         <div className={styles.right}>
@@ -155,6 +269,7 @@ export default class Upload extends Component {
     return (
       <form className={styles.form}>
         {this.renderCareLinkInputs()}
+        {this.renderMedtronicSerialNumberInput()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
@@ -195,6 +310,10 @@ export default class Upload extends Component {
     if (_.get(upload, 'source.type', null) === 'carelink') {
       labelText = text.LABEL_IMPORT;
       disabled = disabled || this.state.carelinkFormIncomplete;
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic') {
+      disabled = disabled || this.state.medtronicFormIncomplete;
     }
 
     if (_.get(upload, 'source.type', null) === 'block') {
@@ -241,6 +360,27 @@ export default class Upload extends Component {
     );
   }
 
+  renderMedtronicSerialNumberInput() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic') {
+      return null;
+    }
+
+    return (
+      <div>
+        <div className={styles.textInputWrapper}>
+          <p>Enter your 6 digit serial number found on the back of your pump.</p>
+          <input
+            type="text"
+            value={this.state.medtronicSerialNumberValue}
+            onChange={this.onMedtronicSerialNumberInputChange}
+            className={styles.textInput}
+            placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
+        </div>
+      </div>
+    );
+  }
+
   renderInstructions() {
     const { upload } = this.props;
     let details = upload.instructions || '';
@@ -254,6 +394,19 @@ export default class Upload extends Component {
     }
     return (
       <div className={styles.detail}>{details}</div>
+    );
+  }
+
+  renderImage() {
+    const { upload } = this.props;
+    let image = upload.image || null;
+
+    if (!image) {
+      return null;
+    }
+
+    return (
+      <div className={styles.detail}><img src={image.src} height={image.height} width={image.width} alt={image.alt} /></div>
     );
   }
 
@@ -338,21 +491,18 @@ export default class Upload extends Component {
 
     if (upload.successful) {
       let dataDownloadLink = null;
-      if (__DEBUG__ && (!_.isEmpty(this.props.upload.data) && Array.isArray(this.props.upload.data))) {
-        let filename = 'uploader-processed-records.json';
-        let jsonData = JSON.stringify(this.props.upload.data, undefined, 4);
-        let blob = new Blob([jsonData], {type: 'text/json'});
-        let dataHref = URL.createObjectURL(blob);
-        dataDownloadLink = (
-          <a href={dataHref}
-            className={styles.dataDownloadLink}
-            download={filename}
-            data-downloadurl={['text/json', filename, dataHref].join(':')}>
-            Download POST data
-          </a>
-        );
+      if (__DEBUG__ && !_.isEmpty(this.props.upload.data)) {
+        dataDownloadLink = this.getDebugLinks(this.props.upload.data);
       }
       return <div className={styles.status}>{this.props.text.UPLOAD_COMPLETE}&nbsp;{dataDownloadLink}</div>;
+    }
+
+    if(upload.failed) {
+      let dataDownloadLink = null;
+      if (__DEBUG__ && this.props.upload.error.data) {
+        dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
+      }
+      return <div className={styles.status}>{dataDownloadLink}</div>;
     }
 
     if (this.isBlockModeFileChosen()) {

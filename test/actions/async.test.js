@@ -1842,7 +1842,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+            }
           }
         ];
         __Rewire__('services', {
@@ -1908,7 +1911,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+            }
           }
         ];
         __Rewire__('services', {
@@ -1979,7 +1985,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+            }
           }
         ];
         __Rewire__('services', {
@@ -2045,7 +2054,10 @@ describe('Asynchronous Actions', () => {
           {
             type: actionTypes.SET_PAGE,
             payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
+            meta: {
+              source: actionSources[actionTypes.SET_PAGE],
+              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+            }
           }
         ];
         __Rewire__('services', {
