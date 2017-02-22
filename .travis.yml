@@ -21,8 +21,6 @@ addons:
       - xz-utils
       - xorriso
 
-before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-
 install:
   - export CXX="g++-4.8"
   - npm install -g npm@latest
