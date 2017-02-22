@@ -663,6 +663,64 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('is suspended but not resumed before upload', function() {
+
+        var suspendResume = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(0)
+          .with_reason({suspended: 'manual', resumed: 'manual'})
+          .set('index', 1234)
+          .done();
+
+        var suspendedBasal = builder.makeSuspendBasal()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(0)
+          .set('index', 1234);
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.finalBasal();
+
+        var expectedTempBasal = _.cloneDeep(tempBasal.done());
+        expectedTempBasal.suppressed.rate = 1.3;
+        expectedTempBasal.duration = 600000;
+        delete expectedTempBasal.index;
+        delete expectedTempBasal.jsDate;
+
+        var expectedSuspendedBasal = _.cloneDeep(suspendedBasal);
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'temp',
+          rate: 1,
+          suppressed : {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3,
+          }
+        };
+        expectedSuspendedBasal.duration = 0;
+        expectedSuspendedBasal.set('suppressed', suppressed);
+        delete expectedSuspendedBasal.index;
+
+        delete basal1.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedTempBasal,
+          suspendResume,
+          expectedSuspendedBasal.done()
+        ]);
+      });
+
       it('is cancelled after schedule change', function() {
 
         var cancelTempBasal = builder.makeTempBasal()
@@ -829,9 +887,8 @@ describe('medtronicSimulator.js', function() {
             .with_conversionOffset(0)
             .with_rate(2);
 
-        tempBasal.duration = 30000; //end in middle of suspend
+        tempBasal.duration = 900000; //end in middle of suspend
 
-        simulator.pumpSettings(settings);
         simulator.basal(basal1);
         simulator.basal(tempBasal);
         simulator.suspendResume(suspendResume);
@@ -840,7 +897,6 @@ describe('medtronicSimulator.js', function() {
 
         var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
-        expectedTempBasal1.duration = 30000;
         delete expectedTempBasal1.index;
         delete expectedTempBasal1.jsDate;
 
@@ -852,8 +908,7 @@ describe('medtronicSimulator.js', function() {
           suppressed : {
             type: 'basal',
             deliveryType: 'scheduled',
-            rate: 1.3,
-            scheduleName: 'standard'
+            rate: 1.3
           }
         };
         expectedSuspendedBasal1.duration = 600000;
@@ -863,7 +918,6 @@ describe('medtronicSimulator.js', function() {
         delete basal1.index;
 
         expect(simulator.getEvents()).deep.equals([
-          settings,
           basal1.done(),
           expectedTempBasal1,
           suspendResume,
