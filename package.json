@@ -27,8 +27,7 @@
     "package": "npm run build && build --publish never",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
-    "package-all": "npm run build && build -mwl",
-    "cleanup": "mop -v"
+    "package-all": "npm run build && build -mwl"
   },
   "dependencies": {
     "async": "1.5.2",
@@ -149,7 +148,7 @@
     "fbjs-scripts": "0.7.1",
     "file-loader": "0.10.0",
     "flux-standard-action": "0.6.1",
-    "gitbook-cli": "1.0.1",
+    "gitbook-cli": "2.3.0",
     "html-webpack-plugin": "2.26.0",
     "jsdom": "9.9.1",
     "json-loader": "0.5.4",
