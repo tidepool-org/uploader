@@ -15,20 +15,15 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha
-
-The entirety of our localstore wrapper needs to be re-thought in electron,
-commenting this out for now to reduce noise
+/*eslint-env mocha */
 
 var _ = require('lodash');
 var expect = require('chai').expect;
 
 var localStore = require('../../lib/core/localStore');
-console.log('testlocalStore: ', localStore);
 
-describe('localStore [node.js version for testing]', function() {
+describe('localStore', function() {
   it('is an object', function() {
-    console.log('in it:',localStore, typeof localStore);
     expect(typeof localStore).equals('object');
   });
 
@@ -54,10 +49,10 @@ describe('localStore [node.js version for testing]', function() {
   });
 
   describe('localStore.getItem', function() {
-    var data = {blocks: {mine: ['a', 'b'], yours: [1,2,3]}};
+    var data = {mine: ['a', 'b'], yours: [1,2,3]};
 
     before(function(){
-      localStore.init(data, console.log);
+      localStore.setItem('blocks', data);
     });
 
     it('is a function', function() {
@@ -66,11 +61,7 @@ describe('localStore [node.js version for testing]', function() {
     });
 
     it('retrieves an item from the store', function() {
-      console.log('inretrieve: ',localStore, localStore.getItem);
-      var intLocalStore = localStore;
-      var getItem = localStore.getItem;
-      debugger;
-      expect(localStore.getItem('blocks', console.log)).deep.equals(data.blocks);
+      expect(localStore.getItem('blocks', console.log)).deep.equals(data);
     });
   });
 
@@ -81,14 +72,13 @@ describe('localStore [node.js version for testing]', function() {
     });
 
     it('adds an item to the store', function() {
-      localStore.setItem({foo: 'bar'});
+      localStore.setItem('foo', 'bar');
       expect(localStore.getItem('foo')).equals('bar');
     });
 
     it('overwrites an existing item', function() {
-      localStore.setItem({foo: 'blocks'});
+      localStore.setItem('foo', 'blocks');
       expect(localStore.getItem('foo')).equals('blocks');
     });
   });
 });
-*/
