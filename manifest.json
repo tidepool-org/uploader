@@ -171,8 +171,8 @@
           "ctsFlowControl": true,
           "sendTimeout": 500,
           "receiveTimeout": 500,
-          "vendorId": 1659,
-          "productId": 8963
+          "vendorId": "0x067b",
+          "productId": "0x2303"
         }
       ]
     }
