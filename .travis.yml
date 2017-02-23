@@ -6,7 +6,8 @@ node_js:
   - "6.3.0"
   - "stable"
 
-compiler: clang
+env:
+  - CXX=g++-4.8
 
 cache:
   directories:
