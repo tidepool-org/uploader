@@ -86,8 +86,8 @@
           "driverId": "OneTouchVerioIQ",
           "bitrate": 38400,
           "mode": "serial",
-          "vendorId": 4292,
-          "productId": 34215
+          "vendorId": "0x10c4",
+          "productId": "0x85a7"
         },
         {
           "deviceName": "FreeStyle Lite",

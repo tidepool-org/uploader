@@ -10,6 +10,7 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
+        "serialport": "^4.0.7",
         "node-hid": "^0.5.4"
   }
 }
