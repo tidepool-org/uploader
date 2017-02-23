@@ -93,7 +93,6 @@ export default validate(merge(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify('production'),
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
-      __REDUX_DEV_UI__: JSON.stringify(JSON.parse(process.env.REDUX_DEV_UI || 'false')),
       __TEST__: false,
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),

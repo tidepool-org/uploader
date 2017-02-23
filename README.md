@@ -51,11 +51,8 @@ The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors 
 
 The environment variable `REDUX_LOG` (boolean) controls whether or not the [redux logger middleware](https://github.com/fcomb/redux-logger/blob/master/README.md) is included. This middleware logs all redux actions in the Chrome developer console, including the (entire) previous and following app state trees. It is primarily useful when working on the UI of the app, and in fact can be quite performance-expensive (especially when uploading a device, due to the fact that every update to the progress bar constitutes an action), so it is not recommended to turn it on while working on device code.
 
-#### `REDUX_DEV_UI`
 
-The environment variable `REDUX_DEV_UI` (boolean) controls whether or not the [redux dev tools UI](https://github.com/gaearon/redux-devtools/blob/master/README.md) is included. The redux dev tools add a UI interface for exploring - and, to a limited extent, manipulating - app actions and state. Even when `REDUX_DEV_UI` is `true`, we have the dev tools hidden by default: the key combination `ctrl + h` will toggle their visibility. The key combination `ctrl + q` will rotate (clockwise) the location at which the dev tools are anchored; the default is for them to be anchored at the bottom of the app. Similarly to the redux logger middleware, the redux dev tools UI is also quite performance expensive and only recommended for use while working on UI code.
-
-`REDUX_LOG` and `REDUX_DEV_UI` are both turned on by default in `config/ui-debug.sh`.
+`REDUX_LOG` is turned on by default in `config/ui-debug.sh`.
 
 ### Local Development w/o Debug Mode(s)
 

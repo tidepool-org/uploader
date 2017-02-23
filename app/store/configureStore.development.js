@@ -1,4 +1,4 @@
-/* global __REDUX_DEV_UI__, __REDUX_LOG__ */
+/* global __REDUX_LOG__ */
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
