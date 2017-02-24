@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
+import open from 'open';
 
 let menu;
 let template;
@@ -57,6 +58,10 @@ app.on('ready', async () => {
     mainWindow.focus();
   });
 
+  mainWindow.webContents.on('new-window', function(event, url){
+    event.preventDefault();
+    open(url);
+  });
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
