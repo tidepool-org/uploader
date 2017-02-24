@@ -19,8 +19,8 @@ import _ from 'lodash';
 import os from 'os';
 import { exec } from 'child_process';
 
-//const regedit = null;
-
+let regedit = null;
+// TODO: figure out OS-specific require?
 if (os.platform() === 'win32') {
   //regedit = require('regedit');
 }
