@@ -37,22 +37,12 @@ import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
 import { pages, urls } from '../constants/otherConstants';
 import * as metrics from '../constants/metrics';
+import { checkVersion } from '../utils/drivers';
 
-import ClinicUserBlock from '../components/ClinicUserBlock';
-import ClinicUserEdit from '../components/ClinicUserEdit';
-import ClinicUserSelect from '../components/ClinicUserSelect';
-import ClinicUploadDone from '../components/ClinicUploadDone';
-import NoUploadTargets from '../components/NoUploadTargets';
-import DeviceSelection from '../components/DeviceSelection';
 import Loading from '../components/Loading';
-import Login from '../components/Login';
 import LoggedInAs from '../components/LoggedInAs';
-import TimezoneDropdown from '../components/TimezoneDropdown';
-import UploadList from '../components/UploadList';
 import UpdatePlease from '../components/UpdatePlease';
-import UserDropdown from '../components/UserDropdown';
 import VersionCheckError from '../components/VersionCheckError';
-import ViewDataLink from '../components/ViewDataLink';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -69,6 +59,7 @@ export class App extends Component {
   }
 
   componentWillMount(){
+    checkVersion();
     let api = this.props.route.api;
     this.props.async.doAppInit(Object.assign({}, config), {
       api: api,
@@ -142,7 +133,7 @@ export class App extends Component {
   }
 
   renderFooter() {
-    const { version } = this.props;
+    const { version } = config;
     return (
       <div className={styles.footerRow}>
         <div className={styles.version}>{`v${version} beta`}</div>

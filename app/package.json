@@ -10,6 +10,8 @@
     "url": "https://github.com/chentsulin"
   },
   "license": "MIT",
-  "dependencies": {
+  "os" : [ "darwin", "win32" ],
+  "optionalDependencies": {
+    "regedit": "2.2.6"
   }
 }
