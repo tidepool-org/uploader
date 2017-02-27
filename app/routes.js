@@ -11,13 +11,6 @@ import NoUploadTargetsPage from './containers/NoUploadTargetsPage';
 import api from '../lib/core/api';
 import config from '../lib/config';
 
-api.create({
-  apiUrl: config.API_URL,
-  uploadUrl: config.UPLOAD_URL,
-  dataUrl: config.DATA_URL,
-  version: config.version
-});
-
 export default (
   <Route path="/" component={App} api={api}>
     <IndexRoute component={Loading} />
