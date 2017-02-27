@@ -15,11 +15,19 @@
  * == BSD2 LICENSE ==
  */
 
-import os from 'os';
+import { exec } from 'child_process';
 
-const platform = os.platform();
-if (platform === 'darwin'){
-  module.exports = require('./drivers.darwin'); // eslint-disable-line global-require
-} else {
-  module.exports = require('./drivers.win32'); // eslint-disable-line global-require
+export function checkVersion() {
+  const version = exec('pkgutil --pkg-info org.tidepool.pkg.TidepoolUSBDriver');
+
+  version.stdout.on('data', (data) => {
+    const lines = data.split('\n');
+    const versionString = lines[1];
+    const versionNum = versionString.split(': ')[1];
+    console.log('Installed Driver version: ',versionNum);
+  });
+
+  version.stderr.on('data', (data) => {
+    console.log(data.toString());
+  });
 }
