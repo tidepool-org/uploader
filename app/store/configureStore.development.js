@@ -1,4 +1,4 @@
-/* global __REDUX_DEV_UI__, __REDUX_LOG__ */
+/* global __REDUX_LOG__ */
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -19,16 +19,24 @@ api.create({
   version: config.version
 });
 
+const noop = function(middlewareAPI){
+  return function(next){
+    return function(action){
+      return next(action);
+    };
+  };
+};
+
 const actionCreators = {
   ...async,
   ...sync,
   push,
 };
 
-const logger = createLogger({
+const logger = __REDUX_LOG__ ? createLogger({
   level: 'info',
   collapsed: true
-});
+}) : noop;
 
 const router = routerMiddleware(hashHistory);
 
@@ -46,7 +54,6 @@ const enhancer = composeEnhancers(
     thunk,
     router,
     logger,
-    createLogger(),
     createErrorLogger(api),
     createMetricsTracker(api)
   )

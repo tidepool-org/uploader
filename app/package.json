@@ -12,5 +12,8 @@
   "dependencies": {
         "serialport": "4.0.7",
         "node-hid": "0.5.4"
+  },
+  "optionalDependencies": {
+    "regedit": "2.2.6"
   }
 }

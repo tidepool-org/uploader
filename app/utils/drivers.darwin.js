@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2014, Tidepool Project
+ * Copyright (c) 2015-2016, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -15,21 +15,19 @@
  * == BSD2 LICENSE ==
  */
 
-var _ = require('lodash');
+import { exec } from 'child_process';
 
-var localStore = null;
-var ourStore = window.localStorage;
+export function checkVersion() {
+  const version = exec('pkgutil --pkg-info org.tidepool.pkg.TidepoolUSBDriver');
 
-if (ourStore) {
-  localStore = require('./storage')({
-    ourStore: ourStore
+  version.stdout.on('data', (data) => {
+    const lines = data.split('\n');
+    const versionString = lines[1];
+    const versionNum = versionString.split(': ')[1];
+    console.log('Installed Driver version: ',versionNum);
   });
-  localStore.getInitialState = function() {
-    return {
-      authToken: null,
-      devices: null
-    };
-  };
-}
 
-module.exports = localStore;
+  version.stderr.on('data', (data) => {
+    console.log(data.toString());
+  });
+}

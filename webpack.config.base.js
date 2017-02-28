@@ -2,9 +2,11 @@
  * Base webpack config used across other specific configs
  */
 
+import _ from 'lodash';
 import path from 'path';
 import validate from 'webpack-validator';
 import { dependencies as externals } from './app/package.json';
+import { optionalDependencies as additionalExternals } from './app/package.json';
 
 export default validate({
   module: {
@@ -38,5 +40,5 @@ export default validate({
 
   plugins: [],
 
-  externals: Object.keys(externals || {})
+  externals: Object.keys(_.merge({}, externals, additionalExternals) || {})
 });

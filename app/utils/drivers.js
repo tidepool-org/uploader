@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2014, Tidepool Project
+ * Copyright (c) 2015-2016, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -15,21 +15,11 @@
  * == BSD2 LICENSE ==
  */
 
-var _ = require('lodash');
+import os from 'os';
 
-var localStore = null;
-var ourStore = window.localStorage;
-
-if (ourStore) {
-  localStore = require('./storage')({
-    ourStore: ourStore
-  });
-  localStore.getInitialState = function() {
-    return {
-      authToken: null,
-      devices: null
-    };
-  };
+const platform = os.platform();
+if (platform === 'darwin'){
+  module.exports = require('./drivers.darwin'); // eslint-disable-line global-require
+} else {
+  module.exports = require('./drivers.win32'); // eslint-disable-line global-require
 }
-
-module.exports = localStore;
