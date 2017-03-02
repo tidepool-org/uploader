@@ -16,9 +16,11 @@
  */
 
 import _ from 'lodash';
-import regedit from 'regedit';
+//import regedit from 'regedit';
+import winreg from 'winreg';
 
 export function checkVersion() {
+/*
   var software;
   regedit.list('HKLM\\SYSTEM\\DriverDatabase\\DriverPackages',
   	function(err, result) {
@@ -26,8 +28,8 @@ export function checkVersion() {
   		var filtered = _.filter(software, function(name){
   			return _.startsWith(name, 'tidepool');
   		});
-  		var tandemPaths = _.map(filtered, function(key) { return 'HKLM\\SYSTEM\\DriverDatabase\\DriverPackages\\' + key; });
-  		regedit.list(tandemPaths, function(err, result) {
+  		var tidepoolPaths = _.map(filtered, function(key) { return 'HKLM\\SYSTEM\\DriverDatabase\\DriverPackages\\' + key; });
+  		regedit.list(tidepoolPaths, function(err, result) {
   			_.forEach(result, function(regvalues){
   				var versionValue = regvalues.values.Version.value;
   				console.log([versionValue[38],versionValue[36],versionValue[34],versionValue[32]].join('.'));
@@ -35,4 +37,25 @@ export function checkVersion() {
   		});
   	}
   );
+*/
+  var regKey = winreg({
+    hive: winreg.HKLM,
+    key: '\\SYSTEM\\DriverDatabase\\DriverPackages'
+  });
+
+  regKey.keys(function(err, items){
+    var filtered = _.filter(items, function(item){
+      return _.startsWith(item.key.split('\\').pop(), 'tidepool');
+    });
+    _.each(filtered, function(tidepoolKey){
+      console.log(tidepoolKey.key);
+      tidepoolKey.values(function(err, values){
+        _.each(values, function(value){
+          if(value.name === 'Version'){
+            console.log('Driver version: ', [value.value[77], value.value[73], value.value[69], value.value[65]].join('.'));
+          }
+        });
+      });
+    });
+  });
 }

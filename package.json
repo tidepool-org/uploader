@@ -9,7 +9,7 @@
   "scripts": {
     "build-docs": "./scripts/update-gh-pages.sh",
     "serve-docs": "./node_modules/.bin/gitbook serve",
-    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --retries 2 --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.js",
+    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 electron-mocha --retries 2 --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.js",
     "test-debug": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --retries 2 --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.js --inspect --debug-brk",
     "test-all": "npm run lint && npm run test && npm run build",
     "test-watch": "npm test -- --watch",
@@ -22,7 +22,7 @@
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
-    "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
+    "postinstall": "concurrently \"electron-rebuild --force\" \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
     "dev": "npm run hot-server -- --start-hot",
     "package": "npm run build && build --publish never",
     "package-win": "npm run build && build --win --x64",
@@ -132,6 +132,8 @@
     "electron": "1.4.15",
     "electron-builder": "12.2.2",
     "electron-devtools-installer": "2.0.1",
+    "electron-mocha": "3.3.0",
+    "electron-rebuild": "^1.5.7",
     "enzyme": "2.7.1",
     "eslint": "3.14.0",
     "eslint-config-airbnb": "14.0.0",
@@ -186,7 +188,9 @@
     "webpack-hot-middleware": "2.15.0",
     "webpack-merge": "2.4.0",
     "webpack-validator": "2.3.0",
-    "write-file-webpack-plugin": "3.1.8"
+    "write-file-webpack-plugin": "3.1.8",
+    "serialport": "4.0.7",
+    "node-hid": "0.5.4"
   },
   "devEngines": {
     "node": ">=6.x",
