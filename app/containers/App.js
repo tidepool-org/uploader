@@ -20,6 +20,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import cx from 'classnames';
+import { remote } from 'electron';
+
+const {Menu, MenuItem} = remote;
 
 import bows from '../../lib/bows.js';
 
@@ -56,6 +59,8 @@ export class App extends Component {
     this.log = bows('App');
     this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
     this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
+    this.setServer = this.setServer.bind(this);
   }
 
   componentWillMount(){
@@ -68,6 +73,47 @@ export class App extends Component {
       localStore,
       log: this.log
     });
+
+    window.addEventListener('contextmenu', this.handleContextMenu, false);
+  }
+
+  setServer(info) {
+    var serverdata = {
+      Local: {
+        API_URL: 'http://localhost:8009',
+        UPLOAD_URL: 'http://localhost:9122',
+        DATA_URL: 'http://localhost:8077',
+        BLIP_URL: 'http://localhost:3000'
+      },
+      Development: {
+        API_URL: 'https://dev-api.tidepool.org',
+        UPLOAD_URL: 'https://dev-uploads.tidepool.org',
+        DATA_URL: 'https://dev-api.tidepool.org/dataservices',
+        BLIP_URL: 'https://dev-blip.tidepool.org'
+      },
+      Staging: {
+        API_URL: 'https://stg-api.tidepool.org',
+        UPLOAD_URL: 'https://stg-uploads.tidepool.org',
+        DATA_URL: 'https://stg-api.tidepool.org/dataservices',
+        BLIP_URL: 'https://stg-blip.tidepool.org'
+      },
+      Integration: {
+        API_URL: 'https://int-api.tidepool.org',
+        UPLOAD_URL: 'https://int-uploads.tidepool.org',
+        DATA_URL: 'https://int-api.tidepool.org/dataservices',
+        BLIP_URL: 'https://int-blip.tidepool.org'
+      },
+      Production: {
+        API_URL: 'https://api.tidepool.org',
+        UPLOAD_URL: 'https://uploads.tidepool.org',
+        DATA_URL: 'https://api.tidepool.org/dataservices',
+        BLIP_URL: 'https://blip.tidepool.org'
+      }
+    };
+
+    console.log('will use', info.label, 'server');
+    var serverinfo = serverdata[info.label];
+    this.props.route.api.setHosts(serverinfo);
   }
 
   render() {
@@ -82,6 +128,52 @@ export class App extends Component {
         {this.renderVersionCheck()}
       </div>
     );
+  }
+
+  handleContextMenu(e){
+    e.preventDefault();
+    const { clientX, clientY } = e;
+    let template = [];
+    if (process.env.NODE_ENV === 'development') {
+      template.push({
+        label: 'Inspect element',
+        click() {
+          remote.getCurrentWindow().inspectElement(clientX, clientY);
+        }
+      });
+      template.push({
+        type: 'separator'
+      });
+    }
+    if (this.props.location.pathname === '/login') {
+      template.push({
+        label: 'Change server',
+        submenu: [
+          {
+            label: 'Local',
+            click: this.setServer
+          },
+          {
+            label: 'Development',
+            click: this.setServer
+          },
+          {
+            label: 'Staging',
+            click: this.setServer
+          },
+          {
+            label: 'Integration',
+            click: this.setServer
+          },
+          {
+            label: 'Production',
+            click: this.setServer
+          }
+        ]
+      });
+    }
+    const menu = Menu.buildFromTemplate(template);
+    menu.popup(remote.getCurrentWindow());
   }
 
   handleClickChooseDevices(metric) {
