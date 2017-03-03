@@ -64,8 +64,6 @@ There are two sets of (unit) tests for the code in this repository.
 
 The tests for all device and data-processing code currently run in the [nodejs](https://nodejs.org/en/) server-side JavaScript environment. (We plan to eventually migrate these tests to run in-browser since the code itself runs in-browser in the Chrome App.)
 
-The tests for all the UI code run using the [Karma test runner](https://karma-runner.github.io/0.13/index.html) in [the headless WebKit browser PhantomJS](http://phantomjs.org/) or the Chrome browser.
-
 To run the tests in this repository as they are run on Travis CI, use:
 
 ```bash
