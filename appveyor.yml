@@ -17,7 +17,6 @@ cache:
 
 platform:
   - x64
-  - x86
 
 matrix:
   fast_finish: true
@@ -53,9 +52,9 @@ test_script:
   - node --version
   - npm run lint
   - npm run test
-  - npm run build
-  - npm run test-e2e
-  - npm run package
+#  - npm run build
+#  - npm run test-e2e
+  - npm run package -- --ia32 --x64
 
 artifacts:
   - path: release
