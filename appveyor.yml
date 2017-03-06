@@ -32,6 +32,8 @@ shallow_clone: true
 clone_depth: 1
 
 install:
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
   - npm install -g npm@latest
