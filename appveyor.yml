@@ -2,8 +2,8 @@ os: unstable
 
 environment:
   matrix:
+    - nodejs_version: 6.3.0
     - nodejs_version: 7
-    - nodejs_version: 6
 
 cache:
   - node_modules -> package.json
@@ -15,8 +15,14 @@ cache:
 # cache:
 #   - "%LOCALAPPDATA%/Yarn"
 
+platform:
+  - x64
+  - x86
+
 matrix:
   fast_finish: true
+  allow_failures:
+    - nodejs_version: 7
 
 build: off
 
@@ -50,3 +56,6 @@ test_script:
   - npm run build
   - npm run test-e2e
   - npm run package
+
+artifacts:
+  - path: release
