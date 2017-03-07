@@ -56,10 +56,8 @@ test_script:
   - npm run test
 #  - npm run build
 #  - npm run test-e2e
-  - set NODE_ENV=development
   - npm run package-dev -- --ia32 --x64
   - 7z a development.zip release
-  - set NODE_ENV=production
   - npm run package -- --ia32 --x64
   - 7z a production.zip release
 

@@ -23,7 +23,7 @@ app.on('window-all-closed', () => {
 
 
 const installExtensions = async () => {
-  if (process.env.NODE_ENV === 'development'  || process.env.BUILD === 'dev') {
+  if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
     const extensions = [
