@@ -47,8 +47,9 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728
+    width: 663,
+    height: 769,
+    resizable: process.env.NODE_ENV === 'development'
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

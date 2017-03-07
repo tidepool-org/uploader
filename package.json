@@ -53,7 +53,7 @@
     "source-map-support": "0.4.10",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.28.0"
+    "tidepool-platform-client": "tidepool-org/platform-client#krystophv/electron"
   },
   "browserslist": "electron 1.4",
   "build": {
