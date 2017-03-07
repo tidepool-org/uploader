@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
+if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
@@ -23,7 +23,7 @@ app.on('window-all-closed', () => {
 
 
 const installExtensions = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
+  if (process.env.NODE_ENV === 'development') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
     const extensions = [
@@ -44,12 +44,13 @@ const installExtensions = async () => {
 
 app.on('ready', async () => {
   await installExtensions();
+  const resizable = (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev');
 
   mainWindow = new BrowserWindow({
     show: false,
     width: 663,
     height: 769,
-    resizable: process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev'
+    resizable: resizable
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
