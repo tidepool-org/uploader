@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
   require('electron-debug')(); // eslint-disable-line global-require
   const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
@@ -23,7 +23,7 @@ app.on('window-all-closed', () => {
 
 
 const installExtensions = async () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development'  || process.env.BUILD === 'dev') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
     const extensions = [
@@ -49,7 +49,7 @@ app.on('ready', async () => {
     show: false,
     width: 663,
     height: 769,
-    resizable: process.env.NODE_ENV === 'development'
+    resizable: process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev'
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -67,7 +67,7 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
@@ -145,7 +145,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: 'View',
-      submenu: (process.env.NODE_ENV === 'development') ? [{
+      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
         label: 'Reload',
         accelerator: 'Command+R',
         click() {
@@ -228,7 +228,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: '&View',
-      submenu: (process.env.NODE_ENV === 'development') ? [{
+      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
         label: '&Reload',
         accelerator: 'Ctrl+R',
         click() {
