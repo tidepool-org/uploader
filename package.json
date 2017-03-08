@@ -163,6 +163,7 @@
     "merge-stream": "1.0.0",
     "minimist": "1.2.0",
     "mocha": "3.2.0",
+    "node-hid": "0.5.4",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "phantomjs-prebuilt": "2.1.7",
@@ -172,6 +173,7 @@
     "redux-logger": "2.7.4",
     "redux-mock-store": "1.1.2",
     "salinity": "0.0.8",
+    "serialport": "4.0.7",
     "sinon": "1.17.7",
     "sinon-chai": "2.8.0",
     "spectron": "3.4.1",
@@ -184,9 +186,7 @@
     "webpack-hot-middleware": "2.15.0",
     "webpack-merge": "2.4.0",
     "webpack-validator": "2.3.0",
-    "write-file-webpack-plugin": "3.1.8",
-    "serialport": "4.0.7",
-    "node-hid": "0.5.4"
+    "write-file-webpack-plugin": "3.1.8"
   },
   "devEngines": {
     "node": ">=6.x",
