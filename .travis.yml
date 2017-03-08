@@ -18,6 +18,9 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
+      - build-essential
+      - git
+      - gcc-4.8
       - g++-4.8
       - icnsutils
       - graphicsmagick
