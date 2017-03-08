@@ -44,12 +44,13 @@ const installExtensions = async () => {
 
 app.on('ready', async () => {
   await installExtensions();
+  const resizable = (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev');
 
   mainWindow = new BrowserWindow({
     show: false,
     width: 663,
     height: 769,
-    resizable: process.env.NODE_ENV === 'development'
+    resizable: resizable
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -67,7 +68,7 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
@@ -145,7 +146,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: 'View',
-      submenu: (process.env.NODE_ENV === 'development') ? [{
+      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
         label: 'Reload',
         accelerator: 'Command+R',
         click() {
@@ -228,7 +229,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: '&View',
-      submenu: (process.env.NODE_ENV === 'development') ? [{
+      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
         label: '&Reload',
         accelerator: 'Ctrl+R',
         click() {

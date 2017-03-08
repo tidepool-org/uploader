@@ -116,6 +116,7 @@ export default validate(merge(baseConfig, {
      */
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"development"',
+      'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"dev"',
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
       __TEST__: false,

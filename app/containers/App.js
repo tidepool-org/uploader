@@ -134,7 +134,7 @@ export class App extends Component {
     e.preventDefault();
     const { clientX, clientY } = e;
     let template = [];
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev' ) {
       template.push({
         label: 'Inspect element',
         click() {

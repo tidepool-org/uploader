@@ -39,7 +39,8 @@ export default validate(merge(baseConfig, {
      */
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('production'),
+        BUILD: JSON.stringify(process.env.BUILD) || '"prod"',
       }
     })
   ],

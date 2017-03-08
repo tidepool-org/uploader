@@ -56,7 +56,14 @@ test_script:
   - npm run test
 #  - npm run build
 #  - npm run test-e2e
+  - npm run package-dev -- --ia32 --x64
+  - 7z a development.zip release
   - npm run package -- --ia32 --x64
+  - 7z a production.zip release
+
 
 artifacts:
-  - path: release
+  - path: development.zip
+    name: Development build
+  - path: production.zip
+    name: Production Build
