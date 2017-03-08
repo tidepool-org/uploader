@@ -184,6 +184,13 @@
           "mode": "HID",
           "vendorId": 6777,
           "productId": 25088
+        },
+        {
+          "deviceName": "Medtronic600",
+          "driverId": "Medtronic600",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25104
         }
       ]
     }
