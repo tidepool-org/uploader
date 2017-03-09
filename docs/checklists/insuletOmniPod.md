@@ -108,6 +108,8 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
+**NB:** Some OmniPod alarms are not "history" events with the log index necessary for bootstrapping to UTC. If one of these alarms fails the backup bootstrapping method (employed for events with no log index), we just drop it from the upload. (And if we succeed at "guessing" a `time` value for one of these using the backuup bootstrapping method, we keep it but annotate it with the `uncertain-timestamp` code.)
+
 #### SMBG
 
   - `[x]` blood glucose value
