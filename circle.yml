@@ -1,0 +1,11 @@
+machine:
+  node:
+    version: 6.3.0
+dependencies:
+  override:
+    - npm install -g npm@latest
+    - npm install
+test:
+  override:
+    - npm run lint
+    - npm run test
