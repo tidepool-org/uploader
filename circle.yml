@@ -1,6 +1,3 @@
-machine:
-  environment:
-    CXX: g++-4.8
 dependencies:
   pre:
     - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
