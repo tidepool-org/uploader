@@ -1,0 +1,15 @@
+machine:
+  environment:
+    CXX: g++-4.8
+  node:
+    version: 7.4.0
+dependencies:
+  pre:
+    - sudo apt-get install g++-4.8 libusb-1.0-0-dev icnsutils
+  override:
+    - npm install -g npm@latest
+    - npm install
+test:
+  override:
+    - npm run lint
+    - npm run test

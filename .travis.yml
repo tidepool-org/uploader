@@ -1,17 +1,22 @@
+osx_image: xcode7.3
+
 sudo: false
 
-language: node_js
+language: c
 
 node_js:
   - "6.3.0"
-  - "stable"
 
-env:
-  - CXX=g++-4.8
+matrix:
+  include:
+    - os: osx
+    - os: linux
+      env: CC=clang CXX=clang++ npm_config_clang=1
+      compiler: clang
 
-cache:
-  directories:
-    - node_modules
+#cache:
+#  directories:
+#    - node_modules
 
 addons:
   apt:
@@ -19,46 +24,27 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-      - icnsutils
-      - graphicsmagick
-      - xz-utils
-      - xorriso
-      - g++-4.8-multilib
-      - gcc-multilib
-      - libgtk2.0-0
-      - libxtst6
-      - libnotify4
-      - libgconf2-4
-      - libgtk2.0-0:i386
-      - libxtst6:i386
-      - libnotify4:i386
-      - libgconf2-4:i386
-      - libnss3:i386
-      - libasound2:i386
-      - libxss1:i386
-      - socat
-      - libusb-1.0-0:i386
       - libusb-1.0-0-dev
-      - libudev-dev
+      - icnsutils
+
+env:
+  - CXX=g++-4.8
+
+before_install:
+  - export DISPLAY=:99.0
+# https://github.com/travis-ci/travis-ci/issues/7313#issuecomment-279914149
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then ( sudo Xvfb :99 -ac -screen 0 1280x1024x16; echo ok )& fi
+  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ( /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16 )& fi
+  - sleep 3
 
 install:
-  - export CXX="g++-4.8"
+  - nvm install 7.4.0
   - npm install -g npm@latest
   - npm install
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start &
-  - sleep 3
 
 script:
   - npm run lint
   - npm run test
-  - npm run build
-  - npm run test-e2e
-  - npm run package
-
-matrix:
-  allow_failures:
-    - node_js: "stable"
+#  - npm run build
+#  - npm run test-e2e
+#  - npm run package
