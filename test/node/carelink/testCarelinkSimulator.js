@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../../lib/carelink/carelinkSimulator.js');
+var pwdSimulator = require('../../../lib/drivers/carelink/carelinkSimulator.js');
 
 function attachPrev(arr) {
   var prevBasal = null;
@@ -746,7 +746,7 @@ describe('carelinkSimulator.js', function(){
         time: suspend.time,
         timezoneOffset: 0,
         conversionOffset: 0,
-        duration: 1800000 
+        duration: 1800000
       }]);
     });
   });
@@ -880,7 +880,7 @@ describe('carelinkSimulator.js', function(){
                    suppressed: {
                      type: 'basal', deliveryType: 'temp', percent: 0.1, rate: 0.1, duration: 900000,
                      time: '2014-09-25T00:30:00.000Z', deviceTime: '2014-09-25T00:30:00', timezoneOffset: 0,
-                     conversionOffset: 0,  
+                     conversionOffset: 0,
                      suppressed: {
                        type: 'basal', deliveryType: 'scheduled', scheduleName: 'billy', rate: 1.0, duration: 3600000,
                        time: '2014-09-25T00:00:00.000Z', 'deviceTime': '2014-09-25T00:00:00', timezoneOffset: 0,
@@ -1120,7 +1120,7 @@ describe('carelinkSimulator.js', function(){
             expectedFirstBasal,
             {
               type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
-              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, 
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0,
               conversionOffset: 0, suppressed: expectedFirstBasal
             },
             _.assign({}, nextBasal, {type: 'basal', deliveryType: 'scheduled', duration: 2880000 })
@@ -1149,7 +1149,7 @@ describe('carelinkSimulator.js', function(){
             expectedFirstBasal,
             {
               type: 'basal', deliveryType: 'suspend', time: '2014-09-25T00:05:00.000Z',
-              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0, 
+              deviceTime: '2014-09-25T00:05:00', duration: 420000, timezoneOffset: 0,
               conversionOffset: 0, suppressed: expectedFirstBasal
             },
             _.assign({}, nextBasal, {
