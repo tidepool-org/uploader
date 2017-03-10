@@ -49,7 +49,7 @@ describe('localStore', function() {
   });
 
   describe('localStore.getItem', function() {
-    var data = {mine: ['a', 'b'], yours: [1,2,3]};
+    var data = 'awesome_data';
 
     before(function(){
       localStore.setItem('blocks', data);
