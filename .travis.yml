@@ -38,7 +38,7 @@ before_install:
   - sleep 3
 
 install:
-  - nvm install 6.3.0
+  - nvm install 7.4.0
   - npm install -g npm@latest
   - npm install
 

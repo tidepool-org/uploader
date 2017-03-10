@@ -2,8 +2,7 @@ os: unstable
 
 environment:
   matrix:
-    - nodejs_version: 6.3.0
-    - nodejs_version: 7
+    - nodejs_version: 7.4.0
 
 cache:
   - node_modules -> package.json
@@ -20,8 +19,6 @@ platform:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - nodejs_version: 7
 
 build: off
 

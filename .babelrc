@@ -20,6 +20,7 @@
     },
     "test": {
       "plugins": [
+        ["resolver", { "resolveDirs": [ "app/node_modules" ]}],
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
