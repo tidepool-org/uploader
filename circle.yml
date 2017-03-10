@@ -10,3 +10,12 @@ test:
   override:
     - npm run lint
     - npm run test
+  post:
+    - npm run package-dev
+    - zip -r -X development.zip release
+    - npm run package
+    - zip -r -X production.zip release
+general:
+  artifacts:
+    - "development.zip"
+    - "production.zip"
