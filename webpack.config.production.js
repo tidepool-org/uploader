@@ -31,7 +31,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 
 
 export default validate(merge(baseConfig, {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   entry: ['babel-polyfill', './app/index'],
 
