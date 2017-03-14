@@ -23,19 +23,19 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { expect } from 'chai';
 
-import * as actionSources from '../../app/constants/actionSources';
-import * as actionTypes from '../../app/constants/actionTypes';
-import * as metrics from '../../app/constants/metrics';
-import { pages, steps, urls } from '../../app/constants/otherConstants';
-import { UnsupportedError } from '../../app/utils/errors';
-import errorText from '../../app/constants/errors';
+import * as actionSources from '../../../app/constants/actionSources';
+import * as actionTypes from '../../../app/constants/actionTypes';
+import * as metrics from '../../../app/constants/metrics';
+import { pages, steps, urls } from '../../../app/constants/otherConstants';
+import { UnsupportedError } from '../../../app/utils/errors';
+import errorText from '../../../app/constants/errors';
 
-import * as asyncActions from '../../app/actions/async';
-import { __Rewire__, __ResetDependency__ } from '../../app/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../app/utils/errors';
+import * as asyncActions from '../../../app/actions/async';
+import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
+import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../../app/utils/errors';
 
-let pwd = require('../browser/fixtures/pwd.json');
-let nonpwd = require('../browser/fixtures/nonpwd.json');
+let pwd = require('../../lib/fixtures/pwd.json');
+let nonpwd = require('../../lib/fixtures/nonpwd.json');
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);

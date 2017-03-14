@@ -21,16 +21,16 @@ import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
-import * as actionTypes from '../../app/constants/actionTypes';
-import { pages, steps } from '../../app/constants/otherConstants';
-import * as misc from '../../app/reducers/misc';
+import * as actionTypes from '../../../app/constants/actionTypes';
+import { pages, steps } from '../../../app/constants/otherConstants';
+import * as misc from '../../../app/reducers/misc';
 
-import devices from '../../app/reducers/devices';
+import devices from '../../../app/reducers/devices';
 
-import { UnsupportedError } from '../../app/utils/errors';
+import { UnsupportedError } from '../../../app/utils/errors';
 
-let pwd = require('../browser/fixtures/pwd.json');
-let nonpwd = require('../browser/fixtures/nonpwd.json');
+let pwd = require('../../lib/fixtures/pwd.json');
+let nonpwd = require('../../lib/fixtures/nonpwd.json');
 
 describe('misc reducers', () => {
   describe('devices', () => {

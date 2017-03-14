@@ -21,8 +21,8 @@ import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
-import * as actionTypes from '../../app/constants/actionTypes';
-import * as users from '../../app/reducers/users';
+import * as actionTypes from '../../../app/constants/actionTypes';
+import * as users from '../../../app/reducers/users';
 
 describe('users', () => {
   describe('allUsers', () => {

@@ -23,9 +23,9 @@ import { expect } from 'chai';
 
 import configureStore from 'redux-mock-store';
 
-import errorText from '../../app/constants/errors';
-import * as utils from '../../app/actions/utils';
-import { addInfoToError } from '../../app/utils/errors';
+import errorText from '../../../app/constants/errors';
+import * as utils from '../../../app/actions/utils';
+import { addInfoToError } from '../../../app/utils/errors';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {

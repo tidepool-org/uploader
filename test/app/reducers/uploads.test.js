@@ -20,9 +20,9 @@
 import _ from 'lodash';
 import { expect } from 'chai';
 
-import * as actionTypes from '../../app/constants/actionTypes';
-import { steps } from '../../app/constants/otherConstants';
-import * as uploads from '../../app/reducers/uploads';
+import * as actionTypes from '../../../app/constants/actionTypes';
+import { steps } from '../../../app/constants/otherConstants';
+import * as uploads from '../../../app/reducers/uploads';
 
 describe('uploads', () => {
   describe('uploadProgress', () => {
