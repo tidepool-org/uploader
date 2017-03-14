@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../../lib/animas/animasSimulator.js');
+var pwdSimulator = require('../../../lib/drivers/animas/animasSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
 describe('animasSimulator.js', function() {

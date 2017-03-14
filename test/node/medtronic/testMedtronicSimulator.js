@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../../lib/medtronic/medtronicSimulator.js');
+var pwdSimulator = require('../../../lib/drivers/medtronic/medtronicSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 

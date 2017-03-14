@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../../lib/insulet/insuletSimulator.js');
+var pwdSimulator = require('../../../lib/drivers/insulet/insuletSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
 describe('insuletSimulator.js', function() {
