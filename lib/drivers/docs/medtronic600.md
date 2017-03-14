@@ -17,7 +17,7 @@
   - `[x]` scheduled basal
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `[x]` name of basal schedule on each scheduled basal rate interval
-    - `[?]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
+    - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[x]` manual temp basal
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `[x]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
@@ -26,12 +26,12 @@
         - `[ ]` rate provided directly OR
         - `[x]` rate computed from percent x suppressed.rate
     - `[x]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `*[ ]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
-    - `*[ ]` basal interval with a start time and duration but no rate (b/c suspended)
-    - `*[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
-  - `*[ ]` final (most recent) basal
-    - `*[ ]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
-    - `*[ ]` basal rate interval with a start time and rate, no (= zero) duration
+  - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
+    - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
+    - `[x]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
+  - `[x]` final (most recent) basal
+    - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
+    - `[x]` basal rate interval with a start time and rate, no (= zero) duration
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -45,7 +45,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` duration of insulin delivery
     - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
     - `[x]` duration of insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
-    - `*[ ]` extended bolus that crosses midnight is split into two records
+    - `[x]` extended bolus that crosses midnight is split into two records
   - `[x]` combo/dual bolus
     - `[x]` amount of insulin delivered - immediate (normal)
     - `[x]` amount of insulin delivered - extended
@@ -53,10 +53,10 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` amount of immediate insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
     - `[x]` amount of extended insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
     - `[x]` duration of extended insulin delivery programmed (if differs from actual duration, in case of bolus interruption, cancellation, etc.)
-    - `*[ ]` extended portion of combo bolus that crosses midnight is split into two records
+    - `[x]` extended portion of combo bolus that crosses midnight is split into two records
   - bolus cancellations/interruptions
-    - `*[ ]` represented by a separate event in the device's data log OR
-    - `*[ ]` result in modifications to a bolus event in the device's data log
+    - `[x]` represented by a separate event in the device's data log OR
+    - `[ ]` result in modifications to a bolus event in the device's data log
   - `[x]` link to "wizard"/calculator entry (via log entry ID or similar)
 
 No Tidepool data model yet:
@@ -76,14 +76,14 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` low insulin
     - `[x]` no insulin
         - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[ ]` low power
-    - `[ ]` no power
+    - `[?]` low power
+    - `[?]` no power
         - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[ ]` occlusion
+    - `[?]` occlusion
         - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[ ]` no delivery
+    - `[?]` no delivery
         - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
-    - `[ ]` auto-off
+    - `[?]` auto-off
         - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
     - `[ ]` over limit (i.e., max bolus exceeded through override)
     - `[ ]` other alarm types (details to be provided in `payload` object)
@@ -93,7 +93,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` prime targets not differentiated
     - `[x]` prime volume in units of insulin
   - `[x]` reservoir change (or reservoir rewind)
-    - `*[ ]` needed to infer a suspend (stoppage of all insulin delivery)
+    - `[ ]` needed to infer a suspend (stoppage of all insulin delivery)
   - `[x]` status events (i.e., suspend & resume)
     - `[ ]` suspensions of insulin delivery are represented as (interval) events with a duration OR
     - `[x]` suspensions of insulin delivery are represented as pairs of point-in-time events: a suspension and a resumption
@@ -113,8 +113,8 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[x]` blood glucose value
   - `[x]` subType (`linked` or `manual`)
   - `[x]` units of value (read from device, not hard-coded)
-  - `*[ ]` out-of-range values (LO or HI)
-  - `*[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+  - `[x]` out-of-range values (LO or HI)
+  - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 
 No Tidepool data model yet:
 
@@ -133,19 +133,19 @@ Device-specific? (Add any device-specific notes/additions here.)
 
   - `[x]` basal schedules
     - `[x]` name of basal schedule OR
-    - `[x]` name of settings profile
+    - `[ ]` name of settings profile
     - `[x]` each schedule as a set of objects each with a rate and a start time
   - `[x]` name of currently active basal schedule
   - `[x]` units of all blood glucose-related fields (read from device, not hard-coded)
   - `[x]` units of all carb-related fields (read from device, not hard-coded)
   - `[x]` carb ratio(s)
-    - `*[ ]` name of settings profile
+    - `[ ]` name of settings profile
     - `[x]` (one or more) set(s) of objects each with a ratio (amount) and a start time
   - `[x]` insulin sensitivity factor(s)
-    - `*[ ]` name of settings profile
+    - `[ ]` name of settings profile
     - `[x]` (one or more) set(s) of objects each with an amount and a start time
   - `[x]` blood glucose target(s)
-    - `*[ ]` name of settings profile
+    - `[ ]` name of settings profile
     - `[x]` (one or more) set(s) of objects each with a target and a start time
     - target shape:
         - `[x]` shape `{low: 80, high: 120}` OR
@@ -155,8 +155,8 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 Settings history:
 
-  - `*[ ]` device stores all changes to settings OR
-  - `*[ ]` device only returns current settings at time of upload
+  - `[x]` device stores all changes to settings OR
+  - `[ ]` device only returns current settings at time of upload
 
 No Tidepool data model yet:
 
@@ -211,8 +211,8 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` shape `{target: 100}` OR
     - `[ ]` shape `{target: 100, range: 20}` OR
     - `[ ]` shape `{target: 100, high: 120}`
-  - `*[ ]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
-  - `[ ]` link to bolus delivered as a result of wizard (via log entry ID or similar)
+  - `[-]` units of BG input and related fields (read from device, not hard-coded; related fields are `bgInput`, `bgTarget`, `insulinSensitivityFactor`)
+  - `[x]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
 Device-specific? (Add any device-specific notes/additions here.)
 
