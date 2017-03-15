@@ -230,7 +230,7 @@ export class App extends Component {
       <div className={styles.footerRow}>
         <div className={styles.version}>{`v${version} beta`}</div>
         <div className="mailto">
-          <a className={styles.footerLink} href="mailto:support@tidepool.org?Subject=Feedback on Uploader" target="mailto">Get support</a>
+          <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get support</a>
         </div>
       </div>
     );

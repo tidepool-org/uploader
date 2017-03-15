@@ -594,6 +594,34 @@ describe('TimezoneOffsetUtil.js', function(){
       });
       expect(noChangesUtil.fillInUTCInfo(obj, dt)).to.deep.equal(expectedRes);
     });
+
+    // for OmniPod unbootstrappable alarms
+    it('does not add `time` etc. to the object if lookup failed', () => {
+        var ambiguousDeviceTime = '2015-03-31T23:59:00';
+        var wrongMonth = builder.makeDeviceEventTimeChange()
+          .with_change({
+            from: '2015-04-01T06:00:00',
+            to: '2015-05-01T06:00:00'
+          })
+          .with_deviceTime('2015-04-01T06:00:00')
+          .set('jsDate', new Date('2015-04-01T06:00:00'))
+          .set('index', 50);
+        var clockDrift = builder.makeDeviceEventTimeChange()
+          .with_change({
+            from: '2015-05-14T23:57:00',
+            to: '2015-05-15T00:00:00',
+          })
+          .with_deviceTime('2015-05-15T00:03:00')
+          .set('jsDate', new Date('2015-05-15T00:03:00'))
+          .set('index', 75);
+        var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', [wrongMonth, clockDrift]);
+        const obj = { index: null };
+        util.fillInUTCInfo(obj, new Date(ambiguousDeviceTime));
+        expect(obj.time).to.be.undefined;
+        expect(obj.timezoneOffset).to.be.undefined;
+        expect(obj.clockDriftOffset).to.be.undefined;
+        expect(obj.conversionOffset).to.be.undefined;
+    });
   });
 });
 
