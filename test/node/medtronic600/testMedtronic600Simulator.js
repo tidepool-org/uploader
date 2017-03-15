@@ -24,8 +24,8 @@ const _ = require('lodash');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const expect = require('salinity').expect;
 
-const Medtronic600Simulator = require('../../../lib/medtronic600/medtronic600Simulator');
-const NGPUtil = require('../../../lib/medtronic600/NGPUtil');
+const Medtronic600Simulator = require('../../../lib/drivers/medtronic600/medtronic600Simulator');
+const NGPUtil = require('../../../lib/drivers/medtronic600/NGPUtil');
 const builder = require('../../../lib/objectBuilder')();
 const TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 

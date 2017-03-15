@@ -20,7 +20,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const expect = require('salinity').expect;
 
-const NGPHistoryParser = require('../../../lib/medtronic600/NGPHistoryParser');
+const NGPHistoryParser = require('../../../lib/drivers/medtronic600/NGPHistoryParser');
 const builder = require('../../../lib/objectBuilder')();
 const TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 
