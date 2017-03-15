@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var getDeviceInfo = require('../../../lib/carelink/getDeviceInfo');
+var getDeviceInfo = require('../../../lib/drivers/carelink/getDeviceInfo');
 
 describe('getDeviceInfo', function() {
   var fakeRows = [

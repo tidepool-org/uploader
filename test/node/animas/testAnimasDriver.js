@@ -19,7 +19,7 @@
 
 var expect = require('salinity').expect;
 
-var driver = require('../../../lib/drivers/animasDriver');
+var driver = require('../../../lib/drivers/animas/animasDriver');
 
 describe('animasDriver.js', function(){
 

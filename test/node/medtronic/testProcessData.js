@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var proc = require('../../../lib/medtronic/processData.js');
+var proc = require('../../../lib/drivers/medtronic/processData.js');
 var builder = require('../../../lib/objectBuilder')();
 var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 

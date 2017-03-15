@@ -20,7 +20,7 @@
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
-var pwdSimulator = require('../../../lib/tandem/tandemSimulator.js');
+var pwdSimulator = require('../../../lib/drivers/tandem/tandemSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
 describe('tandemSimulator.js', function() {
@@ -479,7 +479,7 @@ describe('tandemSimulator.js', function() {
         .with_payload({'logIndices':1, duration: 1500000})
         .done();
       expectedTempBasal.annotations = [{code: 'tandem/basal/temp-without-rate-change'}];
-      
+
       // temp_rate_end basal rate change occurs before temp basal stop
       simulator.basal(suppressed);
       simulator.tempBasal(tempBasalStart);
