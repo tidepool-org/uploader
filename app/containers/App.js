@@ -36,7 +36,7 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 import * as actionSources from '../constants/actionSources';
-import { pages, urls } from '../constants/otherConstants';
+import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 
 import LoggedInAs from '../components/LoggedInAs';
@@ -191,12 +191,12 @@ export class App extends Component {
   }
 
   renderHeader() {
-    const { allUsers, dropdown, isLoggedIn, route } = this.props;
-    if (route.path === '/loading') {
+    const { allUsers, dropdown, location } = this.props;
+    if (location.pathname === pagesMap.LOADING) {
       return null;
     }
 
-    if (!isLoggedIn) {
+    if (location.pathname === pagesMap.LOGIN) {
       return (
         <div className={styles.signup}>
           <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
@@ -254,10 +254,7 @@ App.propTypes = {
 
 // wrap the component to inject dispatch and state into it
 export default connect(
-  (state) => {
-    function hasSomeoneLoggedIn(state) {
-      return !_.includes([pages.LOADING, pages.LOGIN], state.page);
-    }
+  (state, ownProps) => {
     function isClinicAccount(state) {
       return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
     }
@@ -273,7 +270,6 @@ export default connect(
       uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
       // derived state
-      isLoggedIn: hasSomeoneLoggedIn(state),
       readyToRenderVersionCheckOverlay: (
         !state.working.initializingApp && !state.working.checkingVersion
       ),
