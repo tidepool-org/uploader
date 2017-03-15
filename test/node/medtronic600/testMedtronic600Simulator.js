@@ -25,17 +25,22 @@ const _ = require('lodash');
 const expect = require('salinity').expect;
 
 const Medtronic600Simulator = require('../../../lib/medtronic600/medtronic600Simulator');
+const NGPUtil = require('../../../lib/medtronic600/NGPUtil');
 const builder = require('../../../lib/objectBuilder')();
 const TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 
 describe('medtronic600Simulator.js', function() {
   let simulator = null;
   const tzoUtil = new TZOUtil('GMT', '2015-06-01T00:00:00.000Z', []);
+  const settings = {
+    currentNgpTimestamp: new NGPUtil.NGPTimestamp(2186757135, -1643995250),
+  };
 
   beforeEach(function() {
     simulator = new Medtronic600Simulator({
       builder,
       tzoUtil,
+      settings,
     });
   });
 
@@ -218,7 +223,7 @@ describe('medtronic600Simulator.js', function() {
   });
 
   describe('settings', function() {
-    const settings = {
+    const pumpSettings = {
       type: 'pumpSettings',
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -273,8 +278,8 @@ describe('medtronic600Simulator.js', function() {
     };
 
     it('passes through', function() {
-      simulator.pumpSettings(settings);
-      expect(simulator.getEvents()).deep.equals([settings]);
+      simulator.pumpSettings(pumpSettings);
+      expect(simulator.getEvents()).deep.equals([pumpSettings]);
     });
   });
 
@@ -339,7 +344,11 @@ describe('medtronic600Simulator.js', function() {
         expectedSecondBasal
           .set('duration', 713000)
           .set('time', '2017-02-09T13:48:07.000Z')
-          .set('deviceTime', '2017-02-09T13:48:07');
+          .set('deviceTime', '2017-02-09T13:48:07')
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2183958537],
+          });
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -426,7 +435,11 @@ describe('medtronic600Simulator.js', function() {
         expectedThirdBasal
           .set('duration', 1000)
           .set('time', '2017-02-09T20:12:43.000Z')
-          .set('deviceTime', '2017-02-09T20:12:43');
+          .set('deviceTime', '2017-02-09T20:12:43')
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2183981613],
+          });
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -489,7 +502,11 @@ describe('medtronic600Simulator.js', function() {
         expectedThirdBasal
           .set('time', '2017-01-29T00:11:00.000Z')
           .set('deviceTime', '2017-01-29T00:11:00')
-          .set('duration', 2940000);
+          .set('duration', 2940000)
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2182959110],
+          });
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -530,7 +547,11 @@ describe('medtronic600Simulator.js', function() {
           .set('rate', 1.2)
           .set('scheduleName', 'Pattern 1')
           .set('time', '2017-02-10T08:59:24.000Z')
-          .set('deviceTime', '2017-02-10T08:59:24');
+          .set('deviceTime', '2017-02-10T08:59:24')
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2184027614],
+          });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
 
@@ -579,7 +600,11 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_duration(19000)
-          .with_rate(1.2);
+          .with_rate(1.2)
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2183498633],
+          });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
 
@@ -904,7 +929,11 @@ describe('medtronic600Simulator.js', function() {
         expectedFourthBasal
           .set('duration', 1620000)
           .set('time', '2017-02-04T17:33:00.000Z')
-          .set('deviceTime', '2017-02-04T17:33:00');
+          .set('deviceTime', '2017-02-04T17:33:00')
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2183540030],
+          });
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -1030,7 +1059,11 @@ describe('medtronic600Simulator.js', function() {
         expectedFourthBasal
           .set('duration', 1063000)
           .set('time', '2017-02-10T07:42:17.000Z')
-          .set('deviceTime', '2017-02-10T07:42:17');
+          .set('deviceTime', '2017-02-10T07:42:17')
+          .set('clockDriftOffset', 0)
+          .set('payload', {
+            logIndices: [2184021170],
+          });
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -1046,6 +1079,11 @@ describe('medtronic600Simulator.js', function() {
           expectedSecondSuspendedBasal.done(), expectedFourthBasal.done(),
         ]);
       });
+
+      /* TODO - add test for Caty's 11th January 2017 data.
+      it('', function() {
+      });
+      */
     });
   });
 
