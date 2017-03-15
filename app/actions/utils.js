@@ -46,7 +46,7 @@ export function getUtc(utc) {
   return _.isEmpty(utc) ? sundial.utcDateString() : utc;
 }
 
-export function makeProgressFn(dispatch, step, percentage) {
+export function makeProgressFn(dispatch) {
   return (step, percentage) => {
     dispatch(syncActions.uploadProgress(step, percentage));
   };

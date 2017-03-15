@@ -17,7 +17,6 @@
 
 /*eslint-env mocha*/
 
-import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 

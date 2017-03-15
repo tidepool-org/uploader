@@ -19,7 +19,6 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { pages } from '../constants/otherConstants';
-import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
 import actions from '../actions/';
 import React, { Component } from 'react';
@@ -42,7 +41,7 @@ export class ClinicUserEditPage extends Component {
   }
 
   render() {
-    const { allUsers, page, targetUsersForUpload, uploadTargetUser } = this.props;
+    const { allUsers, uploadTargetUser } = this.props;
     return (
       <div>
         <ClinicUserEdit
@@ -65,7 +64,7 @@ export class ClinicUserEditPage extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     return {
       allUsers: state.allUsers,
       page: state.page,

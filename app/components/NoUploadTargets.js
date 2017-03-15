@@ -15,7 +15,6 @@
 * == BSD2 LICENSE ==
 */
 
-import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 
 import { urls } from '../constants/otherConstants';

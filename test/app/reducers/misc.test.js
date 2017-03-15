@@ -22,15 +22,12 @@ import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
 import * as actionTypes from '../../../app/constants/actionTypes';
-import { pages, steps } from '../../../app/constants/otherConstants';
+import { pages } from '../../../app/constants/otherConstants';
 import * as misc from '../../../app/reducers/misc';
 
 import devices from '../../../app/reducers/devices';
 
 import { UnsupportedError } from '../../../app/utils/errors';
-
-let pwd = require('../../lib/fixtures/pwd.json');
-let nonpwd = require('../../lib/fixtures/nonpwd.json');
 
 describe('misc reducers', () => {
   describe('devices', () => {
@@ -56,7 +53,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
-      let resultState = misc.devices(prevState, {
+      misc.devices(prevState, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'mac'}
       });
@@ -77,7 +74,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
-      let resultState = misc.devices(prevState, {
+      misc.devices(prevState, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'win'}
       });
@@ -195,7 +192,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
       const tracked = mutationTracker.trackObj(initialState);
-      let finalState = misc.blipUrls(initialState, {
+      misc.blipUrls(initialState, {
         type: actionTypes.SET_BLIP_VIEW_DATA_URL,
         payload: actionPayload
       });
@@ -212,7 +209,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
       const tracked = mutationTracker.trackObj(initialState);
-      let finalState = misc.blipUrls(initialState, {
+      misc.blipUrls(initialState, {
         type: actionTypes.SET_FORGOT_PASSWORD_URL,
         payload: actionPayload
       });
@@ -229,7 +226,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
       const tracked = mutationTracker.trackObj(initialState);
-      let finalState = misc.blipUrls(initialState, {
+      misc.blipUrls(initialState, {
         type: actionTypes.SET_SIGNUP_URL,
         payload: actionPayload
       });
@@ -246,7 +243,7 @@ describe('misc reducers', () => {
       // test to be sure not *mutating* state object but rather returning new!
       let initialState = {};
       const tracked = mutationTracker.trackObj(initialState);
-      let finalState = misc.blipUrls(initialState, {
+      misc.blipUrls(initialState, {
         type: actionTypes.SET_NEW_PATIENT_URL,
         payload: actionPayload
       });

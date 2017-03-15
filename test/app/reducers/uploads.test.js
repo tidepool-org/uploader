@@ -17,7 +17,6 @@
 
 /*eslint-env mocha*/
 
-import _ from 'lodash';
 import { expect } from 'chai';
 
 import * as actionTypes from '../../../app/constants/actionTypes';
@@ -587,7 +586,6 @@ describe('uploads', () => {
           [deviceKey]: {history: [1,2,3]}
         }
       };
-      const actionPayload = { userId, deviceKey };
       let result = uploads.uploadsByUser(initialState, {
         type: actionTypes.UPLOAD_REQUEST,
         payload: { userId, deviceKey, utc: time }

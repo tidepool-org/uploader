@@ -98,7 +98,7 @@ export function getLogoutErrorMessage() {
 }
 
 export function createErrorLogger(api) {
-  return ({ getState }) => (next) => (action) => {
+  return () => (next) => (action) => {
     if (_.get(action, 'error', false) === true) {
       let err = _.get(action, 'payload', {});
       if (!err.debug) {

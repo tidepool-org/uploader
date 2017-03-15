@@ -17,14 +17,12 @@
 
 /*eslint-env mocha*/
 
-import _ from 'lodash';
 import { isFSA } from 'flux-standard-action';
 import { expect } from 'chai';
 
 import * as actionSources from '../../../app/constants/actionSources';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as metrics from '../../../app/constants/metrics';
-import { steps } from '../../../app/constants/otherConstants';
 
 import * as syncActions from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';

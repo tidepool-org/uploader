@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { pages, urls } from '../constants/otherConstants';
+import { pages } from '../constants/otherConstants';
 import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
 import actions from '../actions/';
@@ -41,7 +41,7 @@ export class MainPage extends Component {
     this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
     this.handleClickEditUser = this.handleClickEditUser.bind(this);
   }
-  
+
   handleClickEditUser() {
     const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
@@ -125,7 +125,7 @@ export class MainPage extends Component {
   }
 
   renderClinicUserBlock() {
-    const { page, isClinicAccount } = this.props;
+    const { isClinicAccount } = this.props;
     if (!isClinicAccount) return null;
     let timezoneDropdown = this.renderTimezoneDropdown();
     return (
@@ -150,7 +150,6 @@ export class MainPage extends Component {
     let userDropdown = this.props.showingUserSelectionDropdown ?
       this.renderUserDropdown() : null;
 
-    const viewDataLink = _.get(this.props, ['blipUrls', 'viewDataLink'], '');
     let timezoneDropdown = null;
     let viewDataLinkButton = this.renderUploadListDoneButton();
     if(!this.props.isClinicAccount){
@@ -183,7 +182,7 @@ export class MainPage extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     function getSelectedTimezone(state) {
       return _.get(
         state,

@@ -40,8 +40,6 @@ var TimezoneDropdown = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var self = this;
-
     if (!this.props.targetId && nextProps.targetId !== null) {
       if (this.props.targetTimezone !== null) {
         this.props.onTimezoneChange(
@@ -66,7 +64,6 @@ var TimezoneDropdown = React.createClass({
   },
 
   buildTzSelector: function() {
-    var self = this;
     function sortByOffset(timezones) {
       return _.sortBy(timezones, function(tz) {
         return tz.offset;
@@ -92,7 +89,6 @@ var TimezoneDropdown = React.createClass({
   },
 
   renderSuggestedTime: function() {
-    var self = this;
     if(this.props.targetTimezone){
       return (
         <div className={styles.timeDetail}>
@@ -109,7 +105,6 @@ var TimezoneDropdown = React.createClass({
   },
 
   renderError: function() {
-    var self = this;
     if(this.props.updateProfileErrorMessage && !this.props.updateProfileErrorDismissed){
       return (
         <div className={styles.error}>

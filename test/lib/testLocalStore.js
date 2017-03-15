@@ -17,7 +17,6 @@
 
 /*eslint-env mocha */
 
-var _ = require('lodash');
 var expect = require('chai').expect;
 
 var localStore = require('../../lib/core/localStore');

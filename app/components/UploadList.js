@@ -68,7 +68,7 @@ export default class UploadList extends Component {
       [styles.wrapNoTZ]: !this.props.timezoneIsSelected
     });
 
-    const { devices, disabled, onReset, onUpload, targetId } = this.props;
+    const { disabled, onReset, onUpload, targetId } = this.props;
 
     const headlineText = this.props.isClinicAccount ? 'Devices' : 'Upload Devices';
 

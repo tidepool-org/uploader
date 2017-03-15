@@ -16,7 +16,6 @@
  */
 
 import React, { Component } from 'react';
-import config from '../../lib/config';
 import styles from '../../styles/components/Login.module.less';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -107,7 +106,7 @@ Login.propTypes = {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     return {
       disabled: Boolean(state.unsupported),
       errorMessage: state.loginErrorMessage,
