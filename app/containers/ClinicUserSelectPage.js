@@ -27,13 +27,12 @@ const syncActions = actions.sync;
 export class ClinicUserSelectPage extends Component {
 
   render() {
-    const { allUsers, page, targetUsersForUpload, uploadTargetUser } = this.props;
+    const { allUsers, targetUsersForUpload, uploadTargetUser } = this.props;
     return (
       <div>
         <ClinicUserSelect
           allUsers={allUsers}
           onUserChange={this.props.async.checkUploadTargetUserAndMaybeRedirect}
-          page={page}
           targetId={uploadTargetUser}
           targetUsersForUpload={targetUsersForUpload}
           onAddUserClick={this.props.async.clickAddNewUser}
@@ -47,7 +46,6 @@ export default connect(
   (state) => {
     return {
       allUsers: state.allUsers,
-      page: state.page,
       targetUsersForUpload: state.targetUsersForUpload,
       uploadTargetUser: state.uploadTargetUser,
     };
