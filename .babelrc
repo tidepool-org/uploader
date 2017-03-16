@@ -13,8 +13,7 @@
     "development": {
       "plugins": [
         "transform-class-properties",
-        "transform-es2015-classes",
-        "tcomb"
+        "transform-es2015-classes"
       ],
       "presets": ["react-hmre"]
     },

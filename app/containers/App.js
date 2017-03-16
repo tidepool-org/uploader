@@ -16,13 +16,12 @@
  */
 
 import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import cx from 'classnames';
 import { remote } from 'electron';
 
-const {Menu, MenuItem} = remote;
+const {Menu} = remote;
 
 import bows from '../../lib/bows.js';
 
@@ -36,13 +35,10 @@ import actions from '../actions/';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
-import { pages, urls } from '../constants/otherConstants';
-import * as metrics from '../constants/metrics';
+import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 
-import Loading from '../components/Loading';
 import LoggedInAs from '../components/LoggedInAs';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
@@ -117,12 +113,10 @@ export class App extends Component {
   }
 
   render() {
-    const { isLoggedIn, page } = this.props;
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <div className={styles.header}>{this.renderHeader()}</div>
         {this.props.children}
-        {/* <div className={styles[page.toLowerCase() + 'Page']}>{this.renderPage()}</div> */}
         <div className={styles.footer}>{this.renderFooter()}</div>
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
@@ -197,12 +191,12 @@ export class App extends Component {
   }
 
   renderHeader() {
-    const { allUsers, dropdown, isLoggedIn, page, route } = this.props;
-    if (route.path === '/loading') {
+    const { allUsers, dropdown, location } = this.props;
+    if (location.pathname === pagesMap.LOADING) {
       return null;
     }
 
-    if (!isLoggedIn) {
+    if (location.pathname === pagesMap.LOGIN) {
       return (
         <div className={styles.signup}>
           <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
@@ -230,7 +224,7 @@ export class App extends Component {
       <div className={styles.footerRow}>
         <div className={styles.version}>{`v${version} beta`}</div>
         <div className="mailto">
-          <a className={styles.footerLink} href="mailto:support@tidepool.org?Subject=Feedback on Uploader" target="mailto">Get support</a>
+          <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get support</a>
         </div>
       </div>
     );
@@ -260,29 +254,7 @@ App.propTypes = {
 
 // wrap the component to inject dispatch and state into it
 export default connect(
-  (state) => {
-    function hasSomeoneLoggedIn(state) {
-      return !_.includes([pages.LOADING, pages.LOGIN], state.page);
-    }
-    function isUploadInProgress(state) {
-      let blockModePrepInProgress = false;
-      if (state.uploadTargetDevice !== null) {
-        const currentDevice = state.devices[state.uploadTargetDevice];
-        if (currentDevice.source.type === 'block') {
-          let blockModeInProgress = _.get(state.uploadsByUser, [state.uploadTargetUser, currentDevice.key], {});
-          if (blockModeInProgress.choosingFile || blockModeInProgress.readingFile ||
-            _.get(blockModeInProgress, ['file', 'data'], null) !== null) {
-            blockModePrepInProgress = true;
-          }
-        }
-      }
-      if (state.working.uploading || blockModePrepInProgress) {
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
+  (state, ownProps) => {
     function isClinicAccount(state) {
       return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
     }
@@ -298,7 +270,6 @@ export default connect(
       uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
       // derived state
-      isLoggedIn: hasSomeoneLoggedIn(state),
       readyToRenderVersionCheckOverlay: (
         !state.working.initializingApp && !state.working.checkingVersion
       ),

@@ -17,12 +17,10 @@
 
 import _ from 'lodash';
 
-import sundial from 'sundial';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
-import { pages, pagesMap, paths, steps } from '../constants/otherConstants';
 
 import { addInfoToError, getAppInitErrorMessage, getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage, UnsupportedError } from '../utils/errors';
 import errorText from '../constants/errors';
@@ -244,7 +242,7 @@ export function initRequest() {
   };
 }
 
-export function initSuccess(session) {
+export function initSuccess() {
   return {
     type: actionTypes.INIT_APP_SUCCESS,
     meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}

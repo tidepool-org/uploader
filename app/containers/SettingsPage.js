@@ -22,7 +22,7 @@ import UserDropdown from '../components/UserDropdown';
 import ClinicUserBlock from '../components/ClinicUserBlock';
 import cx from 'classnames';
 import styles from '../../styles/components/App.module.less';
-import { pages, urls } from '../constants/otherConstants';
+import { pages } from '../constants/otherConstants';
 import * as metrics from '../constants/metrics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -63,7 +63,7 @@ export class SettingsPage extends Component {
   }
 
   renderClinicUserBlock() {
-    const { page, isClinicAccount } = this.props;
+    const { isClinicAccount } = this.props;
     if (!isClinicAccount) return null;
     return (
       <ClinicUserBlock
@@ -123,7 +123,7 @@ export class SettingsPage extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     function getSelectedTargetDevices(state) {
       return _.get(
         state,

@@ -9,7 +9,6 @@ import ClinicUserSelectPage from './containers/ClinicUserSelectPage';
 import ClinicUserEditPage from './containers/ClinicUserEditPage';
 import NoUploadTargetsPage from './containers/NoUploadTargetsPage';
 import api from '../lib/core/api';
-import config from '../lib/config';
 
 export default (
   <Route path="/" component={App} api={api}>

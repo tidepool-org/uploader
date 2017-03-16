@@ -16,11 +16,10 @@
  */
 
 import _ from 'lodash';
-import update from 'react-addons-update';
 import { combineReducers } from 'redux';
 
 import * as actionTypes from '../constants/actionTypes';
-import { pages, steps } from '../constants/otherConstants';
+import { pages } from '../constants/otherConstants';
 import { UnsupportedError } from '../utils/errors';
 
 import initialDevices from './devices';
