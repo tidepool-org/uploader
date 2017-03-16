@@ -27,7 +27,7 @@ var UserDropdown = React.createClass({
     allUsers: React.PropTypes.object.isRequired,
     isUploadInProgress: React.PropTypes.bool,
     onGroupChange: React.PropTypes.func.isRequired,
-		locationPath: React.Proptypes.string.isRequired,
+		locationPath: React.PropTypes.string.isRequired,
     targetId: React.PropTypes.string,
     targetUsersForUpload: React.PropTypes.array.isRequired
   },
