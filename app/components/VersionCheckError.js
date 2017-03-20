@@ -18,7 +18,6 @@
 import cx from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
-import * as errorUtils from '../utils/errors';
 import errorText from '../constants/errors';
 
 import styles from '../../styles/components/VersionCheck.module.less';

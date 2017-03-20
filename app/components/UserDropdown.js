@@ -20,8 +20,6 @@ var React = require('react');
 var Select = require('react-select');
 var personUtils = require('../../lib/core/personUtils');
 
-var pages = require('../constants/otherConstants').pages;
-
 var styles = require('../../styles/components/UserDropdown.module.less');
 
 var UserDropdown = React.createClass({

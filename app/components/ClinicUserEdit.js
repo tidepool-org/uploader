@@ -21,8 +21,6 @@ var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
 import { reduxForm } from 'redux-form';
 
-var config = require('../../lib/config');
-
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
 function zeroPad(value){
@@ -81,7 +79,7 @@ var ClinicUserEdit = React.createClass({
     onSubmitFail: React.PropTypes.func.isRequired
   },
 
-  handleCancel: function(e){
+  handleCancel: function(){
     this.props.cancelEdit();
   },
 
@@ -155,7 +153,7 @@ var ClinicUserEdit = React.createClass({
 
   render: function() {
     var titleText = this.props.targetId ? 'Edit patient account' : 'Create a new patient account';
-    const {fields: {fullName, month, day, year, mrn, email}, error, handleSubmit} = this.props;
+    const {fields: {fullName, month, day, year, mrn, email}, handleSubmit} = this.props;
     var options = _.map(MONTHS, function(item) {
       return <option key={item.value} value={item.value}>{item.label}</option>;
     });

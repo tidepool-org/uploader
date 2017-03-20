@@ -26,7 +26,7 @@ export const pages = {
 };
 
 export const pagesMap = {
-  LOADING: '/loading',
+  LOADING: '/',
   LOGIN: '/login',
   MAIN: '/main',
   NO_UPLOAD_TARGETS: '/no_upload_targets',

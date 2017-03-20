@@ -11,8 +11,27 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
+if (process.env.DEBUG_ERROR === 'true') {
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log('### DEBUG MODE ###');
+  console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
+  console.log();
+}
+
+if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
+  console.log('Using the default environment, which is now production.');
+} else {
+  console.log('***** NOT using the default environment *****');
+  console.log('The default right-click server menu may be incorrect.');
+  console.log('API_URL =', process.env.API_URL);
+  console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
+  console.log('DATA_URL =', process.env.DATA_URL);
+  console.log('BLIP_URL =', process.env.BLIP_URL);
+}
+
+
 export default validate(merge(baseConfig, {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   entry: ['babel-polyfill', './app/index'],
 
@@ -90,10 +109,10 @@ export default validate(merge(baseConfig, {
      * development checks
      */
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"production"',
+      'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
-      __REDUX_DEV_UI__: JSON.stringify(JSON.parse(process.env.REDUX_DEV_UI || 'false')),
       __TEST__: false,
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),

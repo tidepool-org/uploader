@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { hashHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import rootReducer from '../reducers';
-import createLogger from 'redux-logger';
 import api from '../../lib/core/api';
 import config from '../../lib/config';
 import { createErrorLogger } from '../utils/errors';
@@ -21,7 +20,6 @@ const router = routerMiddleware(hashHistory);
 const enhancer = applyMiddleware(
   thunk,
   router,
-  createLogger(),
   createErrorLogger(api),
   createMetricsTracker(api)
 );

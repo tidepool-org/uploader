@@ -98,8 +98,6 @@ export function doAppInit(opts, servicesToInit) {
               if (err) {
                 return dispatch(syncActions.initFailure(err));
               }
-              // remove env-switching context menu after login
-              // TODO: emplement removal of context menu after login
               dispatch(syncActions.initSuccess());
               dispatch(doVersionCheck());
               dispatch(syncActions.setUserInfoFromToken({
@@ -131,8 +129,6 @@ export function doLogin(creds, opts) {
       if (err) {
         return dispatch(syncActions.loginFailure(err.status));
       }
-      // remove env-switching context menu after login
-      // TODO: implement removal of env-switching context menu after login
       dispatch(syncActions.loginSuccess({
         user: results[0].user,
         profile: results[1],

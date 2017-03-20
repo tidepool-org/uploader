@@ -15,12 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
-import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { pages } from '../constants/otherConstants';
-import * as actionSources from '../constants/actionSources';
-import * as metrics from '../constants/metrics';
 import actions from '../actions/';
 import React, { Component } from 'react';
 import ClinicUserSelect from '../components/ClinicUserSelect';
@@ -48,7 +44,7 @@ export class ClinicUserSelectPage extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     return {
       allUsers: state.allUsers,
       page: state.page,

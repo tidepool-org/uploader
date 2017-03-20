@@ -1,6 +1,9 @@
 # Tidepool Uploader
 
 [![Build Status](https://img.shields.io/travis/tidepool-org/chrome-uploader/master.svg)](https://travis-ci.org/tidepool-org/chrome-uploader)
+[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/krystophv/electron?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/krystophv/electron)
+
 
 This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
 
@@ -22,13 +25,17 @@ This README is focused on just the details of getting the uploader running local
 1. Clone this repository.
 1. Run `npm install`
 1. Set the config for the environment you want to target (see [Config](#config) below)
-1. Run `npm start` (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
-1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
-1. Click "Load Unpacked Extension".
-1. Choose the directory where you cloned the repository and click OK. (You may see a warning from Chrome concerning the inclusion of a key file. (`This extension includes the key file '<project_path>/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem`) This is due to the loading of all the `node_modules` and their various internal testing utilities. This isn't a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored.)
-1. To run it, you can choose "Launch" from the chrome://extensions page. You can also run it from the Chrome App Launcher, which Chrome may install for you whether you want it or not.
-1. To open the JavaScript console/Chrome Dev Tools, click on the `index.html` link in the section of chrome://extensions devoted to the uploader. (Note: this link will only appear after you've launched the uploader.)
-1. React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' from chrome://extensions to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the extension. You will definitely need to reload any time you change the manifest.
+1. Run these two commands __simultaneously__ in different console tabs.
+```bash
+$ npm run hot-server
+$ npm run start-hot
+```
+or run two servers with one command
+```bash
+$ npm run dev
+```
+(This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
+1. React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
 
 ## Config
 
@@ -51,11 +58,8 @@ The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors 
 
 The environment variable `REDUX_LOG` (boolean) controls whether or not the [redux logger middleware](https://github.com/fcomb/redux-logger/blob/master/README.md) is included. This middleware logs all redux actions in the Chrome developer console, including the (entire) previous and following app state trees. It is primarily useful when working on the UI of the app, and in fact can be quite performance-expensive (especially when uploading a device, due to the fact that every update to the progress bar constitutes an action), so it is not recommended to turn it on while working on device code.
 
-#### `REDUX_DEV_UI`
 
-The environment variable `REDUX_DEV_UI` (boolean) controls whether or not the [redux dev tools UI](https://github.com/gaearon/redux-devtools/blob/master/README.md) is included. The redux dev tools add a UI interface for exploring - and, to a limited extent, manipulating - app actions and state. Even when `REDUX_DEV_UI` is `true`, we have the dev tools hidden by default: the key combination `ctrl + h` will toggle their visibility. The key combination `ctrl + q` will rotate (clockwise) the location at which the dev tools are anchored; the default is for them to be anchored at the bottom of the app. Similarly to the redux logger middleware, the redux dev tools UI is also quite performance expensive and only recommended for use while working on UI code.
-
-`REDUX_LOG` and `REDUX_DEV_UI` are both turned on by default in `config/ui-debug.sh`.
+`REDUX_LOG` is turned on by default in `config/ui-debug.sh`.
 
 ### Local Development w/o Debug Mode(s)
 
@@ -65,32 +69,10 @@ All debug options are turned *off* by default in `config/local.sh`.
 
 There are two sets of (unit) tests for the code in this repository.
 
-The tests for all device and data-processing code currently run in the [nodejs](https://nodejs.org/en/) server-side JavaScript environment. (We plan to eventually migrate these tests to run in-browser since the code itself runs in-browser in the Chrome App.)
-
-The tests for all the UI code run using the [Karma test runner](https://karma-runner.github.io/0.13/index.html) in [the headless WebKit browser PhantomJS](http://phantomjs.org/) or the Chrome browser.
-
-To run the tests in this repository as they are run on Travis CI, use:
+To run the tests in this repository as they are run on Travis CI, CircleCI and Appveyor use:
 
 ```bash
 $ npm test
-```
-
-To run just the UI tests in both PhantomJS and Chrome *locally*, use:
-
-```bash
-$ npm run browser-tests
-```
-
-To run just the device and data-processing tests in node, use:
-
-```bash
-$ npm run node-tests
-```
-
-To run just the UI tests in PhantomJS with webpack & Karma watching all files for changes and both rebundling the app and re-running the tests on every change, use:
-
-```bash
-$ npm run test-watch
 ```
 
 ## Linting & Code Style
@@ -132,33 +114,6 @@ Assuming you've already merged any changes to master and are on master locally..
 1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. This is so that if you built for the development Chrome store, you can then distribute the same `dist.zip` to the production Chrome store without having to rebuild everything. If the tag is known to *not* be a release candidate, mark it as a pre-release.
 
 
-## Install
-
-* **Note: requires a node version >= 6 and an npm version >= 3.**
-* **If you have installation or compilation issues with this project, please see [our debugging guide](https://github.com/chentsulin/electron-react-boilerplate/issues/400)**
-
-
-And then install dependencies.
-**ProTip**: Install with [yarn](https://github.com/yarnpkg/yarn) for faster and safer installation
-
-```bash
-$ cd your-project-name && npm install
-```
-
-## Run
-
-Run these two commands __simultaneously__ in different console tabs.
-
-```bash
-$ npm run hot-server
-$ npm run start-hot
-```
-
-or run two servers with one command
-
-```bash
-$ npm run dev
-```
 
 ## Editor Configuration
 **Atom**
@@ -212,8 +167,6 @@ $ set UPGRADE_EXTENSIONS=1 && npm run dev
 
 
 ## CSS Modules
-
-This boilerplate out of the box is configured to use [css-modules](https://github.com/css-modules/css-modules).
 
 All `.css` file extensions will use css-modules unless it has `.global.css`.
 
@@ -286,36 +239,3 @@ If you want to have native-like User Interface (OS X El Capitan and Windows 10),
 ## Dispatching redux actions from main process
 
 see discusses in [#118](https://github.com/chentsulin/electron-react-boilerplate/issues/118) and [#108](https://github.com/chentsulin/electron-react-boilerplate/issues/108)
-
-## How to keep the boilerplate updated
-
-If your application is a fork from this repo, you can add this repo to another git remote:
-
-```sh
-git remote add upstream https://github.com/chentsulin/electron-react-boilerplate.git
-```
-
-Then, use git to merge some latest commits:
-
-```sh
-git pull upstream master
-```
-
-## Maintainers
-
-- [C. T. Lin](https://github.com/chentsulin)
-- [Jhen-Jie Hong](https://github.com/jhen0409)
-- [Amila Welihinda](https://github.com/amilajack)
-
-
-## License
-MIT © [C. T. Lin](https://github.com/chentsulin)
-
-[npm-image]: https://img.shields.io/npm/v/electron-react-boilerplate.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/electron-react-boilerplate
-[travis-image]: https://travis-ci.org/chentsulin/electron-react-boilerplate.svg?branch=master
-[travis-url]: https://travis-ci.org/chentsulin/electron-react-boilerplate
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/github/chentsulin/electron-react-boilerplate?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/chentsulin/electron-react-boilerplate/branch/master
-[david_img]: https://img.shields.io/david/chentsulin/electron-react-boilerplate.svg
-[david_site]: https://david-dm.org/chentsulin/electron-react-boilerplate

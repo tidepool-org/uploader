@@ -13,17 +13,18 @@
     "development": {
       "plugins": [
         "transform-class-properties",
-        "transform-es2015-classes",
-        "tcomb"
+        "transform-es2015-classes"
       ],
       "presets": ["react-hmre"]
     },
     "test": {
       "plugins": [
+        ["resolver", { "resolveDirs": [ "app/node_modules" ]}],
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
-          "__TEST__": "true"
+          "__TEST__": "true",
+          "__DEBUG__": "false"
         }]
       ]
     }

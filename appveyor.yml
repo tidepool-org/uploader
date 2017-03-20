@@ -2,8 +2,7 @@ os: unstable
 
 environment:
   matrix:
-    - nodejs_version: 7
-    - nodejs_version: 6
+    - nodejs_version: 7.4.0
 
 cache:
   - node_modules -> package.json
@@ -14,6 +13,9 @@ cache:
 #
 # cache:
 #   - "%LOCALAPPDATA%/Yarn"
+
+platform:
+  - x64
 
 matrix:
   fast_finish: true
@@ -27,6 +29,8 @@ shallow_clone: true
 clone_depth: 1
 
 install:
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
   - npm install -g npm@latest
@@ -47,6 +51,16 @@ test_script:
   - node --version
   - npm run lint
   - npm run test
-  - npm run build
-  - npm run test-e2e
-  - npm run package
+#  - npm run build
+#  - npm run test-e2e
+  - npm run package-dev -- --ia32 --x64
+  - 7z a development.zip release
+  - npm run package -- --ia32 --x64
+  - 7z a production.zip release
+
+
+artifacts:
+  - path: development.zip
+    name: Development build
+  - path: production.zip
+    name: Production Build

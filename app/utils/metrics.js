@@ -20,7 +20,7 @@ import _ from 'lodash';
 const NONE_PROVIDED = 'No Event Name Provided';
 
 export function createMetricsTracker(api) {
-  return ({ getState }) => (next) => (action) => {
+  return () => (next) => (action) => {
     if (_.get(action, 'meta.metric', null) !== null) {
       api.metrics.track(
         _.get(action, 'meta.metric.eventName', NONE_PROVIDED),

@@ -6,7 +6,6 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, push } from 'react-router-redux';
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
-import Root from './containers/Root';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';

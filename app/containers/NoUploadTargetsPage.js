@@ -34,7 +34,7 @@ export class NoUploadTargetsPage extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     return {
       blipUrls: state.blipUrls,
     };
