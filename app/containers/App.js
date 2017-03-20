@@ -209,7 +209,7 @@ export class App extends Component {
       <LoggedInAs
         dropMenu={dropdown}
         isUploadInProgress={this.props.uploadIsInProgress}
-        onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CHOOSE_DEVICES}})}
+        onChooseDevices={this.handleClickChooseDevices}
         onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
         onLogout={this.props.async.doLogout}
         user={allUsers[this.props.loggedInUser]}
@@ -254,66 +254,7 @@ App.propTypes = {
 
 // wrap the component to inject dispatch and state into it
 export default connect(
-  (state) => {
-    function getActiveUploads(state) {
-      const { devices, uploadsByUser, uploadTargetUser } = state;
-      if (uploadTargetUser === null) {
-        return [];
-      }
-      let activeUploads = [];
-      const targetUsersUploads = _.get(uploadsByUser, uploadTargetUser, []);
-      _.map(Object.keys(targetUsersUploads), (deviceKey) => {
-        const upload = uploadsByUser[uploadTargetUser][deviceKey];
-        const device = _.pick(devices[deviceKey], ['instructions', 'image', 'key', 'name', 'source']);
-        const progress = upload.uploading ? {progress: state.uploadProgress} :
-          (upload.successful ? {progress: {percentage: 100}} : {});
-        activeUploads.push(_.assign({}, device, upload, progress));
-      });
-      return activeUploads;
-    }
-    function hasSomeoneLoggedIn(state) {
-      return !_.includes([pages.LOADING, pages.LOGIN], state.page);
-    }
-    function isUploadInProgress(state) {
-      let blockModePrepInProgress = false;
-      if (state.uploadTargetDevice !== null) {
-        const currentDevice = state.devices[state.uploadTargetDevice];
-        if (currentDevice.source.type === 'block') {
-          let blockModeInProgress = _.get(state.uploadsByUser, [state.uploadTargetUser, currentDevice.key], {});
-          if (blockModeInProgress.choosingFile || blockModeInProgress.readingFile ||
-            _.get(blockModeInProgress, ['file', 'data'], null) !== null) {
-            blockModePrepInProgress = true;
-          }
-        }
-      }
-      if (state.working.uploading || blockModePrepInProgress) {
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-    function getPotentialUploadsForUploadTargetUser(state) {
-      return Object.keys(
-        _.get(state, ['uploadsByUser', state.uploadTargetUser], {})
-      );
-    }
-    function getSelectedTargetDevices(state) {
-      return _.get(
-        state,
-        ['targetDevices', state.uploadTargetUser],
-        // fall back to the targets stored under 'noUserSelected', if any
-        _.get(state, ['targetDevices', 'noUserSelected'], [])
-      );
-    }
-    function getSelectedTimezone(state) {
-      return _.get(
-        state,
-        ['targetTimezones', state.uploadTargetUser],
-        // fall back to the timezone stored under 'noUserSelected', if any
-        _.get(state, ['targetTimezones', 'noUserSelected'], null)
-      );
-    }
+  (state, ownProps) => {
     function isClinicAccount(state) {
       return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
     }
