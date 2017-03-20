@@ -76,13 +76,13 @@ export class SettingsPage extends Component {
   }
 
   renderUserDropdown() {
-    const { allUsers, page, targetUsersForUpload, uploadTargetUser } = this.props;
+    const { allUsers, targetUsersForUpload, uploadTargetUser, location } = this.props;
     return (
       <UserDropdown
         allUsers={allUsers}
         isUploadInProgress={this.props.uploadIsInProgress}
         onGroupChange={this.props.async.setUploadTargetUserAndMaybeRedirect}
-        page={page}
+        locationPath={location.path}
         targetId={uploadTargetUser}
         targetUsersForUpload={targetUsersForUpload} />
     );

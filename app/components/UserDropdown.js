@@ -27,7 +27,7 @@ var UserDropdown = React.createClass({
     allUsers: React.PropTypes.object.isRequired,
     isUploadInProgress: React.PropTypes.bool,
     onGroupChange: React.PropTypes.func.isRequired,
-    page: React.PropTypes.string.isRequired,
+		locationPath: React.PropTypes.string.isRequired,
     targetId: React.PropTypes.string,
     targetUsersForUpload: React.PropTypes.array.isRequired
   },
@@ -71,14 +71,15 @@ var UserDropdown = React.createClass({
       return null;
     }
 
-    var text = this.props.route.path === '/main' ?
+    var text = this.props.locationPath === '/main' ?
       'Upload data for' : 'Choose devices for';
+		var styleClass = this.props.locationPath.substring(1);
 
     return (
       <div>
         <div className={styles.uploadGroup}>
           <div className={styles.label}>{text}</div>
-          <div className={styles[this.props.page.toLowerCase()]}>
+          <div className={styles[styleClass]}>
             {this.groupSelector()}
           </div>
         </div>
