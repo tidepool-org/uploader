@@ -2,7 +2,7 @@ sudo: false
 
 language: node_js
 node_js:
-  - "0.12.7"
+  - "6"
   - "stable"
 
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
