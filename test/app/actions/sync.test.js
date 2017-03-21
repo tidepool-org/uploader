@@ -243,33 +243,6 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('setPage', () => {
-    const PAGE = 'FOO';
-    it('should be an FSA', () => {
-      let action = syncActions.setPage(PAGE);
-
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to set the page', () => {
-      const expectedAction = {
-        type: actionTypes.SET_PAGE,
-        payload: {page: PAGE},
-        meta: {source: actionSources[actionTypes.SET_PAGE]}
-      };
-      expect(syncActions.setPage(PAGE)).to.deep.equal(expectedAction);
-    });
-
-    it('should accept a second parameter to override the default action source', () => {
-      const expectedAction = {
-        type: actionTypes.SET_PAGE,
-        payload: {page: PAGE},
-        meta: {source: actionSources.USER}
-      };
-      expect(syncActions.setPage(PAGE, actionSources.USER)).to.deep.equal(expectedAction);
-    });
-  });
-
   describe('setSignUpUrl', () => {
     const URL = 'http://www.acme.com/sign-up';
     it('should be an FSA', () => {

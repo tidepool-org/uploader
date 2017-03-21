@@ -62,15 +62,6 @@ export function os(state = null, action) {
   }
 }
 
-export function page(state = pages.LOADING, action) {
-  switch (action.type) {
-    case actionTypes.SET_PAGE:
-      return action.payload.page;
-    default:
-      return state;
-  }
-}
-
 export function unsupported(state = true, action) {
   switch (action.type) {
     case actionTypes.INIT_APP_FAILURE:

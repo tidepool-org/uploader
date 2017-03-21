@@ -27,6 +27,12 @@ export function createMetricsTracker(api) {
         _.get(action, 'meta.metric.properties', {})
       );
     }
+		if (_.get(action, 'payload.state.meta.metric', null) !== null) {
+			api.metrics.track(
+        _.get(action, 'payload.state.meta.metric.eventName', NONE_PROVIDED),
+        _.get(action, 'payload.state.meta.metric.properties', {})
+      );
+		}
     return next(action);
   };
 }

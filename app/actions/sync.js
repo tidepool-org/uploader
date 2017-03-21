@@ -138,18 +138,6 @@ export function setNewPatientUrl(url) {
   };
 }
 
-export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
-  const meta = {source: actionSource};
-  if (metric) {
-    _.assign(meta, metric);
-  }
-  return {
-    type: actionTypes.SET_PAGE,
-    payload: { page },
-    meta
-  };
-}
-
 export function setSignUpUrl(url) {
   return {
     type: actionTypes.SET_SIGNUP_URL,
