@@ -1,0 +1,40 @@
+seqdiag {
+  === Get CNL Device Info ===
+  driver -> CNL [label = "'X'"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CNL model\nand serial"];
+  === Enter Command Mode ===
+  driver -> CNL [label = "0x15 [NAK]"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x04 [EOT]"];
+  driver -> CNL [label = "0x05 [ENQ]"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  === Toggle Passthrough Mode ===
+  driver -> CNL [label = "'W|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  driver -> CNL [label = "'Q|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  driver -> CNL [label = "'1|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  === Open Connection ===
+  driver -> CNL [label = "'Open Connection' Request"];
+  driver <-- CNL;
+  === Read Pairing Info ===
+  driver -> CNL [label = "'Read Info' Request"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CNL MAC\nand pump MAC"];
+  === Get Link Key ===
+  driver -> CNL [label = "'Link Key' Request"];
+  driver <-- CNL;
+  driver -> driver [label = "Generate encryption\nkey for session"];
+  === Join ZigBee Network ===
+  loop  {
+    driver -> CNL [label = "'Join Network' Request", note = "For each of the pump's ZigBee radio channels"];
+    driver <-- CNL;
+  }
+  === Toggle High Speed Mode ===
+}

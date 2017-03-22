@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 617 2522" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>seqdiag {
+  === Get CNL Device Info ===
+  driver -&gt; CNL [label = "'X'"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract CNL model\nand serial"];
+  === Enter Command Mode ===
+  driver -&gt; CNL [label = "0x15 [NAK]"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Check response is\n0x05 [ENQ]"];
+  === Toggle Passthrough Mode ===
+  driver -&gt; CNL [label = "'W|'"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Check response is\n0x06 [ACK]"];
+  driver -&gt; CNL [label = "'Q|'"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Check response is\n0x06 [ACK]"];
+  driver -&gt; CNL [label = "'1|'"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Check response is\n0x06 [ACK]"];
+  === Open Connection ===
+  driver -&gt; CNL [label = "'Open Connection' Request"];
+  driver &lt;-- CNL;
+  === Read Pairing Info ===
+  driver -&gt; CNL [label = "'Read Info' Request"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract CNL MAC\nand pump MAC"];
+  === Get Link Key ===
+  driver -&gt; CNL [label = "'Link Key' Request"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Generate encryption\nkey for session"];
+
+  === Join ZigBee Network ===
+  loop  {
+    driver -&gt; CNL [label = "'Join Network' Request", note = "For each of the pump's ZigBee radio channels"];
+    driver &lt;-- CNL;
+  }
+
+  alt {
+    driver -&gt; CNL;
+  }
+}
+</desc>
+  <rect fill="rgb(0,0,0)" height="2374" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="135" y="126" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="220" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="506" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="795" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="1005" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="1214" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="1504" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="1700" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="1990" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="2294" />
+  <rect fill="rgb(0,0,0)" height="76" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="2424" />
+  <polygon fill="rgb(0,0,0)" points="347,2286 596,2286 604,2294 604,2303 347,2303 347,2286" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="75" y="46" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="267" y="46" />
+  <rect fill="none" height="138" stroke="rgb(0,0,0)" width="384" x="40" y="2248" />
+  <path d="M 40 2264 L 76 2264" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 76 2264 L 92 2248" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="20" x="58" y="2262">loop</text>
+  <rect fill="none" height="72" stroke="rgb(0,0,0)" width="384" x="40" y="2394" />
+  <path d="M 40 2408 L 68 2408" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 68 2408 L 84 2394" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="12" x="54" y="2406">alt</text>
+  <path d="M 136 80 L 136 2510" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
+  <rect fill="moccasin" height="2374" stroke="rgb(0,0,0)" width="8" x="132" y="120" />
+  <path d="M 328 80 L 328 2510" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="214" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="500" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="789" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="999" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="1208" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="1498" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="1694" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="1984" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="2288" />
+  <rect fill="moccasin" height="76" stroke="rgb(0,0,0)" width="8" x="324" y="2418" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="72" y="40" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="28" x="136" y="65">driver</text>
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="264" y="40" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="22" x="328" y="65">CNL</text>
+  <path d="M 144 214 L 320 214" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,210 320,214 312,218" stroke="rgb(0,0,0)" />
+  <path d="M 144 264 L 320 264" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,260 144,264 152,268" stroke="rgb(0,0,0)" />
+  <path d="M 144 340 L 236 340" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 340 L 236 356" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 356 L 144 356" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,352 144,356 152,360" stroke="rgb(0,0,0)" />
+  <path d="M 144 500 L 320 500" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,496 320,500 312,504" stroke="rgb(0,0,0)" />
+  <path d="M 144 550 L 320 550" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,546 144,550 152,554" stroke="rgb(0,0,0)" />
+  <path d="M 144 628 L 236 628" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 628 L 236 644" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 644 L 144 644" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,640 144,644 152,648" stroke="rgb(0,0,0)" />
+  <path d="M 144 789 L 320 789" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,785 320,789 312,793" stroke="rgb(0,0,0)" />
+  <path d="M 144 839 L 320 839" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,835 144,839 152,843" stroke="rgb(0,0,0)" />
+  <path d="M 144 917 L 236 917" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 917 L 236 933" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 933 L 144 933" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,929 144,933 152,937" stroke="rgb(0,0,0)" />
+  <path d="M 144 999 L 320 999" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,995 320,999 312,1003" stroke="rgb(0,0,0)" />
+  <path d="M 144 1049 L 320 1049" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,1045 144,1049 152,1053" stroke="rgb(0,0,0)" />
+  <path d="M 144 1127 L 236 1127" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1127 L 236 1143" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1143 L 144 1143" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,1139 144,1143 152,1147" stroke="rgb(0,0,0)" />
+  <path d="M 144 1208 L 320 1208" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,1204 320,1208 312,1212" stroke="rgb(0,0,0)" />
+  <path d="M 144 1258 L 320 1258" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,1254 144,1258 152,1262" stroke="rgb(0,0,0)" />
+  <path d="M 144 1336 L 236 1336" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1336 L 236 1352" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1352 L 144 1352" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,1348 144,1352 152,1356" stroke="rgb(0,0,0)" />
+  <path d="M 144 1498 L 320 1498" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,1494 320,1498 312,1502" stroke="rgb(0,0,0)" />
+  <path d="M 144 1548 L 320 1548" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,1544 144,1548 152,1552" stroke="rgb(0,0,0)" />
+  <path d="M 144 1694 L 320 1694" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,1690 320,1694 312,1698" stroke="rgb(0,0,0)" />
+  <path d="M 144 1744 L 320 1744" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,1740 144,1744 152,1748" stroke="rgb(0,0,0)" />
+  <path d="M 144 1822 L 236 1822" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1822 L 236 1838" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 1838 L 144 1838" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,1834 144,1838 152,1842" stroke="rgb(0,0,0)" />
+  <path d="M 144 1984 L 320 1984" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,1980 320,1984 312,1988" stroke="rgb(0,0,0)" />
+  <path d="M 144 2034 L 320 2034" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,2030 144,2034 152,2038" stroke="rgb(0,0,0)" />
+  <path d="M 144 2126 L 236 2126" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 2126 L 236 2142" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 2142 L 144 2142" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,2138 144,2142 152,2146" stroke="rgb(0,0,0)" />
+  <path d="M 144 2288 L 320 2288" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,2284 320,2288 312,2292" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(255,182,193)" points="344,2280 593,2280 601,2288 601,2297 344,2297 344,2280" stroke="rgb(0,0,0)" />
+  <path d="M 593 2280 L 593 2288" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 593 2288 L 601 2288" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="233" x="468" y="2295">For each of the pump's ZigBee radio channels</text>
+  <path d="M 144 2338 L 320 2338" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,2334 144,2338 152,2342" stroke="rgb(0,0,0)" />
+  <path d="M 144 2418 L 320 2418" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,2414 320,2418 312,2422" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="16" x="156" y="212">'X'</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="96" x="192" y="326">Extract CNL model</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="47" x="167" y="338">and serial</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="181" y="498">0x15 [NAK]</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="92" x="190" y="614">Check response is</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="626">0x05 [ENQ]</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="25" x="160" y="787">'W|'</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="92" x="190" y="903">Check response is</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="915">0x06 [ACK]</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="23" x="159" y="997">'Q|'</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="92" x="190" y="1113">Check response is</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="1125">0x06 [ACK]</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="21" x="158" y="1206">'1|'</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="92" x="190" y="1322">Check response is</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="1334">0x06 [ACK]</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="139" x="217" y="1496">'Open Connection' Request</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="99" x="197" y="1692">'Read Info' Request</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="92" x="190" y="1806">Extract CNL MAC</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="80" x="184" y="1820">and pump MAC</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="95" x="195" y="1982">'Link Key' Request</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="102" x="195" y="2104">Generate encryption</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="75" x="181" y="2118">key for session</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="119" x="207" y="2286">'Join Network' Request</text>
+  <path d="M 48 138 L 169 138" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 142 L 169 142" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 294 138 L 416 138" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 294 142 L 416 142" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="18" stroke="rgb(0,0,0)" width="125" x="169" y="131" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="105" x="231" y="145">Get CNL Device Info</text>
+  <path d="M 48 424 L 165 424" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 428 L 165 428" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 299 424 L 416 424" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 299 428 L 416 428" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="18" stroke="rgb(0,0,0)" width="134" x="165" y="417" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="114" x="232" y="431">Enter Command Mode</text>
+  <path d="M 48 712 L 157 712" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 716 L 157 716" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 307 712 L 416 712" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 307 716 L 416 716" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="150" x="157" y="704" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="130" x="232" y="720">Toggle Passthrough Mode</text>
+  <path d="M 48 1420 L 178 1420" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 1424 L 178 1424" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 285 1420 L 416 1420" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 285 1424 L 416 1424" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="107" x="178" y="1412" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="87" x="231" y="1428">Open Connection</text>
+  <path d="M 48 1615 L 179 1615" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 1619 L 179 1619" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 284 1615 L 416 1615" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 284 1619 L 416 1619" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="21" stroke="rgb(0,0,0)" width="105" x="179" y="1607" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="85" x="231" y="1624">Read Pairing Info</text>
+  <path d="M 48 1906 L 189 1906" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 1910 L 189 1910" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 274 1906 L 416 1906" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 274 1910 L 416 1910" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="85" x="189" y="1898" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="65" x="231" y="1914">Get Link Key</text>
+  <path d="M 48 2210 L 169 2210" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 2214 L 169 2214" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 294 2210 L 416 2210" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 294 2214 L 416 2214" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="125" x="169" y="2202" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="105" x="231" y="2218">Join ZigBee Network</text>
+</svg>
