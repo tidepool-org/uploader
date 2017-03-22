@@ -42,6 +42,7 @@ import { checkVersion } from '../utils/drivers';
 import LoggedInAs from '../components/LoggedInAs';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
+import Footer from '../components/Footer';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -117,7 +118,7 @@ export class App extends Component {
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <div className={styles.header}>{this.renderHeader()}</div>
         {this.props.children}
-        <div className={styles.footer}>{this.renderFooter()}</div>
+				<Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
       </div>
@@ -218,18 +219,6 @@ export class App extends Component {
     );
   }
 
-  renderFooter() {
-    const { version } = config;
-    return (
-      <div className={styles.footerRow}>
-        <div className={styles.version}>{`v${version} beta`}</div>
-        <div className="mailto">
-          <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get support</a>
-        </div>
-      </div>
-    );
-  }
-
   renderVersionCheck() {
     const { readyToRenderVersionCheckOverlay, unsupported } = this.props;
     if (readyToRenderVersionCheckOverlay === false || unsupported === false) {
@@ -248,9 +237,7 @@ export class App extends Component {
   }
 }
 
-App.propTypes = {
-  page: React.PropTypes.string.isRequired
-};
+App.propTypes = {};
 
 // wrap the component to inject dispatch and state into it
 export default connect(

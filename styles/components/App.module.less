@@ -93,35 +93,3 @@
   composes: icon-add from '../core/icons.module.less';
   font-style: normal;
 }
-
-.footer {
-  composes: flexColumn from '../core/layout.module.less';
-  margin-top: auto;
-  margin-bottom: 30px;
-  background-image: url(../../images/tidepool_logo_transparent.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-
-.footerRow {
-  composes: flexRow from '../core/layout.module.less';
-  width: 550px;
-  margin: 0px auto;
-  justify-content: space-between;
-  align-self: flex-end;
-}
-
-.footerLink {
-  composes: invertLink from '../core/typography.module.less';
-  text-decoration: none;
-  &:hover,
-  &:focus,
-  &:active {
-    text-decoration: none;
-  }
-}
-
-.version {
-  composes: lightGray from '../core/typography.module.less';
-  flex-basis: 40%;
-}
