@@ -37,4 +37,14 @@ seqdiag {
     driver <-- CNL;
   }
   === Toggle High Speed Mode ===
+  driver -> CNL [label = "'High Speed Mode' Command"];
+  driver <-- CNL;
+  === Get Pump Time ===
+  driver -> CNL [label = "'Pump Time' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract date/time"];
+  === Get Active Basal Pattern ===
+  driver -> CNL [label = "'Pump Status' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract active\nbasal pattern"];
 }

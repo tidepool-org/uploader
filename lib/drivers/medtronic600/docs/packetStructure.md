@@ -207,3 +207,46 @@ A **Transmit Packet Response** is contained in the payload of an [NGP Message](#
 | Unknown bytes    | 2     | Bytes       | Unknown meaning |
 | Size      | 1     | UInt8      | Size of the Encrypted Payload |
 | Encrypted Payload | Variable | Bytes      | Size specified by **Size** |
+
+### High Speed Mode Command
+A **High Speed Mode Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![High Speed Mode Command](images/svg/HighSpeedModeCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number - always `0x80` for the High Speed Mode Command |
+| Command   | 2     | UInt16BE   | `0x0412` |
+| Mode      | 1     | Byte       | `0x00` to Disable<br> `0x01` to Enable |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Pump Time Command
+A **Pump Time Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Pump Time Command](images/svg/PumpTimeCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0403` |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Pump Time Response
+A **Pump Time Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Pump Time Response](images/svg/PumpTimeResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0407` |
+| RTC       | 4     | UInt32BE   | The "Real Time Clock" part of the date/time |
+| Offset    | 4     | UInt32BE   | The "Offset" part of the date/time |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+#### NGP Date Format
+All timestamps in the 600-series protocol messages are represented with the RTC/Offset byte structure.  
+This structure can be converted to a date using the following algorithm:  
+`946684800000 + (RTC * 1000) + ((Offset - 0x100000000) * 1000)`
+
+This returns a number in milliseconds which can be passed to a `Date` object. Note that this is the date in the *local* timezone, **not** in UTC.
