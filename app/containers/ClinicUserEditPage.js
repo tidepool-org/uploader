@@ -67,7 +67,6 @@ export default connect(
   (state) => {
     return {
       allUsers: state.allUsers,
-      page: state.page,
       loggedInUser: state.loggedInUser,
       targetUsersForUpload: state.targetUsersForUpload,
       uploadTargetUser: state.uploadTargetUser,
