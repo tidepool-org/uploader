@@ -47,4 +47,32 @@ seqdiag {
   driver -> CNL [label = "'Pump Status' Command"];
   driver <-- CNL;
   driver -> driver [label = "Extract active\nbasal pattern"];
+  === Get Bolus Wizard Settings ===
+  driver -> CNL [label = "'Bolus Wizard BG Targets' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\nBG targets"];
+  driver -> CNL [label = "'Bolus Wizard Carb Ratios' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\ncarb ratios"];
+  driver -> CNL [label = "'Bolus Wizard Sensitivity Factors' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\ninsulin sensitivities"];
+  === Get Basal Pattern Settings ===
+  driver -> CNL [label = "'Read Basal Pattern' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract basal\npatterns"];
+  === Read Pump History ===
+  driver -> CNL [label = "'Read History Info' Command\nfor Pump data"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract pump\nhistory info"];
+  driver -> CNL [label = "'Read History' Command\nfor Pump data"];
+  driver <-- CNL;
+  driver -> driver [label = "Process pump\nhistory data"];
+  === Read CGM History ===
+  driver -> CNL [label = "'Read History Info' Command\nfor CGM data"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CGM\nhistory info"];
+  driver -> CNL [label = "'Read History' Command\nfor CGM data"];
+  driver <-- CNL;
+  driver -> driver [label = "Process CGM\nhistory data"];
 }

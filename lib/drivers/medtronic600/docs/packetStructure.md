@@ -250,3 +250,181 @@ This structure can be converted to a date using the following algorithm:
 `946684800000 + (RTC * 1000) + ((Offset - 0x100000000) * 1000)`
 
 This returns a number in milliseconds which can be passed to a `Date` object. Note that this is the date in the *local* timezone, **not** in UTC.
+
+### Pump Status Command
+A **Pump Status Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Pump Status Command](images/svg/PumpStatusCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0112` |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Pump Status Response
+A **Pump Status Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Pump Status Response](images/svg/PumpStatusResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x013c` |
+| Pump Status | 1     | Byte       | Bitfield of pump status.<br>*See table below* |
+| Unknown bytes    | 22    | Bytes       | Unknown meaning |
+| Active Basal Pattern | 1     | UInt8      | *See table below* |
+| Normal Rate | 4     | UInt32BE   | Current basal rate for the active pattern. Divide by 10000 to get Units |
+| Temp Rate | 4     | UInt32BE   | Temp basal rate (only if an absolute temp basal is in progress). Divide by 10000 to get Units |
+| Temp % | 1     | UInt8      | Temp basal percentage (only if a Percentage temp basal is in progress). |
+| Temp min. remain | 2     | UInt16BE   | Number of minutes remaining for the current temp basal period |
+| Total basal delivered | 4     | UInt32BE   | Total amount of insulin delivered today. Divide by 10000 to get Units |
+| Battery % | 1     | UInt8      | Percentage of charge left in the pump battery |
+| Insulin remaining | 4     | UInt32BE   | Total amount of insulin left in the reservoir. Divide by 10000 to get Units |
+| Hours | 1     | UInt8      | Estimated number of hours until reservoir is empty. If the value is `25`, it means "More than 24 hours" |
+| Minutes | 1     | UInt8      | Additional estimated number of minutes until reservoir is empty. Add to the **Hours** field |
+| Active Insulin (IOB) | 4     | UInt32BE   | Divide by 10000 to get Units |
+| SGV       | 2     | UInt16BE   | CGM sensor subcutaneous blood glucose value, in mg/dL |
+| Timestamp of last SGV | 8     | NGPTimestamp | NGP Timestamp of last CGM sensor reading |
+| PLGM Status | 1     | Byte       | Bitfield of the Predictive Low Glucose Monitoring status of the pump |
+| CGM Status | 1     | Byte       | Bitfield of the CGM status, including rates of change |
+| Unknown bytes    | 7     | Bytes       | Unknown meaning |
+| BWZ Status | 1     | Byte       | Bitfield of the Bolus Wizard status. `0x01` if the Bolus Wizard has been used in the last 15 minutes |
+| BGL       | 2     | UInt16BE   | Blood Glucose Level entered into the Bolus Wizard, in mg/dL |
+| Unknown bytes    | 21    | Bytes       | Unknown meaning |
+| CCITT     | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+#### Pump Status Flags
+| Flag      | Meaning  |
+|-----------|-----------|
+| `00000001` | Pump suspended |
+| `00000010` | Bolusing |
+| `00010000` | Active (delivering insulin) |
+| `00100000` | Temp basal active |
+| `01000000` | CGM Active |
+
+#### Basal Patterns
+| Value | Meaning   |
+|-------|-----------|
+| 1     | Pattern 1 |
+| 2     | Pattern 2 |
+| 3     | Pattern 3 |
+| 4     | Pattern 4 |
+| 5     | Pattern 5 |
+| 6     | Work Day  |
+| 7     | Day Off   |
+| 8     | Sick Day  |
+
+### Bolus Wizard BG Targets Command
+A **Bolus Wizard BG Targets Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard BG Targets Command](images/svg/BWZTargetsCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0131` |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Bolus Wizard BG Targets Response
+A **Bolus Wizard BG Targets Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard BG Targets Response](images/svg/BWZTargetsResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0132` |
+| Inner CCITT  | 2     | UInt16BE   | CCITT checksum of Byte 5 onwards, not including the CCITT at the end |
+| # Items  | 1     | UInt8      | The number of Bolus Wizard targets |
+| High TGT 1 mg/dL  | 2     | UInt16BE   | The first high target (in mg/dL) |
+| High TGT 1 mmol/L  | 2     | UInt16BE   | The first high target (in mmol/L * 10) |
+| Low TGT 1 mg/dL  | 2     | UInt16BE   | The first low target (in mg/dL) |
+| Low TGT 1 mmol/L  | 2     | UInt16BE   | The first low target (in mmol/L * 10) |
+| TGT 1 Time  | 1     | UInt8      | Time from which this target applies, in half hour units.<br>For example, `0` means midnight, `1` means 00:30, and so on |
+| ...  | Variable | Bytes      | If **# Items** is greater than 1, the pattern (Bytes 6 to 14, shown in green) are repeated for their respective target details. |
+| CCITT  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Bolus Wizard Carb Ratios Command
+A **Bolus Wizard Carb Ratios Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard Carb Ratios Command](images/svg/BWZCarbRatiosCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x012B` |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Bolus Wizard Carb Ratios Response
+A **Bolus Wizard Carb Ratios Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard Carb Ratios Response](images/svg/BWZCarbRatiosResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0132` |
+| Inner CCITT  | 2     | UInt16BE   | CCITT checksum of Byte 5 onwards, not including the CCITT at the end |
+| # Items  | 1     | UInt8      | The number of Bolus Wizard targets |
+| Ratio TGT 1 grams  | 4     | UInt32BE   | The first carb ratio (in grams) |
+| Unknown bytes  | 4     | Bytes      | Meaning unknown, but could be a ratio if Exchanges are used |
+| Ratio 1 Time  | 1     | UInt8      | Time from which this ratio applies, in half hour units.<br>For example, `0` means midnight, `1` means 00:30, and so on |
+| ...  | Variable | Bytes      | If **# Items** is greater than 1, the pattern (Bytes 6 to 14, shown in green) are repeated for their respective target details. |
+| CCITT  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Bolus Wizard Sensitivity Factors Command
+A **Bolus Wizard Sensitivity Factors Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard Sensitivity Factors Command](images/svg/BWZSensitivityFactorsCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x012E` |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Bolus Wizard Sensitivity Factors Response
+A **Bolus Wizard Sensitivity Factors Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Bolus Wizard Sensitivity Factors Response](images/svg/BWZSensitivityFactorsResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x012F` |
+| Inner CCITT  | 2     | UInt16BE   | CCITT checksum of Byte 5 onwards, not including the CCITT at the end |
+| # Items  | 1     | UInt8      | The number of Bolus Wizard targets |
+| ISF TGT 1 mg/dL  | 2     | UInt16BE   | The first insulin sensitivity factor (in mg/dL) |
+| ISF TGT 1 mmol/L  | 2     | UInt16BE   | The first insulin sensitivity factor (in mmol/L) |
+| Ratio 1 Time  | 1     | UInt8      | Time from which this ratio applies, in half hour units.<br>For example, `0` means midnight, `1` means 00:30, and so on |
+| ...  | Variable | Bytes      | If **# Items** is greater than 1, the pattern (Bytes 6 to 10, shown in green) are repeated for their respective target details. |
+| CCITT  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Read Basal Pattern Command
+A **Read Basal Pattern Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Read Basal Pattern Command](images/svg/ReadBasalPatternCommand.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0116` |
+| Pattern # | 1     | UInt8      | The number of the [basal pattern](#basal-patterns) to request. |
+| Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+### Read Basal Pattern Response
+A **Read Basal Pattern Response** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
+
+![Read Basal Pattern Response](images/svg/ReadBasalPatternResponse.svg)
+
+| Field     | Bytes | Data Type  |   Comments   |
+|-----------|:-----:|:----------:|--------------|
+| Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
+| Command   | 2     | UInt16BE   | `0x0123` |
+| Pattern # | 1     | UInt8      | The number of this [basal pattern](#basal-patterns). |
+| # Items  | 1     | UInt8      | The number of segments in this basal pattern |
+| Basal Rate 1 | 2     | UInt32BE   | The first basal rate. Divide by 10000 to get Units |
+| Rate 1 Time  | 1     | UInt8      | Time from which this basal rate applies, in half hour units.<br>For example, `0` means midnight, `1` means 00:30, and so on |
+| ...  | Variable | Bytes      | If **# Items** is greater than 1, the pattern (Bytes 5 to 9, shown in green) are repeated for their respective basal rate details. |
+| CCITT  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |

@@ -8,7 +8,7 @@ To generate an .svg image from a .diag file, type the following in the console:
 
 If you want to convert the whole directory, you can use this one-liner (from this directory):
 
-	while read file; do echo "Converting ${file}..."; $(echo $file | awk '{a=$0;gsub(/^src/,"svg",$0);gsub(/\.diag/,".svg",$0);system("packetdiag -T SVG " a " -o " $0)}'); done <<< $(find src -name "*.diag")
+	while read file; do echo "Converting ${file}..."; $(echo $file | awk '{a=$0;gsub(/^src/,"svg",$0);gsub(/\.diag/,".svg",$0);system("packetdiag -T SVG " a " -o " $0)}'); done < <(find src -name "*.diag")
 
 On Mac: To convert an .svg file into a .png file, first do `brew install librsvg`, and then:
 

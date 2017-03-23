@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg viewBox="0 0 617 3553" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 617 5906" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs id="defs_block">
     <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
       <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
@@ -56,9 +56,37 @@
   driver -&gt; CNL [label = "'Pump Status' Command"];
   driver &lt;-- CNL;
   driver -&gt; driver [label = "Extract active\nbasal pattern"];
+  === Get Bolus Wizard Settings ===
+  driver -&gt; CNL [label = "'Bolus Wizard BG Targets' Command"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract BWZ\nBG targets"];
+  driver -&gt; CNL [label = "'Bolus Wizard Carb Ratios' Command"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract BWZ\ncarb ratios"];
+  driver -&gt; CNL [label = "'Bolus Wizard Sensitivity Factors' Command"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract BWZ\ninsulin sensitivities"];
+  === Get Basal Pattern Settings ===
+  driver -&gt; CNL [label = "'Read Basal Pattern' Command"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract basal\npatterns"];
+  === Read Pump History ===
+  driver -&gt; CNL [label = "'Read History Info' Command\nfor Pump data"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract pump\nhistory info"];
+  driver -&gt; CNL [label = "'Read History' Command\nfor Pump data"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Process pump\nhistory data"];
+  === Read CGM History ===
+  driver -&gt; CNL [label = "'Read History Info' Command\nfor CGM data"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Extract CGM\nhistory info"];
+  driver -&gt; CNL [label = "'Read History' Command\nfor CGM data"];
+  driver &lt;-- CNL;
+  driver -&gt; driver [label = "Process CGM\nhistory data"];
 }
 </desc>
-  <rect fill="rgb(0,0,0)" height="3405" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="135" y="126" />
+  <rect fill="rgb(0,0,0)" height="5758" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="135" y="126" />
   <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="220" />
   <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="506" />
   <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="714" />
@@ -72,6 +100,14 @@
   <rect fill="rgb(0,0,0)" height="63" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="2737" />
   <rect fill="rgb(0,0,0)" height="64" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="2976" />
   <rect fill="rgb(0,0,0)" height="64" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="3297" />
+  <rect fill="rgb(0,0,0)" height="51" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="3644" />
+  <rect fill="rgb(0,0,0)" height="54" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="3896" />
+  <rect fill="rgb(0,0,0)" height="52" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="4150" />
+  <rect fill="rgb(0,0,0)" height="66" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="4468" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="4818" />
+  <rect fill="rgb(0,0,0)" height="50" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="5074" />
+  <rect fill="rgb(0,0,0)" height="52" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="5408" />
+  <rect fill="rgb(0,0,0)" height="52" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="8" x="327" y="5662" />
   <polygon fill="rgb(0,0,0)" points="347,2502 596,2502 604,2510 604,2519 347,2519 347,2502" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" />
   <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="75" y="46" />
   <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="267" y="46" />
@@ -79,9 +115,9 @@
   <path d="M 40 2480 L 76 2480" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 76 2480 L 92 2464" fill="none" stroke="rgb(0,0,0)" />
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="20" x="58" y="2478">loop</text>
-  <path d="M 136 80 L 136 3541" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
-  <rect fill="moccasin" height="3405" stroke="rgb(0,0,0)" width="8" x="132" y="120" />
-  <path d="M 328 80 L 328 3541" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
+  <path d="M 136 80 L 136 5894" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
+  <rect fill="moccasin" height="5758" stroke="rgb(0,0,0)" width="8" x="132" y="120" />
+  <path d="M 328 80 L 328 5894" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="8 4" />
   <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="214" />
   <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="500" />
   <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="708" />
@@ -95,6 +131,14 @@
   <rect fill="moccasin" height="63" stroke="rgb(0,0,0)" width="8" x="324" y="2731" />
   <rect fill="moccasin" height="64" stroke="rgb(0,0,0)" width="8" x="324" y="2970" />
   <rect fill="moccasin" height="64" stroke="rgb(0,0,0)" width="8" x="324" y="3291" />
+  <rect fill="moccasin" height="51" stroke="rgb(0,0,0)" width="8" x="324" y="3638" />
+  <rect fill="moccasin" height="54" stroke="rgb(0,0,0)" width="8" x="324" y="3890" />
+  <rect fill="moccasin" height="52" stroke="rgb(0,0,0)" width="8" x="324" y="4144" />
+  <rect fill="moccasin" height="66" stroke="rgb(0,0,0)" width="8" x="324" y="4462" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="4812" />
+  <rect fill="moccasin" height="50" stroke="rgb(0,0,0)" width="8" x="324" y="5068" />
+  <rect fill="moccasin" height="52" stroke="rgb(0,0,0)" width="8" x="324" y="5402" />
+  <rect fill="moccasin" height="52" stroke="rgb(0,0,0)" width="8" x="324" y="5656" />
   <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="72" y="40" />
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="28" x="136" y="65">driver</text>
   <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="264" y="40" />
@@ -195,6 +239,70 @@
   <path d="M 236 3463 L 236 3479" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 236 3479 L 144 3479" fill="none" stroke="rgb(0,0,0)" />
   <polygon fill="rgb(0,0,0)" points="152,3475 144,3479 152,3483" stroke="rgb(0,0,0)" />
+  <path d="M 144 3638 L 320 3638" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,3634 320,3638 312,3642" stroke="rgb(0,0,0)" />
+  <path d="M 144 3689 L 320 3689" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,3685 144,3689 152,3693" stroke="rgb(0,0,0)" />
+  <path d="M 144 3798 L 236 3798" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 3798 L 236 3814" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 3814 L 144 3814" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,3810 144,3814 152,3818" stroke="rgb(0,0,0)" />
+  <path d="M 144 3890 L 320 3890" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,3886 320,3890 312,3894" stroke="rgb(0,0,0)" />
+  <path d="M 144 3944 L 320 3944" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,3940 144,3944 152,3948" stroke="rgb(0,0,0)" />
+  <path d="M 144 4050 L 236 4050" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4050 L 236 4066" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4066 L 144 4066" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,4062 144,4066 152,4070" stroke="rgb(0,0,0)" />
+  <path d="M 144 4144 L 320 4144" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,4140 320,4144 312,4148" stroke="rgb(0,0,0)" />
+  <path d="M 144 4196 L 320 4196" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,4192 144,4196 152,4200" stroke="rgb(0,0,0)" />
+  <path d="M 144 4302 L 236 4302" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4302 L 236 4318" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4318 L 144 4318" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,4314 144,4318 152,4322" stroke="rgb(0,0,0)" />
+  <path d="M 144 4462 L 320 4462" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,4458 320,4462 312,4466" stroke="rgb(0,0,0)" />
+  <path d="M 144 4528 L 320 4528" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,4524 144,4528 152,4532" stroke="rgb(0,0,0)" />
+  <path d="M 144 4636 L 236 4636" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4636 L 236 4652" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4652 L 144 4652" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,4648 144,4652 152,4656" stroke="rgb(0,0,0)" />
+  <path d="M 144 4812 L 320 4812" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,4808 320,4812 312,4816" stroke="rgb(0,0,0)" />
+  <path d="M 144 4862 L 320 4862" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,4858 144,4862 152,4866" stroke="rgb(0,0,0)" />
+  <path d="M 144 4972 L 236 4972" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4972 L 236 4988" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 4988 L 144 4988" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,4984 144,4988 152,4992" stroke="rgb(0,0,0)" />
+  <path d="M 144 5068 L 320 5068" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,5064 320,5068 312,5072" stroke="rgb(0,0,0)" />
+  <path d="M 144 5118 L 320 5118" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,5114 144,5118 152,5122" stroke="rgb(0,0,0)" />
+  <path d="M 144 5228 L 236 5228" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5228 L 236 5244" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5244 L 144 5244" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,5240 144,5244 152,5248" stroke="rgb(0,0,0)" />
+  <path d="M 144 5402 L 320 5402" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,5398 320,5402 312,5406" stroke="rgb(0,0,0)" />
+  <path d="M 144 5454 L 320 5454" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,5450 144,5454 152,5458" stroke="rgb(0,0,0)" />
+  <path d="M 144 5562 L 236 5562" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5562 L 236 5578" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5578 L 144 5578" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,5574 144,5578 152,5582" stroke="rgb(0,0,0)" />
+  <path d="M 144 5656 L 320 5656" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="312,5652 320,5656 312,5660" stroke="rgb(0,0,0)" />
+  <path d="M 144 5708 L 320 5708" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <polygon fill="rgb(0,0,0)" points="152,5704 144,5708 152,5712" stroke="rgb(0,0,0)" />
+  <path d="M 144 5816 L 236 5816" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5816 L 236 5832" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 236 5832 L 144 5832" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="152,5828 144,5832 152,5836" stroke="rgb(0,0,0)" />
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="16" x="156" y="212">'X'</text>
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="96" x="192" y="326">Extract CNL model</text>
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="47" x="167" y="338">and serial</text>
@@ -227,6 +335,37 @@
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="129" x="212" y="3289">'Pump Status' Command</text>
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="70" x="179" y="3447">Extract active</text>
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="65" x="176" y="3461">basal pattern</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="162" x="229" y="3624">'Bolus Wizard BG Targets' Com</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="28" x="162" y="3636">mand</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="3781">Extract BWZ</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="55" x="171" y="3796">BG targets</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="163" x="229" y="3876">'Bolus Wizard Carb Ratios' Com</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="28" x="162" y="3888">mand</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="4036">Extract BWZ</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="54" x="171" y="4048">carb ratios</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="172" x="234" y="4130">'Bolus Wizard Sensitivity Factors' </text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="52" x="174" y="4142">Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="4288">Extract BWZ</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="89" x="188" y="4300">insulin sensitivities</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="160" x="228" y="4460">'Read Basal Pattern' Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="65" x="176" y="4620">Extract basal</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="42" x="165" y="4634">patterns</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="150" x="223" y="4796">'Read History Info' Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="73" x="184" y="4810">for Pump data</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="68" x="178" y="4956">Extract pump</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="56" x="172" y="4970">history info</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="128" x="212" y="5052">'Read History' Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="73" x="184" y="5066">for Pump data</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="71" x="179" y="5212">Process pump</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="59" x="173" y="5226">history data</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="150" x="223" y="5388">'Read History Info' Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="70" x="183" y="5400">for CGM data</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="177" y="5546">Extract CGM</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="56" x="172" y="5560">history info</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="128" x="212" y="5642">'Read History' Command</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="70" x="183" y="5654">for CGM data</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="69" x="178" y="5800">Process CGM</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="59" x="173" y="5814">history data</text>
   <path d="M 48 138 L 169 138" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 48 142 L 169 142" fill="none" stroke="rgb(0,0,0)" />
   <path d="M 294 138 L 416 138" fill="none" stroke="rgb(0,0,0)" />
@@ -287,4 +426,28 @@
   <path d="M 304 3217 L 416 3217" fill="none" stroke="rgb(0,0,0)" />
   <rect fill="rgb(208,208,208)" height="18" stroke="rgb(0,0,0)" width="145" x="159" y="3206" />
   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="125" x="231" y="3220">Get Active Basal Pattern</text>
+  <path d="M 48 3546 L 156 3546" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 3550 L 156 3550" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 308 3546 L 416 3546" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 308 3550 L 416 3550" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="21" stroke="rgb(0,0,0)" width="152" x="156" y="3538" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="132" x="232" y="3555">Get Bolus Wizard Settings</text>
+  <path d="M 48 4385 L 155 4385" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 4389 L 155 4389" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 309 4385 L 416 4385" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 309 4389 L 416 4389" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="21" stroke="rgb(0,0,0)" width="154" x="155" y="4377" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="134" x="232" y="4394">Get Basal Pattern Settings</text>
+  <path d="M 48 4720 L 173 4720" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 4724 L 173 4724" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 290 4720 L 416 4720" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 290 4724 L 416 4724" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="117" x="173" y="4712" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="97" x="231" y="4728">Read Pump History</text>
+  <path d="M 48 5312 L 175 5312" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 48 5316 L 175 5316" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 289 5312 L 416 5312" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 289 5316 L 416 5316" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(208,208,208)" height="20" stroke="rgb(0,0,0)" width="114" x="175" y="5304" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="94" x="232" y="5320">Read CGM History</text>
 </svg>
