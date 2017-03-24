@@ -21,21 +21,6 @@
   height: 100%;
 }
 
-// Header
-// ====================================
-
-.header {
-  composes: flexColumn from '../core/layout.module.less';
-  background-image: url(../../images/T_icon_transparent.png);
-  background-position: center 25px;
-  background-size: 75px 75px;
-  background-repeat: no-repeat;
-  min-height: 100px;
-  padding-bottom: 10px;
-  width: 550px;
-  margin: 0px auto;
-}
-
 // Page
 // ====================================
 
@@ -43,7 +28,6 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
-  height: @page-height;
   box-sizing: border-box;
 }
 
@@ -71,25 +55,4 @@
   &:hover {
     cursor: not-allowed;
   }
-}
-
-.signup {
-  composes: flexRow from '../core/layout.module.less';
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.signupLink {
-  composes: invertLink from '../core/typography.module.less';
-  text-decoration: none;
-  &:hover,
-  &:focus,
-  &:active {
-    text-decoration: none;
-  }
-}
-
-.signupIcon {
-  composes: icon-add from '../core/icons.module.less';
-  font-style: normal;
 }

@@ -13,23 +13,39 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
-.footer {
+.header {
   composes: flexColumn from '../core/layout.module.less';
-  margin-top: auto;
-  margin-bottom: 30px;
-}
-
-.footerRow {
-  composes: flexRow from '../core/layout.module.less';
+  padding-bottom: 10px;
 	width: 100%;
   max-width: 550px;
   margin: 0px auto;
-  justify-content: space-between;
-  align-self: flex-end;
 }
 
-.footerLink {
-  composes: invertLink gray from '../core/typography.module.less';
+.signup {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.logoWrapper {
+	composes: flexRow from '../core/layout.module.less';
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.logo {
+	width: 340px;
+	height: 36px;
+}
+
+.heroText {
+	composes: flexRow from '../core/layout.module.less';
+	composes: large from '../core/typography.module.less';
+	justify-content: center;
+	margin: 35px auto 50px auto;
+}
+.signupLink {
+  composes: invertLink from '../core/typography.module.less';
   text-decoration: none;
   &:hover,
   &:focus,
@@ -38,17 +54,7 @@
   }
 }
 
-.jdrfText {
-	composes: gray from '../core/typography.module.less';
-}
-
-.jdrfImage {
-	width: 82px;
-	height: 24px;
-	padding-left: 7px;
-}
-
-.version {
-  composes: lightGray from '../core/typography.module.less';
-	margin: 10px auto;
+.signupIcon {
+  composes: icon-add from '../core/icons.module.less';
+  font-style: normal;
 }

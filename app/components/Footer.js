@@ -40,7 +40,7 @@ export default class Footer extends Component {
 					</div>
 	      </div>
 				<div className={styles.footerRow}>
-					<div className={styles.version}>{`v${version} beta`}</div>
+					<div className={styles.version}>{`v${version}`}</div>
 				</div>
 			</div>
     );

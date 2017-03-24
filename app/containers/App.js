@@ -39,10 +39,10 @@ import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 
-import LoggedInAs from '../components/LoggedInAs';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -54,7 +54,6 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
     this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.setServer = this.setServer.bind(this);
@@ -116,7 +115,7 @@ export class App extends Component {
   render() {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
-        <div className={styles.header}>{this.renderHeader()}</div>
+				<Header location={this.props.location} />
         {this.props.children}
 				<Footer version={config.version} />
         {/* VersionCheck as overlay */}
@@ -171,52 +170,12 @@ export class App extends Component {
     menu.popup(remote.getCurrentWindow());
   }
 
-  handleClickChooseDevices(metric) {
-    const { toggleDropdown } = this.props.sync;
-    const { setPage } = this.props.async;
-    // ensure dropdown closes after click
-    setPage(pages.SETTINGS, true, metric);
-    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
-
   handleDismissDropdown() {
     const { dropdown } = this.props;
     // only toggle the dropdown by clicking elsewhere if it's open
     if (dropdown === true) {
       this.props.sync.toggleDropdown(dropdown);
     }
-  }
-
-  noopHandler(e) {
-    e.preventDefault();
-  }
-
-  renderHeader() {
-    const { allUsers, dropdown, location } = this.props;
-    if (location.pathname === pagesMap.LOADING) {
-      return null;
-    }
-
-    if (location.pathname === pagesMap.LOGIN) {
-      return (
-        <div className={styles.signup}>
-          <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
-            <i className={styles.signupIcon}> Sign up</i></a>
-        </div>
-      );
-    }
-
-    return (
-      <LoggedInAs
-        dropMenu={dropdown}
-        isUploadInProgress={this.props.uploadIsInProgress}
-        onChooseDevices={this.handleClickChooseDevices}
-        onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
-        onLogout={this.props.async.doLogout}
-        user={allUsers[this.props.loggedInUser]}
-        isClinicAccount={this.props.isClinicAccount}
-        targetUsersForUpload={this.props.targetUsersForUpload} />
-    );
   }
 
   renderVersionCheck() {
@@ -239,28 +198,16 @@ export class App extends Component {
 
 App.propTypes = {};
 
-// wrap the component to inject dispatch and state into it
 export default connect(
   (state, ownProps) => {
-    function isClinicAccount(state) {
-      return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
-    }
     return {
       // plain state
-      allUsers: state.allUsers,
-      blipUrls: state.blipUrls,
       dropdown: state.dropdown,
-      loggedInUser: state.loggedInUser,
-      page: state.page,
-      targetUsersForUpload: state.targetUsersForUpload,
       unsupported: state.unsupported,
-      uploadIsInProgress: state.working.uploading,
-      uploadTargetUser: state.uploadTargetUser,
       // derived state
       readyToRenderVersionCheckOverlay: (
         !state.working.initializingApp && !state.working.checkingVersion
-      ),
-      isClinicAccount: isClinicAccount(state)
+      )
     };
   },
   (dispatch) => {
