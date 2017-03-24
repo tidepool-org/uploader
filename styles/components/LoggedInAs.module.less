@@ -32,7 +32,7 @@
 .main {
   composes: flexRowWrap from '../core/layout.module.less';
   composes: interactive;
-
+	position: relative;
   justify-content: flex-end;
   margin-top: 20px;
 }
@@ -80,8 +80,8 @@
   cursor: default;
   position: absolute;
   background: white;
-  top: 45px;
-  left: 431px;
+  top: 25px;
+	left: ~"calc(100% - 164px)";
   z-index: 100;
   width: 180px;
 
