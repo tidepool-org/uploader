@@ -17,9 +17,6 @@
   composes: flexColumn from '../core/layout.module.less';
   margin-top: auto;
   margin-bottom: 30px;
-  background-image: url(../../images/tidepool_logo_transparent.png);
-  background-position: center center;
-  background-repeat: no-repeat;
 }
 
 .footerRow {
@@ -31,7 +28,7 @@
 }
 
 .footerLink {
-  composes: invertLink from '../core/typography.module.less';
+  composes: invertLink gray from '../core/typography.module.less';
   text-decoration: none;
   &:hover,
   &:focus,
@@ -40,7 +37,17 @@
   }
 }
 
+.jdrfText {
+	composes: gray from '../core/typography.module.less';
+}
+
+.jdrfImage {
+	width: 82px;
+	height: 24px;
+	padding-left: 7px;
+}
+
 .version {
   composes: lightGray from '../core/typography.module.less';
-  flex-basis: 40%;
+	margin: 10px auto;
 }
