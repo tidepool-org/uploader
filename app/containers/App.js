@@ -115,9 +115,9 @@ export class App extends Component {
   render() {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
-				<Header location={this.props.location} />
+        <Header location={this.props.location} />
         {this.props.children}
-				<Footer version={config.version} />
+        <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
       </div>
