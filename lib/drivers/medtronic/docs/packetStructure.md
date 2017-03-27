@@ -8,7 +8,7 @@ Below we've documented the structure of the various packets in the Medtronic pum
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
 | Header    | 2     | Bytes      | `0x5101`     |
-| Pump Serial Number | 6     | String     | ASCII numbers, always `'000000'` for 600-series |
+| Pump Serial Number | 6     | String     | ASCII numbers |
 | Padding   | 10    | Bytes      | Null Padded  |
 | Operation | 1     | Byte       | *See table below* |
 | Retries   | 1     | Byte       | (Number of Retries << 4) + 1 |
