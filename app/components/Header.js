@@ -34,20 +34,20 @@ import styles from '../../styles/components/Header.module.less';
 export class Header extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
-		blipUrls: PropTypes.object.isRequired,
-		dropdown: PropTypes.bool.isRequired,
-		uploadIsInProgress: PropTypes.bool.isRequired,
+    blipUrls: PropTypes.object.isRequired,
+    dropdown: PropTypes.bool.isRequired,
+    uploadIsInProgress: PropTypes.bool.isRequired,
     user: PropTypes.object,
     isClinicAccount: PropTypes.bool,
     targetUsersForUpload: PropTypes.array
   };
 
-	constructor(props) {
+  constructor(props) {
     super(props);
     this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
   }
 
-	handleClickChooseDevices(metric) {
+  handleClickChooseDevices(metric) {
     const { toggleDropdown } = this.props.sync;
     const { setPage } = this.props.async;
     // ensure dropdown closes after click
@@ -56,40 +56,40 @@ export class Header extends Component {
   }
 
   render() {
-		const { allUsers, dropdown, location } = this.props;
+    const { allUsers, dropdown, location } = this.props;
     if (location.pathname === pagesMap.LOADING) {
       return null;
     }
 
     if (location.pathname === pagesMap.LOGIN) {
       return (
-				<div className={styles.header}>
-	        <div className={styles.signup}>
-	          <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
-	            <i className={styles.signupIcon}> Sign up</i></a>
-	        </div>
-					<div className={styles.logoWrapper}>
-						<img className={styles.logo} src='../images/Tidepool_Logo_light x2.png' />
-					</div>
-					<div className={styles.heroText}>
-						Uploader
-					</div>
-				</div>
+        <div className={styles.header}>
+          <div className={styles.signup}>
+            <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
+              <i className={styles.signupIcon}> Sign up</i></a>
+          </div>
+          <div className={styles.logoWrapper}>
+            <img className={styles.logo} src='../images/Tidepool_Logo x2ght x2.png' />
+          </div>
+          <div className={styles.heroText}>
+            Uploader
+          </div>
+        </div>
       );
     }
 
     return (
-			<div className={styles.header}>
-	      <LoggedInAs
-	        dropMenu={dropdown}
-	        isUploadInProgress={this.props.uploadIsInProgress}
-	        onChooseDevices={this.handleClickChooseDevices}
-	        onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
-	        onLogout={this.props.async.doLogout}
-	        user={allUsers[this.props.loggedInUser]}
-	        isClinicAccount={this.props.isClinicAccount}
-	        targetUsersForUpload={this.props.targetUsersForUpload} />
-			</div>
+      <div className={styles.header}>
+        <LoggedInAs
+          dropMenu={dropdown}
+          isUploadInProgress={this.props.uploadIsInProgress}
+          onChooseDevices={this.handleClickChooseDevices}
+          onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
+          onLogout={this.props.async.doLogout}
+          user={allUsers[this.props.loggedInUser]}
+          isClinicAccount={this.props.isClinicAccount}
+          targetUsersForUpload={this.props.targetUsersForUpload} />
+      </div>
     );
   }
 };
@@ -105,7 +105,7 @@ export default connect(
       blipUrls: state.blipUrls,
       dropdown: state.dropdown,
       loggedInUser: state.loggedInUser,
-			targetUsersForUpload: state.targetUsersForUpload,
+      targetUsersForUpload: state.targetUsersForUpload,
       uploadIsInProgress: state.working.uploading,
       // derived state
       isClinicAccount: isClinicAccount(state)

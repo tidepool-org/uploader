@@ -25,24 +25,24 @@ export default class Footer extends Component {
   };
 
   render() {
-		const version = this.props.version;
+    const version = this.props.version;
     return (
-			<div className={styles.footer}>
-	      <div className={styles.footerRow}>
-					<div>
-	          <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get Support</a>
-	        </div>
-					<div>
-						<a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">Privacy and Terms of Use</a>
-					</div>
-					<div>
-						<span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src="../images/JDRF_Reverse_Logo x2.png"/>
-					</div>
-	      </div>
-				<div className={styles.footerRow}>
-					<div className={styles.version}>{`v${version}`}</div>
-				</div>
-			</div>
+      <div className={styles.footer}>
+        <div className={styles.footerRow}>
+          <div>
+            <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get Support</a>
+          </div>
+          <div>
+            <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">Privacy and Terms of Use</a>
+          </div>
+          <div>
+            <span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src="../images/JDRF_Reverse_Logo x2.png"/>
+          </div>
+        </div>
+        <div className={styles.footerRow}>
+          <div className={styles.version}>{`v${version}`}</div>
+        </div>
+      </div>
     );
   }
 };
