@@ -69,7 +69,7 @@ export class Header extends Component {
               <i className={styles.signupIcon}> Sign up</i></a>
           </div>
           <div className={styles.logoWrapper}>
-            <img className={styles.logo} src='../images/Tidepool_Logo x2ght x2.png' />
+            <img className={styles.logo} src='../images/Tidepool_Logo_light x2.png' />
           </div>
           <div className={styles.heroText}>
             Uploader
