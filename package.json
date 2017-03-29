@@ -67,6 +67,7 @@
 	    "buildResources": "resources",
 	    "output": "release"
 	  },
+		"owner": "tidepool-org",
     "dmg": {
       "contents": [
         {
