@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.305.0",
+  "version": "0.310.0-alpha",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -26,8 +26,8 @@
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
     "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
-    "package": "npm run build && build --publish never",
-    "package-dev": "npm run build-dev && build --publish never",
+    "package": "npm run build && build",
+    "package-dev": "npm run build-dev && build",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl"
@@ -58,11 +58,15 @@
     "sundial": "1.6.0",
     "tidepool-platform-client": "tidepool-org/platform-client#krystophv/electron"
   },
-  "browserslist": "electron 1.4",
+  "browserslist": "electron 1.6",
   "build": {
     "productName": "TidepoolUploader",
     "appId": "org.tidepool.TidepoolUploader",
     "category": "public.app-category.tools",
+		"directories": {
+	    "buildResources": "resources",
+	    "output": "release"
+	  },
     "dmg": {
       "contents": [
         {
@@ -95,10 +99,6 @@
         "AppImage"
       ]
     }
-  },
-  "directories": {
-    "buildResources": "resources",
-    "output": "release"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
