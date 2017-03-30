@@ -6,6 +6,7 @@
   "main": "main.js",
   "author": "Kent Quirk",
   "license": "BSD-2-Clause",
+	"repository": "tidepool-org/chrome-uploader",
   "scripts": {
     "build-docs": "./scripts/update-gh-pages.sh",
     "serve-docs": "./node_modules/.bin/gitbook serve",
