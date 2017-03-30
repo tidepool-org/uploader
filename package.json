@@ -62,12 +62,10 @@
   "build": {
     "productName": "TidepoolUploader",
     "appId": "org.tidepool.TidepoolUploader",
-    "category": "public.app-category.tools",
 		"directories": {
 	    "buildResources": "resources",
 	    "output": "release"
 	  },
-		"owner": "tidepool-org",
     "dmg": {
       "contents": [
         {
@@ -133,7 +131,7 @@
     "d3": "3.5.16",
     "devtron": "1.4.0",
     "electron": "1.6.2",
-    "electron-builder": "12.2.2",
+    "electron-builder": "16.6.0",
     "electron-devtools-installer": "2.0.1",
     "electron-mocha": "3.3.0",
     "electron-rebuild": "1.5.7",
