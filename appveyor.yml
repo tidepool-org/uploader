@@ -55,9 +55,9 @@ test_script:
   - npm run test
 #  - npm run build
 #  - npm run test-e2e
-  - npm run package-dev -- --ia32 --x64
+  - npm run package-dev
   - 7z a development.zip release
-  - npm run package -- --ia32 --x64
+  - npm run package
   - 7z a production.zip release
 
 

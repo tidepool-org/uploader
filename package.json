@@ -28,7 +28,7 @@
     "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
     "package": "npm run build && build -p onTagOrDraft",
-    "package-dev": "npm run build-dev && build -p onTagOrDraft",
+    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}'",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl"
@@ -91,14 +91,27 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis"
-    },
-    "linux": {
       "target": [
-        "deb",
-        "AppImage"
-      ]
-    }
+				{
+					"target": "nsis",
+					"arch": [ "x64", "ia32" ]
+				},
+				{
+					"target": "zip",
+					"arch": [ "x64", "ia32" ]
+				}
+			]
+    },
+		"mac": {
+			"category": "public.app-category.tools",
+			"target": [
+				{
+					"target": "default",
+					"arch": [ "x64" ]
+				},
+				"dir"
+			]
+		}
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
