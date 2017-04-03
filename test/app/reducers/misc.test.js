@@ -124,19 +124,6 @@ describe('misc reducers', () => {
     });
   });
 
-  describe('page', () => {
-    it('should return the initial state', () => {
-      expect(misc.page(undefined, {})).to.equal(pages.LOADING);
-    });
-
-    it('should handle SET_PAGE', () => {
-      expect(misc.page(undefined, {
-        type: actionTypes.SET_PAGE,
-        payload: {page: 'main'}
-      })).to.equal('main');
-    });
-  });
-
   describe('unsupported', () => {
     it('should return the initial state', () => {
       expect(misc.unsupported(undefined, {})).to.be.true;

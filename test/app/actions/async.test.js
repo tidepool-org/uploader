@@ -40,16 +40,6 @@ let nonpwd = require('../../lib/fixtures/nonpwd.json');
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
-global.chrome = {
-  contextMenus: {
-    removeAll: _.noop
-  },
-  runtime: {
-    getManifest: function() { return {permissions: [{usbDevices: [{driverId: '12345'}]}]}; },
-    getPlatformInfo: function(cb) { return cb({os: 'test'}); }
-  }
-};
-
 describe('Asynchronous Actions', () => {
   afterEach(function() {
     // very important to do this in an afterEach than in each test when __Rewire__ is used
@@ -125,14 +115,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/login' ],
+            args: [ {
+							pathname: '/login',
+							state: {
+								meta: {source: actionSources[actionTypes.SET_PAGE]}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.LOGIN},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
         },
         {
           type: actionTypes.INIT_APP_SUCCESS,
@@ -245,14 +235,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/settings' ],
+            args: [ {
+							pathname: '/settings',
+							state: {
+								meta: {source: actionSources[actionTypes.SET_PAGE]}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.SETTINGS},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
       __Rewire__('versionInfo', {
@@ -359,14 +349,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/settings' ],
+            args: [ {
+							pathname: '/settings',
+							state: {
+								meta: {source: actionSources[actionTypes.SET_PAGE]}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.SETTINGS},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
       __Rewire__('services', {
@@ -459,14 +449,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/no_upload_targets' ],
+            args: [ {
+							pathname: '/no_upload_targets',
+							state: {
+								meta: {source: actionSources[actionTypes.SET_PAGE]}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.NO_UPLOAD_TARGETS},
-          meta: {source: actionSources[actionTypes.SET_PAGE]}
         }
       ];
       __Rewire__('services', {
@@ -524,16 +514,16 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/clinic_user_select' ],
+            args: [ {
+							pathname: '/clinic_user_select',
+							state: {
+								meta: {
+									metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+									source: actionSources.USER
+								}
+							}
+						} ],
             method: 'push'
-          }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.CLINIC_USER_SELECT},
-          meta: {
-            source: actionSources.USER,
-            metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}
           }
         }
       ];
@@ -574,14 +564,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/login' ],
+            args: [ {
+							pathname: '/login',
+							state: {
+								meta: {source: actionSources.USER}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.LOGIN},
-          meta: {source: actionSources.USER}
         }
       ];
       __Rewire__('services', {
@@ -617,14 +607,14 @@ describe('Asynchronous Actions', () => {
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ '/login' ],
+            args: [ {
+							pathname: '/login',
+							state: {
+								meta: {source: actionSources.USER}
+							}
+						} ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.SET_PAGE,
-          payload: {page: pages.LOGIN},
-          meta: {source: actionSources.USER}
         }
       ];
       __Rewire__('services', {
@@ -1835,7 +1825,12 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
           },
@@ -1904,7 +1899,12 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
           },
@@ -1978,7 +1978,12 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+							 	state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
           },
@@ -2047,7 +2052,12 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
           },
@@ -2115,14 +2125,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2187,14 +2197,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2282,14 +2292,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+							  	meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2499,14 +2509,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2532,14 +2542,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2587,14 +2597,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2646,14 +2656,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2717,14 +2727,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2789,14 +2799,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: { page: pages.MAIN },
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2883,14 +2893,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: { page: pages.MAIN },
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -2968,14 +2978,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+								pathname: '/settings',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -3047,14 +3057,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -3138,14 +3148,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+								pathname: '/main',
+								state: {
+									meta: {source: actionSources[actionTypes.SET_PAGE]}
+								}
+							} ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -3220,14 +3230,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', {
@@ -3337,14 +3347,14 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {source: actionSources[actionTypes.SET_PAGE]}
           }
         ];
         __Rewire__('services', apiRewire);
@@ -3415,16 +3425,16 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/main' ],
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CLINIC_NEXT}
+                  }
+                }
+              } ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CLINIC_NEXT}
             }
           }
         ];
@@ -3463,16 +3473,16 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/settings' ],
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CLINIC_NEXT}
+                  }
+                }
+              } ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.SETTINGS},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CLINIC_NEXT}
             }
           }
         ];
@@ -3550,16 +3560,18 @@ describe('Asynchronous Actions', () => {
           {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
-              args: [ '/clinic_user_edit' ],
+              args: [  {
+                'pathname': '/clinic_user_edit',
+                'state': {
+                  'meta': {
+                    'metric': {
+                      'eventName': metrics.CLINIC_ADD
+                    },
+                    'source': actionSources[actionTypes.SET_PAGE]
+                  }
+                }
+              } ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.CLINIC_USER_EDIT},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CLINIC_ADD}
             }
           }
         ];
@@ -3568,6 +3580,48 @@ describe('Asynchronous Actions', () => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
+    });
+  });
+
+  describe('setPage', () => {
+    const PAGE = pages.MAIN;
+
+    it('should create an action to set the page', () => {
+      const expectedActions = [{
+				type: '@@router/CALL_HISTORY_METHOD',
+				payload: {
+					args: [ {
+						pathname: '/main',
+						state: {
+							meta: {source: actionSources[actionTypes.SET_PAGE]}
+						}
+					} ],
+					method: 'push'
+				}
+			}];
+      const store = mockStore({});
+      store.dispatch(asyncActions.setPage(PAGE));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+
+    it('should accept a second parameter to override the default action source', () => {
+      const expectedActions = [{
+				type: '@@router/CALL_HISTORY_METHOD',
+				payload: {
+					args: [ {
+						pathname: '/main',
+						state: {
+							meta: {source: actionSources.USER}
+						}
+					} ],
+					method: 'push'
+				}
+			}];
+      const store = mockStore({});
+      store.dispatch(asyncActions.setPage(PAGE, actionSources.USER));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
     });
   });
 });
