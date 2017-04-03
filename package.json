@@ -28,7 +28,7 @@
     "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
     "package": "npm run build && build -p onTagOrDraft",
-    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}'",
+    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}' --extraMetadata.name='tidepool-uploader-dev'",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl"
