@@ -6,7 +6,7 @@
   "main": "main.js",
   "author": "Kent Quirk",
   "license": "BSD-2-Clause",
-	"repository": "tidepool-org/chrome-uploader",
+  "repository": "tidepool-org/chrome-uploader",
   "scripts": {
     "build-docs": "./scripts/update-gh-pages.sh",
     "serve-docs": "./node_modules/.bin/gitbook serve",
@@ -63,10 +63,10 @@
   "build": {
     "productName": "TidepoolUploader",
     "appId": "org.tidepool.TidepoolUploader",
-		"directories": {
-	    "buildResources": "resources",
-	    "output": "release"
-	  },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
     "dmg": {
       "contents": [
         {
@@ -92,26 +92,26 @@
     ],
     "win": {
       "target": [
-				{
-					"target": "nsis",
-					"arch": [ "x64", "ia32" ]
-				},
-				{
-					"target": "zip",
-					"arch": [ "x64", "ia32" ]
-				}
-			]
+        {
+          "target": "nsis",
+          "arch": [ "x64", "ia32" ]
+        },
+        {
+          "target": "zip",
+          "arch": [ "x64", "ia32" ]
+        }
+      ]
     },
-		"mac": {
-			"category": "public.app-category.tools",
-			"target": [
-				{
-					"target": "default",
-					"arch": [ "x64" ]
-				},
-				"dir"
-			]
-		}
+    "mac": {
+      "category": "public.app-category.tools",
+      "target": [
+        {
+          "target": "default",
+          "arch": [ "x64" ]
+        },
+        "dir"
+      ]
+    }
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
