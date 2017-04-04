@@ -1,0 +1,19 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: 0x00 [rotate = 270, color = "#888888"]
+	1: 0x04 [rotate = 270, color = "#888888"]
+	2-6: Pump Serial
+	7: 0x02 [rotate = 270, color = "#888888"]
+	8-15: Pump MAC
+	16: 0x82 [rotate = 270]
+	17-21: [color = "#888888"]
+	22: 0x07 [rotate = 270, color = "#888888"]
+	23: [color = "#888888"]
+	24: 0x28 [rotate = 270, color = "#888888"]
+	25-32: CNL MAC
+	33: 0x42 [rotate = 270]
+	34-40: [color = "#888888"]
+	41: Channel [rotate = 270]
+}
