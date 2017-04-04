@@ -22,7 +22,8 @@ A **MiniMed Message** is broken up into [USB Packet](#usb-packet)s.
 
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
-| Header    | 2     | Bytes      | `0x5103` (`0x03` is an NGP device)     |
+| Header    | 1     | Byte      | `0x51`      |
+| Device Type | 1     | Byte      | *See table below*     |
 | Pump Serial Number | 6     | String     | ASCII numbers, always `'000000'` for 600-series |
 | Padding   | 10    | Bytes      | Null Padded  |
 | Operation | 1     | Byte       | *See table below* |
@@ -32,6 +33,13 @@ A **MiniMed Message** is broken up into [USB Packet](#usb-packet)s.
 | Padding   | 2     | Bytes      | Null Padded  |
 | Checksum  | 1     | UInt8      | Sum of the *entire* message, not including the **Checksum** byte itself  |
 | Payload   | Variable | Bytes      | Size specified by **Payload Size** |
+
+#### Device Type
+| Value     | Operation                  |
+|-----------|----------------------------|
+| `0x01`    |  Paradigm. AKA 5/7 series  |
+| `0x02`    |  Guardian Connect          |
+| `0x03`    |  Next Generation Pump (NGP). AKA 600-series. |
 
 #### Operation
 | Value     | Operation                  |
@@ -70,8 +78,8 @@ A **Read Info Response** is contained in the payload of a [MiniMed Message](#min
 
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
-| CNL MAC   | 8     | UInt64BE   | ZigBee MAC Address of the Contour Next Link |
-| Pump MAC  | 8     | UInt64BE   | ZigBee MAC Address of the 600-series pump |
+| CNL MAC   | 8     | UInt64BE   | IEEE 802.15.4 MAC Address of the Contour Next Link |
+| Pump MAC  | 8     | UInt64BE   | IEEE 802.15.4 MAC Address of the 600-series pump |
 | Link Counter  | 2     | UInt16LE   | Number of times that this CNL/Pump combination have been paired |
 | Mode Flags    | 1     | Byte       | Mode flags for this pairing. If the lowest bit is set, encryption is enabled |
 
@@ -122,20 +130,20 @@ An **NGP Message** is contained in the payload of a [MiniMed Message](#minmed-me
 
 ### Join Network Request
 ![Join Network Response](images/svg/JoinNetworkRequest.svg)
-A **Join Network Request** is sent from the driver to the Contour Next Link 2.4 to attempt to join the pump's ZigBee network.
+A **Join Network Request** is sent from the driver to the Contour Next Link 2.4 to attempt to join the pump's IEEE 802.15.4 network.
 A **Join Network Request** is contained in the payload of a [NGP Message](#ngp-message) where the Command is `0x03` (JOIN_NETWORK).
 
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
 | Sequence Number  | 1     | UInt8      | NGP Sequence Number (always 1 when a `Join Network Request`) |
-| Radio Channel    | 1     | UInt8      | ZigBee (IEEE 802.15.4) radio channel to try comms on. *See table below* |
+| Radio Channel    | 1     | UInt8      | IEEE 802.15.4 radio channel to try comms on. *See table below* |
 | Padding   | 3     | Bytes      | Null Padded  |
 | `0x07`    | 1     | Byte       | Unknown meaning |
 | `0x07`    | 1     | Byte       | Unknown meaning |
 | Padding   | 2     | Bytes      | Null Padded  |
 | `0x02`    | 1     | Byte       | Unknown meaning |
-| CNL MAC   | 8     | UInt64LE   | ZigBee MAC Address of the Contour Next Link |
-| Pump MAC   | 8     | UInt64LE   | ZigBee MAC Address of the 600-series pump |
+| CNL MAC   | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the Contour Next Link |
+| Pump MAC   | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the 600-series pump |
 
 #### Radio Channels
 | Channel   | Comments |
@@ -155,16 +163,16 @@ A **Join Network Request** is contained in the payload of a [NGP Message](#ngp-m
 | `0x04`    | 1     | Byte       | Unknown meaning |
 | Pump Serial | 5     | Bytes      | The pump's serial as a 40-bit unsigned LE integer |
 | `0x02`    | 1     | Byte       | Unknown meaning |
-| Pump MAC   | 8     | UInt64LE   | ZigBee MAC Address of the 600-series pump |
+| Pump MAC   | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the 600-series pump |
 | `0x82`    | 1     | Byte       | Exact meaning unknown, but is `0x82` if the network has been joined |
 | Padding   | 5     | Bytes      | Null Padded  |
 | `0x07`    | 1     | Byte       | Unknown meaning |
 | Padding   | 1     | Byte       | Null Padded  |
 | `0x28`    | 1     | Byte       | Unknown meaning |
-| CNL MAC    | 8     | UInt64LE   | ZigBee MAC Address of the Contour Next Link 2.4 |
+| CNL MAC    | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the Contour Next Link 2.4 |
 | `0x42`    | 1     | Byte       | Exact meaning unknown, but is `0x42` if the network has been joined |
 | Padding   | 7     | Bytes      | Null Padded  |
-| Radio Channel | 1     | UInt8      | ZigBee (IEEE 802.15.4) radio channel on which the network has been joined. |
+| Radio Channel | 1     | UInt8      | IEEE 802.15.4 radio channel on which the network has been joined. |
 
 If the network is not joined, the response has a payload of 9 bytes, whose structure is currently unknown.
 
@@ -175,7 +183,7 @@ A **Transmit Packet Request** is contained in the payload of an [NGP Message](#n
 
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
-| Pump MAC   | 8     | UInt64LE   | ZigBee MAC Address of the 600-series pump |
+| Pump MAC   | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the 600-series pump |
 | Sequence Number  | 1     | UInt8      | NGP Sequence Number |
 | Mode Flags    | 1     | Byte       | Mode flags for this message. *See table below* |
 | Size      | 1     | UInt8      | Size of the Encrypted Payload |
@@ -201,8 +209,8 @@ A **Transmit Packet Response** is contained in the payload of an [NGP Message](#
 |-----------|:-----:|:----------:|--------------|
 | `0x00`    | 1     | Byte       | Unknown meaning |
 | `0x06`    | 1     | Byte       | Unknown meaning |
-| Pump MAC   | 8     | UInt64LE   | ZigBee MAC Address of the 600-series pump |
-| CNL MAC    | 8     | UInt64LE   | ZigBee MAC Address of the Contour Next Link 2.4 |
+| Pump MAC   | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the 600-series pump |
+| CNL MAC    | 8     | UInt64LE   | IEEE 802.15.4 MAC Address of the Contour Next Link 2.4 |
 | Sequence Number  | 1     | UInt8      | NGP Sequence Number |
 | Unknown bytes    | 2     | Bytes       | Unknown meaning |
 | Size      | 1     | UInt8      | Size of the Encrypted Payload |
