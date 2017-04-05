@@ -1,0 +1,20 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-1: Header
+	2-7: Pump Serial Number
+	8-17: [color = "#888888"]
+	18: Operation [rotate = 270]
+	19: Retries [rotate = 270]
+	20: Timeout [rotate = 270]
+	21-22: [color = "#888888"]
+	23-24: Expected Bytes
+	25-26: Expected Packets
+	27: NAK code [rotate = 270]
+	28-29: Payload size
+	30-31: [color = "#888888"]
+	32: Checksum [rotate = 270]
+	33-62: Payload [color = "#EBF1DF"]
+	63: ... [color = "#EBF1DF", style = dashed]
+}

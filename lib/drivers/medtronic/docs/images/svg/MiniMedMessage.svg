@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 896 264" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-1: Header
+	2-7: Pump Serial Number
+	8-17: [color = "#888888"]
+	18: Operation [rotate = 270]
+	19: Retries [rotate = 270]
+	20: Timeout [rotate = 270]
+	21-22: [color = "#888888"]
+	23-24: Expected Bytes
+	25-26: Expected Packets
+	27: NAK code [rotate = 270]
+	28-29: Payload size
+	30-31: [color = "#888888"]
+	32: Checksum [rotate = 270]
+	33-62: Payload [color = "#EBF1DF"]
+	63: ... [color = "#EBF1DF", style = dashed]
+}
+</desc>
+  <path d="M 64 48 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="7" x="64" y="41">0</text>
+  <path d="M 88 64 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 64 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 64 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 64 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 64 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 64 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 64 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 48 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 64 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 64 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 64 L 328 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 352 64 L 352 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 376 64 L 376 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 400 64 L 400 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 64 L 424 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 48 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="448" y="41">16</text>
+  <path d="M 472 64 L 472 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 64 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 64 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 64 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 64 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 592 64 L 592 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 64 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 640 48 L 640 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 64 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 64 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 64 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 64 L 736 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 760 64 L 760 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 64 L 784 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 64 L 808 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 48 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="832" y="41">32</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="64" y="80" />
+  <path d="M 64 80 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 80 L 112 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 152 L 64 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 152 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="36" x="88" y="121">Header</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="144" x="112" y="80" />
+  <path d="M 112 80 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 80 L 256 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 152 L 112 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 152 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="104" x="184" y="122">Pump Serial Number</text>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="240" x="256" y="80" />
+  <path d="M 256 80 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 80 L 496 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 152 L 256 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 152 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="496" y="80" />
+  <path d="M 496 80 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 80 L 520 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 152 L 496 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 152 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,496,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="49" x="532" y="170">Operation</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="520" y="80" />
+  <path d="M 520 80 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 80 L 544 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 152 L 520 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 152 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,520,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="35" x="556" y="169">Retries</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="544" y="80" />
+  <path d="M 544 80 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 80 L 568 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 152 L 544 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 152 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,544,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="41" x="580" y="169">Timeout</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="48" x="568" y="80" />
+  <path d="M 568 80 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 80 L 616 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 152 L 568 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 152 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="616" y="80" />
+  <path d="M 616 80 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 80 L 664 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 152 L 616 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 152 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="46" x="640" y="115">Expected</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="33" x="640" y="129"> Bytes</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="664" y="80" />
+  <path d="M 664 80 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 80 L 712 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 152 L 664 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 152 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="46" x="688" y="116">Expected</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="45" x="688" y="128"> Packets</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="712" y="80" />
+  <path d="M 712 80 L 736 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 80 L 736 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 152 L 712 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 152 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,712,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="51" x="748" y="169">NAK code</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="736" y="80" />
+  <path d="M 736 80 L 784 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 80 L 784 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 152 L 736 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 152 L 736 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="43" x="760" y="116">Payload </text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="19" x="760" y="128">size</text>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="48" x="784" y="80" />
+  <path d="M 784 80 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 80 L 832 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 152 L 784 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 152 L 784 80" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="64" y="152" />
+  <path d="M 64 152 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 152 L 88 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 224 L 64 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 224 L 64 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,64,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="53" x="100" y="241">Checksum</text>
+  </g>
+  <rect fill="rgb(235,241,223)" height="72" stroke="rgb(235,241,223)" width="720" x="88" y="152" />
+  <path d="M 88 152 L 808 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 152 L 808 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 224 L 88 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 224 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="39" x="448" y="194">Payload</text>
+  <rect fill="rgb(235,241,223)" height="72" stroke="rgb(235,241,223)" width="24" x="808" y="152" />
+  <path d="M 808 152 L 832 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 832 152 L 832 224" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 832 224 L 808 224" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 808 224 L 808 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="12" x="820" y="193">...</text>
+</svg>
