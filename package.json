@@ -91,14 +91,21 @@
       "package.json"
     ],
     "win": {
+			"certificateSubjectName": "Tidepool Project",
       "target": [
         {
           "target": "nsis",
-          "arch": [ "x64", "ia32" ]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "zip",
-          "arch": [ "x64", "ia32" ]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ]
     },
@@ -107,7 +114,9 @@
       "target": [
         {
           "target": "default",
-          "arch": [ "x64" ]
+          "arch": [
+            "x64"
+          ]
         },
         "dir"
       ]
@@ -145,10 +154,11 @@
     "d3": "3.5.16",
     "devtron": "1.4.0",
     "electron": "1.6.2",
-    "electron-builder": "16.6.0",
+    "electron-builder": "16.6.1",
     "electron-devtools-installer": "2.0.1",
     "electron-mocha": "3.3.0",
     "electron-rebuild": "1.5.7",
+    "electron-updater": "1.11.2",
     "enzyme": "2.7.1",
     "eslint": "3.16.1",
     "eslint-config-airbnb": "14.0.0",
