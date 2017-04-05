@@ -91,7 +91,6 @@
       "package.json"
     ],
     "win": {
-			"certificateSubjectName": "Tidepool Project",
       "target": [
         {
           "target": "nsis",
