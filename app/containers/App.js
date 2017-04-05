@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
+import * as metrics from '../constants/metrics';
 
 const {Menu} = remote;
 
@@ -209,7 +210,7 @@ export class App extends Component {
       <LoggedInAs
         dropMenu={dropdown}
         isUploadInProgress={this.props.uploadIsInProgress}
-        onChooseDevices={this.handleClickChooseDevices}
+        onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CHOOSE_DEVICES}})}
         onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
         onLogout={this.props.async.doLogout}
         user={allUsers[this.props.loggedInUser]}

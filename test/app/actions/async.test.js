@@ -1828,18 +1828,13 @@ describe('Asynchronous Actions', () => {
               args: [ {
 								pathname: '/main',
 								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
+									meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+                  }
 								}
 							} ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
             }
           }
         ];
@@ -1902,18 +1897,13 @@ describe('Asynchronous Actions', () => {
               args: [ {
 								pathname: '/main',
 								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
+									meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+                  }
 								}
 							} ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
             }
           }
         ];
@@ -1981,18 +1971,13 @@ describe('Asynchronous Actions', () => {
               args: [ {
 								pathname: '/main',
 							 	state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
+									meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+                  }
 								}
 							} ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
             }
           }
         ];
@@ -2055,18 +2040,13 @@ describe('Asynchronous Actions', () => {
               args: [ {
 								pathname: '/main',
 								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
+									meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
+                  }
 								}
 							} ],
               method: 'push'
-            }
-          },
-          {
-            type: actionTypes.SET_PAGE,
-            payload: {page: pages.MAIN},
-            meta: {
-              source: actionSources[actionTypes.SET_PAGE],
-              metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
             }
           }
         ];

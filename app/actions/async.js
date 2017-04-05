@@ -479,7 +479,7 @@ export function clickDeviceSelectionDone() {
         if (isClinicAccount) {
           return dispatch(setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CLINIC_DEVICES_DONE}}));
         }
-        return dispatch(syncActions.setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CHOOSE_DEVICES_DONE}}));
+        return dispatch(setPage(pages.MAIN, undefined, {metric: {eventName: metrics.CHOOSE_DEVICES_DONE}}));
       });
     }
   };

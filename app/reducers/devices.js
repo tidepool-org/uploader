@@ -13,7 +13,7 @@ const devices = {
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': '/images/bayer_contour_next_link.jpg',
+      'src': '../images/bayer_contour_next_link.jpg',
       'height': 52,
       'width': 143,
       'alt': 'Bayer Contour Next Link'
