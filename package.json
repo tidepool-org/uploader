@@ -94,11 +94,17 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [ "x64", "ia32" ]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "zip",
-          "arch": [ "x64", "ia32" ]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ]
     },
@@ -107,7 +113,9 @@
       "target": [
         {
           "target": "default",
-          "arch": [ "x64" ]
+          "arch": [
+            "x64"
+          ]
         },
         "dir"
       ]
@@ -144,6 +152,7 @@
     "css-loader": "0.26.1",
     "d3": "3.5.16",
     "devtron": "1.4.0",
+    "difflet": "1.0.1",
     "electron": "1.6.2",
     "electron-builder": "16.6.0",
     "electron-devtools-installer": "2.0.1",
@@ -164,7 +173,6 @@
     "extract-text-webpack-plugin": "1.0.1",
     "fbjs-scripts": "0.7.1",
     "file-loader": "0.10.0",
-    "difflet": "1.0.1",
     "flux-standard-action": "0.6.1",
     "gitbook-cli": "2.3.0",
     "html-webpack-plugin": "2.26.0",
@@ -197,5 +205,8 @@
   "devEngines": {
     "node": ">=7.4.x",
     "npm": ">=3.x"
+  },
+  "resolutions": {
+    "charm": "1.0.1"
   }
 }
