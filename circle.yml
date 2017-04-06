@@ -1,20 +1,28 @@
+machine:
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
 dependencies:
   pre:
     - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
     - nvm install 7.4.0
     - nvm use 7.4.0
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
   override:
-    - npm install -g npm@latest
-    - npm install
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
+
 test:
   override:
-    - npm run lint
-    - npm run test
+    - yarn lint
+    - yarn test
   post:
-    - npm run package-dev
+    - yarn package-dev
     - zip -r -X development.zip release
-    - npm run package
+    - yarn package
     - zip -r -X production.zip release
+
 general:
   artifacts:
     - "development.zip"
