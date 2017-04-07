@@ -62,7 +62,12 @@ app.on('ready', async () => {
 
   mainWindow.webContents.on('new-window', function(event, url){
     event.preventDefault();
-    open(url);
+    open(url, 'chrome', function(error){
+      if(error){
+        // couldn't open in chrome specifically, probably because it's not installed
+        open(url);
+      }
+    });
   });
   mainWindow.on('closed', () => {
     mainWindow = null;

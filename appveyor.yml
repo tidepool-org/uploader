@@ -1,12 +1,14 @@
 os: unstable
 
 environment:
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
   matrix:
     - nodejs_version: 7.4.0
 
 cache:
   - node_modules -> package.json
   - app/node_modules -> app/package.json
+  - "%LOCALAPPDATA%\\Yarn"
 
 # Enable when https://github.com/yarnpkg/yarn/issues/1233 and
 # https://github.com/yarnpkg/yarn/issues/1059 are resolved and disable npm cache
@@ -33,9 +35,10 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
-  - npm install -g npm@latest
-  - set PATH=%APPDATA%\npm;%PATH%
-  - npm install
+  - yarn
+#  - npm install -g npm@latest
+#  - set PATH=%APPDATA%\npm;%PATH%
+#  - npm install
 
 # Enable when https://github.com/yarnpkg/yarn/issues/1233 and
 # https://github.com/yarnpkg/yarn/issues/1059 are resolved and disable npm cache
@@ -49,13 +52,13 @@ install:
 
 test_script:
   - node --version
-  - npm run lint
-  - npm run test
+  - yarn lint
+  - yarn test
 #  - npm run build
 #  - npm run test-e2e
-  - npm run package-dev -- --ia32 --x64
+  - yarn package-dev
   - 7z a development.zip release
-  - npm run package -- --ia32 --x64
+  - yarn package
   - 7z a production.zip release
 
 
