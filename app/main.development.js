@@ -1,5 +1,7 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
 import open from 'open';
+import { autoUpdater } from 'electron-updater';
+import { sync as syncActions } from './actions';
 
 let menu;
 let template;
@@ -52,12 +54,14 @@ app.on('ready', async () => {
     height: 769,
     resizable: resizable
   });
+  // mainWindow.show();
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
+    autoUpdater.checkForUpdates();
   });
 
   mainWindow.webContents.on('new-window', function(event, url){
@@ -93,11 +97,6 @@ app.on('ready', async () => {
       submenu: [{
         label: 'About Tidepool Uploader',
         selector: 'orderFrontStandardAboutPanel:'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Services',
-        submenu: []
       }, {
         type: 'separator'
       }, {
@@ -286,4 +285,35 @@ app.on('ready', async () => {
     menu = Menu.buildFromTemplate(template);
     mainWindow.setMenu(menu);
   }
+});
+
+function sendAction(action) {
+  mainWindow.webContents.send('action', action);
+}
+autoUpdater.on('checking-for-update', () => {
+  sendAction(syncActions.checkingForUpdates());
+});
+autoUpdater.on('update-available', (ev, info) => {
+  sendAction(syncActions.updateAvailable(info));
+  /*
+  {
+    "version":"0.310.0-alpha",
+    "releaseDate":"2017-04-03T22:29:55.809Z",
+    "url":"https://github.com/tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
+    "releaseJsonUrl":"https://github.com//tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/latest-mac.json"
+  }
+   */
+});
+autoUpdater.on('update-not-available', (ev, info) => {
+  sendAction(syncActions.updateNotAvailable(info));
+});
+autoUpdater.on('error', (ev, err) => {
+  sendAction(syncActions.autoUpdateError(err));
+});
+autoUpdater.on('update-downloaded', (ev, info) => {
+  sendAction(syncActions.updateDownloaded(info));
+});
+
+app.on('window-all-closed', () => {
+  app.quit();
 });

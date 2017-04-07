@@ -22,7 +22,15 @@ import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
 
-import { addInfoToError, getAppInitErrorMessage, getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage, UnsupportedError } from '../utils/errors';
+import {
+  addInfoToError,
+  getAppInitErrorMessage,
+  getLoginErrorMessage,
+  getLogoutErrorMessage,
+  getUpdateProfileErrorMessage,
+  getCreateCustodialAccountErrorMessage,
+  UnsupportedError
+} from '../utils/errors';
 import errorText from '../constants/errors';
 
 import * as actionUtils from './utils';
@@ -606,5 +614,48 @@ export function setUsersTargets(targets) {
     type: actionTypes.SET_USERS_TARGETS,
     payload: { targets },
     meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+  };
+}
+
+/*
+ * relating to electron auto-updater
+ */
+
+export function checkingForUpdates() {
+  return {
+    type: actionTypes.CHECKING_FOR_UPDATES,
+    meta: { source: actionSources[actionTypes.CHECKING_FOR_UPDATES] }
+  };
+}
+
+export function updateAvailable(info) {
+  return {
+    type: actionTypes.UPDATE_AVAILABLE,
+    payload: { info },
+    meta: { source: actionSources[actionTypes.UPDATE_AVAILABLE] }
+  };
+}
+
+export function updateNotAvailable(info) {
+  return {
+    type: actionTypes.UPDATE_NOT_AVAILABLE,
+    payload: { info },
+    meta: { source: actionSources[actionTypes.UPDATE_NOT_AVAILABLE] }
+  };
+}
+
+export function autoUpdateError(error) {
+  return {
+    type: actionTypes.AUTOUPDATE_ERROR,
+    payload: { error },
+    meta: { source: actionSources[actionTypes.AUTOUPDATE_ERROR] }
+  };
+}
+
+export function updateDownloaded(info) {
+  return {
+    type: actionTypes.UPDATE_DOWNLOADED,
+    payload: { info },
+    meta: { source: actionSources[actionTypes.UPDATE_DOWNLOADED] }
   };
 }
