@@ -30,6 +30,7 @@
     "package": "npm run build && build -p onTagOrDraft",
     "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}' --extraMetadata.name='tidepool-uploader-dev'",
     "package-win": "npm run build && build --win --x64",
+    "package-mac": "npm run build && build --mac",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl"
   },
@@ -112,7 +113,13 @@
       "category": "public.app-category.tools",
       "target": [
         {
-          "target": "default",
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "pkg",
           "arch": [
             "x64"
           ]
