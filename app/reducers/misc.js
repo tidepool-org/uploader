@@ -19,7 +19,6 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 
 import * as actionTypes from '../constants/actionTypes';
-import { pages } from '../constants/otherConstants';
 import { UnsupportedError } from '../utils/errors';
 
 import initialDevices from './devices';
@@ -153,6 +152,57 @@ function uploading(state = false, action) {
   }
 }
 
+function checkingElectronUpdate(state = false, action) {
+  switch (action.type) {
+    case actionTypes.CHECKING_FOR_UPDATES:
+      return true;
+    case actionTypes.UPDATE_AVAILABLE:
+    case actionTypes.UPDATE_NOT_AVAILABLE:
+    case actionTypes.AUTOUPDATE_ERROR:
+      return false;
+    default:
+      return state;
+  }
+}
+
 export const working = combineReducers({
-  checkingVersion, fetchingUserInfo, initializingApp, uploading
+  checkingVersion, fetchingUserInfo, initializingApp, uploading, checkingElectronUpdate
 });
+
+export function electronUpdateAvailableDismissed(state = null, action) {
+  switch (action.type) {
+    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+      return null;
+    case actionTypes.DISMISS_UPDATE_AVAILABLE:
+      return true;
+    default:
+      return state;
+  }
+}
+
+export function electronUpdateAvailable(state = null, action) {
+  switch (action.type) {
+    case actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES:
+    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+      return null;
+    case actionTypes.UPDATE_AVAILABLE:
+      return true;
+    case actionTypes.UPDATE_NOT_AVAILABLE:
+      return false;
+    default:
+      return state;
+  }
+}
+
+export function electronUpdateDownloaded(state = null, action) {
+  switch (action.type) {
+    case actionTypes.UPDATE_AVAILABLE:
+      return null;
+    case actionTypes.UPDATE_DOWNLOADED:
+      return true;
+    case actionTypes.AUTOUPDATE_ERROR:
+      return false;
+    default:
+      return state;
+  }
+}

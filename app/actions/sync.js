@@ -621,10 +621,17 @@ export function setUsersTargets(targets) {
  * relating to electron auto-updater
  */
 
-export function checkingForUpdates() {
+export function autoCheckingForUpdates() {
   return {
-    type: actionTypes.CHECKING_FOR_UPDATES,
-    meta: { source: actionSources[actionTypes.CHECKING_FOR_UPDATES] }
+    type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES,
+    meta: { source: actionSources[actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES] }
+  };
+}
+
+export function manualCheckingForUpdates() {
+  return {
+    type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES,
+    meta: { source: actionSources[actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES] }
   };
 }
 

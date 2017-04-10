@@ -291,7 +291,7 @@ function sendAction(action) {
   mainWindow.webContents.send('action', action);
 }
 autoUpdater.on('checking-for-update', () => {
-  sendAction(syncActions.checkingForUpdates());
+  sendAction(syncActions.autoCheckingForUpdates());
 });
 autoUpdater.on('update-available', (ev, info) => {
   sendAction(syncActions.updateAvailable(info));
