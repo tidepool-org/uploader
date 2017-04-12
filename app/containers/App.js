@@ -42,6 +42,7 @@ import { checkVersion } from '../utils/drivers';
 import LoggedInAs from '../components/LoggedInAs';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
+import UpdateModal from '../components/UpdateModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -120,6 +121,7 @@ export class App extends Component {
         <div className={styles.footer}>{this.renderFooter()}</div>
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
+        <UpdateModal />
       </div>
     );
   }
@@ -264,7 +266,6 @@ export default connect(
       blipUrls: state.blipUrls,
       dropdown: state.dropdown,
       loggedInUser: state.loggedInUser,
-      page: state.page,
       targetUsersForUpload: state.targetUsersForUpload,
       unsupported: state.unsupported,
       uploadIsInProgress: state.working.uploading,

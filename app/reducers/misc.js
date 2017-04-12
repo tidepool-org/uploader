@@ -169,6 +169,17 @@ export const working = combineReducers({
   checkingVersion, fetchingUserInfo, initializingApp, uploading, checkingElectronUpdate
 });
 
+export function electronUpdateManualChecked(state = null, action) {
+  switch (action.type) {
+    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+      return true;
+    case actionTypes.DISMISS_UPDATE_NOT_AVAILABLE:
+      return null;
+    default:
+      return state;
+  }
+}
+
 export function electronUpdateAvailableDismissed(state = null, action) {
   switch (action.type) {
     case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:

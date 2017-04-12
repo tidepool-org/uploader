@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import { sync as syncActions } from './actions';
@@ -290,12 +290,15 @@ app.on('ready', async () => {
 function sendAction(action) {
   mainWindow.webContents.send('action', action);
 }
+
 autoUpdater.on('checking-for-update', () => {
   sendAction(syncActions.autoCheckingForUpdates());
 });
+
 autoUpdater.on('update-available', (ev, info) => {
   sendAction(syncActions.updateAvailable(info));
   /*
+  Example `info`
   {
     "version":"0.310.0-alpha",
     "releaseDate":"2017-04-03T22:29:55.809Z",
@@ -304,14 +307,21 @@ autoUpdater.on('update-available', (ev, info) => {
   }
    */
 });
+
 autoUpdater.on('update-not-available', (ev, info) => {
   sendAction(syncActions.updateNotAvailable(info));
 });
+
 autoUpdater.on('error', (ev, err) => {
   sendAction(syncActions.autoUpdateError(err));
 });
+
 autoUpdater.on('update-downloaded', (ev, info) => {
   sendAction(syncActions.updateDownloaded(info));
+});
+
+ipcMain.on('autoUpdater', (event, arg) => {
+  autoUpdater[arg]();
 });
 
 app.on('window-all-closed', () => {

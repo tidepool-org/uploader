@@ -666,3 +666,17 @@ export function updateDownloaded(info) {
     meta: { source: actionSources[actionTypes.UPDATE_DOWNLOADED] }
   };
 }
+
+export function dismissUpdateAvailable() {
+  return {
+    type: actionTypes.DISMISS_UPDATE_AVAILABLE,
+    meta: { source: actionSources[actionTypes.DISMISS_UPDATE_AVAILABLE] }
+  };
+}
+
+export function dismissUpdateNotAvailable() {
+  return {
+    type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
+    meta: { source: actionSources[actionTypes.DISMISS_UPDATE_NOT_AVAILABLE] }
+  };
+}
