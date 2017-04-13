@@ -109,6 +109,7 @@ export default class LoggedInAs extends Component {
       <li>
         <a className={styles.link}
           onClick={this.handleCheckForUpdates}
+          href=""
           title="Check for Updates">
           <i className={styles.updateIcon}></i>
           Check for Updates
