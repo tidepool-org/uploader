@@ -287,12 +287,19 @@ app.on('ready', async () => {
   }
 });
 
+let manualCheck = false;
+
 function sendAction(action) {
   mainWindow.webContents.send('action', action);
 }
 
 autoUpdater.on('checking-for-update', () => {
-  sendAction(syncActions.autoCheckingForUpdates());
+  if(manualCheck) {
+    manualCheck = false;
+    sendAction(syncActions.manualCheckingForUpdates());
+  } else {
+    sendAction(syncActions.autoCheckingForUpdates());
+  }
 });
 
 autoUpdater.on('update-available', (ev, info) => {
@@ -321,6 +328,9 @@ autoUpdater.on('update-downloaded', (ev, info) => {
 });
 
 ipcMain.on('autoUpdater', (event, arg) => {
+  if(arg === 'checkForUpdates') {
+    manualCheck = true;
+  }
   autoUpdater[arg]();
 });
 

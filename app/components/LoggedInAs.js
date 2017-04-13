@@ -14,13 +14,14 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-var _ = require('lodash');
-var React = require('react');
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { ipcRenderer } from 'electron';
 
-var styles = require('../../styles/components/LoggedInAs.module.less');
+import styles from '../../styles/components/LoggedInAs.module.less';
 
-var LoggedInAs = React.createClass({
-  propTypes: {
+export default class LoggedInAs extends Component {
+  static propTypes = {
     dropMenu: React.PropTypes.bool.isRequired,
     isUploadInProgress: React.PropTypes.bool.isRequired,
     onChooseDevices: React.PropTypes.func.isRequired,
@@ -29,44 +30,47 @@ var LoggedInAs = React.createClass({
     user: React.PropTypes.object,
     isClinicAccount: React.PropTypes.bool,
     targetUsersForUpload: React.PropTypes.array
-  },
+  }
 
-  getInitialState: function() {
-    return {
-      loggingOut: false
-    };
-  },
+  constructor(props) {
+    super(props);
+    this.state = { loggingOut: false };
 
-  render: function() {
-    var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
-    var user = this.props.user;
+    this.handleChooseDevices = this.handleChooseDevices.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
 
-    return (
-      <div className={styles.wrapper}>
-        <div className={styles.main} onClick={this.props.onClicked}>
-          <span className={styles.name}>{_.get(user, 'fullName', '')}</span>
-          <i className={styles.downArrow}></i>
-        </div>
-        {dropMenu}
-      </div>
-    );
-  },
-
-  renderDropMenu: function() {
-    function stopPropagation(e) {
-      e.stopPropagation();
+  noopHandler(e) {
+    if (e) {
+      e.preventDefault();
     }
-    return (
-      <div className={styles.dropdown} onClick={stopPropagation}>
-        <ul>
-          {this.renderChooseDevices()}
-          <li>{this.renderLogout()}</li>
-        </ul>
-      </div>
-    );
-  },
+  }
 
-  renderChooseDevices: function() {
+  handleChooseDevices(e) {
+    e.preventDefault();
+    this.props.onChooseDevices();
+  }
+
+  handleCheckForUpdates(e) {
+    e.preventDefault();
+    ipcRenderer.send('autoUpdater','checkForUpdates');
+  }
+
+  handleLogout(e) {
+    e.preventDefault();
+    this.setState({
+      loggingOut: true
+    });
+    var self = this;
+    this.props.onLogout(function(err) {
+      if (err) {
+        self.setState({
+          loggingOut: false
+        });
+      }
+    });
+  }
+  renderChooseDevices() {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
     var isDisabled = uploadInProgress;
@@ -98,9 +102,22 @@ var LoggedInAs = React.createClass({
         </a>
       </li>
     );
-  },
+  }
 
-  renderLogout: function() {
+  renderCheckForUpdates() {
+    return (
+      <li>
+        <a className={styles.link}
+          onClick={this.handleCheckForUpdates}
+          title="Check for Updates">
+          <i className={styles.updateIcon}></i>
+          Check for Updates
+        </a>
+      </li>
+    );
+  }
+
+  renderLogout() {
     var uploadInProgress = this.props.isUploadInProgress;
 
     if (this.state.loggingOut) {
@@ -117,37 +134,37 @@ var LoggedInAs = React.createClass({
         Logout
       </a>
     );
-  },
-
-  getName: function() {
-    return _.get(this.props.user, ['profile', 'fullName']);
-  },
-
-  noopHandler: function(e) {
-    if (e) {
-      e.preventDefault();
-    }
-  },
-
-  handleChooseDevices: function(e) {
-    e.preventDefault();
-    this.props.onChooseDevices();
-  },
-
-  handleLogout: function(e) {
-    e.preventDefault();
-    this.setState({
-      loggingOut: true
-    });
-    var self = this;
-    this.props.onLogout(function(err) {
-      if (err) {
-        self.setState({
-          loggingOut: false
-        });
-      }
-    });
   }
-});
 
-module.exports = LoggedInAs;
+  renderDropMenu() {
+    function stopPropagation(e) {
+      e.stopPropagation();
+    }
+    return (
+      <div className={styles.dropdown} onClick={stopPropagation}>
+        <ul>
+          {this.renderChooseDevices()}
+          {this.renderCheckForUpdates()}
+          <li>{this.renderLogout()}</li>
+        </ul>
+      </div>
+    );
+  }
+
+
+
+  render() {
+    var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
+    var user = this.props.user;
+
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.main} onClick={this.props.onClicked}>
+          <span className={styles.name}>{_.get(user, 'fullName', '')}</span>
+          <i className={styles.downArrow}></i>
+        </div>
+        {dropMenu}
+      </div>
+    );
+  }
+};
