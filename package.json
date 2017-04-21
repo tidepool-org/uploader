@@ -107,7 +107,10 @@
             "ia32"
           ]
         }
-      ]
+      ],
+      "nsis": {
+        "oneClick": false
+      }
     },
     "mac": {
       "category": "public.app-category.tools",
