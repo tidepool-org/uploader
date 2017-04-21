@@ -94,6 +94,9 @@
       "main.js.map",
       "package.json"
     ],
+    "extraResources": [
+      "resources/windows-driver/"
+    ],
     "win": {
       "target": [
         {
