@@ -8,17 +8,15 @@ RequestExecutionLevel admin
   Var /GLOBAL DriverDir
   StrCpy $DriverDir "$INSTDIR\resources\resources\windows-driver"
 
-  Section
-    ${If} ${RunningX64}
-      DetailPrint "64-bit Windows"
-    ${else}
-      DetailPrint "32-bit Windows"
-    ${EndIf}
+  ${If} ${RunningX64}
+    MessageBox MB_OK "64-bit Windows"
+  ${else}
+    MessageBox MB_OK "32-bit Windows"
+  ${EndIf}
 
-    ${If} ${IsWin7}
-      DetailPrint "Windows 7"
-    ${EndIf}
-  SectionEnd
+  ${If} ${IsWin7}
+    MessageBox MB_OK "Windows 7"
+  ${EndIf}
 
   UserInfo::GetAccountType
   pop $0
