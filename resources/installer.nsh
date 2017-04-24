@@ -3,20 +3,21 @@
 
 RequestExecutionLevel admin
 
+!macro customInit
+  
+  ReadINIStr $2 "$TEMP\count.ini" "UserCount" "Value"
+  IfFileExists "$TEMP\count.ini" "+3" ""
+    StrCpy $1 "0"
+  goto +3
+    IntOp $1 $2 + 1
+    StrCpy $R0 "You have ran this setup program $2 times so far!\n\n"
+
+!macroend
+
 !macro customInstall
 
   Var /GLOBAL DriverDir
   StrCpy $DriverDir "$INSTDIR\resources\resources\windows-driver"
-
-  ${If} ${RunningX64}
-    MessageBox MB_OK "64-bit Windows"
-  ${else}
-    MessageBox MB_OK "32-bit Windows"
-  ${EndIf}
-
-  ${If} ${IsWin7}
-    MessageBox MB_OK "Windows 7"
-  ${EndIf}
 
   UserInfo::GetAccountType
   pop $0
@@ -39,5 +40,7 @@ RequestExecutionLevel admin
       ${EndIf}
       ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
   ${EndIf}
+
+  WriteINIStr "$TEMP\count.ini" "UserCount" "Value" "$1"
 
 !macroend
