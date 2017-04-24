@@ -5,6 +5,21 @@ RequestExecutionLevel admin
 
 !macro customInstall
 
+  Var DriverDir
+  StrCpy $DriverDir "$INSTDIR\resources\resources\windows-driver"
+
+  Section
+    ${If} ${RunningX64}
+      DetailPrint "64-bit Windows"
+    ${else}
+      DetailPrint "32-bit Windows"
+    ${EndIf}
+
+    ${If} ${IsWin7}
+      DetailPrint "Windows 7"
+    ${EndIf}
+  SectionEnd
+
   UserInfo::GetAccountType
   pop $0
   ${If} $0 != "admin"
@@ -14,17 +29,17 @@ RequestExecutionLevel admin
   ${EndIf}
 
   ${If} ${RunningX64}
-      DetailPrint "64-bit Windows"
       ${If} ${IsWin7}
-           DetailPrint "Windows 7"
+        ; 64-bit Windows 7
+        CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
       ${EndIf}
-      ExecWait "$INSTDIR\resources\resources\windows-driver\TidepoolUSBDriver_x64.exe"
+      ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
   ${Else}
-      DetailPrint "32-bit Windows"
       ${If} ${IsWin7}
-           DetailPrint "Windows 7"
+        ; 32-bit Windows 7
+        CopyFiles $DriverDir\win7x86\* $DriverDir\i386
       ${EndIf}
-      ExecWait "$INSTDIR\resources\resources\windows-driver\TidepoolUSBDriver_x86.exe"
+      ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
   ${EndIf}
 
 !macroend
