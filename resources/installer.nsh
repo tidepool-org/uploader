@@ -5,7 +5,7 @@ RequestExecutionLevel admin
 
 !macro customInstall
 
-  Var DriverDir
+  Var /GLOBAL DriverDir
   StrCpy $DriverDir "$INSTDIR\resources\resources\windows-driver"
 
   Section
