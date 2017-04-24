@@ -1,14 +1,14 @@
 !include LogicLib.nsh
 !include WinVer.nsh
 
+RequestExecutionLevel admin
+
 !macro customInit
   SetOutPath $INSTDIR
   LogSet on
-  RequestExecutionLevel admin
 !macroend
 
 !macro customInstall
-  !system "echo '' > ${BUILD_RESOURCES_DIR}/customInstall"
 
   UserInfo::GetAccountType
   pop $0

@@ -84,7 +84,9 @@
       ]
     },
     "nsis": {
-      "oneClick": false
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true
     },
     "files": [
       "dist/",
