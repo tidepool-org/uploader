@@ -70,6 +70,7 @@ export default class LoggedInAs extends Component {
       }
     });
   }
+
   renderChooseDevices() {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
@@ -151,8 +152,6 @@ export default class LoggedInAs extends Component {
       </div>
     );
   }
-
-
 
   render() {
     var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
