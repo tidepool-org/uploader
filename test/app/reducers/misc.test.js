@@ -241,6 +241,7 @@ describe('misc reducers', () => {
   describe('working', () => {
     it('should return the initial state', () => {
       expect(misc.working(undefined, {})).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -252,6 +253,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_FAILURE
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: false,
@@ -263,6 +265,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_REQUEST
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -274,6 +277,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_SUCCESS
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: false,
@@ -285,6 +289,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_FAILURE
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -296,6 +301,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_REQUEST
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: true,
         initializingApp: true,
@@ -307,6 +313,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_SUCCESS
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -318,6 +325,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_ABORTED
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -329,6 +337,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_FAILURE
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -340,6 +349,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_FAILURE
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -351,6 +361,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_REQUEST
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: true,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -362,6 +373,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_SUCCESS
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -373,6 +385,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_FAILURE
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -384,6 +397,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_REQUEST
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
@@ -395,11 +409,150 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_SUCCESS
       })).to.deep.equal({
+        checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
         initializingApp: true,
         uploading: false
       });
+    });
+
+    it('should handle CHECKING_FOR_UPDATES', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.CHECKING_FOR_UPDATES
+      })).to.deep.equal({
+        checkingElectronUpdate: true,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle UPDATE_AVAILABLE', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.UPDATE_AVAILABLE
+      })).to.deep.equal({
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle UPDATE_NOT_AVAILABLE', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.UPDATE_NOT_AVAILABLE
+      })).to.deep.equal({
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle AUTOUPDATE_ERROR', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.AUTOUPDATE_ERROR
+      })).to.deep.equal({
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+  });
+
+  describe('electronUpdateManualChecked', () => {
+    it('should return the initial state', () => {
+      expect(misc.electronUpdateManualChecked(undefined, {})).to.be.null;
+    });
+
+    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+      expect(misc.electronUpdateManualChecked(undefined, {
+        type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
+      })).to.be.true;
+    });
+
+    it('should handle DISMISS_UPDATE_NOT_AVAILABLE', () => {
+      expect(misc.electronUpdateManualChecked(undefined, {
+        type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE
+      })).to.be.null;
+    });
+  });
+
+  describe('electronUpdateAvailableDismissed', () => {
+    it('should return the initial state', () => {
+      expect(misc.electronUpdateAvailableDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+      expect(misc.electronUpdateAvailableDismissed(undefined, {
+        type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
+      })).to.be.null;
+    });
+
+    it('should handle DISMISS_UPDATE_AVAILABLE', () => {
+      expect(misc.electronUpdateAvailableDismissed(undefined, {
+        type: actionTypes.DISMISS_UPDATE_AVAILABLE
+      })).to.be.true;
+    });
+  });
+
+  describe('electronUpdateAvailable', () => {
+    it('should return the initial state', () => {
+      expect(misc.electronUpdateAvailable(undefined, {})).to.be.null;
+    });
+
+    it('should handle AUTO_UPDATE_CHECKING_FOR_UPDATES', () => {
+      expect(misc.electronUpdateAvailable(undefined, {
+        type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES
+      })).to.be.null;
+    });
+
+    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+      expect(misc.electronUpdateAvailable(undefined, {
+        type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
+      })).to.be.null;
+    });
+
+    it('should handle UPDATE_AVAILABLE', () => {
+      expect(misc.electronUpdateAvailable(undefined, {
+        type: actionTypes.UPDATE_AVAILABLE
+      })).to.be.true;
+    });
+
+    it('should handle UPDATE_NOT_AVAILABLE', () => {
+      expect(misc.electronUpdateAvailable(undefined, {
+        type: actionTypes.UPDATE_NOT_AVAILABLE
+      })).to.be.false;
+    });
+  });
+
+  describe('electronUpdateDownloaded', () => {
+    it('should return the initial state', () => {
+      expect(misc.electronUpdateDownloaded(undefined, {})).to.be.null;
+    });
+
+    it('should handle UPDATE_AVAILABLE', () => {
+      expect(misc.electronUpdateDownloaded(undefined, {
+        type: actionTypes.UPDATE_AVAILABLE
+      })).to.be.null;
+    });
+
+    it('should handle UPDATE_DOWNLOADED', () => {
+      expect(misc.electronUpdateDownloaded(undefined, {
+        type: actionTypes.UPDATE_DOWNLOADED
+      })).to.be.true;
+    });
+
+    it('should handle AUTOUPDATE_ERROR', () => {
+      expect(misc.electronUpdateDownloaded(undefined, {
+        type: actionTypes.AUTOUPDATE_ERROR
+      })).to.be.false;
     });
   });
 });

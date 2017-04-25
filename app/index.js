@@ -10,10 +10,16 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';
 import '../styles/main.less';
+import { ipcRenderer } from 'electron';
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 store.dispatch(push('/'));
+
+ipcRenderer.on('action', function(event, action) {
+  store.dispatch(action);
+});
+
 render(
   <Provider store={store}>
     <Router history={history} routes={routes} />

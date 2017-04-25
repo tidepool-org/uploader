@@ -43,6 +43,7 @@ import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import UpdateModal from '../components/UpdateModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -120,6 +121,7 @@ export class App extends Component {
         <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
+        <UpdateModal />
       </div>
     );
   }
