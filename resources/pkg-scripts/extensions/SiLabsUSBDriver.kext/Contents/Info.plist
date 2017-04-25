@@ -1,0 +1,2479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>14A261i</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>SiLabsUSBDriver</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.silabs.driver.CP210xVCPDriver</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>SiLabsUSBDriver</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.1.1</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>6A1052d</string>
+	<key>DTPlatformVersion</key>
+	<string>GM</string>
+	<key>DTSDKBuild</key>
+	<string>13F26</string>
+	<key>DTSDKName</key>
+	<string>macosx10.9</string>
+	<key>DTXcode</key>
+	<string>0610</string>
+	<key>DTXcodeBuild</key>
+	<string>6A1052d</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>AES GmbH - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>AES GmbH USB device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32779</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>ARKRAY, Inc - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>USB Cable Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>17</integer>
+			<key>idVendor</key>
+			<integer>3835</integer>
+		</dict>
+		<key>Apperson Education Products</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Benchmark 3000</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33670</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Apperson Education Products - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Advantage 1200</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32793</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Apperson Education Products - 3</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>GradeMaster 600</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32800</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Aruba Networks - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>USB Cable Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60000</integer>
+			<key>idVendor</key>
+			<integer>9766</integer>
+		</dict>
+		<key>Aruba Networks, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Aruba Networks USB to UART Bridge</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60000</integer>
+			<key>idVendor</key>
+			<integer>9766</integer>
+		</dict>
+		<key>BEI Industrial Encoders</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>BEI USB Sensor Interface</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33902</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Bluestar Development, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>BlueStar Telescope Adapter USB Connection</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33132</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>BodyCap</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>BodyCap Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35074</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Brigitte Schenke Technische Hard- &amp; Software</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>FiloCUT3</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34275</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CEL</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CEL EM357 ZigBee USB Stick Long Range to UART Bridge</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34902</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CEL - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CEL EM357 ZigBee USB Stick to UART Bridge</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34903</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60000</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Enhanced Port)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge Controller (Enhanced Port)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60016</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Interface 0)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge (Interface 0)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60017</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Interface 1)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge (Interface 1)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>1</integer>
+			<key>idProduct</key>
+			<integer>60017</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Interface 2)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge (Interface 2)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>2</integer>
+			<key>idProduct</key>
+			<integer>60017</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Interface 3)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge (Interface 3)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>3</integer>
+			<key>idProduct</key>
+			<integer>60017</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (Standard Port)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>CP210x USB to UART Bridge Controller (Standard Port)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>1</integer>
+			<key>idProduct</key>
+			<integer>60016</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>CP210x USB to UART Bridge (USBXpress VCP mode)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>USBXpress Device (CP210x)</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60001</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>DataApex USB Interface</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>U-PAD2</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>60116</integer>
+			<key>idVendor</key>
+			<integer>55982</integer>
+		</dict>
+		<key>ESN</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>ESN Golf Watch</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34737</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Garmin USB Interface</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Garmin ANT Stick</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>4100</integer>
+			<key>idVendor</key>
+			<integer>4047</integer>
+		</dict>
+		<key>IMST GmbH</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>iM871A-usb</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34797</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>IMST GmbH - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>iM871A-ir</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34796</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Imaging Systems Technology</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>ISTTouch System Controler</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33748</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>JR Engineering, Corp.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>K4JRG Rotor Control DXA USB</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32816</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Kersh Risk Management, LLC</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Activity Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33456</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Ketra, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>N1 Wireless interface</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35142</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 121 Current Source</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>256</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 10</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 335 Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>768</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 11</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 336 Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>769</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 12</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 350 Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>770</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 13</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 371 AC Bridge &amp; Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>771</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 14</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 380</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>772</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 15</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>773</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 16</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>774</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 17</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 411 Handheld Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1024</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 18</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 425 Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1025</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 19</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 455A Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1026</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Current Source</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>257</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 20</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 475A Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1027</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 21</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 465 Three Axis Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1028</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 22</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1029</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 23</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Gaussmeter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1030</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 24</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 625A Superconducting MPS</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1536</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 25</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 643 Magnet Power Supply</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1537</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 26</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 648 Magnet Power Supply</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1538</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 27</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Superconducting MPS</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1539</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 28</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Magnet Power Supply</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1540</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 29</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 737 AGM/VSM Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1792</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 3</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Current Source</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>258</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 30</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 776 Hall Matrix</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1793</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 31</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Instrument</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1794</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 32</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Instrument</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>1795</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 33</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 224 Temperature Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>516</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 34</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 372 AC Bridge &amp; Temperature Controller</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>773</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 4</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 218A Temperature Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>512</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 5</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 228 Temperature Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>513</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 6</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 233 Temperature Transmitter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>514</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 7</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Model 235 Temperature Transmitter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>515</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 8</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Temperature Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>516</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>Lake Shore Crytronics, Inc. - 9</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Lake Shore Temperature Monitor</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>517</integer>
+			<key>idVendor</key>
+			<integer>8121</integer>
+		</dict>
+		<key>LifeScan USB Device</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>LifeScan USB Device Driver vSL2.0</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34215</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Link Instruments - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>MSO-19</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>61840</integer>
+			<key>idVendor</key>
+			<integer>12693</integer>
+		</dict>
+		<key>Link Instruments - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>MSO-28</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>62080</integer>
+			<key>idVendor</key>
+			<integer>12693</integer>
+		</dict>
+		<key>Link Instruments - 3</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>MSO-28</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>62081</integer>
+			<key>idVendor</key>
+			<integer>12693</integer>
+		</dict>
+		<key>MMB Research Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>MMB Networks USB Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34980</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Microboards Automation</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Microboards Automation</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33631</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>NetBurner, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>NetBurner Development Kit USB to UART Bridge</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33952</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Pam bv</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Pam bv Usb Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33456</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Parrot SA</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Flight Recorder</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>12288</integer>
+			<key>idVendor</key>
+			<integer>6607</integer>
+		</dict>
+		<key>Planet Innovation</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Ingeni</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34981</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Pololu Corporation</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Pololu USB-to-Serial Adapter</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32827</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>QDnet Technologies Pvt. Ltd.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>QDnet USB to Serial Bridge</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35088</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Quantum Technology</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Mountbatten USB Composite Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32881</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>RTKWARE UBR1 (Interface 0)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>UBR1 GNSS Receiver Virtual COM Port</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35349</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>RTKWARE UBR1 (Interface 1)</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>UBR1 Modem Virtual COM Port</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>1</integer>
+			<key>idProduct</key>
+			<integer>35349</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>RTKWARE UD1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>UD1 Virtual COM Port</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35348</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>SPORTident GmbH - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>SPORTident USB device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32778</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>SiLabsUSBDriver - Fitbit Base Station</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>IOTTYBaseName</key>
+			<string>Fitbit</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Fitbit Base Station</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33988</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Software Bisque, Inc.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Software Bisque MKS 4000</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>32486</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Solid State Logic</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>AlphaLink MX</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>5</integer>
+			<key>idVendor</key>
+			<integer>2675</integer>
+		</dict>
+		<key>Solid State Logic - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>AlphaLink MX</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>6</integer>
+			<key>idVendor</key>
+			<integer>2675</integer>
+		</dict>
+		<key>Starizona</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Starizona MicroTouch</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33524</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Starizona - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Starizona Hyperion</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33974</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Technogym SPA</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>mywellness key</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33799</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Telegesis (UK) Ltd.</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Telegesis USB Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33427</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Topscan</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Scanmarker 1.30</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>20</integer>
+			<key>idVendor</key>
+			<integer>7116</integer>
+		</dict>
+		<key>West Mountain Radio</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>West Mountain Radio RIGblaster</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34334</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>West Mountain Radio - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>West Mountain Radio RIGblaster plug &amp; play</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33098</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>West Mountain Radio - 3</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>West Mountain Radio RIGtalk RT1</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>33099</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>West Mountain Radio - 4</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>West Mountain Radio RIGblaster Advantage</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>3</integer>
+			<key>idVendor</key>
+			<integer>9221</integer>
+		</dict>
+		<key>Zonge International - 1</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Zonge High-Res Receiver ZEN</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35228</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>Zonge International - 2</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>Zonge High-Res, High-Speed Receiver ZEN</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>35249</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+		<key>iBike USB Device</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.silabs.driver.CP210xVCPDriver</string>
+			<key>IOClass</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>IOMatchCategory</key>
+			<string>com_silabs_driver_CP210xVCPDriver</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBInterface</string>
+			<key>New Interface Detected Action</key>
+			<string>None</string>
+			<key>USB Product Name</key>
+			<string>iBike USB Device</string>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>idProduct</key>
+			<integer>34235</integer>
+			<key>idVendor</key>
+			<integer>4292</integer>
+		</dict>
+	</dict>
+	<key>OSBundleLibraries</key>
+	<dict>
+		<key>com.apple.iokit.IOSerialFamily</key>
+		<string>1.0.4</string>
+		<key>com.apple.iokit.IOUSBFamily</key>
+		<string>2.7.7</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>8.0.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>8.0.0</string>
+	</dict>
+</dict>
+</plist>
