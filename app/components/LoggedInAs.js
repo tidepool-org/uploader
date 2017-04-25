@@ -46,8 +46,8 @@ var LoggedInAs = React.createClass({
         <div className={styles.main} onClick={this.props.onClicked}>
           <span className={styles.name}>{_.get(user, 'fullName', '')}</span>
           <i className={styles.downArrow}></i>
+					{dropMenu}
         </div>
-        {dropMenu}
       </div>
     );
   },
