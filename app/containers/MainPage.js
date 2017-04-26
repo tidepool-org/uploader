@@ -81,7 +81,7 @@ export class MainPage extends Component {
 
   renderUploadListDoneButton() {
     const { isClinicAccount } = this.props;
-    if (isClinicAccount) {
+    if (isClinicAccount && this.props.uploadTargetUser) {
       return <ClinicUploadDone
         onClicked= {this.handleClickChangePerson}
         uploadTargetUser={this.props.uploadTargetUser}
