@@ -18,6 +18,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import styles from '../../styles/components/Footer.module.less';
+import logo from '../../images/JDRF_Reverse_Logo x2.png';
 
 export default class Footer extends Component {
   static propTypes = {
@@ -36,7 +37,7 @@ export default class Footer extends Component {
             <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">Privacy and Terms of Use</a>
           </div>
           <div>
-            <span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src="../images/JDRF_Reverse_Logo x2.png"/>
+            <span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src={logo}/>
           </div>
         </div>
         <div className={styles.footerRow}>
