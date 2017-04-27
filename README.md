@@ -5,7 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/krystophv/electron?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/krystophv/electron)
 
 
-This is a [Chrome App](https://developer.chrome.com/apps/about_apps) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
+This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
 
 This README is focused on just the details of getting the uploader running locally. For more detailed information aimed at those working on the development of the uploader, please see the [developer guide](docs/StartHere.md).
 
@@ -23,16 +23,23 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
-1. Run `npm install`
+1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
 1. Run these two commands __simultaneously__ in different console tabs.
 ```bash
 $ npm run hot-server
 $ npm run start-hot
 ```
-or run two servers with one command
+```bash
+$ yarn hot-server
+$ yarn start-hot
+```
+or run the two servers with one command
 ```bash
 $ npm run dev
+```
+```bash
+$ yarn dev
 ```
 (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
 1. React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
@@ -67,19 +74,21 @@ All debug options are turned *off* by default in `config/local.sh`.
 
 ## Tests
 
-There are two sets of (unit) tests for the code in this repository.
-
-To run the tests in this repository as they are run on Travis CI, CircleCI and Appveyor use:
+To run the tests in this repository as they are run on CircleCI and Appveyor use:
 
 ```bash
 $ npm test
+```
+or
+```bash
+$ yarn test
 ```
 
 ## Linting & Code Style
 
 We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
 
-To run the linter (which also runs on Travis CI with every push, along with `npm test`), use:
+To run the linter (which also runs on CircleCI and Appveyor with every push, along with `npm test`), use:
 
 ```
 $ npm run lint
@@ -95,30 +104,26 @@ Docs reside in several places in this repository, such as `docs/` and `lib/drive
 
 See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
 
-## Publishing (to the devel/staging testing & development Chrome store account or production)
+## Publishing
 
-When you're ready to merge your pull request, first
+Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
 
-1. Use the command `mversion minor -m` to bump the version number and create a tag. (You will need to `npm install -g mversion` if you don't have [mversion](https://github.com/mikaelbr/mversion) installed already.)
-1. Push the new tag commit and tag up to GitHub with `git push origin <branch_name>` and `git push origin --tags`.
-1. Merge your approved pull request.
+1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
+1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
+1. When your pull request is approved and merged to `master`, go to the draft release and type in the version for the tag name, ensure that you're targeting the `master` branch, fill out the release notes and publish the release. This will create the tag for you.
 
-Assuming you've already merged any changes to master and are on master locally...
+For a non-production release (alpha, dev, etc.)
 
-1. Start with a fresh Terminal window and `cd` into the chrome-uploader repo. (Alternatively, just make certain you haven't set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)
-1. Checkout the tag you wish to build, using `git checkout tags/<tag_name>`.
-1. Remove your node modules with `rm -rf node_modules/`. (This may not always be necessary, but it's good to be safe in case anything has changed.)
-1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
-1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
-1. Follow instructions in secrets for actually publishing to the Chrome store.
-1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. This is so that if you built for the development Chrome store, you can then distribute the same `dist.zip` to the production Chrome store without having to rebuild everything. If the tag is known to *not* be a release candidate, mark it as a pre-release.
+1. Increment the version number in `package.json` and `app/package.json` and ensure that you have included the channel information after the version patch number (i.e. `v0.304.0-alpha` or `v0.304.0-beta.2`). The hyphen separated version semantic is important.
+1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
+1. When you want to publish your non-production release, go to your draft and type in the version for the tag name, ensure that you're targeting the branch that you're currently releasing from, mark the release as a `pre-release`, fill out the release notes and publish the release. This will create the tag for you on the branch that you want.
 
-
+The Uploader has a self-update mechanism that will look at the latest release and compare versions, downloading and prompting the user to update if a newer version is available. For production releases, only official releases will be considered. For non-production releases (`-alpha`, `-beta.2`, etc.) releases marked as `pre-release` will also be checked, matching against the string portion of the post-hyphen version segment. For more detail about this behavior see [the electron-builder docs concerning auto-update options]( https://github.com/electron-userland/electron-builder/wiki/Auto-Update#appupdater--internaleventemitter)
 
 ## Editor Configuration
 **Atom**
 ```bash
-apm install editorconfig es6-javascript atom-ternjs javascript-snippets linter linter-eslint language-babel autocomplete-modules file-icons
+apm install editorconfig es6-javascript javascript-snippets linter linter-eslint language-babel autocomplete-modules file-icons
 ```
 
 **Sublime**
@@ -147,7 +152,7 @@ apm install editorconfig es6-javascript atom-ternjs javascript-snippets linter l
 
 #### DevTools extension
 
-This boilerplate includes the following DevTools extensions:
+This project includes the following DevTools extensions:
 
 * [Devtron](https://github.com/electron/devtron) - Install via [electron-debug](https://github.com/sindresorhus/electron-debug).
 * [React Developer Tools](https://github.com/facebook/react-devtools) - Install via [electron-devtools-installer](https://github.com/GPMDP/electron-devtools-installer).
@@ -164,21 +169,9 @@ $ UPGRADE_EXTENSIONS=1 npm run dev
 $ set UPGRADE_EXTENSIONS=1 && npm run dev
 ```
 
-
-
 ## CSS Modules
 
-All `.css` file extensions will use css-modules unless it has `.global.css`.
-
-If you need global styles, stylesheets with `.global.css` will not go through the
-css-modules loader. e.g. `app.global.css`
-
-If you want to import global css libraries (like `bootstrap`), you can just write the following code in `.global.css`:
-
-```css
-@import "~bootstrap/dist/css/bootstrap.css";
-```
-
+All `.module.less` files will be use css-modules.
 
 ## Packaging
 
@@ -187,14 +180,8 @@ To package apps for the local platform:
 ```bash
 $ npm run package
 ```
-
-To package apps for all platforms:
-
-First, refer to [Multi Platform Build](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build) for dependencies.
-
-Then,
 ```bash
-$ npm run package-all
+$ yarn package
 ```
 
 To package apps with options:
@@ -225,17 +212,8 @@ See [electron-builder CLI Usage](https://github.com/electron-userland/electron-b
 
 #### Module Structure
 
-This boilerplate uses a [two package.json structure](https://github.com/electron-userland/electron-builder/wiki/Two-package.json-Structure).
+This project uses a [two package.json structure](https://github.com/electron-userland/electron-builder/wiki/Two-package.json-Structure).
 
 1. If the module is native to a platform or otherwise should be included with the published package (i.e. bcrypt, openbci), it should be listed under `dependencies` in `./app/package.json`.
 2. If a module is `import`ed by another module, include it in `dependencies` in `./package.json`.   See [this ESLint rule](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md).
 3. Otherwise, modules used for building, testing and debugging should be included in `devDependencies` in `./package.json`.
-
-
-## Native-like UI
-
-If you want to have native-like User Interface (OS X El Capitan and Windows 10), [react-desktop](https://github.com/gabrielbull/react-desktop) may perfect suit for you.
-
-## Dispatching redux actions from main process
-
-see discusses in [#118](https://github.com/chentsulin/electron-react-boilerplate/issues/118) and [#108](https://github.com/chentsulin/electron-react-boilerplate/issues/108)
