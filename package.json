@@ -62,7 +62,7 @@
   },
   "browserslist": "electron 1.6",
   "build": {
-    "productName": "TidepoolUploader",
+    "productName": "Tidepool Uploader",
     "appId": "org.tidepool.TidepoolUploader",
     "directories": {
       "buildResources": "resources",
