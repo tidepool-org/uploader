@@ -156,6 +156,7 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
     "viewDataLink": "http://localhost:3000/patients/4a86ec44ff/data"
   },
   "working": {
+    "checkingElectronUpdate": false,
     "checkingVersion": false,
     "fetchingUserInfo": false,
     "initializingApp": false,
@@ -232,6 +233,26 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
   "updateProfileErrorDismissed": null,
   "createCustodialAccountErrorMessage": null,
   "createCustodialAccountErrorDismissed": null,
+  "electronUpdateManualChecked": null,
+  "electronUpdateAvailableDismissed": null,
+  "electronUpdateAvailable": null,
+  "electronUpdateDownloaded": false,
+  "form": {},
+  "routing": {
+    "locationBeforeTransitions": {
+      "pathname": '/login',
+      "search": '',
+      "hash": '',
+      "state": {
+        "meta": {
+          "source": 'USER_VISIBLE'
+        }
+      },
+      "action": 'PUSH',
+      "key": 'h91nnh',
+      "query": {}
+    }
+  },
   "targetDevices": {
     "77541c89ba": ["omnipod", "dexcom"],
     "a6328f570d": ["tandem"],
