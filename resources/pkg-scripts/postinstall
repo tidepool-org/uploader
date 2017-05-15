@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "Unloading and uninstalling old extensions..."
+# unload old extensions
+sudo kextunload /Library/Extensions/sweetspot.DexComUSB.kext
+
+# delete old extensions
+sudo rm -rf /Library/Extensions/sweetspot.DexcomUSB.kext
+
+# install new extensions
+echo "Installing and loading new extensions..."
+sudo cp -R ./extensions/DexComUSB.kext /Library/Extensions/DexComUSB.kext
+sudo kextload /Library/Extensions/DexComUSB.kext/
+
+sudo cp -R ./extensions/SiLabsUSBDRiver.kext /Library/Extensions/SiLabsUSBDRiver.kext
+sudo kextload /Library/Extensions/SiLabsUSBDRiver.kext/
+
+sudo cp -R ./extensions/ProlificUsbSerial.kext /Library/Extensions/ProlificUsbSerial.kext
+sudo kextload /Library/Extensions/ProlificUsbSerial.kext/
