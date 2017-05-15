@@ -27,6 +27,10 @@ var ClinicUploadDone = React.createClass({
     uploadsByUser: React.PropTypes.object.isRequired
   },
 
+  handleClick: function(){
+    this.props.onClicked();
+  },
+
   hasCompletedUpload: function(){
     return _.find(_.get(this.props.uploadsByUser, this.props.uploadTargetUser, {}), {completed: true});
   },
@@ -35,7 +39,7 @@ var ClinicUploadDone = React.createClass({
     return (
       <div className={styles.buttonWrap}>
         <a className={styles.button}
-          onClick={this.props.onClicked}
+          onClick={this.handleClick}
           disabled={!this.hasCompletedUpload()} >
           Done
         </a>

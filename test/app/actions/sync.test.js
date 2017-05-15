@@ -1041,4 +1041,132 @@ describe('Synchronous Actions', () => {
       });
     });
   });
+
+  describe('autoCheckingForUpdates', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.autoCheckingForUpdates();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate an automatic update check', () => {
+      const expectedAction = {
+        type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES,
+        meta: {source: actionSources[actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES]}
+      };
+      expect(syncActions.autoCheckingForUpdates()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('manualCheckingForUpdates', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.manualCheckingForUpdates();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate a manual update check', () => {
+      const expectedAction = {
+        type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES,
+        meta: {source: actionSources[actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES]}
+      };
+      expect(syncActions.manualCheckingForUpdates()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('updateAvailable', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.updateAvailable(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate an update being available', () => {
+      const expectedAction = {
+        type: actionTypes.UPDATE_AVAILABLE,
+        payload: { info: updateInfo },
+        meta: {source: actionSources[actionTypes.UPDATE_AVAILABLE]}
+      };
+      expect(syncActions.updateAvailable(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('updateNotAvailable', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.updateNotAvailable(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate no update available', () => {
+      const expectedAction = {
+        type: actionTypes.UPDATE_NOT_AVAILABLE,
+        payload: { info: updateInfo },
+        meta: {source: actionSources[actionTypes.UPDATE_NOT_AVAILABLE]}
+      };
+      expect(syncActions.updateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('autoUpdateError', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.autoUpdateError(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate an error checking for update', () => {
+      const expectedAction = {
+        type: actionTypes.AUTOUPDATE_ERROR,
+        payload: { error: updateInfo },
+        meta: {source: actionSources[actionTypes.AUTOUPDATE_ERROR]}
+      };
+      expect(syncActions.autoUpdateError(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('updateDownloaded', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.updateDownloaded(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate an update finished downloading', () => {
+      const expectedAction = {
+        type: actionTypes.UPDATE_DOWNLOADED,
+        payload: { info: updateInfo },
+        meta: {source: actionSources[actionTypes.UPDATE_DOWNLOADED]}
+      };
+      expect(syncActions.updateDownloaded(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissUpdateAvailable', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissUpdateAvailable();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing update available modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_UPDATE_AVAILABLE,
+        meta: {source: actionSources[actionTypes.DISMISS_UPDATE_AVAILABLE]}
+      };
+      expect(syncActions.dismissUpdateAvailable()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissUpdateNotAvailable', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissUpdateNotAvailable();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing update unavailable modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
+        meta: {source: actionSources[actionTypes.DISMISS_UPDATE_NOT_AVAILABLE]}
+      };
+      expect(syncActions.dismissUpdateNotAvailable()).to.deep.equal(expectedAction);
+    });
+  });
 });

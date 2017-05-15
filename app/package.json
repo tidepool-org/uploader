@@ -1,11 +1,11 @@
 {
   "name": "tidepool-uploader",
   "productName":  "tidepool-uploader",
-	"version": "0.310.0-alpha",
+  "version": "0.310.0-alpha.2",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
-    "name": "Gerrit Niezen",
+    "name": "Tidepool Project",
     "email": "gerrit@tidepool.org"
   },
   "license": "BSD-2-Clause",

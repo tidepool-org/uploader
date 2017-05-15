@@ -58,6 +58,7 @@ test_script:
 #  - npm run test-e2e
   - yarn package-dev
   - 7z a development.zip release
+  - rmdir /S /Q release
   - yarn package
   - 7z a production.zip release
 
