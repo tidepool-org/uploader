@@ -30,6 +30,7 @@ import styles from '../../styles/components/App.module.less';
 import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
+import UserDropdown from '../components/UserDropdown';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
@@ -101,7 +102,7 @@ export class MainPage extends Component {
         allUsers={allUsers}
         isUploadInProgress={this.props.uploadIsInProgress}
         onGroupChange={this.props.async.setUploadTargetUserAndMaybeRedirect}
-        locationPath={location.path}
+        locationPath={location.pathname}
         targetId={uploadTargetUser}
         targetUsersForUpload={targetUsersForUpload} />
     );

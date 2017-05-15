@@ -35,7 +35,8 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
-  - yarn
+# --frozen-lockfile might be better, but potentially too restrictive
+  - yarn --pure-lockfile
 #  - npm install -g npm@latest
 #  - set PATH=%APPDATA%\npm;%PATH%
 #  - npm install
