@@ -4,13 +4,13 @@
 RequestExecutionLevel admin
 
 !macro customInit
-  
-  ReadINIStr $2 "$TEMP\count.ini" "UserCount" "Value"
-  IfFileExists "$TEMP\count.ini" "+3" ""
-    StrCpy $1 "0"
+
+  ReadINIStr $9 "$TEMP\TidepoolUploader.ini" "InstallCount" "Value"
+  IfFileExists "$TEMP\TidepoolUploader.ini" "+3" ""
+    StrCpy $8 "1"
   goto +3
-    IntOp $1 $2 + 1
-    StrCpy $R0 "You have ran this setup program $2 times so far!\n\n"
+    IntOp $8 $9 + 1
+    StrCpy $R7 "You have ran this setup program $9 times so far!\n\n"
 
 !macroend
 
@@ -41,6 +41,6 @@ RequestExecutionLevel admin
       ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
   ${EndIf}
 
-  WriteINIStr "$TEMP\count.ini" "UserCount" "Value" "$1"
+  WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
 
 !macroend
