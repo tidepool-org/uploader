@@ -21,6 +21,12 @@
   margin: 0px auto;
 }
 
+.headerRow {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  align-items: baseline;
+}
+
 .signup {
   composes: flexRow from '../core/layout.module.less';
   justify-content: flex-end;
@@ -38,12 +44,22 @@
   height: 36px;
 }
 
+.smallLogoWrapper {
+  margin-top: 30px;
+  margin-bottom: 55px;
+}
+
+.smallLogo {
+  width: 230px;
+}
+
 .heroText {
   composes: flexRow from '../core/layout.module.less';
   composes: large from '../core/typography.module.less';
   justify-content: center;
   margin: 35px auto 50px auto;
 }
+
 .signupLink {
   composes: invertLink from '../core/typography.module.less';
   text-decoration: none;
