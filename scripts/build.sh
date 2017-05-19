@@ -12,5 +12,7 @@ cp images/*.gif dist/images/
 cp images/*.jpg dist/images/
 mkdir -p dist/fonts
 cp fonts/* dist/fonts
+mkdir -p dist/sounds
+cp sounds/* dist/sounds/
 zip -r dist.zip dist
 echo "Build complete: dist.zip"
