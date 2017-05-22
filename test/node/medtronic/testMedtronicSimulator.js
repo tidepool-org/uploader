@@ -663,6 +663,95 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('restarts temp basal after resume, followed by a reservoir change', function() {
+
+        var suspendResume = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(600000)
+          .with_reason({resumed: 'manual'})
+          .set('index', 1234)
+          .set('resumeIndex', 1235)
+          .done();
+
+        var suspendedBasal = builder.makeSuspendBasal()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1234);
+
+        var deviceEvent = builder.makeDeviceEventReservoirChange()
+          .with_time('2014-09-25T18:40:00.000Z')
+          .with_deviceTime('2014-09-25T18:40:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1235);
+
+        var basal3 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T18:50:00.000Z')
+            .with_deviceTime('2014-09-25T18:50:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.rewind(deviceEvent);
+        simulator.basal(basal3);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 600000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedSuspendedBasal1 = _.cloneDeep(suspendedBasal);
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'temp',
+          rate: 1,
+          suppressed : {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3,
+          }
+        };
+        expectedSuspendedBasal1.duration = 600000;
+        expectedSuspendedBasal1.set('suppressed', suppressed);
+        delete expectedSuspendedBasal1.index;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.time = '2014-09-25T18:30:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-25T18:30:00';
+        delete expectedTempBasal2.payload;
+        delete expectedTempBasal2.expectedDuration;
+
+        delete basal1.index;
+
+        var expectedSuspendedBasal2 = _.cloneDeep(suspendedBasal);
+        expectedSuspendedBasal2.time = '2014-09-25T18:40:00.000Z';
+        expectedSuspendedBasal2.deviceTime = '2014-09-25T18:40:00';
+        expectedSuspendedBasal2.payload.logIndices = [1235];
+        delete expectedSuspendedBasal2.suppressed;
+        delete expectedSuspendedBasal2.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedTempBasal1,
+          suspendResume,
+          expectedSuspendedBasal1.done(),
+          expectedTempBasal2,
+          deviceEvent,
+          expectedSuspendedBasal2.done()
+        ]);
+      });
+
       it('is suspended but not resumed before upload', function() {
 
         var suspendResume = builder.makeDeviceEventSuspendResume()
