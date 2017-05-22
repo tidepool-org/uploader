@@ -322,8 +322,8 @@ describe('processData.js', function() {
     			'payload': {
     				'lgs_types': [
               'Suspend low glucose',
-    					'Suspend user selected',
-    					'Automatic resume after user suspend'
+              'Suspend user selected',
+              'Automatic resume after user suspend'
     				],
     				'logIndices': [
     					1
