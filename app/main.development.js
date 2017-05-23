@@ -60,7 +60,9 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
-    autoUpdater.checkForUpdates();
+    if (process.env.NODE_ENV !== 'development') {
+      autoUpdater.checkForUpdates();
+    }
   });
 
   mainWindow.webContents.on('new-window', function(event, url){
