@@ -164,7 +164,7 @@ describe('processData.js', function() {
           'index': 1,
           'resumeIndex': 4,
           'payload': {
-            'lgs_types': [
+            'reasons': [
               'Suspend low glucose',
               'Suspend user selected',
               'Resume user'
@@ -247,7 +247,7 @@ describe('processData.js', function() {
     			},
     			'duration': 7149000,
     			'payload': {
-    				'lgs_types': [
+    				'reasons': [
     					'Suspend no response',
     					'Automatic resume after no response'
     				],
@@ -320,7 +320,7 @@ describe('processData.js', function() {
           'index' : 1,
           'resumeIndex' : 4,
     			'payload': {
-    				'lgs_types': [
+    				'reasons': [
               'Suspend low glucose',
               'Suspend user selected',
               'Automatic resume after user suspend'
