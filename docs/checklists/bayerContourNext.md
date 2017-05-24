@@ -34,3 +34,10 @@ Supported devices:
 - `[-]` tag/note (e.g., pre- vs. post-meal)
 - `[-]` carbs
 - `[-]` insulin
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API

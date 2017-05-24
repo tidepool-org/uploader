@@ -97,3 +97,10 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` activity/exercise
   - `[ ]` food (e.g., Dexcom allows logging carb events)
   - `[ ]` notes/other events
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API

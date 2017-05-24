@@ -25,3 +25,10 @@
 - `[ ]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
 - `[ ]` device settings, other than date & time (e.g., target blood glucose range)
 - `[ ]` tag/note (e.g., pre- vs. post-meal)
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[ ]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API

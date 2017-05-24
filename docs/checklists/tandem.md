@@ -242,3 +242,10 @@ At the moment, we only process data from the most recent pump shut-down event, i
   - `[ ]` activity/exercise
   - `[ ]` food (e.g., from a food database built into the pump)
   - `[ ]` notes/other events
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API

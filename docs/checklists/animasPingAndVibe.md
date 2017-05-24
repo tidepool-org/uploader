@@ -252,3 +252,10 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` activity/exercise
   - `[-]` food (e.g., from a food database built into the pump)
   - `[ ]` notes/other events
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[ ]` legacy "jellyfish" ingestion API
+  - `[x]` platform ingestion API
