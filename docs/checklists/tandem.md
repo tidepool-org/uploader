@@ -249,3 +249,10 @@ Choose one of the following:
 
   - `[x]` legacy "jellyfish" ingestion API
   - `[ ]` platform ingestion API
+
+### Known implementation issues/TODOs
+
+*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+
+  - `*[ ]` On first upload, read back to the very beginning of the pump's history to construct a full `pumpSettings` history, allowing for fuller `pumpSettings` history (including profile changes) as well as basal schedule look-up.
+  - `*[ ]` Find a reliable way to identify (and then drop) `timeChange` events occurring after a device shutdown so that BtUTC doesn't have to be limited to records since the last pump shutdown.

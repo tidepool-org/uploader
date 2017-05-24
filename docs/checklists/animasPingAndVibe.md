@@ -259,3 +259,7 @@ Choose one of the following:
 
   - `[ ]` legacy "jellyfish" ingestion API
   - `[x]` platform ingestion API
+
+### Known implementation issues/TODOs
+
+*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
