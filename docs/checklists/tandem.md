@@ -233,7 +233,7 @@ No Tidepool data model yet:
 
 ##### Device-specific? (Add any device-specific notes/additions here.)
 
-At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
+At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, all of which reduce to finding a way to reliably identify (and then drop) `timeChange` events occurring just after a device shutdown to reset the stopped clock, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
 
 ### No Tidepool Data Model Yet
 
@@ -253,6 +253,3 @@ Choose one of the following:
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
-
-  - `*[ ]` On first upload, read back to the very beginning of the pump's history to construct a full `pumpSettings` history, allowing for fuller `pumpSettings` history (including profile changes) as well as basal schedule look-up.
-  - `*[ ]` Find a reliable way to identify (and then drop) `timeChange` events occurring after a device shutdown so that BtUTC doesn't have to be limited to records since the last pump shutdown.
