@@ -30,6 +30,10 @@
    * [Tandem G4 CGM](docs/checklists/tandemCGM.md)
    * [Tandem Insulin Pumps](docs/checklists/tandem.md)
 
+* CLI tools
+   * [CareLink CLI tool](lib/drivers/carelink/cli/README.md)
+   * [OmniPod CLI tool](lib/drivers/insulet/cli/README.md)
+
 * [miscellaneous](docs/misc/README.md)
    * ["bootstrapping" to UTC (BtUTC)](docs/BootstrappingToUTC.md)
    * [use of CSS modules](docs/misc/CSSModules.md)
