@@ -1,677 +1,729 @@
+
 <!DOCTYPE HTML>
-<html lang="en" >
-    
+<html lang="" >
     <head>
-        
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Code style | Tidepool Uploader</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Code style · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.6.7">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
-        <meta name="HandheldFriendly" content="true"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
-        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
         
+    
     <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
     
         
-        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+    
         
     
         
-        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-search/search.css">
+    
         
     
         
-        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
-        
     
+        
     
 
         
     
     
-    <link rel="next" href="../../docs/state/index.html" />
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../state/" />
     
     
-    <link rel="prev" href="../../docs/guide/Architecture.html" />
+    <link rel="prev" href="Architecture.html" />
     
 
-        
     </head>
     <body>
         
+<div class="book">
+    <div class="book-summary">
         
-    <div class="book"
-        data-level="1.4"
-        data-chapter-title="Code style"
-        data-filepath="docs/guide/CodeStyle.md"
-        data-basepath="../.."
-        data-revision="Tue Nov 29 2016 21:31:27 GMT-0800 (PST)"
-        data-innerlanguage="">
-    
-
-<div class="book-summary">
-    <nav role="navigation">
-        <ul class="summary">
             
-            
-            
-            
-
-            
-
-            
-    
-        <li class="chapter " data-level="0" data-path="index.html">
-            
-                
-                    <a href="../../index.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                        Introduction
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1" data-path="docs/StartHere.html">
-            
-                
-                    <a href="../../docs/StartHere.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.</b>
-                        
-                        Tidepool uploader developer guide
-                    </a>
-            
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.1" data-path="docs/guide/FeatureOverview.html">
-            
-                
-                    <a href="../../docs/guide/FeatureOverview.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.1.</b>
-                        
-                        Overview of features
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1.2" data-path="docs/guide/DirectoryStructure.html">
-            
-                
-                    <a href="../../docs/guide/DirectoryStructure.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.2.</b>
-                        
-                        App &amp; directory structure
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3" data-path="docs/guide/Architecture.html">
-            
-                
-                    <a href="../../docs/guide/Architecture.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.3.</b>
-                        
-                        Architecture
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter active" data-level="1.4" data-path="docs/guide/CodeStyle.html">
-            
-                
-                    <a href="../../docs/guide/CodeStyle.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.4.</b>
-                        
-                        Code style
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1.5" data-path="docs/state/index.html">
-            
-                
-                    <a href="../../docs/state/index.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.5.</b>
-                        
-                        Application state via Redux
-                    </a>
-            
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.5.1" data-path="docs/state/ExampleStateTree.html">
-            
-                
-                    <a href="../../docs/state/ExampleStateTree.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.5.1.</b>
-                        
-                        Example state tree
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1.5.2" data-path="docs/state/StateTreeGlossary.html">
-            
-                
-                    <a href="../../docs/state/StateTreeGlossary.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.5.2.</b>
-                        
-                        Glossary of state tree terms
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="1.5.3" data-path="docs/state/CustomMiddleware.html">
-            
-                
-                    <a href="../../docs/state/CustomMiddleware.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>1.5.3.</b>
-                        
-                        Custom middleware
-                    </a>
-            
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-        <li class="chapter " data-level="2" data-path="docs/checklisttemplates/index.html">
-            
-                
-                    <a href="../../docs/checklisttemplates/index.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>2.</b>
-                        
-                        checklist TEMPLATES
-                    </a>
-            
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="2.1" data-path="docs/checklisttemplates/BGMChecklist.html">
-            
-                
-                    <a href="../../docs/checklisttemplates/BGMChecklist.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>2.1.</b>
-                        
-                        BGM Checklist
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="2.2" data-path="docs/checklisttemplates/CGMChecklist.html">
-            
-                
-                    <a href="../../docs/checklisttemplates/CGMChecklist.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>2.2.</b>
-                        
-                        CGM Checklist
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="2.3" data-path="docs/checklisttemplates/PumpChecklist.html">
-            
-                
-                    <a href="../../docs/checklisttemplates/PumpChecklist.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>2.3.</b>
-                        
-                        Insulin Pump Checklist
-                    </a>
-            
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-        <li class="chapter " data-level="3" data-path="lib/drivers/docs/index.html">
-            
-                
-                    <a href="../../lib/drivers/docs/index.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.</b>
-                        
-                        checklists
-                    </a>
-            
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="3.1" data-path="lib/drivers/docs/abbottFreeStyleLite.html">
-            
-                
-                    <a href="../../lib/drivers/docs/abbottFreeStyleLite.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.1.</b>
-                        
-                        Abbott FreeStyle
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.2" data-path="lib/drivers/docs/abbottPrecisionXtra.html">
-            
-                
-                    <a href="../../lib/drivers/docs/abbottPrecisionXtra.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.2.</b>
-                        
-                        Abbott Precision Xtra
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.3" data-path="lib/drivers/docs/animasCGM.html">
-            
-                
-                    <a href="../../lib/drivers/docs/animasCGM.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.3.</b>
-                        
-                        Animas Vibe CGM
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.4" data-path="lib/drivers/docs/animasPingAndVibe.html">
-            
-                
-                    <a href="../../lib/drivers/docs/animasPingAndVibe.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.4.</b>
-                        
-                        Animas Ping and Vibe Insulin Pumps
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.5" data-path="lib/drivers/docs/bayerContourNext.html">
-            
-                
-                    <a href="../../lib/drivers/docs/bayerContourNext.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.5.</b>
-                        
-                        Bayer Contour Next
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.6" data-path="lib/drivers/docs/dexcom.html">
-            
-                
-                    <a href="../../lib/drivers/docs/dexcom.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.6.</b>
-                        
-                        Dexcom CGM
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.7" data-path="lib/drivers/docs/carelinkCGM.html">
-            
-                
-                    <a href="../../lib/drivers/docs/carelinkCGM.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.7.</b>
-                        
-                        CareLink (CGM data)
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.8" data-path="lib/drivers/docs/carelinkPumpData.html">
-            
-                
-                    <a href="../../lib/drivers/docs/carelinkPumpData.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.8.</b>
-                        
-                        CareLink (insulin pump data)
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.9" data-path="lib/drivers/docs/oneTouchVerioIQ.html">
-            
-                
-                    <a href="../../lib/drivers/docs/oneTouchVerioIQ.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.9.</b>
-                        
-                        OneTouch VerioIQ
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.10" data-path="lib/drivers/docs/insuletOmniPod.html">
-            
-                
-                    <a href="../../lib/drivers/docs/insuletOmniPod.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.10.</b>
-                        
-                        Insulet OmniPod
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.11" data-path="lib/drivers/docs/tandemCGM.html">
-            
-                
-                    <a href="../../lib/drivers/docs/tandemCGM.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.11.</b>
-                        
-                        Tandem G4 CGM
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="3.12" data-path="lib/drivers/docs/tandem.html">
-            
-                
-                    <a href="../../lib/drivers/docs/tandem.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>3.12.</b>
-                        
-                        Tandem Insulin Pumps
-                    </a>
-            
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-        <li class="chapter " data-level="4" data-path="docs/misc/index.html">
-            
-                
-                    <a href="../../docs/misc/index.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.</b>
-                        
-                        miscellaneous
-                    </a>
-            
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="4.1" data-path="docs/BootstrappingToUTC.html">
-            
-                
-                    <a href="../../docs/BootstrappingToUTC.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.1.</b>
-                        
-                        &quot;bootstrapping&quot; to UTC (BtUTC)
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="4.2" data-path="docs/misc/CSSModules.html">
-            
-                
-                    <a href="../../docs/misc/CSSModules.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.2.</b>
-                        
-                        use of CSS modules
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="4.3" data-path="docs/misc/PWDSimulators.html">
-            
-                
-                    <a href="../../docs/misc/PWDSimulators.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.3.</b>
-                        
-                        PWD &quot;simulators&quot;
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="4.4" data-path="docs/misc/FlatRateBasals.html">
-            
-                
-                    <a href="../../docs/misc/FlatRateBasals.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.4.</b>
-                        
-                        challenges of flat basal profiles
-                    </a>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="4.5" data-path="docs/misc/2015.06.29CareLinkCSVChanges.html">
-            
-                
-                    <a href="../../docs/misc/2015.06.29CareLinkCSVChanges.html">
-                
-                        <i class="fa fa-check"></i>
-                        
-                            <b>4.5.</b>
-                        
-                        2015.06 CareLink CSV updates
-                    </a>
-            
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-
-
-            
-            <li class="divider"></li>
-            <li>
-                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
-                    Published with GitBook
-                </a>
-            </li>
-            
-        </ul>
-    </nav>
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
 </div>
 
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../StartHere.html">
+            
+                <a href="../StartHere.html">
+            
+                    
+                    Tidepool uploader developer guide
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="FeatureOverview.html">
+            
+                <a href="FeatureOverview.html">
+            
+                    
+                    Overview of features
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="DirectoryStructure.html">
+            
+                <a href="DirectoryStructure.html">
+            
+                    
+                    App & directory structure
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="Architecture.html">
+            
+                <a href="Architecture.html">
+            
+                    
+                    Architecture
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.4" data-path="CodeStyle.html">
+            
+                <a href="CodeStyle.html">
+            
+                    
+                    Code style
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="../state/">
+            
+                <a href="../state/">
+            
+                    
+                    Application state via Redux
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.5.1" data-path="../state/ExampleStateTree.html">
+            
+                <a href="../state/ExampleStateTree.html">
+            
+                    
+                    Example state tree
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5.2" data-path="../state/StateTreeGlossary.html">
+            
+                <a href="../state/StateTreeGlossary.html">
+            
+                    
+                    Glossary of state tree terms
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5.3" data-path="../state/CustomMiddleware.html">
+            
+                <a href="../state/CustomMiddleware.html">
+            
+                    
+                    Custom middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../checklisttemplates/">
+            
+                <a href="../checklisttemplates/">
+            
+                    
+                    checklist TEMPLATES
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="../checklisttemplates/BGMChecklist.html">
+            
+                <a href="../checklisttemplates/BGMChecklist.html">
+            
+                    
+                    BGM Checklist
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="../checklisttemplates/CGMChecklist.html">
+            
+                <a href="../checklisttemplates/CGMChecklist.html">
+            
+                    
+                    CGM Checklist
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="../checklisttemplates/PumpChecklist.html">
+            
+                <a href="../checklisttemplates/PumpChecklist.html">
+            
+                    
+                    Insulin Pump Checklist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../checklists/">
+            
+                <a href="../checklists/">
+            
+                    
+                    checklists
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.1" data-path="../checklists/abbottFreeStyleLite.html">
+            
+                <a href="../checklists/abbottFreeStyleLite.html">
+            
+                    
+                    Abbott FreeStyle
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.2" data-path="../checklists/abbottPrecisionXtra.html">
+            
+                <a href="../checklists/abbottPrecisionXtra.html">
+            
+                    
+                    Abbott Precision Xtra
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3" data-path="../checklists/animasCGM.html">
+            
+                <a href="../checklists/animasCGM.html">
+            
+                    
+                    Animas Vibe CGM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.4" data-path="../checklists/animasPingAndVibe.html">
+            
+                <a href="../checklists/animasPingAndVibe.html">
+            
+                    
+                    Animas Ping and Vibe Insulin Pumps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.5" data-path="../checklists/bayerContourNext.html">
+            
+                <a href="../checklists/bayerContourNext.html">
+            
+                    
+                    Bayer Contour Next
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.6" data-path="../checklists/dexcom.html">
+            
+                <a href="../checklists/dexcom.html">
+            
+                    
+                    Dexcom CGM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.7" data-path="../checklists/carelinkCGM.html">
+            
+                <a href="../checklists/carelinkCGM.html">
+            
+                    
+                    CareLink (CGM data)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.8" data-path="../checklists/carelinkPumpData.html">
+            
+                <a href="../checklists/carelinkPumpData.html">
+            
+                    
+                    CareLink (insulin pump data)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.9" data-path="../checklists/oneTouchVerioIQ.html">
+            
+                <a href="../checklists/oneTouchVerioIQ.html">
+            
+                    
+                    OneTouch VerioIQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.10" data-path="../checklists/insuletOmniPod.html">
+            
+                <a href="../checklists/insuletOmniPod.html">
+            
+                    
+                    Insulet OmniPod
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.11" data-path="../checklists/tandemCGM.html">
+            
+                <a href="../checklists/tandemCGM.html">
+            
+                    
+                    Tandem G4 CGM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.12" data-path="../checklists/tandem.html">
+            
+                <a href="../checklists/tandem.html">
+            
+                    
+                    Tandem Insulin Pumps
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" >
+            
+                <span>
+            
+                    
+                    CLI tools
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.1" data-path="../../lib/drivers/carelink/cli/">
+            
+                <a href="../../lib/drivers/carelink/cli/">
+            
+                    
+                    CareLink CLI tool
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.2" data-path="../../lib/drivers/insulet/cli/">
+            
+                <a href="../../lib/drivers/insulet/cli/">
+            
+                    
+                    OmniPod CLI tool
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../misc/">
+            
+                <a href="../misc/">
+            
+                    
+                    miscellaneous
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.4.1" data-path="../BootstrappingToUTC.html">
+            
+                <a href="../BootstrappingToUTC.html">
+            
+                    
+                    "bootstrapping" to UTC (BtUTC)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4.2" data-path="../misc/CSSModules.html">
+            
+                <a href="../misc/CSSModules.html">
+            
+                    
+                    use of CSS modules
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4.3" data-path="../misc/PWDSimulators.html">
+            
+                <a href="../misc/PWDSimulators.html">
+            
+                    
+                    PWD "simulators"
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4.4" data-path="../misc/FlatRateBasals.html">
+            
+                <a href="../misc/FlatRateBasals.html">
+            
+                    
+                    challenges of flat basal profiles
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4.5" data-path="../misc/2015.06.29CareLinkCSVChanges.html">
+            
+                <a href="../misc/2015.06.29CareLinkCSVChanges.html">
+            
+                    
+                    2015.06 CareLink CSV updates
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
     <div class="book-body">
-        <div class="body-inner">
-            <div class="book-header" role="navigation">
-    <!-- Actions Left -->
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
     
 
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../../" >Tidepool Uploader</a>
+        <a href="../.." >Code style</a>
     </h1>
 </div>
 
-            <div class="page-wrapper" tabindex="-1" role="main">
-                <div class="page-inner">
-                
-                
-                    <section class="normal" id="section-">
-                    
-                        <h3 id="code-style">Code style</h3>
-<p>See <a href="../../index.html#linting--code-style" title="Linting &amp; Code Style">the section of the README dedicated to this topic</a> as well as the general <a href="http://developer.tidepool.io/docs/front-end/react/index.html" title="Tidepool developer portal: React @ Tidepool" target="_blank">React @ Tidepool guide</a> for React-specific style and best practices.</p>
 
-                    
-                    </section>
-                
-                
-                </div>
-            </div>
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h3 id="code-style">Code style</h3>
+<p>See <a href="../../#linting--code-style" title="Linting &amp; Code Style">the section of the README dedicated to this topic</a> as well as the general <a href="http://developer.tidepool.io/docs/front-end/react/index.html" title="Tidepool developer portal: React @ Tidepool" target="_blank">React @ Tidepool guide</a> for React-specific style and best practices.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
         </div>
-
-        
-        <a href="../../docs/guide/Architecture.html" class="navigation navigation-prev " aria-label="Previous page: Architecture"><i class="fa fa-angle-left"></i></a>
-        
-        
-        <a href="../../docs/state/index.html" class="navigation navigation-next " aria-label="Next page: Application state via Redux"><i class="fa fa-angle-right"></i></a>
-        
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
     </div>
 </div>
 
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Architecture.html" class="navigation navigation-prev " aria-label="Previous page: Architecture">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../state/" class="navigation navigation-next " aria-label="Next page: Application state via Redux">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
         
-<script src="../../gitbook/app.js"></script>
+    </div>
 
-    
-    <script src="../../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
-    
-
-    
-    <script src="../../gitbook/plugins/gitbook-plugin-search/search.js"></script>
-    
-
-    
-    <script src="../../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
-    
-
-    
-    <script src="../../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
-    
-
-<script>
-require(["gitbook"], function(gitbook) {
-    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
-    gitbook.start(config);
-});
-</script>
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Code style","level":"1.2.4","depth":2,"next":{"title":"Application state via Redux","level":"1.2.5","depth":2,"path":"docs/state/README.md","ref":"docs/state/README.md","articles":[{"title":"Example state tree","level":"1.2.5.1","depth":3,"path":"docs/state/ExampleStateTree.md","ref":"docs/state/ExampleStateTree.md","articles":[]},{"title":"Glossary of state tree terms","level":"1.2.5.2","depth":3,"path":"docs/state/StateTreeGlossary.md","ref":"docs/state/StateTreeGlossary.md","articles":[]},{"title":"Custom middleware","level":"1.2.5.3","depth":3,"path":"docs/state/CustomMiddleware.md","ref":"docs/state/CustomMiddleware.md","articles":[]}]},"previous":{"title":"Architecture","level":"1.2.3","depth":2,"path":"docs/guide/Architecture.md","ref":"docs/guide/Architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/guide/CodeStyle.md","mtime":"2017-05-11T21:30:38.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-26T23:09:10.174Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
 
         
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
     </body>
-    
 </html>
+
