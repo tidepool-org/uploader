@@ -164,7 +164,7 @@ describe('processData.js', function() {
           'index': 1,
           'resumeIndex': 4,
           'payload': {
-            'lgs_types': [
+            'reasons': [
               'Suspend low glucose',
               'Suspend user selected',
               'Resume user'
@@ -247,7 +247,7 @@ describe('processData.js', function() {
     			},
     			'duration': 7149000,
     			'payload': {
-    				'lgs_types': [
+    				'reasons': [
     					'Suspend no response',
     					'Automatic resume after no response'
     				],
@@ -320,7 +320,7 @@ describe('processData.js', function() {
           'index' : 1,
           'resumeIndex' : 4,
     			'payload': {
-    				'lgs_types': [
+    				'reasons': [
               'Suspend low glucose',
               'Suspend user selected',
               'Automatic resume after user suspend'
@@ -333,6 +333,84 @@ describe('processData.js', function() {
 
         var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
         expect(result[0]).to.deep.equal(expected);
+      });
+
+      it('has user suspend followed by LGS suspend', function() {
+
+        // user suspend
+        var suspend1 = {
+            head: [ 0x1E, 0x01 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:22.000Z'),
+            index: 1
+        };
+
+        // followed by LGS suspend
+        var suspend2 = {
+            head: [ 0x1E, 0x22 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:32.000Z'),
+            index: 2
+        };
+
+        var suspend3 = {
+            head: [ 0x1E, 0x43 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:37.000Z'),
+            index: 3
+        };
+
+        var resume1 = {
+            head: [ 0x1F, 0xA6 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T20:00:00.000Z'),
+            index: 4
+        };
+
+        var expected = {
+
+          'time': '2016-12-14T18:00:22.000Z',
+          'timezoneOffset': 0,
+          'clockDriftOffset': 0,
+          'conversionOffset': 0,
+          'deviceTime': '2016-12-14T18:00:22',
+          'type': 'deviceEvent',
+          'subType': 'status',
+          'status': 'suspended',
+          'reason': {
+            'suspended': 'automatic',
+            'resumed': 'manual'
+          },
+          'duration': 7178000,
+          'index' : 1,
+          'resumeIndex' : 4,
+          'payload': {
+            'reasons': [
+              'Suspend user',
+              'Suspend low glucose',
+              'Resume user'
+            ],
+            'logIndices': [
+              1
+            ]
+          }
+        };
+
+        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
+        expect(result[0]).to.deep.equal(expected);
+
       });
 
     });
