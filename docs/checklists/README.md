@@ -2,6 +2,7 @@ Checklists for the implementation of drivers for reading data from diabetes devi
 
    * [Abbott FreeStyle (BGM)](abbottFreeStyleLite.md)
    * [Abbott Precision Xtra (blood glucose & ketone meter)](abbottPrecisionXtra.md)
+   * [Animas Vibe (CGM data)](animasCGM.md)
    * [Animas Ping and Vibe Insulin Pumps](animasPingAndVibe.md)
    * [Bayer Contour Next (BGM)](bayerContourNext.md)
    * [CareLink (CGM data)](carelinkCGM.md)
@@ -10,3 +11,4 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [Insulet OmniPod Insulin Delivery System](insuletOmniPod.md)
    * [OneTouch VerioIQ (BGM)](oneTouchVerioIQ.md)
    * [Tandem Insulin Pumps](tandem.md)
+   * [Tandem G4 (CGM data)](tandemCGM.md)

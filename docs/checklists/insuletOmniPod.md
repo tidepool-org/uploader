@@ -231,3 +231,22 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` activity/exercise
   - `[ ]` food (e.g., from a food database built into the pump)
   - `[ ]` notes/other events
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API
+
+### Known implementation issues/TODOs
+
+*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+
+  - `*[ ]` The method for checking the PDM version for compatibility with the driver/spec should be double-checked; in at least once case a user's upload has failed due to version mismatch, but the version check may not be implemented exactly to spec.
+  - `*[ ]` Implement use of `CARRY_OVER_FLAG` and `NEW_DAY_FLAG` to handle event such as extended boluses (but not limited to those; a full search for potentially affected types should be performed) that are split across midnight but should ideally be only one event according to the Tidepool data model. Remove unnecessary annotation on recombined parts of bolus event split across midnight once these events are being processed to spec rather than by inference.
+  - `*[ ]` Consider using `IN_PROGRESS_FLAG` to discards events in progress at time of upload or ensure that they are being handled properly given that they are still in progress (and may not be fulfilled as programmed).
+  - `*[ ]` Audit where `ERROR`-flagged events are being found and handled correctly.
+  - `*[ ]` Remove `scheduleName` from all `scheduled` basal events since the schedule name is always the name of the active schedule at time of upload, which means it may almost always be incorrect for retrospective data.
+  - `*[ ]` Handle BG-related fields in `pumpSettings` (and possibly `wizard` events) properly for users with `mmol/L`-unit OmniPod systems.
+  - `*[ ]` Handle the BtUTC edge case that affects OmniPod users (living in Daylight Savings-observing timezones) who have large gaps in data crossing a DST changeover.
