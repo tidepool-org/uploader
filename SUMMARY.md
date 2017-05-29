@@ -29,6 +29,8 @@
    * [Insulet OmniPod](docs/checklists/insuletOmniPod.md)
    * [Tandem G4 CGM](docs/checklists/tandemCGM.md)
    * [Tandem Insulin Pumps](docs/checklists/tandem.md)
+   * [Medtronic 5/7-series (pump data)](docs/checklists/medtronic.md)
+   * [Medtronic 5/7-series (CGM data)](docs/checklists/medtronicCGM.md)
 
 * CLI tools
    * [CareLink CLI tool](lib/drivers/carelink/cli/README.md)
