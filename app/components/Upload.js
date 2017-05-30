@@ -43,7 +43,7 @@ export default class Upload extends Component {
       CARELINK_USERNAME: 'CareLink username',
       CARELINK_PASSWORD: 'CareLink password',
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
-      MEDTRONIC_SERIAL_NUMBER: 'Serial number',
+      MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',

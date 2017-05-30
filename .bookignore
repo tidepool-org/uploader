@@ -19,8 +19,10 @@ scripts/
 styles/
 test/
 **/*.js
+.bookignore
 .babelrc
 .eslintrc
+.gitignore
 .travis.yml
 description.txt
 LICENSE

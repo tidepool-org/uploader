@@ -663,6 +663,95 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('restarts temp basal after resume, followed by a reservoir change', function() {
+
+        var suspendResume = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(600000)
+          .with_reason({resumed: 'manual'})
+          .set('index', 1234)
+          .set('resumeIndex', 1235)
+          .done();
+
+        var suspendedBasal = builder.makeSuspendBasal()
+          .with_time('2014-09-25T18:20:00.000Z')
+          .with_deviceTime('2014-09-25T18:20:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1234);
+
+        var deviceEvent = builder.makeDeviceEventReservoirChange()
+          .with_time('2014-09-25T18:40:00.000Z')
+          .with_deviceTime('2014-09-25T18:40:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .set('index', 1235);
+
+        var basal3 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T18:50:00.000Z')
+            .with_deviceTime('2014-09-25T18:50:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.rewind(deviceEvent);
+        simulator.basal(basal3);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        expectedTempBasal1.suppressed.rate = 1.3;
+        expectedTempBasal1.duration = 600000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedSuspendedBasal1 = _.cloneDeep(suspendedBasal);
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'temp',
+          rate: 1,
+          suppressed : {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3,
+          }
+        };
+        expectedSuspendedBasal1.duration = 600000;
+        expectedSuspendedBasal1.set('suppressed', suppressed);
+        delete expectedSuspendedBasal1.index;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.time = '2014-09-25T18:30:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-25T18:30:00';
+        delete expectedTempBasal2.payload;
+        delete expectedTempBasal2.expectedDuration;
+
+        delete basal1.index;
+
+        var expectedSuspendedBasal2 = _.cloneDeep(suspendedBasal);
+        expectedSuspendedBasal2.time = '2014-09-25T18:40:00.000Z';
+        expectedSuspendedBasal2.deviceTime = '2014-09-25T18:40:00';
+        expectedSuspendedBasal2.payload.logIndices = [1235];
+        delete expectedSuspendedBasal2.suppressed;
+        delete expectedSuspendedBasal2.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedTempBasal1,
+          suspendResume,
+          expectedSuspendedBasal1.done(),
+          expectedTempBasal2,
+          deviceEvent,
+          expectedSuspendedBasal2.done()
+        ]);
+      });
+
       it('is suspended but not resumed before upload', function() {
 
         var suspendResume = builder.makeDeviceEventSuspendResume()
@@ -1109,6 +1198,92 @@ describe('medtronicSimulator.js', function() {
 
       });
 
+      it('extends past midnight with schedule change after midnight', function() {
+        var settings = {
+          type: 'pumpSettings',
+          time: '2014-01-08T02:00:00.000Z',
+          deviceTime: '2014-01-08T02:00:00',
+          timezoneOffset: 0,
+          conversionOffset: 0,
+          activeSchedule: 'standard',
+          units: { 'bg': 'mg/dL' },
+          basalSchedules: {
+            standard: [
+              {
+                'start': 0,
+                'rate': 0.7
+              },
+              {
+                'start': 1800000,
+                'rate': 0.75
+              }
+            ]
+          }
+        };
+
+        tempBasal = builder.makeTempBasal()
+          .with_time('2014-09-25T22:43:30.000Z')
+          .with_deviceTime('2014-09-25T22:43:30')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(7200000)
+          .with_rate(1.0)
+          .set('index',1);
+
+        var basal2 = builder.makeScheduledBasal()
+          .with_time('2014-09-26T00:43:30.000Z')
+          .with_deviceTime('2014-09-26T00:43:30')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(415000)
+          .with_rate(0.75)
+          .with_scheduleName('standard');
+
+        simulator.pumpSettings(settings);
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.basal(basal2);
+
+        var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
+        expectedTempBasal1.suppressed = {
+          'type': 'basal',
+          'deliveryType': 'scheduled',
+          'rate': 1.3,
+          'scheduleName': 'standard'
+        };
+        expectedTempBasal1.duration = 4590000;
+        delete expectedTempBasal1.index;
+        delete expectedTempBasal1.jsDate;
+
+        var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal2.duration = 1800000;
+        expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
+        expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
+        expectedTempBasal2.clockDriftOffset = 0;
+        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.rate = 0.7;
+        expectedTempBasal2.payload.duration = 2610000;
+
+        var expectedTempBasal3 = _.cloneDeep(expectedTempBasal1);
+        expectedTempBasal3.duration = 810000;
+        expectedTempBasal3.time = '2014-09-26T00:30:00.000Z';
+        expectedTempBasal3.deviceTime = '2014-09-26T00:30:00';
+        expectedTempBasal3.clockDriftOffset = 0;
+        expectedTempBasal3.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal3.suppressed.rate = 0.75;
+        delete expectedTempBasal3.payload.duration;
+
+        delete basal1.index;
+
+        expect(simulator.getEvents()).deep.equals([
+          settings,
+          basal1.done(),
+          expectedTempBasal1,
+          expectedTempBasal2,
+          expectedTempBasal3
+        ]);
+
+      });
     });
 
   });

@@ -284,7 +284,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         return dispatch(syncActions.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
-      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, 'E_DEVICE_UPLOAD', utc));
+      var errorMessage = 'E_DEVICE_UPLOAD';
+      if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
+        errorMessage = 'E_MEDTRONIC_UPLOAD';
+      }
+      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
     });
   };
 }
