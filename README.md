@@ -25,16 +25,7 @@ This README is focused on just the details of getting the uploader running local
 1. Clone this repository.
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
-1. Run these two commands __simultaneously__ in different console tabs.
-```bash
-$ npm run hot-server
-$ npm run start-hot
-```
-```bash
-$ yarn hot-server
-$ yarn start-hot
-```
-or run the two servers with one command
+1. Run the following command:
 ```bash
 $ npm run dev
 ```
