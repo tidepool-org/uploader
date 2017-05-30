@@ -82,7 +82,7 @@ export class SettingsPage extends Component {
         allUsers={allUsers}
         isUploadInProgress={this.props.uploadIsInProgress}
         onGroupChange={this.props.async.setUploadTargetUserAndMaybeRedirect}
-        locationPath={location.path}
+        locationPath={location.pathname}
         targetId={uploadTargetUser}
         targetUsersForUpload={targetUsersForUpload} />
     );

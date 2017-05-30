@@ -10,7 +10,7 @@ dependencies:
     - curl -o- -L https://yarnpkg.com/install.sh | bash
     - yarn config set cache-folder ~/.cache/yarn
   override:
-    - yarn
+    - yarn --pure-lockfile
   cache_directories:
     - ~/.cache/yarn
 

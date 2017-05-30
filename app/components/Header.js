@@ -81,15 +81,20 @@ export class Header extends Component {
 
     return (
       <div className={styles.header}>
-        <LoggedInAs
-          dropMenu={dropdown}
-          isUploadInProgress={this.props.uploadIsInProgress}
-          onChooseDevices={this.handleClickChooseDevices}
-          onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
-          onLogout={this.props.async.doLogout}
-          user={allUsers[this.props.loggedInUser]}
-          isClinicAccount={this.props.isClinicAccount}
-          targetUsersForUpload={this.props.targetUsersForUpload} />
+        <div className={styles.headerRow}>
+          <div className={styles.smallLogoWrapper}>
+            <img className={styles.smallLogo} src={logo} />
+          </div>
+          <LoggedInAs
+            dropMenu={dropdown}
+            isUploadInProgress={this.props.uploadIsInProgress}
+            onChooseDevices={this.handleClickChooseDevices}
+            onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
+            onLogout={this.props.async.doLogout}
+            user={allUsers[this.props.loggedInUser]}
+            isClinicAccount={this.props.isClinicAccount}
+            targetUsersForUpload={this.props.targetUsersForUpload} />
+        </div>
       </div>
     );
   }
