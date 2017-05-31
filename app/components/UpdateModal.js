@@ -57,7 +57,7 @@ export class UpdateModal extends Component {
     let title, text, actions;
 
     if(electronUpdateAvailable) {
-      title = 'Updates Available!';
+      title = 'Update Available!';
       text = 'After clicking Install, the uploader will restart to complete the installation.';
       actions = [
         <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
