@@ -15,6 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
+// TODO: pick one of the two options below after testing thoroughly
+
 import _ from 'lodash';
 //import regedit from 'regedit';
 import winreg from 'winreg';
@@ -23,19 +25,19 @@ export function checkVersion() {
 /*
   var software;
   regedit.list('HKLM\\SYSTEM\\DriverDatabase\\DriverPackages',
-  	function(err, result) {
-  		software = result['HKLM\\SYSTEM\\DriverDatabase\\DriverPackages'].keys;
-  		var filtered = _.filter(software, function(name){
-  			return _.startsWith(name, 'tidepool');
-  		});
-  		var tidepoolPaths = _.map(filtered, function(key) { return 'HKLM\\SYSTEM\\DriverDatabase\\DriverPackages\\' + key; });
-  		regedit.list(tidepoolPaths, function(err, result) {
-  			_.forEach(result, function(regvalues){
-  				var versionValue = regvalues.values.Version.value;
-  				console.log([versionValue[38],versionValue[36],versionValue[34],versionValue[32]].join('.'));
-  			});
-  		});
-  	}
+    function(err, result) {
+      software = result['HKLM\\SYSTEM\\DriverDatabase\\DriverPackages'].keys;
+      var filtered = _.filter(software, function(name){
+        return _.startsWith(name, 'tidepool');
+      });
+      var tidepoolPaths = _.map(filtered, function(key) { return 'HKLM\\SYSTEM\\DriverDatabase\\DriverPackages\\' + key; });
+      regedit.list(tidepoolPaths, function(err, result) {
+        _.forEach(result, function(regvalues){
+          var versionValue = regvalues.values.Version.value;
+          console.log([versionValue[38],versionValue[36],versionValue[34],versionValue[32]].join('.'));
+        });
+      });
+    }
   );
 */
   var regKey = winreg({
