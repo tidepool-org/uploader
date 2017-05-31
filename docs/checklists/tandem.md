@@ -233,7 +233,7 @@ No Tidepool data model yet:
 
 ##### Device-specific? (Add any device-specific notes/additions here.)
 
-At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
+At the moment, we only process data from the most recent pump shut-down event, if any exist. This is because a subtle assumption of BtUTC is that the pump clock is always running. Unfortunately, when a Tandem device is shut down, the clock stops. There are several ways we might try to handle these shut-downs and still do bootstrapping, all of which reduce to finding a way to reliably identify (and then drop) `timeChange` events occurring just after a device shutdown to reset the stopped clock, but we'll need to research and potentially prototype these to figure out the best approach and then implement it.
 
 ### No Tidepool Data Model Yet
 
@@ -242,3 +242,14 @@ At the moment, we only process data from the most recent pump shut-down event, i
   - `[ ]` activity/exercise
   - `[ ]` food (e.g., from a food database built into the pump)
   - `[ ]` notes/other events
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API
+
+### Known implementation issues/TODOs
+
+*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
