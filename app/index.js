@@ -16,6 +16,9 @@ const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 store.dispatch(push('/'));
 
+// This is the communication mechanism for receiving actions dispatched from
+// the `main` Electron process. `action` should always be the resulting object
+// from an action creator.
 ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
