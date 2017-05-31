@@ -382,10 +382,10 @@ export function uploadRequest(userId, device, utc) {
     meta: {
       source: actionSources[actionTypes.UPLOAD_REQUEST],
       metric: {
-        eventName: `${metrics.UPLOAD_REQUEST} ${actionUtils.getUploadTrackingId(device)}`,
+        eventName: `${metrics.UPLOAD_REQUEST}`,
         properties: {
           type: _.get(device, 'source.type', undefined),
-          source: _.get(device, 'source.driverId', undefined)
+          source: `${actionUtils.getUploadTrackingId(device)}`
         }
       }
     }
@@ -400,19 +400,20 @@ export function uploadProgress(step, percentage) {
   };
 }
 
-export function uploadSuccess(userId, device, upload, data, utc) {
+export function uploadSuccess(userId, device, upload, data, utc, sessionInfo) {
   utc = actionUtils.getUtc(utc);
   const numRecs = data.length;
-  return {
+  console.log("DEVICE:", device);
+  var test = {
     type: actionTypes.UPLOAD_SUCCESS,
     payload: { userId, deviceKey: device.key, data, utc },
     meta: {
       source: actionSources[actionTypes.UPLOAD_SUCCESS],
       metric: {
-        eventName: `${metrics.UPLOAD_SUCCESS} ${actionUtils.getUploadTrackingId(device)}`,
+        eventName: `${metrics.UPLOAD_SUCCESS}`,
         properties: {
           type: _.get(device, 'source.type', undefined),
-          source: _.get(device, 'source.driverId', undefined),
+          source: `${actionUtils.getUploadTrackingId(device)}`,
           started: upload.history[0].start || '',
           finished: utc || '',
           processed: numRecs || 0
@@ -420,6 +421,8 @@ export function uploadSuccess(userId, device, upload, data, utc) {
       }
     }
   };
+  console.log("UPLOADSUCCESS:", test);
+  return test;
 }
 
 export function uploadFailure(err, errProps, device) {
@@ -431,10 +434,10 @@ export function uploadFailure(err, errProps, device) {
     meta: {
       source: actionSources[actionTypes.UPLOAD_FAILURE],
       metric: {
-        eventName: `${metrics.UPLOAD_FAILURE} ${actionUtils.getUploadTrackingId(device)}`,
+        eventName: `${metrics.UPLOAD_FAILURE}`,
         properties: {
           type: _.get(device, 'source.type', undefined),
-          source: _.get(device, 'source.driverId', undefined),
+          source: `${actionUtils.getUploadTrackingId(device)}`,
           error: err
         }
       }
