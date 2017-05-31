@@ -141,7 +141,7 @@ export class App extends Component {
         type: 'separator'
       });
     }
-    if (this.props.location.pathname === '/login') {
+    if (this.props.location.pathname === pagesMap.LOGIN) {
       template.push({
         label: 'Change server',
         submenu: [
