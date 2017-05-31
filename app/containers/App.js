@@ -16,7 +16,7 @@
  */
 
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
@@ -49,7 +49,9 @@ import styles from '../../styles/components/App.module.less';
 
 export class App extends Component {
   static propTypes = {
-    // api: PropTypes.func.isRequired
+    route: PropTypes.shape({
+      api: PropTypes.func.isRequired
+    }).isRequired
   };
 
   constructor(props) {
