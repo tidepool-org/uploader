@@ -46,6 +46,7 @@ export class Header extends Component {
   constructor(props) {
     super(props);
     this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
+    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
   }
 
   handleClickChooseDevices(metric) {
@@ -53,6 +54,11 @@ export class Header extends Component {
     const { setPage } = this.props.async;
     // ensure dropdown closes after click
     setPage(pages.SETTINGS, true, metric);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  }
+
+  handleCheckForUpdates() {
+    const { toggleDropdown } = this.props.sync;
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   }
 
@@ -88,6 +94,7 @@ export class Header extends Component {
           <LoggedInAs
             dropMenu={dropdown}
             isUploadInProgress={this.props.uploadIsInProgress}
+            onCheckForUpdates={this.handleCheckForUpdates}
             onChooseDevices={this.handleClickChooseDevices}
             onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
             onLogout={this.props.async.doLogout}
