@@ -116,11 +116,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         },
@@ -236,11 +236,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/settings',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/settings',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -350,11 +350,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/settings',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/settings',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -450,11 +450,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/no_upload_targets',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/no_upload_targets',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -515,14 +515,14 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/clinic_user_select',
-							state: {
-								meta: {
-									metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
-									source: actionSources.USER
-								}
-							}
-						} ],
+              pathname: '/clinic_user_select',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
             method: 'push'
           }
         }
@@ -565,11 +565,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources.USER}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -608,11 +608,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources.USER}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -1826,11 +1826,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -1892,11 +1892,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -1963,11 +1963,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-							 	state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                 state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2029,11 +2029,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2094,11 +2094,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2166,11 +2166,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2261,11 +2261,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-							  	meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2478,11 +2478,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2511,11 +2511,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2566,11 +2566,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2625,11 +2625,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2696,11 +2696,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2768,11 +2768,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2862,11 +2862,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2947,11 +2947,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3026,11 +3026,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3117,11 +3117,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3556,17 +3556,17 @@ describe('Asynchronous Actions', () => {
 
     it('should create an action to set the page', () => {
       const expectedActions = [{
-				type: '@@router/CALL_HISTORY_METHOD',
-				payload: {
-					args: [ {
-						pathname: '/main',
-						state: {
-							meta: {source: actionSources[actionTypes.SET_PAGE]}
-						}
-					} ],
-					method: 'push'
-				}
-			}];
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: {
+          args: [ {
+            pathname: '/main',
+            state: {
+              meta: {source: actionSources[actionTypes.SET_PAGE]}
+            }
+          } ],
+          method: 'push'
+        }
+      }];
       const store = mockStore({});
       store.dispatch(asyncActions.setPage(PAGE));
       const actions = store.getActions();
@@ -3575,17 +3575,17 @@ describe('Asynchronous Actions', () => {
 
     it('should accept a second parameter to override the default action source', () => {
       const expectedActions = [{
-				type: '@@router/CALL_HISTORY_METHOD',
-				payload: {
-					args: [ {
-						pathname: '/main',
-						state: {
-							meta: {source: actionSources.USER}
-						}
-					} ],
-					method: 'push'
-				}
-			}];
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: {
+          args: [ {
+            pathname: '/main',
+            state: {
+              meta: {source: actionSources.USER}
+            }
+          } ],
+          method: 'push'
+        }
+      }];
       const store = mockStore({});
       store.dispatch(asyncActions.setPage(PAGE, actionSources.USER));
       const actions = store.getActions();
