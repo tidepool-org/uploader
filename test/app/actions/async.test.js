@@ -782,7 +782,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -798,7 +798,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -882,7 +882,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -898,7 +898,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -982,7 +982,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -998,7 +998,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1086,7 +1086,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -1102,7 +1102,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1177,7 +1177,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -1192,7 +1192,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
-              eventName: 'Upload Successful AcmePump',
+              eventName: 'Upload Successful',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1277,8 +1277,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1303,10 +1303,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1385,8 +1385,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1411,10 +1411,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1499,8 +1499,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: undefined}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1524,10 +1524,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1599,8 +1599,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: undefined}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1623,10 +1623,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
-              eventName: 'Upload Successful CareLink',
+              eventName: 'Upload Successful',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 started: time,
                 finished: time,
                 processed: 4
