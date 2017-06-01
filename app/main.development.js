@@ -1,6 +1,8 @@
 import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
+import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 
 let menu;
@@ -70,12 +72,19 @@ app.on('ready', async () => {
 
   mainWindow.webContents.on('new-window', function(event, url){
     event.preventDefault();
-    open(url, 'chrome', function(error){
-      if(error){
-        // couldn't open in chrome specifically, probably because it's not installed
-        open(url);
-      }
-    });
+    let platform = os.platform();
+    let chromeInstalls = chromeFinder[platform]();
+    if(chromeInstalls.length === 0){
+      // no chrome installs found, open user's default browser
+      open(url);
+    } else {
+      open(url, chromeInstalls[0], function(error){
+        if(error){
+          // couldn't open chrome, try OS default
+          open(url);
+        }
+      });
+    }
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
