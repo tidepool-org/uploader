@@ -400,11 +400,10 @@ export function uploadProgress(step, percentage) {
   };
 }
 
-export function uploadSuccess(userId, device, upload, data, utc, sessionInfo) {
+export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
   const numRecs = data.length;
-  console.log("DEVICE:", device);
-  var test = {
+  return {
     type: actionTypes.UPLOAD_SUCCESS,
     payload: { userId, deviceKey: device.key, data, utc },
     meta: {
@@ -421,8 +420,6 @@ export function uploadSuccess(userId, device, upload, data, utc, sessionInfo) {
       }
     }
   };
-  console.log("UPLOADSUCCESS:", test);
-  return test;
 }
 
 export function uploadFailure(err, errProps, device) {
