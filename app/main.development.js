@@ -62,12 +62,7 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
-    // in production NODE_ENV or *any* type of BUILD (including BUILD === 'dev')
-    // we check for updates, but not if NODE_ENV is 'development' and BUILD is unset
-    // this prevents a Webpack build error that masks other build errors during local development
-    if (process.env.NODE_ENV === 'production' || process.env.BUILD) {
-      autoUpdater.checkForUpdates();
-    }
+    checkUpdates();
   });
 
   mainWindow.webContents.on('new-window', function(event, url){
@@ -299,6 +294,17 @@ app.on('ready', async () => {
     mainWindow.setMenu(menu);
   }
 });
+
+function checkUpdates(){
+  // in production NODE_ENV or *any* type of BUILD (including BUILD === 'dev')
+  // we check for updates, but not if NODE_ENV is 'development' and BUILD is unset
+  // this prevents a Webpack build error that masks other build errors during local development
+  if (process.env.NODE_ENV === 'production' || process.env.BUILD) {
+    autoUpdater.checkForUpdates();
+  }
+}
+
+setInterval(checkUpdates, 1000 * 60 * 60 * 24);
 
 let manualCheck = false;
 
