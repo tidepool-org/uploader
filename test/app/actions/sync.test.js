@@ -975,7 +975,12 @@ describe('Synchronous Actions', () => {
           type: actionTypes.VERSION_CHECK_FAILURE,
           error: true,
           payload: err,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+          meta: {
+            source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+            metric: {
+              eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+            }
+          }
         };
 
         expect(syncActions.versionCheckFailure(err)).to.deep.equal(expectedAction);

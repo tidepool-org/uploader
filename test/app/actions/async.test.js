@@ -1687,7 +1687,12 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.VERSION_CHECK_FAILURE,
             error: true,
             payload: err,
-            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+            meta: {
+              source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+              metric: {
+                eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+              }
+            }
           }
         ];
         __Rewire__('services', {
@@ -1716,7 +1721,12 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.VERSION_CHECK_FAILURE,
             error: true,
             payload: err,
-            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+            meta: {
+              source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+              metric: {
+                eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+              }
+            }
           }
         ];
         __Rewire__('services', {
