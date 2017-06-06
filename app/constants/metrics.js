@@ -45,3 +45,6 @@ export const CARELINK_FETCH_SUCCESS = 'CareLink Fetch Successful';
 export const CARELINK_FETCH_FAILURE = 'CareLink Fetch Failed';
 
 export const VERSION_CHECK_FAILURE_OUTDATED = '(Partial) Uploader Version No Longer Supported';
+
+export const UNSUPPORTED_SCREEN_DISPLAYED = 'Electron Uploader - Unsupported screen displayed';
+export const QUIT_AND_INSTALL = 'Electron Uploader - Auto-update occurred';

@@ -519,7 +519,12 @@ export function versionCheckFailure(err, currentVersion, requiredVersion) {
       type: actionTypes.VERSION_CHECK_FAILURE,
       error: true,
       payload: err,
-      meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+      meta: {
+        source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+        metric: {
+          eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+        }
+      }
     };
   }
   else {
@@ -678,5 +683,15 @@ export function dismissUpdateNotAvailable() {
   return {
     type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
     meta: { source: actionSources[actionTypes.DISMISS_UPDATE_NOT_AVAILABLE] }
+  };
+}
+
+export function quitAndInstall() {
+  return {
+    type: actionTypes.QUIT_AND_INSTALL,
+    meta: {
+      source: actionSources[actionTypes.QUIT_AND_INSTALL],
+      metric: { eventName: metrics.QUIT_AND_INSTALL }
+    }
   };
 }

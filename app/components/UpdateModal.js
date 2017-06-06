@@ -27,7 +27,14 @@ import config from '../../lib/config.js';
 import styles from '../../styles/components/UpdateModal.module.less';
 
 export class UpdateModal extends Component {
+  constructor() {
+    super();
+    this.handleInstall = this.handleInstall.bind(this);
+   }
+
   handleInstall() {
+    const { sync } = this.props;
+    sync.quitAndInstall();
     ipcRenderer.send('autoUpdater', 'quitAndInstall');
   }
 
