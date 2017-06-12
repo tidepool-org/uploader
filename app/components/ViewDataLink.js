@@ -34,7 +34,7 @@ var ViewDataLink = React.createClass({
           href={this.props.href}
           onClick={this.props.onViewClicked}
           target="_blank" >
-          Go to Blip
+          See data
         </a>
       </div>
     );
