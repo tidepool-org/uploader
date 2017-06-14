@@ -114,7 +114,8 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[x]` subType (`linked` or `manual`)
   - `[x]` units of value (read from device, not hard-coded)
   - `[ ]` out-of-range values (LO or HI)
-  - `[?]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+  - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+  - out-of-range SMBG thresholds don't apply to linked SMBG values, since they aren't sent to the pump, and the Bolus Wizard won't let you enter values outside of the threshold range either.
 
 No Tidepool data model yet:
 
