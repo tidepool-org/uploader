@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.6",
+  "version": "0.310.0-alpha.7",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -38,6 +38,7 @@
     "async": "1.5.2",
     "babyparse": "0.4.6",
     "blueimp-md5": "2.7.0",
+    "bows": "1.6.0",
     "chrome-launcher": "0.0.1",
     "classnames": "2.2.5",
     "commander": "2.9.0",

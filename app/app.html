@@ -19,6 +19,8 @@
     <div id="app"></div>
     <script>
       {
+        // to enable `bows` logging we set debug here
+        localStorage.setItem('debug', 'true');
         const script = document.createElement('script');
         const port = process.env.PORT || 3005;
         script.src = (process.env.HOT)

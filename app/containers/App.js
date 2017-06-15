@@ -23,7 +23,7 @@ import { remote } from 'electron';
 
 const {Menu} = remote;
 
-import bows from '../../lib/bows.js';
+import bows from 'bows';
 
 import config from '../../lib/config.js';
 
