@@ -1356,6 +1356,65 @@ describe('medtronicSimulator.js', function() {
         ]);
 
       });
+
+      it('has a one-second gap before a scheduled basal', function() {
+        var basal = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:40:01.000Z')
+          .with_deviceTime('2014-09-25T18:40:01')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(0.75);
+
+        var expectedTempBasal = _.cloneDeep(tempBasal).done();
+        delete expectedTempBasal.index;
+
+        var oneSecondTemp = _.cloneDeep(expectedTempBasal);
+        oneSecondTemp.time = '2014-09-25T18:40:00.000Z';
+        oneSecondTemp.deviceTime = '2014-09-25T18:40:00';
+        oneSecondTemp.clockDriftOffset = 0;
+        oneSecondTemp.duration = 1000;
+        oneSecondTemp.annotations = [{code: 'medtronic/basal/one-second-gap'}];
+
+        simulator.basal(tempBasal);
+        simulator.basal(basal);
+
+        expect(simulator.getEvents()).deep.equals([
+          expectedTempBasal,
+          oneSecondTemp
+        ]);
+      });
+
+      it('is cancelled and has a one-second gap before a scheduled basal', function() {
+
+        tempBasal.duration = 1200000;
+        tempBasal.expectedDuration = 1800000;
+
+        var basal = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:30:01.000Z')
+          .with_deviceTime('2014-09-25T18:30:01')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(0.75);
+
+        var expectedTempBasal = _.cloneDeep(tempBasal).done();
+        delete expectedTempBasal.index;
+
+        var oneSecondTemp = _.cloneDeep(expectedTempBasal);
+        oneSecondTemp.time = '2014-09-25T18:30:00.000Z';
+        oneSecondTemp.deviceTime = '2014-09-25T18:30:00';
+        oneSecondTemp.clockDriftOffset = 0;
+        oneSecondTemp.duration = 1000;
+        oneSecondTemp.annotations = [{code: 'medtronic/basal/one-second-gap'}];
+        delete oneSecondTemp.expectedDuration;
+
+        simulator.basal(tempBasal);
+        simulator.basal(basal);
+
+        expect(simulator.getEvents()).deep.equals([
+          expectedTempBasal,
+          oneSecondTemp
+        ]);
+      });
     });
 
   });
