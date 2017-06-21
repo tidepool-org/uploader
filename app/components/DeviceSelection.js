@@ -76,20 +76,7 @@ var DeviceSelection = React.createClass({
 
     var items = _.map(devices, function(device) {
       var isChecked = _.contains(targetDevices, device.key);
-      var driverLink = '';
 
-      if (device.showDriverLink[os] === true &&
-        device.enabled[os] === true) {
-        driverLink = urls.DRIVER_DOWNLOAD;
-      }
-
-      var driverLinkDisplay = null;
-      if (isChecked && !_.isEmpty(driverLink)) {
-        driverLinkDisplay = (
-          <div className={styles.detail}>
-          <a className={styles.driverLink} href={driverLink} target="_blank">Download driver</a></div>
-        );
-      }
       return (
         <div key={device.key}>
           <div className={styles.checkbox}>
@@ -101,7 +88,6 @@ var DeviceSelection = React.createClass({
               onChange={onCheckedChange} />
               <label className={styles.label} htmlFor={device.key}>{device.selectName || device.name}</label>
           </div>
-          {driverLinkDisplay}
         </div>
       );
     });

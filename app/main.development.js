@@ -1,6 +1,8 @@
 import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
+import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 
 let menu;
@@ -60,17 +62,24 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
-    autoUpdater.checkForUpdates();
+    checkUpdates();
   });
 
   mainWindow.webContents.on('new-window', function(event, url){
     event.preventDefault();
-    open(url, 'chrome', function(error){
-      if(error){
-        // couldn't open in chrome specifically, probably because it's not installed
-        open(url);
-      }
-    });
+    let platform = os.platform();
+    let chromeInstalls = chromeFinder[platform]();
+    if(chromeInstalls.length === 0){
+      // no chrome installs found, open user's default browser
+      open(url);
+    } else {
+      open(url, chromeInstalls[0], function(error){
+        if(error){
+          // couldn't open chrome, try OS default
+          open(url);
+        }
+      });
+    }
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -149,31 +158,42 @@ app.on('ready', async () => {
       }]
     }, {
       label: 'View',
-      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
-        label: 'Reload',
-        accelerator: 'Command+R',
-        click() {
-          mainWindow.webContents.reload();
+      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ?
+      [
+        {
+          label: 'Reload',
+          accelerator: 'Command+R',
+          click() {
+            mainWindow.webContents.reload();
+          }
+        }, {
+          label: 'Toggle Full Screen',
+          accelerator: 'Ctrl+Command+F',
+          click() {
+            mainWindow.setFullScreen(!mainWindow.isFullScreen());
+          }
+        }, {
+          label: 'Toggle Developer Tools',
+          accelerator: 'Alt+Command+I',
+          click() {
+            mainWindow.toggleDevTools();
+          }
         }
-      }, {
-        label: 'Toggle Full Screen',
-        accelerator: 'Ctrl+Command+F',
-        click() {
-          mainWindow.setFullScreen(!mainWindow.isFullScreen());
+      ] : [
+        {
+          label: 'Toggle Full Screen',
+          accelerator: 'Ctrl+Command+F',
+          click() {
+            mainWindow.setFullScreen(!mainWindow.isFullScreen());
+          }
+        }, {
+          label: 'Toggle Developer Tools',
+          accelerator: 'Alt+Command+I',
+          click() {
+            mainWindow.toggleDevTools();
+          }
         }
-      }, {
-        label: 'Toggle Developer Tools',
-        accelerator: 'Alt+Command+I',
-        click() {
-          mainWindow.toggleDevTools();
-        }
-      }] : [{
-        label: 'Toggle Full Screen',
-        accelerator: 'Ctrl+Command+F',
-        click() {
-          mainWindow.setFullScreen(!mainWindow.isFullScreen());
-        }
-      }]
+      ]
     }, {
       label: 'Window',
       submenu: [{
@@ -256,6 +276,12 @@ app.on('ready', async () => {
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
+      }, {
+        label: 'Toggle &Developer Tools',
+        accelerator: 'Alt+Ctrl+I',
+        click() {
+          mainWindow.toggleDevTools();
+        }
       }]
     }, {
       label: 'Help',
@@ -285,6 +311,17 @@ app.on('ready', async () => {
     mainWindow.setMenu(menu);
   }
 });
+
+function checkUpdates(){
+  // in production NODE_ENV or *any* type of BUILD (including BUILD === 'dev')
+  // we check for updates, but not if NODE_ENV is 'development' and BUILD is unset
+  // this prevents a Webpack build error that masks other build errors during local development
+  if (process.env.NODE_ENV === 'production' || process.env.BUILD) {
+    autoUpdater.checkForUpdates();
+  }
+}
+
+setInterval(checkUpdates, 1000 * 60 * 60 * 24);
 
 let manualCheck = false;
 

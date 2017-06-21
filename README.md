@@ -23,18 +23,11 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
+1. Make sure you have node v7.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
+1. Check that you are also using npm v4.x, which should come with any node v7.x by default, but if not, run `npm install -g npm@4` to get the latest v4.x version.
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
-1. Run these two commands __simultaneously__ in different console tabs.
-```bash
-$ npm run hot-server
-$ npm run start-hot
-```
-```bash
-$ yarn hot-server
-$ yarn start-hot
-```
-or run the two servers with one command
+1. Run the following command:
 ```bash
 $ npm run dev
 ```
@@ -42,7 +35,8 @@ $ npm run dev
 $ yarn dev
 ```
 (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
-1. React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
+
+**NB:** React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
 
 ## Config
 
@@ -67,6 +61,8 @@ The environment variable `REDUX_LOG` (boolean) controls whether or not the [redu
 
 
 `REDUX_LOG` is turned on by default in `config/ui-debug.sh`.
+
+As an alternative to using `REDUX_LOG`, the Electron uploader now includes the Redux DevTools. See [DevTools](#devtools) below for more details.
 
 ### Local Development w/o Debug Mode(s)
 

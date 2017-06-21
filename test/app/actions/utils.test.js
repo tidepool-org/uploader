@@ -77,7 +77,7 @@ describe('utils', () => {
         meta: {
           source: 'USER_VISIBLE',
           metric: {
-            eventName: 'Upload Failed bar',
+            eventName: 'Upload Failed',
             properties: {
               type: 'device',
               source: 'bar',
@@ -113,7 +113,7 @@ describe('utils', () => {
         meta: {
           source: 'USER_VISIBLE',
           metric: {
-            eventName: 'Upload Failed bar',
+            eventName: 'Upload Failed',
             properties: {
               type: 'device',
               source: 'bar',

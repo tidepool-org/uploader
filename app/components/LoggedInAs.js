@@ -24,6 +24,7 @@ export default class LoggedInAs extends Component {
   static propTypes = {
     dropMenu: React.PropTypes.bool.isRequired,
     isUploadInProgress: React.PropTypes.bool.isRequired,
+    onCheckForUpdates: React.PropTypes.func.isRequired,
     onChooseDevices: React.PropTypes.func.isRequired,
     onClicked: React.PropTypes.func.isRequired,
     onLogout: React.PropTypes.func.isRequired,
@@ -36,6 +37,7 @@ export default class LoggedInAs extends Component {
     super(props);
     this.state = { loggingOut: false };
 
+    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
     this.handleChooseDevices = this.handleChooseDevices.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -53,6 +55,7 @@ export default class LoggedInAs extends Component {
 
   handleCheckForUpdates(e) {
     e.preventDefault();
+    this.props.onCheckForUpdates();
     ipcRenderer.send('autoUpdater','checkForUpdates');
   }
 

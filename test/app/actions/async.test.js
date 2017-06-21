@@ -116,11 +116,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         },
@@ -236,11 +236,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/settings',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/settings',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -350,11 +350,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/settings',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/settings',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -450,11 +450,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/no_upload_targets',
-							state: {
-								meta: {source: actionSources[actionTypes.SET_PAGE]}
-							}
-						} ],
+              pathname: '/no_upload_targets',
+              state: {
+                meta: {source: actionSources[actionTypes.SET_PAGE]}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -515,14 +515,14 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/clinic_user_select',
-							state: {
-								meta: {
-									metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
-									source: actionSources.USER
-								}
-							}
-						} ],
+              pathname: '/clinic_user_select',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
             method: 'push'
           }
         }
@@ -565,11 +565,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources.USER}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -608,11 +608,11 @@ describe('Asynchronous Actions', () => {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
-							pathname: '/login',
-							state: {
-								meta: {source: actionSources.USER}
-							}
-						} ],
+              pathname: '/login',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
             method: 'push'
           }
         }
@@ -782,7 +782,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -798,7 +798,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -882,7 +882,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -898,7 +898,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -982,7 +982,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -998,7 +998,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1086,7 +1086,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -1102,7 +1102,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed AcmePump',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1177,7 +1177,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
             }
           }
@@ -1192,7 +1192,7 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
-              eventName: 'Upload Successful AcmePump',
+              eventName: 'Upload Successful',
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
@@ -1277,8 +1277,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1303,10 +1303,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1385,8 +1385,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1411,10 +1411,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1499,8 +1499,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: undefined}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1524,10 +1524,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: 'Upload Failed CareLink',
+              eventName: 'Upload Failed',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 error: err
               }
             }
@@ -1599,8 +1599,8 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted CareLink',
-              properties: {type: targetDevice.source.type, source: undefined}
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: 'CareLink'}
             }
           }
         },
@@ -1623,10 +1623,10 @@ describe('Asynchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
-              eventName: 'Upload Successful CareLink',
+              eventName: 'Upload Successful',
               properties: {
                 type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
+                source: 'CareLink',
                 started: time,
                 finished: time,
                 processed: 4
@@ -1687,7 +1687,12 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.VERSION_CHECK_FAILURE,
             error: true,
             payload: err,
-            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+            meta: {
+              source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+              metric: {
+                eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+              }
+            }
           }
         ];
         __Rewire__('services', {
@@ -1716,7 +1721,12 @@ describe('Asynchronous Actions', () => {
             type: actionTypes.VERSION_CHECK_FAILURE,
             error: true,
             payload: err,
-            meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+            meta: {
+              source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+              metric: {
+                eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+              }
+            }
           }
         ];
         __Rewire__('services', {
@@ -1826,14 +1836,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {
-                    source: actionSources[actionTypes.SET_PAGE],
-                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
-                  }
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -1895,14 +1902,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {
-                    source: actionSources[actionTypes.SET_PAGE],
-                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
-                  }
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -1969,14 +1973,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-							 	state: {
-									meta: {
-                    source: actionSources[actionTypes.SET_PAGE],
-                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
-                  }
-								}
-							} ],
+                pathname: '/main',
+                 state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2038,14 +2039,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {
-                    source: actionSources[actionTypes.SET_PAGE],
-                    metric: {eventName: metrics.CHOOSE_DEVICES_DONE}
-                  }
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2106,11 +2104,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2178,11 +2176,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2273,11 +2271,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-							  	meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2490,11 +2488,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2523,11 +2521,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2578,11 +2576,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2637,11 +2635,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2708,11 +2706,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2780,11 +2778,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2874,11 +2872,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -2959,11 +2957,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/settings',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3038,11 +3036,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3129,11 +3127,11 @@ describe('Asynchronous Actions', () => {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-								pathname: '/main',
-								state: {
-									meta: {source: actionSources[actionTypes.SET_PAGE]}
-								}
-							} ],
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
               method: 'push'
             }
           }
@@ -3568,17 +3566,17 @@ describe('Asynchronous Actions', () => {
 
     it('should create an action to set the page', () => {
       const expectedActions = [{
-				type: '@@router/CALL_HISTORY_METHOD',
-				payload: {
-					args: [ {
-						pathname: '/main',
-						state: {
-							meta: {source: actionSources[actionTypes.SET_PAGE]}
-						}
-					} ],
-					method: 'push'
-				}
-			}];
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: {
+          args: [ {
+            pathname: '/main',
+            state: {
+              meta: {source: actionSources[actionTypes.SET_PAGE]}
+            }
+          } ],
+          method: 'push'
+        }
+      }];
       const store = mockStore({});
       store.dispatch(asyncActions.setPage(PAGE));
       const actions = store.getActions();
@@ -3587,17 +3585,17 @@ describe('Asynchronous Actions', () => {
 
     it('should accept a second parameter to override the default action source', () => {
       const expectedActions = [{
-				type: '@@router/CALL_HISTORY_METHOD',
-				payload: {
-					args: [ {
-						pathname: '/main',
-						state: {
-							meta: {source: actionSources.USER}
-						}
-					} ],
-					method: 'push'
-				}
-			}];
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: {
+          args: [ {
+            pathname: '/main',
+            state: {
+              meta: {source: actionSources.USER}
+            }
+          } ],
+          method: 'push'
+        }
+      }];
       const store = mockStore({});
       store.dispatch(asyncActions.setPage(PAGE, actionSources.USER));
       const actions = store.getActions();

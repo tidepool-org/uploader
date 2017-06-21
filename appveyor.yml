@@ -10,12 +10,6 @@ cache:
   - app/node_modules -> app/package.json
   - "%LOCALAPPDATA%\\Yarn"
 
-# Enable when https://github.com/yarnpkg/yarn/issues/1233 and
-# https://github.com/yarnpkg/yarn/issues/1059 are resolved and disable npm cache
-#
-# cache:
-#   - "%LOCALAPPDATA%/Yarn"
-
 platform:
   - x64
 
@@ -35,28 +29,13 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
-# --frozen-lockfile might be better, but potentially too restrictive
-  - yarn --pure-lockfile
-#  - npm install -g npm@latest
-#  - set PATH=%APPDATA%\npm;%PATH%
-#  - npm install
-
-# Enable when https://github.com/yarnpkg/yarn/issues/1233 and
-# https://github.com/yarnpkg/yarn/issues/1059 are resolved and disable npm cache
-#
-# install:
-#   - ps: Install-Product node $env:nodejs_version
-#   - set CI=true
-#   - choco install yarn
-#   - refreshenv
-#   - yarn
+  - yarn --frozen-lockfile
 
 test_script:
   - node --version
   - yarn lint
   - yarn test
-#  - npm run build
-#  - npm run test-e2e
+#  - yarn test-e2e
   - yarn package-dev
   - 7z a development.zip release
   - rmdir /S /Q release

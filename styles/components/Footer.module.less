@@ -26,6 +26,7 @@
   margin: 0px auto;
   justify-content: space-between;
   align-self: flex-end;
+  align-items: center;
 }
 
 .footerLink {
@@ -36,6 +37,11 @@
   &:active {
     text-decoration: none;
   }
+}
+
+.jdrfContainer {
+  composes: flexRow from '../core/layout.module.less';
+  align-items: center;
 }
 
 .jdrfText {

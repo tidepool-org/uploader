@@ -19,6 +19,7 @@ var _ = require('lodash');
 var React = require('react');
 var Select = require('react-select');
 var personUtils = require('../../lib/core/personUtils');
+var pagesMap = require('../constants/otherConstants').pagesMap;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 
@@ -27,7 +28,7 @@ var UserDropdown = React.createClass({
     allUsers: React.PropTypes.object.isRequired,
     isUploadInProgress: React.PropTypes.bool,
     onGroupChange: React.PropTypes.func.isRequired,
-		locationPath: React.PropTypes.string.isRequired,
+    locationPath: React.PropTypes.string.isRequired,
     targetId: React.PropTypes.string,
     targetUsersForUpload: React.PropTypes.array.isRequired
   },
@@ -71,9 +72,9 @@ var UserDropdown = React.createClass({
       return null;
     }
 
-    var text = this.props.locationPath === '/main' ?
+    var text = this.props.locationPath === pagesMap.MAIN ?
       'Upload data for' : 'Choose devices for';
-		var styleClass = this.props.locationPath.substring(1);
+    var styleClass = this.props.locationPath.substring(1);
 
     return (
       <div>

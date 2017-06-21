@@ -693,7 +693,7 @@ describe('Synchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
-              eventName: 'Upload Attempted AcmePump',
+              eventName: 'Upload Attempted',
               properties: {type: device.source.type, source: device.source.driverId}
             }
           }
@@ -746,7 +746,7 @@ describe('Synchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
-              eventName: `${metrics.UPLOAD_SUCCESS} ${device.source.driverId}`,
+              eventName: `${metrics.UPLOAD_SUCCESS}`,
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
@@ -788,7 +788,7 @@ describe('Synchronous Actions', () => {
           meta: {
             source: actionSources[actionTypes.UPLOAD_FAILURE],
             metric: {
-              eventName: `${metrics.UPLOAD_FAILURE} ${device.source.driverId}`,
+              eventName: `${metrics.UPLOAD_FAILURE}`,
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
@@ -975,7 +975,12 @@ describe('Synchronous Actions', () => {
           type: actionTypes.VERSION_CHECK_FAILURE,
           error: true,
           payload: err,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_FAILURE]}
+          meta: {
+            source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+            metric: {
+              eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
+            }
+          }
         };
 
         expect(syncActions.versionCheckFailure(err)).to.deep.equal(expectedAction);

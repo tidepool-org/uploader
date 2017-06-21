@@ -16,7 +16,7 @@
  */
 
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
@@ -24,7 +24,7 @@ import * as metrics from '../constants/metrics';
 
 const {Menu} = remote;
 
-import bows from '../../lib/bows.js';
+import bows from 'bows';
 
 import config from '../../lib/config.js';
 
@@ -50,7 +50,9 @@ import styles from '../../styles/components/App.module.less';
 
 export class App extends Component {
   static propTypes = {
-    // api: PropTypes.func.isRequired
+    route: PropTypes.shape({
+      api: PropTypes.func.isRequired
+    }).isRequired
   };
 
   constructor(props) {
@@ -142,7 +144,7 @@ export class App extends Component {
         type: 'separator'
       });
     }
-    if (this.props.location.pathname === '/login') {
+    if (this.props.location.pathname === pagesMap.LOGIN) {
       template.push({
         label: 'Change server',
         submenu: [

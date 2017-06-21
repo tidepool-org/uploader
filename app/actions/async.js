@@ -686,8 +686,8 @@ export function clickAddNewUser(){
 export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
   return (dispatch, getState) => {
     if(pagesMap[page]){
-			const meta = { source: actionSource };
-			_.assign(meta, metric);
+      const meta = { source: actionSource };
+      _.assign(meta, metric);
       dispatch(push({pathname: pagesMap[page], state: { meta }}));
     }
   };

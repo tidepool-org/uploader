@@ -27,7 +27,14 @@ import config from '../../lib/config.js';
 import styles from '../../styles/components/UpdateModal.module.less';
 
 export class UpdateModal extends Component {
+  constructor() {
+    super();
+    this.handleInstall = this.handleInstall.bind(this);
+   }
+
   handleInstall() {
+    const { sync } = this.props;
+    sync.quitAndInstall();
     ipcRenderer.send('autoUpdater', 'quitAndInstall');
   }
 
@@ -57,7 +64,7 @@ export class UpdateModal extends Component {
     let title, text, actions;
 
     if(electronUpdateAvailable) {
-      title = 'Updates Available!';
+      title = 'Update Available!';
       text = 'After clicking Install, the uploader will restart to complete the installation.';
       actions = [
         <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
