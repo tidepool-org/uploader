@@ -595,11 +595,11 @@ describe('objectBuilder.js', function(){
       expect(wiz.timezoneOffset).to.equal(REQUIRED);
       expect(wiz.conversionOffset).to.equal(REQUIRED);
       expect(wiz.deviceTime).to.equal(REQUIRED);
-      expect(wiz.insulinOnBoard).to.equal(REQUIRED);
-      expect(wiz.insulinSensitivity).to.equal(REQUIRED);
-      expect(wiz.bgTarget).to.equal(REQUIRED);
+      expect(wiz.insulinOnBoard).to.equal(OPTIONAL);
+      expect(wiz.insulinSensitivity).to.equal(OPTIONAL);
+      expect(wiz.bgTarget).to.equal(OPTIONAL);
       expect(wiz.bolus).to.equal(REQUIRED);
-      expect(wiz.recommended).to.equal(REQUIRED);
+      expect(wiz.recommended).to.equal(OPTIONAL);
       expect(wiz.units).to.equal(REQUIRED);
 
       expect(wiz.clockDriftOffset).to.equal(OPTIONAL);
