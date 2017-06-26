@@ -17,6 +17,10 @@ export default validate({
     }, {
       test: /\.json$/,
       loader: 'json-loader'
+    },
+    {
+      test: require.resolve('trackjs'),
+      loader: 'exports?trackJs'
     }]
   },
 
@@ -39,6 +43,8 @@ export default validate({
   resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
 
   plugins: [],
+
+  devtool: 'source-map',
 
   externals: Object.keys(_.merge({}, externals, additionalExternals) || {})
 });

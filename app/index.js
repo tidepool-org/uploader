@@ -10,7 +10,19 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';
 import '../styles/main.less';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, crashReporter } from 'electron';
+
+window._trackJs = {
+    token: 'f739b1e86d654970b6ce9170f0e63a33'
+};
+var trackJs = require('trackjs');
+
+var Raven = require('raven');
+Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1ed5ed228@sentry.io/183894',{
+  autoBreadcrumbs: {
+    'console': true  // console logging
+  }
+}).install();
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
@@ -22,6 +34,18 @@ store.dispatch(push('/'));
 ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
+
+crashReporter.start({
+  productName: 'Uploader',
+  companyName: 'Tidepool',
+  submitURL: '',
+  uploadToServer: false
+});
+
+trackJs.track('ahoy trackjs!');
+
+console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
+console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 render(
   <Provider store={store}>
