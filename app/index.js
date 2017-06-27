@@ -42,8 +42,6 @@ crashReporter.start({
   uploadToServer: false
 });
 
-trackJs.track('ahoy trackjs!');
-
 console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
