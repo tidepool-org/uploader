@@ -20,9 +20,10 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
-1. Run `npm install`
+1. Make sure you're running Node 6.x.
+1. Run `yarn install`
 1. Set the config for the environment you want to target (see [Config](#config) below)
-1. Run `npm start` (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
+1. Run `yarn start` (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
 1. Open Chrome. Go to chrome://extensions and turn on Developer mode (checkbox on the top line).
 1. Click "Load Unpacked Extension".
 1. Choose the directory where you cloned the repository and click OK. (You may see a warning from Chrome concerning the inclusion of a key file. (`This extension includes the key file '<project_path>/node_modules/webpack-dev-server/node_modules/sockjs-client/node_modules/eventsource/test/key.pem`) This is due to the loading of all the `node_modules` and their various internal testing utilities. This isn't a security issue, nor is the associated key used or referenced anywhere in the running code and can safely be ignored.)
@@ -36,7 +37,7 @@ Configuration values (for example the URL of the Tidepool Platform) are set via 
 
 ```bash
 $ source config/local.sh
-$ npm start
+$ yarn start
 ```
 
 ### Debug Mode(s)
@@ -72,35 +73,35 @@ The tests for all the UI code run using the [Karma test runner](https://karma-ru
 To run the tests in this repository as they are run on Travis CI, use:
 
 ```bash
-$ npm test
+$ yarn test
 ```
 
 To run just the UI tests in both PhantomJS and Chrome *locally*, use:
 
 ```bash
-$ npm run browser-tests
+$ yarn run browser-tests
 ```
 
 To run just the device and data-processing tests in node, use:
 
 ```bash
-$ npm run node-tests
+$ yarn run node-tests
 ```
 
 To run just the UI tests in PhantomJS with webpack & Karma watching all files for changes and both rebundling the app and re-running the tests on every change, use:
 
 ```bash
-$ npm run test-watch
+$ yarn run test-watch
 ```
 
 ## Linting & Code Style
 
 We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
 
-To run the linter (which also runs on Travis CI with every push, along with `npm test`), use:
+To run the linter (which also runs on Travis CI with every push, along with `yarn test`), use:
 
 ```
-$ npm run lint
+$ yarn run lint
 ```
 
 Aside from the (fairly minimal) JavaScript code style options we *enforce* through the linter, we ask that internal developers and external contributors try to match the style of the code in each module being modified. New modules should look to similar modules for style guidance. In React component code, use existing ES6/ES2015 components (not legacy ES5 components) as the style model for new components.
@@ -117,7 +118,7 @@ See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.
 
 When you're ready to merge your pull request, first
 
-1. Use the command `mversion minor -m` to bump the version number and create a tag. (You will need to `npm install -g mversion` if you don't have [mversion](https://github.com/mikaelbr/mversion) installed already.)
+1. Use the command `mversion minor -m` to bump the version number and create a tag. (You will need to `yarn global add mversion` if you don't have [mversion](https://github.com/mikaelbr/mversion) installed already.)
 1. Push the new tag commit and tag up to GitHub with `git push origin <branch_name>` and `git push origin --tags`.
 1. Merge your approved pull request.
 
@@ -126,7 +127,7 @@ Assuming you've already merged any changes to master and are on master locally..
 1. Start with a fresh Terminal window and `cd` into the chrome-uploader repo. (Alternatively, just make certain you haven't set any environment variables locally; but jebeck likes to start fresh to be absolutely certain of this.)
 1. Checkout the tag you wish to build, using `git checkout tags/<tag_name>`.
 1. Remove your node modules with `rm -rf node_modules/`. (This may not always be necessary, but it's good to be safe in case anything has changed.)
-1. Make sure you are using node v0.12.7 and install fresh dependencies with `npm install`.
-1. Build the `dist.zip` file with `npm run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
+1. Make sure you are using node v6.x and install fresh dependencies with `yarn install`.
+1. Build the `dist.zip` file with `yarn run build`. Look for the "**Using the default environment, which is now production**" message at the beginning of the build process. (You can check the success of a build (prior to publishing) by pointing 'Load unpacked extension' from chrome://extensions to the `dist/` subdir.)
 1. Follow instructions in secrets for actually publishing to the Chrome store.
 1. Fill out the release notes for the tag on GitHub and attach `dist.zip` to your notes. This is so that if you built for the development Chrome store, you can then distribute the same `dist.zip` to the production Chrome store without having to rebuild everything. If the tag is known to *not* be a release candidate, mark it as a pre-release.
