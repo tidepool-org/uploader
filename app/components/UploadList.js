@@ -78,6 +78,7 @@ export default class UploadList extends Component {
           <Upload
             disabled={disabled}
             upload={upload}
+            targetId={targetId}
             onReset={onReset.bind(null, targetId, upload.key)}
             onUpload={onUpload.bind(null, upload.key)}
             readFile={this.props.readFile.bind(null, targetId, upload.key)} />
