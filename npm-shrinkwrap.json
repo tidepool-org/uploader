@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "difflet": {
+      "version": "1.0.1",
+      "from": "difflet@1.0.1",
+      "dependencies": {
+        "charm": {
+          "version": "1.0.1"
+        }
+      }
+    }
+  },
+  "version": "0.306.5"
+}

@@ -37,6 +37,9 @@ export const CLINIC_DEVICES_DONE = 'VCA Devices Done';
 export const CLINIC_TIMEZONE_SELECT = 'VCA Timezone Selected';
 export const CLINIC_CHANGE_DEVICES = 'VCA Change Devices';
 
+export const CHOOSE_DEVICES = 'Choose Devices';
+export const CHOOSE_DEVICES_DONE = 'Choose Devices Done';
+
 export const UPLOAD_REQUEST = 'Upload Attempted';
 export const UPLOAD_SUCCESS = 'Upload Successful';
 export const UPLOAD_FAILURE = 'Upload Failed';

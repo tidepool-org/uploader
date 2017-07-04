@@ -1,0 +1,32 @@
+{
+	colwidth = 64
+	
+	0-7: 0x5A (packet type)
+	8-15: ??
+	
+	16-55: date/time
+	
+	56-63: old units (bg & carb)
+	64-71: ??
+	72-263: old carb ratios (1 byte offset, 2 bytes ratio)
+	
+	264-271: ??	
+	272-399: old insulin sensitivities (1 byte offset, 1 byte amount)
+	
+	400-407: ??
+	408-599: old BG targets (1 byte offset, 1 byte low, 1 byte high)
+	
+	600-615: ??
+	
+	616-623: new units (bg & carb)
+	624-631: ??
+	632-815: new carb ratios
+	
+	816-823: ??
+	824-951: new insulin sensitivities
+	
+	952-959: ??
+	960-1151: new BG targets
+	
+	
+}

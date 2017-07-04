@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.306.1",
+  "version": "0.306.5",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -25,7 +25,11 @@
     "http://localhost/",
     "https://*.tidepool.org/",
     "contextMenus",
-    "fileSystem",
+    {
+      "fileSystem": [
+        "write"
+      ]
+    },
     "system.storage",
     "storage",
     "serial",
@@ -173,6 +177,13 @@
           "receiveTimeout": 500,
           "vendorId": 1659,
           "productId": 8963
+        },
+        {
+          "deviceName": "Medtronic",
+          "driverId": "Medtronic",
+          "mode": "HID",
+          "vendorId": 6777,
+          "productId": 25088
         }
       ]
     }

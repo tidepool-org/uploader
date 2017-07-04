@@ -10,6 +10,21 @@ const devices = {
     source: {type: 'carelink'},
     enabled: {mac: true, win: true}
   },
+  medtronic: {
+    instructions: 'Connect your Bayer Contour Next Link to your computer',
+    image: {
+      'src': '../images/Combined_Pump_and_Meter.jpg',
+      'height': 183,
+      'width': 200,
+      'alt': 'Bayer Contour Next Link'
+    },
+    key: 'medtronic',
+    name: 'Medtronic - 523, 723 or 530G',
+    selectName: 'Medtronic direct from Bayer Contour Next Link',
+    showDriverLink: {mac: false, win: false},
+    source: {type: 'device', driverId: 'Medtronic'},
+    enabled: {mac: true, win: true}
+  },
   omnipod: {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
     key: 'omnipod',

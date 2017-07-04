@@ -1,0 +1,15 @@
+{
+	colwidth = 64
+	node_height = 72
+	
+	0-7: packet type
+	8-15: ??
+	
+	16-31: date/time
+	32-34: active\nschedule [rotate=270]
+	35-55: date/time
+	
+	56-1207: schedules (1 byte offset, 1 byte rate, 1 byte q) x 48
+	
+	
+}
