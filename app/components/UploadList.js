@@ -27,6 +27,7 @@ import styles from '../../styles/components/UploadList.module.less';
 export default class UploadList extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    rememberMedtronicSerialNumber: PropTypes.func.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
     targetId: PropTypes.string,
@@ -77,6 +78,7 @@ export default class UploadList extends Component {
         <div key={upload.key} className={styles.item}>
           <Upload
             disabled={disabled}
+            rememberMedtronicSerialNumber={this.props.rememberMedtronicSerialNumber}
             upload={upload}
             targetId={targetId}
             onReset={onReset.bind(null, targetId, upload.key)}

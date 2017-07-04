@@ -34,6 +34,7 @@ const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 export default class Upload extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    rememberMedtronicSerialNumber: PropTypes.func.isRequired,
     // targetId is needed to remember the pump serial number.
     // It can be null when logged in user is not a data storage account
     // for example a clinic worker
@@ -107,9 +108,13 @@ export default class Upload extends Component {
   }
 
   handleMedtronicUpload() {
-    if(this.state.medtronicSerialNumberRemember) {
+    if (this.state.medtronicSerialNumberRemember) {
       keytar.setPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId,
-        this.state.medtronicSerialNumberValue);
+        this.state.medtronicSerialNumberValue)
+        .then(() => {
+          console.log('Sending event');
+          this.props.rememberMedtronicSerialNumber();
+        });
     }
 
     let options = {
