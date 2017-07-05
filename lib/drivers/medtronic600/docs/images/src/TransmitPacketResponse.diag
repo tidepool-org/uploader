@@ -1,0 +1,14 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: 0x00 [rotate = 270]
+	1: 0x06 [rotate = 270]
+	2-9: Pump MAC
+	10-17: Link MAC
+	18: Seq # [rotate = 270]
+	19-20: [color = "#888888"]
+	21: Size [rotate = 270]
+	22-30: Encrypted Payload [color = "#FCE9DA"]
+	31: ... [color = "#FCE9DA", style = dashed]
+}
