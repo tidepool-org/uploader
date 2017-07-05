@@ -126,6 +126,13 @@
           "productId": 6001
         },
         {
+          "deviceName": "Abbott FreeStyle Libre",
+          "driverId": "AbbottFreeStyleLibre",
+          "mode": "HID",
+          "vendorId": 6753,
+          "productId": 13904
+        },
+        {
           "deviceName": "BayerContourNext",
           "driverId": "BayerContourNext",
           "mode": "HID",

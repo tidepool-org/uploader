@@ -74,6 +74,14 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottFreeStyleFreedomLite'},
     enabled: {mac: false, win: true}
   },
+  abbottfreestylelibre: {
+    instructions: 'Plug in meter with micro-USB',
+    key: 'abbottfreestylelibre',
+    name: 'Abbott FreeStyle Libre',
+    showDriverLink: {linux: false, mac: false, win: false},
+    source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
+    enabled: {linux: true, mac: true, win: true}
+  },
   bayercontournext: {
     instructions: 'Plug in meter with micro-USB',
     key: 'bayercontournext',
