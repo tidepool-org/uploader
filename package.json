@@ -101,7 +101,11 @@
       "package.json"
     ],
     "extraResources": [
-      "resources/windows-driver/",
+      {
+           "from": "resources/${os}",
+           "to": "driver/",
+           "filter": ["**/*", "!*.md"]
+      },
       "sounds/"
     ],
     "win": {
