@@ -47,7 +47,7 @@
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",
     "lodash": "3.10.1",
-    "node-uuid": "1.4.8",
+    "uuid": "3.1.0",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",
