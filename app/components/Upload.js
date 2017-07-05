@@ -109,11 +109,16 @@ export default class Upload extends Component {
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
-      keytar.setPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId,
-        this.state.medtronicSerialNumberValue)
-        .then(() => {
-          console.log('Sending event');
-          this.props.rememberMedtronicSerialNumber();
+      // Only set the password if it is different
+      keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
+        .then((serialNumber) => {
+          if (serialNumber != this.state.medtronicSerialNumberValue) {
+            keytar.setPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId,
+              this.state.medtronicSerialNumberValue)
+              .then(() => {
+                this.props.rememberMedtronicSerialNumber();
+              });
+          }
         });
     }
 
