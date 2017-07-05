@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
-  "productName": "tidepool-uploader",
-  "version": "0.310.0-alpha.8",
+  "productName":  "tidepool-uploader",
+  "version": "0.310.0-alpha.10",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
