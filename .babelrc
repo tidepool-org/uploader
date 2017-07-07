@@ -4,6 +4,7 @@
     "stage-0",
     "react"
   ],
+  "retainLines": true,
   "plugins": ["add-module-exports"],
   "env": {
     "production": {
