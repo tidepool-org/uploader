@@ -72,6 +72,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         datasetId: err.datasetId || null,
         requestTrace: err.requestTrace || null,
         sessionTrace: err.sessionTrace || null,
+        sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
         data: recs
