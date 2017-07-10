@@ -225,7 +225,7 @@ A **High Speed Mode Command** is contained in the payload of a [Transmit Packet 
 |-----------|:-----:|:----------:|--------------|
 | Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number - always `0x80` for the High Speed Mode Command |
 | Command   | 2     | UInt16BE   | `0x0412` |
-| Mode      | 1     | Byte       | `0x00` to Disable<br> `0x01` to Enable |
+| Mode      | 1     | Byte       | `0x00` to Enable<br> `0x01` to Disable |
 | Checksum  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
 
 ### Pump Time Command
