@@ -1,0 +1,8 @@
+{
+	colwidth = 32
+	
+	0-7: 0x18 (packet type)
+	8-15: 0x00
+	
+	16-55: date/time
+}
