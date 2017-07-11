@@ -1,0 +1,29 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x013c
+	3: Pump Status [rotate = 270]
+	4-25: ?? [color = "#888888"]
+	26: Active Basal [rotate = 270]
+	27-30: Normal Rate
+	31-34: Temp Rate
+	35: Temp % [rotate = 270]
+	36-37: Temp\nmin.\nremain
+	38-41: Total basal\ndelivered
+	42: Battery % [rotate = 270]
+	43-46: Insulin remaining
+	47: Hours [rotate = 270]
+	48: Minutes [rotate = 270]
+	49-52: Active Insulin\n(IOB)
+	53-54: SGV
+	55-62: Timestamp of last SGV
+	63: PLGM status [rotate = 270]
+	64: CGM status [rotate = 270]
+	65-71: ?? [color = "#888888"]
+	72: BWZ status [rotate = 270]
+	73-74: BGL
+	75-95: ?? [color = "#888888"]
+	96-97: CCITT
+}

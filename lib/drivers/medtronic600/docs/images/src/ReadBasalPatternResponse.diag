@@ -1,0 +1,13 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x0123
+	3: Pattern # [rotate = 270]
+	4: # Items [rotate = 270]
+	5-8: Basal Rate 1 [rotate = 270, color = "#EBF1DF"]
+	9: Rate 1 Time [rotate = 270, color = "#EBF1DF"]
+	10-12: ... [style = "dashed"]
+	13-14: CCITT
+}

@@ -1,4 +1,6 @@
-import pumpImage from '../../images/Combined_Pump_and_Meter.jpg';
+import medtronicPumpImage from '../../images/Combined_Pump_and_Meter.jpg';
+import medtronic600PumpImage from '../../images/bayer_contour_next_link_24.jpg';
+
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -14,7 +16,7 @@ const devices = {
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': pumpImage,
+      'src': medtronicPumpImage,
       'height': 183,
       'width': 200,
       'alt': 'Bayer Contour Next Link'
@@ -24,6 +26,21 @@ const devices = {
     selectName: 'Medtronic direct from Bayer Contour Next Link',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic'},
+    enabled: {mac: true, win: true}
+  },
+  medtronic600: {
+    instructions: 'Pair your Bayer Contour Next Link 2.4 with your Medtronic pump and connect to your computer',
+    image: {
+      'src': medtronic600PumpImage,
+      'height': 52,
+      'width': 143,
+      'alt': 'Bayer Contour Next Link 2.4'
+    },
+    key: 'medtronic600',
+    name: 'Medtronic - 630G, 640G or 670G',
+    selectName: 'Medtronic direct from Bayer Contour Next Link 2.4',
+    showDriverLink: {mac: false, win: false},
+    source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true}
   },
   omnipod: {
