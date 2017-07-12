@@ -30,7 +30,7 @@ import * as actionSources from '../constants/actionSources';
 import { pages, pagesMap } from '../constants/otherConstants';
 
 import styles from '../../styles/components/Header.module.less';
-import logo from '../../images/Tidepool_Logo_light x2.png';
+import logo from '../../images/Tidepool_Logo_Light x2.png';
 
 export class Header extends Component {
   static propTypes = {
