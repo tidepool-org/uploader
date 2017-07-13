@@ -11,9 +11,9 @@
 ### Required if Present
 
 - `[x]` smbg values
-- `[ ]` units of smbg values (read from device, not hard-coded)
+- `[x]` units of smbg values (read from device, not hard-coded)
 - `[ ]` out-of-range values (LO or HI)
-- `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+- `*[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
 - `[ ]` blood ketone values
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
@@ -22,9 +22,9 @@
 
 ### No Tidepool Data Model Yet
 
-- `[ ]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
+- `*[ ]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
 - `[ ]` device settings, other than date & time (e.g., target blood glucose range)
-- `[ ]` tag/note (e.g., pre- vs. post-meal)
+- `[-]` tag/note (e.g., pre- vs. post-meal)
 
 ### Tidepool ingestion API
 
