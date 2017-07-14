@@ -44,7 +44,7 @@ Configuration values (for example the URL of the Tidepool Platform) are set via 
 
 ```bash
 $ source config/local.sh
-$ npm start
+$ yarn start
 ```
 
 ### Debug Mode(s)
@@ -73,7 +73,7 @@ All debug options are turned *off* by default in `config/local.sh`.
 To run the tests in this repository as they are run on CircleCI and Appveyor use:
 
 ```bash
-$ npm test
+$ yarn test
 ```
 or
 ```bash

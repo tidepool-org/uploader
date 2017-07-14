@@ -714,107 +714,6 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('doUpload [device, driver error]', () => {
-    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
-      const userId = 'a1b2c3', deviceKey = 'a_pump';
-      const time = '2016-01-01T12:05:00.123Z';
-      const targetDevice = {
-        key: deviceKey,
-        name: 'Acme Insulin Pump',
-        showDriverLink: {mac: true},
-        source: {type: 'device', driverId: 'AcmePump'}
-      };
-      const initialState = {
-        devices: {
-          a_pump: targetDevice
-        },
-        os: 'mac',
-        uploadsByUser: {
-          [userId]: {
-            a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
-        },
-        targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
-        },
-        targetTimezones: {
-          [userId]: 'US/Mountain'
-        },
-        uploadTargetDevice: deviceKey,
-        uploadTargetUser: userId,
-        version: '0.100.0',
-        working: {uploading: false}
-      };
-      const errProps = {
-        utc: time,
-        version: initialState.version,
-        code: 'E_DRIVER'
-      };
-      let err = new Error(`You may need to install the ${targetDevice.name} device driver.`);
-      err.driverLink = urls.DRIVER_DOWNLOAD;
-      err.code = errProps.code;
-      err.utc = errProps.utc;
-      err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
-        api: {
-          upload: {
-            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
-          }
-        },
-        device: {
-          detect: (foo, bar, cb) => cb('Error :(')
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.VERSION_CHECK_REQUEST,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
-        },
-        {
-          type: actionTypes.VERSION_CHECK_SUCCESS,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
-        },
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { userId, deviceKey, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
-            }
-          }
-        },
-        {
-          type: actionTypes.DEVICE_DETECT_REQUEST,
-          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
-        },
-        {
-          type: actionTypes.UPLOAD_FAILURE,
-          error: true,
-          payload: err,
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_FAILURE],
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: targetDevice.source.type,
-                source: targetDevice.source.driverId,
-                error: err
-              }
-            }
-          }
-        }
-      ];
-      const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
-    });
-  });
-
   describe('doUpload [device, device detection error (serial)]', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
@@ -822,7 +721,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'device', driverId: 'AcmePump'}
       };
       const initialState = {
@@ -922,7 +820,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'device', driverId: 'AcmePump'}
       };
       const initialState = {
@@ -1022,7 +919,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'device', driverId: 'AcmePump'}
       };
       const initialState = {
@@ -1126,7 +1022,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'device', driverId: 'AcmePump'}
       };
       const initialState = {
@@ -1218,7 +1113,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'CareLink',
-        showDriverLink: {mac: false},
         source: {type: 'carelink'}
       };
       const initialState = {
@@ -1327,7 +1221,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'CareLink',
-        showDriverLink: {mac: false},
         source: {type: 'carelink'}
       };
       const initialState = {
@@ -1435,7 +1328,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'carelink'}
       };
       const initialState = {
@@ -1548,7 +1440,6 @@ describe('Asynchronous Actions', () => {
       const targetDevice = {
         key: deviceKey,
         name: 'Acme Insulin Pump',
-        showDriverLink: {mac: false},
         source: {type: 'carelink'}
       };
       const initialState = {

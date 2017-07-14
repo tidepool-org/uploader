@@ -224,19 +224,19 @@ export function doCareLinkUpload(deviceKey, creds, utc) {
   };
 }
 
-export function doDeviceUpload(driverId, utc) {
+export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
     const { device } = services;
     const version = versionInfo.semver;
     const { devices, os, targetTimezones, uploadTargetUser } = getState();
     const targetDevice = _.findWhere(devices, {source: {driverId: driverId}});
     dispatch(syncActions.deviceDetectRequest());
-    const opts = {
+    _.assign(opts, {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
       version: version
-    };
+    });
     const { uploadsByUser } = getState();
     const currentUpload = _.get(
       uploadsByUser,
@@ -250,28 +250,14 @@ export function doDeviceUpload(driverId, utc) {
 
     device.detect(driverId, opts, (err, dev) => {
       if (err) {
-        if ((os === 'mac' && _.get(targetDevice, ['showDriverLink', os], false) === true) ||
-          (os === 'win' && _.get(targetDevice, ['showDriverLink', os], false) === true)) {
-          let displayErr = new Error();
-          let driverLinkErrProps = {
-            details: err.message,
-            utc: actionUtils.getUtc(utc),
-            code: 'E_DRIVER',
-            version: version
-          };
-          displayErr.driverLink = urls.DRIVER_DOWNLOAD;
-          return dispatch(syncActions.uploadFailure(displayErr, driverLinkErrProps, targetDevice));
-        }
-        else {
-          let displayErr = new Error(errorText.E_SERIAL_CONNECTION);
-          let deviceDetectErrProps = {
-            details: err.message,
-            utc: actionUtils.getUtc(utc),
-            code: 'E_SERIAL_CONNECTION',
-            version: version
-          };
-          return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
-        }
+        let displayErr = new Error(errorText.E_SERIAL_CONNECTION);
+        let deviceDetectErrProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_SERIAL_CONNECTION',
+          version: version
+        };
+        return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
       if (!dev && opts.filename == null) {
@@ -284,7 +270,11 @@ export function doDeviceUpload(driverId, utc) {
         return dispatch(syncActions.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
-      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, 'E_DEVICE_UPLOAD', utc));
+      var errorMessage = 'E_DEVICE_UPLOAD';
+      if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
+        errorMessage = 'E_MEDTRONIC_UPLOAD';
+      }
+      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
     });
   };
 }
@@ -322,7 +312,7 @@ export function doUpload(deviceKey, opts, utc) {
           const deviceType = targetDevice.source.type;
 
           if (_.includes(['device', 'block'], deviceType)) {
-            dispatch(doDeviceUpload(targetDevice.source.driverId, utc));
+            dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
           }
           else if (deviceType === 'carelink') {
             dispatch(doCareLinkUpload(deviceKey, opts, utc));

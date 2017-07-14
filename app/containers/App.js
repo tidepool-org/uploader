@@ -20,6 +20,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
+import * as metrics from '../constants/metrics';
 
 const {Menu} = remote;
 

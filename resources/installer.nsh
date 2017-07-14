@@ -17,7 +17,7 @@ RequestExecutionLevel admin
 !macro customInstall
 
   Var /GLOBAL DriverDir
-  StrCpy $DriverDir "$INSTDIR\resources\resources\windows-driver"
+  StrCpy $DriverDir "$INSTDIR\resources\driver"
 
   UserInfo::GetAccountType
   pop $0

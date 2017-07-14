@@ -40,9 +40,9 @@ describe('hidDevice.js', function(){
       expect(device).itself.to.respondTo('connect');
     });
   });
-  describe('discardBytes', function(){
+  describe('disconnect', function(){
     it('exists', function(){
-      expect(device).itself.to.respondTo('discardBytes');
+      expect(device).itself.to.respondTo('disconnect');
     });
   });
   describe('receive', function(){
@@ -53,26 +53,6 @@ describe('hidDevice.js', function(){
   describe('send', function(){
     it('exists', function(){
       expect(device).itself.to.respondTo('send');
-    });
-  });
-  describe('hasAvailablePacket', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('hasAvailablePacket');
-    });
-  });
-  describe('peekPacket', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('peekPacket');
-    });
-  });
-  describe('nextPacket', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('nextPacket');
-    });
-  });
-  describe('flush', function(){
-    it('exists', function(){
-      expect(device).itself.to.respondTo('flush');
     });
   });
 });

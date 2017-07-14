@@ -1,0 +1,13 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x01 (packet type)
+	8-23: programmed amount
+	24-39: actual amount
+	40-55:iob
+	
+	56-71: date/time
+	72-73: dual bolus\check [rotate=270]
+	74-95: date/time
+}

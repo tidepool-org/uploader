@@ -14,10 +14,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "key": "carelink",
       "name": "Medtronic",
       "selectName": "Medtronic (from CareLink)",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "carelink"
       },
@@ -30,10 +26,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Choose .ibf file from PDM",
       "key": "omnipod",
       "name": "Insulet OmniPod",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "block",
         "driverId": "InsuletOmniPod",
@@ -48,10 +40,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug in receiver with micro-USB",
       "key": "dexcom",
       "name": "Dexcom",
-      "showDriverLink": {
-        "mac": true,
-        "win": true
-      },
       "source": {
         "type": "device",
         "driverId": "Dexcom"
@@ -65,10 +53,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug in pump with micro-USB",
       "key": "tandem",
       "name": "Tandem",
-      "showDriverLink": {
-        "mac": false,
-        "win": true
-      },
       "source": {
         "type": "device",
         "driverId": "Tandem"
@@ -82,10 +66,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug in meter with micro-USB",
       "key": "bayercontournext",
       "name": "Bayer Contour Next",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "device",
         "driverId": "BayerContourNext"
@@ -99,10 +79,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug meter into USB port",
       "key": "bayercontournextusb",
       "name": "Bayer Contour Next USB",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "device",
         "driverId": "BayerContourNextUsb"
@@ -116,10 +92,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug meter into USB port",
       "key": "bayercontourusb",
       "name": "Bayer Contour USB",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "device",
         "driverId": "BayerContourUsb"
@@ -133,10 +105,6 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "instructions": "Plug meter into USB port",
       "key": "bayercontournextlink",
       "name": "Bayer Contour Next Link",
-      "showDriverLink": {
-        "mac": false,
-        "win": false
-      },
       "source": {
         "type": "device",
         "driverId": "BayerContourNextLink"
