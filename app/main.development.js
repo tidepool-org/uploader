@@ -4,6 +4,12 @@ import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
+import Raven from 'raven';
+Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1ed5ed228@sentry.io/183894', {
+  autoBreadcrumbs: {
+    'console': true  // console logging
+  }
+}).install();
 
 let menu;
 let template;
