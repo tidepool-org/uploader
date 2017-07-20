@@ -109,20 +109,12 @@ export default class UploadList extends Component {
     }
     const errorDetails = upload.showErrorDetails ?
       (<div>{upload.error.debug}</div>) : null;
-    const errorMessage = upload.error.driverLink ?
-      (
-        <div className={styles.errorMessageWrapper}>
-          <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}</span>
-          <span className={styles.errorMessageFriendly}>{'It\'s possible you need to install the '}</span>
-          <span className={styles.errorMessageLinkWrap}><a className={styles.errorMessageLink} href={upload.error.driverLink} target="_blank">Tidepool USB driver</a></span>
-        </div>
-      ) :
-      (
-        <div className={styles.errorMessageWrapper}>
-          <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}</span>
-          <span className={styles.errorMessageFriendly}>{upload.error.message}</span>
-        </div>
-      );
+    const errorMessage = (
+      <div className={styles.errorMessageWrapper}>
+        <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}</span>
+        <span className={styles.errorMessageFriendly}>{upload.error.message}</span>
+      </div>
+    );
     const showErrorsText = upload.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
 
     function makeToggleDetailsFn() {

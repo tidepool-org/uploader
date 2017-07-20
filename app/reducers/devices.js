@@ -1,3 +1,4 @@
+import pumpImage from '../../images/Combined_Pump_and_Meter.jpg';
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -6,14 +7,13 @@ const devices = {
     name: 'Medtronic',
     // for the device selection list
     selectName: 'Medtronic (from CareLink)',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'carelink'},
     enabled: {mac: true, win: true}
   },
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': '../images/Combined_Pump_and_Meter.jpg',
+      'src': pumpImage,
       'height': 183,
       'width': 200,
       'alt': 'Bayer Contour Next Link'
@@ -21,7 +21,6 @@ const devices = {
     key: 'medtronic',
     name: 'Medtronic - 523, 723 or 530G',
     selectName: 'Medtronic direct from Bayer Contour Next Link',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic'},
     enabled: {mac: true, win: true}
   },
@@ -29,7 +28,6 @@ const devices = {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
     key: 'omnipod',
     name: 'Insulet OmniPod',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true}
   },
@@ -37,7 +35,6 @@ const devices = {
     instructions: 'Plug in receiver with micro-USB',
     key: 'dexcom',
     name: 'Dexcom',
-    showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true}
   },
@@ -45,7 +42,6 @@ const devices = {
     instructions: 'Plug in meter with cable',
     key: 'precisionxtra',
     name: 'Abbott Precision Xtra',
-    showDriverLink: {mac: false, win: true},
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true}
   },
@@ -53,7 +49,6 @@ const devices = {
     instructions: 'Plug in pump with micro-USB',
     key: 'tandem',
     name: 'Tandem',
-    showDriverLink: {mac: false, win: true},
     source: {type: 'device', driverId: 'Tandem'},
     enabled: {mac: true, win: true}
   },
@@ -61,7 +56,6 @@ const devices = {
     instructions: 'Plug in meter with cable',
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite',
-    showDriverLink: {mac: false, win: true},
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
     enabled: {mac: false, win: true}
   },
@@ -69,7 +63,6 @@ const devices = {
     instructions: 'Plug in meter with cable',
     key: 'abbottfreestylefreedomlite',
     name: 'Abbott FreeStyle Freedom Lite',
-    showDriverLink: {mac: false, win: true},
     source: {type: 'device', driverId: 'AbbottFreeStyleFreedomLite'},
     enabled: {mac: false, win: true}
   },
@@ -77,7 +70,6 @@ const devices = {
     instructions: 'Plug in meter with micro-USB',
     key: 'bayercontournext',
     name: 'Bayer Contour Next',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true}
   },
@@ -85,7 +77,6 @@ const devices = {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournextusb',
     name: 'Bayer Contour Next USB',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'BayerContourNextUsb'},
     enabled: {mac: true, win: true}
   },
@@ -93,7 +84,6 @@ const devices = {
     instructions: 'Plug meter into USB port',
     key: 'bayercontourusb',
     name: 'Bayer Contour USB',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'BayerContourUsb'},
     enabled: {mac: true, win: true}
   },
@@ -101,7 +91,6 @@ const devices = {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournextlink',
     name: 'Bayer Contour Next Link',
-    showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'BayerContourNextLink'},
     enabled: {mac: true, win: true}
   },
@@ -109,7 +98,6 @@ const devices = {
     instructions: 'Suspend and align back of pump with IR dongle front',
     key: 'animas',
     name: 'Animas',
-    showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'Animas'},
     enabled: {mac: true, win: true}
   },
@@ -117,7 +105,6 @@ const devices = {
     instructions: 'Plug in meter with mini-USB',
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
-    showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
     enabled: {mac: true, win: true}
   }
