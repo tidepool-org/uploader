@@ -63,7 +63,7 @@
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#krystophv/electron"
+    "tidepool-platform-client": "0.32.0"
   },
   "browserslist": "electron 1.6",
   "build": {
@@ -102,7 +102,11 @@
       "package.json"
     ],
     "extraResources": [
-      "resources/windows-driver/",
+      {
+           "from": "resources/${os}",
+           "to": "driver/",
+           "filter": ["**/*", "!*.md"]
+      },
       "sounds/"
     ],
     "win": {

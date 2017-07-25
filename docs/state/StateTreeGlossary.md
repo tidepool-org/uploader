@@ -118,7 +118,7 @@ The `viewDataLink` is built every time the `uploadTargetUser` is chosen or chang
 
 *The `devices` property on the state tree is an object keyed by the `id` of each device (or data source) supported by the Tidepool Uploader.*
 
- `devices` *almost* does not belong in the state tree at all, because it is *almost* a constant. However, it is subject to filtering based on operating system; this filtering happens as part of the app initialization step when a user launches the Tidepool Uploader. The property `enabled` - itself an object with `mac` and `win` as its keys - encodes the devices Tidepool currently support on each platform. Similarly, the property `showDriverLink` encodes, for each device, whether the [Tidepool USB driver](http://tidepool.org/downloads/) is required in order to upload the device on each platform.
+ `devices` *almost* does not belong in the state tree at all, because it is *almost* a constant. However, it is subject to filtering based on operating system; this filtering happens as part of the app initialization step when a user launches the Tidepool Uploader. The property `enabled` - itself an object with `mac` and `win` as its keys - encodes the devices Tidepool currently support on each platform.
 
 The properties of each "device" in `devices` should be fairly self-explanatory. For example, the `instructions` property stores the text that appears in the UI under each device name to give the user some indication of how to proceed (e.g., what type of cable is required to connect a particular device).
 
