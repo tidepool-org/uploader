@@ -84,6 +84,11 @@ export default class Upload extends Component {
     this.populateRememberedSerialNumber();
   }
 
+  componentWillMount() {
+      // Initialize the UI state. Needed for logout/login scenarios
+      this.handleReset();
+   }
+
   populateRememberedSerialNumber() {
     keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
       .then((serialNumber) => {
