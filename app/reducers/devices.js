@@ -22,7 +22,7 @@ const devices = {
       'alt': 'Bayer Contour Next Link'
     },
     key: 'medtronic',
-    name: 'Medtronic - 523, 723 or 530G',
+    name: 'Medtronic 523, 723 or 530G',
     selectName: 'Medtronic 523, 723, 530G (Bayer Contour Next Link)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic'},
@@ -37,7 +37,7 @@ const devices = {
       'alt': 'Bayer Contour Next Link 2.4'
     },
     key: 'medtronic600',
-    name: 'Medtronic - 630G, 640G or 670G',
+    name: 'Medtronic 630G, 640G or 670G',
     selectName: 'Medtronic 630G, 640G, 670G (Bayer Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
