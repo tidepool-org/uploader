@@ -49,6 +49,7 @@
     "lodash": "3.10.1",
     "node-uuid": "1.4.8",
     "raven": "2.1.0",
+    "raven-js": "3.17.0",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",

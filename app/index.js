@@ -11,14 +11,14 @@ import configureStore from './store/configureStore';
 import './app.global.css';
 import '../styles/main.less';
 import { ipcRenderer, crashReporter } from 'electron';
+import Raven from 'raven-js';
 
 window._trackJs = {
     token: 'f739b1e86d654970b6ce9170f0e63a33'
 };
 var trackJs = require('trackjs');
 
-var Raven = require('raven');
-Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1ed5ed228@sentry.io/183894',{
+Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78@sentry.io/183894', {
   autoBreadcrumbs: {
     'console': true  // console logging
   }
