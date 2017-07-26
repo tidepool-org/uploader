@@ -13,9 +13,9 @@ sudo cp -R ./extensions/DexComUSB.kext /Library/Extensions/DexComUSB.kext
 sudo chown -R root:wheel /Library/Extensions/DexcomUSB.kext
 sudo kextload /Library/Extensions/DexComUSB.kext/
 
-sudo cp -R ./extensions/SiLabsUSBDRiver.kext /Library/Extensions/SiLabsUSBDRiver.kext
-sudo chown -R root:wheel /Library/Extensions/SiLabsUSBDRiver.kext
-sudo kextload /Library/Extensions/SiLabsUSBDRiver.kext/
+sudo cp -R ./extensions/SiLabsUSBDriver.kext /Library/Extensions/SiLabsUSBDriver.kext
+sudo chown -R root:wheel /Library/Extensions/SiLabsUSBDriver.kext
+sudo kextload /Library/Extensions/SiLabsUSBDriver.kext/
 
 sudo cp -R ./extensions/ProlificUsbSerial.kext /Library/Extensions/ProlificUsbSerial.kext
 sudo chown -R root:wheel /Library/Extensions/ProlificUsbSerial.kext
