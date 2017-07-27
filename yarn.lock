@@ -8559,9 +8559,9 @@ through@2, through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
-tidepool-platform-client@0.32.0:
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.32.0.tgz#79f52f63c78105ac306f17b3b73084596f9fc319"
+tidepool-platform-client@0.32.1:
+  version "0.32.1"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.32.1.tgz#0fbf0ffd033b8c9192bc0529f3ff373a6aeac6d2"
   dependencies:
     async "0.9.0"
     crypto "0.0.3"

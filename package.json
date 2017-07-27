@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.15",
+  "version": "0.310.0-alpha.16",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -64,7 +64,7 @@
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.32.0",
+    "tidepool-platform-client": "0.32.1",
     "trackjs": "2.8.2"
   },
   "browserslist": "electron 1.6",
