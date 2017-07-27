@@ -20,6 +20,8 @@ test/node/carelink/overlaps/test-account.csv
 test/carelink/testRemoveOverlapsFullTestFile.js
 test/node/carelink/testRemoveOverlapsFullTestFile.js
 
+lib/medtronic/cli/*.json
+
 tmp
 npm-debug.log
 node_modules
@@ -29,6 +31,7 @@ bower_components
 .idea
 *.iml
 .com.apple.timemachine.*
+.tern-project
 
 _book/
 web/
