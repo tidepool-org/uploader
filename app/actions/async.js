@@ -250,28 +250,14 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
 
     device.detect(driverId, opts, (err, dev) => {
       if (err) {
-        if ((os === 'mac' && _.get(targetDevice, ['showDriverLink', os], false) === true) ||
-          (os === 'win' && _.get(targetDevice, ['showDriverLink', os], false) === true)) {
-          let displayErr = new Error();
-          let driverLinkErrProps = {
-            details: err.message,
-            utc: actionUtils.getUtc(utc),
-            code: 'E_DRIVER',
-            version: version
-          };
-          displayErr.driverLink = urls.DRIVER_DOWNLOAD;
-          return dispatch(syncActions.uploadFailure(displayErr, driverLinkErrProps, targetDevice));
-        }
-        else {
-          let displayErr = new Error(errorText.E_SERIAL_CONNECTION);
-          let deviceDetectErrProps = {
-            details: err.message,
-            utc: actionUtils.getUtc(utc),
-            code: 'E_SERIAL_CONNECTION',
-            version: version
-          };
-          return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
-        }
+        let displayErr = new Error(errorText.E_SERIAL_CONNECTION);
+        let deviceDetectErrProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_SERIAL_CONNECTION',
+          version: version
+        };
+        return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
       if (!dev && opts.filename == null) {

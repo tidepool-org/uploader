@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.306.5",
+  "version": "0.307.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -111,19 +111,19 @@
         },
         {
           "deviceName": "FreeStyle Lite (with FTDI cable)",
-          "driverId": "AbbottFreeStyleLiteFTDI",
+          "driverId": "AbbottFreeStyleLite",
           "bitrate": 19200,
           "mode": "FTDI",
-          "vendorId": 403,
-          "productId": 6001
+          "vendorId": 1027,
+          "productId": 24577
         },
         {
           "deviceName": "FreeStyle Freedom Lite (with FTDI cable)",
-          "driverId": "AbbottFreeStyleFreedomLiteFTDI",
+          "driverId": "AbbottFreeStyleFreedomLite",
           "bitrate": 19200,
           "mode": "FTDI",
-          "vendorId": 403,
-          "productId": 6001
+          "vendorId": 1027,
+          "productId": 24577
         },
         {
           "deviceName": "BayerContourNext",
