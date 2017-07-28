@@ -1,0 +1,50 @@
+os: unstable
+
+environment:
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
+  matrix:
+    - nodejs_version: 7.4.0
+
+cache:
+  - node_modules -> package.json
+  - app/node_modules -> app/package.json
+  - "%LOCALAPPDATA%\\Yarn"
+
+platform:
+  - x64
+
+matrix:
+  fast_finish: true
+
+build: off
+
+version: '{build}'
+
+shallow_clone: true
+
+clone_depth: 1
+
+install:
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
+  - ps: Install-Product node $env:nodejs_version
+  - set CI=true
+  - yarn --frozen-lockfile
+
+test_script:
+  - node --version
+  - yarn lint
+  - yarn test
+#  - yarn test-e2e
+  - yarn package-dev
+  - 7z a development.zip release
+  - rmdir /S /Q release
+  - yarn package
+  - 7z a production.zip release
+
+
+artifacts:
+  - path: development.zip
+    name: Development build
+  - path: production.zip
+    name: Production Build

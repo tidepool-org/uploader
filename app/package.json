@@ -1,0 +1,19 @@
+{
+  "name": "tidepool-uploader",
+  "productName":  "tidepool-uploader",
+  "version": "0.310.0-alpha.17",
+  "description": "Tidepool Project Universal Uploader",
+  "main": "./main.js",
+  "author": {
+    "name": "Tidepool Project",
+    "email": "gerrit@tidepool.org"
+  },
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "node-hid": "0.5.4",
+    "serialport": "4.0.7"
+  },
+  "optionalDependencies": {
+    "winreg": "1.2.3"
+  }
+}

@@ -53,6 +53,15 @@
     "no-use-before-define": 0
   },
   "plugins": [
-    "react"
-  ]
+    "react",
+    "promise",
+    "import"
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.eslint.js"
+      }
+    }
+  }
 }
