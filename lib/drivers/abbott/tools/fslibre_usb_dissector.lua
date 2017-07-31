@@ -19,6 +19,7 @@ local atp_data = ProtoField.new("ATP Data", "fslibre_usb.atp.data", ftypes.BYTES
 local atp_sequence_received = ProtoField.new("ATP Seq Rx", "fslibre_usb.atp.sequence_received", ftypes.UINT8)
 local atp_sequence_sent = ProtoField.new("ATP Seq Tx", "fslibre_usb.atp.sequence_sent", ftypes.UINT8)
 local atp_crc32 = ProtoField.new("ATP CRC32", "fslibre_usb.atp.crc32", ftypes.UINT32, nil, base.HEX)
+local atp_unknown = ProtoField.new("ATP UNKNOWN", "fslibre_usb.atp.unknown", ftypes.UINT16, nil, base.HEX)
 
 local aap_frame = ProtoField.new("AAP Frame", "fslibre_usb.aap", ftypes.NONE)
 local aap_data_length = ProtoField.new("AAP Data Length", "fslibre_usb.aap.data_length", ftypes.UINT32)
@@ -36,6 +37,7 @@ fslibre_usb.fields = {
     atp_sequence_received,
     atp_sequence_sent,
     atp_crc32,
+    atp_unknown,
     aap_frame,
     aap_data_length,
     aap_op_code,
@@ -134,13 +136,18 @@ function fslibre_usb.dissector(tvbuf, pktinfo, root)
             local atp_data_buf = hid_report_buf:range(data_offset, data_length_value):tvb()
             atp_tree:add(atp_data, atp_data_buf:range()):set_hidden()
 
-            if data_length_value > 4 then
+            if data_length_value >= 2 then
                 atp_tree:add(atp_sequence_received, atp_data_buf:range(0, 1))
                 atp_tree:add(atp_sequence_sent, atp_data_buf:range(1, 1))
-                atp_tree:add(atp_crc32, atp_data_buf:range(2, 4))
 
-                if data_length_value > 6 then
-                    dissect_aap(atp_data_buf:range(6):tvb(), pktinfo, atp_tree)
+                if data_length_value >= 6 then
+                    atp_tree:add(atp_crc32, atp_data_buf:range(2, 4))
+
+                    if data_length_value > 6 then
+                        dissect_aap(atp_data_buf:range(6):tvb(), pktinfo, atp_tree)
+                    end
+                elseif data_length_value == 4 then
+                    atp_tree:add(atp_unknown, atp_data_buf:range(2, 2))
                 end
             end
         end
