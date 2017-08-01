@@ -26,6 +26,8 @@ const errorProps = {
   step: 'Driver Step',
   datasetId: 'Dataset ID',
   requestTrace: 'Request Trace',
+  sessionToken: 'Session Token',
+  sessionTrace: 'Session Trace',
   stringifiedStack: 'Stack Trace',
   utc: 'UTC Time',
   version: 'Version'

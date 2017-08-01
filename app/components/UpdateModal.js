@@ -48,40 +48,57 @@ export class UpdateModal extends Component {
       sync
     } = this.props;
 
-    if ( checkingElectronUpdate ||
-      (
-        !(electronUpdateDownloaded && !electronUpdateAvailableDismissed) &&
-        !(electronUpdateManualChecked && (
-            !electronUpdateAvailableDismissed ||
-            electronUpdateDownloaded
-          )
-        )
-      )
-    ) {
+    let title, text, actions;
+
+    if(electronUpdateAvailableDismissed){
       return null;
     }
 
-    let title, text, actions;
-
-    if(electronUpdateAvailable) {
-      title = 'Update Available!';
-      text = 'After clicking Install, the uploader will restart to complete the installation.';
-      actions = [
-        <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
-          Dismiss
-        </button>,
-        <button key='install' className={styles.button} onClick={this.handleInstall}>
-          Install
-        </button>
-      ];
-    } else {
-      title = 'Uploader is up-to-date!';
-      text = `You are running version ${config.version}, the most recent one.`;
-      actions = (
-        <button className={styles.button} onClick={sync.dismissUpdateNotAvailable}>
-          Okay!
-        </button>
-      );
+    if (electronUpdateManualChecked) {
+      if (checkingElectronUpdate){
+        title = 'Checking for update...';
+      } else {
+        if (electronUpdateAvailable) {
+          title = 'Update Available!';
+          if (!electronUpdateDownloaded) {
+            text = 'Downloading update';
+          } else { // available and downloaded
+            text = 'After clicking Install, the uploader will restart to complete the installation.';
+            actions = [
+              <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
+                Dismiss
+              </button>,
+              <button key='install' className={styles.button} onClick={this.handleInstall}>
+                Install
+              </button>
+            ];
+          }
+        } else { // no update available
+          title = 'Uploader is up-to-date!';
+          text = `You are running version ${config.version}, the most recent one.`;
+          actions = (
+            <button className={styles.button} onClick={sync.dismissUpdateNotAvailable}>
+              Okay!
+            </button>
+          );
+        }
+      }
+    }
+    else { // automatic background check
+      if(electronUpdateAvailable && electronUpdateDownloaded){
+        title = 'Update Available!';
+        text = 'After clicking Install, the uploader will restart to complete the installation.';
+        actions = [
+          <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
+            Dismiss
+          </button>,
+          <button key='install' className={styles.button} onClick={this.handleInstall}>
+            Install
+          </button>
+        ];
+      } else {
+        return null;
+      }
     }
 
     return (
