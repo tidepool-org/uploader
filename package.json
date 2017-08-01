@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.11+32.gdd8a5cd7",
+  "version": "0.310.0-alpha.11.33.g3249638d",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -19,8 +19,8 @@
     "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register server.js",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
-    "build-main-dev": "cross-env BUILD=dev NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer-dev": "cross-env BUILD=dev NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
+    "build-main-dev": "cross-env BUILD=dev DEBUG_ERROR=true NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
+    "build-renderer-dev": "cross-env BUILD=dev DEBUG_ERROR=true NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "build-dev": "npm run build-main-dev && npm run build-renderer-dev",
     "start": "cross-env NODE_ENV=production electron ./app/",
