@@ -13,11 +13,6 @@ import '../styles/main.less';
 import { ipcRenderer, crashReporter } from 'electron';
 import Raven from 'raven-js';
 
-window._trackJs = {
-    token: 'f739b1e86d654970b6ce9170f0e63a33'
-};
-var trackJs = require('trackjs');
-
 Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78@sentry.io/183894', {
   autoBreadcrumbs: {
     'console': true  // console logging
