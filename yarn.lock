@@ -4038,6 +4038,14 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+git-describe@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/git-describe/-/git-describe-4.0.2.tgz#9ecc5e6df4658450c89ea35d10183c9f5f40dc73"
+  dependencies:
+    lodash "^4.16.6"
+  optionalDependencies:
+    semver "^5.3.0"
+
 gitbook-cli@2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/gitbook-cli/-/gitbook-cli-2.3.0.tgz#01a360de71a48e53277ed2cb1abf6c60a0901576"
@@ -5489,7 +5497,7 @@ lodash@4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.5.1.tgz#80e8a074ca5f3893a6b1c10b2a636492d710c316"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.0, lodash@^4.6.1, lodash@^4.8.0, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.0, lodash@^4.6.1, lodash@^4.8.0, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -7991,7 +7999,7 @@ shelljs@0.7.0:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shelljs@^0.7.5:
+shelljs@^0.7.5, shelljs@^0.7.8:
   version "0.7.8"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
   dependencies:
