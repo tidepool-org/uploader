@@ -67,16 +67,19 @@ local function dissect_aap(atp_payload_buf, pktinfo, atp_tree)
     repeat
         local aap_data_length_num_bytes = 0
         local aap_data_length_value = 0
-        -- the first 0 to 3 bytes describe the aap frame length in their lower 7 bits
+        -- the first 0 to 3 bytes describe the aap frame length in their lower 7 bits in little endian
         for i = 0, 2 do
             local byte_value = atp_payload_buf:range(aap_frame_offset + i, 1):uint()
             -- if highest bit is not set, this is already the command byte
             if not bit32.btest(byte_value, 0x80) then
                 break
             end
-            -- highest bit was set, add lower 7 bits to length value
-            aap_data_length_value = bit32.lshift(aap_data_length_value, 7)
-            aap_data_length_value = bit32.bor(aap_data_length_value, bit32.band(byte_value, 0x7f))
+            -- highest bit was set, extract lower 7 bits as length value
+            local byte_length_value = bit32.band(byte_value, 0x7f)
+            -- shift these 7 bits to the left depending on the index i
+            byte_length_value = bit32.lshift(byte_length_value, 7 * i)
+            -- combine these bits with the previous length value
+            aap_data_length_value = bit32.bor(byte_length_value, aap_data_length_value)
             aap_data_length_num_bytes = aap_data_length_num_bytes + 1
         end
 
