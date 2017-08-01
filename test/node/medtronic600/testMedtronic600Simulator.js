@@ -69,7 +69,7 @@ describe('medtronic600Simulator.js', function() {
       value: 1.3,
     };
 
-    it('passes through', function() {
+    it('should pass through', function() {
       const val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -85,13 +85,13 @@ describe('medtronic600Simulator.js', function() {
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('drops manual if same value linked within 15 minutes', function() {
+    it('should drop manual if the same value is linked within 15 minutes', function() {
       simulator.smbg(linked);
       simulator.smbg(manual);
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('does not drop duplicate linked values', function() {
+    it('should not drop duplicate linked values', function() {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
@@ -114,12 +114,12 @@ describe('medtronic600Simulator.js', function() {
         subType: 'normal',
       };
 
-      it('passes through', function() {
+      it('should pass through', function() {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
+      it('should not pass through a zero-volume bolus that does not have an expectedNormal', function() {
         const zeroBolus = _.assign({}, val, {
           normal: 0.0,
           time: '2014-09-25T01:05:00.000Z',
@@ -144,7 +144,7 @@ describe('medtronic600Simulator.js', function() {
         subType: 'square',
       };
 
-      it('passes through', function() {
+      it('should pass through', function() {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
@@ -164,7 +164,7 @@ describe('medtronic600Simulator.js', function() {
         subType: 'dual/square',
       };
 
-      it('passes through', function() {
+      it('should pass through', function() {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
@@ -172,7 +172,7 @@ describe('medtronic600Simulator.js', function() {
   });
 
   describe('wizard', function() {
-    it('passes through', function() {
+    it('should pass through', function() {
       const wizard = {
         bgTarget: {
           high: 5.5,
@@ -277,14 +277,14 @@ describe('medtronic600Simulator.js', function() {
       conversionOffset: 0,
     };
 
-    it('passes through', function() {
+    it('should pass through', function() {
       simulator.pumpSettings(pumpSettings);
       expect(simulator.getEvents()).deep.equals([pumpSettings]);
     });
   });
 
   describe('basal', function() {
-    it('sets duration using a following basal', function() {
+    it('should set duration using a following basal', function() {
       const basal1 = builder.makeScheduledBasal()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -309,7 +309,7 @@ describe('medtronic600Simulator.js', function() {
     });
 
     describe('temp basal', function() {
-      it('corrects a restored scheduled basal start time after a temp basal', function() {
+      it('should correct a restored scheduled basal start time after a temp basal', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
@@ -358,7 +358,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('ignores a segment change event when that segment is already active', function() {
+      it('should ignore a segment change event when that segment is already active', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
@@ -385,7 +385,7 @@ describe('medtronic600Simulator.js', function() {
         expect(simulator.getEvents().length === 1);
       });
 
-      it('checks for basal schedule changes', function() {
+      it('should check for basal schedule changes', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-02-09T19:27:43.000Z')
           .with_deviceTime('2017-02-09T19:27:43')
@@ -450,7 +450,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('changes temp basal rate for percentage basals across a basal schedule change', function() {
+      it('should change temp basal rate for percentage basals across a basal schedule change', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-01-28T22:41:00.000Z')
           .with_deviceTime('2017-01-28T22:41:00')
@@ -516,7 +516,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('handles temp basals ending near schedule change boundaries', function() {
+      it('should handle temp basals ending near schedule change boundaries', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-02-10T08:29:24.000Z')
           .with_deviceTime('2017-02-10T08:29:24')
@@ -563,7 +563,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('handles back to back temp basals', function() {
+      it('should handle back to back temp basals', function() {
         const basal1 = builder.makeTempBasal()
           .with_time('2017-02-04T05:33:03.000Z')
           .with_deviceTime('2017-02-04T05:33:03')
@@ -618,7 +618,7 @@ describe('medtronic600Simulator.js', function() {
     });
 
     describe('pump suspend', function() {
-      it('sets suppressed info for suspended basal', function() {
+      it('should set suppressed info for suspended basal', function() {
         const basal1 = builder.makeScheduledBasal()
           .with_time('2014-09-25T01:00:00.000Z')
           .with_deviceTime('2014-09-25T01:00:00')
@@ -681,7 +681,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('sets a restored scheduled basal after a pump suspend', function() {
+      it('should set a restored scheduled basal after a pump suspend', function() {
         const basal1 = builder.makeScheduledBasal()
           .with_time('2017-02-09T15:00:00.000Z')
           .with_deviceTime('2017-02-09T15:00:00')
@@ -746,7 +746,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('handles back to back pump suspends', function() {
+      it('should handle back to back pump suspends', function() {
         const basal1 = builder.makeScheduledBasal()
           .with_time('2017-02-01T20:00:00.000Z')
           .with_deviceTime('2017-02-01T20:00:00')
@@ -845,7 +845,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('handles a pump suspend during a temp basal', function() {
+      it('should handle a pump suspend during a temp basal', function() {
         const basal1 = builder.makeScheduledBasal()
           .with_time('2017-02-04T17:00:00.000Z')
           .with_deviceTime('2017-02-04T17:00:00')
@@ -948,7 +948,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('handles a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change', function() {
+      it('should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change', function() {
         const basal1 = builder.makeScheduledBasal()
           .with_time('2017-02-10T06:00:00.000Z')
           .with_deviceTime('2017-02-10T06:00:00')
