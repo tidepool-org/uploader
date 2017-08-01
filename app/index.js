@@ -10,7 +10,7 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';
 import '../styles/main.less';
-import { ipcRenderer, crashReporter } from 'electron';
+import { ipcRenderer } from 'electron';
 import Raven from 'raven-js';
 
 Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78@sentry.io/183894', {
@@ -29,16 +29,6 @@ store.dispatch(push('/'));
 ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
-
-crashReporter.start({
-  productName: 'Uploader',
-  companyName: 'Tidepool',
-  submitURL: '',
-  uploadToServer: false
-});
-
-console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
-console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 render(
   <Provider store={store}>

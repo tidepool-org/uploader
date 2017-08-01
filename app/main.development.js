@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
 import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
@@ -10,6 +10,16 @@ Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1e
     'console': true  // console logging
   }
 }).install();
+
+crashReporter.start({
+  productName: 'Uploader',
+  companyName: 'Tidepool',
+  submitURL: '',
+  uploadToServer: false
+});
+
+console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
+console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 let menu;
 let template;
