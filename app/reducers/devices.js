@@ -8,7 +8,7 @@ const devices = {
     key: 'carelink',
     name: 'Medtronic',
     // for the device selection list
-    selectName: 'Medtronic (from CareLink)',
+    selectName: 'Medtronic (CareLink import)',
     source: {type: 'carelink'},
     enabled: {mac: true, win: true}
   },
@@ -21,8 +21,8 @@ const devices = {
       'alt': 'Bayer Contour Next Link'
     },
     key: 'medtronic',
-    name: 'Medtronic - 523, 723 or 530G',
-    selectName: 'Medtronic direct from Bayer Contour Next Link',
+    name: 'Medtronic 523, 723 or 530G',
+    selectName: 'Medtronic 523, 723, 530G (Bayer Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
     enabled: {mac: true, win: true}
   },
@@ -35,8 +35,8 @@ const devices = {
       'alt': 'Bayer Contour Next Link 2.4'
     },
     key: 'medtronic600',
-    name: 'Medtronic - 630G, 640G or 670G',
-    selectName: 'Medtronic direct from Bayer Contour Next Link 2.4',
+    name: 'Medtronic 630G, 640G or 670G',
+    selectName: 'Medtronic 630G, 640G, 670G (Bayer Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true}
