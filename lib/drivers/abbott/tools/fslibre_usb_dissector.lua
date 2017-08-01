@@ -19,6 +19,7 @@ local atp_data = ProtoField.new("ATP Data", "fslibre_usb.atp.data", ftypes.BYTES
 local atp_sequence_received = ProtoField.new("ATP Seq Rx", "fslibre_usb.atp.sequence_received", ftypes.UINT8)
 local atp_sequence_sent = ProtoField.new("ATP Seq Tx", "fslibre_usb.atp.sequence_sent", ftypes.UINT8)
 local atp_crc32 = ProtoField.new("ATP CRC32", "fslibre_usb.atp.crc32", ftypes.UINT32, nil, base.HEX)
+local atp_crc32bin = ProtoField.new("ATP CRC32 BIN", "fslibre_usb.atp.crc32bin", ftypes.STRING)
 local atp_unknown = ProtoField.new("ATP UNKNOWN", "fslibre_usb.atp.unknown", ftypes.UINT16, nil, base.HEX)
 
 local aap_frame = ProtoField.new("AAP Frame", "fslibre_usb.aap", ftypes.NONE)
@@ -37,6 +38,7 @@ fslibre_usb.fields = {
     atp_sequence_received,
     atp_sequence_sent,
     atp_crc32,
+    atp_crc32bin,
     atp_unknown,
     aap_frame,
     aap_data_length,
@@ -45,6 +47,19 @@ fslibre_usb.fields = {
 }
 
 local hid_report_length = 64
+
+
+local function to_bits(num, bits)
+    -- returns a string of bits, most significant first
+    bits = bits or math.max(1, select(2, math.frexp(num)))
+    local t = {} -- table containing the bits
+    for b = bits, 1, -1 do
+        t[b] = math.fmod(num, 2)
+        num = math.floor((num - t[b]) / 2)
+    end
+    return table.concat(t) -- convert table to string
+end
+
 
 local function dissect_aap(atp_payload_buf, pktinfo, atp_tree)
     local aap_frame_offset = 0
@@ -142,6 +157,9 @@ function fslibre_usb.dissector(tvbuf, pktinfo, root)
 
                 if data_length_value >= 6 then
                     atp_tree:add(atp_crc32, atp_data_buf:range(2, 4))
+
+                    local crc32_value = atp_data_buf:range(2, 4):uint()
+                    atp_tree:add(atp_crc32bin, atp_data_buf:range(2, 4), to_bits(crc32_value, 32)):set_hidden()
 
                     if data_length_value > 6 then
                         dissect_aap(atp_data_buf:range(6):tvb(), pktinfo, atp_tree)
