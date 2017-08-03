@@ -155,6 +155,8 @@ function uploading(state = false, action) {
 function checkingElectronUpdate(state = false, action) {
   switch (action.type) {
     case actionTypes.CHECKING_FOR_UPDATES:
+    case actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES:
+    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
       return true;
     case actionTypes.UPDATE_AVAILABLE:
     case actionTypes.UPDATE_NOT_AVAILABLE:
