@@ -33,7 +33,7 @@ describe('NGPHistoryParser.js', () => {
   const settings = {};
 
   describe('wizard', () => {
-    it('bolus record gets added to wizard', () => {
+    it('should add bolus record to wizard', () => {
       const bolusData = 'dc001a822dff2e9e029f8e01aa0000014dfc00014dfc000032c8';
       const wizardData = '3d0035822dfdd69e029f8e01000000003c002300000046003200370000000000014dfc000032c80000000000014dfc000000014dfc';
       const historyParser = new NGPHistoryParser(cfg, settings, [wizardData + bolusData]);
