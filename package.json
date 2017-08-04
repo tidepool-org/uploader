@@ -27,7 +27,7 @@
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
     "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
-    "prepare-qa-build": "node scripts/prepare-qa-build.js",
+    "prepare-qa-build": "node -r babel-register scripts/prepare-qa-build.js",
     "package": "npm run build && build -p onTagOrDraft",
     "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}' --extraMetadata.name='tidepool-uploader-dev'",
     "package-win": "npm run build && build --win --x64",
