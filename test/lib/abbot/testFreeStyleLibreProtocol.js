@@ -71,7 +71,7 @@ describe('freeStyleLibreProtocol.js', () => {
           ['\x01\x02\x03\x04\x05', 15]
         ];
         inputData.forEach(([data, checksum]) => {
-            const result = FreeStyleLibreProtocol.validateChecksum(data, checksum);
+            const result = FreeStyleLibreProtocol.validateTextChecksum(data, checksum);
             expect(result).deep.equals(true);
           }
         );
@@ -86,7 +86,7 @@ describe('freeStyleLibreProtocol.js', () => {
           ['', ''],
         ];
         inputData.forEach(([data, checksum]) => {
-            const result = FreeStyleLibreProtocol.validateChecksum(data, checksum);
+            const result = FreeStyleLibreProtocol.validateTextChecksum(data, checksum);
             expect(result).deep.equals(false);
           }
         );
