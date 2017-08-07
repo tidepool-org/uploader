@@ -3,9 +3,15 @@
 echo "Unloading and uninstalling old extensions..."
 # unload old extensions
 sudo kextunload /Library/Extensions/sweetspot.DexComUSB.kext
+sudo kextunload /Library/Extensions/DexcomUSB.kext
+sudo kextunload /Library/Extensions/SiLabsUSBDriver.kext
+sudo kextunload /Library/Extensions/ProlificUsbSerial.kext
 
 # delete old extensions
 sudo rm -rf /Library/Extensions/sweetspot.DexcomUSB.kext
+sudo rm -rf /Library/Extensions/DexcomUSB.kext
+sudo rm -rf /Library/Extensions/SiLabsUSBDriver.kext
+sudo rm -rf /Library/Extensions/ProlificUsbSerial.kext
 
 # install new extensions
 echo "Installing and loading new extensions..."
