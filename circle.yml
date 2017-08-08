@@ -11,7 +11,6 @@ dependencies:
     - yarn config set cache-folder ~/.cache/yarn
   override:
     - yarn --frozen-lockfile
-    - ./node_modules/.bin/electron-rebuild
   cache_directories:
     - ~/.cache/yarn
 
