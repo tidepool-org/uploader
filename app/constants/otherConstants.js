@@ -57,7 +57,6 @@ export const steps = {
 };
 
 export const urls = {
-  DRIVER_DOWNLOAD: 'http://tidepool.org/downloads/',
   HOW_TO_UPDATE_KB_ARTICLE: 'http://support.tidepool.org/article/6-how-to-install-or-upgrade-the-tidepool-uploader-gen',
   HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data'
 };

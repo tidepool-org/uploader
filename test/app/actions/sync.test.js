@@ -675,7 +675,6 @@ describe('Synchronous Actions', () => {
       const device = {
         key: 'a_pump',
         name: 'Acme Pump',
-        showDriverLink: {mac: true, win: true},
         source: {type: 'device', driverId: 'AcmePump'},
         enabled: {mac: true, win: true}
       };

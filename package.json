@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.11",
+  "version": "0.310.0-alpha.17",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -19,14 +19,15 @@
     "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register server.js",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
-    "build-main-dev": "cross-env BUILD=dev NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer-dev": "cross-env BUILD=dev NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
+    "build-main-dev": "cross-env BUILD=dev DEBUG_ERROR=true NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
+    "build-renderer-dev": "cross-env BUILD=dev DEBUG_ERROR=true NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "build-dev": "npm run build-main-dev && npm run build-renderer-dev",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
     "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
+    "prepare-qa-build": "node -r babel-register scripts/prepare-qa-build.js",
     "package": "npm run build && build -p onTagOrDraft",
     "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}' --extraMetadata.name='tidepool-uploader-dev'",
     "package-win": "npm run build && build --win --x64",
@@ -47,7 +48,6 @@
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",
     "lodash": "3.10.1",
-    "node-uuid": "1.4.8",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",
@@ -62,7 +62,8 @@
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#krystophv/electron"
+    "tidepool-platform-client": "0.33.0",
+    "uuid": "3.1.0"
   },
   "browserslist": "electron 1.6",
   "build": {
@@ -101,7 +102,14 @@
       "package.json"
     ],
     "extraResources": [
-      "resources/windows-driver/",
+      {
+        "from": "resources/${os}",
+        "to": "driver/",
+        "filter": [
+          "**/*",
+          "!*.md"
+        ]
+      },
       "sounds/"
     ],
     "win": {
@@ -195,6 +203,7 @@
     "fbjs-scripts": "0.7.1",
     "file-loader": "0.11.1",
     "flux-standard-action": "1.2.0",
+    "git-describe": "4.0.2",
     "gitbook-cli": "2.3.0",
     "html-webpack-plugin": "2.28.0",
     "jsdom": "9.12.0",
@@ -203,7 +212,7 @@
     "less-loader": "2.2.3",
     "minimist": "1.2.0",
     "mocha": "3.2.0",
-    "node-hid": "0.5.4",
+    "nodegit": "0.18.3",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "proxyquire": "1.7.11",
@@ -212,7 +221,7 @@
     "redux-logger": "3.0.1",
     "redux-mock-store": "1.2.3",
     "salinity": "0.0.8",
-    "serialport": "4.0.7",
+    "shelljs": "0.7.8",
     "sinon": "2.1.0",
     "sinon-chai": "2.9.0",
     "spectron": "3.4.1",

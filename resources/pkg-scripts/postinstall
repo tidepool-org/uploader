@@ -3,19 +3,28 @@
 echo "Unloading and uninstalling old extensions..."
 # unload old extensions
 sudo kextunload /Library/Extensions/sweetspot.DexComUSB.kext
+sudo kextunload /Library/Extensions/DexcomUSB.kext
+sudo kextunload /Library/Extensions/SiLabsUSBDriver.kext
+sudo kextunload /Library/Extensions/ProlificUsbSerial.kext
 
 # delete old extensions
 sudo rm -rf /Library/Extensions/sweetspot.DexcomUSB.kext
+sudo rm -rf /Library/Extensions/DexcomUSB.kext
+sudo rm -rf /Library/Extensions/SiLabsUSBDriver.kext
+sudo rm -rf /Library/Extensions/ProlificUsbSerial.kext
 
 # install new extensions
 echo "Installing and loading new extensions..."
 sudo cp -R ./extensions/DexComUSB.kext /Library/Extensions/DexComUSB.kext
+sudo chown -R root:wheel /Library/Extensions/DexcomUSB.kext
 sudo kextload /Library/Extensions/DexComUSB.kext/
 
-sudo cp -R ./extensions/SiLabsUSBDRiver.kext /Library/Extensions/SiLabsUSBDRiver.kext
-sudo kextload /Library/Extensions/SiLabsUSBDRiver.kext/
+sudo cp -R ./extensions/SiLabsUSBDriver.kext /Library/Extensions/SiLabsUSBDriver.kext
+sudo chown -R root:wheel /Library/Extensions/SiLabsUSBDriver.kext
+sudo kextload /Library/Extensions/SiLabsUSBDriver.kext/
 
 sudo cp -R ./extensions/ProlificUsbSerial.kext /Library/Extensions/ProlificUsbSerial.kext
+sudo chown -R root:wheel /Library/Extensions/ProlificUsbSerial.kext
 sudo kextload /Library/Extensions/ProlificUsbSerial.kext/
 
 file="/tmp/TidepoolUploader.cnt"
