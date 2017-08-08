@@ -64,7 +64,41 @@ describe('freeStyleLibreProtocol.js', () => {
 
   describe('static', () => {
 
-    describe('validate checksum', () => {
+    describe('validate binary protocol checksum', () => {
+      it('does produce valid checksums', () => {
+        // data captured using Wireshark: mapping from AAP packet string to its corresponding ATP CRC32
+        const ATP_CRC_LOOKUP = {
+          '\x34': 0x0032c637,
+          '\x54': 0xac9700a0,
+          '\x41': 0xf743b0bb,
+          '\x7d': 0x167d464f,
+          '\x81\x51\x01': 0x281fba26,
+          '\x81\x51\x02': 0x2a764faf,
+          '\x81\x51\x03': 0x2baee328,
+          '\x81\x51\x04': 0x2ea5a4bd,
+          '\x81\x51\x05': 0x2f7d083a,
+          '\x81\x51\x06': 0x2d14fdb3,
+          '\x81\x51\x07': 0x2ccc5134,
+          '\x81\x51\x08': 0x27027299,
+          '\x81\x51\x09': 0x26dade1e,
+          '\x81\x51\x0a': 0x24b32b97,
+          '\x81\x31\x00': 0x48224ccb,
+          '\x81\x31\x01': 0x49fae04c,
+          '\x81\x31\x06': 0x4cf1a7d9,
+          '\x81\x31\x07': 0x4d290b5e,
+          '\x81\x60\x01': 0xcaf4d6cf
+        };
+        Object.keys(ATP_CRC_LOOKUP).forEach(key => {
+            const expectedChecksum = ATP_CRC_LOOKUP[key];
+            const buffer = new Buffer(key, 'binary');
+            const calculatedChecksum = FreeStyleLibreProtocol.calcCrc32(buffer);
+            expect(calculatedChecksum).equals(expectedChecksum);
+          }
+        );
+      });
+    });
+
+    describe('validate text protocol checksum', () => {
       it('does accept valid checksums', () => {
         const inputData = [
           ['', 0],
