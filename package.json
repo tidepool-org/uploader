@@ -25,7 +25,7 @@
     "build-dev": "npm run build-main-dev && npm run build-renderer-dev",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
-    "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
+    "postinstall": "concurrently \"electron-builder install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
     "prepare-qa-build": "node -r babel-register scripts/prepare-qa-build.js",
     "package": "npm run build && build -p onTagOrDraft",
@@ -147,6 +147,10 @@
         },
         "dir"
       ]
+    },
+    "pkg": {
+      "allowAnywhere": false,
+      "allowRootDirectory": false
     }
   },
   "bin": {
@@ -182,7 +186,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "electron": "1.6.2",
-    "electron-builder": "18.3.5",
+    "electron-builder": "19.19.1",
     "electron-devtools-installer": "2.2.0",
     "electron-mocha": "3.4.0",
     "electron-rebuild": "1.5.7",
