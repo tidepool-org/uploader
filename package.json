@@ -29,7 +29,7 @@
     "dev": "npm run hot-server -- --start-hot",
     "prepare-qa-build": "node -r babel-register scripts/prepare-qa-build.js",
     "package": "npm run build && build -p onTagOrDraft",
-    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}'",
+    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='tidepool-uploader-${version}-${arch}-${os}-dev.${ext}' --config.nsis.artifactName='tidepool-uploader-setup-${version}-dev.${ext}' --config.pkg.artifactName='tidepool-uploader-${version}-dev.${ext}'",
     "package-win": "npm run build && build --win --x64",
     "package-mac": "npm run build && build --mac",
     "package-linux": "npm run build && build --linux",
@@ -68,6 +68,7 @@
   "browserslist": "electron 1.6",
   "build": {
     "productName": "Tidepool Uploader",
+    "artifactName": "tidepool-uploader-${version}-${arch}-${os}.${ext}",
     "appId": "org.tidepool.TidepoolUploader",
     "directories": {
       "buildResources": "resources",
@@ -91,7 +92,8 @@
     "nsis": {
       "oneClick": false,
       "perMachine": true,
-      "allowElevation": true
+      "allowElevation": true,
+      "artifactName": "tidepool-uploader-setup-${version}.${ext}"
     },
     "files": [
       "dist/",
@@ -149,6 +151,7 @@
       ]
     },
     "pkg": {
+      "artifactName": "tidepool-uploader-${version}.${ext}",
       "allowAnywhere": false,
       "allowRootDirectory": false
     }
