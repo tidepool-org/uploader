@@ -20,7 +20,13 @@
     },
     "test": {
       "plugins": [
-        ["resolver", { "resolveDirs": [ "app/node_modules" ]}],
+        [ "module-resolver", {
+          "root": ["./app/node_modules"],
+          "alias": {
+            "node-hid": "./app/node_modules/node-hid",
+            "serialport": "./app/node_modules/serialport"
+          }
+        } ],
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
