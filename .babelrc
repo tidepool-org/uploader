@@ -5,10 +5,7 @@
     "react"
   ],
   "retainLines": true,
-  "plugins": [
-    "add-module-exports",
-    [ "module-resolver", { "root": ["./app/node_modules"] } ]
-  ],
+  "plugins": ["add-module-exports"],
   "env": {
     "production": {
       "presets": ["react-optimize"],
