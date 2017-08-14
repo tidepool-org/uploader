@@ -13,7 +13,7 @@
 #### CBG
 
   - `[x]` cbg values
-  - `[x]` units of cbg values (read from device, not hard-coded)
+  - `[ ]` units of cbg values (read from device, not hard-coded)
   - `*[ ]` out-of-range values (LO or HI)
   - `*[ ]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
 
@@ -28,7 +28,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` units of calibration value (read from device, not hard-coded)
   - `[x]` time changes (presence of which is also in the [BtUTC section](#bootstrapping-to-utc) below)
     - `[x]` device display time `from` (before change) and `to` (result of change)
-    - `[ ]` agent of change (`automatic` or `manual`)
+    - `[x]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
 
@@ -92,16 +92,17 @@ Device-specific? (Add any device-specific notes/additions here.)
 
 > **NB:** You can and should add to this section if there are other data types documented in the device's data protocol specification but not part of Tidepool's data model (yet).
 
-  - `[ ]` activity/exercise
-  - `[ ]` food (e.g., Dexcom allows logging carb events)
-  - `[ ]` notes/other events
+  - `[-]` activity/exercise
+  - `[-]` food (e.g., Dexcom allows logging carb events)
+  - `[-]` notes/other events
+  - `[-]` insulin (rapid acting, long term)
 
 ### Tidepool ingestion API
 
 Choose one of the following:
 
   - `[x]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+  - `*[ ]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
