@@ -8,8 +8,6 @@ environment:
     - nodejs_version: 7.4.0
 
 cache:
-  - node_modules -> package.json
-  - app/node_modules -> app/package.json
   - "%LOCALAPPDATA%\\Yarn"
 
 platform:
@@ -39,14 +37,14 @@ test_script:
   - yarn test
 #  - yarn test-e2e
   - yarn package-dev
-  - 7z a development.zip release
+#  - 7z a development.zip release
   - rmdir /S /Q release
   - yarn package
-  - 7z a production.zip release
+#  - 7z a production.zip release
 
 
-artifacts:
-  - path: development.zip
-    name: Development build
-  - path: production.zip
-    name: Production Build
+#artifacts:
+#  - path: development.zip
+#    name: Development build
+#  - path: production.zip
+#    name: Production Build
