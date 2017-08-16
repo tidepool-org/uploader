@@ -1,4 +1,4 @@
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
