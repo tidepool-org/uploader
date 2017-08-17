@@ -18,7 +18,7 @@
   - `*[ ]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
 
 Device-specific? (Add any device-specific notes/additions here.)
-  - internal glucose unit is always mg/dL for this device, independent of display unit 
+  - internal glucose unit is always mg/dL for this device, independent of display unit
   - out-of-range thresholds are 40 mg/dL and 500 mg/dL
   - out-of-range measurements are reported as values 40 or 500 respectively
 
@@ -96,6 +96,43 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[-]` food (e.g., Dexcom allows logging carb events)
   - `[-]` notes/other events
   - `[-]` insulin (rapid acting, long term)
+
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `*[ ]` platform ingestion API
+
+### Known implementation issues/TODOs
+
+*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+
+
+## Checklist for Blood Glucose Meter Implementation
+
+### Required if Present
+
+- `[x]` smbg values
+- `[ ]` units of smbg values (read from device, not hard-coded)
+- `*[ ]` out-of-range values (LO or HI)
+- `*[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+- `[x]` date & time settings changes
+- `[x]` blood ketone values
+- `[ ]` units of blood ketone values (read from device, not hard-coded)
+- `*[ ]` ketone out-of-range values
+- `*[ ]` ketone out-of-range value thresholds
+
+Device-specific? (Add any device-specific notes/additions here.)
+  - internal glucose unit is always mg/dL for this device, independent of display unit
+  - out-of-range thresholds are 40 mg/dL and 500 mg/dL
+  - out-of-range measurements are reported as values 40 or 500 respectively
+
+### No Tidepool Data Model Yet
+
+- `[x]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
+- `[-]` device settings, other than date & time (e.g., target blood glucose range)
+- `[-]` tag/note (e.g., pre- vs. post-meal)
 
 ### Tidepool ingestion API
 
