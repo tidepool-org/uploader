@@ -147,10 +147,6 @@
         },
         "dir"
       ]
-    },
-    "pkg": {
-      "allowAnywhere": false,
-      "allowRootDirectory": false
     }
   },
   "bin": {

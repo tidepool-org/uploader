@@ -27,6 +27,12 @@ sudo cp -R ./extensions/ProlificUsbSerial.kext /Library/Extensions/ProlificUsbSe
 sudo chown -R root:wheel /Library/Extensions/ProlificUsbSerial.kext
 sudo kextload /Library/Extensions/ProlificUsbSerial.kext/
 
+echo User: $USER
+echo Home: $HOME
+echo Folder: "$2/Tidepool Uploader.app"
+
+sudo chown -R $USER:staff "$2/Tidepool Uploader.app"
+
 file="/tmp/TidepoolUploader.cnt"
 
 if [ -e ${file} ]; then
