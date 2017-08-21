@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2016, Tidepool Project
+ * Copyright (c) 2017, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -33,7 +33,7 @@ describe('freeStyleLibreProtocol.js', () => {
 
     describe('parse text responses', () => {
 
-      it('does parse and return valid text responses', () => {
+      it('should parse and return valid text responses', () => {
         const inputData = [
           ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD OK\r\n', 'DB Record Number = 226988'],
           ['2.1.2\r\nCKSM:00000108\r\nCMD OK\r\n', '2.1.2']
@@ -46,7 +46,7 @@ describe('freeStyleLibreProtocol.js', () => {
       });
 
 
-      it('does not accept invalid text responses', () => {
+      it('should not accept invalid text responses', () => {
         const inputData = [
           ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD Fail!\r\n', Error],
           ['2.1.2\r\nCKSM:00000111\r\nCMD OK\r\n', Error],
@@ -65,7 +65,8 @@ describe('freeStyleLibreProtocol.js', () => {
   describe('static', () => {
 
     describe('validate binary protocol checksum', () => {
-      it('does produce valid checksums', () => {
+
+      it('should produce valid checksums', () => {
         // data captured using Wireshark: mapping from AAP packet string to its corresponding ATP CRC32
         const ATP_CRC_LOOKUP = {
           '\x34': 0x0032c637,
@@ -99,7 +100,8 @@ describe('freeStyleLibreProtocol.js', () => {
     });
 
     describe('validate text protocol checksum', () => {
-      it('does accept valid checksums', () => {
+
+      it('should accept valid checksums', () => {
         const inputData = [
           ['', 0],
           ['\x01\x02\x03\x04\x05', 15]
@@ -111,7 +113,7 @@ describe('freeStyleLibreProtocol.js', () => {
         );
       });
 
-      it('does decline invalid checksums', () => {
+      it('should decline invalid checksums', () => {
         const inputData = [
           ['', 10],
           ['\x01\x02\x03\x04\x05', 0],

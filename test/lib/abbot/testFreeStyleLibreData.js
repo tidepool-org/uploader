@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2016, Tidepool Project
+ * Copyright (c) 2017, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -63,7 +63,7 @@ describe('freeStyleLibreData.js', () => {
 
     describe('process AAP packets', () => {
 
-      it('correctly restores 32bit records numbers', () => {
+      it('should correctly restore 32bit records numbers', () => {
         const historicalRecordJson = `
           {
             "dataLength": 21,
@@ -103,7 +103,7 @@ describe('freeStyleLibreData.js', () => {
   describe('static', () => {
 
     describe('validate annotations', () => {
-      it('annotates only out-of-range BG values', () => {
+      it('should only annotate out-of-range BG values', () => {
         const inputData = [
           [GLUCOSE_LO, true],
           [GLUCOSE_HI, true],
