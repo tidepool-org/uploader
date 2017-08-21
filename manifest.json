@@ -46,7 +46,7 @@
         },
         {
           "deviceName": "OneTouch Mini w/FTDI cable",
-          "driverId": "OneTouchMini",
+          "driverId": "OneTouchUltraMini",
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577
