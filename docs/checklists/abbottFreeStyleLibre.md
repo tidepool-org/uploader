@@ -14,12 +14,12 @@
 
   - `[x]` cbg values
   - `[ ]` units of cbg values (read from device, not hard-coded)
-  - `*[ ]` out-of-range values (LO or HI)
-  - `*[ ]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
+  - `[x]` out-of-range values (LO or HI)
+  - `[x]` out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)
 
 Device-specific? (Add any device-specific notes/additions here.)
   - internal glucose unit is always mg/dL for this device, independent of display unit
-  - out-of-range thresholds are 40 mg/dL and 500 mg/dL
+  - out-of-range thresholds are 41 mg/dL and 499 mg/dL
   - out-of-range measurements are reported as values 40 or 500 respectively
 
 #### Device Events
@@ -115,18 +115,19 @@ Choose one of the following:
 
 - `[x]` smbg values
 - `[ ]` units of smbg values (read from device, not hard-coded)
-- `*[ ]` out-of-range values (LO or HI)
-- `*[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+- `[x]` out-of-range values (LO or HI)
+- `[x]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[x]` date & time settings changes
 - `[x]` blood ketone values
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
-- `*[ ]` ketone out-of-range values
-- `*[ ]` ketone out-of-range value thresholds
+- `[x]` ketone out-of-range values
+- `[x]` ketone out-of-range value thresholds
 
 Device-specific? (Add any device-specific notes/additions here.)
   - internal glucose unit is always mg/dL for this device, independent of display unit
-  - out-of-range thresholds are 40 mg/dL and 500 mg/dL
-  - out-of-range measurements are reported as values 40 or 500 respectively
+  - glucose out-of-range thresholds are 41 mg/dL and 499 mg/dL
+  - glucose out-of-range measurements are reported as values 40 or 500 respectively
+  - ketone out-of-range upper threshold is 8.0 mmol/L
 
 ### No Tidepool Data Model Yet
 
