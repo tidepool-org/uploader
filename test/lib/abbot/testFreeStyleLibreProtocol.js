@@ -19,7 +19,7 @@
 
 import {expect} from 'salinity';
 
-import {FreeStyleLibreProtocol} from '../../../lib/drivers/abbott/freeStyleLibreProtocol.js';
+import {FreeStyleLibreProtocol} from '../../../lib/drivers/abbott/freeStyleLibreProtocol';
 
 describe('freeStyleLibreProtocol.js', () => {
   const cfg = {};
@@ -35,8 +35,8 @@ describe('freeStyleLibreProtocol.js', () => {
 
       it('does parse and return valid text responses', () => {
         const inputData = [
-          ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD OK\r\n', 'DB Record Number = 226988\r\n'],
-          ['2.1.2\r\nCKSM:00000108\r\nCMD OK\r\n', '2.1.2\r\n']
+          ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD OK\r\n', 'DB Record Number = 226988'],
+          ['2.1.2\r\nCKSM:00000108\r\nCMD OK\r\n', '2.1.2']
         ];
         inputData.forEach(([data, expectedResult]) => {
             const result = protocol.parseTextResponse(data);
