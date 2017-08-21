@@ -83,7 +83,8 @@
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577,
-          "sendTimeout": 5000
+          "sendTimeout": 5000,
+          "receiveTimeout": 5000
         },
         {
           "deviceName": "OneTouchVerioIQ",
