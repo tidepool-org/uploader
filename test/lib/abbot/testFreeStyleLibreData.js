@@ -22,7 +22,7 @@ import {expect} from 'salinity';
 import builder from '../../../lib/objectBuilder';
 import annotate from '../../../lib/eventAnnotations';
 
-import {FreeStyleLibreData} from '../../../lib/drivers/abbott/freeStyleLibreData';
+import FreeStyleLibreData from '../../../lib/drivers/abbott/freeStyleLibreData';
 import {
   GLUCOSE_HI,
   GLUCOSE_LO
