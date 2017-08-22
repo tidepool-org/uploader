@@ -19,7 +19,7 @@
 
 import {expect} from 'salinity';
 
-import {FreeStyleLibreProtocol} from '../../../lib/drivers/abbott/freeStyleLibreProtocol';
+import FreeStyleLibreProtocol from '../../../lib/drivers/abbott/freeStyleLibreProtocol';
 
 describe('freeStyleLibreProtocol.js', () => {
   const cfg = {};
