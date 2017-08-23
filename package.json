@@ -48,6 +48,7 @@
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",
     "lodash": "3.10.1",
+    "plist": "2.1.0",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",
@@ -61,6 +62,7 @@
     "semver": "5.3.0",
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
+    "sudo-prompt": "7.1.1",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.33.0",
     "uuid": "3.1.0"

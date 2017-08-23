@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2015-2016, Tidepool Project
+ * Copyright (c) 2015-2017, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -16,18 +16,43 @@
  */
 
 import { exec } from 'child_process';
+import { remote } from 'electron';
+//import Sudoer from 'electron-sudo';
+import sudo from 'sudo-prompt';
+import plist from 'plist';
+import fs from 'fs';
+import path from 'path';
 
 export function checkVersion() {
-  const version = exec('pkgutil --pkg-info org.tidepool.pkg.TidepoolUSBDriver');
 
-  version.stdout.on('data', (data) => {
-    const lines = data.split('\n');
-    const versionString = lines[1];
-    const versionNum = versionString.split(': ')[1];
-    console.log('Installed Driver version: ',versionNum);
-  });
 
-  version.stderr.on('data', (data) => {
-    console.log(data.toString());
-  });
+  async function updateDrivers() {
+    const options = {
+      name: 'Tidepool Driver Installer',
+      icns: '/Applications/Tidepool Uploader.app/Contents/Resources/Tidepool Uploader.icns',
+    };
+    sudo.exec('echo hello', options,
+      (error, stdout, stderr) => {
+        if (error) throw error;
+        console.log('stdout: ' + stdout);
+      }
+    );
+  }
+
+  const driverPath = path.join(path.dirname(remote.app.getAppPath()),'driver/extensions/');
+  const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
+
+  for (let driver of driverList) {
+    console.log(driver);
+    const currentplist = plist.parse(fs.readFileSync(path.join(driverPath, driver, '/Contents/Info.plist'), 'utf8'));
+    const currentVersion = currentplist.CFBundleVersion;
+    console.log('Current Driver version:', currentVersion);
+
+    const installedplist = plist.parse(fs.readFileSync(path.join('/Library/Extensions/',driver,'/Contents/Info.plist'),'utf8'));
+    const installedVersion = installedplist.CFBundleVersion;
+    console.log('Installed Driver version: ', installedVersion);
+  }
+
+  updateDrivers();
+
 }
