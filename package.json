@@ -44,6 +44,7 @@
     "classnames": "2.2.5",
     "commander": "2.9.0",
     "electron-debug": "1.1.0",
+    "electron-is-dev": "0.3.0",
     "font-awesome": "4.7.0",
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",

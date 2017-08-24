@@ -2962,6 +2962,10 @@ electron-download@^3.0.1, electron-download@^3.1.0:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
+electron-is-dev@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.3.0.tgz#14e6fda5c68e9e4ecbeff9ccf037cbd7c05c5afe"
+
 electron-is-dev@^0.1.0, electron-is-dev@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.1.2.tgz#8a1043e32b3a1da1c3f553dce28ce764246167e3"
