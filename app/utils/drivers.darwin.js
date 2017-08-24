@@ -21,10 +21,11 @@ import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
 import isDev from 'electron-is-dev';
+import decompress from 'decompress';
 
 export function checkVersion() {
 
-  function updateDrivers(appFolder) {
+  function updateDrivers(appFolder, driverPath) {
     const options = {
       name: 'Tidepool Driver Installer',
       icns: path.join(appFolder,'/Tidepool Uploader.icns')
@@ -74,12 +75,15 @@ export function checkVersion() {
     return;
   }
 
-  let appFolder = path.dirname(remote.app.getAppPath());
-  const driverPath = path.join(appFolder,'driver/extensions');
-  const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
+  const appFolder = path.dirname(remote.app.getAppPath());
 
-  if (hasOldDriver(driverPath, driverList)) {
-    updateDrivers(appFolder);
-  }
+  decompress(path.join(appFolder,'driver/extensions.zip'), path.join(appFolder,'driver/')).then(files => {
+    const driverPath = path.join(appFolder,'driver/extensions');
+    const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
+
+    if (hasOldDriver(driverPath, driverList)) {
+      updateDrivers(appFolder, driverPath);
+    }
+  });
 
 }
