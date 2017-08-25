@@ -56,7 +56,7 @@ export function checkVersion() {
   }
 
   function hasOldDriver(dPath, driverList) {
-    for (let driver of driverList) {
+    for (const driver of driverList) {
       const currentVersion = readVersion(dPath, driver);
       const installedVersion = readVersion('/Library/Extensions/', driver);
       console.log(driver,'version: Installed =', installedVersion, ', Current =', currentVersion);
