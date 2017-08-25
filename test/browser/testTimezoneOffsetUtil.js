@@ -1,15 +1,15 @@
 /*
  * == BSD2 LICENSE ==
  * Copyright (c) 2014, Tidepool Project
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
  * License as published by the Open Source Initiative at opensource.org.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the License for more details.
- * 
+ *
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
@@ -23,6 +23,7 @@ var expect = chai.expect;
 
 var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
+var sundial = require('sundial');
 
 describe('TimezoneOffsetUtil.js', function(){
   it('exports a function', function(){
@@ -51,7 +52,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
   it('defaults to across-the-board timezone application if no `changes` provided as third param', function(){
     var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
-    expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
+    expect(util.lookup(sundial.parseFromFormat('201504010000', 'YYYYMMDDHHmm'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
       timezoneOffset: -240,
       clockDriftOffset: 0,
@@ -650,7 +651,7 @@ describe('TimezoneOffsetUtil in practice', function(){
     expect(offsets.length).to.equal(2);
     expect(offsets).to.deep.equal([-420, -360]);
   });
-  
+
   it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
     this.timeout(5000);
     setTimeout(function() {
