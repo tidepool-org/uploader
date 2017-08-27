@@ -163,6 +163,7 @@ export class MainPage extends Component {
         {changePersonLink}
         {clinicUserBlock}
         <UploadList
+          rememberMedtronicSerialNumber={this.props.sync.rememberMedtronicSerialNumber}
           disabled={Boolean(this.props.unsupported) || !Boolean(this.props.selectedTimezone)}
           isClinicAccount={this.props.isClinicAccount}
           isUploadInProgress={this.props.uploadIsInProgress}
