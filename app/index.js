@@ -1,3 +1,4 @@
+/* global  __VERSION_SHA__ */
 import _ from 'lodash';
 import React from 'react';
 import { render } from 'react-dom';
@@ -12,6 +13,33 @@ import './app.global.css';
 import '../styles/main.less';
 import { ipcRenderer } from 'electron';
 import Raven from 'raven-js';
+import Rollbar from 'rollbar/dist/rollbar.umd';
+
+let rollbar = new Rollbar({
+    accessToken: '1843589282464f4facd43f794c8201a8',
+    captureUncaught: true,
+    payload: {
+        environment: 'test',
+        client: {
+          javascript: {
+            code_version: __VERSION_SHA__,
+            guess_uncaught_frames: true
+          }
+        }
+    },
+    transform: function(payload) {
+      var trace = payload.body.trace;
+      if (trace && trace.frames) {
+        for (var i = 0; i < trace.frames.length; i++) {
+          var filename = trace.frames[i].filename;
+          if (filename) {
+            trace.frames[i].filename = 'http://dynamichost/dist/bundle.js';
+          }
+        }
+      }
+    }
+  }
+);
 
 Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78@sentry.io/183894', {
   autoBreadcrumbs: {
