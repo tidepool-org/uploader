@@ -1,6 +1,7 @@
 Checklists for the implementation of drivers for reading data from diabetes devices currently supported or in development.
 
-   * [Abbott FreeStyle (BGM)](abbottFreeStyleLite.md)
+   * [Abbott FreeStyle Lite & Freedom Lite (BGM)](abbottFreeStyleLite.md)
+   * [Abbott FreeStyle Libre (CGM & BGM data)](abbottFreeStyleLibre.md)
    * [Abbott Precision Xtra (blood glucose & ketone meter)](abbottPrecisionXtra.md)
    * [Animas Vibe (CGM data)](animasCGM.md)
    * [Animas Ping and Vibe Insulin Pumps](animasPingAndVibe.md)
