@@ -56,6 +56,16 @@ export function clickGoToBlip() {
   };
 }
 
+export function rememberMedtronicSerialNumber(serialNumber) {
+  return {
+    type: actionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER,
+    meta: {
+      source: actionSources[actionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER],
+      metric: { eventName: metrics.MEDTRONIC_REMEMBER_SERIAL_NUMBER }
+    }
+  };
+}
+
 export function clinicAddMrn(){
   return {
     type: actionTypes.CLINIC_ADD_MRN,
