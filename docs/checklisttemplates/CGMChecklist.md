@@ -101,4 +101,8 @@ Choose one of the following:
 
 ### Known implementation issues/TODOs
 
+Add any device-specific known issues or implementation TODOs here in checklist format.
+
+### Known implementation issues/TODOs
+
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
