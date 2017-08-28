@@ -17,7 +17,7 @@ const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
-const ROLLBAR_POST_TOKEN = JSON.stringify(process.env.ROLLBAR_POST_TOKEN);
+const ROLLBAR_POST_TOKEN = process.env.ROLLBAR_POST_TOKEN;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -123,7 +123,7 @@ export default validate(merge(baseConfig, {
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
       __TEST__: false,
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
-      __ROLLBAR_POST_TOKEN__: ROLLBAR_POST_TOKEN,
+      __ROLLBAR_POST_TOKEN__: JSON.stringify(ROLLBAR_POST_TOKEN),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
 
