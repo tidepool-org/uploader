@@ -27,6 +27,8 @@ let rollbar = new Rollbar({
           }
         }
     },
+    // to deal with URI's as local filesystem paths, we use the "many domain" transform:
+    // https://rollbar.com/docs/source-maps/#using-source-maps-on-many-domains
     transform: function(payload) {
       var trace = payload.body.trace;
       if (trace && trace.frames) {
