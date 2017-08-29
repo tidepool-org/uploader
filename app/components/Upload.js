@@ -22,15 +22,23 @@ import cx from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
 import sundial from 'sundial';
+import keytar from 'keytar';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
 
 import styles from '../../styles/components/Upload.module.less';
 
+const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
+
 export default class Upload extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    rememberMedtronicSerialNumber: PropTypes.func.isRequired,
+    // targetId is needed to remember the pump serial number.
+    // It can be null when logged in user is not a data storage account
+    // for example a clinic worker
+    targetId: PropTypes.string,
     upload: PropTypes.object.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -44,12 +52,13 @@ export default class Upload extends Component {
       CARELINK_PASSWORD: 'CareLink password',
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
       MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
+      REMEMBER_SERIAL_NUMBER: 'Remember serial number',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
       LABEL_FAILED: 'Try again',
       LAST_UPLOAD: 'Last upload: ',
-      DEVICE_UNKOWN: 'Unknown device',
+      DEVICE_UNKNOWN: 'Unknown device',
       UPLOAD_COMPLETE: 'Done!',
       UPLOAD_PROGRESS: 'Uploading... '
     }
@@ -58,7 +67,8 @@ export default class Upload extends Component {
   state = {
     carelinkFormIncomplete: true,
     medtronicFormIncomplete: true,
-    medtronicSerialNumberValue: null
+    medtronicSerialNumberValue: '',
+    medtronicSerialNumberRemember: false
   };
 
   constructor(props) {
@@ -69,6 +79,28 @@ export default class Upload extends Component {
     this.onBlockModeInputChange = this.onBlockModeInputChange.bind(this);
     this.onCareLinkInputChange = this.onCareLinkInputChange.bind(this);
     this.onMedtronicSerialNumberInputChange = this.onMedtronicSerialNumberInputChange.bind(this);
+    this.onMedtronicSerialNumberRememberChange = this.onMedtronicSerialNumberRememberChange.bind(this);
+
+    this.populateRememberedSerialNumber();
+  }
+
+  componentWillMount() {
+      // Initialize the UI state. Needed for logout/login scenarios
+      this.handleReset();
+   }
+
+  populateRememberedSerialNumber() {
+    keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
+      .then((serialNumber) => {
+        if(serialNumber) {
+          this.setState({
+            medtronicSerialNumberValue: serialNumber,
+            medtronicSerialNumberRemember: true,
+            medtronicFormIncomplete: false,
+          });
+          this.onCareLinkInputChange();
+        }
+    });
   }
 
   handleCareLinkUpload() {
@@ -81,6 +113,20 @@ export default class Upload extends Component {
   }
 
   handleMedtronicUpload() {
+    if (this.state.medtronicSerialNumberRemember) {
+      // Only set the password if it is different
+      keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
+        .then((serialNumber) => {
+          if (serialNumber != this.state.medtronicSerialNumberValue) {
+            keytar.setPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId,
+              this.state.medtronicSerialNumberValue)
+              .then(() => {
+                this.props.rememberMedtronicSerialNumber();
+              });
+          }
+        });
+    }
+
     let options = {
       serialNumber: this.state.medtronicSerialNumberValue
     };
@@ -94,9 +140,10 @@ export default class Upload extends Component {
     this.setState({
       carelinkFormIncomplete: true,
       medtronicFormIncomplete: true,
-      medtronicSerialNumberValue: null
+      medtronicSerialNumberValue: ''
     });
     this.props.onReset();
+    this.populateRememberedSerialNumber();
   }
 
   handleUpload(e) {
@@ -133,6 +180,20 @@ export default class Upload extends Component {
     }
     else {
       this.setState({carelinkFormIncomplete: false});
+    }
+  }
+
+  onMedtronicSerialNumberRememberChange(e) {
+    const checkbox = e.target;
+    const checked = checkbox.checked;
+
+    this.setState({
+      medtronicSerialNumberRemember: checked
+    });
+
+    // Delete the stored serial number if the "Remember" box is being unchecked
+    if(!checked) {
+      keytar.deletePassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId);
     }
   }
 
@@ -376,6 +437,16 @@ export default class Upload extends Component {
             onChange={this.onMedtronicSerialNumberInputChange}
             className={styles.textInput}
             placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
+          <div className={styles.rememberWrap}>
+            <input
+              type="checkbox"
+              id="medtronicSerialRemember"
+              onChange={this.onMedtronicSerialNumberRememberChange}
+              checked={this.state.medtronicSerialNumberRemember} />
+            <label htmlFor="medtronicSerialRemember">
+              {this.props.text.REMEMBER_SERIAL_NUMBER}
+            </label>
+          </div>
         </div>
       </div>
     );
@@ -435,7 +506,7 @@ export default class Upload extends Component {
   renderName() {
     const { upload, text } = this.props;
     return (
-      <div className={styles.name}>{upload.name || text.DEVICE_UNKOWN}</div>
+      <div className={styles.name}>{upload.name || text.DEVICE_UNKNOWN}</div>
     );
   }
 
