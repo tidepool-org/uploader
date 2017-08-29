@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2015-2016, Tidepool Project
+ * Copyright (c) 2017, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -15,19 +15,75 @@
  * == BSD2 LICENSE ==
  */
 
-import { exec } from 'child_process';
+import { remote } from 'electron';
+import sudo from 'sudo-prompt';
+import plist from 'plist';
+import fs from 'fs';
+import path from 'path';
+import isDev from 'electron-is-dev';
+import decompress from 'decompress';
 
 export function checkVersion() {
-  const version = exec('pkgutil --pkg-info org.tidepool.pkg.TidepoolUSBDriver');
 
-  version.stdout.on('data', (data) => {
-    const lines = data.split('\n');
-    const versionString = lines[1];
-    const versionNum = versionString.split(': ')[1];
-    console.log('Installed Driver version: ',versionNum);
+  function updateDrivers(appFolder, driverPath) {
+    const options = {
+      name: 'Tidepool Driver Installer',
+      icns: path.join(appFolder,'/Tidepool Uploader.icns')
+    };
+    sudo.exec(path.join(appFolder,'driver/updateDrivers.sh').replace(/ /g, '\\ ') + ' ' + driverPath.replace(/ /g, '\\ '), options,
+      (error, stdout, stderr) => {
+        console.log('sudo result: ' + stdout);
+        if (error) {
+          console.log(error);
+        }
+      }
+    );
+  }
+
+  function readVersion(dPath, driver) {
+    try {
+      const list = plist.parse(fs.readFileSync(path.join(dPath, driver, '/Contents/Info.plist'), 'utf8'));
+      const version = list.CFBundleVersion;
+      return version;
+    } catch (error) {
+      if(error.code ==='ENOENT') {
+        return 'Not found';
+      } else {
+        console.log(error);
+      }
+      return null;
+    }
+  }
+
+  function hasOldDriver(dPath, driverList) {
+    for (const driver of driverList) {
+      const currentVersion = readVersion(dPath, driver);
+      const installedVersion = readVersion('/Library/Extensions/', driver);
+      console.log(driver,'version: Installed =', installedVersion, ', Current =', currentVersion);
+
+      if(currentVersion !== installedVersion) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (isDev) {
+    // The dev mode Electron.app does not contain the drivers or update script,
+    // it gets copied into the .app during packaging.
+    console.log('Not checking driver versions in dev mode.');
+    return;
+  }
+
+  const appFolder = path.dirname(remote.app.getAppPath());
+
+  decompress(path.join(appFolder,'driver/extensions.zip'), path.join(appFolder,'driver/')).then(files => {
+    const driverPath = path.join(appFolder,'driver/extensions');
+    const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
+
+    if (hasOldDriver(driverPath, driverList)) {
+      updateDrivers(appFolder, driverPath);
+    }
   });
 
-  version.stderr.on('data', (data) => {
-    console.log(data.toString());
-  });
 }
