@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.17",
+  "version": "0.320.0-alpha.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -25,11 +25,11 @@
     "build-dev": "npm run build-main-dev && npm run build-renderer-dev",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
-    "postinstall": "concurrently \"electron-builder install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
+    "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\" && electron-rebuild --force --module-dir app",
     "dev": "npm run hot-server -- --start-hot",
     "prepare-qa-build": "node -r babel-register scripts/prepare-qa-build.js",
     "package": "npm run build && build -p onTagOrDraft",
-    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName=\"${productName}-${version}-${arch}-${os}-dev.${ext}\" --config.nsis.artifactName=\"${productName}-Setup-${version}-dev.${ext}\" --extraMetadata.name=\"tidepool-uploader-dev\"",
+    "package-dev": "npm run build-dev && build -p onTagOrDraft --config.artifactName='${productName}-${version}-dev.${ext}' --config.nsis.artifactName='${productName}-Setup-${version}-dev.${ext}' --extraMetadata.name='tidepool-uploader-dev'",
     "package-win": "npm run build && build --win --x64",
     "package-mac": "npm run build && build --mac",
     "package-linux": "npm run build && build --linux",
@@ -43,11 +43,14 @@
     "chrome-launcher": "0.0.1",
     "classnames": "2.2.5",
     "commander": "2.9.0",
+    "decompress": "4.2.0",
     "electron-debug": "1.1.0",
+    "electron-is-dev": "0.3.0",
     "font-awesome": "4.7.0",
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",
     "lodash": "3.10.1",
+    "plist": "2.1.0",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",
@@ -61,6 +64,7 @@
     "semver": "5.3.0",
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
+    "sudo-prompt": "7.1.1",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.33.0",
     "uuid": "3.1.0"
@@ -76,17 +80,18 @@
     "dmg": {
       "contents": [
         {
-          "x": 410,
-          "y": 150,
+          "x": 390,
+          "y": 170,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 130,
-          "y": 150,
+          "x": 150,
+          "y": 170,
           "type": "file"
         }
-      ]
+      ],
+      "background": "resources/background.tiff"
     },
     "nsis": {
       "oneClick": false,
@@ -140,17 +145,13 @@
           ]
         },
         {
-          "target": "pkg",
+          "target": "dmg",
           "arch": [
             "x64"
           ]
         },
         "dir"
       ]
-    },
-    "pkg": {
-      "allowAnywhere": false,
-      "allowRootDirectory": false
     }
   },
   "bin": {
@@ -186,7 +187,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "electron": "1.6.2",
-    "electron-builder": "19.5.1",
+    "electron-builder": "18.3.5",
     "electron-devtools-installer": "2.2.0",
     "electron-mocha": "3.4.0",
     "electron-rebuild": "1.5.7",
