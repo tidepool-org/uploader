@@ -223,12 +223,6 @@ app.on('ready', async () => {
           shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Check for Updates',
-        click() {
-          manualCheck = true;
-          autoUpdater.checkForUpdates();
-        }
-      }, {
         label: 'Privacy Policy',
         click() {
           shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
@@ -295,6 +289,12 @@ app.on('ready', async () => {
         label: 'Get Support',
         click() {
           shell.openExternal('http://support.tidepool.org/');
+        }
+      }, {
+        label: 'Check for Updates',
+        click() {
+          manualCheck = true;
+          autoUpdater.checkForUpdates();
         }
       }, {
         label: 'Privacy Policy',
