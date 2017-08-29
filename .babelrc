@@ -4,7 +4,6 @@
     "stage-0",
     "react"
   ],
-  "retainLines": true,
   "plugins": ["add-module-exports"],
   "env": {
     "production": {
@@ -20,13 +19,7 @@
     },
     "test": {
       "plugins": [
-        [ "module-resolver", {
-          "root": ["./app/node_modules"],
-          "alias": {
-            "node-hid": "./app/node_modules/node-hid",
-            "serialport": "./app/node_modules/serialport"
-          }
-        } ],
+        ["resolver", { "resolveDirs": [ "app/node_modules" ]}],
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
