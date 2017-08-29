@@ -6,14 +6,17 @@ import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 import Raven from 'raven';
-import Rollbar from 'rollbar';
+import Rollbar from 'rollbar/src/server/rollbar';
 
+let rollbar;
 if(process.env.NODE_ENV === 'production') {
-  const rollbar = new Rollbar({
+  rollbar = new Rollbar({
     accessToken: __ROLLBAR_POST_TOKEN__,
-    environment: 'electron_main_process',
     captureUncaught: true,
-    captureUnhandledRejections: true
+    captureUnhandledRejections: true,
+    payload: {
+        environment: 'electron_main_process'
+    }
   });
 }
 
