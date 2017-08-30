@@ -16,28 +16,24 @@
  */
 
 import { remote } from 'electron';
-import sudo from 'sudo-prompt';
 import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
 import isDev from 'electron-is-dev';
 import decompress from 'decompress';
+import * as sync from '../actions/sync';
 
-export function checkVersion() {
+export function checkVersion(dispatch) {
 
-  function updateDrivers(appFolder, driverPath) {
+  dispatch(sync.checkingForDriverUpdate());
+
+  function setInstallOpts(iconsPath, scriptPath, driverPath) {
     const options = {
       name: 'Tidepool Driver Installer',
-      icns: path.join(appFolder,'/Tidepool Uploader.icns')
+      icns: iconsPath
     };
-    sudo.exec(path.join(appFolder,'driver/updateDrivers.sh').replace(/ /g, '\\ ') + ' ' + driverPath.replace(/ /g, '\\ '), options,
-      (error, stdout, stderr) => {
-        console.log('sudo result: ' + stdout);
-        if (error) {
-          console.log(error);
-        }
-      }
-    );
+    const execString = scriptPath.replace(/ /g, '\\ ') + ' ' + driverPath.replace(/ /g, '\\ ');
+    dispatch(sync.driverUpdateShellOpts({options,execString}));
   }
 
   function readVersion(dPath, driver) {
@@ -56,33 +52,42 @@ export function checkVersion() {
   }
 
   function hasOldDriver(dPath, driverList) {
+    let installedVersion;
     for (const driver of driverList) {
       const currentVersion = readVersion(dPath, driver);
-      const installedVersion = readVersion('/Library/Extensions/', driver);
+      installedVersion = readVersion('/Library/Extensions/', driver);
       console.log(driver,'version: Installed =', installedVersion, ', Current =', currentVersion);
 
       if(currentVersion !== installedVersion) {
+        dispatch(sync.driverUpdateAvailable(installedVersion, currentVersion));
         return true;
       }
     }
+    dispatch(sync.driverUpdateNotAvailable(installedVersion));
     return false;
   }
 
+  const appFolder = path.dirname(remote.app.getAppPath());
+  let zipPath = path.join(appFolder,'driver/extensions.zip');
+  let extractPath = path.join(appFolder,'driver/');
+  let driverPath = path.join(extractPath,'extensions');
+  let iconsPath = path.join(appFolder,'/Tidepool Uploader.icns');
+  let scriptPath = path.join(appFolder,'driver/updateDrivers.sh');
+
   if (isDev) {
-    // The dev mode Electron.app does not contain the drivers or update script,
-    // it gets copied into the .app during packaging.
-    console.log('Not checking driver versions in dev mode.');
-    return;
+    const rootDir = path.resolve(appFolder, '../../../../../../');
+    zipPath = path.resolve(rootDir, 'resources/mac/extensions.zip');
+    extractPath = path.resolve(rootDir, 'build/driver/');
+    driverPath = path.join(extractPath, 'extensions');
+    iconsPath = path.join(rootDir, 'resources/icon.icns');
+    scriptPath = path.resolve(rootDir, 'resources/mac/updateDrivers.sh');
   }
 
-  const appFolder = path.dirname(remote.app.getAppPath());
-
-  decompress(path.join(appFolder,'driver/extensions.zip'), path.join(appFolder,'driver/')).then(files => {
-    const driverPath = path.join(appFolder,'driver/extensions');
+  decompress(zipPath, extractPath).then(files => {
     const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
 
     if (hasOldDriver(driverPath, driverList)) {
-      updateDrivers(appFolder, driverPath);
+      setInstallOpts(iconsPath, scriptPath, driverPath);
     }
   });
 
