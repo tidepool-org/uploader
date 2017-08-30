@@ -10,7 +10,7 @@
     "test": "mocha test/node/ && mocha test/node/**/*.js && ./node_modules/karma/bin/karma start",
     "browser-tests": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome",
     "node-tests": "mocha test/node/ && mocha test/node/**/*.js",
-    "test-watch": "./node_modules/karma/bin/karma start --no-single-run",
+    "test-watch": "./node_modules/karma/bin/karma start --browsers PhantomJS,Chrome --no-single-run",
     "prestart": "rm -rf _book/",
     "start": "bash ./scripts/config.sh && webpack -d --progress --colors --watch",
     "start-hot": "npm run prestart && bash ./scripts/config.sh && webpack-dev-server --hot --inline --progress --colors",
