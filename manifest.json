@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tidepool Uploader",
   "short_name": "Uploader",
-  "version": "0.309.0",
+  "version": "0.312.0",
   "description": "The Tidepool Uploader helps you get your data from insulin pumps, CGMs and BG meters into Tidepool’s secure cloud platform.",
   "minimum_chrome_version": "38",
   "icons": {
@@ -46,7 +46,7 @@
         },
         {
           "deviceName": "OneTouch Mini w/FTDI cable",
-          "driverId": "OneTouchMini",
+          "driverId": "OneTouchUltraMini",
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577
@@ -83,7 +83,8 @@
           "mode": "FTDI",
           "vendorId": 1027,
           "productId": 24577,
-          "sendTimeout": 5000
+          "sendTimeout": 5000,
+          "receiveTimeout": 5000
         },
         {
           "deviceName": "OneTouchVerioIQ",
