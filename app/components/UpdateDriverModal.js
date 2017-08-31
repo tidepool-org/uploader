@@ -65,7 +65,7 @@ export class UpdateDriverModal extends Component {
     } else {
       if (driverUpdateAvailable) {
         title = 'Driver Update Available!';
-        text = 'After clicking Install, the uploader ask for your password to complete the installation. This window will close when completed.';
+        text = 'After clicking Install, the uploader will ask for your password to complete the installation. This window will close when completed.';
         actions = [
           <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissDriverUpdateAvailable}>
             Dismiss
