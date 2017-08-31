@@ -241,6 +241,7 @@ describe('misc reducers', () => {
   describe('working', () => {
     it('should return the initial state', () => {
       expect(misc.working(undefined, {})).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -253,6 +254,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_FAILURE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -265,6 +267,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_REQUEST
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -277,6 +280,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_SUCCESS
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -289,6 +293,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_FAILURE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -301,6 +306,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_REQUEST
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: true,
@@ -313,6 +319,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_SUCCESS
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -325,6 +332,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_ABORTED
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -337,6 +345,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_FAILURE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -349,6 +358,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_FAILURE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -361,6 +371,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_REQUEST
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: true,
         fetchingUserInfo: false,
@@ -373,6 +384,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_SUCCESS
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -385,6 +397,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_FAILURE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -397,6 +410,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_REQUEST
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -409,6 +423,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_SUCCESS
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -421,6 +436,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.CHECKING_FOR_UPDATES
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: true,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -433,6 +449,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPDATE_AVAILABLE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -445,6 +462,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPDATE_NOT_AVAILABLE
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -457,6 +475,7 @@ describe('misc reducers', () => {
       expect(misc.working(undefined, {
         type: actionTypes.AUTOUPDATE_ERROR
       })).to.deep.equal({
+        checkingDriverUpdate: false,
         checkingElectronUpdate: false,
         checkingVersion: false,
         fetchingUserInfo: false,
@@ -464,6 +483,46 @@ describe('misc reducers', () => {
         uploading: false
       });
     });
+
+    it('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.CHECKING_FOR_DRIVER_UPDATE
+      })).to.deep.equal({
+        checkingDriverUpdate: true,
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle DRIVER_UPDATE_AVAILABLE', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.DRIVER_UPDATE_AVAILABLE
+      })).to.deep.equal({
+        checkingDriverUpdate: false,
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
+    it('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
+      expect(misc.working(undefined, {
+        type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE
+      })).to.deep.equal({
+        checkingDriverUpdate: false,
+        checkingElectronUpdate: false,
+        checkingVersion: false,
+        fetchingUserInfo: false,
+        initializingApp: true,
+        uploading: false
+      });
+    });
+
   });
 
   describe('electronUpdateManualChecked', () => {
@@ -553,6 +612,76 @@ describe('misc reducers', () => {
       expect(misc.electronUpdateDownloaded(undefined, {
         type: actionTypes.AUTOUPDATE_ERROR
       })).to.be.false;
+    });
+  });
+
+  describe('driverUpdateAvailable', () => {
+    it('should return the initial state', () => {
+      expect(misc.driverUpdateAvailable(undefined, {})).to.be.null;
+    });
+
+    it('should handle DRIVER_UPDATE_AVAILABLE', () => {
+      const payload = {'example':'info'};
+      expect(misc.driverUpdateAvailable(undefined, {
+        type: actionTypes.DRIVER_UPDATE_AVAILABLE,
+        payload
+      })).to.deep.equal(payload);
+    });
+
+    it('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
+      expect(misc.driverUpdateAvailable(undefined, {
+        type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE
+      })).to.be.false;
+    });
+
+    it('should handle DRIVER_INSTALL', () => {
+      expect(misc.driverUpdateAvailable(undefined, {
+        type: actionTypes.DRIVER_INSTALL
+      })).to.be.false;
+    });
+  });
+
+  describe('driverUpdateAvailableDismissed', () => {
+    it('should return the initial state', () => {
+      expect(misc.driverUpdateAvailableDismissed(undefined, {})).to.be.null;
+    });
+
+    it('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
+      expect(misc.driverUpdateAvailableDismissed(undefined, {
+        type: actionTypes.CHECKING_FOR_DRIVER_UPDATE
+      })).to.be.false;
+    });
+
+    it('should handle DISMISS_DRIVER_UPDATE_AVAILABLE', () => {
+      expect(misc.driverUpdateAvailableDismissed(undefined, {
+        type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE
+      })).to.be.true;
+    });
+  });
+
+  describe('driverUpdateShellOpts', () => {
+    it('should return the initial state', () => {
+      expect(misc.driverUpdateShellOpts(undefined, {})).to.be.null;
+    });
+
+    it('should handle DRIVER_INSTALL_SHELL_OPTS', () => {
+      const payload = {'example':'info'};
+      expect(misc.driverUpdateShellOpts(undefined, {
+        type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
+        payload
+      })).to.deep.equal(payload);
+    });
+  });
+
+  describe('driverUpdateComplete', () => {
+    it('should return the initial state', () => {
+      expect(misc.driverUpdateComplete(undefined, {})).to.be.null;
+    });
+
+    it('should handle DRIVER_INSTALL', () => {
+      expect(misc.driverUpdateComplete(undefined, {
+        type: actionTypes.DRIVER_INSTALL
+      })).to.be.true;
     });
   });
 });
