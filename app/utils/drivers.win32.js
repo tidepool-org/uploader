@@ -21,7 +21,7 @@ import _ from 'lodash';
 //import regedit from 'regedit';
 import winreg from 'winreg';
 
-export function checkVersion() {
+export function checkVersion(dispatch) {
 /*
   var software;
   regedit.list('HKLM\\SYSTEM\\DriverDatabase\\DriverPackages',

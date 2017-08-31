@@ -41,7 +41,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
@@ -121,6 +120,12 @@ app.on('ready', async () => {
       submenu: [{
         label: 'About Tidepool Uploader',
         selector: 'orderFrontStandardAboutPanel:'
+      }, {
+        label: 'Check for Updates',
+        click() {
+          manualCheck = true;
+          autoUpdater.checkForUpdates();
+        }
       }, {
         type: 'separator'
       }, {
@@ -229,24 +234,19 @@ app.on('ready', async () => {
     }, {
       label: 'Help',
       submenu: [{
-        label: 'Learn More',
+        label: 'Get Support',
         click() {
-          shell.openExternal('http://electron.atom.io');
+          shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Documentation',
+        label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
+          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
         }
       }, {
-        label: 'Community Discussions',
+        label: 'Report an issue...',
         click() {
-          shell.openExternal('https://discuss.atom.io/c/electron');
-        }
-      }, {
-        label: 'Search Issues',
-        click() {
-          shell.openExternal('https://github.com/atom/electron/issues');
+          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
         }
       }]
     }];
@@ -302,24 +302,25 @@ app.on('ready', async () => {
     }, {
       label: 'Help',
       submenu: [{
-        label: 'Learn More',
+        label: 'Get Support',
         click() {
-          shell.openExternal('http://electron.atom.io');
+          shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Documentation',
+        label: 'Check for Updates',
         click() {
-          shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
+          manualCheck = true;
+          autoUpdater.checkForUpdates();
         }
       }, {
-        label: 'Community Discussions',
+        label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://discuss.atom.io/c/electron');
+          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
         }
       }, {
-        label: 'Search Issues',
+        label: 'Report an issue...',
         click() {
-          shell.openExternal('https://github.com/atom/electron/issues');
+          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
         }
       }]
     }];
@@ -385,6 +386,10 @@ ipcMain.on('autoUpdater', (event, arg) => {
   }
   autoUpdater[arg]();
 });
+
+if(!app.isDefaultProtocolClient('tidepoolupload')){
+  app.setAsDefaultProtocolClient('tidepoolupload');
+}
 
 app.on('window-all-closed', () => {
   app.quit();

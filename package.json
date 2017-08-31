@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "0.310.0-alpha.21",
+  "version": "0.320.0-alpha.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -43,13 +43,16 @@
     "chrome-launcher": "0.0.1",
     "classnames": "2.2.5",
     "commander": "2.9.0",
+    "decompress": "4.2.0",
     "electron-debug": "1.1.0",
+    "electron-is-dev": "0.3.0",
     "font-awesome": "4.7.0",
     "is-electron": "2.0.0",
     "lighthouse": "2.0.0",
     "lodash": "3.10.1",
     "raven": "2.1.0",
     "raven-js": "3.17.0",
+    "plist": "2.1.0",
     "react": "15.4.2",
     "react-addons-update": "15.4.2",
     "react-dom": "15.4.2",
@@ -63,6 +66,7 @@
     "semver": "5.3.0",
     "source-map-support": "0.4.14",
     "stack-trace": "0.0.9",
+    "sudo-prompt": "7.1.1",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.33.0",
     "uuid": "3.1.0"
@@ -78,17 +82,18 @@
     "dmg": {
       "contents": [
         {
-          "x": 410,
-          "y": 150,
+          "x": 372,
+          "y": 190,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 130,
-          "y": 150,
+          "x": 150,
+          "y": 190,
           "type": "file"
         }
-      ]
+      ],
+      "background": "resources/background.tiff"
     },
     "nsis": {
       "oneClick": false,
@@ -119,15 +124,15 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32"
+            "ia32",
+            "x64"
           ]
         },
         {
           "target": "zip",
           "arch": [
-            "x64",
-            "ia32"
+            "ia32",
+            "x64"
           ]
         }
       ]
@@ -142,7 +147,7 @@
           ]
         },
         {
-          "target": "pkg",
+          "target": "dmg",
           "arch": [
             "x64"
           ]

@@ -210,7 +210,7 @@ describe('medtronicSimulator.js', function() {
     });
   });
 
-  /*
+
   describe('deviceEvent', function() {
     describe('alarm', function() {
       it('passes through', function() {
@@ -230,8 +230,82 @@ describe('medtronicSimulator.js', function() {
       });
     });
 
+    describe('time-change', function() {
+
+      it('splits temp basal in two with time change', function() {
+        var basal1 = builder.makeScheduledBasal()
+          .with_time('2014-09-25T02:00:00.000Z')
+          .with_deviceTime('2014-09-25T02:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Alice')
+          .with_rate(0.75);
+
+        var tempBasal = builder.makeTempBasal()
+          .with_time('2014-09-25T03:00:00.000Z')
+          .with_deviceTime('2014-09-25T03:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(1800000)
+          .with_rate(1.0);
+
+        var timeChange = builder.makeDeviceEventTimeChange()
+          .with_change({
+            from: '2014-09-25T03:10:00.000Z',
+            to: '2014-09-25T04:10:00.000Z',
+            agent: 'manual'
+          })
+          .with_payload({deviceType: 'pump'})
+          .with_time('2014-09-25T03:10:00.000Z')
+          .with_deviceTime('2014-09-25T04:10:00')
+          .with_timezoneOffset(60)
+          .with_conversionOffset(0)
+          .set('index', 3);
+
+        var basal2 = builder.makeScheduledBasal()
+          .with_time('2014-09-25T03:30:00.000Z')
+          .with_deviceTime('2014-09-25T04:30:00')
+          .with_timezoneOffset(60)
+          .with_conversionOffset(0)
+          .with_scheduleName('Alice')
+          .with_rate(2);
+
+        var expectedFirstTempBasal = _.cloneDeep(tempBasal.done());
+        var suppressed = {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          rate: 0.75,
+          scheduleName: 'Alice'
+        };
+        expectedFirstTempBasal.duration = 600000;
+        expectedFirstTempBasal.suppressed = suppressed;
+
+        var expectedSecondTempBasal = _.cloneDeep(tempBasal.done());
+        expectedSecondTempBasal.time ='2014-09-25T03:10:00.000Z';
+        expectedSecondTempBasal.deviceTime = '2014-09-25T04:10:00';
+        expectedSecondTempBasal.timezoneOffset = 60;
+        expectedSecondTempBasal.suppressed = suppressed;
+        expectedSecondTempBasal.duration = 1200000;
+        expectedSecondTempBasal.annotations = [{code: 'medtronic/basal/time-change'}];
+        expectedSecondTempBasal.payload = {logIndices : [4]};
+
+        simulator.basal(basal1);
+        simulator.basal(tempBasal);
+        simulator.changeDeviceTime(timeChange);
+        simulator.basal(basal2);
+
+        expect(simulator.getEvents()).deep.equals([
+          basal1.done(),
+          expectedFirstTempBasal,
+          timeChange,
+          expectedSecondTempBasal
+        ]);
+      });
+
+    });
+
   });
-  */
+
 
   describe('settings', function() {
     var settings = {
@@ -1607,6 +1681,14 @@ describe('medtronicSimulator.js', function() {
         .with_rate(1.2);
       basal2.deviceId = 'medtronic12345';
 
+      var basal3 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T04:00:00.000Z')
+        .with_deviceTime('2014-09-25T04:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+      basal3.deviceId = 'medtronic12345';
+
       var expectedSuspendResume = {
         time: '2014-09-25T02:00:00.000Z',
         deviceTime: '2014-09-25T02:00:00',
@@ -1625,6 +1707,7 @@ describe('medtronicSimulator.js', function() {
       simulator.basal(basal1);
       simulator.alarm(alarm);
       simulator.basal(basal2);
+      simulator.basal(basal3);
 
       var expectedBasal = builder.makeSuspendBasal()
         .with_time('2014-09-25T02:00:00.000Z')
@@ -1645,7 +1728,8 @@ describe('medtronicSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([
         basal1.done(),
         expectedAlarm,
-        expectedBasal
+        expectedBasal,
+        basal2.done() // checks that the suspending event has been cleared
       ]);
     });
   });
