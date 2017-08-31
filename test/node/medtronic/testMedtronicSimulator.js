@@ -1681,6 +1681,14 @@ describe('medtronicSimulator.js', function() {
         .with_rate(1.2);
       basal2.deviceId = 'medtronic12345';
 
+      var basal3 = builder.makeScheduledBasal()
+        .with_time('2014-09-25T04:00:00.000Z')
+        .with_deviceTime('2014-09-25T04:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(2);
+      basal3.deviceId = 'medtronic12345';
+
       var expectedSuspendResume = {
         time: '2014-09-25T02:00:00.000Z',
         deviceTime: '2014-09-25T02:00:00',
@@ -1699,6 +1707,7 @@ describe('medtronicSimulator.js', function() {
       simulator.basal(basal1);
       simulator.alarm(alarm);
       simulator.basal(basal2);
+      simulator.basal(basal3);
 
       var expectedBasal = builder.makeSuspendBasal()
         .with_time('2014-09-25T02:00:00.000Z')
@@ -1719,7 +1728,8 @@ describe('medtronicSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([
         basal1.done(),
         expectedAlarm,
-        expectedBasal
+        expectedBasal,
+        basal2.done() // checks that the suspending event has been cleared
       ]);
     });
   });
