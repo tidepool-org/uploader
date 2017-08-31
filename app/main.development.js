@@ -1,3 +1,4 @@
+/* global __ROLLBAR_POST_TOKEN__ */
 import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
 import os from 'os';
 import open from 'open';
@@ -5,6 +6,20 @@ import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 import Raven from 'raven';
+import Rollbar from 'rollbar/src/server/rollbar';
+
+let rollbar;
+if(process.env.NODE_ENV === 'production') {
+  rollbar = new Rollbar({
+    accessToken: __ROLLBAR_POST_TOKEN__,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+        environment: 'electron_main_process'
+    }
+  });
+}
+
 Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1ed5ed228@sentry.io/183894', {
   autoBreadcrumbs: {
     'console': true  // console logging

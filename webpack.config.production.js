@@ -10,6 +10,14 @@ import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
+import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
+import cp from 'child_process';
+
+const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+  process.env.APPVEYOR_REPO_COMMIT ||
+  cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
+
+const ROLLBAR_POST_TOKEN = process.env.ROLLBAR_POST_TOKEN;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -114,6 +122,8 @@ export default validate(merge(baseConfig, {
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
       __TEST__: false,
+      __VERSION_SHA__: JSON.stringify(VERSION_SHA),
+      __ROLLBAR_POST_TOKEN__: JSON.stringify(ROLLBAR_POST_TOKEN),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
 
@@ -134,6 +144,13 @@ export default validate(merge(baseConfig, {
       filename: '../app.html',
       template: 'app/app.html',
       inject: false
+    }),
+
+    /** Upload sourcemap to Rollbar */
+    new RollbarSourceMapPlugin({
+      accessToken: ROLLBAR_POST_TOKEN,
+      version: VERSION_SHA,
+      publicPath: 'http://dynamichost/dist'
     })
   ],
 
