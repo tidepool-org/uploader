@@ -86,6 +86,13 @@
           "sendTimeout": 5000
         },
         {
+          "deviceName": "OneTouchVerio",
+          "driverId": "OneTouchVerio",
+          "mode": "usb",
+          "vendorId": 10086,
+          "productId": 0
+        },
+        {
           "deviceName": "OneTouchVerioIQ",
           "driverId": "OneTouchVerioIQ",
           "bitrate": 38400,

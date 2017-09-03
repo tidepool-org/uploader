@@ -109,6 +109,13 @@ const devices = {
     source: {type: 'device', driverId: 'Animas'},
     enabled: {mac: true, win: true}
   },
+  onetouchverio: {
+    instructions: 'Plug in meter with mini-USB',
+    name: 'OneTouch Verio',
+    key: 'onetouchverio',
+    source: {type: 'device', driverId: 'OneTouchVerio'},
+    enabled: {linux: true, mac: true, win: true}
+  },
   onetouchverioiq: {
     instructions: 'Plug in meter with mini-USB',
     name: 'OneTouch VerioIQ',
