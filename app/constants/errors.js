@@ -28,7 +28,7 @@ module.exports = {
   E_HID_CONNECTION: 'Hmm, your device doesn\'t appear to be connected',
   E_INIT: 'Error during app initialization',
   E_MEDTRONIC_UNSUPPORTED: 'Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry...',
-  E_MEDTRONIC_UPLOAD: 'Is there another device (e.g. CareLink/OpenAPS/Loop) talking to your pump? If not, see error details below or contact Tidepool Support.',
+  E_MEDTRONIC_UPLOAD: 'Make sure no other software (e.g. CareLink, OpenAPS, Loop) is talking to your pump. Otherwise, please see the error details below or contact Tidepool Support.',
   E_OFFLINE: 'Not connected to the Internet!',
   E_READ_FILE: 'Error reading file ',
   E_SERIAL_CONNECTION: 'Hmm, we couldn\'t detect your device',
