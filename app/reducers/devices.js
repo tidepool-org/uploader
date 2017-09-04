@@ -1,4 +1,4 @@
-import pumpImage from '../../images/Combined_Pump_and_Meter.jpg';
+import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -13,8 +13,8 @@ const devices = {
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': pumpImage,
-      'height': 183,
+      'src': mm723Image,
+      'height': 128,
       'width': 200,
       'alt': 'Bayer Contour Next Link'
     },
