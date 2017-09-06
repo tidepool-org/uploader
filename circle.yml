@@ -1,0 +1,31 @@
+machine:
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+dependencies:
+  pre:
+    - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+    - nvm install 7.4.0
+    - nvm use 7.4.0
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - yarn config set cache-folder ~/.cache/yarn
+  override:
+    - yarn --frozen-lockfile
+  cache_directories:
+    - ~/.cache/yarn
+
+test:
+  override:
+    - yarn lint
+    - yarn test
+  post:
+    - yarn package-dev
+#    - zip -r -X development.zip release
+    - rm -rf release
+    - yarn package
+#    - zip -r -X production.zip release
+
+#general:
+#  artifacts:
+#    - "development.zip"
+#    - "production.zip"

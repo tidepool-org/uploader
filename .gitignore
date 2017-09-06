@@ -12,8 +12,19 @@ logs
 results
 config/
 build
+build/Release
+.eslintcache
 dist
 dist.zip
+release
+app/main.js
+app/main.js.map
+app/bundle.js
+app/bundle.js.map
+app/style.css
+app/style.css.map
+main.js
+main.js.map
 
 test/carelink/overlaps/test-account.csv
 test/node/carelink/overlaps/test-account.csv
@@ -25,7 +36,9 @@ lib/medtronic/cli/*.json
 tmp
 npm-debug.log
 node_modules
+app/node_modules
 bower_components
+coverage
 
 .DS_Store
 .idea
