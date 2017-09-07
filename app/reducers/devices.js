@@ -78,7 +78,7 @@ const devices = {
   abbottfreestylelite: {
     instructions: 'Plug in meter with cable',
     key: 'abbottfreestylelite',
-    name: 'Abbott FreeStyle Lite & Freedom Lite',
+    name: 'Abbott FreeStyle Lite & FreeStyle Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
     enabled: {mac: false, win: true},
     bitrate: 19200,
