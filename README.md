@@ -1,8 +1,7 @@
 # Tidepool Uploader
 
-[![Build Status](https://img.shields.io/travis/tidepool-org/chrome-uploader/master.svg)](https://travis-ci.org/tidepool-org/chrome-uploader)
-[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/krystophv/electron?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/krystophv/electron)
+[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
