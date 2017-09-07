@@ -705,3 +705,53 @@ export function quitAndInstall() {
     }
   };
 }
+
+/*
+ * relating to driver updates
+ */
+
+export function checkingForDriverUpdate() {
+  return {
+    type: actionTypes.CHECKING_FOR_DRIVER_UPDATE,
+    meta: { source: actionSources[actionTypes.CHECKING_FOR_DRIVER_UPDATE] }
+  };
+}
+
+export function driverUpdateAvailable(current, available) {
+  return {
+    type: actionTypes.DRIVER_UPDATE_AVAILABLE,
+    payload: { current, available },
+    meta: { source: actionSources[actionTypes.DRIVER_UPDATE_AVAILABLE] }
+  };
+}
+
+export function driverUpdateNotAvailable() {
+  return {
+    type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
+    meta: { source: actionSources[actionTypes.DRIVER_UPDATE_NOT_AVAILABLE] }
+  };
+}
+
+export function dismissDriverUpdateAvailable() {
+  return {
+    type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
+    meta: { source: actionSources[actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE] }
+  };
+}
+
+export function driverInstall() {
+  return {
+    type: actionTypes.DRIVER_INSTALL,
+    meta: {
+      source: actionSources[actionTypes.DRIVER_INSTALL]
+    }
+  };
+}
+
+export function driverUpdateShellOpts(opts) {
+  return {
+    type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
+    payload: { opts },
+    meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS] }
+  };
+}

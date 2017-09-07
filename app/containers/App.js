@@ -45,6 +45,7 @@ import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
+import UpdateDriverModal from '../components/UpdateDriverModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -64,7 +65,7 @@ export class App extends Component {
   }
 
   componentWillMount(){
-    checkVersion();
+    checkVersion(this.props.dispatch);
     let api = this.props.route.api;
     this.props.async.doAppInit(Object.assign({}, config), {
       api: api,
@@ -125,6 +126,7 @@ export class App extends Component {
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />
+        <UpdateDriverModal />
       </div>
     );
   }
@@ -218,7 +220,8 @@ export default connect(
   (dispatch) => {
     return {
       async: bindActionCreators(asyncActions, dispatch),
-      sync: bindActionCreators(syncActions, dispatch)
+      sync: bindActionCreators(syncActions, dispatch),
+      dispatch: dispatch
     };
   }
 )(App);
