@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
-import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
+import * as chromeFinder from 'chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 
 let menu;
