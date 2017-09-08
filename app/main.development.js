@@ -67,6 +67,7 @@ app.on('ready', async () => {
   mainWindow.webContents.on('new-window', function(event, url){
     event.preventDefault();
     let platform = os.platform();
+    // TODO: remove this hack once GoogleChrome/chrome-launcher#20 is resolved
     if(platform === 'win32' && !process.env['PROGRAMFILES(X86)']){
       process.env['PROGRAMFILES(X86)'] = process.env.PROGRAMFILES;
     }
