@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
-import * as chromeFinder from 'lighthouse/chrome-launcher/chrome-finder';
+import * as chromeFinder from 'chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 
 let menu;
@@ -67,6 +67,10 @@ app.on('ready', async () => {
   mainWindow.webContents.on('new-window', function(event, url){
     event.preventDefault();
     let platform = os.platform();
+    // TODO: remove this hack once GoogleChrome/chrome-launcher#20 is resolved
+    if(platform === 'win32' && !process.env['PROGRAMFILES(X86)']){
+      process.env['PROGRAMFILES(X86)'] = process.env.PROGRAMFILES;
+    }
     let chromeInstalls = chromeFinder[platform]();
     if(chromeInstalls.length === 0){
       // no chrome installs found, open user's default browser
