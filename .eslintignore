@@ -1,3 +1,4 @@
 app/dist/
 app/main.js
 node_modules
+dist/
