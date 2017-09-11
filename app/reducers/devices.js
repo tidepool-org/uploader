@@ -69,7 +69,7 @@ const devices = {
   abbottfreestylelibre: {
     instructions: 'Plug in meter with micro-USB',
     key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
+    name: 'Abbott FreeStyle Libre (Beta Unsupported)',
     showDriverLink: {linux: false, mac: false, win: false},
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true}
