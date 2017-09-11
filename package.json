@@ -64,7 +64,6 @@
     "stack-trace": "0.0.9",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.33.0",
-    "usb": "1.2.0",
     "uuid": "3.1.0"
   },
   "browserslist": "electron 1.6",
