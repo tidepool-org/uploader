@@ -319,6 +319,27 @@ describe('users', () => {
       });
     });
 
+    it('should handle LOGIN_SUCCESS and collapse bayer meters', () => {
+      expect(users.targetDevices(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { memberships: [
+          {userid: 'a1b2c3', profile: {foo: 'bar'}},
+          {userid: 'd4e5f6',
+            profile: {
+              patient: {
+                a: 1,
+                targetDevices: ['bayercontourusb', 'bayercontournextlink', 'bayercontournextusb', 'a_cgm']
+              }
+            }
+          },
+          {userid: 'g7h8i0', profile: {patient: {b: 2}}}
+        ]}
+      })).to.deep.equal({
+        d4e5f6: ['bayercontournext', 'a_cgm'],
+        g7h8i0: []
+      });
+    });
+
     it('should handle LOGOUT_REQUEST', () => {
       let initialState = {
         d4e5f6: ['a_meter', 'another_pump'],
@@ -383,6 +404,26 @@ describe('users', () => {
       expect(initialState === result).to.be.false;
       expect(initialState.d4e5f6 === result.d4e5f6).to.be.false;
       expect(initialState.g7h8i0 === result.g7h8i0).to.be.false;
+    });
+
+    it('should handle SET_USERS_TARGETS and collapse bayer meters', () => {
+      let initialState = {
+        d4e5f6: [],
+        g7h8i0: []
+      };
+      const targets = {
+        d4e5f6: [{key: 'bayercontourusb'}],
+        g7h8i0: [{key: 'bayercontournextlink'}, {key: 'bayercontournextusb'}],
+        j1k2l3: [{key: 'another_pump'}]
+      };
+      let result = users.targetDevices(initialState, {
+        type: actionTypes.SET_USERS_TARGETS,
+        payload: { targets }
+      });
+      expect(result).to.deep.equal({
+        d4e5f6: ['bayercontournext'],
+        g7h8i0: ['bayercontournext']
+      });
     });
 
     it('should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)', () => {
