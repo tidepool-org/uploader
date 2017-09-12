@@ -1,4 +1,5 @@
 app/dist/
 app/main.js
-node_modules
+node_modules/
 dist/
+web/
