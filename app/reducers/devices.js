@@ -110,7 +110,7 @@ const devices = {
   },
   onetouchultramini: {
     instructions: 'Plug in meter with cable',
-    name: 'OneTouch Ultra Mini',
+    name: 'OneTouch UltraMini',
     key: 'onetouchultramini',
     showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltraMini'},
