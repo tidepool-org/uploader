@@ -319,24 +319,21 @@ describe('users', () => {
       });
     });
 
-    it('should handle LOGIN_SUCCESS and collapse bayer meters', () => {
+    it('should handle LOGIN_SUCCESS and collapse bayer meters and abbottfreestylefreedomlite', () => {
       expect(users.targetDevices(undefined, {
         type: actionTypes.LOGIN_SUCCESS,
         payload: { memberships: [
           {userid: 'a1b2c3', profile: {foo: 'bar'}},
-          {userid: 'd4e5f6',
-            profile: {
-              patient: {
-                a: 1,
-                targetDevices: ['bayercontourusb', 'bayercontournextlink', 'bayercontournextusb', 'a_cgm']
-              }
-            }
-          },
-          {userid: 'g7h8i0', profile: {patient: {b: 2}}}
+          {userid: 'd4e5f6', profile: { patient: { a: 1, targetDevices: [
+            'bayercontourusb', 'bayercontournextlink', 'bayercontournextusb', 'a_cgm'
+          ]}}},
+          {userid: 'g7h8i0', profile: { patient: {b: 2, targetDevices: ['abbottfreestylefreedomlite']}}},
+          {userid: 'j9k1l2', profile: { patient: {c: 3, targetDevices: ['bayercontour']}}}
         ]}
       })).to.deep.equal({
         d4e5f6: ['bayercontournext', 'a_cgm'],
-        g7h8i0: []
+        g7h8i0: ['abbottfreestylelite'],
+        j9k1l2: ['bayercontour']
       });
     });
 
