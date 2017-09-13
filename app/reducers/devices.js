@@ -118,7 +118,7 @@ const devices = {
   },
   onetouchultra2: {
     instructions: 'Plug in meter with cable',
-    name: 'OneTouch Ultra2',
+    name: 'OneTouch Ultra 2',
     key: 'onetouchultra2',
     showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltra2'},
