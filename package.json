@@ -44,6 +44,7 @@
     "chrome-launcher": "0.0.1",
     "classnames": "2.2.5",
     "commander": "2.9.0",
+    "drivelist": "5.1.8",
     "electron-debug": "1.1.0",
     "font-awesome": "4.7.0",
     "is-electron": "2.0.0",
