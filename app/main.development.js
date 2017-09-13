@@ -4,6 +4,7 @@ import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
+import DebugMode from '../app/utils/debugMode';
 
 let menu;
 let template;
@@ -47,7 +48,7 @@ const installExtensions = async () => {
 
 app.on('ready', async () => {
   await installExtensions();
-  const resizable = (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev');
+  const resizable = (process.env.NODE_ENV === 'development');
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -88,7 +89,7 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') {
+  if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
@@ -167,7 +168,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: 'View',
-      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ?
+      submenu: (process.env.NODE_ENV === 'development') ?
       [
         {
           label: 'Reload',
@@ -256,7 +257,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: '&View',
-      submenu: (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev') ? [{
+      submenu: (process.env.NODE_ENV === 'development') ? [{
         label: '&Reload',
         accelerator: 'Ctrl+R',
         click() {
@@ -318,10 +319,9 @@ app.on('ready', async () => {
 });
 
 function checkUpdates(){
-  // in production NODE_ENV or *any* type of BUILD (including BUILD === 'dev')
-  // we check for updates, but not if NODE_ENV is 'development' and BUILD is unset
+  // in production NODE_ENV we check for updates, but not if NODE_ENV is 'development'
   // this prevents a Webpack build error that masks other build errors during local development
-  if (process.env.NODE_ENV === 'production' || process.env.BUILD) {
+  if (process.env.NODE_ENV === 'production') {
     autoUpdater.checkForUpdates();
   }
 }

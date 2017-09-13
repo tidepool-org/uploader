@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
 
-const {Menu} = remote;
+const { Menu } = remote;
 
 import bows from 'bows';
 
@@ -39,6 +39,7 @@ const syncActions = actions.sync;
 import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
+import DebugMode from '../utils/debugMode';
 
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
@@ -48,6 +49,39 @@ import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
 
 import styles from '../../styles/components/App.module.less';
+
+const serverdata = {
+  Local: {
+    API_URL: 'http://localhost:8009',
+    UPLOAD_URL: 'http://localhost:9122',
+    DATA_URL: 'http://localhost:8077',
+    BLIP_URL: 'http://localhost:3000'
+  },
+  Development: {
+    API_URL: 'https://dev-api.tidepool.org',
+    UPLOAD_URL: 'https://dev-uploads.tidepool.org',
+    DATA_URL: 'https://dev-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://dev-blip.tidepool.org'
+  },
+  Staging: {
+    API_URL: 'https://stg-api.tidepool.org',
+    UPLOAD_URL: 'https://stg-uploads.tidepool.org',
+    DATA_URL: 'https://stg-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://stg-blip.tidepool.org'
+  },
+  Integration: {
+    API_URL: 'https://int-api.tidepool.org',
+    UPLOAD_URL: 'https://int-uploads.tidepool.org',
+    DATA_URL: 'https://int-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://int-blip.tidepool.org'
+  },
+  Production: {
+    API_URL: 'https://api.tidepool.org',
+    UPLOAD_URL: 'https://uploads.tidepool.org',
+    DATA_URL: 'https://api.tidepool.org/dataservices',
+    BLIP_URL: 'https://blip.tidepool.org'
+  }
+};
 
 export class App extends Component {
   static propTypes = {
@@ -62,6 +96,10 @@ export class App extends Component {
     this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.setServer = this.setServer.bind(this);
+    const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
+    this.state = {
+      server: initial_server
+    };
   }
 
   componentWillMount(){
@@ -79,42 +117,10 @@ export class App extends Component {
   }
 
   setServer(info) {
-    var serverdata = {
-      Local: {
-        API_URL: 'http://localhost:8009',
-        UPLOAD_URL: 'http://localhost:9122',
-        DATA_URL: 'http://localhost:8077',
-        BLIP_URL: 'http://localhost:3000'
-      },
-      Development: {
-        API_URL: 'https://dev-api.tidepool.org',
-        UPLOAD_URL: 'https://dev-uploads.tidepool.org',
-        DATA_URL: 'https://dev-api.tidepool.org/dataservices',
-        BLIP_URL: 'https://dev-blip.tidepool.org'
-      },
-      Staging: {
-        API_URL: 'https://stg-api.tidepool.org',
-        UPLOAD_URL: 'https://stg-uploads.tidepool.org',
-        DATA_URL: 'https://stg-api.tidepool.org/dataservices',
-        BLIP_URL: 'https://stg-blip.tidepool.org'
-      },
-      Integration: {
-        API_URL: 'https://int-api.tidepool.org',
-        UPLOAD_URL: 'https://int-uploads.tidepool.org',
-        DATA_URL: 'https://int-api.tidepool.org/dataservices',
-        BLIP_URL: 'https://int-blip.tidepool.org'
-      },
-      Production: {
-        API_URL: 'https://api.tidepool.org',
-        UPLOAD_URL: 'https://uploads.tidepool.org',
-        DATA_URL: 'https://api.tidepool.org/dataservices',
-        BLIP_URL: 'https://blip.tidepool.org'
-      }
-    };
-
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
     this.props.route.api.setHosts(serverinfo);
+    this.setState({server: info.label});
   }
 
   render() {
@@ -135,7 +141,7 @@ export class App extends Component {
     e.preventDefault();
     const { clientX, clientY } = e;
     let template = [];
-    if (process.env.NODE_ENV === 'development' || process.env.BUILD === 'dev' ) {
+    if (process.env.NODE_ENV === 'development') {
       template.push({
         label: 'Inspect element',
         click() {
@@ -152,25 +158,43 @@ export class App extends Component {
         submenu: [
           {
             label: 'Local',
-            click: this.setServer
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'Local'
           },
           {
             label: 'Development',
-            click: this.setServer
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'Development'
           },
           {
             label: 'Staging',
-            click: this.setServer
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'Staging'
           },
           {
             label: 'Integration',
-            click: this.setServer
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'Integration'
           },
           {
             label: 'Production',
-            click: this.setServer
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'Production'
           }
         ]
+      });
+      template.push({
+        label: 'Toggle Debug Mode',
+        type: 'checkbox',
+        checked: DebugMode.isDebug,
+        click() {
+          DebugMode.setDebug(!DebugMode.isDebug);
+        }
       });
     }
     const menu = Menu.buildFromTemplate(template);

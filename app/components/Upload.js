@@ -15,8 +15,6 @@
 * == BSD2 LICENSE ==
 */
 
-/* global __DEBUG__ */
-
 import _ from 'lodash';
 import cx from 'classnames';
 import React, { Component, PropTypes } from 'react';
@@ -26,6 +24,7 @@ import keytar from 'keytar';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
+import DebugMode from '../utils/debugMode';
 
 import styles from '../../styles/components/Upload.module.less';
 
@@ -562,7 +561,7 @@ export default class Upload extends Component {
 
     if (upload.successful) {
       let dataDownloadLink = null;
-      if (__DEBUG__ && !_.isEmpty(this.props.upload.data)) {
+      if (DebugMode.isDebug && !_.isEmpty(this.props.upload.data)) {
         dataDownloadLink = this.getDebugLinks(this.props.upload.data);
       }
       return <div className={styles.status}>{this.props.text.UPLOAD_COMPLETE}&nbsp;{dataDownloadLink}</div>;
@@ -570,7 +569,7 @@ export default class Upload extends Component {
 
     if(upload.failed) {
       let dataDownloadLink = null;
-      if (__DEBUG__ && this.props.upload.error.data) {
+      if (DebugMode.isDebug && this.props.upload.error.data) {
         dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
       }
       return <div className={styles.status}>{dataDownloadLink}</div>;
