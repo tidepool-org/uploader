@@ -6,7 +6,9 @@ environment:
     - nodejs_version: 7.4.0
 
 cache:
-  - "%LOCALAPPDATA%\\Yarn"
+  - node_modules -> package.json
+  - app/node_modules -> app/package.json
+#  - "%LOCALAPPDATA%\\Yarn"
 
 platform:
   - x64
@@ -27,17 +29,17 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   - ps: Install-Product node $env:nodejs_version $env:platform
   - set CI=true
-  - yarn --frozen-lockfile
+  - node ./yarn-1.0.2.js --frozen-lockfile --offline
 
 test_script:
   - node --version
-  - yarn lint
-  - yarn test
+  - node ./yarn-1.0.2.js lint
+  - node ./yarn-1.0.2.js test
 #  - yarn test-e2e
-#  - yarn package-dev
+#  - node ./yarn-1.0.2.js package-dev
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
-  - yarn package
+  - node ./yarn-1.0.2.js package
 #  - 7z a production.zip release
 
 notifications:

@@ -1,3 +1,5 @@
 app/dist/
 app/main.js
 node_modules
+yarn-*.js
+build/

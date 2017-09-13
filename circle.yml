@@ -7,22 +7,22 @@ dependencies:
     - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
     - nvm install 7.4.0
     - nvm use 7.4.0
-    - curl -o- -L https://yarnpkg.com/install.sh | bash
-    - yarn config set cache-folder ~/.cache/yarn
+#    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - node ./yarn-1.0.2.js config set cache-folder ~/.cache/yarn
   override:
-    - yarn --frozen-lockfile
+    - node ./yarn-1.0.2.js --frozen-lockfile --offline
   cache_directories:
-    - ~/.cache/yarn
+#    - ~/.cache/yarn
 
 test:
   override:
-    - yarn lint
-    - yarn test
+    - node ./yarn-1.0.2.js lint
+    - node ./yarn-1.0.2.js test
   post:
-#    - yarn package-dev
+#    - node ./yarn-1.0.2.js package-dev
 #    - zip -r -X development.zip release
-#    - rm -rf release
-    - yarn package
+    - rm -rf release
+    - node ./yarn-1.0.2.js package
 #    - zip -r -X production.zip release
 
 #general:
