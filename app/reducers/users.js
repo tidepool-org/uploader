@@ -156,7 +156,18 @@ export function targetDevices(state = {}, action) {
       let newState = {};
       _.each(memberships, (membership) => {
         if (isPwd(membership)) {
-          newState[membership.userid] = _.get(membership, ['profile', 'patient', 'targetDevices'], []);
+          let targetDevices = _.get(membership, ['profile', 'patient', 'targetDevices'], []);
+          // collapse all bayercontour* devices into bayercontournext
+          targetDevices = _.uniq(_.map(targetDevices, function(device) {
+            if (device.startsWith('bayercontour') && device.length > 12) {
+              return 'bayercontournext';
+            }
+            if (device === 'abbottfreestylefreedomlite') {
+              return 'abbottfreestylelite';
+            }
+            return device;
+          }));
+          newState[membership.userid] = targetDevices;
         }
       });
       return newState;
@@ -179,7 +190,17 @@ export function targetDevices(state = {}, action) {
       let newState = state;
       _.forOwn(targets, (targetsArray, userId) => {
         if (newState[userId] != null) {
-          const targetDevices = _.pluck(targetsArray, 'key');
+          let targetDevices = _.pluck(targetsArray, 'key');
+          // collapse all bayercontour* devices into bayercontournext
+          targetDevices = _.uniq(_.map(targetDevices, function(device) {
+            if (device.startsWith('bayercontour') && device.length > 12) {
+              return 'bayercontournext';
+            }
+            if (device === 'abbottfreestylefreedomlite') {
+              return 'abbottfreestylelite';
+            }
+            return device;
+          }));
           newState = update(
             newState,
             {[userId]: {$set: targetDevices}}
