@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-import _ from 'lodash';
 import { ipcRenderer, ipcMain } from 'electron';
 let isRenderer = (process && process.type === 'renderer');
 
@@ -24,27 +23,27 @@ if (isRenderer) {
     JSON.parse(localStorage.getItem('isDebug')) ||
     false;
 
-  const DebugMode = module.exports = {
+  const debugMode = module.exports = {
     isDebug,
     setDebug: function(isDebug) {
       ipcRenderer.send('setDebug', isDebug);
       localStorage.setItem('isDebug', JSON.stringify(isDebug));
-      DebugMode.isDebug = isDebug;
-      return DebugMode.isDebug;
+      debugMode.isDebug = isDebug;
+      return debugMode.isDebug;
     }
   };
 } else {
   let isDebug = process.env.DEBUG_ERROR || false;
 
   ipcMain.on('setDebug', (event, arg) => {
-    DebugMode.isDebug = arg;
+    debugMode.isDebug = arg;
   });
 
-  const DebugMode = module.exports = {
+  const debugMode = module.exports = {
     isDebug,
     setDebug: function(isDebug) {
-      DebugMode.isDebug = isDebug;
-      return DebugMode.isDebug;
+      debugMode.isDebug = isDebug;
+      return debugMode.isDebug;
     }
   };
 }

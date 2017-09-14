@@ -39,7 +39,7 @@ const syncActions = actions.sync;
 import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
-import DebugMode from '../utils/debugMode';
+import debugMode from '../utils/debugMode';
 
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
@@ -191,9 +191,9 @@ export class App extends Component {
       template.push({
         label: 'Toggle Debug Mode',
         type: 'checkbox',
-        checked: DebugMode.isDebug,
+        checked: debugMode.isDebug,
         click() {
-          DebugMode.setDebug(!DebugMode.isDebug);
+          debugMode.setDebug(!debugMode.isDebug);
         }
       });
     }
