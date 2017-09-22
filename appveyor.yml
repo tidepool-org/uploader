@@ -3,7 +3,7 @@ os: unstable
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
   matrix:
-    - nodejs_version: 7.4.0
+    - nodejs_version: 7.9.0
 
 cache:
   - node_modules -> package.json

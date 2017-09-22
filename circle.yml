@@ -5,8 +5,8 @@ machine:
 dependencies:
   pre:
     - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
-    - nvm install 7.4.0
-    - nvm use 7.4.0
+    - nvm install 7.9.0
+    - nvm use 7.9.0
     - curl -o- -L https://yarnpkg.com/install.sh | bash
     - yarn config set cache-folder ~/.cache/yarn
   override:
