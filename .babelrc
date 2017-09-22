@@ -8,7 +8,10 @@
   "env": {
     "production": {
       "presets": ["react-optimize"],
-      "plugins": ["babel-plugin-dev-expression"]
+      "plugins": ["babel-plugin-dev-expression",
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ]
     },
     "development": {
       "plugins": [
