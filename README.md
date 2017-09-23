@@ -1,8 +1,7 @@
 # Tidepool Uploader
 
-[![Build Status](https://img.shields.io/travis/tidepool-org/chrome-uploader/master.svg)](https://travis-ci.org/tidepool-org/chrome-uploader)
-[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/krystophv%2Felectron)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/krystophv/electron?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/krystophv/electron)
+[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
@@ -55,14 +54,7 @@ For ease of development we have several debug features that developers can turn 
 
 The environment variable `DEBUG_ERROR` (boolean) controls whether or not errors sourced in device drivers are caught and an error message displayed in the UI (the production setting) or whether they are thrown in the console (much more useful for local development because then the file name and line number of the error are easily accessible, along with a stack trace). `DEBUG_ERROR` mode is turned on by default in `config/device-debug.sh`.
 
-#### `REDUX_LOG`
-
-The environment variable `REDUX_LOG` (boolean) controls whether or not the [redux logger middleware](https://github.com/fcomb/redux-logger/blob/master/README.md) is included. This middleware logs all redux actions in the Chrome developer console, including the (entire) previous and following app state trees. It is primarily useful when working on the UI of the app, and in fact can be quite performance-expensive (especially when uploading a device, due to the fact that every update to the progress bar constitutes an action), so it is not recommended to turn it on while working on device code.
-
-
-`REDUX_LOG` is turned on by default in `config/ui-debug.sh`.
-
-As an alternative to using `REDUX_LOG`, the Electron uploader now includes the Redux DevTools. See [DevTools](#devtools) below for more details.
+This can also be toggled internally in the running Electron app via a right-click context menu available on the login screen, much like the menu for switching environments.
 
 ### Local Development w/o Debug Mode(s)
 
