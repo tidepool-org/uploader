@@ -1934,9 +1934,11 @@ char-spinner@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/char-spinner/-/char-spinner-1.0.1.tgz#e6ea67bd247e107112983b7ab0479ed362800081"
 
-charm@0.1.x:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
+charm@0.1.x, charm@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/charm/-/charm-1.0.1.tgz#68566a7a553d4fe91797030dd1852d0dd6efa82d"
+  dependencies:
+    inherits "^2.0.1"
 
 cheerio@^0.22.0:
   version "0.22.0"
