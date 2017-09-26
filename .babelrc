@@ -23,8 +23,7 @@
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
-          "__TEST__": "true",
-          "__DEBUG__": false
+          "process.env.DEBUG_ERROR": false
         }]
       ]
     }

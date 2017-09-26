@@ -15,8 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/* global __TEST__ */
-
 import _ from 'lodash';
 import stacktrace from 'stack-trace';
 
@@ -78,7 +76,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         data: recs
       };
 
-      if (!__TEST__) {
+      if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.pluck(
           _.filter(
             stacktrace.parse(err),
