@@ -34,7 +34,7 @@
   "dependencies": {
     "async": "1.5.2",
     "babyparse": "0.4.6",
-    "blueimp-md5": "2.7.0",
+    "blueimp-md5": "2.10.0",
     "bows": "1.6.0",
     "chrome-launcher": "0.8.0",
     "classnames": "2.2.5",
