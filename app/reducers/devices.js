@@ -80,10 +80,9 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
     enabled: {mac: true, win: true}
   },
-  /* TODO: re-enable these after Electron is on production
   onetouchultramini: {
     instructions: 'Plug in meter with cable',
-    name: 'OneTouch Ultra Mini',
+    name: 'OneTouch UltraMini',
     key: 'onetouchultramini',
     showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltraMini'},
@@ -91,13 +90,12 @@ const devices = {
   },
   onetouchultra2: {
     instructions: 'Plug in meter with cable',
-    name: 'OneTouch Ultra2',
+    name: 'OneTouch Ultra 2',
     key: 'onetouchultra2',
     showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true}
   }
-  */
 };
 
 export default devices;
