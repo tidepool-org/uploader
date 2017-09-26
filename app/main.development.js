@@ -6,7 +6,6 @@ import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
-import Raven from 'raven';
 import Rollbar from 'rollbar/src/server/rollbar';
 
 let rollbar;
@@ -20,12 +19,6 @@ if(process.env.NODE_ENV === 'production') {
     }
   });
 }
-
-Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78:32643a50ee9241c18b97f0c1ed5ed228@sentry.io/183894', {
-  autoBreadcrumbs: {
-    'console': true  // console logging
-  }
-}).install();
 
 crashReporter.start({
   productName: 'Uploader',

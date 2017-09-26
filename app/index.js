@@ -12,14 +12,13 @@ import configureStore from './store/configureStore';
 import './app.global.css';
 import '../styles/main.less';
 import { ipcRenderer } from 'electron';
-import Raven from 'raven-js';
 import Rollbar from 'rollbar/dist/rollbar.umd';
 
 let rollbar = new Rollbar({
     accessToken: '1843589282464f4facd43f794c8201a8',
     captureUncaught: true,
     payload: {
-        environment: 'test',
+        environment: 'electron_renderer',
         client: {
           javascript: {
             code_version: __VERSION_SHA__,
@@ -42,12 +41,6 @@ let rollbar = new Rollbar({
     }
   }
 );
-
-Raven.config('https://ae50ed563cf24caab8ed7f469b0b0c78@sentry.io/183894', {
-  autoBreadcrumbs: {
-    'console': true  // console logging
-  }
-}).install();
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
