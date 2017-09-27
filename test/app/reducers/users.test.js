@@ -284,15 +284,16 @@ describe('users', () => {
         [userId]: ['a_meter', 'a_pump'],
         d4e5f6: ['another_pump']
       });
-      // tests to be sure not *mutating* state object but rather returning new!
-      expect(initialState === result).to.be.false;
-      expect(initialState[userId] === result[userId]).to.be.false;
+
+      // due to dupe, state is not modified
+      expect(initialState === result).to.be.true;
+      expect(initialState[userId] === result[userId]).to.be.true;
     });
 
     it('should handle ADD_TARGET_DEVICE [when no user selected]', () => {
       const userId = 'noUserSelected', deviceKey = 'a_pump';
       let initialState = {
-        [userId]: ['a_meter', 'a_pump'],
+        a1b2c3: ['a_meter', 'a_pump'],
         d4e5f6: ['another_pump']
       };
       let result = users.targetDevices(initialState, {
@@ -301,7 +302,7 @@ describe('users', () => {
       });
       expect(result).to.deep.equal({
         noUserSelected: ['a_pump'],
-        [userId]: ['a_meter', 'a_pump'],
+        a1b2c3: ['a_meter', 'a_pump'],
         d4e5f6: ['another_pump']
       });
       // tests to be sure not *mutating* state object but rather returning new!
