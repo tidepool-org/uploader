@@ -214,7 +214,6 @@
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "proxyquire": "1.7.11",
-    "react-addons-test-utils": "15.5.1",
     "react-hot-loader": "1.3.1",
     "redux-mock-store": "1.2.3",
     "salinity": "0.0.8",
