@@ -1,3 +1,32 @@
 {
-  stage: 0
+  "presets": [
+    ["env", { "targets": { "node": 7 }, "useBuiltIns": true }],
+    "stage-0",
+    "react"
+  ],
+  "plugins": ["add-module-exports"],
+  "env": {
+    "production": {
+      "presets": ["react-optimize"],
+      "plugins": ["babel-plugin-dev-expression"]
+    },
+    "development": {
+      "plugins": [
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ],
+      "presets": ["react-hmre"]
+    },
+    "test": {
+      "plugins": [
+        ["resolver", { "resolveDirs": [ "app/node_modules" ]}],
+        ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
+        "babel-plugin-rewire",
+        ["transform-define", {
+          "__TEST__": "true",
+          "__DEBUG__": false
+        }]
+      ]
+    }
+  }
 }
