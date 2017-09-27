@@ -24,38 +24,72 @@
 const fs = require('fs');
 const builder = require('xmlbuilder');
 const Client = require('ftp');
+const https = require('https');
+
+const ORG = 'tidepool-org';
+const REPO = 'chrome-uploader';
 
 if(!process.env.FTP_AV_PASSWORD_TIDEPOOL) {
-  console.log('Please set the FTP_PASSWORD_TIDEPOOL environment variable.');
+  console.log('Please set the FTP_AV_PASSWORD_TIDEPOOL environment variable.');
 } else {
-  //TODO: get filename
-  const filename = 'https://github.com/tidepool-org/chrome-uploader/releases/download/v2.0.2/tidepool-uploader-setup-2.0.2.exe';
 
-  const xml = builder.create('products', { encoding: 'utf-8'})
-    .att('xlmns', 'http://www.kaspersky.com/KLSRL/ISV')
-    .ele('product')
-      .ele('url', filename)
-    .end({ pretty: true});
+  const options = {
+    hostname: 'api.github.com',
+    port: 443,
+    path: '/repos/' + ORG + '/' + REPO + '/releases/latest',
+    method: 'GET',
+    headers: {
+        'accept': 'application/json',
+        'user-agent': ORG + '.av-submit'
+    }
+  };
 
-  console.log(xml);
+  https.get(options, res => {
+    let body = '';
 
-  fs.writeFile('uploader.xml', xml, (err) => {
-    if (err) throw err;
-    console.log('The file has been saved!');
-
-    const c = new Client();
-    c.on('ready', function() {
-      c.put('uploader.xml', 'uploader.xml', function(err) {
-        if (err) throw err;
-        c.end();
-        console.log('Uploaded file to FTP server.');
-      });
+    res.on('data', function (chunk) {
+      body += chunk;
     });
 
-    c.connect({
-      host : 'whitelist1.kaspersky-labs.com',
-      user : 'wl-Tidepool',
-      password: process.env.FTP_AV_PASSWORD_TIDEPOOL
+    res.on('end', function () {
+      const data = JSON.parse(body);
+
+      let downloadURL = '';
+      for (let asset of data.assets) {
+        if (asset.name.endsWith('.exe')) {
+          downloadURL = asset.browser_download_url;
+        }
+      }
+
+      console.log('File URL:', downloadURL);
+
+      const xml = builder.create('products', { encoding: 'utf-8'})
+        .att('xlmns', 'http://www.kaspersky.com/KLSRL/ISV')
+        .ele('product')
+          .ele('url', downloadURL)
+        .end({ pretty: true});
+
+      console.log(xml);
+
+      fs.writeFile('uploader.xml', xml, (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+
+        const c = new Client();
+        c.on('ready', function() {
+          c.put('uploader.xml', 'uploader.xml', function(err) {
+            if (err) throw err;
+            c.end();
+            console.log('Uploaded file to FTP server.');
+          });
+        });
+
+        c.connect({
+          host : 'whitelist1.kaspersky-labs.com',
+          user : 'wl-Tidepool',
+          password: process.env.FTP_AV_PASSWORD_TIDEPOOL
+        });
+      });
     });
   });
 }
