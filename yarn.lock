@@ -2656,10 +2656,6 @@ cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
 
-d3@3.5.16:
-  version "3.5.16"
-  resolved "https://registry.yarnpkg.com/d3/-/d3-3.5.16.tgz#a518d6ced154a3078f2cb78ae1f8ad95342b2734"
-
 damerau-levenshtein@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.4.tgz#03191c432cb6eea168bb77f3a55ffdccb8978514"

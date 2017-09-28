@@ -18,7 +18,6 @@
 /*eslint-env mocha*/
 
 var _ = require('lodash');
-var d3 = require('d3');
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
@@ -627,9 +626,11 @@ describe('TimezoneOffsetUtil.js', function(){
 });
 
 describe('TimezoneOffsetUtil in practice', function(){
+	var oneDay = 1000 * 60 * 60 * 24;
   it('applies a timezone across-the-board when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
+    var startDate = sundial.parseFromFormat('2015-02-01T00:00:00').getTime();
+    var dates = _.map(_.range(100), (days) => new Date(startDate + days * oneDay));
     // Hawaii doesn't use Daylight Savings Time
     var util = new TZOUtil('Pacific/Honolulu', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
@@ -641,7 +642,8 @@ describe('TimezoneOffsetUtil in practice', function(){
 
   it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
+    var startDate = sundial.parseFromFormat('2015-02-01T00:00:00').getTime();
+    var dates = _.map(_.range(100), (days) => new Date(startDate + days * oneDay));
     // US/Mountain *does* use Daylight Savings Time
     var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
@@ -656,21 +658,18 @@ describe('TimezoneOffsetUtil in practice', function(){
   it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
     this.timeout(5000);
     setTimeout(function() {
-      var data = [], index = 0;
-      var datetimesHomeAgain = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-19T05:05:00'),
-        sundial.parseFromFormat('2015-05-01T00:00:00'),
-        5
+      var data = [], index = 0, fiveMinutes = 1000 * 60 * 5;
+      var datetimesHomeAgainStart = sundial.parseFromFormat('2015-04-19T05:05:00').getTime();
+      var datetimesHomeAgain = _.map(_.range(3395), (i) =>
+        new Date(datetimesHomeAgainStart + fiveMinutes * i)
       );
-      var datetimesInNZ = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-10T19:05:00'),
-        sundial.parseFromFormat('2015-04-20T00:05:00'),
-        5
+      var datetimesInNZStart = sundial.parseFromFormat('2015-04-10T19:05:00').getTime();
+      var datetimesInNZ = _.map(_.range(2652), (i) =>
+        new Date(datetimesInNZStart + fiveMinutes * i)
       );
-      var datetimesBeforeTrip = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-01T00:00:00'),
-        sundial.parseFromFormat('2015-04-10T00:05:00'),
-        5
+      var datetimesBeforeTripStart = sundial.parseFromFormat('2015-04-01T00:00:00').getTime();
+      var datetimesBeforeTrip = _.map(_.range(2593), (i) =>
+        new Date(datetimesBeforeTripStart + fiveMinutes * i)
       );
       var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
       _.each(datetimes, function(dt) {

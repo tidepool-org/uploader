@@ -175,7 +175,6 @@
     "concurrently": "3.5.0",
     "cross-env": "5.0.5",
     "css-loader": "0.28.7",
-    "d3": "3.5.16",
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "electron": "1.7.8",
