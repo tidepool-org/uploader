@@ -1,11 +1,6 @@
 {
   // I want to use babel-eslint for parsing!
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "jsx": true,
-    "classes": true,
-    "modules": true,
-  },
   "env": {
     // I write for browser
     "browser": true,
