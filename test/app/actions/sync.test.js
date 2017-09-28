@@ -439,7 +439,7 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-				const action = syncActions.initFailure(err)
+				const action = syncActions.initFailure(err);
 				expect(action.payload).to.deep.include({message:errorText.E_INIT});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
