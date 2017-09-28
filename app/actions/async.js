@@ -16,7 +16,6 @@
  */
 
 import _ from 'lodash';
-import async from 'async';
 import semver from 'semver';
 import os from 'os';
 import { push } from 'react-router-redux';
