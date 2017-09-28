@@ -64,7 +64,7 @@ if(!process.env.FTP_AV_PASSWORD_TIDEPOOL) {
       console.log('File URL:', downloadURL);
 
       const xml = builder.create('products', { encoding: 'utf-8'})
-        .att('xlmns', 'http://www.kaspersky.com/KLSRL/ISV')
+        .att('xmlns', 'http://www.kaspersky.com/KLSRL/ISV')
         .ele('product')
           .ele('url', downloadURL)
         .end({ pretty: true});
