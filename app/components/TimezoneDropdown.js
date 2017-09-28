@@ -14,11 +14,11 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 * == BSD2 LICENSE ==
 */
+import Select from 'react-select';
 
 var _ = require('lodash');
 var React = require('react');
 var sundial = require('sundial');
-var Select = require('react-select');
 var cx = require('classnames');
 
 var styles = require('../../styles/components/TimezoneDropdown.module.less');
