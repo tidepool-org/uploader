@@ -25,7 +25,7 @@ import * as syncActions from './sync';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
-    return _.pluck(targets, 'key');
+    return _.map(targets, 'key');
   });
 }
 
@@ -77,7 +77,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       };
 
       if (!(process.env.NODE_ENV === 'test')) {
-        uploadErrProps.stringifiedStack = _.pluck(
+        uploadErrProps.stringifiedStack = _.map(
           _.filter(
             stacktrace.parse(err),
             (cs) => { return cs.functionName !== null; }
@@ -98,7 +98,7 @@ export function viewDataPathForUser(uploadTargetUser) {
 
 export function mergeProfileUpdates(profile, updates){
   // merge property values except arrays, which get replaced entirely
-  return _.merge(profile, updates, (original, update) => {
+  return _.mergeWith(profile, updates, (original, update) => {
     if (_.isArray(original)) {
       return update;
     }

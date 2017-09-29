@@ -193,7 +193,7 @@ export default class Upload extends Component {
   onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
     const value = field.value;
-    const chars = value.split('');
+    const chars = _.split(value, '');
 
     // Check if input is purely numbers.
     // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
@@ -232,11 +232,11 @@ export default class Upload extends Component {
 
     let post_link = null;
 
-    if(Array.isArray(data) || Array.isArray(data.post_records)) {
+    if(_.isArray(data) || _.isArray(data.post_records)) {
 
       let filename = 'uploader-processed-records.json';
       let jsonData = null;
-      if (Array.isArray(data)) {
+      if (_.isArray(data)) {
         jsonData = JSON.stringify(data, undefined, 4);
       } else {
         jsonData = JSON.stringify(data.post_records, undefined, 4);
@@ -254,13 +254,13 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(Array.isArray(data.pages)) {
+    if(_.isArray(data.pages)) {
       let filenameBinary = 'binary-blob.json';
       let blob = { settings:data.settings, pages:data.pages };
-      if(Array.isArray(data.cbg_pages)) {
+      if(_.isArray(data.cbg_pages)) {
         blob.cbg_pages = data.cbg_pages;
       }
-      if(Array.isArray(data.isig_pages)) {
+      if(_.isArray(data.isig_pages)) {
         blob.isig_pages = data.isig_pages;
       }
       let jsonDataBinary = JSON.stringify(blob, undefined, 4);
@@ -448,7 +448,7 @@ export default class Upload extends Component {
   renderInstructions() {
     const { upload } = this.props;
     let details = upload.instructions || '';
-    if (Array.isArray(details)) {
+    if (_.isArray(details)) {
       return (
         <div className={styles.detail}>
           {_.get(details, 0, '')}<br/>

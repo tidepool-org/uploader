@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
 import os from 'os';
 import open from 'open';
@@ -41,7 +42,7 @@ const installExtensions = async () => {
     //       Waiting on https://github.com/tc39/proposal-async-iteration
     //       Promises will fail silently, which isn't what we want in development
     return Promise
-      .all(extensions.map(name => installer.default(installer[name], forceDownload)))
+      .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
       .catch(console.log);
   }
 };

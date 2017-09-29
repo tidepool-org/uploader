@@ -40,5 +40,5 @@ export default validate({
 
   plugins: [],
 
-  externals: Object.keys(_.merge({}, externals, additionalExternals) || {})
+  externals: _.keys(_.merge({}, externals, additionalExternals) || {})
 });

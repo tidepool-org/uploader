@@ -76,7 +76,7 @@ class DeviceSelection extends React.Component {
     var targetDevices = this.props.targetDevices;
 
     var items = _.map(devices, function(device) {
-      var isChecked = _.contains(targetDevices, device.key);
+      var isChecked = _.includes(targetDevices, device.key);
 
       return (
         <div key={device.key}>

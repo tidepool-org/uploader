@@ -30,8 +30,8 @@ export function allUsers(state = {}, action) {
       let newState = {};
       _.each(memberships, (membership) => {
         newState[membership.userid] = (membership.userid === user.userid) ?
-          Object.assign({}, _.omit(user, 'userid'), profile) :
-          Object.assign({}, membership.profile);
+          _.assign({}, _.omit(user, 'userid'), profile) :
+          _.assign({}, membership.profile);
       });
       return newState;
     }
@@ -179,7 +179,7 @@ export function targetDevices(state = {}, action) {
       let newState = state;
       _.forOwn(targets, (targetsArray, userId) => {
         if (newState[userId] != null) {
-          const targetDevices = _.pluck(targetsArray, 'key');
+          const targetDevices = _.map(targetsArray, 'key');
           newState = update(
             newState,
             {[userId]: {$set: targetDevices}}
@@ -225,7 +225,7 @@ export function targetTimezones(state = {}, action) {
         // we have to check *specifically* for undefined here
         // because we use null when there isn't a timezone
         if (newState[userId] !== undefined) {
-          const targetTimezones = _.uniq(_.pluck(targetsArray, 'timezone'));
+          const targetTimezones = _.uniq(_.map(targetsArray, 'timezone'));
           if (targetTimezones.length === 1) {
             newState = update(
               newState,

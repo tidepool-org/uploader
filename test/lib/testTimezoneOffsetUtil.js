@@ -637,7 +637,7 @@ describe('TimezoneOffsetUtil in practice', function(){
       var datum = data[i], date = dates[i];
       util.fillInUTCInfo(datum, date);
     }
-    expect(_.pluck(data, 'timezoneOffset')[0]).to.equal(-600);
+    expect(_.map(data, 'timezoneOffset')[0]).to.equal(-600);
   });
 
   it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
@@ -650,7 +650,7 @@ describe('TimezoneOffsetUtil in practice', function(){
       var datum = data[i], date = dates[i];
       util.fillInUTCInfo(datum, date);
     }
-    var offsets = _.uniq(_.pluck(data, 'timezoneOffset'));
+    var offsets = _.uniq(_.map(data, 'timezoneOffset'));
     expect(offsets.length).to.equal(2);
     expect(offsets).to.deep.equal([-420, -360]);
   });
@@ -704,12 +704,12 @@ describe('TimezoneOffsetUtil in practice', function(){
       var byTime = _.sortBy(data, function(d) { return d.time; });
       var byIndex = _.sortBy(data, function(d) { return d.index; });
       expect(byTime).to.deep.equal(byIndex);
-      var deviceTimes = _.pluck(data, 'deviceTime');
+      var deviceTimes = _.map(data, 'deviceTime');
       var uniqDeviceTimes = _.uniq(deviceTimes);
       // given the time changes involved, device times are *not*
       // expected to be unique, hence the length of arrays should vary
       expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
-      var times = _.pluck(data, 'time');
+      var times = _.map(data, 'time');
       var uniqTimes = _.uniq(times);
       // but UTC times should *always* be unique, even with travel!
       // so the length of arrays should stay the same, even when reducing to unique

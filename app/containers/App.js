@@ -103,7 +103,7 @@ export class App extends Component {
   componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.route.api;
-    this.props.async.doAppInit(Object.assign({}, config), {
+    this.props.async.doAppInit(_.assign({}, config), {
       api: api,
       carelink,
       device,

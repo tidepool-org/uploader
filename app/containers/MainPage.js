@@ -193,7 +193,7 @@ export default connect(
       }
       let activeUploads = [];
       const targetUsersUploads = _.get(uploadsByUser, uploadTargetUser, []);
-      _.map(Object.keys(targetUsersUploads), (deviceKey) => {
+      _.map(_.keys(targetUsersUploads), (deviceKey) => {
         const upload = uploadsByUser[uploadTargetUser][deviceKey];
         const device = _.pick(devices[deviceKey], ['instructions', 'image', 'key', 'name', 'source']);
         const progress = upload.uploading ? {progress: state.uploadProgress} :

@@ -25,7 +25,7 @@ var personUtils = require('../../lib/core/personUtils');
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
 function zeroPad(value){
-  return _.padLeft(value, 2, '0');
+  return _.padStart(value, 2, '0');
 }
 
 function validateForm(values){

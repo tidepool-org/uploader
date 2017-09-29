@@ -82,19 +82,19 @@ export function unsupported(state = true, action) {
 export function blipUrls(state = {}, action) {
   switch (action.type) {
     case actionTypes. SET_BLIP_VIEW_DATA_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         viewDataLink: action.payload.url
       });
     case actionTypes.SET_FORGOT_PASSWORD_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         forgotPassword: action.payload.url
       });
     case actionTypes.SET_SIGNUP_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         signUp: action.payload.url
       });
     case actionTypes.SET_NEW_PATIENT_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         newPatient: action.payload.url
       });
     default:
