@@ -54,7 +54,7 @@
     "react-router-redux": "4.0.8",
     "react-select": "1.0.0-rc.10",
     "redux": "3.7.2",
-    "redux-form": "5.3.4",
+    "redux-form": "7.0.4",
     "redux-thunk": "2.2.0",
     "semver": "5.4.1",
     "source-map-support": "0.4.18",
