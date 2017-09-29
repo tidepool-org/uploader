@@ -17,14 +17,15 @@
 
 var React = require('react');
 var _ = require('lodash');
+var PropTypes = require('prop-types');
 
 var styles = require('../../styles/components/ClinicUploadDone.module.less');
 
 class ClinicUploadDone extends React.Component {
   static propTypes = {
-    onClicked: React.PropTypes.func.isRequired,
-    uploadTargetUser: React.PropTypes.string.isRequired,
-    uploadsByUser: React.PropTypes.object.isRequired
+    onClicked: PropTypes.func.isRequired,
+    uploadTargetUser: PropTypes.string.isRequired,
+    uploadsByUser: PropTypes.object.isRequired
   };
 
   handleClick = () => {

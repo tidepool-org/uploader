@@ -18,6 +18,7 @@ import Select from 'react-select';
 
 var _ = require('lodash');
 var React = require('react');
+var PropTypes = require('prop-types');
 var personUtils = require('../../lib/core/personUtils');
 var pagesMap = require('../constants/otherConstants').pagesMap;
 
@@ -25,12 +26,12 @@ var styles = require('../../styles/components/UserDropdown.module.less');
 
 class UserDropdown extends React.Component {
   static propTypes = {
-    allUsers: React.PropTypes.object.isRequired,
-    isUploadInProgress: React.PropTypes.bool,
-    onGroupChange: React.PropTypes.func.isRequired,
-    locationPath: React.PropTypes.string.isRequired,
-    targetId: React.PropTypes.string,
-    targetUsersForUpload: React.PropTypes.array.isRequired
+    allUsers: PropTypes.object.isRequired,
+    isUploadInProgress: PropTypes.bool,
+    onGroupChange: PropTypes.func.isRequired,
+    locationPath: PropTypes.string.isRequired,
+    targetId: PropTypes.string,
+    targetUsersForUpload: PropTypes.array.isRequired
   };
 
   groupSelector = () => {

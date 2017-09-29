@@ -17,7 +17,8 @@
 
 import _ from 'lodash';
 import cx from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
@@ -604,4 +605,4 @@ export default class Upload extends Component {
     return (_.get(upload, 'source.type', null) === 'carelink') &&
       (upload.isFetching);
   }
-};
+}

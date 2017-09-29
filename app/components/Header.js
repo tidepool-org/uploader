@@ -16,7 +16,8 @@
 */
 
 import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '../actions/';
@@ -105,7 +106,7 @@ export class Header extends Component {
       </div>
     );
   }
-};
+}
 
 export default connect(
   (state, ownProps) => {

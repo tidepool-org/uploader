@@ -15,6 +15,7 @@
  * == BSD2 LICENSE ==
  */
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 
@@ -22,15 +23,15 @@ import styles from '../../styles/components/LoggedInAs.module.less';
 
 export default class LoggedInAs extends Component {
   static propTypes = {
-    dropMenu: React.PropTypes.bool.isRequired,
-    isUploadInProgress: React.PropTypes.bool.isRequired,
-    onCheckForUpdates: React.PropTypes.func.isRequired,
-    onChooseDevices: React.PropTypes.func.isRequired,
-    onClicked: React.PropTypes.func.isRequired,
-    onLogout: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object,
-    isClinicAccount: React.PropTypes.bool,
-    targetUsersForUpload: React.PropTypes.array
+    dropMenu: PropTypes.bool.isRequired,
+    isUploadInProgress: PropTypes.bool.isRequired,
+    onCheckForUpdates: PropTypes.func.isRequired,
+    onChooseDevices: PropTypes.func.isRequired,
+    onClicked: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired,
+    user: PropTypes.object,
+    isClinicAccount: PropTypes.bool,
+    targetUsersForUpload: PropTypes.array
   }
 
   constructor(props) {
@@ -170,4 +171,4 @@ export default class LoggedInAs extends Component {
       </div>
     );
   }
-};
+}

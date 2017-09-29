@@ -16,6 +16,7 @@
 */
 
 var _ = require('lodash');
+var PropTypes = require('prop-types');
 var React = require('react');
 var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
@@ -25,11 +26,11 @@ var styles = require('../../styles/components/ClinicUserBlock.module.less');
 
 class ClinicUserBlock extends React.Component {
   static propTypes = {
-    allUsers: React.PropTypes.object.isRequired,
-    targetId: React.PropTypes.string,
-    timezoneDropdown: React.PropTypes.element,
-    onEditUser: React.PropTypes.func.isRequired,
-    isUploadInProgress: React.PropTypes.bool.isRequired
+    allUsers: PropTypes.object.isRequired,
+    targetId: PropTypes.string,
+    timezoneDropdown: PropTypes.element,
+    onEditUser: PropTypes.func.isRequired,
+    isUploadInProgress: PropTypes.bool.isRequired
   };
 
   formatBirthday = (birthday) => {

@@ -16,6 +16,7 @@
 */
 
 var _ = require('lodash');
+var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
@@ -32,19 +33,19 @@ var hostMap = {
 
 class DeviceSelection extends React.Component {
   static propTypes = {
-    disabled: React.PropTypes.bool.isRequired,
-    devices: React.PropTypes.object.isRequired,
-    targetDevices: React.PropTypes.array.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    devices: PropTypes.object.isRequired,
+    targetDevices: PropTypes.array.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
-    targetId: React.PropTypes.string,
-    timezoneIsSelected: React.PropTypes.bool.isRequired,
-    userDropdownShowing: React.PropTypes.bool.isRequired,
-    userIsSelected: React.PropTypes.bool.isRequired,
-    addDevice: React.PropTypes.func.isRequired,
-    removeDevice: React.PropTypes.func.isRequired,
-    onDone: React.PropTypes.func.isRequired,
-    isClinicAccount: React.PropTypes.bool.isRequired
+    targetId: PropTypes.string,
+    timezoneIsSelected: PropTypes.bool.isRequired,
+    userDropdownShowing: PropTypes.bool.isRequired,
+    userIsSelected: PropTypes.bool.isRequired,
+    addDevice: PropTypes.func.isRequired,
+    removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
+    isClinicAccount: PropTypes.bool.isRequired
   };
 
   componentWillReceiveProps(nextProps) {

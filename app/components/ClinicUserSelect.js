@@ -18,6 +18,7 @@ import Select from 'react-select';
 
 var _ = require('lodash');
 var React = require('react');
+var PropTypes = require('prop-types');
 var sundial = require('sundial');
 var cx = require('classnames');
 var personUtils = require('../../lib/core/personUtils');
@@ -27,12 +28,12 @@ var styles = require('../../styles/components/ClinicUserSelect.module.less');
 
 class ClinicUserSelect extends React.Component {
   static propTypes = {
-    allUsers: React.PropTypes.object.isRequired,
-    onUserChange: React.PropTypes.func.isRequired,
-    targetId: React.PropTypes.string,
-    targetUsersForUpload: React.PropTypes.array.isRequired,
-    onAddUserClick: React.PropTypes.func.isRequired,
-    setTargetUser: React.PropTypes.func.isRequired
+    allUsers: PropTypes.object.isRequired,
+    onUserChange: PropTypes.func.isRequired,
+    targetId: PropTypes.string,
+    targetUsersForUpload: PropTypes.array.isRequired,
+    onAddUserClick: PropTypes.func.isRequired,
+    setTargetUser: PropTypes.func.isRequired
   };
 
   handleClickNext = (e) => {

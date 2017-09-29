@@ -15,12 +15,13 @@
  * == BSD2 LICENSE ==
  */
 
+import { reduxForm } from 'redux-form';
+
 var React = require('react');
+var PropTypes = require('prop-types');
 var _ = require('lodash');
 var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
-import { reduxForm } from 'redux-form';
-
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
 function zeroPad(value){
@@ -66,17 +67,17 @@ var MONTHS = [
 
 class ClinicUserEdit extends React.Component {
   static propTypes = {
-    createCustodialAccountErrorMessage: React.PropTypes.string,
-    createCustodialAccountErrorDismissed: React.PropTypes.bool.isRequired,
-    updateProfileErrorMessage: React.PropTypes.string,
-    updateProfileErrorDismissed: React.PropTypes.bool.isRequired,
-    allUsers: React.PropTypes.object.isRequired,
-    loggedInUser: React.PropTypes.string.isRequired,
-    targetId: React.PropTypes.string,
-    updateUser: React.PropTypes.func.isRequired,
-    createUser: React.PropTypes.func.isRequired,
-    cancelEdit: React.PropTypes.func.isRequired,
-    onSubmitFail: React.PropTypes.func.isRequired
+    createCustodialAccountErrorMessage: PropTypes.string,
+    createCustodialAccountErrorDismissed: PropTypes.bool.isRequired,
+    updateProfileErrorMessage: PropTypes.string,
+    updateProfileErrorDismissed: PropTypes.bool.isRequired,
+    allUsers: PropTypes.object.isRequired,
+    loggedInUser: PropTypes.string.isRequired,
+    targetId: PropTypes.string,
+    updateUser: PropTypes.func.isRequired,
+    createUser: PropTypes.func.isRequired,
+    cancelEdit: PropTypes.func.isRequired,
+    onSubmitFail: PropTypes.func.isRequired
   };
 
   handleCancel = () => {

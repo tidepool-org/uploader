@@ -16,7 +16,8 @@
 */
 
 import cx from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import errorText from '../constants/errors';
 
@@ -68,4 +69,4 @@ export default class VersionCheckError extends Component {
       </div>
     );
   }
-};
+}

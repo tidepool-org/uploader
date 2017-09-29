@@ -18,6 +18,7 @@ import Select from 'react-select';
 
 var _ = require('lodash');
 var React = require('react');
+var PropTypes = require('prop-types');
 var sundial = require('sundial');
 var cx = require('classnames');
 
@@ -25,18 +26,18 @@ var styles = require('../../styles/components/TimezoneDropdown.module.less');
 
 class TimezoneDropdown extends React.Component {
   static propTypes = {
-    onTimezoneChange: React.PropTypes.func.isRequired,
-    selectorLabel: React.PropTypes.string.isRequired,
+    onTimezoneChange: PropTypes.func.isRequired,
+    selectorLabel: PropTypes.string.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
-    targetId: React.PropTypes.string,
-    targetTimezone: React.PropTypes.string,
-    updateProfileErrorMessage: React.PropTypes.string,
-    updateProfileErrorDismissed: React.PropTypes.bool,
-    dismissUpdateProfileError: React.PropTypes.func.isRequired,
-    isClinicAccount: React.PropTypes.bool,
-    userDropdownShowing: React.PropTypes.bool,
-    isUploadInProgress: React.PropTypes.bool.isRequired
+    targetId: PropTypes.string,
+    targetTimezone: PropTypes.string,
+    updateProfileErrorMessage: PropTypes.string,
+    updateProfileErrorDismissed: PropTypes.bool,
+    dismissUpdateProfileError: PropTypes.func.isRequired,
+    isClinicAccount: PropTypes.bool,
+    userDropdownShowing: PropTypes.bool,
+    isUploadInProgress: PropTypes.bool.isRequired
   };
 
   componentWillReceiveProps(nextProps) {
