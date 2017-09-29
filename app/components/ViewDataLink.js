@@ -20,13 +20,13 @@ var React = require('react');
 
 var styles = require('../../styles/components/ViewDataLink.module.less');
 
-var ViewDataLink = React.createClass({
-  propTypes: {
+class ViewDataLink extends React.Component {
+  static propTypes = {
     href: React.PropTypes.string.isRequired,
     onViewClicked: React.PropTypes.func.isRequired
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div className={styles.buttonWrap}>
         <a className={styles.button}
@@ -39,6 +39,6 @@ var ViewDataLink = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ViewDataLink;

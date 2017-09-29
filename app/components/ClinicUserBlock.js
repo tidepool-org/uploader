@@ -23,24 +23,24 @@ var cx = require('classnames');
 
 var styles = require('../../styles/components/ClinicUserBlock.module.less');
 
-var ClinicUserBlock = React.createClass({
-  propTypes: {
+class ClinicUserBlock extends React.Component {
+  static propTypes = {
     allUsers: React.PropTypes.object.isRequired,
     targetId: React.PropTypes.string,
     timezoneDropdown: React.PropTypes.element,
     onEditUser: React.PropTypes.func.isRequired,
     isUploadInProgress: React.PropTypes.bool.isRequired
-  },
+  };
 
-  formatBirthday: function(birthday) {
+  formatBirthday = (birthday) => {
     return sundial.translateMask(birthday, 'YYYY-MM-DD', 'M/D/YYYY');
-  },
+  };
 
-  noopHandler: function(e){
+  noopHandler = (e) => {
     e.preventDefault();
-  },
+  };
 
-  render: function() {
+  render() {
     var editClasses = cx({
       [styles.edit]: true,
       [styles.disabled]: this.props.isUploadInProgress
@@ -62,6 +62,6 @@ var ClinicUserBlock = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ClinicUserBlock;

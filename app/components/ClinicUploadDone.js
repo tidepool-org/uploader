@@ -20,22 +20,22 @@ var _ = require('lodash');
 
 var styles = require('../../styles/components/ClinicUploadDone.module.less');
 
-var ClinicUploadDone = React.createClass({
-  propTypes: {
+class ClinicUploadDone extends React.Component {
+  static propTypes = {
     onClicked: React.PropTypes.func.isRequired,
     uploadTargetUser: React.PropTypes.string.isRequired,
     uploadsByUser: React.PropTypes.object.isRequired
-  },
+  };
 
-  handleClick: function(){
+  handleClick = () => {
     this.props.onClicked();
-  },
+  };
 
-  hasCompletedUpload: function(){
+  hasCompletedUpload = () => {
     return _.find(_.get(this.props.uploadsByUser, this.props.uploadTargetUser, {}), {completed: true});
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div className={styles.buttonWrap}>
         <a className={styles.button}
@@ -46,6 +46,6 @@ var ClinicUploadDone = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ClinicUploadDone;

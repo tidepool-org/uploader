@@ -23,17 +23,17 @@ var pagesMap = require('../constants/otherConstants').pagesMap;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 
-var UserDropdown = React.createClass({
-  propTypes: {
+class UserDropdown extends React.Component {
+  static propTypes = {
     allUsers: React.PropTypes.object.isRequired,
     isUploadInProgress: React.PropTypes.bool,
     onGroupChange: React.PropTypes.func.isRequired,
     locationPath: React.PropTypes.string.isRequired,
     targetId: React.PropTypes.string,
     targetUsersForUpload: React.PropTypes.array.isRequired
-  },
+  };
 
-  groupSelector: function(){
+  groupSelector = () => {
     var allUsers = this.props.allUsers;
     var targets = this.props.targetUsersForUpload;
 
@@ -63,8 +63,9 @@ var UserDropdown = React.createClass({
         value={this.props.targetId}
       />
     );
-  },
-  render: function() {
+  };
+
+  render() {
     // we're already doing a check to see if we want to render in App.js
     // but this is an extra measure of protection against trying to render
     // when we don't have the potential target users to do so
@@ -87,6 +88,6 @@ var UserDropdown = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = UserDropdown;

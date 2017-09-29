@@ -24,26 +24,29 @@ var personUtils = require('../../lib/core/personUtils');
 var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
- 
-var ClinicUserSelect = React.createClass({
-  propTypes: {
+
+class ClinicUserSelect extends React.Component {
+  static propTypes = {
     allUsers: React.PropTypes.object.isRequired,
     onUserChange: React.PropTypes.func.isRequired,
     targetId: React.PropTypes.string,
     targetUsersForUpload: React.PropTypes.array.isRequired,
     onAddUserClick: React.PropTypes.func.isRequired,
     setTargetUser: React.PropTypes.func.isRequired
-  },
-  handleClickNext: function(e) {
+  };
+
+  handleClickNext = (e) => {
     e.preventDefault();
     if(this.props.targetId){
       this.props.onUserChange(this.props.targetId);
     }
-  },
-  handleOnChange: function(userId) {
+  };
+
+  handleOnChange = (userId) => {
     this.props.setTargetUser(userId, {eventName: metrics.CLINIC_SEARCH_SELECTED});
-  },
-  valueRenderer: function(option) {
+  };
+
+  valueRenderer = (option) => {
     var user = _.get(this.props.allUsers, option.value);
     var name = personUtils.patientFullName(user);
     var bday = _.get(user, ['patient', 'birthday'], '');
@@ -69,8 +72,9 @@ var ClinicUserSelect = React.createClass({
         </div>
       </div>
     );
-  },
-  renderSelector: function(){
+  };
+
+  renderSelector = () => {
     var allUsers = this.props.allUsers;
     var targets = this.props.targetUsersForUpload;
     var sorted = _.sortBy(targets, function(targetId) {
@@ -106,8 +110,9 @@ var ClinicUserSelect = React.createClass({
         onChange={this.handleOnChange}
       />
     );
-  },
-  renderButton: function() {
+  };
+
+  renderButton = () => {
     var classes = cx({
       [styles.button]: true,
       disabled: !this.props.targetId
@@ -117,8 +122,9 @@ var ClinicUserSelect = React.createClass({
         Next
       </div>
     );
-  },
-  renderAddNew: function() {
+  };
+
+  renderAddNew = () => {
     var classes = cx({
       [styles.addLink]: true
     });
@@ -128,8 +134,9 @@ var ClinicUserSelect = React.createClass({
         Add new
       </div>
     );
-  },
-  render: function() {
+  };
+
+  render() {
     return (
       <div className={styles.wrap}>
         <div className={styles.wrapInner}>
@@ -149,6 +156,6 @@ var ClinicUserSelect = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ClinicUserSelect;

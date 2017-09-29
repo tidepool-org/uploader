@@ -19,13 +19,13 @@ var React = require('react');
 
 var styles = require('../../styles/components/ProgressBar.module.less');
 
-var ProgressBar = React.createClass({
-  propTypes: {
+class ProgressBar extends React.Component {
+  static propTypes = {
     // Percentage is an integer between 0 and 100
     percentage: React.PropTypes.number.isRequired
-  },
+  };
 
-  render: function() {
+  render() {
     // Minimum fill of 1%
     var width = this.props.percentage ? this.props.percentage : 1;
     return (
@@ -34,6 +34,6 @@ var ProgressBar = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ProgressBar;

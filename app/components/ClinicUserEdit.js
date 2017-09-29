@@ -25,7 +25,7 @@ var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
 function zeroPad(value){
   return _.padLeft(value, 2, '0');
-};
+}
 
 function validateForm(values){
   var errors = {};
@@ -40,13 +40,13 @@ function validateForm(values){
     errors.year = 'Hmm, this date doesn’t look right';
   }
   return errors;
-};
+}
 
 function isValidDate(dateString){
   // check to see if date is proper and not in the future
   return (sundial.isValidDateForMask(dateString, 'YYYY-MM-DD')) &&
     (sundial.dateDifference(new Date(), dateString, 'd') > 0);
-};
+}
 
 var MONTHS = [
   {value: '', label: 'Month'},
@@ -64,8 +64,8 @@ var MONTHS = [
   {value: '12', label: 'December'}
 ];
 
-var ClinicUserEdit = React.createClass({
-  propTypes: {
+class ClinicUserEdit extends React.Component {
+  static propTypes = {
     createCustodialAccountErrorMessage: React.PropTypes.string,
     createCustodialAccountErrorDismissed: React.PropTypes.bool.isRequired,
     updateProfileErrorMessage: React.PropTypes.string,
@@ -77,13 +77,13 @@ var ClinicUserEdit = React.createClass({
     createUser: React.PropTypes.func.isRequired,
     cancelEdit: React.PropTypes.func.isRequired,
     onSubmitFail: React.PropTypes.func.isRequired
-  },
+  };
 
-  handleCancel: function(){
+  handleCancel = () => {
     this.props.cancelEdit();
-  },
+  };
 
-  handleNext: function(values) {
+  handleNext = (values) => {
     var name = values.fullName;
     var dateString = values.year+'-'+values.month+'-'+zeroPad(values.day);
     var email = values.email;
@@ -111,9 +111,9 @@ var ClinicUserEdit = React.createClass({
         this.props.createUser(profile);
       }
     }
-  },
+  };
 
-  renderCreateError: function() {
+  renderCreateError = () => {
     if (this.props.createCustodialAccountErrorDismissed || !this.props.createCustodialAccountErrorMessage) {
       return null;
     }
@@ -124,9 +124,9 @@ var ClinicUserEdit = React.createClass({
         </span>
       </div>
     );
-  },
+  };
 
-  renderUpdateError: function() {
+  renderUpdateError = () => {
     if (this.props.updateProfileErrorDismissed || !this.props.updateProfileErrorMessage) {
       return null;
     }
@@ -137,9 +137,9 @@ var ClinicUserEdit = React.createClass({
         </span>
       </div>
     );
-  },
+  };
 
-  renderDateError: function(){
+  renderDateError = () => {
     const {fields: {month, day, year}} = this.props;
     if (!year.error) { return null; }
     // only render the error if each field has either been touched or has a value
@@ -149,9 +149,9 @@ var ClinicUserEdit = React.createClass({
     const yearCheck = ((year.touched || year.value) && !year.active);
     return monthCheck && dayCheck && yearCheck &&
       (<div className={styles.validationError}>{year.error}</div>);
-  },
+  };
 
-  render: function() {
+  render() {
     var titleText = this.props.targetId ? 'Edit patient account' : 'Create a new patient account';
     const {fields: {fullName, month, day, year, mrn, email}, handleSubmit} = this.props;
     var options = _.map(MONTHS, function(item) {
@@ -218,7 +218,7 @@ var ClinicUserEdit = React.createClass({
       </div>
     );
   }
-});
+}
 
 function mapStateToProps(state){
     if(!state.uploadTargetUser){
@@ -233,13 +233,13 @@ function mapStateToProps(state){
       email: _.get(user, ['patient', 'email'], ''),
       mrn: _.get(user, ['patient', 'mrn'], '')
     }};
-};
+}
 
-ClinicUserEdit = reduxForm({
+const ClinicUserEditWrapped = reduxForm({
   form: 'userEdit',
   fields: ['fullName', 'year', 'month', 'day', 'mrn', 'email'],
   validate: validateForm
 },
 mapStateToProps)(ClinicUserEdit);
 
-module.exports = ClinicUserEdit;
+module.exports = ClinicUserEditWrapped;

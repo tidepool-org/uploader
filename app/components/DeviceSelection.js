@@ -30,8 +30,8 @@ var hostMap = {
   'linux': 'linux',
 };
 
-var DeviceSelection = React.createClass({
-  propTypes: {
+class DeviceSelection extends React.Component {
+  static propTypes = {
     disabled: React.PropTypes.bool.isRequired,
     devices: React.PropTypes.object.isRequired,
     targetDevices: React.PropTypes.array.isRequired,
@@ -45,9 +45,9 @@ var DeviceSelection = React.createClass({
     removeDevice: React.PropTypes.func.isRequired,
     onDone: React.PropTypes.func.isRequired,
     isClinicAccount: React.PropTypes.bool.isRequired
-  },
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var self = this;
 
     if (!this.props.userIsSelected && nextProps.userIsSelected) {
@@ -55,9 +55,9 @@ var DeviceSelection = React.createClass({
         self.props.addDevice(nextProps.targetId, device);
       });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var targetUser = this.props.targetId || 'noUserSelected';
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
@@ -125,11 +125,11 @@ var DeviceSelection = React.createClass({
         </div>
       </div>
     );
-  },
-
-  handleSubmit: function() {
-    this.props.onDone();
   }
-});
+
+  handleSubmit = () => {
+    this.props.onDone();
+  };
+}
 
 module.exports = DeviceSelection;
