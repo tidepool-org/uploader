@@ -94,9 +94,6 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
-    this.handleContextMenu = this.handleContextMenu.bind(this);
-    this.setServer = this.setServer.bind(this);
     const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
     this.state = {
       server: initial_server
@@ -117,12 +114,12 @@ export class App extends Component {
     window.addEventListener('contextmenu', this.handleContextMenu, false);
   }
 
-  setServer(info) {
+  setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
     this.props.route.api.setHosts(serverinfo);
     this.setState({server: info.label});
-  }
+  };
 
   render() {
     return (
@@ -138,7 +135,7 @@ export class App extends Component {
     );
   }
 
-  handleContextMenu(e){
+  handleContextMenu = e => {
     e.preventDefault();
     const { clientX, clientY } = e;
     let template = [];
@@ -200,15 +197,15 @@ export class App extends Component {
     }
     const menu = Menu.buildFromTemplate(template);
     menu.popup(remote.getCurrentWindow());
-  }
+  };
 
-  handleDismissDropdown() {
+  handleDismissDropdown = () => {
     const { dropdown } = this.props;
     // only toggle the dropdown by clicking elsewhere if it's open
     if (dropdown === true) {
       this.props.sync.toggleDropdown(dropdown);
     }
-  }
+  };
 
   renderVersionCheck() {
     const { readyToRenderVersionCheckOverlay, unsupported } = this.props;

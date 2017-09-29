@@ -36,32 +36,25 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
-    this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
-    this.handleClickEditUser = this.handleClickEditUser.bind(this);
-  }
-
-  handleClickEditUser() {
+  handleClickEditUser = () => {
     const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
-  }
+  };
 
-  handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
+  handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {
     const { setUploadTargetUser } = this.props.sync;
     const { setPage } = this.props.async;
     setUploadTargetUser(null);
     setPage(pages.CLINIC_USER_SELECT, undefined, metric);
-  }
+  };
 
-  handleClickChooseDevices(metric) {
+  handleClickChooseDevices = metric => {
     const { toggleDropdown } = this.props.sync;
     const { setPage } = this.props.async;
     // ensure dropdown closes after click
     setPage(pages.SETTINGS, true, metric);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
   renderTimezoneDropdown() {
     const { uploadTargetUser } = this.props;

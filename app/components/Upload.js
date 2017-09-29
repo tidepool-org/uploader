@@ -73,13 +73,6 @@ export default class Upload extends Component {
 
   constructor(props) {
     super(props);
-    this.handleCareLinkUpload = this.handleCareLinkUpload.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
-    this.onBlockModeInputChange = this.onBlockModeInputChange.bind(this);
-    this.onCareLinkInputChange = this.onCareLinkInputChange.bind(this);
-    this.onMedtronicSerialNumberInputChange = this.onMedtronicSerialNumberInputChange.bind(this);
-    this.onMedtronicSerialNumberRememberChange = this.onMedtronicSerialNumberRememberChange.bind(this);
 
     this.populateRememberedSerialNumber();
   }
@@ -103,14 +96,14 @@ export default class Upload extends Component {
     });
   }
 
-  handleCareLinkUpload() {
+  handleCareLinkUpload = () => {
     const { refs } = this;
     let options = {
       username: refs.username.value,
       password: refs.password.value
     };
     this.props.onUpload(options);
-  }
+  };
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
@@ -133,7 +126,7 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
-  handleReset(e) {
+  handleReset = e => {
     if (e) {
       e.preventDefault();
     }
@@ -144,9 +137,9 @@ export default class Upload extends Component {
     });
     this.props.onReset();
     this.populateRememberedSerialNumber();
-  }
+  };
 
-  handleUpload(e) {
+  handleUpload = e => {
     const { upload } = this.props;
     if (e) {
       e.preventDefault();
@@ -162,15 +155,15 @@ export default class Upload extends Component {
 
     var options = {};
     this.props.onUpload(options);
-  }
+  };
 
-  onBlockModeInputChange(e) {
+  onBlockModeInputChange = e => {
     const { upload } = this.props;
     let file = e.target.files[0];
     this.props.readFile(file, upload.source.extension);
-  }
+  };
 
-  onCareLinkInputChange() {
+  onCareLinkInputChange = () => {
     const { refs } = this;
     let username = refs.username && refs.username.value;
     let password = refs.password && refs.password.value;
@@ -181,9 +174,9 @@ export default class Upload extends Component {
     else {
       this.setState({carelinkFormIncomplete: false});
     }
-  }
+  };
 
-  onMedtronicSerialNumberRememberChange(e) {
+  onMedtronicSerialNumberRememberChange = e => {
     const checkbox = e.target;
     const checked = checkbox.checked;
 
@@ -195,9 +188,9 @@ export default class Upload extends Component {
     if(!checked) {
       keytar.deletePassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId);
     }
-  }
+  };
 
-  onMedtronicSerialNumberInputChange(e) {
+  onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
     const value = field.value;
     const chars = value.split('');
@@ -233,7 +226,7 @@ export default class Upload extends Component {
         medtronicFormIncomplete: true
       });
     }
-  }
+  };
 
   getDebugLinks(data) {
 

@@ -44,24 +44,18 @@ export class Header extends Component {
     targetUsersForUpload: PropTypes.array
   };
 
-  constructor(props) {
-    super(props);
-    this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
-    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
-  }
-
-  handleClickChooseDevices(metric) {
+  handleClickChooseDevices = metric => {
     const { toggleDropdown } = this.props.sync;
     const { setPage } = this.props.async;
     // ensure dropdown closes after click
     setPage(pages.SETTINGS, true, metric);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
-  handleCheckForUpdates() {
+  handleCheckForUpdates = () => {
     const { toggleDropdown } = this.props.sync;
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
   render() {
     const { allUsers, dropdown, location } = this.props;

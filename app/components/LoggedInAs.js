@@ -37,10 +37,6 @@ export default class LoggedInAs extends Component {
   constructor(props) {
     super(props);
     this.state = { loggingOut: false };
-
-    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
-    this.handleChooseDevices = this.handleChooseDevices.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   noopHandler(e) {
@@ -49,18 +45,18 @@ export default class LoggedInAs extends Component {
     }
   }
 
-  handleChooseDevices(e) {
+  handleChooseDevices = e => {
     e.preventDefault();
     this.props.onChooseDevices();
-  }
+  };
 
-  handleCheckForUpdates(e) {
+  handleCheckForUpdates = e => {
     e.preventDefault();
     this.props.onCheckForUpdates();
     ipcRenderer.send('autoUpdater','checkForUpdates');
-  }
+  };
 
-  handleLogout(e) {
+  handleLogout = e => {
     e.preventDefault();
     this.setState({
       loggingOut: true
@@ -73,7 +69,7 @@ export default class LoggedInAs extends Component {
         });
       }
     });
-  }
+  };
 
   renderChooseDevices() {
     var title = '';
