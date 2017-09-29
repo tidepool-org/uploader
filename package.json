@@ -223,7 +223,7 @@
     "webpack-dev-server": "1.14.1",
     "webpack-hot-middleware": "2.19.1",
     "webpack-merge": "4.1.0",
-    "webpack-validator": "2.3.0"
+    "webpack-validator": "3.0.0"
   },
   "devEngines": {
     "node": ">=7.4.x",
