@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { hashHistory } from 'react-router';
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware, push } from 'react-router-redux'
 import rootReducer from '../reducers';
 import api from '../../lib/core/api';
 import config from '../../lib/config';
@@ -15,15 +14,14 @@ api.create({
   version: config.version
 });
 
-const router = routerMiddleware(hashHistory);
+export default function configureStore(initialState, history) {
+	const router = routerMiddleware(history);
+	const enhancer = applyMiddleware(
+	  thunk,
+	  router,
+	  createErrorLogger(api),
+	  createMetricsTracker(api)
+	);
 
-const enhancer = applyMiddleware(
-  thunk,
-  router,
-  createErrorLogger(api),
-  createMetricsTracker(api)
-);
-
-export default function configureStore(initialState) {
   return createStore(rootReducer, initialState, enhancer); // eslint-disable-line
 }

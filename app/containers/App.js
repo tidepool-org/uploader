@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
+import { Route, Switch } from 'react-router-dom';
 
 const { Menu } = remote;
 
@@ -42,6 +43,13 @@ import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
 
+import MainPage from './MainPage';
+import Login from '../components/Login';
+import Loading from '../components/Loading';
+import SettingsPage from './SettingsPage';
+import ClinicUserSelectPage from './ClinicUserSelectPage';
+import ClinicUserEditPage from './ClinicUserEditPage';
+import NoUploadTargetsPage from './NoUploadTargetsPage';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
@@ -102,7 +110,7 @@ export class App extends Component {
 
   componentWillMount(){
     checkVersion(this.props.dispatch);
-    let api = this.props.route.api;
+    let api = this.props.api;
     this.props.async.doAppInit(_.assign({}, config), {
       api: api,
       carelink,
@@ -117,7 +125,7 @@ export class App extends Component {
   setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
-    this.props.route.api.setHosts(serverinfo);
+    this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
   };
 
@@ -125,7 +133,15 @@ export class App extends Component {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <Header location={this.props.location} />
-        {this.props.children}
+				<Switch>
+					<Route exact strict path="/" component={Loading} />
+					<Route path="/login" component={Login}/>
+					<Route path="/main" component={MainPage}/>
+					<Route path="/settings" component={SettingsPage}/>
+					<Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
+					<Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
+					<Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
+				</Switch>
         <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}

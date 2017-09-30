@@ -42,6 +42,7 @@
     "electron-debug": "1.4.0",
     "electron-is-dev": "0.3.0",
     "eslint-plugin-lodash": "^2.4.5",
+    "history": "4.7.2",
     "immutability-helper": "2.4.0",
     "is-electron": "2.1.0",
     "lodash": "4.17.4",
@@ -50,8 +51,8 @@
     "react": "15.6.2",
     "react-dom": "15.6.2",
     "react-redux": "5.0.6",
-    "react-router": "3.0.2",
-    "react-router-redux": "4.0.8",
+    "react-router-dom": "4.2.2",
+    "react-router-redux": "5.0.0-alpha.6",
     "react-select": "1.0.0-rc.10",
     "redux": "3.7.2",
     "redux-form": "7.0.4",
@@ -227,7 +228,7 @@
     "webpack-validator": "3.0.0"
   },
   "devEngines": {
-    "node": ">=7.4.x",
+    "node": ">=7.9.x",
     "npm": ">=3.x"
   },
   "resolutions": {
