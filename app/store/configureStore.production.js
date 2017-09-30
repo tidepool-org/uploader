@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { routerMiddleware, push } from 'react-router-redux'
+import { routerMiddleware, push } from 'react-router-redux';
 import rootReducer from '../reducers';
 import api from '../../lib/core/api';
 import config from '../../lib/config';
