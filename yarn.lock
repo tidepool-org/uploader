@@ -1838,7 +1838,28 @@ builder-util-runtime@^1.0.5:
     debug "^3.0.1"
     fs-extra-p "^4.4.2"
 
-builder-util@2.0.5, builder-util@^2.0.2, builder-util@^2.0.5:
+builder-util@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-2.0.6.tgz#2a3eec93c77709e45f879c2eccdcbe5f29a70271"
+  dependencies:
+    "7zip-bin" "^2.2.4"
+    bluebird-lst "^1.0.3"
+    builder-util-runtime "^1.0.6"
+    chalk "^2.1.0"
+    debug "^3.1.0"
+    fs-extra-p "^4.4.2"
+    ini "^1.3.4"
+    is-ci "^1.0.10"
+    js-yaml "^3.10.0"
+    lazy-val "^1.0.2"
+    node-emoji "^1.8.1"
+    semver "^5.4.1"
+    source-map-support "^0.4.18"
+    stat-mode "^0.2.2"
+    temp-file "^2.0.3"
+    tunnel-agent "^0.6.0"
+
+builder-util@^2.0.2, builder-util@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-2.0.5.tgz#ee75a98b38a2aaa60f12290300f06d879bfdef6d"
   dependencies:
@@ -3080,16 +3101,16 @@ ejs@^2.5.7, ejs@~2.5.6:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-electron-builder@19.32.2:
-  version "19.32.2"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.32.2.tgz#282d26f069a62461da3445a01149244bd898105e"
+electron-builder@19.33.0:
+  version "19.33.0"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.33.0.tgz#2b0ac41fb9ece5b07f3df57f21064ac3e705f225"
   dependencies:
     "7zip-bin" "^2.2.4"
     app-package-builder "1.0.3"
     asar-integrity "0.2.1"
     async-exit-hook "^2.0.1"
     bluebird-lst "^1.0.3"
-    builder-util "2.0.5"
+    builder-util "2.0.6"
     builder-util-runtime "1.0.6"
     chalk "^2.1.0"
     chromium-pickle-js "^0.2.0"
@@ -3545,9 +3566,9 @@ eslint-scope@^3.7.1:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint@4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.7.2.tgz#ff6f5f5193848a27ee9b627be3e73fb9cb5e662e"
+eslint@4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.8.0.tgz#229ef0e354e0e61d837c7a80fdfba825e199815e"
   dependencies:
     ajv "^5.2.0"
     babel-code-frame "^6.22.0"
@@ -3682,9 +3703,9 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-express@4.16.0:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/express/-/express-4.16.0.tgz#b519638e4eb58e7178c81b498ef22f798cb2e255"
+express@4.16.1:
+  version "4.16.1"
+  resolved "https://registry.yarnpkg.com/express/-/express-4.16.1.tgz#6b33b560183c9b253b7b62144df33a4654ac9ed0"
   dependencies:
     accepts "~1.3.4"
     array-flatten "1.1.1"
@@ -3709,8 +3730,8 @@ express@4.16.0:
     qs "6.5.1"
     range-parser "~1.2.0"
     safe-buffer "5.1.1"
-    send "0.16.0"
-    serve-static "1.13.0"
+    send "0.16.1"
+    serve-static "1.13.1"
     setprototypeof "1.1.0"
     statuses "~1.3.1"
     type-is "~1.6.15"
@@ -8281,9 +8302,9 @@ send@0.15.4:
     range-parser "~1.2.0"
     statuses "~1.3.1"
 
-send@0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/send/-/send-0.16.0.tgz#16338dbb9a2ede4ad57b48420ec3b82d8e80a57b"
+send@0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/send/-/send-0.16.1.tgz#a70e1ca21d1382c11d0d9f6231deb281080d7ab3"
   dependencies:
     debug "2.6.9"
     depd "~1.1.1"
@@ -8320,14 +8341,14 @@ serve-static@1.12.4:
     parseurl "~1.3.1"
     send "0.15.4"
 
-serve-static@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.13.0.tgz#810c91db800e94ba287eae6b4e06caab9fdc16f1"
+serve-static@1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.13.1.tgz#4c57d53404a761d8f2e7c1e8a18a47dbf278a719"
   dependencies:
     encodeurl "~1.0.1"
     escape-html "~1.0.3"
     parseurl "~1.3.2"
-    send "0.16.0"
+    send "0.16.1"
 
 set-blocking@^1.0.0:
   version "1.0.0"
