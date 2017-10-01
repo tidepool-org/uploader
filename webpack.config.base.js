@@ -4,19 +4,17 @@
 
 import _ from 'lodash';
 import path from 'path';
-import validate from 'webpack-validator';
 import { dependencies as externals } from './app/package.json';
 import { optionalDependencies as additionalExternals } from './app/package.json';
 
-export default validate({
+export default {
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
-      loaders: ['babel-loader'],
+      use: [{
+        loader: 'babel-loader'
+      }],
       exclude: /node_modules/
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader'
     }]
   },
 
@@ -32,13 +30,12 @@ export default validate({
    * Determine the array of extensions that should be used to resolve modules.
    */
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
-    fallback: path.join(__dirname, 'node_modules')
+    extensions: ['.js', '.jsx', '.json'],
+    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
   },
-  resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
+  resolveLoader: { },
 
   plugins: [],
 
   externals: _.keys(_.merge({}, externals, additionalExternals) || {})
-});
+};
