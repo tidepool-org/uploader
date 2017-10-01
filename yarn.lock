@@ -2074,9 +2074,9 @@ char-spinner@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/char-spinner/-/char-spinner-1.0.1.tgz#e6ea67bd247e107112983b7ab0479ed362800081"
 
-charm@0.1.x, charm@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/charm/-/charm-1.0.1.tgz#68566a7a553d4fe91797030dd1852d0dd6efa82d"
+charm@0.1.x, charm@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/charm/-/charm-1.0.2.tgz#8add367153a6d9a581331052c4090991da995e35"
   dependencies:
     inherits "^2.0.1"
 

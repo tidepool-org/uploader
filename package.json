@@ -231,6 +231,6 @@
     "npm": ">=3.x"
   },
   "resolutions": {
-    "charm": "1.0.1"
+    "charm": "1.0.2"
   }
 }
