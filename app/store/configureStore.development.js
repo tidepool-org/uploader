@@ -22,26 +22,26 @@ const actionCreators = {
 };
 
 export default function configureStore(initialState, history) {
-	const router = routerMiddleware(history);
+  const router = routerMiddleware(history);
 
-	// If Redux DevTools Extension is installed use it, otherwise use Redux compose
-	/* eslint-disable no-underscore-dangle */
-	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-	  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-	    // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
-	    actionCreators,
-	  }) :
-	  compose;
-	/* eslint-enable no-underscore-dangle */
+  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
+  /* eslint-disable no-underscore-dangle */
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
+      actionCreators,
+    }) :
+    compose;
+  /* eslint-enable no-underscore-dangle */
 
-	const enhancer = composeEnhancers(
-	  applyMiddleware(
-	    thunk,
-	    router,
-	    createErrorLogger(api),
-	    createMetricsTracker(api)
-	  )
-	);
+  const enhancer = composeEnhancers(
+    applyMiddleware(
+      thunk,
+      router,
+      createErrorLogger(api),
+      createMetricsTracker(api)
+    )
+  );
 
   const store = createStore(rootReducer, initialState, enhancer);
 

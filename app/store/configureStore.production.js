@@ -15,13 +15,13 @@ api.create({
 });
 
 export default function configureStore(initialState, history) {
-	const router = routerMiddleware(history);
-	const enhancer = applyMiddleware(
-	  thunk,
-	  router,
-	  createErrorLogger(api),
-	  createMetricsTracker(api)
-	);
+  const router = routerMiddleware(history);
+  const enhancer = applyMiddleware(
+    thunk,
+    router,
+    createErrorLogger(api),
+    createMetricsTracker(api)
+  );
 
   return createStore(rootReducer, initialState, enhancer); // eslint-disable-line
 }
