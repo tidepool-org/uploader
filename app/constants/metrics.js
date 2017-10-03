@@ -47,6 +47,8 @@ export const UPLOAD_FAILURE = 'Upload Failed';
 export const CARELINK_FETCH_SUCCESS = 'CareLink Fetch Successful';
 export const CARELINK_FETCH_FAILURE = 'CareLink Fetch Failed';
 
+export const MEDTRONIC_REMEMBER_SERIAL_NUMBER = 'Medtronic Remember Serial Number';
+
 export const VERSION_CHECK_FAILURE_OUTDATED = '(Partial) Uploader Version No Longer Supported';
 
 export const UNSUPPORTED_SCREEN_DISPLAYED = 'Electron Uploader - Unsupported screen displayed';

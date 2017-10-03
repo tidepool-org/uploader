@@ -1,6 +1,7 @@
 import medtronicPumpImage from '../../images/Combined_Pump_and_Meter.jpg';
 import medtronic600PumpImage from '../../images/bayer_contour_next_link_24.jpg';
 
+import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -15,8 +16,8 @@ const devices = {
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': medtronicPumpImage,
-      'height': 183,
+      'src': mm723Image,
+      'height': 128,
       'width': 200,
       'alt': 'Bayer Contour Next Link'
     },
@@ -124,7 +125,25 @@ const devices = {
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
     enabled: {mac: true, win: true}
+  },
+  /* TODO: re-enable these after Electron is on production
+  onetouchultramini: {
+    instructions: 'Plug in meter with cable',
+    name: 'OneTouch Ultra Mini',
+    key: 'onetouchultramini',
+    showDriverLink: {mac: true, win: true},
+    source: {type: 'device', driverId: 'OneTouchUltraMini'},
+    enabled: {mac: true, win: true}
+  },
+  onetouchultra2: {
+    instructions: 'Plug in meter with cable',
+    name: 'OneTouch Ultra2',
+    key: 'onetouchultra2',
+    showDriverLink: {mac: true, win: true},
+    source: {type: 'device', driverId: 'OneTouchUltra2'},
+    enabled: {mac: true, win: true}
   }
+  */
 };
 
 export default devices;

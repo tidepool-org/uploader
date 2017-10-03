@@ -1173,4 +1173,101 @@ describe('Synchronous Actions', () => {
       expect(syncActions.dismissUpdateNotAvailable()).to.deep.equal(expectedAction);
     });
   });
+
+  describe('checkingForDriverUpdate', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.checkingForDriverUpdate();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate a driver update check', () => {
+      const expectedAction = {
+        type: actionTypes.CHECKING_FOR_DRIVER_UPDATE,
+        meta: {source: actionSources[actionTypes.CHECKING_FOR_DRIVER_UPDATE]}
+      };
+      expect(syncActions.checkingForDriverUpdate()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('driverUpdateAvailable', () => {
+    const current = '1';
+    const available = '2';
+    it('should be an FSA', () => {
+      let action = syncActions.driverUpdateAvailable(current, available);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate a driver update being available', () => {
+      const expectedAction = {
+        type: actionTypes.DRIVER_UPDATE_AVAILABLE,
+        payload: { current, available },
+        meta: {source: actionSources[actionTypes.DRIVER_UPDATE_AVAILABLE]}
+      };
+      expect(syncActions.driverUpdateAvailable(current, available)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('driverUpdateNotAvailable', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.driverUpdateNotAvailable(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate no driver update available', () => {
+      const expectedAction = {
+        type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
+        meta: {source: actionSources[actionTypes.DRIVER_UPDATE_NOT_AVAILABLE]}
+      };
+      expect(syncActions.driverUpdateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissDriverUpdateAvailable', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissDriverUpdateAvailable();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing driver update available modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
+        meta: {source: actionSources[actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE]}
+      };
+      expect(syncActions.dismissDriverUpdateAvailable()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('driverInstall', () => {
+    const updateInfo = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.driverInstall(updateInfo);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate a driver update install', () => {
+      const expectedAction = {
+        type: actionTypes.DRIVER_INSTALL,
+        meta: {source: actionSources[actionTypes.DRIVER_INSTALL]}
+      };
+      expect(syncActions.driverInstall(updateInfo)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('driverUpdateShellOpts', () => {
+    const opts = {'url':'http://example.com'};
+    it('should be an FSA', () => {
+      let action = syncActions.driverUpdateShellOpts(opts);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to set update script opts', () => {
+      const expectedAction = {
+        type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
+        payload: { opts },
+        meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS]}
+      };
+      expect(syncActions.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
+    });
+  });
 });

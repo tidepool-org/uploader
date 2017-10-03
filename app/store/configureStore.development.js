@@ -1,17 +1,13 @@
-/* global __REDUX_LOG__ */
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { hashHistory } from 'react-router';
 import { routerMiddleware, push } from 'react-router-redux';
-import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import { async, sync } from '../actions';
 import api from '../../lib/core/api';
 import config from '../../lib/config';
 import { createErrorLogger } from '../utils/errors';
 import { createMetricsTracker } from '../utils/metrics';
-
 
 api.create({
   apiUrl: config.API_URL,
@@ -20,24 +16,11 @@ api.create({
   version: config.version
 });
 
-const noop = function(middlewareAPI){
-  return function(next){
-    return function(action){
-      return next(action);
-    };
-  };
-};
-
 const actionCreators = {
   ...async,
   ...sync,
   push,
 };
-
-const logger = __REDUX_LOG__ ? createLogger({
-  level: 'info',
-  collapsed: true
-}) : noop;
 
 const router = routerMiddleware(hashHistory);
 
@@ -54,7 +37,6 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
     router,
-    logger,
     createErrorLogger(api),
     createMetricsTracker(api)
   )
