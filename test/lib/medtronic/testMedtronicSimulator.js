@@ -464,7 +464,9 @@ describe('medtronicSimulator.js', function() {
           tempBasalOverMidnight = null,
           suspendResume = null,
           suspendedBasal = null,
-          basal3 = null;
+          basal3 = null,
+          prime = null,
+          reservoirChange = null;
 
       beforeEach( function() {
         basal1 = builder.makeScheduledBasal()
@@ -542,6 +544,23 @@ describe('medtronicSimulator.js', function() {
             .with_timezoneOffset(0)
             .with_conversionOffset(0)
             .with_rate(2);
+
+        reservoirChange = builder.makeDeviceEventReservoirChange()
+            .with_time('2014-09-25T18:20:00.000Z')
+            .with_deviceTime('2014-09-25T18:20:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .set('index', 1234)
+            .done();
+
+        prime =builder.makeDeviceEventPrime()
+          .with_time('2014-09-25T18:30:00.000Z')
+          .with_deviceTime('2014-09-25T18:30:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_primeTarget('tubing')
+          .set('index', 1235)
+          .done();
 
         tempBasalOverMidnight = builder.makeTempBasal()
           .with_time('2014-09-25T23:10:00.000Z')
@@ -812,26 +831,15 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('rewinds and primes the pump, but there are no basal records yet', function() {
+        simulator.rewind(reservoirChange);
+        simulator.prime(prime);
+        expect(simulator.getEvents()).deep.equals([reservoirChange, prime]);
+      });
+
       it('restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)', function() {
 
         settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
-
-        var reservoirChange = builder.makeDeviceEventReservoirChange()
-          .with_time('2014-09-25T18:20:00.000Z')
-          .with_deviceTime('2014-09-25T18:20:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .set('index', 1234)
-          .done();
-
-        var prime =builder.makeDeviceEventPrime()
-        .with_time('2014-09-25T18:30:00.000Z')
-        .with_deviceTime('2014-09-25T18:30:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_primeTarget('tubing')
-        .set('index', 1235)
-        .done();
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
