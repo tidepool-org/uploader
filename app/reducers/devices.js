@@ -1,7 +1,6 @@
-import medtronicPumpImage from '../../images/Combined_Pump_and_Meter.jpg';
+import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import medtronic600PumpImage from '../../images/bayer_contour_next_link_24.jpg';
 
-import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
