@@ -67,7 +67,7 @@ var MONTHS = [
 ];
 
 var options = _.map(MONTHS, function(item) {
-	return <option key={item.value} value={item.value}>{item.label}</option>;
+  return <option key={item.value} value={item.value}>{item.label}</option>;
 });
 
 function renderInput(field){
@@ -156,18 +156,18 @@ class ClinicUserEdit extends React.Component {
     );
   };
 
-	renderDateInputs = (fields) => (
-		<div>
-			<div className={styles.bdayWrap}>
-				<select className={styles.monthInput} {...fields.month.input}>
-					{options}
-				</select>
-				<input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text"/>
-				<input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text"/>
-			</div>
-			{this.renderDateError(fields)}
-		</div>
-	);
+  renderDateInputs = (fields) => (
+    <div>
+      <div className={styles.bdayWrap}>
+        <select className={styles.monthInput} {...fields.month.input}>
+          {options}
+        </select>
+        <input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text"/>
+        <input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text"/>
+      </div>
+      {this.renderDateError(fields)}
+    </div>
+  );
 
   renderDateError = (fields) => {
     const {month, day, year} = fields;
@@ -206,19 +206,19 @@ class ClinicUserEdit extends React.Component {
             <label className={styles.inputLabel} htmlFor="birthday">
               Patient Birthdate
             </label>
-						<Fields names={['month', 'day', 'year']} component={this.renderDateInputs} />
+            <Fields names={['month', 'day', 'year']} component={this.renderDateInputs} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="mrn">
               MRN (optional)
             </label>
-						<Field name="mrn" component={renderInput} />
+            <Field name="mrn" component={renderInput} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="email">
               Patient Email (optional)
             </label>
-						<Field name="email" component={renderInput} />
+            <Field name="email" component={renderInput} />
           </div>
           <div className={styles.actions}>
             <div>
@@ -246,21 +246,21 @@ const ClinicUserEditWrapped = reduxForm({
 })(ClinicUserEdit);
 
 function mapStateToProps(state){
-		let initialValues = {};
+    let initialValues = {};
 
-		if(state.uploadTargetUser){
-			var user = _.get(state.allUsers, state.uploadTargetUser);
-			initialValues = {
-				initialValues: {
-					fullName: personUtils.patientFullName(user),
-					year: _.get(user, ['patient', 'birthday'], '').substr(0,4),
-					month: _.get(user, ['patient', 'birthday'], '').substr(5,2),
-					day: _.get(user, ['patient', 'birthday'], '').substr(8,2),
-					email: _.get(user, ['patient', 'email'], ''),
-					mrn: _.get(user, ['patient', 'mrn'], '')
-				}
-			};
-		};
+    if(state.uploadTargetUser){
+      var user = _.get(state.allUsers, state.uploadTargetUser);
+      initialValues = {
+        initialValues: {
+          fullName: personUtils.patientFullName(user),
+          year: _.get(user, ['patient', 'birthday'], '').substr(0,4),
+          month: _.get(user, ['patient', 'birthday'], '').substr(5,2),
+          day: _.get(user, ['patient', 'birthday'], '').substr(8,2),
+          email: _.get(user, ['patient', 'email'], ''),
+          mrn: _.get(user, ['patient', 'mrn'], '')
+        }
+      };
+    };
 
     return initialValues;
 }

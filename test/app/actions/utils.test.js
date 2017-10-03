@@ -61,7 +61,7 @@ describe('utils', () => {
       expect(dispatch.callCount).to.equal(0);
       fn(err);
       expect(dispatch.callCount).to.equal(1);
-			const expectedAction = {
+      const expectedAction = {
         type: 'UPLOAD_FAILURE',
         error: true,
         payload: addInfoToError(displayErr, {
@@ -86,17 +86,17 @@ describe('utils', () => {
           }
         }
       };
-			const result = dispatch.firstCall.args[0];
-			expect(result.payload).to.deep.include({
-				message: errorText[errCode],
-				details: err.message,
-				utc: utc,
-				name: err.name,
-				code: errCode,
-				version: '0.100.0'
-			});
-			expectedAction.payload = result.payload;
-			expectedAction.meta.metric.properties.error = result.payload;
+      const result = dispatch.firstCall.args[0];
+      expect(result.payload).to.deep.include({
+        message: errorText[errCode],
+        details: err.message,
+        utc: utc,
+        name: err.name,
+        code: errCode,
+        version: '0.100.0'
+      });
+      expectedAction.payload = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
       expect(result).to.deep.equal(expectedAction);
     });
 
@@ -144,7 +144,7 @@ describe('utils', () => {
         version: '0.100.0'
       });
       expectedAction.payload = result.payload;
-			expectedAction.meta.metric.properties.error = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
       expect(result).to.deep.equal(expectedAction);
     });
   });

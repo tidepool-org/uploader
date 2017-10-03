@@ -310,7 +310,7 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({working: {initializingApp: true}});
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
       const actions = store.getActions();
-			expect(actions[2].payload).to.deep.include({message:errorText.E_INIT});
+      expect(actions[2].payload).to.deep.include({message:errorText.E_INIT});
       expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -421,7 +421,7 @@ describe('Asynchronous Actions', () => {
         {remember: false}
       ));
       const actions = store.getActions();
-			expect(actions[1].payload).to.deep.include({message:getLoginErrorMessage()});
+      expect(actions[1].payload).to.deep.include({message:getLoginErrorMessage()});
       expectedActions[1].payload = actions[1].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -1251,7 +1251,7 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
-			expect(actions[4].payload).to.deep.include({message: errorText.E_FETCH_CARELINK});
+      expect(actions[4].payload).to.deep.include({message: errorText.E_FETCH_CARELINK});
       expectedActions[4].payload = actions[4].payload;
       expect(actions[5].payload).to.deep.include({
         message: errorText.E_FETCH_CARELINK,
@@ -1491,13 +1491,13 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
-			expect(actions[5].payload).to.deep.include({
+      expect(actions[5].payload).to.deep.include({
         message: errorText.E_CARELINK_UPLOAD,
         code: err.code,
         utc: err.utc,
         version: err.version,
         debug: err.debug,
-				name: err.name
+        name: err.name
       });
       expectedActions[5].payload = actions[5].payload;
       expectedActions[5].meta.metric.properties.error = actions[5].payload;
@@ -1633,11 +1633,11 @@ describe('Asynchronous Actions', () => {
         store.dispatch(asyncActions.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-					message: errorText.E_FILE_EXT + ext,
-					code: err.code,
-					version: err.version,
-					debug: err.debug
-				});
+          message: errorText.E_FILE_EXT + ext,
+          code: err.code,
+          version: err.version,
+          debug: err.debug
+        });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });

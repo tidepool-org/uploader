@@ -133,15 +133,15 @@ export class App extends Component {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <Header location={this.props.location} />
-				<Switch>
-					<Route exact strict path="/" component={Loading} />
-					<Route path="/login" component={Login}/>
-					<Route path="/main" component={MainPage}/>
-					<Route path="/settings" component={SettingsPage}/>
-					<Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
-					<Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
-					<Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
-				</Switch>
+        <Switch>
+          <Route exact strict path="/" component={Loading} />
+          <Route path="/login" component={Login}/>
+          <Route path="/main" component={MainPage}/>
+          <Route path="/settings" component={SettingsPage}/>
+          <Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
+          <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
+          <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
+        </Switch>
         <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}

@@ -31,9 +31,9 @@ ipcRenderer.on('action', function(event, action) {
 
 render(
   <Provider store={store}>
-		<ConnectedRouter history={history}>
-			<Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
-		</ConnectedRouter>
+    <ConnectedRouter history={history}>
+      <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('app')
 );

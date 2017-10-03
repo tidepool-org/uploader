@@ -163,7 +163,7 @@ export default merge(baseConfig, {
      * code by enabling this plugin.
      * https://github.com/webpack/docs/wiki/list-of-plugins#noerrorsplugin
      */
-     new webpack.NoErrorsPlugin(),
+     new webpack.NoEmitOnErrorsPlugin(),
      /**
      * Create global constants which can be configured at compile time.
      *

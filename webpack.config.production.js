@@ -1,6 +1,6 @@
 /**
- * Build config for electron 'Renderer Process' file
- */
+* Build config for electron 'Renderer Process' file
+*/
 
 import path from 'path';
 import webpack from 'webpack';
@@ -45,16 +45,26 @@ export default merge(baseConfig, {
       {
         test: /\.global\.css$/,
         use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: 'css-loader'
-				})
+          fallback: {
+            loader: 'style-loader',
+            options: {
+              hmr: false
+            }
+          },
+          use: 'css-loader'
+        })
       },
 
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
         use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
+          fallback: {
+            loader: 'style-loader',
+            options: {
+              hmr: false
+            }
+          },
           use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
         })
       },
@@ -62,7 +72,10 @@ export default merge(baseConfig, {
       {
         test: /\.module\.less$/,
         use: [{
-          loader: 'style-loader'
+          loader: 'style-loader',
+          options: {
+            hmr: false
+          }
         }, {
           loader: 'css-loader',
           options: {
@@ -130,31 +143,34 @@ export default merge(baseConfig, {
     ]
   },
 
-  plugins: [/**
-   * Create global constants which can be configured at compile time.
-   *
-   * Useful for allowing different behaviour between development builds and
-   * release builds
-   *
-   * NODE_ENV should be production so that modules do not perform certain
-   * development checks
-   */
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"production"',
-    'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
-    __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
-    'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
-  }), /**
-   * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
+  plugins: [
+    /**
+    * Create global constants which can be configured at compile time.
+    *
+    * Useful for allowing different behaviour between development builds and
+    * release builds
+    *
+    * NODE_ENV should be production so that modules do not perform certain
+    * development checks
+    */
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"production"',
+      'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
+      __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
+      'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+    }),
+    /**
+    * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
 
-  new BabiliPlugin({
+    new BabiliPlugin({
     // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
     deadcode: false,
   }),
   */
-  new ExtractTextPlugin({ filename: 'style.css', allChunks: true }), /**
-   * Dynamically generate index.html page
-   */
+  new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+  /**
+  * Dynamically generate index.html page
+  */
   new HtmlWebpackPlugin({
     filename: '../app.html',
     template: 'app/app.html',

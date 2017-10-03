@@ -52,7 +52,7 @@
     "react",
     "promise",
     "import",
-		"lodash"
+    "lodash"
   ],
   "settings": {
     "import/resolver": {

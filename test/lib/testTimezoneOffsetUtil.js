@@ -626,7 +626,7 @@ describe('TimezoneOffsetUtil.js', function(){
 });
 
 describe('TimezoneOffsetUtil in practice', function(){
-	var oneDay = 1000 * 60 * 60 * 24;
+  var oneDay = 1000 * 60 * 60 * 24;
   it('applies a timezone across-the-board when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
     var startDate = sundial.parseFromFormat('2015-02-01T00:00:00').getTime();
