@@ -32,6 +32,11 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    alias: {
+      superagent: 'superagent/lib/client.js',
+      emitter: 'component-emitter',
+      reduce  : 'reduce-component'
+    }
   },
   resolveLoader: { },
 

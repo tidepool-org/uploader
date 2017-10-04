@@ -183,13 +183,6 @@ export default merge(baseConfig, {
       debug: true
     })
   ],
-  resolve: {
-    alias: {
-      superagent: 'superagent/lib/client.js',
-      emitter: "component-emitter",
-      reduce: "reduce-component"
-    }
-  },
   /**
    * https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
    */
