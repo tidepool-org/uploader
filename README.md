@@ -99,7 +99,7 @@ Release management and application updates are handled via the Github provider i
 1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
 1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
 1. When your pull request is approved and merged to `master`, go to the draft release and type in the version for the tag name, ensure that you're targeting the `master` branch, fill out the release notes and publish the release. This will create the tag for you.
-1. After you've smoke tested the release, use the `scripts/av-submit.js` script to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the `FTP_AV_PASSWORD_TIDEPOOL` environment variable and is stored in 1Password. 
+1. After you've smoke tested the release, run `yarn av-whitelist` to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the `FTP_AV_PASSWORD_TIDEPOOL` environment variable and is stored in 1Password. 
 
 For a non-production release (alpha, dev, etc.)
 
