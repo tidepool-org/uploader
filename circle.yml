@@ -19,9 +19,9 @@ test:
     - yarn lint
     - yarn test
   post:
-    - yarn package-dev
+#    - yarn package-dev
 #    - zip -r -X development.zip release
-    - rm -rf release
+#    - rm -rf release
     - yarn package
 #    - zip -r -X production.zip release
 
