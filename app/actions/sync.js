@@ -17,6 +17,7 @@
 
 import _ from 'lodash';
 
+import rollbar from '../utils/rollbar';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -287,6 +288,14 @@ export function loginRequest() {
 export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
+  rollbar.configure({
+    payload: {
+      person: {
+        id: user.userid,
+        username: user.username,
+      }
+    }
+  });
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload: { user, profile, memberships },
