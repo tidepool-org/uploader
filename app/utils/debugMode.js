@@ -14,7 +14,7 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-
+import isElectron from 'is-electron';
 import { ipcRenderer, ipcMain } from 'electron';
 let isRenderer = (process && process.type === 'renderer');
 
@@ -35,9 +35,11 @@ if (isRenderer) {
 } else {
   let isDebug = process.env.DEBUG_ERROR || false;
 
-  ipcMain.on('setDebug', (event, arg) => {
-    debugMode.isDebug = arg;
-  });
+  if (isElectron()) {
+    ipcMain.on('setDebug', (event, arg) => {
+      debugMode.isDebug = arg;
+    });
+  }
 
   const debugMode = module.exports = {
     isDebug,

@@ -63,51 +63,12 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       }
     },
     "bayercontournext": {
-      "instructions": "Plug in meter with micro-USB",
+      "instructions": "Plug meter into USB port",
       "key": "bayercontournext",
       "name": "Bayer Contour Next",
       "source": {
         "type": "device",
         "driverId": "BayerContourNext"
-      },
-      "enabled": {
-        "mac": true,
-        "win": true
-      }
-    },
-    "bayercontournextusb": {
-      "instructions": "Plug meter into USB port",
-      "key": "bayercontournextusb",
-      "name": "Bayer Contour Next USB",
-      "source": {
-        "type": "device",
-        "driverId": "BayerContourNextUsb"
-      },
-      "enabled": {
-        "mac": true,
-        "win": true
-      }
-    },
-    "bayercontourusb": {
-      "instructions": "Plug meter into USB port",
-      "key": "bayercontourusb",
-      "name": "Bayer Contour USB",
-      "source": {
-        "type": "device",
-        "driverId": "BayerContourUsb"
-      },
-      "enabled": {
-        "mac": true,
-        "win": true
-      }
-    },
-    "bayercontournextlink": {
-      "instructions": "Plug meter into USB port",
-      "key": "bayercontournextlink",
-      "name": "Bayer Contour Next Link",
-      "source": {
-        "type": "device",
-        "driverId": "BayerContourNextLink"
       },
       "enabled": {
         "mac": true,
@@ -136,7 +97,7 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "carelink": {
         "history": []
       },
-      "bayercontournextlink": {
+      "bayercontournext": {
         "history": []
       }
     },
@@ -224,7 +185,7 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
   "targetDevices": {
     "77541c89ba": ["omnipod", "dexcom"],
     "a6328f570d": ["tandem"],
-    "4a86ec44ff": ["carelink", "bayercontournextlink"]
+    "4a86ec44ff": ["carelink", "bayercontournext"]
   },
   "targetTimezones": {
     "77541c89ba": "US/Mountain",
