@@ -1,4 +1,4 @@
-## LifeScan OneTouch Ultra Mini
+## LifeScan OneTouch UltraMini
 
 (Key:
 

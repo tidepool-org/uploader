@@ -464,7 +464,9 @@ describe('medtronicSimulator.js', function() {
           tempBasalOverMidnight = null,
           suspendResume = null,
           suspendedBasal = null,
-          basal3 = null;
+          basal3 = null,
+          prime = null,
+          reservoirChange = null;
 
       beforeEach( function() {
         basal1 = builder.makeScheduledBasal()
@@ -543,6 +545,23 @@ describe('medtronicSimulator.js', function() {
             .with_conversionOffset(0)
             .with_rate(2);
 
+        reservoirChange = builder.makeDeviceEventReservoirChange()
+            .with_time('2014-09-25T18:20:00.000Z')
+            .with_deviceTime('2014-09-25T18:20:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .set('index', 1234)
+            .done();
+
+        prime =builder.makeDeviceEventPrime()
+          .with_time('2014-09-25T18:30:00.000Z')
+          .with_deviceTime('2014-09-25T18:30:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_primeTarget('tubing')
+          .set('index', 1235)
+          .done();
+
         tempBasalOverMidnight = builder.makeTempBasal()
           .with_time('2014-09-25T23:10:00.000Z')
           .with_deviceTime('2014-09-25T23:10:00')
@@ -597,7 +616,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-25T18:10:50.000Z';
         expectedTempBasal2.deviceTime = '2014-09-25T18:10:50';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.475;
         delete expectedTempBasal2.payload.duration;
 
@@ -631,7 +650,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.2;
         delete expectedTempBasal2.payload.duration;
 
@@ -667,7 +686,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-26T01:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T01:00:00';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.375;
         delete expectedTempBasal2.payload.duration;
 
@@ -720,8 +739,8 @@ describe('medtronicSimulator.js', function() {
         expectedSuspendedBasal2.time = '2014-09-25T18:25:00.000Z';
         expectedSuspendedBasal2.deviceTime = '2014-09-25T18:25:00';
         expectedSuspendedBasal2.clockDriftOffset = 0;
-        expectedSuspendedBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedSuspendedBasal2.suppressed.suppressed.rate = 0.475;
+        expectedSuspendedBasal2.suppressed.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedSuspendedBasal2.payload.duration;
 
         var expectedTempBasal2 = _.cloneDeep(expectedTempBasal1);
@@ -729,6 +748,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-25T18:30:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-25T18:30:00';
         expectedTempBasal2.suppressed.rate = 0.475;
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedTempBasal2.payload;
         delete expectedTempBasal2.expectedDuration;
 
@@ -768,10 +788,10 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.clockDriftOffset = 0;
         expectedTempBasal2.expectedDuration = 1500000;
         expectedTempBasal2.suppressed.rate = 0.475;
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.duration = 300000;
         delete expectedTempBasal2.payload.duration;
         delete expectedTempBasal2.index;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
 
         var expectedSuspendedBasal1 = _.cloneDeep(suspendedBasal);
         var suppressed = {
@@ -787,6 +807,7 @@ describe('medtronicSimulator.js', function() {
         };
         expectedSuspendedBasal1.duration = 600000;
         expectedSuspendedBasal1.set('suppressed', suppressed);
+        expectedSuspendedBasal1.suppressed.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedSuspendedBasal1.index;
 
         var expectedTempBasal3 = _.cloneDeep(expectedTempBasal1);
@@ -795,7 +816,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal3.deviceTime = '2014-09-25T18:30:00';
         expectedTempBasal3.clockDriftOffset = 0;
         expectedTempBasal3.suppressed.rate = 0.475;
-        expectedTempBasal3.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal3.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedTempBasal3.payload;
         delete expectedTempBasal3.expectedDuration;
 
@@ -812,26 +833,15 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
+      it('rewinds and primes the pump, but there are no basal records yet', function() {
+        simulator.rewind(reservoirChange);
+        simulator.prime(prime);
+        expect(simulator.getEvents()).deep.equals([reservoirChange, prime]);
+      });
+
       it('restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)', function() {
 
         settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
-
-        var reservoirChange = builder.makeDeviceEventReservoirChange()
-          .with_time('2014-09-25T18:20:00.000Z')
-          .with_deviceTime('2014-09-25T18:20:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .set('index', 1234)
-          .done();
-
-        var prime =builder.makeDeviceEventPrime()
-        .with_time('2014-09-25T18:30:00.000Z')
-        .with_deviceTime('2014-09-25T18:30:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_primeTarget('tubing')
-        .set('index', 1235)
-        .done();
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
@@ -854,7 +864,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.duration = 300000;
         delete expectedTempBasal2.payload.duration;
         delete expectedTempBasal2.index;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
 
         var expectedSuspendedBasal1 = _.cloneDeep(suspendedBasal);
         var suppressed = {
@@ -871,6 +881,7 @@ describe('medtronicSimulator.js', function() {
         expectedSuspendedBasal1.duration = 600000;
         expectedSuspendedBasal1.set('payload', {logIndices : [1234]});
         expectedSuspendedBasal1.set('suppressed', suppressed);
+        expectedSuspendedBasal1.suppressed.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedSuspendedBasal1.index;
 
         var expectedTempBasal3 = _.cloneDeep(expectedTempBasal1);
@@ -879,7 +890,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal3.deviceTime = '2014-09-25T18:30:00';
         expectedTempBasal3.clockDriftOffset = 0;
         expectedTempBasal3.suppressed.rate = 0.475;
-        expectedTempBasal3.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal3.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         delete expectedTempBasal3.payload.duration;
 
         delete basal1.index;
@@ -1072,7 +1083,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-25T18:10:50.000Z';
         expectedTempBasal2.deviceTime = '2014-09-25T18:10:50';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.475;
         delete expectedTempBasal2.payload.duration;
 
@@ -1183,7 +1194,7 @@ describe('medtronicSimulator.js', function() {
                     rate: 0.375,
                     scheduleName: 'standard'
                   });
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.payload = { logIndices: [1] };
 
         var expectedTempBasal3 = _.cloneDeep(updateTempBasal.done());
@@ -1238,7 +1249,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.2;
         delete expectedTempBasal2.payload.duration;
 
@@ -1446,7 +1457,7 @@ describe('medtronicSimulator.js', function() {
     			});
         expectedBasal2.clockDriftOffset = 0;
         delete expectedBasal1.index;
-        expectedBasal2.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+        expectedBasal2.suppressed.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
 
         var expectedBasal3 = builder.makeSuspendBasal()
           .with_time('2017-01-08T22:00:00.000Z')
@@ -1462,7 +1473,7 @@ describe('medtronicSimulator.js', function() {
             'scheduleName': 'standard'
           });
         expectedBasal3.clockDriftOffset = 0;
-        expectedBasal3.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+        expectedBasal3.suppressed.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
 
         var expectedBasal4 = builder.makeSuspendBasal()
           .with_time('2017-01-09T00:00:00.000Z')
@@ -1478,7 +1489,7 @@ describe('medtronicSimulator.js', function() {
           });
           expectedBasal4.clockDriftOffset = 0;
           expectedBasal4.payload = { logIndices: [0] };
-          expectedBasal4.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
+          expectedBasal4.suppressed.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
 
         var basal2 = builder.makeScheduledBasal()
           .with_time('2017-01-09T01:43:22.000Z')
@@ -1565,7 +1576,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal2.time = '2014-09-26T00:00:00.000Z';
         expectedTempBasal2.deviceTime = '2014-09-26T00:00:00';
         expectedTempBasal2.clockDriftOffset = 0;
-        expectedTempBasal2.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal2.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal2.suppressed.rate = 0.7;
         expectedTempBasal2.payload.duration = 2610000;
 
@@ -1574,7 +1585,7 @@ describe('medtronicSimulator.js', function() {
         expectedTempBasal3.time = '2014-09-26T00:30:00.000Z';
         expectedTempBasal3.deviceTime = '2014-09-26T00:30:00';
         expectedTempBasal3.clockDriftOffset = 0;
-        expectedTempBasal3.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
+        expectedTempBasal3.suppressed.annotations = [{code: 'medtronic/basal/fabricated-from-schedule'}];
         expectedTempBasal3.suppressed.rate = 0.75;
         delete expectedTempBasal3.payload.duration;
 
