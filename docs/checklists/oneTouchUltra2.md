@@ -1,4 +1,4 @@
-## OneTouch Ultra2
+## OneTouch Ultra 2
 
 (Key:
 
