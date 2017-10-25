@@ -19,7 +19,7 @@
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
-- `[?]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
+- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ### No Tidepool Data Model Yet
 
