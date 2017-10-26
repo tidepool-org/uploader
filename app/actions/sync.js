@@ -287,7 +287,8 @@ export function loginSuccess(results) {
   const rollbar = require('../utils/rollbar');
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
-  rollbar.configure({
+  // the rewire plugin messes with default export in tests
+  rollbar.configure && rollbar.configure({
     payload: {
       person: {
         id: user.userid,
