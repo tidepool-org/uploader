@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.2.0-libre-rollbar.2",
+  "version": "2.2.0-libre-rollbar.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
