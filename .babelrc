@@ -31,6 +31,7 @@
         "babel-plugin-rewire",
         ["transform-define", {
           "__TEST__": "true",
+          "__VERSION_SHA__": "abcd",
           "__DEBUG__": false
         }]
       ]

@@ -24,6 +24,7 @@ var expect = require('chai').expect;
 
 var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
+var sundial = require('sundial');
 
 describe('TimezoneOffsetUtil.js', function(){
   it('exports a function', function(){
@@ -52,7 +53,7 @@ describe('TimezoneOffsetUtil.js', function(){
 
   it('defaults to across-the-board timezone application if no `changes` provided as third param', function(){
     var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
-    expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
+    expect(util.lookup(sundial.parseFromFormat('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
       timezoneOffset: -240,
       clockDriftOffset: 0,
@@ -69,7 +70,7 @@ describe('TimezoneOffsetUtil.js', function(){
         to: '2015-03-08T13:00:00',
       })
       .with_deviceTime('2015-03-08T12:01:21')
-      .set('jsDate', new Date('2015-03-08T12:01:21'))
+      .set('jsDate', sundial.parseFromFormat('2015-03-08T12:01:21'))
       .set('index', 10);
     var bootstrapUtil = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [belatedDST]);
     expect(bootstrapUtil.type).to.equal('utc-bootstrapping');
@@ -83,7 +84,7 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-03-08T13:00:00',
         })
         .with_deviceTime('2015-03-08T12:01:21')
-        .set('jsDate', new Date('2015-03-08T13:00:00'))
+        .set('jsDate', sundial.parseFromFormat('2015-03-08T13:00:00'))
         .set('index', 10);
       var travel = builder.makeDeviceEventTimeChange()
         .with_change({
@@ -91,7 +92,7 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-04-01T14:35:00'
         })
         .with_deviceTime('2015-04-01T15:33:24')
-        .set('jsDate', new Date('2015-04-01T14:35:00'))
+        .set('jsDate', sundial.parseFromFormat('2015-04-01T14:35:00'))
         .set('index', 100);
       var wrongMonth = builder.makeDeviceEventTimeChange()
         .with_change({
@@ -99,7 +100,7 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-05-10T16:05:00'
         })
         .with_deviceTime('2015-04-10T16:05:10')
-        .set('jsDate', new Date('2015-05-10T16:05:00'))
+        .set('jsDate', sundial.parseFromFormat('2015-05-10T16:05:00'))
         .set('index', 200);
       var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [belatedDST, travel, wrongMonth]);
       expect(_.map(util.records, function(rec) { return _.omit(rec, ['payload', 'index']); })).to.deep.equal([
@@ -150,7 +151,7 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-03-08T13:00:00',
         })
         .with_deviceTime('2015-03-08T12:01:21')
-        .set('jsDate', new Date('2015-03-08T12:01:21'))
+        .set('jsDate', sundial.parseFromFormat('2015-03-08T12:01:21'))
         .set('index', 10);
       var travel = builder.makeDeviceEventTimeChange()
         .with_change({
@@ -158,7 +159,7 @@ describe('TimezoneOffsetUtil.js', function(){
           to: '2015-04-01T14:35:00'
         })
         .with_deviceTime('2015-04-01T15:33:24')
-        .set('jsDate', new Date('2015-04-01T15:33:24'))
+        .set('jsDate', sundial.parseFromFormat('2015-04-01T15:33:24'))
         .set('index', 100);
       var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [belatedDST, travel]);
       expect(Array.isArray(util.records)).to.be.true;
@@ -258,16 +259,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-01T12:00:00'
           })
           .with_deviceTime('2015-03-01T12:02:05')
-          .set('jsDate', new Date('2015-03-01T12:02:05'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-01T12:02:05'))
           .set('index', 50);
         var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [clockDriftAdjust]);
-        expect(util.lookup(new Date('2015-02-01T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-02-01T00:00:00'))).to.deep.equal({
           time: '2015-02-01T04:00:00.000Z',
           timezoneOffset: -240,
           clockDriftOffset: 125000,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-04-01T00:00:00'))).to.deep.equal({
           time: '2015-04-01T04:00:00.000Z',
           timezoneOffset: -240,
           clockDriftOffset: 0,
@@ -283,16 +284,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-08T13:00:00',
           })
           .with_deviceTime('2015-03-08T12:01:21')
-          .set('jsDate', new Date('2015-03-08T12:01:21'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-08T12:01:21'))
           .set('index', 10);
         var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [belatedDST]);
-        expect(util.lookup(new Date('2015-04-01T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-04-01T00:00:00'))).to.deep.equal({
           time: '2015-04-01T04:00:00.000Z',
           timezoneOffset: -240,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-01T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-01T00:00:00'))).to.deep.equal({
           time: '2015-03-01T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 81000,
@@ -307,7 +308,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-01T12:00:00'
           })
           .with_deviceTime('2015-03-01T12:02:05')
-          .set('jsDate', new Date('2015-03-01T12:02:05'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-01T12:02:05'))
           .set('index', 10);
         var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -315,7 +316,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-08T13:00:00',
           })
           .with_deviceTime('2015-03-08T12:01:21')
-          .set('jsDate', new Date('2015-03-08T12:01:21'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-08T12:01:21'))
           .set('index', 50);
         var clockDriftAdjust2 = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -323,7 +324,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-15T12:00:00'
           })
           .with_deviceTime('2015-03-15T12:02:05')
-          .set('jsDate', new Date('2015-03-15T12:02:05'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-15T12:02:05'))
           .set('index', 100);
         var justAChange = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -331,7 +332,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-04-01T13:30:00'
           })
           .with_deviceTime('2015-04-01T15:31:22')
-          .set('jsDate', new Date('2015-04-01T15:31:22'))
+          .set('jsDate', sundial.parseFromFormat('2015-04-01T15:31:22'))
           .set('index', 120);
         var changeBack = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -339,7 +340,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-04-08T11:03:00'
           })
           .with_deviceTime('2015-04-08T09:04:02')
-          .set('jsDate', new Date('2015-04-08T09:04:02'))
+          .set('jsDate', sundial.parseFromFormat('2015-04-08T09:04:02'))
           .set('index', 150);
         var util = new TZOUtil('US/Central', '2015-06-01T00:00:00.000Z', [
           clockDriftAdjust1,
@@ -348,25 +349,25 @@ describe('TimezoneOffsetUtil.js', function(){
           justAChange,
           changeBack
         ]);
-        expect(util.lookup(new Date('2015-03-05T12:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-05T12:00:00'))).to.deep.equal({
           time: '2015-03-05T18:00:00.000Z',
           timezoneOffset: -360,
           clockDriftOffset: 350000,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-10T12:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-10T12:00:00'))).to.deep.equal({
           time: '2015-03-10T17:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 269000,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-20T12:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-20T12:00:00'))).to.deep.equal({
           time: '2015-03-20T17:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 144000,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-04-02T12:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-04-02T12:00:00'))).to.deep.equal({
           time: '2015-04-02T19:00:00.000Z',
           timezoneOffset: -420,
           clockDriftOffset: 62000,
@@ -381,16 +382,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-11-01T01:00:00'
           })
           .with_deviceTime('2015-11-01T02:00:00')
-          .set('jsDate', new Date('2015-11-01T02:00:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-11-01T02:00:00'))
           .set('index', 10);
         var util = new TZOUtil('US/Eastern', '2016-01-01T00:00:00.000Z', [onTimeDST]);
-        expect(util.lookup(new Date('2015-11-05T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-11-05T00:00:00'))).to.deep.equal({
           time: '2015-11-05T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-10-05T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-10-05T00:00:00'))).to.deep.equal({
           time: '2015-10-05T04:00:00.000Z',
           timezoneOffset: -240,
           clockDriftOffset: 0,
@@ -406,16 +407,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-04-02T12:26:00'
           })
           .with_deviceTime('2015-04-03T08:25:00')
-          .set('jsDate', new Date('2015-04-03T08:25:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-04-03T08:25:00'))
           .set('index', 10);
         var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [fromNZ]);
-        expect(util.lookup(new Date('2015-04-10T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-04-10T00:00:00'))).to.deep.equal({
           time: '2015-04-10T07:00:00.000Z',
           timezoneOffset: -420,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-10T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-10T00:00:00'))).to.deep.equal({
           time: '2015-03-09T11:00:00.000Z',
           timezoneOffset: 780,
           clockDriftOffset: -60000,
@@ -431,16 +432,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-03-26T08:25:00'
           })
           .with_deviceTime('2015-03-25T12:26:00')
-          .set('jsDate', new Date('2015-03-25T12:26:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-03-25T12:26:00'))
           .set('index', 10);
         var util = new TZOUtil('Pacific/Auckland', '2015-04-01T00:00:00.000Z', [toNZ]);
-        expect(util.lookup(new Date('2015-03-31T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-31T00:00:00'))).to.deep.equal({
           time: '2015-03-30T11:00:00.000Z',
           timezoneOffset: 780,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2015-03-15T00:00:00'))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2015-03-15T00:00:00'))).to.deep.equal({
           time: '2015-03-15T07:00:00.000Z',
           timezoneOffset: -420,
           clockDriftOffset: 60000,
@@ -457,16 +458,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2014-12-15T15:00:00'
           })
           .with_deviceTime('2013-12-15T15:00:00')
-          .set('jsDate', new Date('2013-12-15T15:00:00'))
+          .set('jsDate', sundial.parseFromFormat('2013-12-15T15:00:00'))
           .set('index', 10);
         var util = new TZOUtil('US/Eastern', '2015-01-01T00:00:00.000Z', [wrongYear]);
-        expect(util.lookup(new Date('2014-12-25T00:00:00'), 15)).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2014-12-25T00:00:00'), 15)).to.deep.equal({
           time: '2014-12-25T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date('2013-12-10T00:00:00'), 5)).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat('2013-12-10T00:00:00'), 5)).to.deep.equal({
           time: '2014-12-10T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 0,
@@ -478,16 +479,16 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2014-12-15T15:00:00'
           })
           .with_deviceTime('2014-11-15T15:00:00')
-          .set('jsDate', new Date('2014-11-15T15:00:00'))
+          .set('jsDate', sundial.parseFromFormat('2014-11-15T15:00:00'))
           .set('index', 10);
         var util2 = new TZOUtil('US/Eastern', '2015-01-01T00:00:00.000Z', [wrongMonth]);
-        expect(util2.lookup(new Date('2014-12-25T00:00:00'), 15)).to.deep.equal({
+        expect(util2.lookup(sundial.parseFromFormat('2014-12-25T00:00:00'), 15)).to.deep.equal({
           time: '2014-12-25T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util2.lookup(new Date('2014-11-10T00:00:00'), 5)).to.deep.equal({
+        expect(util2.lookup(sundial.parseFromFormat('2014-11-10T00:00:00'), 5)).to.deep.equal({
           time: '2014-12-10T05:00:00.000Z',
           timezoneOffset: -300,
           clockDriftOffset: 0,
@@ -503,22 +504,22 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-04-01T07:00:00'
           })
           .with_deviceTime('2015-04-01T19:00:00')
-          .set('jsDate', new Date('2015-04-01T19:00:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-04-01T19:00:00'))
           .set('index', 50);
         var util = new TZOUtil('US/Mountain', '2015-05-01T00:00:00.000Z', [amNotPM]);
-        expect(util.lookup(new Date(ambiguousDeviceTime), 51)).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat(ambiguousDeviceTime), 51)).to.deep.equal({
           time: '2015-04-01T18:00:00.000Z',
           timezoneOffset: -360,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date(ambiguousDeviceTime), 49)).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat(ambiguousDeviceTime), 49)).to.deep.equal({
           time: '2015-04-01T06:00:00.000Z',
           timezoneOffset: 360,
           clockDriftOffset: 0,
           conversionOffset: 0
         });
-        expect(util.lookup(new Date(ambiguousDeviceTime))).to.deep.equal({
+        expect(util.lookup(sundial.parseFromFormat(ambiguousDeviceTime))).to.deep.equal({
           time: '2015-04-01T06:00:00.000Z',
           timezoneOffset: 360,
           clockDriftOffset: 0,
@@ -557,7 +558,7 @@ describe('TimezoneOffsetUtil.js', function(){
         type: 'foo',
         index: 0
       };
-      var dt = new Date('2015-04-03T11:30:00');
+      var dt = sundial.parseFromFormat('2015-04-03T11:30:00');
       expect(stubLookup.callCount).to.equal(0);
       noChangesUtil.fillInUTCInfo(obj, dt);
       expect(stubLookup.callCount).to.equal(1);
@@ -569,7 +570,7 @@ describe('TimezoneOffsetUtil.js', function(){
         type: 'foo',
         index: 10
       };
-      var dt = new Date('2015-04-03T11:30:00');
+      var dt = sundial.parseFromFormat('2015-04-03T11:30:00');
       var expectedRes = _.assign({}, obj, {
         time: '2015-04-02T22:30:00.000Z',
         timezoneOffset: 780,
@@ -584,7 +585,7 @@ describe('TimezoneOffsetUtil.js', function(){
         type: 'deviceEvent',
         subType: 'alarm'
       };
-      var dt = new Date('2015-04-03T11:30:00');
+      var dt = sundial.parseFromFormat('2015-04-03T11:30:00');
       var expectedRes = _.assign({}, obj, {
         time: '2015-04-02T22:30:00.000Z',
         timezoneOffset: 780,
@@ -604,7 +605,7 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-05-01T06:00:00'
           })
           .with_deviceTime('2015-04-01T06:00:00')
-          .set('jsDate', new Date('2015-04-01T06:00:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-04-01T06:00:00'))
           .set('index', 50);
         var clockDrift = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -612,11 +613,11 @@ describe('TimezoneOffsetUtil.js', function(){
             to: '2015-05-15T00:00:00',
           })
           .with_deviceTime('2015-05-15T00:03:00')
-          .set('jsDate', new Date('2015-05-15T00:03:00'))
+          .set('jsDate', sundial.parseFromFormat('2015-05-15T00:03:00'))
           .set('index', 75);
         var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', [wrongMonth, clockDrift]);
         const obj = { index: null };
-        util.fillInUTCInfo(obj, new Date(ambiguousDeviceTime));
+        util.fillInUTCInfo(obj, sundial.parseFromFormat(ambiguousDeviceTime));
         expect(obj.time).to.be.undefined;
         expect(obj.timezoneOffset).to.be.undefined;
         expect(obj.clockDriftOffset).to.be.undefined;
@@ -628,7 +629,7 @@ describe('TimezoneOffsetUtil.js', function(){
 describe('TimezoneOffsetUtil in practice', function(){
   it('applies a timezone across-the-board when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
+    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
     // Hawaii doesn't use Daylight Savings Time
     var util = new TZOUtil('Pacific/Honolulu', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
@@ -640,7 +641,7 @@ describe('TimezoneOffsetUtil in practice', function(){
 
   it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(new Date('2015-02-01T00:00:00'), new Date('2015-05-12T00:00:00'));
+    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
     // US/Mountain *does* use Daylight Savings Time
     var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
@@ -657,18 +658,18 @@ describe('TimezoneOffsetUtil in practice', function(){
     setTimeout(function() {
       var data = [], index = 0;
       var datetimesHomeAgain = d3.time.minute.utc.range(
-        new Date('2015-04-19T05:05:00'),
-        new Date('2015-05-01T00:00:00'),
+        sundial.parseFromFormat('2015-04-19T05:05:00'),
+        sundial.parseFromFormat('2015-05-01T00:00:00'),
         5
       );
       var datetimesInNZ = d3.time.minute.utc.range(
-        new Date('2015-04-10T19:05:00'),
-        new Date('2015-04-20T00:05:00'),
+        sundial.parseFromFormat('2015-04-10T19:05:00'),
+        sundial.parseFromFormat('2015-04-20T00:05:00'),
         5
       );
       var datetimesBeforeTrip = d3.time.minute.utc.range(
-        new Date('2015-04-01T00:00:00'),
-        new Date('2015-04-10T00:05:00'),
+        sundial.parseFromFormat('2015-04-01T00:00:00'),
+        sundial.parseFromFormat('2015-04-10T00:05:00'),
         5
       );
       var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
@@ -686,7 +687,7 @@ describe('TimezoneOffsetUtil in practice', function(){
           to: '2015-04-19T05:03:00'
         })
         .with_deviceTime('2015-04-20T00:00:00')
-        .set('jsDate', new Date('2015-04-20T00:00:00'))
+        .set('jsDate', sundial.parseFromFormat('2015-04-20T00:00:00'))
         .set('index', 10489);
       var toNZ = builder.makeDeviceEventTimeChange()
         .with_change({
@@ -694,7 +695,7 @@ describe('TimezoneOffsetUtil in practice', function(){
           to: '2015-04-10T19:02:00'
         })
         .with_deviceTime('2015-04-10T00:02:30')
-        .set('jsDate', new Date('2015-04-10T00:02:30'))
+        .set('jsDate', sundial.parseFromFormat('2015-04-10T00:02:30'))
         .set('index', 5185);
       var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', [toNZ, fromNZ]);
       for (var i = 0; i < data.length; ++i) {

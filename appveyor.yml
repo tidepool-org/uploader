@@ -34,12 +34,20 @@ test_script:
   - yarn lint
   - yarn test
 #  - yarn test-e2e
-  - yarn package-dev
+#  - yarn package-dev
 #  - 7z a development.zip release
-  - rmdir /S /Q release
+#  - rmdir /S /Q release
   - yarn package
 #  - 7z a production.zip release
 
+notifications:
+  - provider: Slack
+    incoming_webhook:
+      # webhook URL is encrypted so can be stored in public repo
+      secure: PkO2WgPHg816yzPsyT47fxuBlM5bGhsNUn+VaNmLU6zCC31xwttRteKybldC6Jp1kdlWALyRdxt7WYsWDrkrAG3tHYSHSo7RDhea4qLuwjA=
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: false
 
 #artifacts:
 #  - path: development.zip

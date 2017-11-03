@@ -1,4 +1,4 @@
-import pumpImage from '../../images/Combined_Pump_and_Meter.jpg';
+import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -13,8 +13,8 @@ const devices = {
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
     image: {
-      'src': pumpImage,
-      'height': 183,
+      'src': mm723Image,
+      'height': 128,
       'width': 200,
       'alt': 'Bayer Contour Next Link'
     },
@@ -55,51 +55,23 @@ const devices = {
   abbottfreestylelite: {
     instructions: 'Plug in meter with cable',
     key: 'abbottfreestylelite',
-    name: 'Abbott FreeStyle Lite',
+    name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
     enabled: {mac: false, win: true}
   },
-  abbottfreestylefreedomlite: {
-    instructions: 'Plug in meter with cable',
-    key: 'abbottfreestylefreedomlite',
-    name: 'Abbott FreeStyle Freedom Lite',
-    source: {type: 'device', driverId: 'AbbottFreeStyleFreedomLite'},
-    enabled: {mac: false, win: true}
-  },
   abbottfreestylelibre: {
-    instructions: 'Plug in meter with micro-USB',
+    instructions: '(Unsupported) Plug in meter with micro-USB cable',
     key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
+    name: 'Abbott FreeStyle Libre (Beta)',
     showDriverLink: {linux: false, mac: false, win: false},
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true}
   },
   bayercontournext: {
-    instructions: 'Plug in meter with micro-USB',
+    instructions: 'Plug meter into USB port',
     key: 'bayercontournext',
     name: 'Bayer Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
-    enabled: {mac: true, win: true}
-  },
-  bayercontournextusb: {
-    instructions: 'Plug meter into USB port',
-    key: 'bayercontournextusb',
-    name: 'Bayer Contour Next USB',
-    source: {type: 'device', driverId: 'BayerContourNextUsb'},
-    enabled: {mac: true, win: true}
-  },
-  bayercontourusb: {
-    instructions: 'Plug meter into USB port',
-    key: 'bayercontourusb',
-    name: 'Bayer Contour USB',
-    source: {type: 'device', driverId: 'BayerContourUsb'},
-    enabled: {mac: true, win: true}
-  },
-  bayercontournextlink: {
-    instructions: 'Plug meter into USB port',
-    key: 'bayercontournextlink',
-    name: 'Bayer Contour Next Link',
-    source: {type: 'device', driverId: 'BayerContourNextLink'},
     enabled: {mac: true, win: true}
   },
   animas: {
@@ -121,6 +93,22 @@ const devices = {
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
+    enabled: {mac: true, win: true}
+  },
+  onetouchultramini: {
+    instructions: 'Plug in meter with cable',
+    name: 'OneTouch UltraMini',
+    key: 'onetouchultramini',
+    showDriverLink: {mac: true, win: true},
+    source: {type: 'device', driverId: 'OneTouchUltraMini'},
+    enabled: {mac: true, win: true}
+  },
+  onetouchultra2: {
+    instructions: 'Plug in meter with cable',
+    name: 'OneTouch Ultra 2',
+    key: 'onetouchultra2',
+    showDriverLink: {mac: true, win: true},
+    source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true}
   }
 };

@@ -167,8 +167,20 @@ function checkingElectronUpdate(state = false, action) {
   }
 }
 
+function checkingDriverUpdate(state = false, action) {
+  switch (action.type) {
+    case actionTypes.CHECKING_FOR_DRIVER_UPDATE:
+      return true;
+    case actionTypes.DRIVER_UPDATE_AVAILABLE:
+    case actionTypes.DRIVER_UPDATE_NOT_AVAILABLE:
+      return false;
+    default:
+      return state;
+  }
+}
+
 export const working = combineReducers({
-  checkingVersion, fetchingUserInfo, initializingApp, uploading, checkingElectronUpdate
+  checkingVersion, fetchingUserInfo, initializingApp, uploading, checkingElectronUpdate, checkingDriverUpdate
 });
 
 export function electronUpdateManualChecked(state = null, action) {
@@ -215,6 +227,47 @@ export function electronUpdateDownloaded(state = null, action) {
       return true;
     case actionTypes.AUTOUPDATE_ERROR:
       return false;
+    default:
+      return state;
+  }
+}
+
+export function driverUpdateAvailable(state = null, action) {
+  switch (action.type) {
+    case actionTypes.DRIVER_UPDATE_AVAILABLE:
+      return action.payload;
+    case actionTypes.DRIVER_UPDATE_NOT_AVAILABLE:
+    case actionTypes.DRIVER_INSTALL:
+      return false;
+    default:
+      return state;
+  }
+}
+
+export function driverUpdateAvailableDismissed(state = null, action) {
+  switch (action.type) {
+    case actionTypes.CHECKING_FOR_DRIVER_UPDATE:
+      return false;
+    case actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE:
+      return true;
+    default:
+      return state;
+  }
+}
+
+export function driverUpdateShellOpts(state = null, action) {
+  switch (action.type) {
+    case actionTypes.DRIVER_INSTALL_SHELL_OPTS:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export function driverUpdateComplete(state = null, action) {
+  switch (action.type) {
+    case actionTypes.DRIVER_INSTALL:
+      return true;
     default:
       return state;
   }
