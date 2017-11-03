@@ -1,10 +1,34 @@
-import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+/* global __ROLLBAR_POST_TOKEN__ */
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
 import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/chrome-finder';
 import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
+import Rollbar from 'rollbar/src/server/rollbar';
+
+let rollbar;
+if(process.env.NODE_ENV === 'production') {
+  rollbar = new Rollbar({
+    accessToken: __ROLLBAR_POST_TOKEN__,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+        environment: 'electron_main_process'
+    }
+  });
+}
+
+crashReporter.start({
+  productName: 'Uploader',
+  companyName: 'Tidepool',
+  submitURL: '',
+  uploadToServer: false
+});
+
+console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
+console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 let menu;
 let template;
