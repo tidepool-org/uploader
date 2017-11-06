@@ -16,7 +16,7 @@
   "overrides": [
     {
       "files": [
-        "oneTouchMiniDriver.js",
+        "oneTouchUltraMini.js",
         "oneTouchUltra2.js",
         "oneTouchVerioIQ.js"
       ],
