@@ -10,6 +10,7 @@
     "stage-0",
     "react"
   ],
+  "retainLines": true,
   "plugins": ["add-module-exports"],
   "env": {
     "production": {
@@ -17,20 +18,26 @@
       "plugins": ["babel-plugin-dev-expression", "transform-class-properties", "transform-es2015-classes"]
     },
     "development": {
-      "plugins": ["transform-class-properties", "transform-es2015-classes"],
+      "plugins": [
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ],
       "presets": ["react-hmre"]
     },
     "test": {
       "plugins": [
-        ["resolver", {
-          "resolveDirs": ["app/node_modules"]
-        }],
-        ["webpack-loaders", {
-          "config": "webpack.config.test.js",
-          "verbose": false
-        }],
-        "babel-plugin-rewire", ["transform-define", {
+        [ "module-resolver", {
+          "root": ["./app/node_modules"],
+          "alias": {
+            "node-hid": "./app/node_modules/node-hid",
+            "serialport": "./app/node_modules/serialport"
+          }
+        } ],
+        ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
+        "babel-plugin-rewire",
+        ["transform-define", {
           "__TEST__": "true",
+          "__VERSION_SHA__": "abcd",
           "__DEBUG__": false
         }]
       ]

@@ -1,0 +1,4 @@
+To analyze the USB protocol of the Abbott FreeStyle Libre, install this Lua plugin for Wireshark and sniff the traffic on the appropriate usbmon interface.
+
+To install this plugin, copy it or make a symlink to it in:
+~/.wireshark/plugins

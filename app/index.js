@@ -1,3 +1,4 @@
+import rollbar from './utils/rollbar';
 import _ from 'lodash';
 import React from 'react';
 import { render } from 'react-dom';

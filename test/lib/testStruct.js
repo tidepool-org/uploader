@@ -130,22 +130,7 @@ describe('struct.js', function(){
       expect(theStruct).itself.to.respondTo('copyBytes');
     });
   });
-// The legal type characters are:
-// b -- a 1-byte unsigned value
-// y -- a 1-byte signed value
-// s -- a 2-byte unsigned short in little-endian format (0x01 0x00 is returned as 1, not 256)
-// S -- a 2-byte unsigned short in big-endian format (0x01 0x00 is returned as 256, not 1)
-// i -- a 4-byte unsigned integer in little-endian format
-// I -- a 4-byte unsigned integer in big-endian format
-// n -- a 4-byte signed integer in little-endian format
-// N -- a 4-byte signed integer in big-endian format
-// h -- a 2-byte signed integer in little-endian format
-// H -- a 2-byte signed integer in big-endian format
-// z -- a zero-terminated string of maximum length controlled by the size parameter.
-// Z -- a string of bytes with the length controlled by the size parameter.
-// f -- a 4-byte float in little-endian format
-// F -- a 4-byte float in big-endian format
-// . -- the appropriate number of bytes is ignored (used for padding)
+  // The legal type characters are and their meaning are described at the top of the struct.js file.
   describe('structlen and format parsing', function(){
     it('work properly', function(){
       expect(theStruct.structlen('b6.Si')).to.equal(13);
@@ -195,6 +180,15 @@ describe('struct.js', function(){
       expect(len).to.equal(16);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u0055\u0055\u0055\u0055\u00AA\u00AA\u00AA\u00AA\u00FF\u00FF\u00FF\u00FF\u0000\u0000\u0000\u0000');
+    });
+    it('works for B', function(){
+      var buf = new Uint8Array(4);
+      var inputBuf = [1, 2, 3, 4];
+      var len = theStruct.pack(buf, 0, '4B', inputBuf);
+      expect(len).to.equal(4);
+      var result = String.fromCharCode.apply(null, buf);
+      var expected = String.fromCharCode.apply(null, inputBuf);
+      expect(result).to.equal(expected);
     });
     it('works for z', function(){
       var buf = new Uint8Array(8);
