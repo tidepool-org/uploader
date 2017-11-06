@@ -188,7 +188,7 @@
     "difflet": "1.0.1",
     "electron": "1.6.2",
     "electron-builder": "18.3.5",
-    "electron-devtools-installer": "2.2.0",
+    "electron-devtools-installer": "2.2.1",
     "electron-mocha": "3.4.0",
     "electron-rebuild": "1.5.7",
     "electron-updater": "1.14.2",
