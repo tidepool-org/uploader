@@ -69,8 +69,8 @@ describe('misc reducers', () => {
       });
       let expectedResult = _.pick(devices, filterDevicesFn('win'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // because nothing currently is unavailable on Windows
-      expect(Object.keys(actualResult).length).to.equal(Object.keys(devices).length);
+      // because we do currently have devices unavailable on Windows
+      expect(Object.keys(actualResult).length).to.be.lessThan(Object.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
