@@ -7,6 +7,11 @@
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
+import cp from 'child_process';
+
+const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+  process.env.APPVEYOR_REPO_COMMIT ||
+  cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
 
@@ -177,6 +182,7 @@ export default merge(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"development"',
       'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"dev"',
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
+      __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
     new webpack.LoaderOptionsPlugin({

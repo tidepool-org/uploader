@@ -39,6 +39,7 @@ export default merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
+      __ROLLBAR_POST_TOKEN__: JSON.stringify(process.env.ROLLBAR_POST_TOKEN),
     })
   ],
 
