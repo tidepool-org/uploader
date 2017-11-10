@@ -12,7 +12,7 @@
   "dependencies": {
     "keytar": "4.0.4",
     "node-hid": "0.5.7",
-    "serialport": "4.0.7"
+    "serialport": "6.0.4"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"
