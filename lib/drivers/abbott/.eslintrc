@@ -17,10 +17,7 @@
     {
       "files": [
         "abbottFreeStyleLite.js",
-        "abbottPrecisionXtra.js",
-        "freeStyleLibreProtocol.js",
-        "freeStyleLibreData.js",
-        "cli/fslibre.js"
+        "abbottPrecisionXtra.js"
       ],
       "rules": {
         "func-names": "warn",
