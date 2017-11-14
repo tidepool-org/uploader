@@ -1,4 +1,4 @@
-# LifeScan OneTouch VerioIQ
+# LifeScan OneTouch Verio & Verio Flex
 
 ## Checklist for Blood Glucose Meter Implementation
 
@@ -23,7 +23,7 @@
 - `[ ]` ketone out-of-range value thresholds
 
 ## Notes
-- Units of smbg values are available in data protocol, but always reported in mg/dL
+- Display units of smbg values are available in data protocol, but always reported in mg/dL
 - HI/LO values are not described in spec, but user manual states that values above 600 and below 20 mg/dL are out-of-range, and are annotated as such
 
 ### No Tidepool Data Model Yet
