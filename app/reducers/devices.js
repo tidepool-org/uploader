@@ -82,8 +82,8 @@ const devices = {
     enabled: {mac: true, win: true}
   },
   onetouchverio: {
-    instructions: 'Plug in meter with mini-USB',
-    name: 'OneTouch Verio',
+    instructions: 'Plug in meter with micro-USB',
+    name: 'OneTouch Verio & Verio Flex',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
     enabled: {linux: true, mac: true, win: false}
