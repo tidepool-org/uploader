@@ -54,7 +54,7 @@ const serverdata = {
   Local: {
     API_URL: 'http://localhost:8009',
     UPLOAD_URL: 'http://localhost:9122',
-    DATA_URL: 'http://localhost:8077',
+    DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
   Development: {
