@@ -8,6 +8,11 @@ import webpack from 'webpack';
 import validate from 'webpack-validator';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
+import cp from 'child_process';
+
+const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+  process.env.APPVEYOR_REPO_COMMIT ||
+  cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
 
@@ -120,6 +125,7 @@ export default validate(merge(baseConfig, {
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
       __TEST__: false,
+      __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     })
   ],

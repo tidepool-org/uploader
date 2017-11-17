@@ -54,32 +54,32 @@ const serverdata = {
   Local: {
     API_URL: 'http://localhost:8009',
     UPLOAD_URL: 'http://localhost:9122',
-    DATA_URL: 'http://localhost:8077',
+    DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
   Development: {
     API_URL: 'https://dev-api.tidepool.org',
     UPLOAD_URL: 'https://dev-uploads.tidepool.org',
     DATA_URL: 'https://dev-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://dev-blip.tidepool.org'
+    BLIP_URL: 'https://dev-app.tidepool.org'
   },
   Staging: {
     API_URL: 'https://stg-api.tidepool.org',
     UPLOAD_URL: 'https://stg-uploads.tidepool.org',
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://stg-blip.tidepool.org'
+    BLIP_URL: 'https://stg-app.tidepool.org'
   },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
     UPLOAD_URL: 'https://int-uploads.tidepool.org',
     DATA_URL: 'https://int-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://int-blip.tidepool.org'
+    BLIP_URL: 'https://int-app.tidepool.org'
   },
   Production: {
     API_URL: 'https://api.tidepool.org',
     UPLOAD_URL: 'https://uploads.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
-    BLIP_URL: 'https://blip.tidepool.org'
+    BLIP_URL: 'https://app.tidepool.org'
   }
 };
 
