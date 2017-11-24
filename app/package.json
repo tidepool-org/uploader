@@ -10,7 +10,9 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
+    "drivelist": "5.1.8",
     "keytar": "4.0.3",
+    "lodash": "3.10.1",
     "node-hid": "0.5.4",
     "serialport": "4.0.7",
     "usb": "1.2.0"
