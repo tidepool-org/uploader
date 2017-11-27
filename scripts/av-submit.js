@@ -27,7 +27,7 @@ const Client = require('ftp');
 const https = require('https');
 
 const ORG = 'tidepool-org';
-const REPO = 'chrome-uploader';
+const REPO = 'uploader';
 
 if(!process.env.FTP_AV_PASSWORD_TIDEPOOL) {
   console.log('Please set the FTP_AV_PASSWORD_TIDEPOOL environment variable.');

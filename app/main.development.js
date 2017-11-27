@@ -259,7 +259,7 @@ app.on('ready', async () => {
       }, {
         label: 'Report an issue...',
         click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://github.com/tidepool-org/uploader/issues');
         }
       }]
     }];
@@ -333,7 +333,7 @@ app.on('ready', async () => {
       }, {
         label: 'Report an issue...',
         click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://github.com/tidepool-org/uploader/issues');
         }
       }]
     }];
@@ -374,8 +374,8 @@ autoUpdater.on('update-available', (ev, info) => {
   {
     "version":"0.310.0-alpha",
     "releaseDate":"2017-04-03T22:29:55.809Z",
-    "url":"https://github.com/tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
-    "releaseJsonUrl":"https://github.com//tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/latest-mac.json"
+    "url":"https://github.com/tidepool-org/uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
+    "releaseJsonUrl":"https://github.com//tidepool-org/uploader/releases/download/v0.310.0-alpha/latest-mac.json"
   }
    */
 });

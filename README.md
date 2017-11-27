@@ -1,7 +1,7 @@
 # Tidepool Uploader
 
-[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master)
+[![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
@@ -15,7 +15,7 @@ This README is focused on just the details of getting the uploader running local
 - [Tests](#tests)
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
-- [Publishing](#publishing-to-the-develstaging-testing--development-chrome-store-account-or-production)
+- [Publishing](#publishing)
 
 * * * * *
 
@@ -99,7 +99,7 @@ Release management and application updates are handled via the Github provider i
 1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
 1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
 1. When your pull request is approved and merged to `master`, go to the draft release and type in the version for the tag name, ensure that you're targeting the `master` branch, fill out the release notes and publish the release. This will create the tag for you.
-1. After you've smoke tested the release, run `yarn av-whitelist` to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the `FTP_AV_PASSWORD_TIDEPOOL` environment variable and is stored in 1Password. 
+1. After you've smoke tested the release, run `yarn av-whitelist` to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the `FTP_AV_PASSWORD_TIDEPOOL` environment variable and is stored in 1Password.
 
 For a non-production release (alpha, dev, etc.)
 
