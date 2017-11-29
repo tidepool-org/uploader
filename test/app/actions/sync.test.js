@@ -439,7 +439,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-        expect(syncActions.initFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.initFailure(err);
+        expect(action.payload).to.deep.include({message:errorText.E_INIT});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -521,7 +524,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         };
-        expect(syncActions.loginFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.loginFailure(err);
+        expect(action.payload).to.deep.include({message:err});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         __ResetDependency__('getLoginErrorMessage');
       });
     });
@@ -579,7 +585,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         };
-        expect(syncActions.logoutFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.logoutFailure(err);
+        expect(action.payload).to.deep.include({message:err});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         __ResetDependency__('getLoginErrorMessage');
       });
     });
@@ -644,7 +653,10 @@ describe('Synchronous Actions', () => {
             metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
           }
         };
-        expect(syncActions.fetchCareLinkFailure('Error :(')).to.deep.equal(expectedAction);
+        const action = syncActions.fetchCareLinkFailure('Error :(');
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
 
     });
@@ -665,8 +677,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         };
-
-        expect(syncActions.uploadAborted()).to.deep.equal(expectedAction);
+        const action = syncActions.uploadAborted();
+        expect(action.payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -796,6 +810,16 @@ describe('Synchronous Actions', () => {
             }
           }
         };
+        const action = syncActions.uploadFailure(origError, errProps, device);
+        expect(action.payload).to.deep.include({
+          message: resError.message,
+          code: resError.code,
+          utc: resError.utc,
+          debug: resError.debug
+        });
+        expectedAction.payload = action.payload;
+        expectedAction.meta.metric.properties.error = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
       });
     });
@@ -853,8 +877,10 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
         };
-
-        expect(syncActions.readFileAborted(err)).to.deep.equal(expectedAction);
+        const action = syncActions.readFileAborted(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -913,8 +939,10 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_FAILURE]}
         };
-
-        expect(syncActions.readFileFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.readFileFailure(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
   });
@@ -981,15 +1009,18 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-
-        expect(syncActions.versionCheckFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.versionCheckFailure(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
 
       it('should create an action to mark the current uploader\'s version as unsupported', () => {
+        const err = new UnsupportedError(currentVersion, requiredVersion);
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_FAILURE,
           error: true,
-          payload: new UnsupportedError(currentVersion, requiredVersion),
+          payload: err,
           meta: {
             source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
             metric: {
@@ -998,8 +1029,10 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-
-        expect(syncActions.versionCheckFailure(null, currentVersion, requiredVersion)).to.deep.equal(expectedAction);
+        const action = syncActions.versionCheckFailure(null, currentVersion, requiredVersion);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
   });

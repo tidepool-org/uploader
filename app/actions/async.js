@@ -16,7 +16,6 @@
  */
 
 import _ from 'lodash';
-import async from 'async';
 import semver from 'semver';
 import os from 'os';
 import { push } from 'react-router-redux';
@@ -229,7 +228,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
     const { device } = services;
     const version = versionInfo.semver;
     const { devices, os, targetTimezones, uploadTargetUser } = getState();
-    const targetDevice = _.findWhere(devices, {source: {driverId: driverId}});
+    const targetDevice = _.find(devices, {source: {driverId: driverId}});
     dispatch(syncActions.deviceDetectRequest());
     _.assign(opts, {
       targetId: uploadTargetUser,
@@ -498,7 +497,7 @@ export function clickEditUserNext(profile) {
         }
         const { targetDevices, devices, allUsers, loggedInUser } = getState();
         const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
-        const supportedDeviceKeys = Object.keys(devices);
+        const supportedDeviceKeys = _.keys(devices);
         const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
           return _.includes(supportedDeviceKeys, key);
         });
@@ -552,7 +551,7 @@ export function retrieveTargetsFromStorage() {
         });
       });
       const targetDeviceKeys = targetDevices[uploadTargetUser];
-      const supportedDeviceKeys = Object.keys(devices);
+      const supportedDeviceKeys = _.keys(devices);
       const atLeastOneDeviceSupportedOnSystem = _.some(targetDeviceKeys, (key) => {
         return _.includes(supportedDeviceKeys, key);
       });
@@ -633,7 +632,7 @@ export function setUploadTargetUserAndMaybeRedirect(targetId) {
       api.makeBlipUrl(actionUtils.viewDataPathForUser(targetId))
     ));
     const targetedDevices = _.get(targetDevices, targetId, []);
-    const supportedDeviceKeys = Object.keys(devices);
+    const supportedDeviceKeys = _.keys(devices);
     const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
       return _.includes(supportedDeviceKeys, key);
     });
@@ -650,7 +649,7 @@ export function checkUploadTargetUserAndMaybeRedirect() {
       return;
     }
     const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
-    const supportedDeviceKeys = Object.keys(devices);
+    const supportedDeviceKeys = _.keys(devices);
     const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
       return _.includes(supportedDeviceKeys, key);
     });
