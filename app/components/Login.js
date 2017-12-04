@@ -15,6 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styles from '../../styles/components/Login.module.less';
 import { connect } from 'react-redux';
@@ -95,14 +96,14 @@ export class Login extends Component {
       </div>
     );
   }
-};
+}
 
 Login.propTypes = {
-  disabled: React.PropTypes.bool.isRequired,
-  errorMessage: React.PropTypes.string,
-  forgotPasswordUrl: React.PropTypes.string.isRequired,
-  isFetching: React.PropTypes.bool.isRequired,
-  onLogin: React.PropTypes.func.isRequired
+  disabled: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string,
+  forgotPasswordUrl: PropTypes.string.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  onLogin: PropTypes.func.isRequired
 };
 
 export default connect(
