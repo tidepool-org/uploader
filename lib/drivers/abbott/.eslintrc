@@ -51,7 +51,9 @@
         "no-console": "warn",
         "no-multi-spaces": "warn",
         "no-mixed-operators": "warn",
-        "max-len": "warn"
+        "max-len": "warn",
+        "prefer-destructuring": "warn",
+        "no-buffer-constructor": "warn"
       }
     }
   ],

@@ -47,7 +47,7 @@ export function checkVersion(dispatch) {
 
   regKey.keys(function(err, items){
     var filtered = _.filter(items, function(item){
-      return _.startsWith(item.key.split('\\').pop(), 'tidepool');
+      return _.startsWith(_.split(item.key, '\\').pop(), 'tidepool');
     });
     _.each(filtered, function(tidepoolKey){
       console.log(tidepoolKey.key);

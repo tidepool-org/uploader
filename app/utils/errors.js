@@ -121,5 +121,5 @@ export function UnsupportedError(currentVersion, requiredVersion) {
   this.message = `Uploader version ${currentVersion} is no longer supported; version ${requiredVersion} or higher is required.`;
 }
 
-UnsupportedError.prototype = Object.create(Error.prototype);
+UnsupportedError.prototype = _.create(Error.prototype);
 UnsupportedError.prototype.constructor = UnsupportedError;
