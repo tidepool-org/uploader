@@ -310,6 +310,8 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({working: {initializingApp: true}});
       store.dispatch(asyncActions.doAppInit(config, servicesToInit));
       const actions = store.getActions();
+      expect(actions[2].payload).to.deep.include({message:errorText.E_INIT});
+      expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -419,6 +421,8 @@ describe('Asynchronous Actions', () => {
         {remember: false}
       ));
       const actions = store.getActions();
+      expect(actions[1].payload).to.deep.include({message:getLoginErrorMessage()});
+      expectedActions[1].payload = actions[1].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -627,6 +631,8 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({});
       store.dispatch(asyncActions.doLogout());
       const actions = store.getActions();
+      expect(actions[1].payload).to.deep.include({message:getLogoutErrorMessage()});
+      expectedActions[1].payload = actions[1].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -672,6 +678,10 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({});
       store.dispatch(asyncActions.doUpload());
       const actions = store.getActions();
+      expect(actions[1].payload).to.deep.include({message:(new UnsupportedError(currentVersion, requiredVersion)).message});
+      expectedActions[1].payload = actions[1].payload;
+      expect(actions[2].payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+      expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -710,6 +720,8 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload());
       const actions = store.getActions();
+      expect(actions[2].payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+      expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -809,6 +821,15 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
+      expect(actions[4].payload).to.deep.include({
+        message: errorText.E_SERIAL_CONNECTION,
+        code: err.code,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug
+      });
+      expectedActions[4].payload = actions[4].payload;
+      expectedActions[4].meta.metric.properties.error = actions[4].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -908,6 +929,15 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
+      expect(actions[4].payload).to.deep.include({
+        message: errorText.E_HID_CONNECTION,
+        code: err.code,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug
+      });
+      expectedActions[4].payload = actions[4].payload;
+      expectedActions[4].meta.metric.properties.error = actions[4].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1011,6 +1041,17 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
+      expect(actions[4].payload).to.deep.include({
+        message: errorText.E_DEVICE_UPLOAD,
+        code: err.code,
+        details: err.details,
+        name: err.name,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug
+      });
+      expectedActions[4].payload = actions[4].payload;
+      expectedActions[4].meta.metric.properties.error = actions[4].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1210,6 +1251,16 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
+      expect(actions[4].payload).to.deep.include({message: errorText.E_FETCH_CARELINK});
+      expectedActions[4].payload = actions[4].payload;
+      expect(actions[5].payload).to.deep.include({
+        message: errorText.E_FETCH_CARELINK,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug
+      });
+      expectedActions[5].payload = actions[5].payload;
+      expectedActions[5].meta.metric.properties.error = actions[5].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1317,7 +1368,18 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      expect(actions[4].payload).to.deep.include({message:errorText.E_CARELINK_CREDS});
+      expectedActions[4].payload = actions[4].payload;
+      expect(actions[5].payload).to.deep.include({
+        message: errorText.E_CARELINK_CREDS,
+        code: err.code,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug
+      });
+      expectedActions[5].payload = actions[5].payload;
+      expectedActions[5].meta.metric.properties.error = actions[5].payload;
+      expect(actions).to.deep.equals(expectedActions);
     });
   });
 
@@ -1429,6 +1491,16 @@ describe('Asynchronous Actions', () => {
       const store = mockStore(initialState);
       store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
+      expect(actions[5].payload).to.deep.include({
+        message: errorText.E_CARELINK_UPLOAD,
+        code: err.code,
+        utc: err.utc,
+        version: err.version,
+        debug: err.debug,
+        name: err.name
+      });
+      expectedActions[5].payload = actions[5].payload;
+      expectedActions[5].meta.metric.properties.error = actions[5].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1560,6 +1632,13 @@ describe('Asynchronous Actions', () => {
         const store = mockStore(state);
         store.dispatch(asyncActions.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({
+          message: errorText.E_FILE_EXT + ext,
+          code: err.code,
+          version: err.version,
+          debug: err.debug
+        });
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -1596,6 +1675,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({});
         store.dispatch(asyncActions.doVersionCheck());
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:'API error!'});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -1630,6 +1711,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({});
         store.dispatch(asyncActions.doVersionCheck());
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:'Invalid semver [foo.bar]'});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -1669,6 +1752,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({});
         store.dispatch(asyncActions.doVersionCheck());
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:err.message});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -1904,6 +1989,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore(state);
         store.dispatch(asyncActions.clickDeviceSelectionDone());
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -2142,6 +2229,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({});
         store.dispatch(asyncActions.clickEditUserNext(profile));
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -2299,6 +2388,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore(state);
         store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -3151,6 +3242,8 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({});
         store.dispatch(asyncActions.createCustodialAccount(profile));
         const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:getCreateCustodialAccountErrorMessage()});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });

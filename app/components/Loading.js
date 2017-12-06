@@ -18,14 +18,14 @@
 var React = require('react');
 var styles = require('../../styles/components/App.module.less');
 
-var Loading = React.createClass({
-  render: function() {
+class Loading extends React.Component {
+  render() {
     return <div className={styles.mainWrap}>
       <div className={styles.loading}>
         Loading...
       </div>
     </div>;
   }
-});
+}
 
 module.exports = Loading;

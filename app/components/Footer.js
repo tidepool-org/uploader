@@ -15,7 +15,9 @@
 * == BSD2 LICENSE ==
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+
+import React, { Component } from 'react';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
@@ -46,4 +48,4 @@ export default class Footer extends Component {
       </div>
     );
   }
-};
+}

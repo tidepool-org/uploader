@@ -17,7 +17,8 @@
 
 import _ from 'lodash';
 import cx from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
@@ -72,13 +73,6 @@ export default class Upload extends Component {
 
   constructor(props) {
     super(props);
-    this.handleCareLinkUpload = this.handleCareLinkUpload.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
-    this.onBlockModeInputChange = this.onBlockModeInputChange.bind(this);
-    this.onCareLinkInputChange = this.onCareLinkInputChange.bind(this);
-    this.onMedtronicSerialNumberInputChange = this.onMedtronicSerialNumberInputChange.bind(this);
-    this.onMedtronicSerialNumberRememberChange = this.onMedtronicSerialNumberRememberChange.bind(this);
 
     this.populateRememberedSerialNumber();
   }
@@ -102,14 +96,14 @@ export default class Upload extends Component {
     });
   }
 
-  handleCareLinkUpload() {
+  handleCareLinkUpload = () => {
     const { refs } = this;
     let options = {
       username: refs.username.value,
       password: refs.password.value
     };
     this.props.onUpload(options);
-  }
+  };
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
@@ -132,7 +126,7 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
-  handleReset(e) {
+  handleReset = e => {
     if (e) {
       e.preventDefault();
     }
@@ -143,9 +137,9 @@ export default class Upload extends Component {
     });
     this.props.onReset();
     this.populateRememberedSerialNumber();
-  }
+  };
 
-  handleUpload(e) {
+  handleUpload = e => {
     const { upload } = this.props;
     if (e) {
       e.preventDefault();
@@ -161,15 +155,15 @@ export default class Upload extends Component {
 
     var options = {};
     this.props.onUpload(options);
-  }
+  };
 
-  onBlockModeInputChange(e) {
+  onBlockModeInputChange = e => {
     const { upload } = this.props;
     let file = e.target.files[0];
     this.props.readFile(file, upload.source.extension);
-  }
+  };
 
-  onCareLinkInputChange() {
+  onCareLinkInputChange = () => {
     const { refs } = this;
     let username = refs.username && refs.username.value;
     let password = refs.password && refs.password.value;
@@ -180,9 +174,9 @@ export default class Upload extends Component {
     else {
       this.setState({carelinkFormIncomplete: false});
     }
-  }
+  };
 
-  onMedtronicSerialNumberRememberChange(e) {
+  onMedtronicSerialNumberRememberChange = e => {
     const checkbox = e.target;
     const checked = checkbox.checked;
 
@@ -194,12 +188,12 @@ export default class Upload extends Component {
     if(!checked) {
       keytar.deletePassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId);
     }
-  }
+  };
 
-  onMedtronicSerialNumberInputChange(e) {
+  onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
     const value = field.value;
-    const chars = value.split('');
+    const chars = _.split(value, '');
 
     // Check if input is purely numbers.
     // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
@@ -232,17 +226,17 @@ export default class Upload extends Component {
         medtronicFormIncomplete: true
       });
     }
-  }
+  };
 
   getDebugLinks(data) {
 
     let post_link = null;
 
-    if(Array.isArray(data) || Array.isArray(data.post_records)) {
+    if(_.isArray(data) || _.isArray(data.post_records)) {
 
       let filename = 'uploader-processed-records.json';
       let jsonData = null;
-      if (Array.isArray(data)) {
+      if (_.isArray(data)) {
         jsonData = JSON.stringify(data, undefined, 4);
       } else {
         jsonData = JSON.stringify(data.post_records, undefined, 4);
@@ -260,13 +254,13 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(Array.isArray(data.pages)) {
+    if(_.isArray(data.pages)) {
       let filenameBinary = 'binary-blob.json';
       let blob = { settings:data.settings, pages:data.pages };
-      if(Array.isArray(data.cbg_pages)) {
+      if(_.isArray(data.cbg_pages)) {
         blob.cbg_pages = data.cbg_pages;
       }
-      if(Array.isArray(data.isig_pages)) {
+      if(_.isArray(data.isig_pages)) {
         blob.isig_pages = data.isig_pages;
       }
       let jsonDataBinary = JSON.stringify(blob, undefined, 4);
@@ -454,7 +448,7 @@ export default class Upload extends Component {
   renderInstructions() {
     const { upload } = this.props;
     let details = upload.instructions || '';
-    if (Array.isArray(details)) {
+    if (_.isArray(details)) {
       return (
         <div className={styles.detail}>
           {_.get(details, 0, '')}<br/>
@@ -604,4 +598,4 @@ export default class Upload extends Component {
     return (_.get(upload, 'source.type', null) === 'carelink') &&
       (upload.isFetching);
   }
-};
+}

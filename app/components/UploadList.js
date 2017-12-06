@@ -1,4 +1,3 @@
-
 /*
 * == BSD2 LICENSE ==
 * Copyright (c) 2016, Tidepool Project
@@ -17,7 +16,8 @@
 */
 
 import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import cx from 'classnames';
 
 import Upload from './Upload';
@@ -37,11 +37,11 @@ export default class UploadList extends Component {
     onUpload: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
     toggleErrorDetails: PropTypes.func.isRequired,
-    updateProfileErrorMessage: React.PropTypes.string,
-    isClinicAccount: React.PropTypes.bool.isRequired,
-    onChooseDevices: React.PropTypes.func.isRequired,
-    timezoneIsSelected: React.PropTypes.bool.isRequired,
-    isUploadInProgress: React.PropTypes.bool.isRequired
+    updateProfileErrorMessage: PropTypes.string,
+    isClinicAccount: PropTypes.bool.isRequired,
+    onChooseDevices: PropTypes.func.isRequired,
+    timezoneIsSelected: PropTypes.bool.isRequired,
+    isUploadInProgress: PropTypes.bool.isRequired
   };
 
   static defaultProps = {

@@ -40,7 +40,7 @@ module.exports = {
   API_URL: process.env.API_URL || 'https://api.tidepool.org',
   UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.org',
   DATA_URL: process.env.DATA_URL || 'https://api.tidepool.org/dataservices',
-  BLIP_URL: process.env.BLIP_URL || 'https://blip.tidepool.org',
+  BLIP_URL: process.env.BLIP_URL || 'https://app.tidepool.org',
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
   DEFAULT_CARELINK_DAYS: process.env.DEFAULT_CARELINK_DAYS || '180'
 };
