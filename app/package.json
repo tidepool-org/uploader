@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.2.2",
+  "version": "2.2.2-veo-support.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
