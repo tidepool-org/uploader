@@ -68,7 +68,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.0.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "tidepool-org/platform-client#delta-uploads",
+    "tidepool-platform-client": "0.35.0",
     "uuid": "3.1.0"
   },
   "browserslist": "electron 1.6",
