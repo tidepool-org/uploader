@@ -45,8 +45,8 @@ export function getUtc(utc) {
 }
 
 export function makeProgressFn(dispatch) {
-  return (step, percentage) => {
-    dispatch(syncActions.uploadProgress(step, percentage));
+  return (step, percentage, first) => {
+    dispatch(syncActions.uploadProgress(step, percentage, first));
   };
 }
 
