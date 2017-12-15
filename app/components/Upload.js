@@ -60,7 +60,9 @@ export default class Upload extends Component {
       LAST_UPLOAD: 'Last upload: ',
       DEVICE_UNKNOWN: 'Unknown device',
       UPLOAD_COMPLETE: 'Done!',
-      UPLOAD_PROGRESS: 'Uploading... '
+      UPLOAD_PROGRESS: 'Uploading... ',
+      NOTE: 'Note:',
+      FIRST_UPLOAD: 'Because this is the first upload for this device, it may take a long time. Future uploads will be faster.'
     }
   };
 
@@ -300,6 +302,7 @@ export default class Upload extends Component {
             {this.renderStatus()}
           </div>
           {this.renderProgress()}
+          {this.renderFirstUpload()}
           {this.renderActions()}
         </div>
       </div>
@@ -521,6 +524,18 @@ export default class Upload extends Component {
     }
 
     return <div className={styles.progress}><ProgressBar percentage={percentage}/></div>;
+  }
+
+  renderFirstUpload() {
+    const { upload } = this.props;
+
+    if (upload.uploading && upload.progress && upload.progress.isFirstUpload) {
+      return (
+        <div className={styles.detail}><b>{this.props.text.NOTE}</b>&nbsp;{this.props.text.FIRST_UPLOAD}</div>
+      );
+    } else {
+      return null;
+    }
   }
 
   renderReset() {
