@@ -15,6 +15,7 @@
  * == BSD2 LICENSE ==
  */
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 
@@ -22,24 +23,20 @@ import styles from '../../styles/components/LoggedInAs.module.less';
 
 export default class LoggedInAs extends Component {
   static propTypes = {
-    dropMenu: React.PropTypes.bool.isRequired,
-    isUploadInProgress: React.PropTypes.bool.isRequired,
-    onCheckForUpdates: React.PropTypes.func.isRequired,
-    onChooseDevices: React.PropTypes.func.isRequired,
-    onClicked: React.PropTypes.func.isRequired,
-    onLogout: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object,
-    isClinicAccount: React.PropTypes.bool,
-    targetUsersForUpload: React.PropTypes.array
+    dropMenu: PropTypes.bool.isRequired,
+    isUploadInProgress: PropTypes.bool.isRequired,
+    onCheckForUpdates: PropTypes.func.isRequired,
+    onChooseDevices: PropTypes.func.isRequired,
+    onClicked: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired,
+    user: PropTypes.object,
+    isClinicAccount: PropTypes.bool,
+    targetUsersForUpload: PropTypes.array
   }
 
   constructor(props) {
     super(props);
     this.state = { loggingOut: false };
-
-    this.handleCheckForUpdates = this.handleCheckForUpdates.bind(this);
-    this.handleChooseDevices = this.handleChooseDevices.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   noopHandler(e) {
@@ -48,18 +45,18 @@ export default class LoggedInAs extends Component {
     }
   }
 
-  handleChooseDevices(e) {
+  handleChooseDevices = e => {
     e.preventDefault();
     this.props.onChooseDevices();
-  }
+  };
 
-  handleCheckForUpdates(e) {
+  handleCheckForUpdates = e => {
     e.preventDefault();
     this.props.onCheckForUpdates();
     ipcRenderer.send('autoUpdater','checkForUpdates');
-  }
+  };
 
-  handleLogout(e) {
+  handleLogout = e => {
     e.preventDefault();
     this.setState({
       loggingOut: true
@@ -72,7 +69,7 @@ export default class LoggedInAs extends Component {
         });
       }
     });
-  }
+  };
 
   renderChooseDevices() {
     var title = '';
@@ -170,4 +167,4 @@ export default class LoggedInAs extends Component {
       </div>
     );
   }
-};
+}

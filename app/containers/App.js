@@ -16,11 +16,13 @@
  */
 
 import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
+import { Route, Switch } from 'react-router-dom';
 
 const { Menu } = remote;
 
@@ -41,6 +43,13 @@ import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
 
+import MainPage from './MainPage';
+import Login from '../components/Login';
+import Loading from '../components/Loading';
+import SettingsPage from './SettingsPage';
+import ClinicUserSelectPage from './ClinicUserSelectPage';
+import ClinicUserEditPage from './ClinicUserEditPage';
+import NoUploadTargetsPage from './NoUploadTargetsPage';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
@@ -61,25 +70,25 @@ const serverdata = {
     API_URL: 'https://dev-api.tidepool.org',
     UPLOAD_URL: 'https://dev-uploads.tidepool.org',
     DATA_URL: 'https://dev-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://dev-blip.tidepool.org'
+    BLIP_URL: 'https://dev-app.tidepool.org'
   },
   Staging: {
     API_URL: 'https://stg-api.tidepool.org',
     UPLOAD_URL: 'https://stg-uploads.tidepool.org',
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://stg-blip.tidepool.org'
+    BLIP_URL: 'https://stg-app.tidepool.org'
   },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
     UPLOAD_URL: 'https://int-uploads.tidepool.org',
     DATA_URL: 'https://int-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://int-blip.tidepool.org'
+    BLIP_URL: 'https://int-app.tidepool.org'
   },
   Production: {
     API_URL: 'https://api.tidepool.org',
     UPLOAD_URL: 'https://uploads.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
-    BLIP_URL: 'https://blip.tidepool.org'
+    BLIP_URL: 'https://app.tidepool.org'
   }
 };
 
@@ -93,9 +102,6 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
-    this.handleContextMenu = this.handleContextMenu.bind(this);
-    this.setServer = this.setServer.bind(this);
     const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
     this.state = {
       server: initial_server
@@ -104,8 +110,8 @@ export class App extends Component {
 
   componentWillMount(){
     checkVersion(this.props.dispatch);
-    let api = this.props.route.api;
-    this.props.async.doAppInit(Object.assign({}, config), {
+    let api = this.props.api;
+    this.props.async.doAppInit(_.assign({}, config), {
       api: api,
       carelink,
       device,
@@ -116,18 +122,26 @@ export class App extends Component {
     window.addEventListener('contextmenu', this.handleContextMenu, false);
   }
 
-  setServer(info) {
+  setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
-    this.props.route.api.setHosts(serverinfo);
+    this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
-  }
+  };
 
   render() {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <Header location={this.props.location} />
-        {this.props.children}
+        <Switch>
+          <Route exact strict path="/" component={Loading} />
+          <Route path="/login" component={Login}/>
+          <Route path="/main" component={MainPage}/>
+          <Route path="/settings" component={SettingsPage}/>
+          <Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
+          <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
+          <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
+        </Switch>
         <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
@@ -137,7 +151,7 @@ export class App extends Component {
     );
   }
 
-  handleContextMenu(e){
+  handleContextMenu = e => {
     e.preventDefault();
     const { clientX, clientY } = e;
     let template = [];
@@ -199,15 +213,15 @@ export class App extends Component {
     }
     const menu = Menu.buildFromTemplate(template);
     menu.popup(remote.getCurrentWindow());
-  }
+  };
 
-  handleDismissDropdown() {
+  handleDismissDropdown = () => {
     const { dropdown } = this.props;
     // only toggle the dropdown by clicking elsewhere if it's open
     if (dropdown === true) {
       this.props.sync.toggleDropdown(dropdown);
     }
-  }
+  };
 
   renderVersionCheck() {
     const { readyToRenderVersionCheckOverlay, unsupported } = this.props;

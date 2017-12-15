@@ -26,12 +26,7 @@ import { sync as syncActions } from '../actions/';
 import styles from '../../styles/components/UpdateDriverModal.module.less';
 
 export class UpdateDriverModal extends Component {
-  constructor() {
-    super();
-    this.handleInstall = this.handleInstall.bind(this);
-   }
-
-  handleInstall() {
+  handleInstall = () => {
     const { sync, driverUpdateShellOpts } = this.props;
     const { execString, options } = driverUpdateShellOpts.opts;
     sudo.exec(execString, options,
@@ -43,7 +38,7 @@ export class UpdateDriverModal extends Component {
         sync.driverInstall();
       }
     );
-  }
+  };
 
   render() {
     const {
