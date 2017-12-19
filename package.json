@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.2.3",
+  "version": "2.2.4-verio-flex.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -191,7 +191,6 @@
     "electron-builder": "19.45.5",
     "electron-devtools-installer": "2.2.1",
     "electron-mocha": "5.0.0",
-    "electron-rebuild": "1.5.7",
     "electron-updater": "2.16.1",
     "enzyme": "3.2.0",
     "eslint": "4.11.0",
