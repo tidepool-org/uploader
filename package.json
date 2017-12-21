@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.2.2-pxtra-timeout.1",
+  "version": "2.2.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",

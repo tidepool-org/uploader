@@ -300,27 +300,28 @@ export function doUpload(deviceKey, opts, utc) {
         }
         else {
           dispatch(syncActions.versionCheckSuccess());
-          const { devices, uploadTargetUser, working } = getState();
-          if (working.uploading === true) {
-            return dispatch(syncActions.uploadAborted());
-          }
-
-          dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
-
-          const targetDevice = devices[deviceKey];
-          const deviceType = targetDevice.source.type;
-
-          if (_.includes(['device', 'block'], deviceType)) {
-            dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
-          }
-          else if (deviceType === 'carelink') {
-            dispatch(doCareLinkUpload(deviceKey, opts, utc));
-          }
         }
       }
       catch(err) {
         dispatch(syncActions.versionCheckFailure(err));
         return dispatch(syncActions.uploadAborted());
+      }
+
+      const { devices, uploadTargetUser, working } = getState();
+      if (working.uploading === true) {
+        return dispatch(syncActions.uploadAborted());
+      }
+
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const targetDevice = devices[deviceKey];
+      const deviceType = targetDevice.source.type;
+
+      if (_.includes(['device', 'block'], deviceType)) {
+        dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
+      }
+      else if (deviceType === 'carelink') {
+        dispatch(doCareLinkUpload(deviceKey, opts, utc));
       }
     });
   };
