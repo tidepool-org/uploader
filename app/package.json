@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.2.4",
+  "version": "2.2.5-medtronic-new-record.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "keytar": "4.0.4",
     "node-hid": "0.5.7",
-    "serialport": "5.0.0"
+    "serialport": "6.0.4"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"
