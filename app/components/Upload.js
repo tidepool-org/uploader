@@ -62,7 +62,9 @@ export default class Upload extends Component {
       UPLOAD_COMPLETE: 'Done!',
       UPLOAD_PROGRESS: 'Uploading... ',
       NOTE: 'Note:',
-      FIRST_UPLOAD: 'Because this is the first upload for this device, it may take a long time. Future uploads will be faster.'
+      FIRST_UPLOAD: 'We\'ve improved how devices upload. This upload will take \
+                     longer than usual, but your future uploads will be much, \
+                     much faster.'
     }
   };
 
