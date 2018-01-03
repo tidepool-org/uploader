@@ -1085,6 +1085,56 @@ describe('medtronic600Simulator.js', function() {
       });
       */
     });
+
+    describe('Auto-Mode basal', function() {
+      it('should add a gap between two Auto-Mode basals that are more than six minutes apart', function() {
+        const basal1 = builder.makeScheduledBasal()
+          .with_time('2017-02-09T13:11:41.000Z')
+          .with_deviceTime('2017-02-09T13:11:41')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Auto-Basal')
+          .with_rate(0.75);
+        const basal2 = builder.makeScheduledBasal()
+          .with_time('2017-02-09T13:18:41.000Z')
+          .with_deviceTime('2017-02-09T13:18:41')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Auto-Basal')
+          .with_rate(1.5)
+          .with_duration(300000);
+
+        const expectedFirstBasal = _.cloneDeep(basal1);
+        expectedFirstBasal
+          .set('duration', 300000);
+        const expectedSecondBasal = builder.makeScheduledBasal()
+          .with_time('2017-02-09T13:16:41.000Z')
+          .with_deviceTime('2017-02-09T13:16:41')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_clockDriftOffset(0)
+          .with_scheduleName('Auto-Basal')
+          .with_rate(0)
+          .with_duration(120000);
+        expectedSecondBasal
+          .set('payload', {
+            logIndices: [2183956651],
+          })
+          .set('annotations', [{
+            code: 'basal/auto',
+          }]);
+        const expectedThirdBasal = _.cloneDeep(basal2);
+        expectedThirdBasal
+          .set('duration', 300000);
+
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+        simulator.finalBasal();
+        expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
+          expectedSecondBasal.done(), expectedThirdBasal.done(),
+        ]);
+      });
+    });
   });
 
   describe('device event', function() {});
