@@ -31,23 +31,17 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class SettingsPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
-    this.handleClickEditUser = this.handleClickEditUser.bind(this);
-  }
-
-  handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
+  handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {
     const { setUploadTargetUser } = this.props.sync;
     const { setPage } = this.props.async;
     setUploadTargetUser(null);
     setPage(pages.CLINIC_USER_SELECT, undefined, metric);
-  }
+  };
 
-  handleClickEditUser() {
+  handleClickEditUser = () => {
     const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
-  }
+  };
 
   renderChangePersonLink() {
     var classes = cx({

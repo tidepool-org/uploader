@@ -1,11 +1,6 @@
 {
   // I want to use babel-eslint for parsing!
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "jsx": true,
-    "classes": true,
-    "modules": true,
-  },
   "env": {
     // I write for browser
     "browser": true,
@@ -50,12 +45,17 @@
     "eqeqeq": 0,
     "no-bitwise": 0,
     // TODO: either try to fix this globally or use an embedded .eslintrc for drivers
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "lodash/prefer-lodash-method": "warn",
+    "max-len": "warn",
+    "prefer-destructuring": "warn",
+    "no-buffer-constructor": "warn"
   },
   "plugins": [
     "react",
     "promise",
-    "import"
+    "import",
+    "lodash"
   ],
   "settings": {
     "import/resolver": {
