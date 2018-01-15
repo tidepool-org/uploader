@@ -72,7 +72,7 @@ const devices = {
     key: 'bayercontournext',
     name: 'Bayer Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   animas: {
     instructions: 'Suspend and align back of pump with IR dongle front',
