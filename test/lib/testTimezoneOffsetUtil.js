@@ -18,7 +18,6 @@
 /*eslint-env mocha*/
 
 var _ = require('lodash');
-var d3 = require('d3');
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
@@ -27,31 +26,31 @@ var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 var sundial = require('sundial');
 
 describe('TimezoneOffsetUtil.js', function(){
-  it('should export a function', function(){
+  it('exports a function', function(){
     expect(typeof TZOUtil).to.equal('function');
   });
 
-  it('should return an object', function(){
+  it('returns an object', function(){
     var util = new TZOUtil('US/Pacific', '2015-06-01T00:00:00.000Z', []);
     expect(typeof util).to.equal('object');
   });
 
-  it('should throw an error if a named timezone not provided as first param', function(){
+  it('throws an error if a named timezone not provided as first param', function(){
     var fn = function() { new TZOUtil('foo', '2015-06-01T00:00:00.000Z', '2015-01-01T00:00:00.000Z', []); };
     expect(fn).to.throw('Unrecognized timezone name!');
   });
 
-  it('should throw an error if a valid timestamp is not provided as second param', function(){
+  it('throws an error if a valid timestamp is not provided as second param', function(){
     var fn = function() { new TZOUtil('US/Pacific', 'foo', []); };
     expect(fn).to.throw('Invalid timestamp for most recent datum!');
   });
 
-  it('should throw an error if `changes` not empty and not all events are `timeChange`', function(){
+  it('throws an error if `changes` not empty and not all events are `timeChange`', function(){
     var fn = function() { new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', [{type: 'foo'}]); };
     expect(fn).to.throw(Error);
   });
 
-  it('should default to across-the-board timezone application if no `changes` provided as third param', function(){
+  it('defaults to across-the-board timezone application if no `changes` provided as third param', function(){
     var util = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
     expect(util.lookup(sundial.parseFromFormat('2015-04-01T00:00:00'))).to.deep.equal({
       time: '2015-04-01T04:00:00.000Z',
@@ -61,7 +60,7 @@ describe('TimezoneOffsetUtil.js', function(){
     });
   });
 
-  it('should identify the type of timezone offset production used as `utc-bootstrapping` or `across-the-board-timezone`', function() {
+  it('identifies the type of timezone offset production used as `utc-bootstrapping` or `across-the-board-timezone`', function() {
     var atbUtil = new TZOUtil('US/Eastern', '2015-06-01T00:00:00.000Z', []);
     expect(atbUtil.type).to.equal('across-the-board-timezone');
     var belatedDST = builder.makeDeviceEventTimeChange()
@@ -77,7 +76,7 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   describe('records', function(){
-    it('should add `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
+    it('adds `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)', function(){
       var belatedDST = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-03-08T12:01:21',
@@ -144,7 +143,7 @@ describe('TimezoneOffsetUtil.js', function(){
       ]);
     });
 
-    it('should make the `changes` provided (with additional attrs added) publicly available as `records`', function(){
+    it('makes the `changes` provided (with additional attrs added) publicly available as `records`', function(){
       var belatedDST = builder.makeDeviceEventTimeChange()
         .with_change({
           from: '2015-03-08T12:01:21',
@@ -173,11 +172,11 @@ describe('TimezoneOffsetUtil.js', function(){
 
   describe('findOffsetDifferences', function(){
     var util = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
-    it('should be a function', function(){
+    it('is a function', function(){
       expect(typeof util.findOffsetDifferences).to.equal('function');
     });
 
-    it('should return the offsetDifference between two deviceTimes in minutes', function(){
+    it('returns the offsetDifference between two deviceTimes in minutes', function(){
       var a = {
         change: {
           from: '2015-01-01T00:00:00',
@@ -194,7 +193,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(util.findOffsetDifferences(b).offsetDifference).to.equal(120);
     });
 
-    it('should return the rawDifference between two deviceTimes in milliseconds', function(){
+    it('returns the rawDifference between two deviceTimes in milliseconds', function(){
       var a = {
         change: {
           from: '2015-01-01T00:00:00',
@@ -211,7 +210,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(util.findOffsetDifferences(b).rawDifference).to.equal(80000);
     });
 
-    it('should round offsetDifference to the nearest 30 minutes', function(){
+    it('rounds offsetDifference to the nearest 30 minutes', function(){
       // from Pacific/Chatham (UTC+13:45) to UTC
       var a = {
         change: {
@@ -222,7 +221,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(util.findOffsetDifferences(a).offsetDifference).to.equal(810);
     });
 
-    it('should only allow for "clock drift" adjustments of < 15 minutes', function(){
+    it('only allows for "clock drift" adjustments of < 15 minutes', function(){
       // clock drift adjustment = difference of 0
       var a = {
         change: {
@@ -246,13 +245,13 @@ describe('TimezoneOffsetUtil.js', function(){
   });
 
   describe('lookup', function(){
-    it('should be a function', function(){
+    it('is a function', function(){
       var util = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
       expect(typeof util.lookup).to.equal('function');
     });
 
     describe('uses the appropriate offset from UTC given (non-empty) `changes` provided', function(){
-      it('should ensure that under clock drift adjustment only, timezoneOffset doesn\'t change even if DST', function(){
+      it('under clock drift adjustment only, timezoneOffset doesn\'t change even if DST', function(){
         var clockDriftAdjust = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-01T12:02:05',
@@ -277,7 +276,7 @@ describe('TimezoneOffsetUtil.js', function(){
         expect(util.type).to.equal('utc-bootstrapping');
       });
 
-      it('should ensure that under DST change (spring forward), timezoneOffset changes', function(){
+      it('under DST change (spring forward), timezoneOffset changes', function(){
         var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
@@ -301,7 +300,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that under mixture of clock drift and real changes, intervals are contiguous', function(){
+      it('under mixture of clock drift and real changes, intervals are contiguous', function(){
         var clockDriftAdjust1 = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-01T12:02:05',
@@ -375,7 +374,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that under DST change (fall back), timezoneOffset changes', function(){
+      it('under DST change (fall back), timezoneOffset changes', function(){
         var onTimeDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-11-01T02:00:00',
@@ -399,7 +398,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that under travel across the date line (eastward), timezoneOffset changes', function(){
+      it('under travel across the date line (eastward), timezoneOffset changes', function(){
         // i.e., JHB comes to visit
         var fromNZ = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -424,7 +423,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that under travel across the date line (westward), timezoneOffset changes', function(){
+      it('under travel across the date line (westward), timezoneOffset changes', function(){
         // i.e., Left Coaster goes to NZ
         var toNZ = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -449,7 +448,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does', function(){
+      it('under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does', function(){
         // TODO: these don't work without the indices given to the lookup function
         // is this expected? is there a way to do the offsetIntervals differently to fix it?
         var wrongYear = builder.makeDeviceEventTimeChange()
@@ -496,7 +495,7 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
-      it('should ensure that when there is no `index`, uses first UTC timestamp that fits in an offsetInterval', function(){
+      it('when no `index`, uses first UTC timestamp that fits in an offsetInterval', function(){
         var ambiguousDeviceTime = '2015-04-01T12:00:00';
         var amNotPM = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -531,28 +530,28 @@ describe('TimezoneOffsetUtil.js', function(){
 
   describe('fillInUTCInfo', function(){
     var noChangesUtil = new TZOUtil('Pacific/Auckland', '2015-06-01T00:00:00.000Z', []);
-    it('should be a function', function() {
+    it('is a function', function() {
       expect(typeof noChangesUtil.fillInUTCInfo).to.equal('function');
     });
 
-    it('should throw an error if something other than an object provided as first param', function(){
+    it('throws an error if something other than an object provided as first param', function(){
       var fn1 = function() { noChangesUtil.fillInUTCInfo(1, new Date()); };
       expect(fn1).to.throw('Must provide an object!');
       var fn2 = function() { noChangesUtil.fillInUTCInfo([1,2,3], new Date()); };
       expect(fn2).to.throw('Must provide an object!');
     });
 
-    it('should throw an error if an empty object provided as first param', function(){
+    it('throws an error if an empty object provided as first param', function(){
       var fn = function() { noChangesUtil.fillInUTCInfo({}, new Date()); };
       expect(fn).to.throw('Object must not be empty!');
     });
 
-    it('should throw an error if a valid JavaScript Date not provided as second param', function(){
+    it('throws an error if a valid JavaScript Date not provided as second param', function(){
       var fn = function() { noChangesUtil.fillInUTCInfo({type: 'foo'}, 'bar'); };
       expect(fn).to.throw('Date must be provided!');
     });
 
-    it('should properly recognize 0 as an index and passes it to `lookup` function', function(){
+    it('properly recognizes 0 as an index and passes it to `lookup` function', function(){
       var stubLookup = sinon.spy(noChangesUtil, 'lookup');
       var obj = {
         type: 'foo',
@@ -565,7 +564,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(stubLookup.calledWith(dt, 0)).to.be.true;
     });
 
-    it('should mutate the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', function(){
+    it('mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', function(){
       var obj = {
         type: 'foo',
         index: 10
@@ -580,7 +579,7 @@ describe('TimezoneOffsetUtil.js', function(){
       expect(noChangesUtil.fillInUTCInfo(obj, dt)).to.deep.equal(expectedRes);
     });
 
-    it('should annotate the object if no `index` present', function(){
+    it('annotates the object if no `index` present', function(){
       var obj = {
         type: 'deviceEvent',
         subType: 'alarm'
@@ -597,7 +596,7 @@ describe('TimezoneOffsetUtil.js', function(){
     });
 
     // for OmniPod unbootstrappable alarms
-    it('should not add `time` etc. to the object if lookup failed', () => {
+    it('does not add `time` etc. to the object if lookup failed', () => {
         var ambiguousDeviceTime = '2015-03-31T23:59:00';
         var wrongMonth = builder.makeDeviceEventTimeChange()
           .with_change({
@@ -627,50 +626,50 @@ describe('TimezoneOffsetUtil.js', function(){
 });
 
 describe('TimezoneOffsetUtil in practice', function(){
-  it('should apply a timezone across-the-board when no `changes` provided', function(){
+  var oneDay = 1000 * 60 * 60 * 24;
+  it('applies a timezone across-the-board when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
+    var startDate = sundial.parseFromFormat('2015-02-01T00:00:00').getTime();
+    var dates = _.map(_.range(100), (days) => new Date(startDate + days * oneDay));
     // Hawaii doesn't use Daylight Savings Time
     var util = new TZOUtil('Pacific/Honolulu', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
       var datum = data[i], date = dates[i];
       util.fillInUTCInfo(datum, date);
     }
-    expect(_.pluck(data, 'timezoneOffset')[0]).to.equal(-600);
+    expect(_.map(data, 'timezoneOffset')[0]).to.equal(-600);
   });
 
-  it('should apply a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
+  it('applies a timezone across-the-board (including offset changes b/c of DST) when no `changes` provided', function(){
     var data = _.map(_.range(0,100), function(d) { return {value: d, type: 'foo'}; });
-    var dates = d3.time.day.range(sundial.parseFromFormat('2015-02-01T00:00:00'), sundial.parseFromFormat('2015-05-12T00:00:00'));
+    var startDate = sundial.parseFromFormat('2015-02-01T00:00:00').getTime();
+    var dates = _.map(_.range(100), (days) => new Date(startDate + days * oneDay));
     // US/Mountain *does* use Daylight Savings Time
     var util = new TZOUtil('US/Mountain', '2015-06-01T00:00:00.000Z', []);
     for (var i = 0; i < data.length; ++i) {
       var datum = data[i], date = dates[i];
       util.fillInUTCInfo(datum, date);
     }
-    var offsets = _.uniq(_.pluck(data, 'timezoneOffset'));
+    var offsets = _.uniq(_.map(data, 'timezoneOffset'));
     expect(offsets.length).to.equal(2);
     expect(offsets).to.deep.equal([-420, -360]);
   });
 
-  it('should apply the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
+  it('applies the offsets inferred from `changes`, resulting in no gaps or overlaps', function(done){
     this.timeout(5000);
     setTimeout(function() {
-      var data = [], index = 0;
-      var datetimesHomeAgain = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-19T05:05:00'),
-        sundial.parseFromFormat('2015-05-01T00:00:00'),
-        5
+      var data = [], index = 0, fiveMinutes = 1000 * 60 * 5;
+      var datetimesHomeAgainStart = sundial.parseFromFormat('2015-04-19T05:05:00').getTime();
+      var datetimesHomeAgain = _.map(_.range(3395), (i) =>
+        new Date(datetimesHomeAgainStart + fiveMinutes * i)
       );
-      var datetimesInNZ = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-10T19:05:00'),
-        sundial.parseFromFormat('2015-04-20T00:05:00'),
-        5
+      var datetimesInNZStart = sundial.parseFromFormat('2015-04-10T19:05:00').getTime();
+      var datetimesInNZ = _.map(_.range(2652), (i) =>
+        new Date(datetimesInNZStart + fiveMinutes * i)
       );
-      var datetimesBeforeTrip = d3.time.minute.utc.range(
-        sundial.parseFromFormat('2015-04-01T00:00:00'),
-        sundial.parseFromFormat('2015-04-10T00:05:00'),
-        5
+      var datetimesBeforeTripStart = sundial.parseFromFormat('2015-04-01T00:00:00').getTime();
+      var datetimesBeforeTrip = _.map(_.range(2593), (i) =>
+        new Date(datetimesBeforeTripStart + fiveMinutes * i)
       );
       var datetimes = _.flatten([datetimesBeforeTrip, datetimesInNZ, datetimesHomeAgain]);
       _.each(datetimes, function(dt) {
@@ -705,12 +704,12 @@ describe('TimezoneOffsetUtil in practice', function(){
       var byTime = _.sortBy(data, function(d) { return d.time; });
       var byIndex = _.sortBy(data, function(d) { return d.index; });
       expect(byTime).to.deep.equal(byIndex);
-      var deviceTimes = _.pluck(data, 'deviceTime');
+      var deviceTimes = _.map(data, 'deviceTime');
       var uniqDeviceTimes = _.uniq(deviceTimes);
       // given the time changes involved, device times are *not*
       // expected to be unique, hence the length of arrays should vary
       expect(deviceTimes.length).not.to.equal(uniqDeviceTimes.length);
-      var times = _.pluck(data, 'time');
+      var times = _.map(data, 'time');
       var uniqTimes = _.uniq(times);
       // but UTC times should *always* be unique, even with travel!
       // so the length of arrays should stay the same, even when reducing to unique

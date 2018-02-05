@@ -3,18 +3,24 @@ import _ from 'lodash';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore, push } from 'react-router-redux';
+import { Route } from 'react-router-dom';
+import { push } from 'react-router-redux';
+import { ipcRenderer } from 'electron';
+import { ConnectedRouter } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
+
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
-import routes from './routes';
 import configureStore from './store/configureStore';
+import api from '../lib/core/api';
+import App from './containers/App';
 import './app.global.css';
 import '../styles/main.less';
-import { ipcRenderer } from 'electron';
 
-const store = configureStore();
-const history = syncHistoryWithStore(hashHistory, store);
+
+const history = createHistory();
+
+const store = configureStore(undefined, history);
 store.dispatch(push('/'));
 
 // This is the communication mechanism for receiving actions dispatched from
@@ -26,7 +32,9 @@ ipcRenderer.on('action', function(event, action) {
 
 render(
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <ConnectedRouter history={history}>
+      <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('app')
 );

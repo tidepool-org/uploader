@@ -14,32 +14,33 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 * == BSD2 LICENSE ==
 */
+import Select from 'react-select';
 
 var _ = require('lodash');
 var React = require('react');
+var PropTypes = require('prop-types');
 var sundial = require('sundial');
-var Select = require('react-select');
 var cx = require('classnames');
 
 var styles = require('../../styles/components/TimezoneDropdown.module.less');
 
-var TimezoneDropdown = React.createClass({
-  propTypes: {
-    onTimezoneChange: React.PropTypes.func.isRequired,
-    selectorLabel: React.PropTypes.string.isRequired,
+class TimezoneDropdown extends React.Component {
+  static propTypes = {
+    onTimezoneChange: PropTypes.func.isRequired,
+    selectorLabel: PropTypes.string.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
-    targetId: React.PropTypes.string,
-    targetTimezone: React.PropTypes.string,
-    updateProfileErrorMessage: React.PropTypes.string,
-    updateProfileErrorDismissed: React.PropTypes.bool,
-    dismissUpdateProfileError: React.PropTypes.func.isRequired,
-    isClinicAccount: React.PropTypes.bool,
-    userDropdownShowing: React.PropTypes.bool,
-    isUploadInProgress: React.PropTypes.bool.isRequired
-  },
+    targetId: PropTypes.string,
+    targetTimezone: PropTypes.string,
+    updateProfileErrorMessage: PropTypes.string,
+    updateProfileErrorDismissed: PropTypes.bool,
+    dismissUpdateProfileError: PropTypes.func.isRequired,
+    isClinicAccount: PropTypes.bool,
+    userDropdownShowing: PropTypes.bool,
+    isUploadInProgress: PropTypes.bool.isRequired
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!this.props.targetId && nextProps.targetId !== null) {
       if (this.props.targetTimezone !== null) {
         this.props.onTimezoneChange(
@@ -48,22 +49,22 @@ var TimezoneDropdown = React.createClass({
         );
       }
     }
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     var self = this;
     self.updateSuggestedInterval = setInterval(
       function(){
         self.setState({time: new Date()});
       }, 1000 * 60
     );
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearInterval(this.updateSuggestedInterval);
-  },
+  }
 
-  buildTzSelector: function() {
+  buildTzSelector = () => {
     function sortByOffset(timezones) {
       return _.sortBy(timezones, function(tz) {
         return tz.offset;
@@ -86,9 +87,9 @@ var TimezoneDropdown = React.createClass({
         value={this.props.targetTimezone}
         disabled={this.props.isUploadInProgress} />
     );
-  },
+  };
 
-  renderSuggestedTime: function() {
+  renderSuggestedTime = () => {
     if(this.props.targetTimezone){
       return (
         <div className={styles.timeDetail}>
@@ -102,9 +103,9 @@ var TimezoneDropdown = React.createClass({
         </div>
       );
     }
-  },
+  };
 
-  renderError: function() {
+  renderError = () => {
     if(this.props.updateProfileErrorMessage && !this.props.updateProfileErrorDismissed){
       return (
         <div className={styles.error}>
@@ -113,9 +114,9 @@ var TimezoneDropdown = React.createClass({
         </div>
       );
     }
-  },
+  };
 
-  render: function() {
+  render() {
     var timezoneClasses = cx({
       [styles.clinic]: this.props.isClinicAccount,
       [styles.userDropdownShowing]: this.props.userDropdownShowing,
@@ -140,6 +141,6 @@ var TimezoneDropdown = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = TimezoneDropdown;

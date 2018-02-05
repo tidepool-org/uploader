@@ -5,7 +5,6 @@
  */
 
 import webpack from 'webpack';
-import validate from 'webpack-validator';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
@@ -34,9 +33,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-export default validate(merge(baseConfig, {
-  debug: true,
-
+export default merge(baseConfig, {
   devtool: '#cheap-module-source-map',
 
   entry: [
@@ -50,50 +47,114 @@ export default validate(merge(baseConfig, {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.global\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?sourceMap'
-        ]
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }]
       },
 
       {
         test: /^((?!\.global).)*\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        ]
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
+            importLoaders: 1,
+            localIdentName: '[name]__[local]___[hash:base64:5]'
+          }
+        }]
       },
 
       {
         test: /\.module\.less$/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          'less-loader?sourceMap'
-        ]
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
+            importLoaders: 1,
+            localIdentName: '[name]__[local]___[hash:base64:5]'
+          }
+        }, {
+          loader: 'less-loader',
+          options: {
+            sourceMap: true
+          }
+        }]
       },
 
       {
         test: /^((?!module).)*\.less$/,
-        loaders: [
-          'style-loader',
-          'css-loader?sourceMap',
-          'less-loader?sourceMap'
-        ]
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+
+          options: {
+            sourceMap: true
+          }
+        }, {
+          loader: 'less-loader',
+
+          options: {
+            sourceMap: true
+          }
+        }]
       },
 
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
+      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use: [{
+        loader: 'url-loader',
+
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
+      }] },
+      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, use: [{
+        loader: 'url-loader',
+
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
+      }] },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: [{
+        loader: 'url-loader',
+
+        options: {
+          limit: 10000,
+          mimetype: 'application/octet-stream'
+        }
+      }] },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: [{
+        loader: 'file-loader'
+      }] },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: [{
+        loader: 'url-loader',
+
+        options: {
+          limit: 10000,
+          mimetype: 'image/svg+xml'
+        }
+      }] },
 
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        loader: 'url-loader'
+        use: [{
+          loader: 'url-loader'
+        }]
       }
 
     ]
@@ -102,15 +163,13 @@ export default validate(merge(baseConfig, {
   plugins: [
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
     new webpack.HotModuleReplacementPlugin(),
-
     /**
      * If you are using the CLI, the webpack process will not exit with an error
      * code by enabling this plugin.
      * https://github.com/webpack/docs/wiki/list-of-plugins#noerrorsplugin
      */
-    new webpack.NoErrorsPlugin(),
-
-    /**
+     new webpack.NoEmitOnErrorsPlugin(),
+     /**
      * Create global constants which can be configured at compile time.
      *
      * Useful for allowing different behaviour between development builds and
@@ -123,13 +182,13 @@ export default validate(merge(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || '"development"',
       'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"dev"',
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
-      __REDUX_LOG__: JSON.stringify(JSON.parse(process.env.REDUX_LOG || 'false')),
-      __TEST__: false,
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+    }),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
     })
   ],
-
   /**
    * https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
    */
@@ -137,4 +196,4 @@ export default validate(merge(baseConfig, {
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
   }
-}));
+});

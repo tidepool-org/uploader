@@ -15,7 +15,8 @@
 * == BSD2 LICENSE ==
 */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import styles from '../../styles/components/VersionCheck.module.less';
 
@@ -46,4 +47,4 @@ export default class UpdatePlease extends Component {
       </div>
     );
   }
-};
+}

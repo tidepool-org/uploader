@@ -1,12 +1,6 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "7.9.0",
-        "electron": "1.7.8"
-      },
-      "useBuiltIns": true
-    }],
+    ["env", { "targets": { "node": "7.9.0", "electron": "1.7.8" }, "useBuiltIns": true }],
     "stage-0",
     "react"
   ],
@@ -15,7 +9,7 @@
   "env": {
     "production": {
       "presets": ["react-optimize"],
-      "plugins": ["babel-plugin-dev-expression", "transform-class-properties", "transform-es2015-classes"]
+      "plugins": ["babel-plugin-dev-expression"]
     },
     "development": {
       "plugins": [
@@ -36,9 +30,8 @@
         ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
         "babel-plugin-rewire",
         ["transform-define", {
-          "__TEST__": "true",
           "__VERSION_SHA__": "abcd",
-          "__DEBUG__": false
+          "process.env.DEBUG_ERROR": false
         }]
       ]
     }

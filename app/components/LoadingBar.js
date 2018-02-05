@@ -19,14 +19,14 @@ var React = require('react');
 
 var styles = require('../../styles/components/LoadingBar.module.less');
 
-var LoadingBar = React.createClass({
-  render: function() {
+class LoadingBar extends React.Component {
+  render() {
     return (
       <div className={styles.loadingBar}>
         <div className={styles.fill}>&nbsp;</div>
       </div>
     );
   }
-});
+}
 
 module.exports = LoadingBar;
