@@ -22,7 +22,7 @@
 
 const _ = require('lodash');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const expect = require('salinity').expect;
+const { expect } = require('salinity').expect;
 
 const Medtronic600Simulator = require('../../../lib/drivers/medtronic600/medtronic600Simulator');
 const NGPUtil = require('../../../lib/drivers/medtronic600/NGPUtil');

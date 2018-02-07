@@ -18,7 +18,7 @@
 /* global beforeEach, describe, it */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const expect = require('salinity').expect;
+const { expect } = require('salinity').expect;
 
 const NGPHistoryParser = require('../../../lib/drivers/medtronic600/NGPHistoryParser');
 const builder = require('../../../lib/objectBuilder')();
