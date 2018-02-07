@@ -17,17 +17,16 @@
 
 /* global beforeEach, describe, it */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require('salinity').expect;
+import { expect } from 'chai';
 
-const NGPHistoryParser = require('../../../lib/drivers/medtronic600/NGPHistoryParser');
-const builder = require('../../../lib/objectBuilder')();
-const TZOUtil = require('../../../lib/TimezoneOffsetUtil');
+import NGPHistoryParser from '../../../lib/drivers/medtronic600/NGPHistoryParser';
+import builder from '../../../lib/objectBuilder';
+import TZOUtil from '../../../lib/TimezoneOffsetUtil';
 
 describe('NGPHistoryParser.js', () => {
   const tzoUtil = new TZOUtil('GMT', '2016-12-01T00:00:00.000Z', []);
   const cfg = {
-    builder,
+    builder: builder(),
     tzoUtil,
   };
   const settings = {};

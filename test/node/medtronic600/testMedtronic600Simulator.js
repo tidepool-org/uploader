@@ -20,14 +20,13 @@
 // Mocha doesn't like arrow functions: https://mochajs.org/#arrow-functions
 /* eslint-disable prefer-arrow-callback,func-names,space-before-function-paren */
 
-const _ = require('lodash');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require('salinity').expect;
+import _ from 'lodash';
+import { expect } from 'chai';
 
-const Medtronic600Simulator = require('../../../lib/drivers/medtronic600/medtronic600Simulator');
-const NGPUtil = require('../../../lib/drivers/medtronic600/NGPUtil');
-const builder = require('../../../lib/objectBuilder')();
-const TZOUtil = require('../../../lib/TimezoneOffsetUtil');
+import Medtronic600Simulator from '../../../lib/drivers/medtronic600/medtronic600Simulator';
+import NGPUtil from '../../../lib/drivers/medtronic600/NGPUtil';
+import builder from '../../../lib/objectBuilder';
+import TZOUtil from '../../../lib/TimezoneOffsetUtil';
 
 describe('medtronic600Simulator.js', function() {
   let simulator = null;
@@ -38,7 +37,7 @@ describe('medtronic600Simulator.js', function() {
 
   beforeEach(function() {
     simulator = new Medtronic600Simulator({
-      builder,
+      builder: builder(),
       tzoUtil,
       settings,
     });
@@ -285,14 +284,14 @@ describe('medtronic600Simulator.js', function() {
 
   describe('basal', function() {
     it('should set duration using a following basal', function() {
-      const basal1 = builder.makeScheduledBasal()
+      const basal1 = simulator.config.builder.makeScheduledBasal()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
         .with_timezoneOffset(0)
         .with_conversionOffset(0)
         .with_scheduleName('Pattern 1')
         .with_rate(0.75);
-      const basal2 = builder.makeScheduledBasal()
+      const basal2 = simulator.config.builder.makeScheduledBasal()
         .with_time('2014-09-25T03:00:00.000Z')
         .with_deviceTime('2014-09-25T03:00:00')
         .with_timezoneOffset(0)
@@ -310,7 +309,7 @@ describe('medtronic600Simulator.js', function() {
 
     describe('temp basal', function() {
       it('should correct a restored scheduled basal start time after a temp basal', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
           .with_timezoneOffset(0)
@@ -323,14 +322,14 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.5,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:49:00.000Z')
           .with_deviceTime('2017-02-09T13:49:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.5);
-        const basal3 = builder.makeScheduledBasal()
+        const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T14:00:00.000Z')
           .with_deviceTime('2017-02-09T14:00:00')
           .with_timezoneOffset(0)
@@ -359,7 +358,7 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should ignore a segment change event when that segment is already active', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
           .with_timezoneOffset(0)
@@ -372,7 +371,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.5,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:12:00.000Z')
           .with_deviceTime('2017-02-09T13:12:00')
           .with_timezoneOffset(0)
@@ -386,7 +385,7 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should check for basal schedule changes', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T19:27:43.000Z')
           .with_deviceTime('2017-02-09T19:27:43')
           .with_timezoneOffset(0)
@@ -399,14 +398,14 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.4,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T20:00:00.000Z')
           .with_deviceTime('2017-02-09T20:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
-        const basal3 = builder.makeScheduledBasal()
+        const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T20:13:00.000Z')
           .with_deviceTime('2017-02-09T20:13:00')
           .with_timezoneOffset(0)
@@ -451,7 +450,7 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should change temp basal rate for percentage basals across a basal schedule change', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-01-28T22:41:00.000Z')
           .with_deviceTime('2017-01-28T22:41:00')
           .with_timezoneOffset(0)
@@ -465,14 +464,14 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.4,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-01-29T00:00:00.000Z')
           .with_deviceTime('2017-01-29T00:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.5);
-        const basal3 = builder.makeScheduledBasal()
+        const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-01-29T01:00:00.000Z')
           .with_deviceTime('2017-01-29T01:00:00')
           .with_timezoneOffset(0)
@@ -517,7 +516,7 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should handle temp basals ending near schedule change boundaries', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-10T08:29:24.000Z')
           .with_deviceTime('2017-02-10T08:29:24')
           .with_timezoneOffset(0)
@@ -530,7 +529,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T09:00:00.000Z')
           .with_deviceTime('2017-02-10T09:00:00')
           .with_timezoneOffset(0)
@@ -564,7 +563,7 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should handle back to back temp basals', function() {
-        const basal1 = builder.makeTempBasal()
+        const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T05:33:03.000Z')
           .with_deviceTime('2017-02-04T05:33:03')
           .with_timezoneOffset(0)
@@ -577,7 +576,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
-        const basal2 = builder.makeTempBasal()
+        const basal2 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T06:03:22.000Z')
           .with_deviceTime('2017-02-04T06:03:22')
           .with_timezoneOffset(0)
@@ -593,7 +592,7 @@ describe('medtronic600Simulator.js', function() {
 
         const expectedFirstBasal = _.cloneDeep(basal1);
 
-        const expectedSecondBasal = builder.makeScheduledBasal()
+        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T06:03:03.000Z')
           .with_deviceTime('2017-02-04T06:03:03')
           .with_timezoneOffset(0)
@@ -619,7 +618,7 @@ describe('medtronic600Simulator.js', function() {
 
     describe('pump suspend', function() {
       it('should set suppressed info for suspended basal', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2014-09-25T01:00:00.000Z')
           .with_deviceTime('2014-09-25T01:00:00')
           .with_timezoneOffset(0)
@@ -627,7 +626,7 @@ describe('medtronic600Simulator.js', function() {
           .with_scheduleName('Alice')
           .with_rate(1);
 
-        const suspendResume = builder.makeDeviceEventSuspendResume()
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2014-09-25T02:00:00.000Z')
           .with_deviceTime('2014-09-25T02:00:00')
           .with_timezoneOffset(0)
@@ -639,14 +638,14 @@ describe('medtronic600Simulator.js', function() {
           })
           .done();
 
-        const suspendedBasal = builder.makeSuspendBasal()
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
           .with_time('2014-09-25T02:00:00.000Z')
           .with_deviceTime('2014-09-25T02:00:00')
           .with_duration(3600000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
 
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2014-09-25T03:00:00.000Z')
           .with_deviceTime('2014-09-25T01:00:00')
           .with_timezoneOffset(0)
@@ -682,14 +681,14 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should set a restored scheduled basal after a pump suspend', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T15:00:00.000Z')
           .with_deviceTime('2017-02-09T15:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.4);
-        const suspendResume = builder.makeDeviceEventSuspendResume()
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-09T18:12:18.000Z')
           .with_deviceTime('2017-02-09T18:12:18')
           .with_timezoneOffset(0)
@@ -701,13 +700,13 @@ describe('medtronic600Simulator.js', function() {
             resumed: 'manual',
           })
           .done();
-        const suspendedBasal = builder.makeSuspendBasal()
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
           .with_time('2017-02-09T18:12:18.000Z')
           .with_deviceTime('2017-02-09T18:12:18')
           .with_duration(652000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T18:24:00.000Z')
           .with_deviceTime('2017-02-09T18:24:00')
           .with_timezoneOffset(0)
@@ -728,7 +727,7 @@ describe('medtronic600Simulator.js', function() {
         };
         expectedSuspendedBasal.set('suppressed', suppressed);
 
-        const expectedSecondBasal = builder.makeScheduledBasal()
+        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T18:23:10.000Z')
           .with_deviceTime('2017-02-09T18:23:10')
           .with_timezoneOffset(0)
@@ -747,14 +746,14 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should handle back to back pump suspends', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T20:00:00.000Z')
           .with_deviceTime('2017-02-01T20:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.4);
-        const suspendResume1 = builder.makeDeviceEventSuspendResume()
+        const suspendResume1 = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-01T22:20:30.000Z')
           .with_deviceTime('2017-02-01T22:20:30')
           .with_timezoneOffset(0)
@@ -766,13 +765,13 @@ describe('medtronic600Simulator.js', function() {
             resumed: 'manual',
           })
           .done();
-        const suspendedBasal1 = builder.makeSuspendBasal()
+        const suspendedBasal1 = simulator.config.builder.makeSuspendBasal()
           .with_time('2017-02-01T22:20:30.000Z')
           .with_deviceTime('2017-02-01T22:20:30')
           .with_duration(170000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
-        const suspendResume2 = builder.makeDeviceEventSuspendResume()
+        const suspendResume2 = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-01T22:23:27.000Z')
           .with_deviceTime('2017-02-01T22:23:27')
           .with_timezoneOffset(0)
@@ -784,13 +783,13 @@ describe('medtronic600Simulator.js', function() {
             resumed: 'manual',
           })
           .done();
-        const suspendedBasal2 = builder.makeSuspendBasal()
+        const suspendedBasal2 = simulator.config.builder.makeSuspendBasal()
           .with_time('2017-02-01T22:23:27.000Z')
           .with_deviceTime('2017-02-01T22:23:27')
           .with_duration(544000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T22:35:00.000Z')
           .with_deviceTime('2017-02-01T22:35:00')
           .with_timezoneOffset(0)
@@ -811,7 +810,7 @@ describe('medtronic600Simulator.js', function() {
         const expectedFirstSuspendedBasal = _.cloneDeep(suspendedBasal1);
         expectedFirstSuspendedBasal.set('suppressed', suppressed);
 
-        const expectedSecondBasal = builder.makeScheduledBasal()
+        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T22:23:20.000Z')
           .with_deviceTime('2017-02-01T22:23:20')
           .with_timezoneOffset(0)
@@ -823,7 +822,7 @@ describe('medtronic600Simulator.js', function() {
         const expectedSecondSuspendedBasal = _.cloneDeep(suspendedBasal2);
         expectedSecondSuspendedBasal.set('suppressed', suppressed);
 
-        const expectedThirdBasal = builder.makeScheduledBasal()
+        const expectedThirdBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T22:32:31.000Z')
           .with_deviceTime('2017-02-01T22:32:31')
           .with_timezoneOffset(0)
@@ -846,14 +845,14 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should handle a pump suspend during a temp basal', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T17:00:00.000Z')
           .with_deviceTime('2017-02-04T17:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
-        const basal2 = builder.makeTempBasal()
+        const basal2 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T17:03:22.000Z')
           .with_deviceTime('2017-02-04T17:03:22')
           .with_timezoneOffset(0)
@@ -866,7 +865,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
-        const suspendResume = builder.makeDeviceEventSuspendResume()
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-04T17:07:02.000Z')
           .with_deviceTime('2017-02-04T17:07:02')
           .with_timezoneOffset(0)
@@ -878,20 +877,20 @@ describe('medtronic600Simulator.js', function() {
             resumed: 'automatic',
           })
           .done();
-        const suspendedBasal = builder.makeSuspendBasal()
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
           .with_time('2017-02-04T17:07:02.000Z')
           .with_deviceTime('2017-02-04T17:07:02')
           .with_duration(887000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
-        const basal3 = builder.makeScheduledBasal()
+        const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T17:34:00.000Z')
           .with_deviceTime('2017-02-04T17:34:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
-        const basal4 = builder.makeScheduledBasal()
+        const basal4 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T18:00:00.000Z')
           .with_deviceTime('2017-02-04T18:00:00')
           .with_timezoneOffset(0)
@@ -949,14 +948,14 @@ describe('medtronic600Simulator.js', function() {
       });
 
       it('should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T06:00:00.000Z')
           .with_deviceTime('2017-02-10T06:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.4);
-        const basal2 = builder.makeTempBasal()
+        const basal2 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-10T06:27:43.000Z')
           .with_deviceTime('2017-02-10T06:27:43')
           .with_timezoneOffset(0)
@@ -969,14 +968,14 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.4,
             scheduleName: 'Pattern 1',
           });
-        const basal3 = builder.makeScheduledBasal()
+        const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T07:00:00.000Z')
           .with_deviceTime('2017-02-10T07:00:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
-        const suspendResume = builder.makeDeviceEventSuspendResume()
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-10T07:02:18.000Z')
           .with_deviceTime('2017-02-10T07:02:18')
           .with_timezoneOffset(0)
@@ -988,20 +987,20 @@ describe('medtronic600Simulator.js', function() {
             resumed: 'automatic',
           })
           .done();
-        const suspendedBasal = builder.makeSuspendBasal()
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
           .with_time('2017-02-10T07:02:18.000Z')
           .with_deviceTime('2017-02-10T07:02:18')
           .with_duration(2399000)
           .with_timezoneOffset(0)
           .with_conversionOffset(0);
-        const basal4 = builder.makeScheduledBasal()
+        const basal4 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T07:13:00.000Z')
           .with_deviceTime('2017-02-10T07:13:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
-        const basal5 = builder.makeScheduledBasal()
+        const basal5 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T08:00:00.000Z')
           .with_deviceTime('2017-02-10T08:00:00')
           .with_timezoneOffset(0)
@@ -1088,14 +1087,14 @@ describe('medtronic600Simulator.js', function() {
 
     describe('Auto-Mode basal', function() {
       it('should add a gap between two Auto-Mode basals that are more than six minutes apart', function() {
-        const basal1 = builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Auto-Basal')
           .with_rate(0.75);
-        const basal2 = builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:18:41.000Z')
           .with_deviceTime('2017-02-09T13:18:41')
           .with_timezoneOffset(0)
@@ -1107,7 +1106,7 @@ describe('medtronic600Simulator.js', function() {
         const expectedFirstBasal = _.cloneDeep(basal1);
         expectedFirstBasal
           .set('duration', 300000);
-        const expectedSecondBasal = builder.makeScheduledBasal()
+        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:16:41.000Z')
           .with_deviceTime('2017-02-09T13:16:41')
           .with_timezoneOffset(0)
