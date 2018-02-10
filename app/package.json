@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
-  "productName":  "tidepool-uploader",
-  "version": "2.0.4-600series-qa.10",
+  "productName": "tidepool-uploader",
+  "version": "2.2.5-600series-qa.12",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
@@ -10,11 +10,11 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "keytar": "4.0.3",
-    "node-hid": "0.5.4",
-    "serialport": "4.0.7"
+    "keytar": "4.0.4",
+    "node-hid": "0.5.7",
+    "serialport": "5.0.0"
   },
   "optionalDependencies": {
-    "winreg": "1.2.3"
+    "winreg": "1.2.4"
   }
 }

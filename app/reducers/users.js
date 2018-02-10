@@ -16,7 +16,7 @@
  */
 
 import _ from 'lodash';
-import update from 'react-addons-update';
+import update from 'immutability-helper';
 import personUtils from '../../lib/core/personUtils';
 
 import * as actionTypes from '../constants/actionTypes';
@@ -30,8 +30,8 @@ export function allUsers(state = {}, action) {
       let newState = {};
       _.each(memberships, (membership) => {
         newState[membership.userid] = (membership.userid === user.userid) ?
-          Object.assign({}, _.omit(user, 'userid'), profile) :
-          Object.assign({}, membership.profile);
+          _.assign({}, _.omit(user, 'userid'), profile) :
+          _.assign({}, membership.profile);
       });
       return newState;
     }
@@ -190,7 +190,7 @@ export function targetDevices(state = {}, action) {
       let newState = state;
       _.forOwn(targets, (targetsArray, userId) => {
         if (newState[userId] != null) {
-          let targetDevices = _.pluck(targetsArray, 'key');
+          let targetDevices = _.map(targetsArray, 'key');
           // collapse all bayercontour* devices into bayercontournext
           targetDevices = _.uniq(_.map(targetDevices, function(device) {
             if (device.startsWith('bayercontour') && device.length > 12) {
@@ -246,7 +246,7 @@ export function targetTimezones(state = {}, action) {
         // we have to check *specifically* for undefined here
         // because we use null when there isn't a timezone
         if (newState[userId] !== undefined) {
-          const targetTimezones = _.uniq(_.pluck(targetsArray, 'timezone'));
+          const targetTimezones = _.uniq(_.map(targetsArray, 'timezone'));
           if (targetTimezones.length === 1) {
             newState = update(
               newState,
