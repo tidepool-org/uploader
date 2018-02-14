@@ -22,7 +22,7 @@ const devices = {
     name: 'Medtronic - 523, 723 or 530G',
     selectName: 'Medtronic direct from Bayer Contour Next Link',
     source: {type: 'device', driverId: 'Medtronic'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
