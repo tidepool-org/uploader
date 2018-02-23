@@ -18,7 +18,6 @@
 import _ from 'lodash';
 
 import errorText from '../constants/errors';
-import rollbar from '../utils/rollbar';
 
 const errorProps = {
   code: 'Code',
@@ -107,7 +106,6 @@ export function createErrorLogger(api) {
       if (!err.debug) {
         err.debug = err.message || 'Unknown error';
       }
-      rollbar.error(err);
       api.errors.log(
        err,
         _.get(action, 'meta.metric.eventName', null),
