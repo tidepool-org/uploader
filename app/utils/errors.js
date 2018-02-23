@@ -18,7 +18,7 @@
 import _ from 'lodash';
 
 import errorText from '../constants/errors';
-import rollbar from './utils/rollbar';
+import rollbar from '../utils/rollbar';
 
 const errorProps = {
   code: 'Code',
