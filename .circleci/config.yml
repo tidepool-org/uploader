@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/tidepool-org/chrome-uploader
+    docker:
+    - image: circleci/node:8.2.1
+    parallelism: 1
+    # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
+    # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    # The `macos` block requests that builds will run on a machine running
+    # macOS with the specified version of Xcode installed
+    macos:
+      xcode: '9.0'
+    steps:
+    - checkout
+    - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+    - restore_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+    - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+    - run: yarn config set cache-folder ~/.cache/yarn
+    - run: yarn --frozen-lockfile
+    - save_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+        - ~/.cache/yarn
+        - ./node_modules
+    # Test
+    - run: yarn lint
+    - run: yarn test
+    # Package
+    - run: yarn package
+    # Teardown
+    # Save test results
+    - store_test_results:
+        path: /tmp/circleci-test-results
+    # Save artifacts
+    - store_artifacts:
+        path: /tmp/circleci-artifacts
+    - store_artifacts:
+        path: /tmp/circleci-test-results
