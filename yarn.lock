@@ -1869,7 +1869,7 @@ builder-util-runtime@3.4.0:
     fs-extra-p "^4.5.0"
     sax "^1.2.4"
 
-builder-util-runtime@^3.1.0, builder-util-runtime@^3.3.1:
+builder-util-runtime@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/builder-util-runtime/-/builder-util-runtime-3.3.1.tgz#d905cd5b7be7e60124a532ddd0e988e12c1bd5c3"
   dependencies:
@@ -1896,7 +1896,7 @@ builder-util-runtime@~3.1.0:
     fs-extra-p "^4.4.4"
     sax "^1.2.4"
 
-builder-util@3.4.4, builder-util@^3.2.1, builder-util@^3.4.2, builder-util@^3.4.4:
+builder-util@3.4.4, builder-util@^3.4.2, builder-util@^3.4.4:
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-3.4.4.tgz#cab30f37c1ee4fb23d33b20ac71e76e3c8451d28"
   dependencies:
@@ -5077,7 +5077,7 @@ inquirer@^3.0.6, inquirer@~3.3.0:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
-int64-buffer@^0.1.9:
+int64-buffer@^0.1.10:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/int64-buffer/-/int64-buffer-0.1.10.tgz#277b228a87d95ad777d07c13832022406a473423"
 
@@ -7718,7 +7718,7 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-rabin-bindings@~1.7.3:
+rabin-bindings@~1.7.4:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/rabin-bindings/-/rabin-bindings-1.7.4.tgz#174581d3b9a3c1b09ece75dc21f1b4ae0dd79974"
   dependencies:
