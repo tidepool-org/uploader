@@ -8,7 +8,7 @@ var difflet = require('difflet')({ indent : 2, comment: true });
 var intro = 'Compare JSON CLI:';
 var file1, file2;
 
-var EXCLUDES = ['payload','bolus.payload'];
+var EXCLUDES = ['payload','bolus.payload','guid','uploadId'];
 
 function loadFile(filePath, cb) {
   fs.readFile(filePath, 'utf8', function(error, data) {
@@ -84,7 +84,7 @@ if(file1 && file2) {
     loadFile(file1, function(json1) {
       loadFile(file2, function(json2) {
         _.remove(json1, function (record) {
-          return record.type === 'pumpSettings';
+          return record.type === 'pumpSettings' || record.type == 'upload';
         });
         if(program.type) {
           console.log(intro,'Filtering by', program.type);
