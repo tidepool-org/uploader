@@ -58,7 +58,8 @@ describe('misc reducers', () => {
         payload: {os: 'mac'}
       });
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
-      // because we do currently have devices unavailable on Mac
+      // at least one device is unavailable on Mac, so available devices should be less than
+      // all devices
       expect(_.keys(actualResult).length).to.be.lessThan(_.keys(devices).length);
     });
 
@@ -69,8 +70,9 @@ describe('misc reducers', () => {
       });
       let expectedResult = _.pickBy(devices, filterDevicesFn('win'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // because nothing currently is unavailable on Windows
-      expect(_.keys(actualResult).length).to.equal(_.keys(devices).length);
+      // at least one device is unavailable on Windows, so available devices should be less than
+      // all devices
+      expect(_.keys(actualResult).length).to.be.lessThan(_.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
