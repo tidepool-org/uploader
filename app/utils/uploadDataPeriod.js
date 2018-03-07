@@ -26,7 +26,7 @@ const PERIODS = {
 
 if (isRenderer) {
   let period = JSON.parse(localStorage.getItem('uploadDataPeriod')) ||
-    PERIODS.ALL;
+    PERIODS.DELTA;
 
   const uploadDataPeriod = module.exports = {
     period,
@@ -39,7 +39,7 @@ if (isRenderer) {
     }
   };
 } else {
-  let period = PERIODS.ALL;
+  let period = PERIODS.DELTA;
 
   if (isElectron()) {
     ipcMain.on('setUploadDataPeriod', (event, arg) => {
