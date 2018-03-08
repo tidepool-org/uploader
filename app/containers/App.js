@@ -228,9 +228,11 @@ export class App extends Component {
           {
             label: 'Last 4 weeks',
             id: uploadDataPeriod.PERIODS.FOUR_WEEKS,
+            visible: debugMode.isDebug,
             click: this.setDataPeriod,
             type: 'radio',
-            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.FOUR_WEEKS
+            checked: uploadDataPeriod.period ===
+              uploadDataPeriod.PERIODS.FOUR_WEEKS
           }
         ]
       });
