@@ -411,10 +411,10 @@ export function uploadRequest(userId, device, utc) {
   };
 }
 
-export function uploadProgress(step, percentage) {
+export function uploadProgress(step, percentage, isFirstUpload) {
   return {
     type: actionTypes.UPLOAD_PROGRESS,
-    payload: { step, percentage },
+    payload: { step, percentage, isFirstUpload },
     meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
   };
 }
