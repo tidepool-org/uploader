@@ -1079,6 +1079,70 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
+      it('should handle a pump suspend as the first basal event', function() {
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
+          .with_time('2017-09-04T18:00:00.000Z')
+          .with_deviceTime('2017-09-04T14:00:00')
+          .with_duration(41400000)
+          .with_timezoneOffset(-240)
+          .with_conversionOffset(0);
+        const basal1 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-09-05T04:00:00.000Z')
+          .with_deviceTime('2017-09-05T00:00:00')
+          .with_timezoneOffset(-240)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.15)
+          .with_duration(3600000);
+        const basal2 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-09-05T05:00:00.000Z')
+          .with_deviceTime('2017-09-05T01:00:00')
+          .with_timezoneOffset(-240)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.35)
+          .with_duration(3600000);
+
+        const expectedFirstBasal = _.cloneDeep(suspendedBasal);
+        expectedFirstBasal
+          .set('duration', 3600000)
+          .set('time', '2017-09-05T04:00:00.000Z')
+          .set('deviceTime', '2017-09-05T00:00:00');
+        expectedFirstBasal.set('suppressed', {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          rate: 1.15,
+          scheduleName: 'Pattern 1',
+        });
+
+        const expectedSecondBasal = _.cloneDeep(suspendedBasal);
+        expectedSecondBasal
+          .set('duration', 1800000)
+          .set('time', '2017-09-05T05:00:00.000Z')
+          .set('deviceTime', '2017-09-05T01:00:00');
+        expectedSecondBasal.set('suppressed', {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          rate: 1.35,
+          scheduleName: 'Pattern 1',
+        });
+
+        const expectedThirdBasal = _.cloneDeep(basal2);
+        expectedThirdBasal
+          .set('duration', 1800000)
+          .set('time', '2017-09-05T05:30:00.000Z')
+          .set('deviceTime', '2017-09-05T01:30:00');
+
+        simulator.basal(suspendedBasal);
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+        simulator.finalBasal();
+
+        expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
+          expectedSecondBasal.done(), expectedThirdBasal.done(),
+        ]);
+      });
+
       /* TODO - add test for Caty's 11th January 2017 data.
       it('', function() {
       });

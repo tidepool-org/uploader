@@ -42,6 +42,7 @@ import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import MainPage from './MainPage';
 import Login from '../components/Login';
@@ -129,6 +130,11 @@ export class App extends Component {
     this.setState({server: info.label});
   };
 
+  setDataPeriod = info => {
+    console.log('fetch device data for', info.label);
+    uploadDataPeriod.setPeriod(info.id);
+  };
+
   render() {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
@@ -199,6 +205,34 @@ export class App extends Component {
             click: this.setServer,
             type: 'radio',
             checked: this.state.server === 'Production'
+          }
+        ]
+      });
+      template.push({
+        label: 'Upload Data',
+        submenu: [
+          {
+            label: 'Everything',
+            id: uploadDataPeriod.PERIODS.ALL,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.ALL
+          },
+          {
+            label: 'New since last upload',
+            id: uploadDataPeriod.PERIODS.DELTA,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.DELTA
+          },
+          {
+            label: 'Last 4 weeks',
+            id: uploadDataPeriod.PERIODS.FOUR_WEEKS,
+            visible: debugMode.isDebug,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period ===
+              uploadDataPeriod.PERIODS.FOUR_WEEKS
           }
         ]
       });
