@@ -21,6 +21,7 @@
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
+- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ## Notes
 - Display units of smbg values are available in data protocol, but always reported in mg/dL
