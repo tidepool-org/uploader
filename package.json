@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -61,7 +61,7 @@
     "redux": "3.7.2",
     "redux-form": "7.1.2",
     "redux-thunk": "2.2.0",
-    "rollbar": "2.3.1",
+    "rollbar": "2.3.9",
     "rollbar-sourcemap-webpack-plugin": "2.2.0",
     "semver": "5.4.1",
     "source-map-support": "0.5.0",

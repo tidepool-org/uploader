@@ -5,6 +5,7 @@ import Rollbar from 'rollbar/dist/rollbar.umd';
 let rollbar = new Rollbar({
     accessToken: '1843589282464f4facd43f794c8201a8',
     captureUncaught: true,
+    enabled: process.env.NODE_ENV === 'production',
     payload: {
         environment: 'electron_renderer',
         client: {
