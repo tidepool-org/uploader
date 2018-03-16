@@ -29,7 +29,7 @@ const devices = {
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
     instructions: 'Plug in receiver with micro-USB',
