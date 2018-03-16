@@ -717,7 +717,7 @@ describe('Synchronous Actions', () => {
     });
 
     describe('uploadProgress', () => {
-      const step = 'READ', percentage = 50;
+      const step = 'READ', percentage = 50, isFirstUpload = true;
       it('should be an FSA', () => {
         let action = syncActions.uploadProgress(step, percentage);
 
@@ -727,11 +727,11 @@ describe('Synchronous Actions', () => {
       it('should create an action to update the step and percentage complete for the upload in progress', () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_PROGRESS,
-          payload: { step, percentage },
+          payload: { step, percentage, isFirstUpload },
           meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
         };
 
-        expect(syncActions.uploadProgress(step, percentage)).to.deep.equal(expectedAction);
+        expect(syncActions.uploadProgress(step, percentage, isFirstUpload)).to.deep.equal(expectedAction);
       });
     });
 
