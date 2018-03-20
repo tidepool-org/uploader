@@ -24,7 +24,6 @@ import sundial from 'sundial';
 import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/DeviceTimeModal.module.less';
-import { showingDeviceTimePrompt } from '../reducers/misc';
 
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
@@ -135,7 +134,7 @@ export class DeviceTimeModal extends Component {
   }
 
   render() {
-    const { showingDeviceTimePrompt, sync } = this.props;
+    const { showingDeviceTimePrompt } = this.props;
 
     if(!showingDeviceTimePrompt){
       return null;
