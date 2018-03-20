@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.3",
+  "version": "2.5.4-time-difference.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -219,7 +219,6 @@
     "mocha": "3.2.0",
     "node-hid": "0.5.7",
     "nodegit": "0.20.3",
-    "node-hid": "0.5.7",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "3.1.3",
