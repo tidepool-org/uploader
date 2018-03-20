@@ -686,4 +686,24 @@ describe('misc reducers', () => {
       })).to.be.true;
     });
   });
+
+  describe('showingDeviceTimePrompt', () => {
+    it('should return the initial state', () => {
+      expect(misc.showingDeviceTimePrompt(undefined, {})).to.be.null;
+    });
+
+    it('should handle DEVICE_TIME_INCORRECT', () => {
+      const payload = { callback: () => { }, cfg: { conf: 'value' }, times: { time1: 'value1' }};
+      expect(misc.showingDeviceTimePrompt(undefined, {
+        type: actionTypes.DEVICE_TIME_INCORRECT,
+        payload
+      })).to.deep.equal(payload);
+    });
+
+    it('should handle DISMISS_DEVICE_TIME_PROMPT', () => {
+      expect(misc.showingDeviceTimePrompt(undefined, {
+        type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+      })).to.be.false;
+    });
+  });
 });
