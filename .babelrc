@@ -14,7 +14,10 @@
     "development": {
       "plugins": [
         "transform-class-properties",
-        "transform-es2015-classes"
+        "transform-es2015-classes",
+        ["transform-define", {
+          "__VERSION_SHA__": "abcd",
+        }]
       ],
       "presets": ["react-hmre"]
     },
