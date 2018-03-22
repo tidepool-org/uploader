@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.3-libre-decompress-bug.1",
+  "version": "2.5.3-libre-decompress-bug.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
