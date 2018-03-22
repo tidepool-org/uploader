@@ -89,7 +89,7 @@ export class DeviceTimeModal extends Component {
             Is your CGM time set correctly? If not:
             <br/>
             <div><span className={styles.numeral}>1.</span> Update the time and date on your CGM</div>
-            <div><span className={styles.numeral}>2.</span> Wait 5 minutes for a new reading to appear</div>
+            <div><span className={styles.numeral}>2.</span> Wait for a new reading to appear</div>
             <div><span className={styles.numeral}>3.</span> Try uploading again</div> 
             </div>
           </div>
