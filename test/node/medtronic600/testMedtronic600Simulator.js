@@ -1151,14 +1151,14 @@ describe('medtronic600Simulator.js', function() {
 
     describe('Auto-Mode basal', function() {
       it('should add a gap between two Auto-Mode basals that are more than six minutes apart', function() {
-        const basal1 = simulator.config.builder.makeScheduledBasal()
+        const basal1 = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_scheduleName('Auto-Basal')
           .with_rate(0.75);
-        const basal2 = simulator.config.builder.makeScheduledBasal()
+        const basal2 = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:18:41.000Z')
           .with_deviceTime('2017-02-09T13:18:41')
           .with_timezoneOffset(0)
@@ -1170,7 +1170,7 @@ describe('medtronic600Simulator.js', function() {
         const expectedFirstBasal = _.cloneDeep(basal1);
         expectedFirstBasal
           .set('duration', 300000);
-        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
+        const expectedSecondBasal = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:16:41.000Z')
           .with_deviceTime('2017-02-09T13:16:41')
           .with_timezoneOffset(0)
@@ -1182,10 +1182,7 @@ describe('medtronic600Simulator.js', function() {
         expectedSecondBasal
           .set('payload', {
             logIndices: [2183956651],
-          })
-          .set('annotations', [{
-            code: 'basal/auto',
-          }]);
+          });
         const expectedThirdBasal = _.cloneDeep(basal2);
         expectedThirdBasal
           .set('duration', 300000);
