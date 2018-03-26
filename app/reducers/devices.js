@@ -24,7 +24,7 @@ const devices = {
     name: 'Medtronic 523, 723 or 530G',
     selectName: 'Medtronic 523, 723, 530G (Bayer Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   medtronic600: {
     instructions: 'Pair your Bayer Contour Next Link 2.4 with your Medtronic pump and connect to your computer',
@@ -46,7 +46,7 @@ const devices = {
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
     instructions: 'Plug in receiver with micro-USB',
@@ -89,7 +89,7 @@ const devices = {
     key: 'bayercontournext',
     name: 'Bayer Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   animas: {
     instructions: 'Suspend and align back of pump with IR dongle front',
@@ -97,6 +97,13 @@ const devices = {
     name: 'Animas',
     source: {type: 'device', driverId: 'Animas'},
     enabled: {mac: true, win: true}
+  },
+  onetouchverio: {
+    instructions: 'Plug in meter with micro-USB',
+    name: 'OneTouch Verio & Verio Flex',
+    key: 'onetouchverio',
+    source: {type: 'device', driverId: 'OneTouchVerio'},
+    enabled: {linux: true, mac: true, win: false}
   },
   onetouchverioiq: {
     instructions: 'Plug in meter with mini-USB',
