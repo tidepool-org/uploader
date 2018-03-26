@@ -1,6 +1,12 @@
 {
   "presets": [
-    ["env", { "targets": { "node": "7.9.0", "electron": "1.7.8" }, "useBuiltIns": true }],
+    [
+      "env",
+      {
+        "targets": { "node": "7.9.0", "electron": "1.7.8" },
+        "useBuiltIns": true
+      }
+    ],
     "stage-0",
     "react"
   ],
@@ -9,30 +15,49 @@
   "env": {
     "production": {
       "presets": ["react-optimize"],
-      "plugins": ["babel-plugin-dev-expression", "transform-class-properties", "transform-es2015-classes"]
+      "plugins": [
+        "babel-plugin-dev-expression",
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ]
     },
     "development": {
       "plugins": [
         "transform-class-properties",
-        "transform-es2015-classes"
+        "transform-es2015-classes",
+        [
+          "transform-define",
+          {
+            "__VERSION_SHA__": "abcd"
+          }
+        ]
       ],
       "presets": ["react-hmre"]
     },
     "test": {
       "plugins": [
-        [ "module-resolver", {
-          "root": ["./app/node_modules"],
-          "alias": {
-            "node-hid": "./app/node_modules/node-hid",
-            "serialport": "./app/node_modules/serialport"
+        [
+          "module-resolver",
+          {
+            "root": ["./app/node_modules"],
+            "alias": {
+              "node-hid": "./app/node_modules/node-hid",
+              "serialport": "./app/node_modules/serialport"
+            }
           }
-        } ],
-        ["webpack-loaders", { "config": "webpack.config.test.js", "verbose": false }],
+        ],
+        [
+          "webpack-loaders",
+          { "config": "webpack.config.test.js", "verbose": false }
+        ],
         "babel-plugin-rewire",
-        ["transform-define", {
-          "__VERSION_SHA__": "abcd",
-          "process.env.DEBUG_ERROR": false
-        }]
+        [
+          "transform-define",
+          {
+            "__VERSION_SHA__": "abcd",
+            "process.env.DEBUG_ERROR": false
+          }
+        ]
       ]
     }
   }
