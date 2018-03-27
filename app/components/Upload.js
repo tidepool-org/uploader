@@ -258,16 +258,13 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(_.isArray(data.pages)) {
+    if(_.isArray(data.pages || data.aapPackets)) {
+      /*
+        we currently support binary blobs for Medtronic (.pages) and
+        Libre (.aapPackets)
+      */
       let filenameBinary = 'binary-blob.json';
-      let blob = { settings:data.settings, pages:data.pages };
-      if(_.isArray(data.cbg_pages)) {
-        blob.cbg_pages = data.cbg_pages;
-      }
-      if(_.isArray(data.isig_pages)) {
-        blob.isig_pages = data.isig_pages;
-      }
-      let jsonDataBinary = JSON.stringify(blob, undefined, 4);
+      let jsonDataBinary = JSON.stringify(data, undefined, 4);
       let blobBinary = new Blob([jsonDataBinary], {type: 'text/json'});
       let dataHrefBinary = URL.createObjectURL(blobBinary);
       binary_link = (
