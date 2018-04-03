@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.5.4-time-difference.4",
+  "version": "2.5.4-time-difference.5",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
