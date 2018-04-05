@@ -41,6 +41,12 @@ export class DeviceTimeModal extends Component {
     return 'unknown';
   }
 
+  isAnimas = () => {
+    const { showingDeviceTimePrompt } = this.props;
+    const {deviceInfo} = showingDeviceTimePrompt.cfg;
+    return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === 'Animas';
+  }
+
   handleContinue = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
     showingDeviceTimePrompt.callback(null);
@@ -54,14 +60,21 @@ export class DeviceTimeModal extends Component {
   }
 
   getActions = () => {
-    return [
-      <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
-        Upload anyway
-      </button>,
+    const buttons = [];
+    if ( !this.isAnimas() ) {
+      buttons.push(
+        <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
+          Upload anyway
+        </button>,
+      );
+    }
+    buttons.push(
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
         Check time again
       </button>
-    ];
+    );
+
+    return buttons;
   }
 
   getMessage = () => {
@@ -77,7 +90,7 @@ export class DeviceTimeModal extends Component {
             <div><span className={styles.numeral}>1.</span> Update the time on your pump</div>
             <div><span className={styles.numeral}>2.</span> Suspend your pump</div>
             <div><span className={styles.numeral}>3.</span> Resume your pump</div>
-            <div><span className={styles.numeral}>4.</span> Try uploading again</div> 
+            <div><span className={styles.numeral}>4.</span> Try uploading again</div>
             </div>
           </div>
         );
@@ -90,7 +103,7 @@ export class DeviceTimeModal extends Component {
             <br/>
             <div><span className={styles.numeral}>1.</span> Update the time and date on your CGM</div>
             <div><span className={styles.numeral}>2.</span> Wait for a new reading to appear</div>
-            <div><span className={styles.numeral}>3.</span> Try uploading again</div> 
+            <div><span className={styles.numeral}>3.</span> Try uploading again</div>
             </div>
           </div>
         );
@@ -103,7 +116,7 @@ export class DeviceTimeModal extends Component {
             <br/>
             <div><span className={styles.numeral}>1.</span> Update the time and date on your meter</div>
             <div><span className={styles.numeral}>2.</span> Test your blood glucose again</div>
-            <div><span className={styles.numeral}>3.</span> Try uploading again</div> 
+            <div><span className={styles.numeral}>3.</span> Try uploading again</div>
             </div>
           </div>
         );
