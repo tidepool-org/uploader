@@ -85,6 +85,7 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
   - `[x]` date & time settings changes
+  - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -122,6 +123,7 @@ Choose one of the following:
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[x]` ketone out-of-range values
 - `[x]` ketone out-of-range value thresholds
+- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 Device-specific? (Add any device-specific notes/additions here.)
   - internal glucose unit is always mg/dL for this device, independent of display unit

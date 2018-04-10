@@ -19,6 +19,7 @@
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
+- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 #### Notes:
 - according to user manual, <20 mg/dL is LO and >600 mg/dL is HI
