@@ -96,7 +96,7 @@ const devices = {
     enabled: {mac: true, win: true}
   },
   onetouchultramini: {
-    instructions: 'Plug in meter with cable',
+    instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch UltraMini',
     key: 'onetouchultramini',
     showDriverLink: {mac: true, win: true},
@@ -104,7 +104,7 @@ const devices = {
     enabled: {mac: true, win: true}
   },
   onetouchultra2: {
-    instructions: 'Plug in meter with cable',
+    instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch Ultra 2',
     key: 'onetouchultra2',
     showDriverLink: {mac: true, win: true},

@@ -50,11 +50,20 @@ export function makeProgressFn(dispatch) {
   };
 }
 
+export function makeDisplayModal(dispatch) {
+  return (cb, cfg, times) => {
+    dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
+  };
+}
+
 export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
     if (err) {
+      if(err === 'deviceTimePromptClose'){
+        return dispatch(syncActions.uploadCancelled(getUtc(utc)));
+      }
       // the drivers sometimes just pass a string arg as err, instead of an actual error :/
       if (typeof err === 'string') {
         err = new Error(err);

@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.3-libre-decompress-bug.1",
+  "version": "2.5.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -68,7 +68,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.0.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.35.0",
+    "tidepool-platform-client": "0.36.0",
     "uuid": "3.1.0"
   },
   "browserslist": "electron 1.6",
@@ -219,7 +219,6 @@
     "mocha": "3.2.0",
     "node-hid": "0.5.7",
     "nodegit": "0.20.3",
-    "node-hid": "0.5.7",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "3.1.3",
