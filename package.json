@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.2-rollbar.1",
+  "version": "2.5.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -68,7 +68,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.0.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.35.0",
+    "tidepool-platform-client": "0.36.0",
     "util-promisify": "2.1.0",
     "uuid": "3.1.0"
   },

@@ -1056,6 +1056,88 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('doUpload [device, time check error and dialog dismissed]', () => {
+    it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
+      const userId = 'a1b2c3', deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
+      const targetDevice = {
+        key: deviceKey,
+        name: 'Acme Insulin Pump',
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      const initialState = {
+        devices: {
+          a_pump: targetDevice
+        },
+        os: 'mac',
+        uploadsByUser: {
+          [userId]: {
+            a_cgm: {},
+            a_pump: {history: [{start: time}]}
+          }
+        },
+        targetDevices: {
+          [userId]: ['a_cgm', 'a_pump']
+        },
+        targetTimezones: {
+          [userId]: 'US/Mountain'
+        },
+        uploadTargetDevice: deviceKey,
+        uploadTargetUser: userId,
+        version: '0.100.0',
+        working: {uploading: false}
+      };
+      let err = 'deviceTimePromptClose';
+      __Rewire__('services', {
+        api: {
+          upload: {
+            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
+          }
+        },
+        device: {
+          detect: (foo, bar, cb) => cb(null, {}),
+          upload: (foo, bar, cb) => cb(err)
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { userId, deviceKey, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted',
+              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+            }
+          }
+        },
+        {
+          type: actionTypes.DEVICE_DETECT_REQUEST,
+          meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+        },
+        {
+          type: actionTypes.UPLOAD_CANCELLED,
+          payload: { utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_CANCELLED]
+          }
+        }
+      ];
+      const store = mockStore(initialState);
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
   describe('doUpload [no error]', () => {
     it('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_SUCCESS actions', () => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';

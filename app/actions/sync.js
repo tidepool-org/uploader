@@ -288,14 +288,16 @@ export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
   // the rewire plugin messes with default export in tests
-  rollbar.configure && rollbar.configure({
-    payload: {
-      person: {
-        id: user.userid,
-        username: user.username,
+  if (rollbar) {
+    rollbar.configure && rollbar.configure({
+      payload: {
+        person: {
+          id: user.userid,
+          username: user.username,
+        }
       }
-    }
-  });
+    });
+  }
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload: { user, profile, memberships },
@@ -457,6 +459,16 @@ export function uploadFailure(err, errProps, device) {
           error: err
         }
       }
+    }
+  };
+}
+
+export function uploadCancelled(utc) {
+  return {
+    type: actionTypes.UPLOAD_CANCELLED,
+    payload: { utc },
+    meta: {
+      source: actionSources[actionTypes.UPLOAD_CANCELLED]
     }
   };
 }
@@ -762,5 +774,20 @@ export function driverUpdateShellOpts(opts) {
     type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
     payload: { opts },
     meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS] }
+  };
+}
+
+export function deviceTimeIncorrect(callback, cfg, times) {
+  return {
+    type: actionTypes.DEVICE_TIME_INCORRECT,
+    payload: { callback, cfg, times },
+    meta: { source: actionSources[actionTypes.DEVICE_TIME_INCORRECT] }
+  };
+}
+
+export function dismissedDeviceTimePromp() {
+  return {
+    type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+    meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }
   };
 }

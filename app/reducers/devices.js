@@ -29,7 +29,7 @@ const devices = {
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
     instructions: 'Plug in receiver with micro-USB',
@@ -95,14 +95,14 @@ const devices = {
     enabled: {mac: true, win: true}
   },
   onetouchultramini: {
-    instructions: 'Plug in meter with cable',
+    instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch UltraMini',
     key: 'onetouchultramini',
     source: {type: 'device', driverId: 'OneTouchUltraMini'},
     enabled: {mac: true, win: true}
   },
   onetouchultra2: {
-    instructions: 'Plug in meter with cable',
+    instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch Ultra 2',
     key: 'onetouchultra2',
     source: {type: 'device', driverId: 'OneTouchUltra2'},
