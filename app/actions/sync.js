@@ -463,6 +463,16 @@ export function uploadFailure(err, errProps, device) {
   };
 }
 
+export function uploadCancelled(utc) {
+  return {
+    type: actionTypes.UPLOAD_CANCELLED,
+    payload: { utc },
+    meta: {
+      source: actionSources[actionTypes.UPLOAD_CANCELLED]
+    }
+  };
+}
+
 export function deviceDetectRequest() {
   return {
     type: actionTypes.DEVICE_DETECT_REQUEST,
@@ -764,5 +774,20 @@ export function driverUpdateShellOpts(opts) {
     type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
     payload: { opts },
     meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS] }
+  };
+}
+
+export function deviceTimeIncorrect(callback, cfg, times) {
+  return {
+    type: actionTypes.DEVICE_TIME_INCORRECT,
+    payload: { callback, cfg, times },
+    meta: { source: actionSources[actionTypes.DEVICE_TIME_INCORRECT] }
+  };
+}
+
+export function dismissedDeviceTimePromp() {
+  return {
+    type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+    meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }
   };
 }

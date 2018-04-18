@@ -146,6 +146,7 @@ function uploading(state = false, action) {
     case actionTypes.READ_FILE_FAILURE:
     case actionTypes.UPLOAD_FAILURE:
     case actionTypes.UPLOAD_SUCCESS:
+    case actionTypes.UPLOAD_CANCELLED:
       return false;
     default:
       return state;
@@ -268,6 +269,17 @@ export function driverUpdateComplete(state = null, action) {
   switch (action.type) {
     case actionTypes.DRIVER_INSTALL:
       return true;
+    default:
+      return state;
+  }
+}
+
+export function showingDeviceTimePrompt(state = null, action) {
+  switch (action.type) {
+    case actionTypes.DEVICE_TIME_INCORRECT:
+      return { callback: action.payload.callback, cfg: action.payload.cfg, times: action.payload.times };
+    case actionTypes.DISMISS_DEVICE_TIME_PROMPT:
+      return false;
     default:
       return state;
   }

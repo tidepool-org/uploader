@@ -234,6 +234,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
+      dialogDisplay: actionUtils.makeDisplayModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
