@@ -32,7 +32,7 @@
 Choose one of the following:
 
   - `[ ]` legacy "jellyfish" ingestion API
-  - `*[ ]` platform ingestion API
+  - `[x]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
