@@ -1363,4 +1363,20 @@ describe('Synchronous Actions', () => {
       expect(syncActions.dismissedDeviceTimePromp()).to.deep.equal(expectedAction);
     });
   });
+
+  describe('timezoneBlur', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.timezoneBlur();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate blur of timezone selector', () => {
+      const expectedAction = {
+        type: actionTypes.TIMEZONE_BLUR,
+        meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
+      };
+      expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+    });
+  });
+
 });

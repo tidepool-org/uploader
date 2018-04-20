@@ -25,6 +25,16 @@ var cx = require('classnames');
 var styles = require('../../styles/components/TimezoneDropdown.module.less');
 
 class TimezoneDropdown extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.timezoneSelect = null;
+
+    this.setTimezoneSelect = element => {
+      this.timezoneSelect = element;
+    };
+  }
+
   static propTypes = {
     onTimezoneChange: PropTypes.func.isRequired,
     selectorLabel: PropTypes.string.isRequired,
@@ -64,6 +74,12 @@ class TimezoneDropdown extends React.Component {
     clearInterval(this.updateSuggestedInterval);
   }
 
+  componentDidUpdate() {
+    if (this.timezoneSelect && this.props.isTimezoneFocused) {
+      this.timezoneSelect.focus();
+    }
+  }
+
   buildTzSelector = () => {
     function sortByOffset(timezones) {
       return _.sortBy(timezones, function(tz) {
@@ -80,12 +96,14 @@ class TimezoneDropdown extends React.Component {
     return (
       <Select clearable={false}
         name={'timezoneSelect'}
+        onBlur={this.props.onBlur}
         onChange={this.props.onTimezoneChange.bind(null, targetUser)}
         options={opts}
         simpleValue={true}
         placeholder={'Type to search...'}
         value={this.props.targetTimezone}
-        disabled={this.props.isUploadInProgress} />
+        disabled={this.props.isUploadInProgress}
+        ref={this.setTimezoneSelect} />
     );
   };
 
