@@ -74,19 +74,23 @@ export default class UploadList extends Component {
     const headlineText = this.props.isClinicAccount ? 'Devices' : 'Upload Devices';
 
     const items = _.map(this.props.uploads, (upload) => {
-      return (
-        <div key={upload.key} className={styles.item}>
-          <Upload
-            disabled={disabled}
-            rememberMedtronicSerialNumber={this.props.rememberMedtronicSerialNumber}
-            upload={upload}
-            targetId={targetId}
-            onReset={onReset.bind(null, targetId, upload.key)}
-            onUpload={onUpload.bind(null, upload.key)}
-            readFile={this.props.readFile.bind(null, targetId, upload.key)} />
-          {this.renderErrorForUpload(upload)}
-        </div>
-      );
+      if (upload.name) {
+        return (
+          <div key={upload.key} className={styles.item}>
+            <Upload
+              disabled={disabled}
+              rememberMedtronicSerialNumber={this.props.rememberMedtronicSerialNumber}
+              upload={upload}
+              targetId={targetId}
+              onReset={onReset.bind(null, targetId, upload.key)}
+              onUpload={onUpload.bind(null, upload.key)}
+              readFile={this.props.readFile.bind(null, targetId, upload.key)} />
+            {this.renderErrorForUpload(upload)}
+          </div>
+        );
+      } else {
+        return;
+      }
     });
 
     return (
