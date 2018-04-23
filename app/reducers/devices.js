@@ -20,7 +20,7 @@ const devices = {
     },
     key: 'medtronic',
     name: 'Medtronic - 523, 723 or 530G',
-    selectName: 'Medtronic direct from Bayer Contour Next Link',
+    selectName: 'Medtronic 523, 723, 530G (using Bayer Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
     enabled: {mac: true, win: true, linux: true}
   },
