@@ -8,7 +8,7 @@ const devices = {
     // for the device selection list
     selectName: 'Medtronic (from CareLink)',
     source: {type: 'carelink'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: false, win: false} // CareLink is now disabled for all platforms
   },
   medtronic: {
     instructions: 'Connect your Bayer Contour Next Link to your computer',
