@@ -47,7 +47,9 @@ class TimezoneDropdown extends React.Component {
     dismissUpdateProfileError: PropTypes.func.isRequired,
     isClinicAccount: PropTypes.bool,
     userDropdownShowing: PropTypes.bool,
-    isUploadInProgress: PropTypes.bool.isRequired
+    isUploadInProgress: PropTypes.bool.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    isTimezoneFocused: PropTypes.bool.isRequired
   };
 
   componentWillReceiveProps(nextProps) {
