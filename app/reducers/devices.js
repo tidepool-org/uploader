@@ -70,7 +70,7 @@ const devices = {
   bayercontournext: {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournext',
-    name: 'Bayer Contour Next',
+    name: 'Ascensia (Bayer) Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
