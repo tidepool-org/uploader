@@ -364,8 +364,8 @@ export default class Upload extends Component {
     let disabled = upload.disabled || this.props.disabled;
 
     if (_.get(upload, 'source.type', null) === 'carelink') {
-      labelText = text.LABEL_IMPORT;
-      disabled = disabled || this.state.carelinkFormIncomplete;
+      labelText = 'Enable';
+      disabled = false;
     }
 
     if (_.get(upload, 'key', null) === 'medtronic') {
@@ -398,19 +398,8 @@ export default class Upload extends Component {
     return (
       <div>
         <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="username"
-            placeholder={this.props.text.CARELINK_USERNAME}/>
-        </div>
-        <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="password"
-            type="password"
-            placeholder={this.props.text.CARELINK_PASSWORD}/>
+          Medtronic has disabled this functionality.
+          Click the button below to enable direct upload to Tidepool using a Contour Next Link.
         </div>
       </div>
     );

@@ -8,7 +8,7 @@ const devices = {
     // for the device selection list
     selectName: 'Medtronic (from CareLink)',
     source: {type: 'carelink'},
-    enabled: {mac: false, win: false} // CareLink is now disabled for all platforms
+    enabled: {mac: true, win: true, linux: true}
   },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
