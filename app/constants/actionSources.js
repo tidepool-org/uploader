@@ -51,6 +51,7 @@ export const TOGGLE_ERROR_DETAILS = USER;
 export const DISMISS_UPDATE_PROFILE_ERROR = USER;
 export const DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR = USER;
 export const SET_ALL_USERS = UNDER_THE_HOOD;
+export const TIMEZONE_BLUR = UNDER_THE_HOOD;
 
 /*
  * Asyncronous action types
