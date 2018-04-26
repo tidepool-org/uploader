@@ -4,7 +4,7 @@ import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electro
 import os from 'os';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
-import * as chromeFinder from 'chrome-launcher/chrome-finder';
+import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
 import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
