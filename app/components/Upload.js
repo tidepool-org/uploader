@@ -40,6 +40,7 @@ export default class Upload extends Component {
     // for example a clinic worker
     targetId: PropTypes.string,
     upload: PropTypes.object.isRequired,
+    addDevice: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
@@ -101,12 +102,8 @@ export default class Upload extends Component {
   }
 
   handleCareLinkUpload = () => {
-    const { refs } = this;
-    let options = {
-      username: refs.username.value,
-      password: refs.password.value
-    };
-    this.props.onUpload(options);
+    var addDevice = this.props.addDevice.bind(null, this.props.targetId);
+    addDevice('medtronic');
   };
 
   handleMedtronicUpload() {

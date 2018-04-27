@@ -31,6 +31,7 @@ export default class UploadList extends Component {
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
     targetId: PropTypes.string,
+    addDevice: PropTypes.func.isRequired,
     uploads: PropTypes.array.isRequired,
     userDropdownShowing: PropTypes.bool.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -72,9 +73,13 @@ export default class UploadList extends Component {
     const { disabled, onReset, onUpload, targetId } = this.props;
 
     const headlineText = this.props.isClinicAccount ? 'Devices' : 'Upload Devices';
-
+    const medtronicEnabled = _.findIndex(this.props.uploads, {key:'medtronic'}) === -1 ? false : true;
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
+        //only show carelink if medtronic direct is not enabled
+        if (upload.key === 'carelink' && medtronicEnabled) {
+          return;
+        }
         return (
           <div key={upload.key} className={styles.item}>
             <Upload
@@ -82,6 +87,7 @@ export default class UploadList extends Component {
               rememberMedtronicSerialNumber={this.props.rememberMedtronicSerialNumber}
               upload={upload}
               targetId={targetId}
+              addDevice={this.props.addDevice}
               onReset={onReset.bind(null, targetId, upload.key)}
               onUpload={onUpload.bind(null, upload.key)}
               readFile={this.props.readFile.bind(null, targetId, upload.key)} />
