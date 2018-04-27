@@ -168,6 +168,7 @@ export class MainPage extends Component {
           readFile={this.props.async.readFile}
           targetId={this.props.uploadTargetUser}
           addDevice={this.props.sync.addTargetDevice}
+          removeDevice={this.props.sync.removeTargetDevice}
           timezoneIsSelected={Boolean(this.props.selectedTimezone)}
           toggleErrorDetails={this.props.sync.toggleErrorDetails}
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}

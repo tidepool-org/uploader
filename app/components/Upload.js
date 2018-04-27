@@ -41,6 +41,7 @@ export default class Upload extends Component {
     targetId: PropTypes.string,
     upload: PropTypes.object.isRequired,
     addDevice: PropTypes.func.isRequired,
+    removeDevice: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
@@ -103,7 +104,9 @@ export default class Upload extends Component {
 
   handleCareLinkUpload = () => {
     var addDevice = this.props.addDevice.bind(null, this.props.targetId);
+    var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
     addDevice('medtronic');
+    removeDevice('carelink');
   };
 
   handleMedtronicUpload() {
