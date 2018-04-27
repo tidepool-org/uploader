@@ -706,4 +706,28 @@ describe('misc reducers', () => {
       })).to.be.false;
     });
   });
+
+  describe('isTimezoneFocused', () => {
+    it('should return the initial state', () => {
+      expect(misc.isTimezoneFocused(undefined, {})).to.be.false;
+    });
+
+    it('should handle UPLOAD_CANCELLED', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.UPLOAD_CANCELLED,
+      })).to.be.true;
+    });
+
+    it('should handle TIMEZONE_BLUR', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.TIMEZONE_BLUR,
+      })).to.be.false;
+    });
+
+    it('should handle UPLOAD_REQUEST', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.UPLOAD_REQUEST,
+      })).to.be.false;
+    });
+  });
 });
