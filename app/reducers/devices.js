@@ -109,7 +109,7 @@ const devices = {
     enabled: {mac: true, win: true}
   },
   truemetrix: {
-    instructions: 'True Metrix: Place meter in cradle True Metrix Air & Go: Plug in meter with micro-USB cable',
+    instructions: 'True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable',
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
