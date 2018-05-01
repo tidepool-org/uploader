@@ -284,3 +284,15 @@ export function showingDeviceTimePrompt(state = null, action) {
       return state;
   }
 }
+
+export function isTimezoneFocused(state = false, action) {
+  switch (action.type) {
+    case actionTypes.UPLOAD_CANCELLED:
+      return true;
+    case actionTypes.TIMEZONE_BLUR:
+    case actionTypes.UPLOAD_REQUEST:
+      return false;
+    default:
+      return state;
+  }
+}

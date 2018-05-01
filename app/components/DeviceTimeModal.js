@@ -70,7 +70,7 @@ export class DeviceTimeModal extends Component {
     }
     buttons.push(
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Check time again
+        Cancel this upload
       </button>
     );
 
@@ -87,10 +87,9 @@ export class DeviceTimeModal extends Component {
             <div className={styles.body}>
             Is your pump time set correctly? If not:
             <br/>
-            <div><span className={styles.numeral}>1.</span> Update the time on your pump</div>
-            <div><span className={styles.numeral}>2.</span> Suspend your pump</div>
-            <div><span className={styles.numeral}>3.</span> Resume your pump</div>
-            <div><span className={styles.numeral}>4.</span> Try uploading again</div>
+            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
+            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
+            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
             </div>
           </div>
         );
@@ -101,9 +100,9 @@ export class DeviceTimeModal extends Component {
             <div className={styles.body}>
             Is your CGM time set correctly? If not:
             <br/>
-            <div><span className={styles.numeral}>1.</span> Update the time and date on your CGM</div>
-            <div><span className={styles.numeral}>2.</span> Wait for a new reading to appear</div>
-            <div><span className={styles.numeral}>3.</span> Try uploading again</div>
+            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
+            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
+            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
             </div>
           </div>
         );
@@ -114,9 +113,9 @@ export class DeviceTimeModal extends Component {
             <div className={styles.body}>
             Is your meter time set correctly? If not:
             <br/>
-            <div><span className={styles.numeral}>1.</span> Update the time and date on your meter</div>
-            <div><span className={styles.numeral}>2.</span> Test your blood glucose again</div>
-            <div><span className={styles.numeral}>3.</span> Try uploading again</div>
+            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
+            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
+            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
             </div>
           </div>
         );
