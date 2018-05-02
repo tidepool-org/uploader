@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.9",
+  "version": "2.5.9-more-rollbar-logging.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
