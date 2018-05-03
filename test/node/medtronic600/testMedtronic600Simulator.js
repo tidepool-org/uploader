@@ -107,13 +107,11 @@ describe('medtronic600Simulator.js', function() {
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('should not drop duplicate linked values', function() {
+    it('should drop exact duplicate linked values', function() {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
-      const expectedSecond = _.cloneDeep(linked);
-
-      expect(simulator.getEvents()).deep.equals([linked, expectedSecond]);
+      expect(simulator.getEvents()).deep.equals([linked]);
     });
   });
 
