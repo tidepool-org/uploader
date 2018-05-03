@@ -1119,10 +1119,6 @@ describe('medtronic600Simulator.js', function() {
             logIndices: [2183981984],
           });
         delete expectedFourthBasal.index;
-        /* // FIXME: Should the below work?
-        addIndex(expectedFourthBasal);
-        updateExpected(expectedFourthBasal);
-        */
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -1241,7 +1237,6 @@ describe('medtronic600Simulator.js', function() {
           .with_scheduleName('Auto-Basal')
           .with_rate(0)
           .with_duration(120000);
-        // TODO: is this logIndex accurate?
         expectedSecondBasal
           .set('payload', {
             logIndices: [2183917465],
