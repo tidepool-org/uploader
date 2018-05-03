@@ -57,6 +57,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
+import DeviceTimeModal from '../components/DeviceTimeModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -153,6 +154,7 @@ export class App extends Component {
         {this.renderVersionCheck()}
         <UpdateModal />
         <UpdateDriverModal />
+        <DeviceTimeModal />
       </div>
     );
   }

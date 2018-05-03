@@ -22,11 +22,28 @@
 
 import _ from 'lodash';
 import { expect } from 'chai';
+import sundial from 'sundial';
 
 import Medtronic600Simulator from '../../../lib/drivers/medtronic600/medtronic600Simulator';
 import NGPUtil from '../../../lib/drivers/medtronic600/NGPUtil';
 import builder from '../../../lib/objectBuilder';
 import TZOUtil from '../../../lib/TimezoneOffsetUtil';
+
+function addIndex(event) {
+  // Use a hardcoded offset of -1643956064
+  const rtc = (sundial.parseFromFormat(event.deviceTime).getTime() / 1000)
+    - 946684800 - -1643956064;
+  event.set('index', rtc);
+  return rtc;
+}
+
+function updateExpected(expectedEvent) {
+  expectedEvent.set('payload', {
+    logIndices: [expectedEvent.index],
+  });
+  // eslint-disable-next-line no-param-reassign
+  delete expectedEvent.index;
+}
 
 describe('medtronic600Simulator.js', function() {
   let simulator = null;
@@ -90,13 +107,11 @@ describe('medtronic600Simulator.js', function() {
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('should not drop duplicate linked values', function() {
+    it('should drop exact duplicate linked values', function() {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
-      const expectedSecond = _.cloneDeep(linked);
-
-      expect(simulator.getEvents()).deep.equals([linked, expectedSecond]);
+      expect(simulator.getEvents()).deep.equals([linked]);
     });
   });
 
@@ -322,6 +337,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.5,
             scheduleName: 'Pattern 1',
           });
+        addIndex(basal1);
         const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T13:49:00.000Z')
           .with_deviceTime('2017-02-09T13:49:00')
@@ -338,6 +354,7 @@ describe('medtronic600Simulator.js', function() {
           .with_rate(1.7);
 
         const expectedFirstBasal = _.cloneDeep(basal1);
+        updateExpected(expectedFirstBasal);
 
         const expectedSecondBasal = _.cloneDeep(basal2);
         expectedSecondBasal
@@ -346,7 +363,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-09T13:48:07')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183958537],
+            logIndices: [2183919351],
           });
 
         simulator.basal(basal1);
@@ -405,6 +422,7 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
+        addIndex(basal2);
         const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T20:13:00.000Z')
           .with_deviceTime('2017-02-09T20:13:00')
@@ -428,6 +446,9 @@ describe('medtronic600Simulator.js', function() {
             deliveryType: 'scheduled',
             rate: 1.2,
             scheduleName: 'Pattern 1',
+          })
+          .set('payload', {
+            logIndices: [2183941664],
           });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
@@ -437,8 +458,9 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-09T20:12:43')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183981613],
+            logIndices: [2183942427],
           });
+        delete expectedThirdBasal.index;
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -471,6 +493,7 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.5);
+        addIndex(basal2);
         const basal3 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-01-29T01:00:00.000Z')
           .with_deviceTime('2017-01-29T01:00:00')
@@ -495,6 +518,9 @@ describe('medtronic600Simulator.js', function() {
             deliveryType: 'scheduled',
             rate: 1.5,
             scheduleName: 'Pattern 1',
+          })
+          .set('payload', {
+            logIndices: [2182919264],
           });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
@@ -504,8 +530,9 @@ describe('medtronic600Simulator.js', function() {
           .set('duration', 2940000)
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2182959110],
+            logIndices: [2182919924],
           });
+        delete expectedThirdBasal.index;
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -529,6 +556,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
+        addIndex(basal1);
         const basal2 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T09:00:00.000Z')
           .with_deviceTime('2017-02-10T09:00:00')
@@ -537,8 +565,10 @@ describe('medtronic600Simulator.js', function() {
           .with_scheduleName('Pattern 2')
           .with_duration(1000)
           .with_rate(1.4);
+        addIndex(basal2);
 
         const expectedFirstBasal = _.cloneDeep(basal1);
+        updateExpected(expectedFirstBasal);
 
         const expectedSecondBasal = _.cloneDeep(basal2);
         expectedSecondBasal
@@ -549,10 +579,15 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-10T08:59:24')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2184027614],
+            logIndices: [2183988428],
           });
+        delete expectedSecondBasal.index;
 
         const expectedThirdBasal = _.cloneDeep(basal2);
+        expectedThirdBasal.set('payload', {
+          logIndices: [2183988464],
+        });
+        delete expectedThirdBasal.index;
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -576,6 +611,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
+        addIndex(basal1);
         const basal2 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T06:03:22.000Z')
           .with_deviceTime('2017-02-04T06:03:22')
@@ -591,6 +627,7 @@ describe('medtronic600Simulator.js', function() {
           });
 
         const expectedFirstBasal = _.cloneDeep(basal1);
+        updateExpected(expectedFirstBasal);
 
         const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T06:03:03.000Z')
@@ -602,7 +639,7 @@ describe('medtronic600Simulator.js', function() {
           .with_rate(1.2)
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183498633],
+            logIndices: [2183459447],
           });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
@@ -852,6 +889,7 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
+        addIndex(basal1);
         const basal2 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T17:03:22.000Z')
           .with_deviceTime('2017-02-04T17:03:22')
@@ -865,6 +903,7 @@ describe('medtronic600Simulator.js', function() {
             rate: 1.2,
             scheduleName: 'Pattern 1',
           });
+        addIndex(basal2);
         const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-04T17:07:02.000Z')
           .with_deviceTime('2017-02-04T17:07:02')
@@ -900,10 +939,14 @@ describe('medtronic600Simulator.js', function() {
           .with_rate(1.5);
 
         const expectedFirstBasal = _.cloneDeep(basal1);
-        expectedFirstBasal.set('duration', 202000);
+        expectedFirstBasal
+          .set('duration', 202000);
+        updateExpected(expectedFirstBasal);
 
         const expectedSecondBasal = _.cloneDeep(basal2);
-        expectedSecondBasal.set('duration', 220000);
+        expectedSecondBasal
+          .set('duration', 220000);
+        updateExpected(expectedSecondBasal);
 
         const expectedFirstSuspendedBasal = _.cloneDeep(suspendedBasal);
         expectedFirstSuspendedBasal.set('suppressed', {
@@ -922,7 +965,11 @@ describe('medtronic600Simulator.js', function() {
         expectedThirdBasal
           .set('duration', 671000)
           .set('time', '2017-02-04T17:21:49.000Z')
-          .set('deviceTime', '2017-02-04T17:21:49');
+          .set('deviceTime', '2017-02-04T17:21:49')
+          .set('payload', {
+            logIndices: [2183499066],
+          });
+        delete expectedThirdBasal.index;
 
         const expectedFourthBasal = _.cloneDeep(basal1);
         expectedFourthBasal
@@ -931,8 +978,9 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-04T17:33:00')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183540030],
+            logIndices: [2183500844],
           });
+        delete expectedFourthBasal.index;
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -975,6 +1023,7 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Pattern 1')
           .with_rate(1.2);
+        addIndex(basal3);
         const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
           .with_time('2017-02-10T07:02:18.000Z')
           .with_deviceTime('2017-02-10T07:02:18')
@@ -1020,12 +1069,16 @@ describe('medtronic600Simulator.js', function() {
           .set('duration', 138000)
           .set('time', '2017-02-10T07:00:00.000Z')
           .set('deviceTime', '2017-02-10T07:00:00');
-        expectedThirdBasal.set('suppressed', {
-          type: 'basal',
-          deliveryType: 'scheduled',
-          rate: 1.2,
-          scheduleName: 'Pattern 1',
-        });
+        expectedThirdBasal
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.2,
+            scheduleName: 'Pattern 1',
+          })
+          .set('payload', {
+            logIndices: [2183981264],
+          });
 
         const expectedFirstSuspendedBasal = _.cloneDeep(suspendedBasal);
         expectedFirstSuspendedBasal
@@ -1061,8 +1114,9 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-10T07:42:17')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2184021170],
+            logIndices: [2183981984],
           });
+        delete expectedFourthBasal.index;
 
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -1158,6 +1212,7 @@ describe('medtronic600Simulator.js', function() {
           .with_conversionOffset(0)
           .with_scheduleName('Auto-Basal')
           .with_rate(0.75);
+        addIndex(basal1);
         const basal2 = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:18:41.000Z')
           .with_deviceTime('2017-02-09T13:18:41')
@@ -1170,6 +1225,7 @@ describe('medtronic600Simulator.js', function() {
         const expectedFirstBasal = _.cloneDeep(basal1);
         expectedFirstBasal
           .set('duration', 300000);
+        updateExpected(expectedFirstBasal);
         const expectedSecondBasal = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:16:41.000Z')
           .with_deviceTime('2017-02-09T13:16:41')
@@ -1181,7 +1237,7 @@ describe('medtronic600Simulator.js', function() {
           .with_duration(120000);
         expectedSecondBasal
           .set('payload', {
-            logIndices: [2183956651],
+            logIndices: [2183917465],
           });
         const expectedThirdBasal = _.cloneDeep(basal2);
         expectedThirdBasal

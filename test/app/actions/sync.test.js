@@ -824,6 +824,32 @@ describe('Synchronous Actions', () => {
       });
     });
 
+    describe('uploadCancelled', () => {
+      const errProps = {
+        utc: '2016-01-01T12:05:00.123Z',
+      };
+      const device = {
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      it('should be an FSA', () => {
+        let action = syncActions.uploadCancelled();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to report an upload cancellation', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_CANCELLED,
+          payload: { utc: errProps.utc },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_CANCELLED]
+          }
+        };
+        const action = syncActions.uploadCancelled(errProps.utc);
+        expect(action).to.deep.equal(expectedAction);
+      });
+    });
+
     describe('deviceDetectRequest', () => {
       it('should be an FSA', () => {
         let action = syncActions.deviceDetectRequest();
@@ -1303,4 +1329,54 @@ describe('Synchronous Actions', () => {
       expect(syncActions.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
     });
   });
+
+  describe('deviceTimeIncorrect', () => {
+    const callback = () => {},
+      cfg = { config: 'value'},
+      times = { time1: 'time' };
+    it('should be an FSA', () => {
+      let action = syncActions.deviceTimeIncorrect(callback, cfg, times);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing device time mismatch modal', () => {
+      const expectedAction = {
+        type: actionTypes.DEVICE_TIME_INCORRECT,
+        payload: { callback, cfg, times },
+        meta: {source: actionSources[actionTypes.DEVICE_TIME_INCORRECT]}
+      };
+      expect(syncActions.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissedDeviceTimePromt', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissedDeviceTimePromp();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing device time mismatch modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+        meta: {source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT]}
+      };
+      expect(syncActions.dismissedDeviceTimePromp()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('timezoneBlur', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.timezoneBlur();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate blur of timezone selector', () => {
+      const expectedAction = {
+        type: actionTypes.TIMEZONE_BLUR,
+        meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
+      };
+      expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+    });
+  });
+
 });
