@@ -69,7 +69,9 @@ export class MainPage extends Component {
         targetTimezone={this.props.selectedTimezone}
         updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
         updateProfileErrorMessage={this.props.updateProfileErrorMessage}
-        userDropdownShowing={this.props.showingUserSelectionDropdown} />
+        userDropdownShowing={this.props.showingUserSelectionDropdown}
+        onBlur={this.props.sync.timezoneBlur}
+        isTimezoneFocused={this.props.isTimezoneFocused} />
     );
   }
 
@@ -228,6 +230,7 @@ export default connect(
       allUsers: state.allUsers,
       blipUrls: state.blipUrls,
       isClinicAccount: isClinicAccount(state),
+      isTimezoneFocused: state.isTimezoneFocused,
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),
       showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),
