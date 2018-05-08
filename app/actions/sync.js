@@ -791,3 +791,10 @@ export function dismissedDeviceTimePromp() {
     meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }
   };
 }
+
+export function timezoneBlur() {
+  return {
+    type: actionTypes.TIMEZONE_BLUR,
+    meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
+  };
+}
