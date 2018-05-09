@@ -1343,7 +1343,13 @@ describe('Synchronous Actions', () => {
       const expectedAction = {
         type: actionTypes.DEVICE_TIME_INCORRECT,
         payload: { callback, cfg, times },
-        meta: {source: actionSources[actionTypes.DEVICE_TIME_INCORRECT]}
+        meta: {
+          source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+          metric: {
+            eventName: metrics.DEVICE_TIME_INCORRECT,
+            properties: { times },
+          },
+        },
       };
       expect(syncActions.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
     });

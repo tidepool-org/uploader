@@ -781,7 +781,13 @@ export function deviceTimeIncorrect(callback, cfg, times) {
   return {
     type: actionTypes.DEVICE_TIME_INCORRECT,
     payload: { callback, cfg, times },
-    meta: { source: actionSources[actionTypes.DEVICE_TIME_INCORRECT] }
+    meta: {
+      source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+      metric: {
+        eventName: metrics.DEVICE_TIME_INCORRECT,
+        properties: { times },
+      }
+    },
   };
 }
 
