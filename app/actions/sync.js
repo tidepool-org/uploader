@@ -791,7 +791,7 @@ export function deviceTimeIncorrect(callback, cfg, times) {
   };
 }
 
-export function dismissedDeviceTimePromp() {
+export function dismissedDeviceTimePrompt() {
   return {
     type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
     meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }

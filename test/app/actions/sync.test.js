@@ -1355,9 +1355,9 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('dismissedDeviceTimePromt', () => {
+  describe('dismissedDeviceTimePrompt', () => {
     it('should be an FSA', () => {
-      let action = syncActions.dismissedDeviceTimePromp();
+      let action = syncActions.dismissedDeviceTimePrompt();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1366,7 +1366,7 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
         meta: {source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT]}
       };
-      expect(syncActions.dismissedDeviceTimePromp()).to.deep.equal(expectedAction);
+      expect(syncActions.dismissedDeviceTimePrompt()).to.deep.equal(expectedAction);
     });
   });
 
