@@ -32,10 +32,14 @@ describe('NGPHistoryParser.js', () => {
   const settings = {};
 
   describe('wizard', () => {
-    it('should add bolus record to wizard', () => {
-      const bolusData = 'dc001a822dff2e9e029f8e01aa0000014dfc00014dfc000032c8';
+    it('should add bolus record with matching programmed event to wizard', () => {
+      const bolusProgrammedData = '150016822dff2e9e029f8e01aa0000014dfc000032c8';
+      const bolusCompleteData = 'dc001a822dff189e029f8e01aa0000014dfc00014dfc000032c8';
       const wizardData = '3d0035822dfdd69e029f8e01000000003c002300000046003200370000000000014dfc000032c80000000000014dfc000000014dfc';
-      const historyParser = new NGPHistoryParser(cfg, settings, [wizardData + bolusData]);
+      const historyParser = new NGPHistoryParser(
+        cfg, settings,
+        [bolusProgrammedData + wizardData + bolusCompleteData],
+      );
       const events = [];
 
       const expected = {
@@ -82,6 +86,18 @@ describe('NGPHistoryParser.js', () => {
         type: 'wizard',
         units: 'mmol/L',
       };
+
+      historyParser.buildNormalBolusRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+    });
+
+    it('should ignore a bolus record without a matching programmed event', () => {
+      const bolusData = 'dc001a822dff2e9e029f8e01aa0000014dfc00014dfc000032c8';
+      const wizardData = '3d0035822dfdd69e029f8e01000000003c002300000046003200370000000000014dfc000032c80000000000014dfc000000014dfc';
+      const historyParser = new NGPHistoryParser(cfg, settings, [wizardData + bolusData]);
+      const events = [];
+
+      const expected = undefined;
 
       historyParser.buildNormalBolusRecords(events);
       expect(events[0]).to.deep.equal(expected);
