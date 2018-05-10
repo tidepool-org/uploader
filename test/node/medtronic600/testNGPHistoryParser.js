@@ -103,4 +103,36 @@ describe('NGPHistoryParser.js', () => {
       expect(events[0]).to.deep.equal(expected);
     });
   });
+
+  describe('suspend', () => {
+    it('should calculate the correct suspend duration', () => {
+      const suspendData = '1e000c81ee52f6a092886601';
+      const resumeData = '1f000c81ee56b5a092886602';
+      const historyParser = new NGPHistoryParser(cfg, settings, [suspendData + resumeData]);
+      const events = [];
+
+      const expected = {
+        time: '2018-05-05T21:15:08.000Z',
+        timezoneOffset: 0,
+        clockDriftOffset: 0,
+        conversionOffset: 0,
+        deviceTime: '2018-05-05T21:15:08',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: { suspended: 'automatic', resumed: 'manual' },
+        duration: 959000,
+        payload: {
+          suspended: { cause: 'Alarm suspend' },
+          resumed: { cause: 'User cleared alarm' },
+          logIndices: [2179879670],
+        },
+        index: 2179879670,
+        jsDate: new Date('2018-05-05T21:15:08.000Z'),
+      };
+
+      historyParser.buildSuspendResumeRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+    });
+  });
 });
