@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.5.9-truemetrix.4",
+  "version": "2.5.9-truemetrix.5",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
