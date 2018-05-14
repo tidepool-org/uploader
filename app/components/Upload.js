@@ -42,6 +42,7 @@ export default class Upload extends Component {
     upload: PropTypes.object.isRequired,
     addDevice: PropTypes.func.isRequired,
     removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
@@ -103,10 +104,17 @@ export default class Upload extends Component {
   }
 
   handleCareLinkUpload = () => {
+    /*
+    Once everyone has switched away from the CareLink option, this function, as
+    well as the props addDevice, removeDevice and onDone can be removed from
+    Upload, UploadList and MainPage components. See following PR for details:
+    https://github.com/tidepool-org/chrome-uploader/pull/602
+    */
     var addDevice = this.props.addDevice.bind(null, this.props.targetId);
     var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
     addDevice('medtronic');
     removeDevice('carelink');
+    this.props.onDone();
   };
 
   handleMedtronicUpload() {

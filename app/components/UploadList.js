@@ -33,6 +33,7 @@ export default class UploadList extends Component {
     targetId: PropTypes.string,
     addDevice: PropTypes.func.isRequired,
     removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
     uploads: PropTypes.array.isRequired,
     userDropdownShowing: PropTypes.bool.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -90,6 +91,7 @@ export default class UploadList extends Component {
               targetId={targetId}
               addDevice={this.props.addDevice}
               removeDevice={this.props.removeDevice}
+              onDone={this.props.onDone}
               onReset={onReset.bind(null, targetId, upload.key)}
               onUpload={onUpload.bind(null, upload.key)}
               readFile={this.props.readFile.bind(null, targetId, upload.key)} />
