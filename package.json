@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.8-device-list-fixes.1",
+  "version": "2.5.8-device-list-fixes.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
