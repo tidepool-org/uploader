@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.9-truemetrix.5",
+  "version": "2.5.9-truemetrix.6",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
