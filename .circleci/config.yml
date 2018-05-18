@@ -25,6 +25,8 @@ jobs:
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
+    - run: yarn global add greenkeeper-lockfile@1
+    - run: greenkeeper-lockfile-update
     - run: yarn --frozen-lockfile
     - save_cache:
         key: dependency-cache-{{ checksum "package.json" }}
@@ -34,5 +36,6 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
+    - run: greenkeeper-lockfile-upload
     # Package
     - run: yarn package
