@@ -1302,6 +1302,7 @@ describe('medtronic600Simulator.js', function() {
           .set('suppressed', {
             type: 'basal',
             deliveryType: 'temp',
+            percent: 2,
             rate: 3.0,
             suppressed: {
               type: 'basal',
@@ -1319,6 +1320,7 @@ describe('medtronic600Simulator.js', function() {
           .set('suppressed', {
             type: 'basal',
             deliveryType: 'temp',
+            percent: 2,
             rate: 2.0,
             suppressed: {
               type: 'basal',
