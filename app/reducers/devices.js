@@ -10,19 +10,19 @@ const devices = {
     // for the device selection list
     selectName: 'Medtronic (CareLink import)',
     source: {type: 'carelink'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   medtronic: {
-    instructions: 'Connect your Bayer Contour Next Link to your computer',
+    instructions: 'Connect your Contour Next Link to your computer',
     image: {
       'src': mm723Image,
       'height': 128,
       'width': 200,
-      'alt': 'Bayer Contour Next Link'
+      'alt': 'Contour Next Link'
     },
     key: 'medtronic',
-    name: 'Medtronic 523, 723 or 530G',
-    selectName: 'Medtronic 523, 723, 530G (Bayer Contour Next Link)',
+    name: 'Medtronic 523, 723, Veo or 530G',
+    selectName: 'Medtronic 523, 723, Veo or 530G (using Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -36,7 +36,7 @@ const devices = {
     },
     key: 'medtronic600',
     name: 'Medtronic 630G, 640G or 670G',
-    selectName: 'Medtronic 630G, 640G, 670G (Bayer Contour Next Link 2.4)',
+    selectName: 'Medtronic 630G, 640G, 670G (using Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true}
@@ -87,7 +87,7 @@ const devices = {
   bayercontournext: {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournext',
-    name: 'Bayer Contour Next',
+    name: 'Ascensia (Bayer) Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
