@@ -782,6 +782,106 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
+      it('should handle a pump suspend that crosses multiple schedule changes', function() {
+        const basal1 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-05-18T00:00:00.000Z')
+          .with_deviceTime('2017-05-18T00:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.35);
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
+          .with_time('2017-05-18T00:30:00.000Z')
+          .with_deviceTime('2017-05-18T00:30:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(7200000)
+          .with_reason({
+            suspended: 'automatic',
+            resumed: 'manual',
+          })
+          .done();
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
+          .with_time('2017-05-18T00:30:00.000Z')
+          .with_deviceTime('2017-05-18T00:30:00')
+          .with_duration(7200000)
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0);
+        const basal2 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-05-18T01:00:00.000Z')
+          .with_deviceTime('2017-05-18T01:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.25);
+        const basal3 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-05-18T02:00:00.000Z')
+          .with_deviceTime('2017-05-18T02:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_duration(3600000)
+          .with_rate(1.3);
+
+        const expectedFirstBasal = _.cloneDeep(basal1);
+        expectedFirstBasal.set('duration', 1800000);
+
+        const expectedFirstSuspendedBasal = _.cloneDeep(suspendedBasal);
+        expectedFirstSuspendedBasal
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.35,
+            scheduleName: 'Pattern 1',
+          })
+          .set('duration', 1800000);
+
+        const expectedSecondSuspendedBasal = _.cloneDeep(expectedFirstSuspendedBasal);
+        expectedSecondSuspendedBasal
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.25,
+            scheduleName: 'Pattern 1',
+          })
+          .set('duration', 3600000)
+          .set('time', '2017-05-18T01:00:00.000Z')
+          .set('deviceTime', '2017-05-18T01:00:00');
+
+        const expectedThirdSuspendedBasal = _.cloneDeep(expectedFirstSuspendedBasal);
+        expectedThirdSuspendedBasal
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.3,
+            scheduleName: 'Pattern 1',
+          })
+          .set('duration', 1800000)
+          .set('time', '2017-05-18T02:00:00.000Z')
+          .set('deviceTime', '2017-05-18T02:00:00');
+
+        const expectedSecondBasal = simulator.config.builder.makeScheduledBasal()
+          .with_time('2017-05-18T02:30:00.000Z')
+          .with_deviceTime('2017-05-18T02:30:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_duration(1800000)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.3);
+
+        simulator.basal(basal1);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.basal(basal2);
+        simulator.basal(basal3);
+        simulator.finalBasal();
+        expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(), suspendResume,
+          expectedFirstSuspendedBasal.done(), expectedSecondSuspendedBasal.done(),
+          expectedThirdSuspendedBasal.done(), expectedSecondBasal.done(),
+        ]);
+      });
+
       it('should handle back to back pump suspends', function() {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T20:00:00.000Z')
@@ -1130,6 +1230,147 @@ describe('medtronic600Simulator.js', function() {
           expectedSecondBasal.done(), expectedThirdBasal.done(), suspendResume,
           expectedFirstSuspendedBasal.done(),
           expectedSecondSuspendedBasal.done(), expectedFourthBasal.done(),
+        ]);
+      });
+
+      it('should handle a pump suspend that starts during a temp basal and finishes before the end of the temp basal, including a scheduled basal change', function() {
+        const basal1 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2018-05-18T06:00:00.000Z')
+          .with_deviceTime('2018-05-18T06:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.5);
+        const basal2 = simulator.config.builder.makeTempBasal()
+          .with_time('2018-05-18T11:04:17.000Z')
+          .with_deviceTime('2018-05-18T11:04:17')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_percent(2.0)
+          .with_rate(3.0)
+          .with_duration(14400000)
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.5,
+            scheduleName: 'Pattern 1',
+          });
+        const suspendResume = simulator.config.builder.makeDeviceEventSuspendResume()
+          .with_time('2018-05-18T11:15:17.000Z')
+          .with_deviceTime('2018-05-18T11:15:17')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_status('suspended')
+          .with_duration(7243000)
+          .with_reason({
+            suspended: 'automatic',
+            resumed: 'automatic',
+          })
+          .done();
+        const suspendedBasal = simulator.config.builder.makeSuspendBasal()
+          .with_time('2018-05-18T11:15:17.000Z')
+          .with_deviceTime('2018-05-18T11:15:17')
+          .with_duration(7243000)
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0);
+        const basal3 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2018-05-18T12:00:00.000Z')
+          .with_deviceTime('2018-05-18T12:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_rate(1.0);
+        addIndex(basal3);
+        const basal4 = simulator.config.builder.makeScheduledBasal()
+          .with_time('2018-05-18T16:00:00.000Z')
+          .with_deviceTime('2018-05-18T16:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_scheduleName('Pattern 1')
+          .with_duration(3600000)
+          .with_rate(1.2);
+
+        const expectedFirstBasal = _.cloneDeep(basal1);
+        expectedFirstBasal.set('duration', 18257000);
+
+        const expectedSecondBasal = _.cloneDeep(basal2);
+        expectedSecondBasal.set('duration', 660000);
+
+        const expectedFirstSuspendedBasal = _.cloneDeep(suspendedBasal);
+        expectedFirstSuspendedBasal
+          .set('duration', 2683000)
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'temp',
+            percent: 2,
+            rate: 3.0,
+            suppressed: {
+              type: 'basal',
+              deliveryType: 'scheduled',
+              rate: 1.5,
+              scheduleName: 'Pattern 1',
+            },
+          });
+
+        const expectedSecondSuspendedBasal = _.cloneDeep(suspendedBasal);
+        expectedSecondSuspendedBasal
+          .set('time', '2018-05-18T12:00:00.000Z')
+          .set('deviceTime', '2018-05-18T12:00:00')
+          .set('duration', 4560000)
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'temp',
+            percent: 2,
+            rate: 2.0,
+            suppressed: {
+              type: 'basal',
+              deliveryType: 'scheduled',
+              rate: 1.0,
+              scheduleName: 'Pattern 1',
+            },
+          });
+
+        const expectedThirdBasal = _.cloneDeep(basal2);
+        expectedThirdBasal
+          .set('duration', 6497000)
+          .set('time', '2018-05-18T13:16:00.000Z')
+          .set('deviceTime', '2018-05-18T13:16:00')
+          .set('rate', 2)
+          .set('payload', {
+            logIndices: [2223916064],
+          })
+          .set('suppressed', {
+            type: 'basal',
+            deliveryType: 'scheduled',
+            rate: 1.0,
+            scheduleName: 'Pattern 1',
+          });
+
+        const expectedFourthBasal = _.cloneDeep(basal3);
+        expectedFourthBasal
+          .set('duration', 3343000)
+          .set('clockDriftOffset', 0)
+          .set('time', '2018-05-18T15:04:17.000Z')
+          .set('deviceTime', '2018-05-18T15:04:17')
+          .set('payload', {
+            logIndices: [2223927121],
+          });
+        delete expectedFourthBasal.index;
+
+        const expectedFifthBasal = _.cloneDeep(basal4);
+
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+        simulator.suspendResume(suspendResume);
+        simulator.basal(suspendedBasal);
+        simulator.basal(basal3);
+        simulator.basal(basal4);
+        simulator.finalBasal();
+
+        expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
+          expectedSecondBasal.done(), suspendResume, expectedFirstSuspendedBasal.done(),
+          expectedSecondSuspendedBasal.done(), expectedThirdBasal.done(),
+          expectedFourthBasal.done(), expectedFifthBasal.done(),
         ]);
       });
 

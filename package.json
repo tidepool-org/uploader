@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.9-600series-qa.27",
+  "version": "2.5.9-600series-qa.28",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
