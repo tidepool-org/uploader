@@ -82,6 +82,7 @@ describe('processData.js', function() {
         expectedDuration: 1800000,
         payload: { logIndices: [40] },
         index: 40,
+        iob: 0.2,
         jsDate: new Date('2016-11-14T01:42:00.000Z')
       };
 
