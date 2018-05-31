@@ -1343,15 +1343,21 @@ describe('Synchronous Actions', () => {
       const expectedAction = {
         type: actionTypes.DEVICE_TIME_INCORRECT,
         payload: { callback, cfg, times },
-        meta: {source: actionSources[actionTypes.DEVICE_TIME_INCORRECT]}
+        meta: {
+          source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+          metric: {
+            eventName: metrics.DEVICE_TIME_INCORRECT,
+            properties: { times },
+          },
+        },
       };
       expect(syncActions.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
     });
   });
 
-  describe('dismissedDeviceTimePromt', () => {
+  describe('dismissedDeviceTimePrompt', () => {
     it('should be an FSA', () => {
-      let action = syncActions.dismissedDeviceTimePromp();
+      let action = syncActions.dismissedDeviceTimePrompt();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1360,7 +1366,7 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
         meta: {source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT]}
       };
-      expect(syncActions.dismissedDeviceTimePromp()).to.deep.equal(expectedAction);
+      expect(syncActions.dismissedDeviceTimePrompt()).to.deep.equal(expectedAction);
     });
   });
 

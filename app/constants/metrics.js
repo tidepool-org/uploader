@@ -53,3 +53,6 @@ export const VERSION_CHECK_FAILURE_OUTDATED = '(Partial) Uploader Version No Lon
 
 export const UNSUPPORTED_SCREEN_DISPLAYED = 'Electron Uploader - Unsupported screen displayed';
 export const QUIT_AND_INSTALL = 'Electron Uploader - Auto-update occurred';
+
+export const DEVICE_TIME_INCORRECT = 'Device time incorrect';
+ 
