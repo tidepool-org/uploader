@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.5.9-iob-fix.1",
+  "version": "2.5.12",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
