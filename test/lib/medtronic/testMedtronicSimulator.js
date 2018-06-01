@@ -169,6 +169,7 @@ describe('medtronicSimulator.js', function() {
         conversionOffset: 0,
         deviceId: 'medtronic12345',
         normal: 1.3,
+        iob: 0.2,
         type: 'bolus',
         subType: 'normal'
       };
@@ -201,6 +202,7 @@ describe('medtronicSimulator.js', function() {
       delete expectedWizard.jsDate;
       expectedWizard.bolus = _.clone(bolus);
       delete expectedWizard.bolus.jsDate;
+      delete expectedWizard.bolus.iob;
     });
 
     it('bolus record gets added to wizard', function() {
