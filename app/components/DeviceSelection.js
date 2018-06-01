@@ -92,11 +92,8 @@ class DeviceSelection extends React.Component {
         </div>
       );
     });
-    // ensure that carelink is last
+
     var carelink = _.remove(items, {'key': 'carelink'});
-    if(!_.isEmpty(items)){
-      items = items.concat(carelink);
-    }
 
     // TODO: when this gets the ES6 treatment, use computed property syntax
     var formClassesObject = {};
