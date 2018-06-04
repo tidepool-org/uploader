@@ -135,4 +135,55 @@ describe('NGPHistoryParser.js', () => {
       expect(events[0]).to.deep.equal(expected);
     });
   });
+
+  describe('temp basal', () => {
+    it('should synthesize a temp basal with annotations if final temp basal event is TEMP_BASAL_PROGRAMMED', () => {
+      const basalSegmentStart = '1d001181963895a101dbab020200001482';
+      const tempBasalProgrammed = '1b00148196614ca101dbab000100000000c800f0';
+      const historyParser = new NGPHistoryParser(cfg, settings, [basalSegmentStart +
+        tempBasalProgrammed]);
+      const events = [];
+
+      // We need to simplify the object using JSON.parse/JSON.stringify because
+      // .done() would cause an error on an incomplete builder() object.
+      const expectedFirstBasal = JSON.parse(JSON.stringify(builder().makeScheduledBasal()
+        .with_time('2018-05-23T12:00:00.000Z')
+        .with_deviceTime('2018-05-23T12:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_clockDriftOffset(0)
+        .with_scheduleName('Pattern 2')
+        .with_rate(0.525)
+        .set('index', 2174105749)
+        .set('jsDate', new Date('2018-05-23T12:00:00.000Z'))));
+
+      const expectedTempBasal = JSON.parse(JSON.stringify(builder().makeTempBasal()
+        .with_time('2018-05-23T14:53:43.000Z')
+        .with_deviceTime('2018-05-23T14:53:43')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_clockDriftOffset(0)
+        .with_rate(1.05)
+        .with_percent(2)
+        .with_expectedDuration(14400000)
+        .with_duration(14400000)
+        .set('index', 2174116172)
+        .set('jsDate', '2018-05-23T14:53:43.000Z')
+        .set('annotations', [{
+          code: 'basal/unknown-duration',
+        }])
+        .set('suppressed', {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          rate: 0.525,
+          scheduleName: 'Pattern 2',
+        })));
+
+      historyParser.buildBasalRecords(events);
+      historyParser.buildTempBasalRecords(events);
+
+      expect(JSON.parse(JSON.stringify(events))).to.deep.equal([expectedFirstBasal,
+        expectedTempBasal]);
+    });
+  });
 });
