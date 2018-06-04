@@ -781,11 +781,17 @@ export function deviceTimeIncorrect(callback, cfg, times) {
   return {
     type: actionTypes.DEVICE_TIME_INCORRECT,
     payload: { callback, cfg, times },
-    meta: { source: actionSources[actionTypes.DEVICE_TIME_INCORRECT] }
+    meta: {
+      source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+      metric: {
+        eventName: metrics.DEVICE_TIME_INCORRECT,
+        properties: { times },
+      }
+    },
   };
 }
 
-export function dismissedDeviceTimePromp() {
+export function dismissedDeviceTimePrompt() {
   return {
     type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
     meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }
