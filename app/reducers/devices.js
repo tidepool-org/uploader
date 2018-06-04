@@ -39,7 +39,7 @@ const devices = {
     selectName: 'Medtronic 630G, 640G, 670G (using Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
