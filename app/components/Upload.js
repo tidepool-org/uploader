@@ -242,6 +242,15 @@ export default class Upload extends Component {
     }
   };
 
+  onMedtronic600LinkedChange = e => {
+    const checkbox = e.target;
+    const { checked } = checkbox;
+
+    this.setState({
+      medtronic600Linked: checked
+    });
+  };
+
   getDebugLinks(data) {
 
     let post_link = null;
@@ -460,7 +469,7 @@ export default class Upload extends Component {
             <input
               type="checkbox"
               id="medtronic600Linked"
-              onChange={this.onMedtronicSerialNumberRememberChange}
+              onChange={this.onMedtronic600LinkedChange}
               checked={this.state.medtronic600Linked} />
             <label htmlFor="medtronic600Linked">
               {this.props.text.MEDTRONIC_600_IS_LINKED}
