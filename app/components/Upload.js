@@ -56,6 +56,7 @@ export default class Upload extends Component {
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
       MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
       REMEMBER_SERIAL_NUMBER: 'Remember serial number',
+      MEDTRONIC_600_IS_LINKED: 'Next Link and pump are linked',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
@@ -75,7 +76,8 @@ export default class Upload extends Component {
     carelinkFormIncomplete: true,
     medtronicFormIncomplete: true,
     medtronicSerialNumberValue: '',
-    medtronicSerialNumberRemember: false
+    medtronicSerialNumberRemember: false,
+    medtronic600Linked: true
   };
 
   constructor(props) {
@@ -334,6 +336,7 @@ export default class Upload extends Component {
       <form className={styles.form}>
         {this.renderCareLinkInputs()}
         {this.renderMedtronicSerialNumberInput()}
+        {this.renderMedtronic600SerialNumberInput()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
@@ -438,6 +441,39 @@ export default class Upload extends Component {
             <label htmlFor="medtronicSerialRemember">
               {this.props.text.REMEMBER_SERIAL_NUMBER}
             </label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderMedtronic600SerialNumberInput() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic600') {
+      return null;
+    }
+
+    return (
+      <div>
+        <div className={styles.textInputWrapper}>
+          <div className={styles.rememberWrap}>
+            <input
+              type="checkbox"
+              id="medtronic600Linked"
+              onChange={this.onMedtronicSerialNumberRememberChange}
+              checked={this.state.medtronic600Linked} />
+            <label htmlFor="medtronic600Linked">
+              {this.props.text.MEDTRONIC_600_IS_LINKED}
+            </label>
+          </div>
+          <div style={!this.state.medtronic600Linked ? {} : { display: 'none' }}>
+            <p>Enter your 10 character serial number.</p>
+            <input
+              type="text"
+              value={this.state.medtronicSerialNumberValue}
+              onChange={this.onMedtronicSerialNumberInputChange}
+              className={styles.textInput}
+              placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
           </div>
         </div>
       </div>
