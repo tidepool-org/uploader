@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.0-update-serialport.4",
+  "version": "2.6.0-update-serialport.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
