@@ -25,7 +25,7 @@ import { expect } from 'chai';
 import sundial from 'sundial';
 
 import Medtronic600Simulator from '../../../lib/drivers/medtronic600/medtronic600Simulator';
-import NGPUtil from '../../../lib/drivers/medtronic600/NGPUtil';
+import { NGPTimestamp } from '../../../lib/drivers/medtronic600/NGPUtil';
 import builder from '../../../lib/objectBuilder';
 import TZOUtil from '../../../lib/TimezoneOffsetUtil';
 
@@ -49,7 +49,7 @@ describe('medtronic600Simulator.js', function() {
   let simulator = null;
   const tzoUtil = new TZOUtil('GMT', '2015-06-01T00:00:00.000Z', []);
   const settings = {
-    currentNgpTimestamp: new NGPUtil.NGPTimestamp(2186757135, -1643995250),
+    currentNgpTimestamp: new NGPTimestamp(2186757135, -1643995250),
   };
 
   beforeEach(function() {
