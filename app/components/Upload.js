@@ -277,6 +277,10 @@ export default class Upload extends Component {
     // Capitalise any characters
     const value = _.toUpper(field.value);
 
+    if (value.length > 10) {
+      return;
+    }
+
     // The final valid match is /^\d{2}[0-9A-Z]\d{6}A-Z}/
     // The following matches progressively as well.
     // eslint-disable-next-line max-len
