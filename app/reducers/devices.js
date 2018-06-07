@@ -27,7 +27,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   medtronic600: {
-    instructions: 'Pair your Bayer Contour Next Link 2.4 with your Medtronic pump and connect to your computer',
+    instructions: 'Connect your Contour Next Link 2.4 to your computer',
     image: {
       'src': medtronic600PumpImage,
       'height': 52,

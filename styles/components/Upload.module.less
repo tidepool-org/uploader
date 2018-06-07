@@ -111,6 +111,10 @@
   composes: form-control from '../core/forms.less';
 }
 
+.textInputError:extend(.textInput) {
+  border-color: @red !important;
+}
+
 .buttonWrap {
   composes: flexRowWrap from '../core/layout.module.less';
   justify-content: flex-end;

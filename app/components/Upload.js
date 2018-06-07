@@ -77,6 +77,9 @@ export default class Upload extends Component {
     medtronicFormIncomplete: true,
     medtronicSerialNumberValue: '',
     medtronicSerialNumberRemember: false,
+    medtronic600FormIncomplete: false,
+    medtronic600SerialNumberValue: '',
+    medtronic600SerialNumberValid: true,
     medtronic600Linked: true
   };
 
@@ -140,6 +143,13 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  handleMedtronic600Upload() {
+    let options = {
+      serialNumber: this.state.medtronic600SerialNumberValue
+    };
+    this.props.onUpload(options);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -147,7 +157,11 @@ export default class Upload extends Component {
     this.setState({
       carelinkFormIncomplete: true,
       medtronicFormIncomplete: true,
-      medtronicSerialNumberValue: ''
+      medtronicSerialNumberValue: '',
+      medtronic600FormIncomplete: false,
+      medtronic600SerialNumberValue: '',
+      medtronic600SerialNumberValid: true,
+      medtronic600Linked: true
     });
     this.props.onReset();
     this.populateRememberedSerialNumber();
@@ -165,6 +179,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'medtronic') {
       return this.handleMedtronicUpload();
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      return this.handleMedtronic600Upload();
     }
 
     var options = {};
@@ -247,8 +265,55 @@ export default class Upload extends Component {
     const { checked } = checkbox;
 
     this.setState({
-      medtronic600Linked: checked
+      medtronic600Linked: checked,
+      medtronic600FormIncomplete: !checked,
+      medtronic600SerialNumberValue: checked ? '' :
+        this.state.medtronic600SerialNumberValue,
     });
+  };
+
+  onMedtronic600SerialNumberInputChange = e => {
+    const field = e.target;
+    // Capitalise any characters
+    const value = _.toUpper(field.value);
+
+    // The final valid match is /^\d{2}[0-9A-Z]\d{6}A-Z}/
+    // The following matches progressively as well.
+    // eslint-disable-next-line max-len
+    const regex = /^([A-Z]([A-Z]([0-9A-Z](\d(\d(\d(\d(\d(\d([A-Z])?)?)?)?)?)?)?)?)?)?$/;
+    const match = regex.exec(value);
+    const isCompleteMatch = match && !_.isUndefined(match[10]);
+    if (!match) {
+      this.setState({
+        medtronic600SerialNumberValid: false,
+      });
+    } else {
+      this.setState({
+        medtronic600SerialNumberValid: true,
+      });
+    }
+
+    if (field && value) {
+      if (value.length === 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: !isCompleteMatch,
+        });
+      }
+      else if (value.length < 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: true,
+        });
+      }
+    }
+    else {
+      this.setState({
+        medtronic600SerialNumberValue: '',
+        medtronic600SerialNumberValid: true,
+        medtronic600FormIncomplete: true
+      });
+    }
   };
 
   getDebugLinks(data) {
@@ -392,6 +457,10 @@ export default class Upload extends Component {
       disabled = disabled || this.state.medtronicFormIncomplete;
     }
 
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      disabled = disabled || this.state.medtronic600FormIncomplete;
+    }
+
     if (_.get(upload, 'source.type', null) === 'block') {
       return null;
     }
@@ -475,13 +544,15 @@ export default class Upload extends Component {
               {this.props.text.MEDTRONIC_600_IS_LINKED}
             </label>
           </div>
-          <div style={!this.state.medtronic600Linked ? {} : { display: 'none' }}>
-            <p>Enter your 10 character serial number.</p>
+          <div style={!this.state.medtronic600Linked ?
+            {} : { display: 'none' }}>
+            <p>Enter your 10 character pump serial number.</p>
             <input
               type="text"
-              value={this.state.medtronicSerialNumberValue}
-              onChange={this.onMedtronicSerialNumberInputChange}
-              className={styles.textInput}
+              value={this.state.medtronic600SerialNumberValue}
+              onChange={this.onMedtronic600SerialNumberInputChange}
+              className={this.state.medtronic600SerialNumberValid ?
+                styles.textInput: styles.textInputError}
               placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
           </div>
         </div>
