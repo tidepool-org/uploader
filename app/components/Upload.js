@@ -56,7 +56,7 @@ export default class Upload extends Component {
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
       MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
       REMEMBER_SERIAL_NUMBER: 'Remember serial number',
-      MEDTRONIC_600_IS_LINKED: 'Next Link and pump are linked',
+      MEDTRONIC_600_IS_LINKED: 'Meter and pump are linked',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
@@ -550,7 +550,7 @@ export default class Upload extends Component {
           </div>
           <div style={!this.state.medtronic600Linked ?
             {} : { display: 'none' }}>
-            <p>Enter your 10 character pump serial number.</p>
+            <p>Enter 10 character serial number.</p>
             <input
               type="text"
               value={this.state.medtronic600SerialNumberValue}

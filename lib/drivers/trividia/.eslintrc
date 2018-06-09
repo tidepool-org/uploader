@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": ["lodash"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+  },
+  "rules": {
+    "no-plusplus": ["error", {
+      "allowForLoopAfterthoughts": true
+    }],
+  },
+  "settings": {
+    "lodash": 3
+  }
+}
