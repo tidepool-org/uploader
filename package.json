@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.2",
+  "version": "2.6.2-missing-record.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
