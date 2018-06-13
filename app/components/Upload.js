@@ -40,6 +40,9 @@ export default class Upload extends Component {
     // for example a clinic worker
     targetId: PropTypes.string,
     upload: PropTypes.object.isRequired,
+    addDevice: PropTypes.func.isRequired,
+    removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
@@ -101,12 +104,17 @@ export default class Upload extends Component {
   }
 
   handleCareLinkUpload = () => {
-    const { refs } = this;
-    let options = {
-      username: refs.username.value,
-      password: refs.password.value
-    };
-    this.props.onUpload(options);
+    /*
+    Once everyone has switched away from the CareLink option, this function, as
+    well as the props addDevice, removeDevice and onDone can be removed from
+    Upload, UploadList and MainPage components. See following PR for details:
+    https://github.com/tidepool-org/chrome-uploader/pull/602
+    */
+    var addDevice = this.props.addDevice.bind(null, this.props.targetId);
+    var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
+    addDevice('medtronic');
+    removeDevice('carelink');
+    this.props.onDone();
   };
 
   handleMedtronicUpload() {
@@ -364,8 +372,8 @@ export default class Upload extends Component {
     let disabled = upload.disabled || this.props.disabled;
 
     if (_.get(upload, 'source.type', null) === 'carelink') {
-      labelText = text.LABEL_IMPORT;
-      disabled = disabled || this.state.carelinkFormIncomplete;
+      labelText = 'Enable';
+      disabled = false;
     }
 
     if (_.get(upload, 'key', null) === 'medtronic') {
@@ -398,19 +406,8 @@ export default class Upload extends Component {
     return (
       <div>
         <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="username"
-            placeholder={this.props.text.CARELINK_USERNAME}/>
-        </div>
-        <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="password"
-            type="password"
-            placeholder={this.props.text.CARELINK_PASSWORD}/>
+          Medtronic has removed the CareLink export feature.
+          Click below to enable direct upload to Tidepool using a Contour Next Link.
         </div>
       </div>
     );
