@@ -495,6 +495,30 @@ describe('TimezoneOffsetUtil.js', function(){
         });
       });
 
+      it('under 23-hour change, timezoneOffset doesn\'t change but conversionOffset does', function(){
+        var twentyThree = builder.makeDeviceEventTimeChange()
+          .with_change({
+            from: '2013-12-15T23:00:00',
+            to: '2013-12-16T22:00:00'
+          })
+          .with_deviceTime('2013-12-16T22:00:00')
+          .set('jsDate', sundial.parseFromFormat('2013-12-16T22:00:00'))
+          .set('index', 10);
+        var util = new TZOUtil('US/Eastern', '2015-01-01T00:00:00.000Z', [twentyThree]);
+        expect(util.lookup(sundial.parseFromFormat('2014-12-25T00:00:00'), 15)).to.deep.equal({
+          time: '2014-12-25T05:00:00.000Z',
+          timezoneOffset: -300,
+          clockDriftOffset: 0,
+          conversionOffset: 0
+        });
+        expect(util.lookup(sundial.parseFromFormat('2013-12-10T00:00:00'), 5)).to.deep.equal({
+          time: '2013-12-11T04:00:00.000Z',
+          timezoneOffset: -240,
+          clockDriftOffset: 0,
+          conversionOffset: -86400000
+        });
+      });
+
       it('when no `index`, uses first UTC timestamp that fits in an offsetInterval', function(){
         var ambiguousDeviceTime = '2015-04-01T12:00:00';
         var amNotPM = builder.makeDeviceEventTimeChange()
