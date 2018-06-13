@@ -181,7 +181,7 @@
     "babili-webpack-plugin": "0.1.2",
     "chai": "4.1.2",
     "concurrently": "3.5.1",
-    "cross-env": "5.1.4",
+    "cross-env": "5.2.0",
     "css-loader": "0.28.11",
     "devtron": "1.4.0",
     "difflet": "1.0.1",
