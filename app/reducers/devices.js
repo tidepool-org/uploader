@@ -1,5 +1,5 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
-import medtronic600PumpImage from '../../images/bayer_contour_next_link_24.jpg';
+import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 const devices = {
   carelink: {
@@ -29,9 +29,9 @@ const devices = {
   medtronic600: {
     instructions: 'Connect your Contour Next Link 2.4 to your computer',
     image: {
-      'src': medtronic600PumpImage,
-      'height': 52,
-      'width': 143,
+      'src': mm600Image,
+      'height': 128,
+      'width': 200,
       'alt': 'Bayer Contour Next Link 2.4'
     },
     key: 'medtronic600',
