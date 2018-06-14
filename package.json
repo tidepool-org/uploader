@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.0-600series-adhoc.4",
+  "version": "2.6.0-600series-adhoc.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
