@@ -31,7 +31,7 @@ test/node/carelink/overlaps/test-account.csv
 test/carelink/testRemoveOverlapsFullTestFile.js
 test/node/carelink/testRemoveOverlapsFullTestFile.js
 
-lib/medtronic/cli/*.json
+lib/drivers/medtronic/cli/*.json
 
 tmp
 npm-debug.log
