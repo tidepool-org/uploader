@@ -56,6 +56,7 @@ export default class Upload extends Component {
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
       MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
       REMEMBER_SERIAL_NUMBER: 'Remember serial number',
+      MEDTRONIC_600_IS_LINKED: 'Meter and pump are linked',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
@@ -75,7 +76,11 @@ export default class Upload extends Component {
     carelinkFormIncomplete: true,
     medtronicFormIncomplete: true,
     medtronicSerialNumberValue: '',
-    medtronicSerialNumberRemember: false
+    medtronicSerialNumberRemember: false,
+    medtronic600FormIncomplete: false,
+    medtronic600SerialNumberValue: '',
+    medtronic600SerialNumberValid: true,
+    medtronic600Linked: true
   };
 
   constructor(props) {
@@ -138,6 +143,13 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  handleMedtronic600Upload() {
+    let options = {
+      serialNumber: this.state.medtronic600SerialNumberValue
+    };
+    this.props.onUpload(options);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -145,7 +157,11 @@ export default class Upload extends Component {
     this.setState({
       carelinkFormIncomplete: true,
       medtronicFormIncomplete: true,
-      medtronicSerialNumberValue: ''
+      medtronicSerialNumberValue: '',
+      medtronic600FormIncomplete: false,
+      medtronic600SerialNumberValue: '',
+      medtronic600SerialNumberValid: true,
+      medtronic600Linked: true
     });
     this.props.onReset();
     this.populateRememberedSerialNumber();
@@ -163,6 +179,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'medtronic') {
       return this.handleMedtronicUpload();
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      return this.handleMedtronic600Upload();
     }
 
     var options = {};
@@ -236,6 +256,67 @@ export default class Upload extends Component {
       this.setState({
         medtronicSerialNumberValue: '',
         medtronicFormIncomplete: true
+      });
+    }
+  };
+
+  onMedtronic600LinkedChange = e => {
+    const checkbox = e.target;
+    const { checked } = checkbox;
+
+    this.setState({
+      medtronic600Linked: checked,
+      medtronic600FormIncomplete: !checked,
+      medtronic600SerialNumberValue: checked ? '' :
+        this.state.medtronic600SerialNumberValue,
+      medtronic600SerialNumberValid: true,
+    });
+  };
+
+  onMedtronic600SerialNumberInputChange = e => {
+    const field = e.target;
+    // Capitalise any characters
+    const value = _.toUpper(field.value);
+
+    if (value.length > 10) {
+      return;
+    }
+
+    // The final valid match is /^\d{2}[0-9A-Z]\d{6}A-Z}/
+    // The following matches progressively as well.
+    // eslint-disable-next-line max-len
+    const regex = /^([A-Z]([A-Z]([0-9A-Z](\d(\d(\d(\d(\d(\d([A-Z])?)?)?)?)?)?)?)?)?)?$/;
+    const match = regex.exec(value);
+    const isCompleteMatch = match && !_.isUndefined(match[10]);
+    if (!match) {
+      this.setState({
+        medtronic600SerialNumberValid: false,
+      });
+    } else {
+      this.setState({
+        medtronic600SerialNumberValid: true,
+      });
+    }
+
+    if (field && value) {
+      if (value.length === 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: !isCompleteMatch,
+        });
+      }
+      else if (value.length < 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: true,
+        });
+      }
+    }
+    else {
+      this.setState({
+        medtronic600SerialNumberValue: '',
+        medtronic600SerialNumberValid: true,
+        medtronic600FormIncomplete: true
       });
     }
   };
@@ -334,6 +415,7 @@ export default class Upload extends Component {
       <form className={styles.form}>
         {this.renderCareLinkInputs()}
         {this.renderMedtronicSerialNumberInput()}
+        {this.renderMedtronic600SerialNumberInput()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
@@ -378,6 +460,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'medtronic') {
       disabled = disabled || this.state.medtronicFormIncomplete;
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      disabled = disabled || this.state.medtronic600FormIncomplete;
     }
 
     if (_.get(upload, 'source.type', null) === 'block') {
@@ -438,6 +524,48 @@ export default class Upload extends Component {
             <label htmlFor="medtronicSerialRemember">
               {this.props.text.REMEMBER_SERIAL_NUMBER}
             </label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderMedtronic600SerialNumberInput() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic600') {
+      return null;
+    }
+
+    const divHidden = cx({
+      [styles.hidden]: this.state.medtronic600Linked,
+    });
+    
+    const serialInputStyle = cx({
+      [styles.textInput]: this.state.medtronic600SerialNumberValid,
+      [styles.textInputError]: !this.state.medtronic600SerialNumberValid,
+    });
+
+    return (
+      <div>
+        <div className={styles.textInputWrapper}>
+          <div className={styles.rememberWrap}>
+            <input
+              type="checkbox"
+              id="medtronic600Linked"
+              onChange={this.onMedtronic600LinkedChange}
+              checked={this.state.medtronic600Linked} />
+            <label htmlFor="medtronic600Linked">
+              {this.props.text.MEDTRONIC_600_IS_LINKED}
+            </label>
+          </div>
+          <div className={divHidden}>
+            <p>Enter 10 character serial number.</p>
+            <input
+              type="text"
+              value={this.state.medtronic600SerialNumberValue}
+              onChange={this.onMedtronic600SerialNumberInputChange}
+              className={serialInputStyle}
+              placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
           </div>
         </div>
       </div>
