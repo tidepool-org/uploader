@@ -58,7 +58,7 @@
     "react-router-redux": "5.0.0-alpha.9",
     "react-select": "1.2.1",
     "redux": "3.7.2",
-    "redux-form": "7.3.0",
+    "redux-form": "7.4.1",
     "redux-thunk": "2.2.0",
     "rollbar": "2.3.9",
     "rollbar-sourcemap-webpack-plugin": "2.3.0",
