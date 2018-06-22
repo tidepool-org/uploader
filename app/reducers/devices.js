@@ -50,7 +50,7 @@ const devices = {
     key: 'tandem',
     name: 'Tandem',
     source: {type: 'device', driverId: 'Tandem'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   abbottfreestylelite: {
     instructions: 'Plug in meter with cable',
