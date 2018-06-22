@@ -160,7 +160,7 @@
   },
   "devDependencies": {
     "babel-core": "6.26.3",
-    "babel-eslint": "8.2.3",
+    "babel-eslint": "8.2.4",
     "babel-loader": "7.1.4",
     "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-dev-expression": "0.2.1",
