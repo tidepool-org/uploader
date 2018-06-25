@@ -162,7 +162,7 @@
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
     "babel-loader": "7.1.4",
-    "babel-plugin-add-module-exports": "0.2.1",
+    "babel-plugin-add-module-exports": "0.3.0-pre",
     "babel-plugin-dev-expression": "0.2.1",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-rewire": "1.1.0",
