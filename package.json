@@ -190,7 +190,7 @@
     "electron-builder": "20.11.1",
     "electron-devtools-installer": "2.2.3",
     "electron-mocha": "6.0.2",
-    "electron-updater": "2.21.10",
+    "electron-updater": "2.22.0",
     "enzyme": "3.3.0",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "16.1.0",
