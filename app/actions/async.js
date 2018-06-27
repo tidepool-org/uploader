@@ -225,7 +225,7 @@ export function doCareLinkUpload(deviceKey, creds, utc) {
 
 export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
-    const { device } = services;
+    const { device, api } = services;
     const version = versionInfo.semver;
     const { devices, os, targetTimezones, uploadTargetUser } = getState();
     const targetDevice = _.find(devices, {source: {driverId: driverId}});
@@ -274,7 +274,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
       }
-      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
+      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc, api));
     });
   };
 }

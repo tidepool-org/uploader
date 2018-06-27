@@ -23,6 +23,10 @@ import sundial from 'sundial';
 import errorText from '../constants/errors';
 import * as syncActions from './sync';
 
+const isBrowser = typeof window !== 'undefined';
+// eslint-disable-next-line no-console
+const debug = isBrowser ? require('bows')('utils') : console.log;
+
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
     return _.map(targets, 'key');
@@ -56,10 +60,30 @@ export function makeDisplayModal(dispatch) {
   };
 }
 
-export function makeUploadCb(dispatch, getState, errCode, utc) {
-  return (err, recs) => {
+export function makeUploadCb(dispatch, getState, errCode, utc, api) {
+  return async (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+    const CONTENT_TYPE = 'application/json';
+
+    if(_.isArray(recs.pages || recs.aapPackets)) {
+      /*
+        we currently support binary blobs for Medtronic (.pages) and
+        Libre (.aapPackets)
+      */
+      const data = _.omit(recs, ['post_records']);
+      const filenameBinary = 'binary-blob.json';
+      const jsonDataBinary = JSON.stringify(data, undefined, 4);
+      const blobBinary = new Blob([jsonDataBinary], {type: CONTENT_TYPE});
+
+      try {
+        await api.upload.blob(blobBinary, CONTENT_TYPE);
+      } catch (error) {
+        // we shouldn't fail if we can't upload the binary blob
+        debug(error);
+      }
+    }
+
     if (err) {
       if(err === 'deviceTimePromptClose'){
         return dispatch(syncActions.uploadCancelled(getUtc(utc)));

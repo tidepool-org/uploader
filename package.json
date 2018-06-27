@@ -67,7 +67,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.37.0",
+    "tidepool-platform-client": "../platform-client",
     "uuid": "3.2.1"
   },
   "browserslist": "electron 1.6",
