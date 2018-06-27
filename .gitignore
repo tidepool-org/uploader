@@ -32,6 +32,7 @@ test/carelink/testRemoveOverlapsFullTestFile.js
 test/node/carelink/testRemoveOverlapsFullTestFile.js
 
 lib/drivers/medtronic/cli/*.json
+lib/drivers/insulet/cli/*.ibf
 
 tmp
 npm-debug.log
