@@ -65,6 +65,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
     const CONTENT_TYPE = 'application/json';
+    let blobId = null;
 
     if(_.isArray(recs.pages || recs.aapPackets)) {
       /*
@@ -74,10 +75,13 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
       const data = _.omit(recs, ['post_records']);
       const filenameBinary = 'binary-blob.json';
       const jsonDataBinary = JSON.stringify(data, undefined, 4);
-      const blobBinary = new Blob([jsonDataBinary], {type: CONTENT_TYPE});
 
       try {
-        await api.upload.blob(blobBinary, CONTENT_TYPE);
+        const result = await api.upload.blob(jsonDataBinary, CONTENT_TYPE);
+
+        if (result && result.id) {
+          blobId = result.id;
+        }
       } catch (error) {
         // we shouldn't fail if we can't upload the binary blob
         debug(error);
@@ -106,6 +110,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
         sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
+        blobId: blobId,
         data: recs
       };
 
