@@ -81,6 +81,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
 
         if (result && result.id) {
           blobId = result.id;
+          debug('Blob ID:', blobId);
         }
       } catch (error) {
         // we shouldn't fail if we can't upload the binary blob
