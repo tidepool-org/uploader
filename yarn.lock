@@ -10425,8 +10425,9 @@ thunky@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.2.tgz#a862e018e3fb1ea2ec3fce5d55605cf57f247371"
 
-tidepool-platform-client@../platform-client:
-  version "0.36.0"
+tidepool-platform-client@0.38.0-upload-blobs.1:
+  version "0.38.0-upload-blobs.1"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.38.0-upload-blobs.1.tgz#00651dc5c907fbafe36b63f3ff5cd7cde037fd14"
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
