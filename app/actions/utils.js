@@ -67,7 +67,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
     const CONTENT_TYPE = 'application/json';
     let blobId = null;
 
-    if(_.isArray(recs.pages || recs.aapPackets)) {
+    if(recs != null && _.isArray(recs.pages || recs.aapPackets)) {
       /*
         we currently support binary blobs for Medtronic (.pages) and
         Libre (.aapPackets)
