@@ -31,7 +31,7 @@ describe('utils', () => {
   describe('makeUploadCb', () => {
     const dispatch = sinon.spy();
     afterEach(() => {
-      dispatch.reset();
+      dispatch.resetHistory();
     });
     const errCode = 'E_DEVICE_UPLOAD';
     const utc = new Date().toISOString();

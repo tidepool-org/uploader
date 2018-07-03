@@ -50,13 +50,13 @@ export class DeviceTimeModal extends Component {
   handleContinue = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
     showingDeviceTimePrompt.callback(null);
-    sync.dismissedDeviceTimePromp();
+    sync.dismissedDeviceTimePrompt();
   }
 
   handleCancel = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
     showingDeviceTimePrompt.callback('deviceTimePromptClose');
-    sync.dismissedDeviceTimePromp();
+    sync.dismissedDeviceTimePrompt();
   }
 
   getActions = () => {

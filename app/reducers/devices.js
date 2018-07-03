@@ -1,5 +1,5 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
-import medtronic600PumpImage from '../../images/bayer_contour_next_link_24.jpg';
+import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 const devices = {
   carelink: {
@@ -10,36 +10,36 @@ const devices = {
     // for the device selection list
     selectName: 'Medtronic (CareLink import)',
     source: {type: 'carelink'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   medtronic: {
-    instructions: 'Connect your Bayer Contour Next Link to your computer',
+    instructions: 'Connect your Contour Next Link to your computer',
     image: {
       'src': mm723Image,
       'height': 128,
       'width': 200,
-      'alt': 'Bayer Contour Next Link'
+      'alt': 'Contour Next Link'
     },
     key: 'medtronic',
-    name: 'Medtronic 523, 723 or 530G',
-    selectName: 'Medtronic 523, 723, 530G (Bayer Contour Next Link)',
+    name: 'Medtronic 523, 723, Veo or 530G',
+    selectName: 'Medtronic 523, 723, Veo or 530G (using Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
     enabled: {mac: true, win: true, linux: true}
   },
   medtronic600: {
-    instructions: 'Pair your Bayer Contour Next Link 2.4 with your Medtronic pump and connect to your computer',
+    instructions: 'Connect your Contour Next Link 2.4 to your computer',
     image: {
-      'src': medtronic600PumpImage,
-      'height': 52,
-      'width': 143,
+      'src': mm600Image,
+      'height': 128,
+      'width': 200,
       'alt': 'Bayer Contour Next Link 2.4'
     },
     key: 'medtronic600',
     name: 'Medtronic 630G, 640G or 670G',
-    selectName: 'Medtronic 630G, 640G, 670G (Bayer Contour Next Link 2.4)',
+    selectName: 'Medtronic 630G, 640G, 670G (using Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
@@ -80,14 +80,13 @@ const devices = {
     instructions: 'Plug in meter with micro-USB cable',
     key: 'abbottfreestylelibre',
     name: 'Abbott FreeStyle Libre',
-    showDriverLink: {linux: false, mac: false, win: false},
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true}
   },
   bayercontournext: {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournext',
-    name: 'Bayer Contour Next',
+    name: 'Ascensia (Bayer) Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -116,17 +115,22 @@ const devices = {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch UltraMini',
     key: 'onetouchultramini',
-    showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltraMini'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchultra2: {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',
     name: 'OneTouch Ultra 2',
     key: 'onetouchultra2',
-    showDriverLink: {mac: true, win: true},
     source: {type: 'device', driverId: 'OneTouchUltra2'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
+  },
+  truemetrix: {
+    instructions: 'True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable',
+    name: 'Trividia Health True Metrix',
+    key: 'truemetrix',
+    source: {type: 'device', driverId: 'TrueMetrix'},
+    enabled: {mac: true, win: true, linux: true}
   }
 };
 
