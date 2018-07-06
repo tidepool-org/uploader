@@ -185,7 +185,7 @@
     "css-loader": "0.28.11",
     "devtron": "1.4.0",
     "difflet": "1.0.1",
-    "drivelist": "6.1.8",
+    "drivelist": "6.2.3",
     "electron": "1.8.4",
     "electron-builder": "20.11.1",
     "electron-devtools-installer": "2.2.3",
