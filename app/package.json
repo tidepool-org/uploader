@@ -14,7 +14,8 @@
     "keytar": "4.2.1",
     "node-hid": "0.7.2",
     "serialport": "6.2.0",
-    "usb": "1.3.1"
+    "usb": "1.3.1",
+    "usb-cdc-acm": "0.1.1"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"
