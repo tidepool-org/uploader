@@ -61,7 +61,7 @@ export function makeDisplayModal(dispatch) {
 }
 
 export function makeUploadCb(dispatch, getState, errCode, utc, api) {
-  return async (err, recs) => {
+  return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
     const CONTENT_TYPE = 'application/json';
@@ -76,17 +76,17 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
       const filenameBinary = 'binary-blob.json';
       const jsonDataBinary = JSON.stringify(data, undefined, 4);
 
-      try {
-        const result = await api.upload.blob(jsonDataBinary, CONTENT_TYPE);
+      api.upload.blob(jsonDataBinary, CONTENT_TYPE, function (err, result) {
+        if (err) {
+          // we shouldn't fail if we can't upload the binary blob
+          debug(err);
+        }
 
         if (result && result.id) {
           blobId = result.id;
           debug('Blob ID:', blobId);
         }
-      } catch (error) {
-        // we shouldn't fail if we can't upload the binary blob
-        debug(error);
-      }
+      });
     }
 
     if (err) {
