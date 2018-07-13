@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.3-upload-blobs.1",
+  "version": "2.6.4-upload-blobs.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
