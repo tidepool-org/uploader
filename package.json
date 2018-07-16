@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.4",
+  "version": "2.6.4-catch-hid-errors.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
