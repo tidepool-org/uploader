@@ -50,6 +50,7 @@
     "is-electron": "2.1.0",
     "lodash": "4.17.10",
     "plist": "3.0.1",
+    "pl2303": "../pl2303",
     "prop-types": "15.6.1",
     "react": "16.3.2",
     "react-dom": "16.3.2",
