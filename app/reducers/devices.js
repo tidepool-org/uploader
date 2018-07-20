@@ -92,7 +92,7 @@ const devices = {
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchultramini: {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',
