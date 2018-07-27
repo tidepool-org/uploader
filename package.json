@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.6.4-user-space-drivers.2",
+  "version": "2.6.4-user-space-drivers.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -51,7 +51,7 @@
     "is-electron": "2.1.0",
     "lodash": "4.17.10",
     "plist": "3.0.1",
-    "pl2303": "0.0.1",
+    "pl2303": "0.0.2",
     "prop-types": "15.6.1",
     "react": "16.4.0",
     "react-dom": "16.4.0",
