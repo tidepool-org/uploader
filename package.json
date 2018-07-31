@@ -71,7 +71,6 @@
     "sudo-prompt": "8.2.0",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.37.0",
-    "util-promisify": "2.1.0",
     "uuid": "3.2.1"
   },
   "browserslist": "electron 1.6",
