@@ -1437,11 +1437,6 @@ describe('medtronic600Simulator.js', function() {
           expectedSecondBasal.done(), expectedThirdBasal.done(),
         ]);
       });
-
-      /* TODO - add test for Caty's 11th January 2017 data.
-      it('', function() {
-      });
-      */
     });
 
     describe('Auto-Mode basal', function() {
