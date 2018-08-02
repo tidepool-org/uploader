@@ -274,7 +274,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
       }
-      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc, api));
+      device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
     });
   };
 }

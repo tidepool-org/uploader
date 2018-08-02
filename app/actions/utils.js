@@ -60,34 +60,10 @@ export function makeDisplayModal(dispatch) {
   };
 }
 
-export function makeUploadCb(dispatch, getState, errCode, utc, api) {
+export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
-    const CONTENT_TYPE = 'application/json';
-    let blobId = null;
-
-    if(recs != null && _.isArray(recs.pages || recs.aapPackets)) {
-      /*
-        we currently support binary blobs for Medtronic (.pages) and
-        Libre (.aapPackets)
-      */
-      const data = _.omit(recs, ['post_records']);
-      const filenameBinary = 'binary-blob.json';
-      const jsonDataBinary = JSON.stringify(data, undefined, 4);
-
-      api.upload.blob(jsonDataBinary, CONTENT_TYPE, function (err, result) {
-        if (err) {
-          // we shouldn't fail if we can't upload the binary blob
-          debug(err);
-        }
-
-        if (result && result.id) {
-          blobId = result.id;
-          debug('Blob ID:', blobId);
-        }
-      });
-    }
 
     if (err) {
       if(err === 'deviceTimePromptClose'){
@@ -111,7 +87,6 @@ export function makeUploadCb(dispatch, getState, errCode, utc, api) {
         sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
-        blobId: blobId,
         data: recs
       };
 
