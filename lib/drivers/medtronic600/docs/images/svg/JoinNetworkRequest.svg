@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 752 192" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1: Channel [rotate = 270]
+	2-4: [color = "#888888"]
+	5: 0x07 [color = "#888888", rotate = 270]
+	6: 0x07 [color = "#888888", rotate = 270]
+	7-8: [color = "#888888"]
+	9: 0x02 [color = "#888888", rotate = 270]
+	10-17: CNL MAC
+	18-25: Pump MAC
+}
+</desc>
+  <path d="M 64 48 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="7" x="64" y="41">0</text>
+  <path d="M 88 64 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 64 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 64 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 64 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 64 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 64 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 64 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 64 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 64 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 64 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 64 L 328 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 352 64 L 352 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 376 48 L 376 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="376" y="41">13</text>
+  <path d="M 400 64 L 400 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 64 L 424 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 64 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 472 64 L 472 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 64 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 64 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 64 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 64 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 592 64 L 592 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 64 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 640 64 L 640 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 64 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 48 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="688" y="41">26</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="64" y="80" />
+  <path d="M 64 80 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 80 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 152 L 64 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 152 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,64,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="31" x="100" y="170">Seq #</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="88" y="80" />
+  <path d="M 88 80 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 80 L 112 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 152 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 152 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,88,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="40" x="124" y="169">Channel</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="72" x="112" y="80" />
+  <path d="M 112 80 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 80 L 184 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 152 L 112 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 152 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="24" x="184" y="80" />
+  <path d="M 184 80 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 80 L 208 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 152 L 184 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 152 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,184,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="27" x="220" y="169">0x07</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="24" x="208" y="80" />
+  <path d="M 208 80 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 80 L 232 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 152 L 208 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 152 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,208,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="27" x="244" y="169">0x07</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="48" x="232" y="80" />
+  <path d="M 232 80 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 80 L 280 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 152 L 232 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 152 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="24" x="280" y="80" />
+  <path d="M 280 80 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 80 L 304 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 152 L 280 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 152 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,280,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="27" x="316" y="169">0x02</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="304" y="80" />
+  <path d="M 304 80 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 80 L 496 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 152 L 304 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 152 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="52" x="400" y="121">CNL MAC</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="496" y="80" />
+  <path d="M 496 80 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 80 L 688 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 152 L 496 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 152 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="59" x="592" y="122">Pump MAC</text>
+</svg>

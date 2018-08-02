@@ -1,0 +1,16 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x0132
+	3-4: Inner\nCCITT
+	5: # Items [rotate = 270]
+	6-7: High TGT 1\nmg/dL [rotate = 270, color = "#EBF1DF"]
+	8-9: High TGT 1\nmmol/L [rotate = 270, color = "#EBF1DF"]
+	10-11: Low TGT 1\nmg/dL [rotate = 270, color = "#EBF1DF"]
+	12-13: Low TGT 1\nmmol/L [rotate = 270, color = "#EBF1DF"]
+	14: TGT 1 Time [rotate = 270, color = "#EBF1DF"]
+	15-17: ... [style = "dashed"]
+	18-19: CCITT
+}
