@@ -41,7 +41,7 @@ $ yarn dev
 
 ## Config
 
-Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.io/starting-up-services/)), for example:
+Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.org/starting-up-services/)), for example:
 
 ```bash
 $ source config/local.sh
@@ -90,9 +90,9 @@ Aside from the (fairly minimal) JavaScript code style options we *enforce* throu
 
 ## Docs
 
-Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.io/](http://developer.tidepool.io/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
+Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.org](http://developer.tidepool.org/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
 
-See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
+See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.org/docs/).
 
 ## Publishing
 
