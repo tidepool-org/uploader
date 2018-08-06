@@ -137,6 +137,61 @@ describe('NGPHistoryParser.js', () => {
   });
 
   describe('temp basal', () => {
+    it('should not create a temp basal event if a TEMP_BASAL_COMPLETE has no corresponding TEMP_BASAL_PROGRAMMED', () => {
+      const tempBasalComplete = '22001582b21d749e0290540001000000007d005a00';
+      const historyParser = new NGPHistoryParser(cfg, settings, [tempBasalComplete]);
+      const events = [];
+
+      const expected = undefined;
+
+      historyParser.buildTempBasalRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+    });
+
+    it('should not create a temp basal event if a corresponding suppressed basal cannot be found', () => {
+      const tempBasalProgrammed = '1b001482e91daa9e0274350001000000007d005a';
+      const tempBasalComplete = '22001582e9329f9e0274350001000000007d005a00';
+      const historyParser = new NGPHistoryParser(cfg, settings, [tempBasalProgrammed +
+        tempBasalComplete]);
+      const events = [];
+
+      const expected = undefined;
+
+      historyParser.buildTempBasalRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+    });
+
+    it('should create a temp basal event when all required pump history events are found', () => {
+      const basalSegmentStart = '1d001182e8f04b9e0274350101000032c8';
+      const tempBasalProgrammed = '1b001482e91daa9e0274350001000000007d005a';
+      const tempBasalComplete = '22001582e9329f9e0274350001000000007d005a00';
+      const historyParser = new NGPHistoryParser(cfg, settings, [basalSegmentStart +
+        tempBasalProgrammed + tempBasalComplete]);
+      const events = [];
+
+      const expectedTempBasal = JSON.parse(JSON.stringify(builder().makeTempBasal()
+        .with_time('2017-07-02T11:13:35.000Z')
+        .with_deviceTime('2017-07-02T11:13:35')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_clockDriftOffset(0)
+        .with_rate(1.625)
+        .with_percent(1.25)
+        .with_expectedDuration(5400000)
+        .with_duration(5400000)
+        .set('index', 2196315562)
+        .set('jsDate', '2017-07-02T11:13:35.000Z')
+        .set('suppressed', {
+          type: 'basal',
+          deliveryType: 'scheduled',
+          rate: 1.3,
+          scheduleName: 'Pattern 1',
+        })));
+
+      historyParser.buildTempBasalRecords(events);
+      expect(JSON.parse(JSON.stringify(events))).to.deep.equal([expectedTempBasal]);
+    });
+
     it('should synthesize a temp basal with annotations if final temp basal event is TEMP_BASAL_PROGRAMMED', () => {
       const basalSegmentStart = '1d001181963895a101dbab020200001482';
       const tempBasalProgrammed = '1b00148196614ca101dbab000100000000c800f0';
