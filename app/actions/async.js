@@ -225,7 +225,7 @@ export function doCareLinkUpload(deviceKey, creds, utc) {
 
 export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
-    const { device, api } = services;
+    const { device } = services;
     const version = versionInfo.semver;
     const { devices, os, targetTimezones, uploadTargetUser } = getState();
     const targetDevice = _.find(devices, {source: {driverId: driverId}});
