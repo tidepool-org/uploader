@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.2-upload-blobs.7",
+  "version": "2.7.2-upload-blobs.8",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
