@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -70,7 +70,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.37.0",
+    "tidepool-platform-client": "0.38.0",
     "uuid": "3.2.1"
   },
   "browserslist": "electron 1.6",
