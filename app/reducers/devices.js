@@ -45,7 +45,7 @@ const devices = {
     instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
     key: 'omnipod',
     name: 'Insulet OmniPod',
-    source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
@@ -109,7 +109,7 @@ const devices = {
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchultramini: {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',
