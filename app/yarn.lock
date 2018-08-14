@@ -761,6 +761,10 @@ nan@^2.10.0, nan@^2.8.0, nan@^2.9.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
+napi-macros@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/napi-macros/-/napi-macros-1.7.0.tgz#6d556b1616f694f561b048211a9d8d1941700814"
+
 needle@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.2.1.tgz#b5e325bd3aae8c2678902fa296f729455d1d3a7d"
@@ -775,6 +779,10 @@ node-abi@^2.2.0:
   dependencies:
     semver "^5.4.1"
 
+node-gyp-build@3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.4.0.tgz#f8f62507e65f152488b28aac25d04b9d79748cf7"
+
 node-hid@0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-0.7.3.tgz#736e9a4dee5eec96c20fbe301e0311bb185cb2f4"
@@ -783,10 +791,12 @@ node-hid@0.7.3:
     nan "^2.10.0"
     prebuild-install "^4.0.0"
 
-node-mtp@../../node-mtp:
-  version "0.0.1"
+node-mtp@0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.7.tgz#49642e2b93cd2d41a04df4ce353c74cedf156d2f"
   dependencies:
-    bindings "^1.3.0"
+    napi-macros "1.7.0"
+    node-gyp-build "3.4.0"
 
 node-pre-gyp@^0.10.0:
   version "0.10.2"
