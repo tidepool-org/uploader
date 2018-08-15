@@ -12,6 +12,7 @@ jobs:
     steps:
     - checkout
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+    - run: brew install libmtp
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
     - run:
