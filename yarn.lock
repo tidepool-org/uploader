@@ -6791,10 +6791,6 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-napi-macros@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/napi-macros/-/napi-macros-1.7.0.tgz#6d556b1616f694f561b048211a9d8d1941700814"
-
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -6870,10 +6866,6 @@ node-forge@0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
 
-node-gyp-build@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.4.0.tgz#f8f62507e65f152488b28aac25d04b9d79748cf7"
-
 node-gyp@~3.6.0, node-gyp@~3.6.2:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.6.3.tgz#369fcb09146ae2167f25d8d23d8b49cc1a110d8d"
@@ -6927,13 +6919,6 @@ node-hid@0.7.3:
     url "^0.11.0"
     util "^0.10.3"
     vm-browserify "0.0.4"
-
-node-mtp@0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.9.tgz#a41e9bdaa9511790d0a944b411eb2cac46019b92"
-  dependencies:
-    napi-macros "1.7.0"
-    node-gyp-build "3.4.0"
 
 node-pre-gyp@^0.10.0:
   version "0.10.3"
