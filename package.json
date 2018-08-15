@@ -220,7 +220,7 @@
     "minimist": "1.2.0",
     "mocha": "5.2.0",
     "node-hid": "0.7.3",
-    "node-mtp": "0.1.8",
+    "node-mtp": "0.1.9",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
@@ -240,6 +240,9 @@
     "webpack-hot-middleware": "2.22.2",
     "webpack-merge": "4.1.2",
     "xmlbuilder": "10.0.0"
+  },
+  "optionalDependencies": {
+
   },
   "devEngines": {
     "node": ">=7.9.x",

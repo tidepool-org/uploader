@@ -6928,9 +6928,9 @@ node-hid@0.7.3:
     util "^0.10.3"
     vm-browserify "0.0.4"
 
-node-mtp@0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.8.tgz#6d972c9932ecc1b4846331b8c8a39157a779c5c5"
+node-mtp@0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.9.tgz#a41e9bdaa9511790d0a944b411eb2cac46019b92"
   dependencies:
     napi-macros "1.7.0"
     node-gyp-build "3.4.0"
