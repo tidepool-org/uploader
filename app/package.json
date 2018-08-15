@@ -13,7 +13,7 @@
     "drivelist": "6.2.2",
     "keytar": "4.2.1",
     "node-hid": "0.7.3",
-    "node-mtp": "0.1.7",
+    "node-mtp": "0.1.8",
     "serialport": "6.2.2",
     "usb": "1.3.2"
   },

@@ -220,7 +220,7 @@
     "minimist": "1.2.0",
     "mocha": "5.2.0",
     "node-hid": "0.7.3",
-    "node-mtp": "0.1.7",
+    "node-mtp": "0.1.8",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
