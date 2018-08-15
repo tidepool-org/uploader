@@ -13,11 +13,11 @@
     "drivelist": "6.2.2",
     "keytar": "4.2.1",
     "node-hid": "0.7.3",
-    "node-mtp": "0.1.9",
     "serialport": "6.2.2",
     "usb": "1.3.2"
   },
   "optionalDependencies": {
+    "node-mtp": "0.1.9",
     "winreg": "1.2.4"
   }
 }
