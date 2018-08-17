@@ -47,6 +47,7 @@
     "electron-is-dev": "0.3.0",
     "es6-error": "4.1.1",
     "eslint-plugin-lodash": "2.5.0",
+    "glob": "7.1.2",
     "history": "4.7.2",
     "iconv-lite": "0.4.19",
     "immutability-helper": "2.7.0",
