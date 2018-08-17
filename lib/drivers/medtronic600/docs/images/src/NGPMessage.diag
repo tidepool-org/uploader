@@ -1,0 +1,10 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Command [rotate = 270]
+	1: Size [rotate = 270]
+	2-55: Payload [color = "#EBF1DF"]
+	56: ... [color = "#EBF1DF", style = dashed]
+	57-58: Checksum [rotate = 270, color = "#E4DFEC", style = dashed]
+}

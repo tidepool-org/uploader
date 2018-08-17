@@ -132,7 +132,6 @@ describe('commonFunctions.js', function(){
     it('rounds to nearest 15 minutes for clock skew', function(){
       basal.with_time('2015-11-05T17:05:00.000Z')
            .with_conversionOffset(420000);
-      console.log(basal);
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
   });

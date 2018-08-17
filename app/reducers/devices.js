@@ -1,4 +1,6 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
+import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
+
 const devices = {
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -6,7 +8,7 @@ const devices = {
     key: 'carelink',
     name: 'Medtronic',
     // for the device selection list
-    selectName: 'Medtronic (from CareLink)',
+    selectName: 'Medtronic (CareLink import)',
     source: {type: 'carelink'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -19,9 +21,24 @@ const devices = {
       'alt': 'Contour Next Link'
     },
     key: 'medtronic',
-    name: 'Medtronic - 523, 723, Veo or 530G',
+    name: 'Medtronic 523, 723, Veo or 530G',
     selectName: 'Medtronic 523, 723, Veo or 530G (using Contour Next Link)',
     source: {type: 'device', driverId: 'Medtronic'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  medtronic600: {
+    instructions: 'Connect your Contour Next Link 2.4 to your computer',
+    image: {
+      'src': mm600Image,
+      'height': 128,
+      'width': 200,
+      'alt': 'Bayer Contour Next Link 2.4'
+    },
+    key: 'medtronic600',
+    name: 'Medtronic 630G, 640G or 670G',
+    selectName: 'Medtronic 630G, 640G, 670G (using Contour Next Link 2.4)',
+    showDriverLink: {mac: false, win: false},
+    source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
