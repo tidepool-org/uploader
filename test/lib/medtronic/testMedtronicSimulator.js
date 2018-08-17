@@ -361,15 +361,15 @@ describe('medtronicSimulator.js', function() {
               units: 'Units'
           },
           calculator: {
-              enabled: true
+              enabled: true,
+              insulin: {
+                  duration: 8,
+                  units: 'hours'
+              }
           },
-          combination: {
+          extended: {
               enabled: true
           }
-      })
-      .with_insulin({
-          duration: 8,
-          units: 'hours'
       })
       .with_time('2014-09-25T01:00:00.000Z')
       .with_deviceTime('2014-09-25T01:00:00')
