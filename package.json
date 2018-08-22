@@ -48,7 +48,7 @@
     "es6-error": "4.1.1",
     "eslint-plugin-lodash": "2.5.0",
     "history": "4.7.2",
-    "iconv-lite": "0.4.19",
+    "iconv-lite": "0.4.24",
     "immutability-helper": "2.7.0",
     "is-electron": "2.1.0",
     "lodash": "4.17.10",
