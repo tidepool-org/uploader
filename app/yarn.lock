@@ -791,9 +791,9 @@ node-hid@0.7.3:
     nan "^2.10.0"
     prebuild-install "^4.0.0"
 
-node-mtp@0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.9.tgz#a41e9bdaa9511790d0a944b411eb2cac46019b92"
+node-mtp@0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.1.13.tgz#7757737c52b129d86bc62f3b9b973703df3ab16a"
   dependencies:
     napi-macros "1.7.0"
     node-gyp-build "3.4.0"
