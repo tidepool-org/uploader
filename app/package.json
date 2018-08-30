@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.7.4-omnipod-dash.4",
+  "version": "2.7.4-omnipod-dash.5",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
