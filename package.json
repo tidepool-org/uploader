@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.4-add-pump-settings.2",
+  "version": "2.7.4-add-pump-settings.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",

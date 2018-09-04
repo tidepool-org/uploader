@@ -149,6 +149,15 @@ Device-specific? (Add any device-specific notes/additions here.)
         - `[ ]` shape `{target: 100}` OR
         - `[ ]` shape `{target: 100, range: 20}` OR
         - `[ ]` shape `{target: 100, high: 120}`
+  - basal features:
+    - `[x]` temp basal type (`manual` or `percentage`)
+    - `[x]` max basal (as a u/hr rate)
+  - bolus features:
+    - `[x]` bolus "wizard"/calculator enabled
+    - `[x]` extended boluses enabled
+    - `[x]` max bolus
+  - `[x]` insulin action time
+  - `[x]` display BG units
 
 Settings history:
 
