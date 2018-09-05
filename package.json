@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.4-rollbar-email-fix.2",
+  "version": "2.7.4-rollbar-email-fix.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
