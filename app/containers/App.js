@@ -113,7 +113,8 @@ export class App extends Component {
   componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
-    this.props.async.doAppInit(_.assign({}, config), {
+    this.props.async.doAppInit(
+      _.assign({ environment: this.state.server }, config), {
       api: api,
       carelink,
       device,
@@ -127,6 +128,7 @@ export class App extends Component {
   setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
+    serverinfo.environment = info.label;
     this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
   };

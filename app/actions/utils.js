@@ -23,6 +23,10 @@ import sundial from 'sundial';
 import errorText from '../constants/errors';
 import * as syncActions from './sync';
 
+const isBrowser = typeof window !== 'undefined';
+// eslint-disable-next-line no-console
+const debug = isBrowser ? require('bows')('utils') : console.log;
+
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
     return _.map(targets, 'key');
@@ -60,6 +64,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+
     if (err) {
       if(err === 'deviceTimePromptClose'){
         return dispatch(syncActions.uploadCancelled(getUtc(utc)));
