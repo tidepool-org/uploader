@@ -10,7 +10,7 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "6.2.2",
+    "drivelist": "6.4.3",
     "keytar": "4.2.1",
     "node-hid": "0.7.6",
     "@ronomon/direct-io": "2.4.3",
