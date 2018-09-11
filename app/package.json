@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.6.4-user-space-drivers.3",
+  "version": "2.7.5-user-space-drivers.4",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {

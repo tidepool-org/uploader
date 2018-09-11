@@ -1,0 +1,78 @@
+seqdiag {
+  === Get CNL Device Info ===
+  driver -> CNL [label = "'X'"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CNL model\nand serial"];
+  === Enter Command Mode ===
+  driver -> CNL [label = "0x15 [NAK]"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x04 [EOT]"];
+  driver -> CNL [label = "0x05 [ENQ]"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  === Toggle Passthrough Mode ===
+  driver -> CNL [label = "'W|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  driver -> CNL [label = "'Q|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  driver -> CNL [label = "'1|'"];
+  driver <-- CNL;
+  driver -> driver [label = "Check response is\n0x06 [ACK]"];
+  === Open Connection ===
+  driver -> CNL [label = "'Open Connection' Request"];
+  driver <-- CNL;
+  === Read Pairing Info ===
+  driver -> CNL [label = "'Read Info' Request"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CNL MAC\nand pump MAC"];
+  === Get Link Key ===
+  driver -> CNL [label = "'Link Key' Request"];
+  driver <-- CNL;
+  driver -> driver [label = "Generate encryption\nkey for session"];
+  === Join ZigBee Network ===
+  loop  {
+    driver -> CNL [label = "'Join Network' Request", note = "For each of the pump's ZigBee radio channels"];
+    driver <-- CNL;
+  }
+  === Toggle High Speed Mode ===
+  driver -> CNL [label = "'High Speed Mode' Command"];
+  driver <-- CNL;
+  === Get Pump Time ===
+  driver -> CNL [label = "'Pump Time' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract date/time"];
+  === Get Active Basal Pattern ===
+  driver -> CNL [label = "'Pump Status' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract active\nbasal pattern"];
+  === Get Bolus Wizard Settings ===
+  driver -> CNL [label = "'Bolus Wizard BG Targets' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\nBG targets"];
+  driver -> CNL [label = "'Bolus Wizard Carb Ratios' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\ncarb ratios"];
+  driver -> CNL [label = "'Bolus Wizard Sensitivity Factors' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract BWZ\ninsulin sensitivities"];
+  === Get Basal Pattern Settings ===
+  driver -> CNL [label = "'Read Basal Pattern' Command"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract basal\npatterns"];
+  === Read Pump History ===
+  driver -> CNL [label = "'Read History Info' Command\nfor Pump data"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract pump\nhistory info"];
+  driver -> CNL [label = "'Read History' Command\nfor Pump data"];
+  driver <-- CNL;
+  driver -> driver [label = "Process pump\nhistory data"];
+  === Read CGM History ===
+  driver -> CNL [label = "'Read History Info' Command\nfor CGM data"];
+  driver <-- CNL;
+  driver -> driver [label = "Extract CGM\nhistory info"];
+  driver -> CNL [label = "'Read History' Command\nfor CGM data"];
+  driver <-- CNL;
+  driver -> driver [label = "Process CGM\nhistory data"];
+}

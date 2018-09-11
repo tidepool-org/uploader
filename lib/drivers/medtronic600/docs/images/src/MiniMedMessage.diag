@@ -1,0 +1,16 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-1: Header
+	2-7: Pump Serial Number
+	8-17: [color = "#888888"]
+	18: Operation [rotate = 270]
+	19-22: Sequence Number
+	23-27: [color = "#888888"]
+	28-29: Payload Size
+	30-31: [color = "#888888"]
+	32: Checksum [rotate = 270]
+	33-62: Payload [color = "#EBF1DF"]
+	63: ... [color = "#EBF1DF", style = dashed]
+}
