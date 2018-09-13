@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.6-win-install-changes.1",
+  "version": "2.7.6-win-install-changes.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -98,7 +98,7 @@
       "background": "resources/background.tiff"
     },
     "nsis": {
-      "oneClick": true,
+      "oneClick": false,
       "perMachine": true,
       "allowElevation": true
     },
