@@ -98,7 +98,7 @@
       "background": "resources/background.tiff"
     },
     "nsis": {
-      "oneClick": false,
+      "oneClick": true,
       "perMachine": true,
       "allowElevation": true
     },

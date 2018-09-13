@@ -32,13 +32,13 @@ RequestExecutionLevel admin
         ; 64-bit Windows 7
         CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
       ${EndIf}
-      ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
+      ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe /q"
   ${Else}
       ${If} ${IsWin7}
         ; 32-bit Windows 7
         CopyFiles $DriverDir\win7x86\* $DriverDir\i386
       ${EndIf}
-      ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
+      ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe /q"
   ${EndIf}
 
   WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
