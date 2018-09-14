@@ -27,6 +27,9 @@ RequestExecutionLevel admin
       Quit
   ${EndIf}
 
+  ; Add our certificate to the local store to prevent unnecessary pop-up
+  ExecWait "certutil -addstore TrustedPublisher $DriverDir\tidepool.cer"
+
   ${If} ${RunningX64}
       ${If} ${IsWin7}
         ; 64-bit Windows 7
