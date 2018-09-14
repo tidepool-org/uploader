@@ -28,7 +28,10 @@ RequestExecutionLevel admin
   ${EndIf}
 
   ; Add our certificate to the local store to prevent unnecessary pop-up
-  ExecWait "certutil -addstore TrustedPublisher $DriverDir\tidepool.cer"
+  nsExec::Exec 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"''
+  Pop $1
+  WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
+
 
   ${If} ${RunningX64}
       ${If} ${IsWin7}
