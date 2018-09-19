@@ -44,7 +44,7 @@
     "commander": "2.15.1",
     "decompress": "4.2.0",
     "electron-debug": "2.0.0",
-    "electron-is-dev": "0.3.0",
+    "electron-is-dev": "1.0.0",
     "es6-error": "4.1.1",
     "eslint-plugin-lodash": "2.5.0",
     "history": "4.7.2",
