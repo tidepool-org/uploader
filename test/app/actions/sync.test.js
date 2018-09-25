@@ -1385,4 +1385,67 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('adHocPairingRequest', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate start of a 600 series ad hoc pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST]}
+      };
+      expect(syncActions.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingSuccess', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingSuccess();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate success of a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_SUCCESS,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_SUCCESS]}
+      };
+      expect(syncActions.adHocPairingSuccess()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingFailure', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingFailure();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate failure of a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_FAILURE,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_FAILURE]}
+      };
+      expect(syncActions.adHocPairingFailure()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingCancelled', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingCancelled();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate cancelling a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_CANCELLED,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_CANCELLED]}
+      };
+      expect(syncActions.adHocPairingCancelled()).to.deep.equal(expectedAction);
+    });
+  });
+
 });

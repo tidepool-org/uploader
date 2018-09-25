@@ -792,3 +792,36 @@ export function timezoneBlur() {
     meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
   };
 }
+
+/* 
+* relating to ad hoc pairing dialog
+*/
+
+export function adHocPairingRequest(callback, cfg) {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+  };
+}
+
+export function adHocPairingSuccess() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_SUCCESS,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_SUCCESS] }
+  };
+}
+
+export function adHocPairingFailure() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_FAILURE,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_FAILURE] }
+  };
+}
+
+export function adHocPairingCancelled() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_CANCELLED,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_CANCELLED] }
+  };
+}

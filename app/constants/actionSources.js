@@ -118,3 +118,9 @@ export const CREATE_CUSTODIAL_ACCOUNT_FAILURE = USER_VISIBLE;
 
 // application update
 export const QUIT_AND_INSTALL = UNDER_THE_HOOD;
+
+// ad hoc pairing
+export const AD_HOC_PAIRING_REQUEST = USER_VISIBLE;
+export const AD_HOC_PAIRING_SUCCESS = USER_VISIBLE;
+export const AD_HOC_PAIRING_FAILURE = USER_VISIBLE;
+export const AD_HOC_PAIRING_CANCELLED = USER;

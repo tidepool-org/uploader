@@ -54,9 +54,15 @@ export function makeProgressFn(dispatch) {
   };
 }
 
-export function makeDisplayModal(dispatch) {
+export function makeDisplayTimeModal(dispatch) {
   return (cb, cfg, times) => {
     dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
+  };
+}
+
+export function makeDisplayAdhocModal(dispatch) {
+  return (cb, cfg) => {
+    dispatch(syncActions.adHocPairing(cb, cfg));
   };
 }
 
@@ -66,7 +72,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
     const targetDevice = devices[uploadTargetDevice];
 
     if (err) {
-      if(err === 'deviceTimePromptClose'){
+      if(err === 'deviceTimePromptClose' || err === 'adHocModalClose'){
         return dispatch(syncActions.uploadCancelled(getUtc(utc)));
       }
       // the drivers sometimes just pass a string arg as err, instead of an actual error :/
