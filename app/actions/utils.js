@@ -62,7 +62,7 @@ export function makeDisplayTimeModal(dispatch) {
 
 export function makeDisplayAdhocModal(dispatch) {
   return (cb, cfg) => {
-    dispatch(syncActions.adHocPairing(cb, cfg));
+    dispatch(syncActions.adHocPairingRequest(cb, cfg));
   };
 }
 
