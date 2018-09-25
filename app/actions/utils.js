@@ -66,6 +66,18 @@ export function makeDisplayAdhocModal(dispatch) {
   };
 }
 
+export function makeAdHocSuccess(dispatch) {
+  return () => {
+    dispatch(syncActions.adHocPairingSuccess());
+  };
+}
+
+export function makeAdHocFailure(dispatch) {
+  return () => {
+    dispatch(syncActions.adHocPairingFailure());
+  };
+}
+
 export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
