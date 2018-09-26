@@ -63,7 +63,7 @@
     "redux": "3.7.2",
     "redux-form": "7.4.0",
     "redux-thunk": "2.3.0",
-    "rollbar": "2.4.1",
+    "rollbar": "2.4.5",
     "rollbar-sourcemap-webpack-plugin": "2.3.0",
     "semver": "5.5.0",
     "source-map-support": "0.5.6",
