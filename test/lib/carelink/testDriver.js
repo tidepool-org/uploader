@@ -102,6 +102,6 @@ function spiderTests(baseDir) {
 
 describe('carelinkDriver.js', function(){
   describe('Input/Output Test', function(){
-      //spiderTests(__dirname);
+      spiderTests(__dirname);
   });
 });
