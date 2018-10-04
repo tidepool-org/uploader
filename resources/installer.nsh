@@ -22,20 +22,21 @@ RequestExecutionLevel admin
   UserInfo::GetAccountType
   pop $0
   ${If} $0 != "admin"
-      MessageBox mb_iconstop "You need administrator rights to install the Tidepool Uploader."
+      MessageBox MB_OK|MB_ICONSTOP "You need administrator rights to install the Tidepool Uploader."
       SetErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
       Quit
   ${EndIf}
 
-  ; Add our certificate to the local store to prevent unnecessary pop-up
-  nsExec::ExecToStack 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"'
-  Pop $1
-  WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
-
   ${If} ${IsWin7}
-    IfSilent +1 +3
+    IfSilent +1 +4
       MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
-      Abort
+      SetErrorLevel 2 ; aborted by script
+      Quit
+  ${Else}
+    ; Add our certificate to the local store to prevent unnecessary pop-up
+    nsExec::ExecToStack 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"'
+    Pop $1
+    WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
   ${EndIf}
 
   ${If} ${RunningX64}
