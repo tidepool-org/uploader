@@ -12,6 +12,19 @@ RequestExecutionLevel admin
     IntOp $8 $9 + 1
     StrCpy $R7 "You have ran this setup program $9 times so far!\n\n"
 
+  UserInfo::GetAccountType
+  pop $0
+  ${If} $0 != "admin"
+      MessageBox MB_OK|MB_ICONSTOP "You need administrator rights to install the Tidepool Uploader."
+      SetErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
+      Abort
+  ${EndIf}
+
+  IfSilent +1 +4
+    MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
+    SetErrorLevel 2 ; aborted by script
+    Abort
+
 !macroend
 
 !macro customInstall
@@ -19,25 +32,10 @@ RequestExecutionLevel admin
   Var /GLOBAL DriverDir
   StrCpy $DriverDir "$INSTDIR\resources\driver"
 
-  UserInfo::GetAccountType
-  pop $0
-  ${If} $0 != "admin"
-      MessageBox MB_OK|MB_ICONSTOP "You need administrator rights to install the Tidepool Uploader."
-      SetErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
-      Quit
-  ${EndIf}
-
-  ${If} ${IsWin7}
-    IfSilent +1 +4
-      MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
-      SetErrorLevel 2 ; aborted by script
-      Quit
-  ${Else}
-    ; Add our certificate to the local store to prevent unnecessary pop-up
-    nsExec::ExecToStack 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"'
-    Pop $1
-    WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
-  ${EndIf}
+  ; Add our certificate to the local store to prevent unnecessary pop-up
+  nsExec::ExecToStack 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"'
+  Pop $1
+  WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
 
   ${If} ${RunningX64}
       ${If} ${IsWin7}
