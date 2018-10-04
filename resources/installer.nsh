@@ -32,19 +32,28 @@ RequestExecutionLevel admin
   Pop $1
   WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
 
+  ${If} ${IsWin7}
+    IfSilent +1 +3
+      MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
+      Abort
+  ${EndIf}
 
   ${If} ${RunningX64}
       ${If} ${IsWin7}
         ; 64-bit Windows 7
         CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
+        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
+      ${Else}
+        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe /q"
       ${EndIf}
-      ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe /q"
   ${Else}
       ${If} ${IsWin7}
         ; 32-bit Windows 7
         CopyFiles $DriverDir\win7x86\* $DriverDir\i386
+        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
+      ${Else}
+        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe /q"
       ${EndIf}
-      ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe /q"
   ${EndIf}
 
   WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
