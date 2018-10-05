@@ -20,10 +20,12 @@ RequestExecutionLevel admin
       Abort
   ${EndIf}
 
-  IfSilent +1 +4
-    MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
-    SetErrorLevel 2 ; aborted by script
-    Abort
+  ${If} ${IsWin7}
+    IfSilent +1 +4
+      MessageBox MB_OK|MB_ICONSTOP "This installer can not run in silent mode on Windows 7!"
+      SetErrorLevel 2 ; aborted by script
+      Abort
+  ${EndIf}
 
 !macroend
 
