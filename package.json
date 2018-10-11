@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.6-verio-mojave-fix.3",
+  "version": "2.7.6-verio-mojave-fix.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
