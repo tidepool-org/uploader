@@ -462,6 +462,7 @@ describe('tandemSimulator.js', function() {
                     rate: 1.3
                   })
         .set('percent', 0.65)
+        .set('rate', 0.845)
         .set('deviceId', 'tandem12345')
         .with_payload({'logIndices':1, duration: 1500000})
         .done();
