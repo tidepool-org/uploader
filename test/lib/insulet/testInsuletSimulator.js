@@ -310,20 +310,16 @@ describe('insuletSimulator.js', function() {
       };
 
       it('passes through with a status', function() {
-        var suspend = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'InsOmn1234',
-          type: 'deviceEvent',
-          subType: 'status',
-          status: 'suspended',
-          reason: {suspended: 'manual'}
-        };
+        var suspend = builder.makeDeviceEventSuspendResume()
+          .with_time('2014-09-25T01:00:00.000Z')
+          .with_deviceTime('2014-09-25T01:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_reason({suspended: 'manual'});
 
         var withStatus = _.assign({}, val, {status: suspend});
         simulator.changeReservoir(withStatus);
+        simulator.finalBasal();
         expect(simulator.getEvents()).deep.equals([withStatus]);
       });
 
