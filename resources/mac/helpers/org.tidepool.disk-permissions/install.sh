@@ -1,9 +1,14 @@
 #!/bin/sh
-BASE_PATH="$(cd "$(dirname "${0}")"; pwd)"
+BASE_PATH="$(cd "$(dirname "${0}")" 2>/dev/null && pwd)"
 HELPER_SCRIPT="org.tidepool.disk-permissions.sh"
 HELPER_SCRIPT_PATH="/Library/PrivilegedHelperTools"
 PLIST_NAME="org.tidepool.disk-permissions.plist"
 PLIST_PATH="/Library/LaunchDaemons"
+
+if [ test -z $BASE_PATH ]; then
+   echo "Base path not found."
+   exit 1
+fi
 
 if [ "${1}" = "--uninstall" ]; then
     if [ -e "${PLIST_PATH}" ]; then
