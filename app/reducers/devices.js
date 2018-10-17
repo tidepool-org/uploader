@@ -5,16 +5,6 @@ import { remote } from 'electron';
 const i18n = remote.getGlobal( 'i18n' );
 
 const devices = {
-  carelink: {
-    instructions: [i18n.t('Import from CareLink'), i18n.t('(We will not store your credentials)')],
-    isFetching: false,
-    key: 'carelink',
-    name: 'Medtronic',
-    // for the device selection list
-    selectName: 'Medtronic (CareLink import)',
-    source: {type: 'carelink'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',

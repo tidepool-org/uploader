@@ -22,9 +22,6 @@
   },
   "overrides": [
     {
-      "files": [
-        "carelink.js",
-      ],
       "rules": {
         "func-names": "warn",
         "no-var": "warn",

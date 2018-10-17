@@ -81,8 +81,7 @@ export default class UploadList extends Component {
     const medtronicEnabled = _.findIndex(this.props.uploads, {key:'medtronic'}) === -1 ? false : true;
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
-        //only show carelink if medtronic direct is not enabled
-        if (upload.key === 'carelink' && medtronicEnabled) {
+        if (upload.key === 'carelink') {
           return;
         }
         return (
