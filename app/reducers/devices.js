@@ -2,16 +2,6 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 const devices = {
-  carelink: {
-    instructions: ['Import from CareLink', '(We will not store your credentials)'],
-    isFetching: false,
-    key: 'carelink',
-    name: 'Medtronic',
-    // for the device selection list
-    selectName: 'Medtronic (CareLink import)',
-    source: {type: 'carelink'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
     image: {

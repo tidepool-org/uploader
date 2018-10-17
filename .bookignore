@@ -4,7 +4,6 @@ dist/
 fonts/
 ./images/
 lib/**/*.js
-lib/carelink/
 lib/components/
 lib/containers/
 lib/core/
