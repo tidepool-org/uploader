@@ -488,8 +488,8 @@ describe('medtronicSimulator.js', function() {
           .with_rate(1.0)
           .set('index',1);
         basal2 = builder.makeScheduledBasal()
-          .with_time('2014-09-26T18:10:50.000Z')
-          .with_deviceTime('2014-09-26T18:10:50')
+          .with_time('2014-09-25T18:40:00.000Z')
+          .with_deviceTime('2014-09-25T18:40:00')
           .with_timezoneOffset(0)
           .with_conversionOffset(0)
           .with_rate(2)
@@ -541,8 +541,8 @@ describe('medtronicSimulator.js', function() {
           .set('index', 1234);
 
         basal3 = builder.makeScheduledBasal()
-            .with_time('2014-09-25T18:40:00.000Z')
-            .with_deviceTime('2014-09-25T18:40:00')
+            .with_time('2014-09-26T01:10:00.000Z')
+            .with_deviceTime('2014-09-26T01:10:00')
             .with_timezoneOffset(0)
             .with_conversionOffset(0)
             .with_rate(2);
@@ -638,7 +638,7 @@ describe('medtronicSimulator.js', function() {
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
         simulator.basal(tempBasalOverMidnight);
-        simulator.basal(basal2);
+        simulator.basal(basal3);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasalOverMidnight.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -675,7 +675,7 @@ describe('medtronicSimulator.js', function() {
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
         simulator.basal(tempBasalOverMidnight);
-        simulator.basal(basal2);
+        simulator.basal(basal3);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasalOverMidnight.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -712,7 +712,7 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(tempBasal);
         simulator.suspendResume(suspendResume);
         simulator.basal(suspendedBasal);
-        simulator.basal(basal3);
+        simulator.basal(basal2);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -776,7 +776,7 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(tempBasal);
         simulator.suspendResume(suspendResume);
         simulator.basal(suspendedBasal);
-        simulator.basal(basal3);
+        simulator.basal(basal2);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -850,7 +850,7 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(tempBasal);
         simulator.rewind(reservoirChange);
         simulator.prime(prime);
-        simulator.basal(basal3);
+        simulator.basal(basal2);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -1123,7 +1123,7 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(basal1);
         simulator.basal(tempBasal);
         simulator.basal(cancelTempBasal);
-        simulator.basal(basal2);
+        simulator.basal(basal3);
 
         var expectedTempBasal1 = _.cloneDeep(tempBasal.done());
         expectedTempBasal1.suppressed.rate = 1.3;
@@ -1169,6 +1169,13 @@ describe('medtronicSimulator.js', function() {
           .with_conversionOffset(0)
           .with_duration(1800000)
           .with_rate(0);
+
+        basal2 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T03:40:00.000Z')
+            .with_deviceTime('2014-09-25T03:40:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
@@ -1232,6 +1239,13 @@ describe('medtronicSimulator.js', function() {
           .with_conversionOffset(0)
           .with_duration(0)
           .with_rate(null);
+
+        basal2 = builder.makeScheduledBasal()
+            .with_time('2014-09-26T00:05:00.000Z')
+            .with_deviceTime('2014-09-26T00:05:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
@@ -1371,6 +1385,13 @@ describe('medtronicSimulator.js', function() {
           .with_conversionOffset(0)
           .with_duration(180000)
           .with_percent(0);
+
+        basal2 = builder.makeScheduledBasal()
+            .with_time('2014-09-25T18:33:00.000Z')
+            .with_deviceTime('2014-09-25T18:33:00')
+            .with_timezoneOffset(0)
+            .with_conversionOffset(0)
+            .with_rate(2);
 
         simulator.basal(basal1);
         simulator.basal(tempBasal);
