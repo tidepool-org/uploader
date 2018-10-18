@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.5-upload-timeframe.2",
+  "version": "2.7.8",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
