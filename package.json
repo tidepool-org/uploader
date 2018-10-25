@@ -42,6 +42,7 @@
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
     "commander": "2.15.1",
+    "cp2102": "0.0.1",
     "decompress": "4.2.0",
     "electron-debug": "2.0.0",
     "electron-is-dev": "0.3.0",
@@ -53,6 +54,7 @@
     "is-electron": "2.1.0",
     "lodash": "4.17.10",
     "plist": "3.0.1",
+    "pl2303": "0.0.2",
     "prop-types": "15.6.1",
     "react": "16.4.0",
     "react-dom": "16.4.0",
@@ -71,6 +73,7 @@
     "sudo-prompt": "8.2.0",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.38.0",
+    "usb-cdc-acm": "0.1.1",
     "uuid": "3.2.1"
   },
   "browserslist": "electron 1.6",
