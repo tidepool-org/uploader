@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.6-cgm-delta-fix.1",
+  "version": "2.8.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
