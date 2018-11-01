@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.7.8-rollbar-server-root.1",
+  "version": "2.8.3",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
