@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.7.6-win-install-changes.9",
+  "version": "2.7.6-win-install-changes.10",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
