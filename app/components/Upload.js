@@ -19,6 +19,7 @@ import _ from 'lodash';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Select from 'react-select';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
@@ -26,6 +27,7 @@ import keytar from 'keytar';
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
 import debugMode from '../utils/debugMode';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
 
@@ -80,7 +82,8 @@ export default class Upload extends Component {
     medtronic600FormIncomplete: false,
     medtronic600SerialNumberValue: '',
     medtronic600SerialNumberValid: true,
-    medtronic600Linked: true
+    medtronic600Linked: true,
+    medtronic600UploadPeriod: uploadDataPeriod.period
   };
 
   constructor(props) {
@@ -321,6 +324,12 @@ export default class Upload extends Component {
     }
   };
 
+  onMedtronic600UploadPeriodChange = period => {
+    this.setState({
+      medtronic600UploadPeriod: uploadDataPeriod.setPeriod(period)
+    });
+  };
+
   getDebugLinks(data) {
 
     let post_link = null;
@@ -416,6 +425,7 @@ export default class Upload extends Component {
         {this.renderCareLinkInputs()}
         {this.renderMedtronicSerialNumberInput()}
         {this.renderMedtronic600SerialNumberInput()}
+        {this.renderMedtronicUploadRangeSelect()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
@@ -567,6 +577,31 @@ export default class Upload extends Component {
               className={serialInputStyle}
               placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderMedtronicUploadRangeSelect() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic600') {
+      return null;
+    }
+    const opts = [
+      { label: 'since last upload', value: uploadDataPeriod.PERIODS.DELTA },
+      { label: 'last 4 weeks', value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
+      { label: 'all data on pump', value: uploadDataPeriod.PERIODS.ALL }
+    ];
+    return (
+      <div className={styles.uploadPeriodRow}>
+        <div>Upload:</div>
+        <div className={styles.dropdown}>
+          <Select clearable={false}
+            name={'uploadDataPeriodSelect'}
+            options={opts}
+            simpleValue={true}
+            onChange={this.onMedtronic600UploadPeriodChange}
+            value={this.state.medtronic600UploadPeriod} />
         </div>
       </div>
     );
