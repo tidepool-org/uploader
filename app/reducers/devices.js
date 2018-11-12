@@ -60,7 +60,7 @@ const devices = {
     key: 'precisionxtra',
     name: 'Abbott Precision Xtra',
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
-    enabled: {mac: false, win: true}
+    enabled: {mac: false, win: true, linux: true}
   },
   tandem: {
     instructions: 'Plug in pump with micro-USB',
@@ -74,7 +74,7 @@ const devices = {
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
-    enabled: {mac: false, win: true}
+    enabled: {mac: false, win: true, linux: true}
   },
   abbottfreestylelibre: {
     instructions: 'Plug in meter with micro-USB cable',
@@ -95,7 +95,7 @@ const devices = {
     key: 'animas',
     name: 'Animas',
     source: {type: 'device', driverId: 'Animas'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverio: {
     instructions: 'Plug in meter with micro-USB',
@@ -109,7 +109,7 @@ const devices = {
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchultramini: {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',

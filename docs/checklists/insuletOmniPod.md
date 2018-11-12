@@ -149,6 +149,15 @@ Device-specific? (Add any device-specific notes/additions here.)
         - `[ ]` shape `{target: 100}` OR
         - `[ ]` shape `{target: 100, range: 20}` OR
         - `[x]` shape `{target: 100, high: 120}`
+  - basal features:
+    - `[x]` temp basal type (`manual` or `percentage`)
+    - `[x]` max basal (as a u/hr rate)
+  - bolus features:
+    - `[x]` bolus "wizard"/calculator enabled
+    - `[x]` extended boluses enabled
+    - `[x]` max bolus
+  - `[x]` insulin action time
+  - `[x]` display BG units
 
 Settings history:
 
@@ -166,21 +175,13 @@ No Tidepool data model yet:
     - `[-]` BG reminder
     - `[ ]` bolus reminder
   - `[-]` alert settings (volume or vibration-only; whether enabled)
-  - basal features:
-    - `[-]` temp basal type (`manual` or `percentage`)
-    - `[-]` max basal (as a u/hr rate)
   - bolus features:
-    - `[-]` bolus "wizard"/calculator enabled
     - `[-]` bolus increment for non-"quick"/manual boluses
-    - `[-]` extended boluses enabled
-    - `[-]` extended bolus type (`manual` or `percentage`)
     - `[-]` min BG to allow calculation of bolus delivery
     - `[-]` reverse correction enabled
-    - `[-]` max bolus
     - "quick"/manual bolus:
         - `[ ]` enabled
         - `[ ]` increment
-  - `[-]` insulin action time
   - `[ ]` clock display preference (12h vs 24h format)
 
 Device-specific? (Add any device-specific notes/additions here.)
