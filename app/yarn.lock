@@ -813,6 +813,14 @@ log-utils@^0.2.1:
     time-stamp "^1.0.1"
     warning-symbol "^0.1.0"
 
+lzo-decompress@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.0.8.tgz#7593c957b8827d52ceae770bd0797f57d80e80db"
+  integrity sha512-A4SBmWIGT74lTR/PYDN6engyuN9xxnCIV8R6VAuO26bBT65EmzaBXKdv7MWiO0YfYgsv/dqJioQEPYHkWNqJxg==
+  dependencies:
+    napi-macros "1.7.0"
+    node-gyp-build "3.4.0"
+
 map-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
