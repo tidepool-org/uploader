@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.8.3-lzo-changes.1",
+  "version": "2.8.3-lzo-changes.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -219,7 +219,7 @@
     "json-loader": "0.5.7",
     "less": "3.8.1",
     "less-loader": "4.1.0",
-    "lzo-decompress": "0.0.8",
+    "lzo-decompress": "0.0.10",
     "minimist": "1.2.0",
     "mocha": "5.2.0",
     "node-hid": "0.7.3",
