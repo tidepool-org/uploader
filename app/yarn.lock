@@ -813,13 +813,13 @@ log-utils@^0.2.1:
     time-stamp "^1.0.1"
     warning-symbol "^0.1.0"
 
-lzo-decompress@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.0.10.tgz#c1dcc8cfebb2982664cac43870f9702cab970dff"
-  integrity sha512-OgJ9pvYTqNgSoN2Y3+mwLdWdc6JXcDcoFeb1mwFX1N6em17lbaJWY/x24UEqH9iZFbMGQj62X/li/6kvv40UPA==
+lzo-decompress@0.0.23:
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.0.23.tgz#09c5f1647491d74531ffd8562d902dcd08a31c5d"
+  integrity sha512-vBN4IfIisEEIzpHTQRU2Pgnx3jiOG6blyBc7ieWH8oKfnw3BsoursidVHsATskBlP8DoF7wdmN1TzIWMHQ5IxQ==
   dependencies:
     napi-macros "1.7.0"
-    node-gyp-build "3.4.0"
+    node-gyp-build "3.5.0"
 
 map-visit@^1.0.0:
   version "1.0.0"
@@ -935,6 +935,11 @@ node-gyp-build@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.4.0.tgz#f8f62507e65f152488b28aac25d04b9d79748cf7"
   integrity sha512-YoviGBJYGrPdLOKDIQB0sKxuKy/EEsxzooNkOZak4vSTKT/qH0Pa6dj3t1MJjEQGsefih61IyHDmO1WW7xOFfw==
+
+node-gyp-build@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.5.0.tgz#92f7c6517d1f90e2795a1cd49a59c6487b4f1cdb"
+  integrity sha512-qjEE8eIWVyqZhkAFUzytGpOGvLHeX5kXBB6MYyTOCPZBrBlsLyXAAzTsp/hWMbVlg8kVpzDJCZZowIrnKpwmqQ==
 
 node-hid@0.7.3:
   version "0.7.3"
