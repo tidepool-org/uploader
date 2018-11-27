@@ -813,10 +813,10 @@ log-utils@^0.2.1:
     time-stamp "^1.0.1"
     warning-symbol "^0.1.0"
 
-lzo-decompress@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.1.tgz#0db69194390c16c1377e1e3112d073b7be6e9b7f"
-  integrity sha512-U+u3V1SyUI0dH8EdWfmrXy1UnrpM4Qgx6Sn1R7SYZKA9KayJBqEDGTjyi1UafY1WgTfx76JcHZBw5NpOjY4JGQ==
+lzo-decompress@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.2.tgz#ed6bb2c51c9ec786815c8e0b42fa6fcb8be482a1"
+  integrity sha512-hwZOB61BN+SzsR4PGldRucyCoIRWWlAN4lhkTDI7+TIQZBkjDpzQOGUYK378I3p3YcdnmgUz1WOKExz4K+pe9w==
   dependencies:
     napi-macros "1.7.0"
     node-gyp-build "3.5.0"
