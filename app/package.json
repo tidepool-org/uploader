@@ -13,6 +13,7 @@
     "drivelist": "6.2.2",
     "keytar": "4.2.1",
     "node-hid": "0.7.2",
+    "@ronomon/direct-io": "2.4.3",
     "serialport": "6.2.0",
     "usb": "1.3.2"
   },
