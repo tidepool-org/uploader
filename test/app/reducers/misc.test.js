@@ -70,8 +70,8 @@ describe('misc reducers', () => {
       });
       let expectedResult = _.pickBy(devices, filterDevicesFn('win'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // at least one device may be unavailable on Windows, so available devices should be less than
-      // all devices
+      // at least one device may be unavailable on Windows, so available devices
+      // could be less or equal to total number of devices
       expect(_.keys(actualResult).length).to.be.at.most(_.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
