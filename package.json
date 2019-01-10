@@ -72,7 +72,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.0",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.38.0",
+    "tidepool-platform-client": "0.39.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "3.2.1"
   },
