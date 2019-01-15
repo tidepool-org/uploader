@@ -195,7 +195,8 @@ export function doCareLinkUpload(deviceKey, creds, utc) {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_FETCH_CARELINK',
-          version: version
+          version: version,
+          originalError: err
         };
         dispatch(syncActions.fetchCareLinkFailure(errorText.E_FETCH_CARELINK));
         return dispatch(syncActions.uploadFailure(fetchErr, fetchErrProps, targetDevice));
@@ -255,7 +256,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_SERIAL_CONNECTION',
-          version: version
+          version: version,
+          originalError: err
         };
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
