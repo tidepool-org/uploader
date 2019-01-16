@@ -195,8 +195,7 @@ export function doCareLinkUpload(deviceKey, creds, utc) {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_FETCH_CARELINK',
-          version: version,
-          originalError: err
+          version: version
         };
         dispatch(syncActions.fetchCareLinkFailure(errorText.E_FETCH_CARELINK));
         return dispatch(syncActions.uploadFailure(fetchErr, fetchErrProps, targetDevice));
