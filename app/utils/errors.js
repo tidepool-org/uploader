@@ -31,7 +31,7 @@ const errorProps = {
   stringifiedStack: 'Stack Trace',
   utc: 'UTC Time',
   version: 'Version',
-  originalError: 'Original Err'
+  originalError: 'Original Error'
 };
 
 export function addInfoToError(err, props) {
