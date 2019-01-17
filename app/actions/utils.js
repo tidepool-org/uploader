@@ -60,7 +60,7 @@ export function makeDisplayModal(dispatch) {
   };
 }
 
-export function makeUploadCb(dispatch, getState, errCode, utc) { 
+export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
