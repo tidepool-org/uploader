@@ -60,7 +60,7 @@ export function makeDisplayModal(dispatch) {
   };
 }
 
-export function makeUploadCb(dispatch, getState, errCode, utc) {
+export function makeUploadCb(dispatch, getState, errCode, utc) { 
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
@@ -87,7 +87,8 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
-        data: recs
+        data: recs,
+        originalError: err
       };
 
       if (!(process.env.NODE_ENV === 'test')) {
