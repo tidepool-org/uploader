@@ -12,9 +12,9 @@ DeviceClassGUID = "{78a1c341-4539-11d3-b88d-00c04fad5171}"
 ; Date MUST be in MM/DD/YYYY format
 Date = "01/23/2019"
 
-ProviderName = "libusb 1.0"
+ProviderName = "Tidepool"
 WinUSB_SvcDesc = "WinUSB Driver Service"
-DiskName = "libusb (WinUSB) Device Install Disk"
+DiskName = "Tidepool USB Driver Installation Disk"
 ClassName = "libusb (WinUSB) devices"
 
 ; ====================== Version ======================
@@ -25,7 +25,7 @@ Signature = "$Windows NT$"
 Class = %ClassName%
 ClassGuid = %DeviceClassGUID%
 Provider = %ProviderName%
-CatalogFile = libusb_device.cat
+CatalogFile = tidepoolusb.cat
 
 ; =================== Class section ===================
 
