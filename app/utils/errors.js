@@ -30,8 +30,7 @@ const errorProps = {
   sessionTrace: 'Session Trace',
   stringifiedStack: 'Stack Trace',
   utc: 'UTC Time',
-  version: 'Version',
-  originalError: 'Original Error'
+  version: 'Version'
 };
 
 export function addInfoToError(err, props) {
