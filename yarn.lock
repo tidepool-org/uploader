@@ -566,7 +566,7 @@ ansi-cyan@^0.1.1:
   dependencies:
     ansi-wrap "0.1.0"
 
-ansi-escapes@^3.0.0:
+ansi-escapes@^3.0.0, ansi-escapes@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.1.0.tgz#f73207bb81207d75fd6c83f125af26eea378ca30"
 
@@ -4041,11 +4041,11 @@ eslint-config-airbnb@16.1.0:
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
 
-eslint-formatter-pretty@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-formatter-pretty/-/eslint-formatter-pretty-2.0.0.tgz#7bc011def9a01d457928988c736a8d5b8b13a00c"
+eslint-formatter-pretty@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-formatter-pretty/-/eslint-formatter-pretty-2.1.0.tgz#dfd1661dcc9d7ec928604fa3c9919a1b0616a7ec"
   dependencies:
-    ansi-escapes "^3.0.0"
+    ansi-escapes "^3.1.0"
     chalk "^2.1.0"
     eslint-rule-docs "^1.1.5"
     log-symbols "^2.0.0"
