@@ -15,8 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/* global __TEST__ */
-
 import _ from 'lodash';
 import stacktrace from 'stack-trace';
 
@@ -25,9 +23,13 @@ import sundial from 'sundial';
 import errorText from '../constants/errors';
 import * as syncActions from './sync';
 
+const isBrowser = typeof window !== 'undefined';
+// eslint-disable-next-line no-console
+const debug = isBrowser ? require('bows')('utils') : console.log;
+
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
-    return _.pluck(targets, 'key');
+    return _.map(targets, 'key');
   });
 }
 
@@ -47,8 +49,14 @@ export function getUtc(utc) {
 }
 
 export function makeProgressFn(dispatch) {
-  return (step, percentage) => {
-    dispatch(syncActions.uploadProgress(step, percentage));
+  return (step, percentage, isFirstUpload) => {
+    dispatch(syncActions.uploadProgress(step, percentage, isFirstUpload));
+  };
+}
+
+export function makeDisplayModal(dispatch) {
+  return (cb, cfg, times) => {
+    dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
   };
 }
 
@@ -56,7 +64,11 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+
     if (err) {
+      if(err === 'deviceTimePromptClose'){
+        return dispatch(syncActions.uploadCancelled(getUtc(utc)));
+      }
       // the drivers sometimes just pass a string arg as err, instead of an actual error :/
       if (typeof err === 'string') {
         err = new Error(err);
@@ -77,9 +89,10 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         version: version,
         data: recs
       };
+      displayErr.originalError = err;
 
-      if (!__TEST__) {
-        uploadErrProps.stringifiedStack = _.pluck(
+      if (!(process.env.NODE_ENV === 'test')) {
+        uploadErrProps.stringifiedStack = _.map(
           _.filter(
             stacktrace.parse(err),
             (cs) => { return cs.functionName !== null; }
@@ -100,7 +113,7 @@ export function viewDataPathForUser(uploadTargetUser) {
 
 export function mergeProfileUpdates(profile, updates){
   // merge property values except arrays, which get replaced entirely
-  return _.merge(profile, updates, (original, update) => {
+  return _.mergeWith(profile, updates, (original, update) => {
     if (_.isArray(original)) {
       return update;
     }

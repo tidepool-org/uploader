@@ -82,7 +82,7 @@ All the state that is driven by the current (i.e., in progress) or recent upload
 
 #### `uploadProgress`
 
-*The `uploadProgress` property is an object with two keys: `percentage` to record the percentage towards completion of the current upload in progress and `step` to encode the current step in the upload sequence (e.g., device detection, device read, POSTing data to the Tidepool data ingestion API).*
+*The `uploadProgress` property is an object with two keys: `percentage` to record the percentage towards completion of the current upload in progress and `step` to encode the current step in the upload sequence (e.g., device detection, device read, POSTing data to the Tidepool data ingestion API). Optionally a third key, `isFirstUpload`, can be used to indicate that the upload is the first upload from a device. This is useful for delta uploads, to display a message that the first upload will take longer than subsequent uploads.*
 
 When there is not an upload in progress, the value of `uploadProgress` is `null`.
 

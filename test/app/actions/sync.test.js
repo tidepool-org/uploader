@@ -439,7 +439,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-        expect(syncActions.initFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.initFailure(err);
+        expect(action.payload).to.deep.include({message:errorText.E_INIT});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -521,7 +524,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         };
-        expect(syncActions.loginFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.loginFailure(err);
+        expect(action.payload).to.deep.include({message:err});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         __ResetDependency__('getLoginErrorMessage');
       });
     });
@@ -579,7 +585,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         };
-        expect(syncActions.logoutFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.logoutFailure(err);
+        expect(action.payload).to.deep.include({message:err});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         __ResetDependency__('getLoginErrorMessage');
       });
     });
@@ -644,7 +653,10 @@ describe('Synchronous Actions', () => {
             metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
           }
         };
-        expect(syncActions.fetchCareLinkFailure('Error :(')).to.deep.equal(expectedAction);
+        const action = syncActions.fetchCareLinkFailure('Error :(');
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
 
     });
@@ -665,8 +677,10 @@ describe('Synchronous Actions', () => {
           payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         };
-
-        expect(syncActions.uploadAborted()).to.deep.equal(expectedAction);
+        const action = syncActions.uploadAborted();
+        expect(action.payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -700,10 +714,34 @@ describe('Synchronous Actions', () => {
 
         expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
       });
+
+      it('should create appropriate metric properties for 600 series upload limits', () => {
+        const time = '2016-01-01T12:05:00.123Z';
+        __Rewire__('uploadDataPeriod', { period: 1 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { userId, deviceKey: device.key, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted',
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                limit: 'all data'
+              }
+            }
+          }
+        };
+
+        expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
+      });
     });
 
     describe('uploadProgress', () => {
-      const step = 'READ', percentage = 50;
+      const step = 'READ', percentage = 50, isFirstUpload = true;
       it('should be an FSA', () => {
         let action = syncActions.uploadProgress(step, percentage);
 
@@ -713,11 +751,11 @@ describe('Synchronous Actions', () => {
       it('should create an action to update the step and percentage complete for the upload in progress', () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_PROGRESS,
-          payload: { step, percentage },
+          payload: { step, percentage, isFirstUpload },
           meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
         };
 
-        expect(syncActions.uploadProgress(step, percentage)).to.deep.equal(expectedAction);
+        expect(syncActions.uploadProgress(step, percentage, isFirstUpload)).to.deep.equal(expectedAction);
       });
     });
 
@@ -758,6 +796,33 @@ describe('Synchronous Actions', () => {
         };
         expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
       });
+
+      it('should create an action to record a successful 600 series upload w/ limit', () => {
+        const time = '2016-01-01T12:05:00.123Z';
+        __Rewire__('uploadDataPeriod', { period: 2 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_SUCCESS,
+          payload: { userId, deviceKey: device.key, data, utc: time},
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_SUCCESS],
+            metric: {
+              eventName: `${metrics.UPLOAD_SUCCESS}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                started: time,
+                finished: time,
+                processed: data.length,
+                limit: 'new data'
+              }
+            }
+          }
+        };
+
+        expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
+      });
     });
 
     describe('uploadFailure', () => {
@@ -796,7 +861,77 @@ describe('Synchronous Actions', () => {
             }
           }
         };
+        const action = syncActions.uploadFailure(origError, errProps, device);
+        expect(action.payload).to.deep.include({
+          message: resError.message,
+          code: resError.code,
+          utc: resError.utc,
+          debug: resError.debug
+        });
+        expectedAction.payload = action.payload;
+        expectedAction.meta.metric.properties.error = action.payload;
+        expect(action).to.deep.equal(expectedAction);
         expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+      });
+
+      it('should create an action to report an upload failure with limit for 600 series', () => {
+        __Rewire__('uploadDataPeriod', { period: 3 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: resError,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: `${metrics.UPLOAD_FAILURE}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                error: resError,
+                limit: '4 weeks'
+              }
+            }
+          }
+        };
+        const action = syncActions.uploadFailure(origError, errProps, device);
+        expect(action.payload).to.deep.include({
+          message: resError.message,
+          code: resError.code,
+          utc: resError.utc,
+          debug: resError.debug
+        });
+        expectedAction.payload = action.payload;
+        expectedAction.meta.metric.properties.error = action.payload;
+        expect(action).to.deep.equal(expectedAction);
+        expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
+      });
+    });
+
+    describe('uploadCancelled', () => {
+      const errProps = {
+        utc: '2016-01-01T12:05:00.123Z',
+      };
+      const device = {
+        source: {type: 'device', driverId: 'AcmePump'}
+      };
+      it('should be an FSA', () => {
+        let action = syncActions.uploadCancelled();
+
+        expect(isFSA(action)).to.be.true;
+      });
+
+      it('should create an action to report an upload cancellation', () => {
+        const expectedAction = {
+          type: actionTypes.UPLOAD_CANCELLED,
+          payload: { utc: errProps.utc },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_CANCELLED]
+          }
+        };
+        const action = syncActions.uploadCancelled(errProps.utc);
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -853,8 +988,10 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
         };
-
-        expect(syncActions.readFileAborted(err)).to.deep.equal(expectedAction);
+        const action = syncActions.readFileAborted(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
 
@@ -913,8 +1050,10 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_FAILURE]}
         };
-
-        expect(syncActions.readFileFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.readFileFailure(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
   });
@@ -981,15 +1120,18 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-
-        expect(syncActions.versionCheckFailure(err)).to.deep.equal(expectedAction);
+        const action = syncActions.versionCheckFailure(err);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
 
       it('should create an action to mark the current uploader\'s version as unsupported', () => {
+        const err = new UnsupportedError(currentVersion, requiredVersion);
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_FAILURE,
           error: true,
-          payload: new UnsupportedError(currentVersion, requiredVersion),
+          payload: err,
           meta: {
             source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
             metric: {
@@ -998,8 +1140,10 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-
-        expect(syncActions.versionCheckFailure(null, currentVersion, requiredVersion)).to.deep.equal(expectedAction);
+        const action = syncActions.versionCheckFailure(null, currentVersion, requiredVersion);
+        expect(action.payload).to.deep.include({message:err.message});
+        expectedAction.payload = action.payload;
+        expect(action).to.deep.equal(expectedAction);
       });
     });
   });
@@ -1270,4 +1414,60 @@ describe('Synchronous Actions', () => {
       expect(syncActions.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
     });
   });
+
+  describe('deviceTimeIncorrect', () => {
+    const callback = () => {},
+      cfg = { config: 'value'},
+      times = { time1: 'time' };
+    it('should be an FSA', () => {
+      let action = syncActions.deviceTimeIncorrect(callback, cfg, times);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing device time mismatch modal', () => {
+      const expectedAction = {
+        type: actionTypes.DEVICE_TIME_INCORRECT,
+        payload: { callback, cfg, times },
+        meta: {
+          source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+          metric: {
+            eventName: metrics.DEVICE_TIME_INCORRECT,
+            properties: { times },
+          },
+        },
+      };
+      expect(syncActions.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissedDeviceTimePrompt', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissedDeviceTimePrompt();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate user dismissing device time mismatch modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+        meta: {source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT]}
+      };
+      expect(syncActions.dismissedDeviceTimePrompt()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('timezoneBlur', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.timezoneBlur();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate blur of timezone selector', () => {
+      const expectedAction = {
+        type: actionTypes.TIMEZONE_BLUR,
+        meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
+      };
+      expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+    });
+  });
+
 });

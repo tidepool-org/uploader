@@ -15,20 +15,21 @@
  * == BSD2 LICENSE ==
  */
 
+import _ from 'lodash';
 import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
+import { routerReducer as router } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import * as misc from './misc';
 import * as uploads from './uploads';
 import * as users from './users';
 
 const rootReducer = combineReducers(
-  Object.assign(
+  _.assign(
     misc,
     uploads,
     users,
     { form: formReducer },
-    { routing }
+    { router }
   )
 );
 

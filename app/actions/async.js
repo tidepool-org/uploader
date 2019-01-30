@@ -16,7 +16,6 @@
  */
 
 import _ from 'lodash';
-import async from 'async';
 import semver from 'semver';
 import os from 'os';
 import { push } from 'react-router-redux';
@@ -83,7 +82,7 @@ export function doAppInit(opts, servicesToInit) {
               return dispatch(syncActions.initFailure(apiError));
             }
             log('Setting all api hosts');
-            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL']));
+            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
             dispatch(syncActions.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
@@ -229,12 +228,13 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
     const { device } = services;
     const version = versionInfo.semver;
     const { devices, os, targetTimezones, uploadTargetUser } = getState();
-    const targetDevice = _.findWhere(devices, {source: {driverId: driverId}});
+    const targetDevice = _.find(devices, {source: {driverId: driverId}});
     dispatch(syncActions.deviceDetectRequest());
     _.assign(opts, {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
+      dialogDisplay: actionUtils.makeDisplayModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
@@ -257,6 +257,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_SERIAL_CONNECTION',
           version: version
         };
+        displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -301,27 +302,28 @@ export function doUpload(deviceKey, opts, utc) {
         }
         else {
           dispatch(syncActions.versionCheckSuccess());
-          const { devices, uploadTargetUser, working } = getState();
-          if (working.uploading === true) {
-            return dispatch(syncActions.uploadAborted());
-          }
-
-          dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
-
-          const targetDevice = devices[deviceKey];
-          const deviceType = targetDevice.source.type;
-
-          if (_.includes(['device', 'block'], deviceType)) {
-            dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
-          }
-          else if (deviceType === 'carelink') {
-            dispatch(doCareLinkUpload(deviceKey, opts, utc));
-          }
         }
       }
       catch(err) {
         dispatch(syncActions.versionCheckFailure(err));
         return dispatch(syncActions.uploadAborted());
+      }
+
+      const { devices, uploadTargetUser, working } = getState();
+      if (working.uploading === true) {
+        return dispatch(syncActions.uploadAborted());
+      }
+
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const targetDevice = devices[deviceKey];
+      const deviceType = targetDevice.source.type;
+
+      if (_.includes(['device', 'block'], deviceType)) {
+        dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
+      }
+      else if (deviceType === 'carelink') {
+        dispatch(doCareLinkUpload(deviceKey, opts, utc));
       }
     });
   };
@@ -498,7 +500,7 @@ export function clickEditUserNext(profile) {
         }
         const { targetDevices, devices, allUsers, loggedInUser } = getState();
         const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
-        const supportedDeviceKeys = Object.keys(devices);
+        const supportedDeviceKeys = _.keys(devices);
         const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
           return _.includes(supportedDeviceKeys, key);
         });
@@ -552,7 +554,7 @@ export function retrieveTargetsFromStorage() {
         });
       });
       const targetDeviceKeys = targetDevices[uploadTargetUser];
-      const supportedDeviceKeys = Object.keys(devices);
+      const supportedDeviceKeys = _.keys(devices);
       const atLeastOneDeviceSupportedOnSystem = _.some(targetDeviceKeys, (key) => {
         return _.includes(supportedDeviceKeys, key);
       });
@@ -633,7 +635,7 @@ export function setUploadTargetUserAndMaybeRedirect(targetId) {
       api.makeBlipUrl(actionUtils.viewDataPathForUser(targetId))
     ));
     const targetedDevices = _.get(targetDevices, targetId, []);
-    const supportedDeviceKeys = Object.keys(devices);
+    const supportedDeviceKeys = _.keys(devices);
     const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
       return _.includes(supportedDeviceKeys, key);
     });
@@ -650,7 +652,7 @@ export function checkUploadTargetUserAndMaybeRedirect() {
       return;
     }
     const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
-    const supportedDeviceKeys = Object.keys(devices);
+    const supportedDeviceKeys = _.keys(devices);
     const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
       return _.includes(supportedDeviceKeys, key);
     });

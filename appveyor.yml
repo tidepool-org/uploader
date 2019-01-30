@@ -3,7 +3,7 @@ image: Visual Studio 2017
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
   matrix:
-    - nodejs_version: 7.4.0
+    - nodejs_version: 10.11.0
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"
@@ -21,6 +21,8 @@ version: '{build}'
 shallow_clone: true
 
 clone_depth: 1
+
+skip_branch_with_pr: true
 
 install:
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version

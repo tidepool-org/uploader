@@ -16,7 +16,7 @@
  */
 
 import _ from 'lodash';
-import update from 'react-addons-update';
+import update from 'immutability-helper';
 
 import * as actionTypes from '../constants/actionTypes';
 import { steps } from '../constants/otherConstants';
@@ -39,6 +39,7 @@ export function uploadProgress(state = null, action) {
       };
     case actionTypes.UPLOAD_FAILURE:
     case actionTypes.UPLOAD_SUCCESS:
+    case actionTypes.UPLOAD_CANCELLED:
       return null;
     case actionTypes.UPLOAD_PROGRESS:
       return Object.assign({}, state, action.payload);
@@ -284,6 +285,46 @@ export function uploadsByUser(state = {}, action) {
         state,
         {[userId]: {[deviceKey]: {showErrorDetails: {$set: isVisible}}}}
       );
+    }
+    case actionTypes.UPLOAD_CANCELLED: {
+      const { utc } = action.payload;
+      let uploadTargetUser, uploadTargetDevice;
+      _.forOwn(state, (uploads, userId) => {
+        _.forOwn(uploads, (upload, deviceKey) => {
+          if (upload.uploading === true) {
+            uploadTargetUser = userId;
+            uploadTargetDevice = deviceKey;
+          }
+        });
+      });
+      if (uploadTargetUser && uploadTargetDevice) {
+        let newState = state;
+        let devicesForCurrentUser = _.get(state, [uploadTargetUser], {});
+        _.forOwn(devicesForCurrentUser, (upload, key) => {
+          newState = update(
+            newState,
+            {[uploadTargetUser]: {[key]: {$apply: (upload) => {
+              if (key === uploadTargetDevice) {
+                return update(
+                  upload,
+                  {
+                    completed: {$set: true},
+                    failed: {$set: false},
+                    history: {[0]: {
+                      finish: {$set: utc}
+                    }},
+                    uploading: {$set: false}
+                  }
+                );
+              }
+              else {
+                return _.omit(upload, 'disabled');
+              }
+            }}}}
+          );
+        });
+        return newState;
+      }
     }
     case actionTypes.UPLOAD_FAILURE: {
       const err = action.payload;

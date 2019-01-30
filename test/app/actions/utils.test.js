@@ -31,7 +31,7 @@ describe('utils', () => {
   describe('makeUploadCb', () => {
     const dispatch = sinon.spy();
     afterEach(() => {
-      dispatch.reset();
+      dispatch.resetHistory();
     });
     const errCode = 'E_DEVICE_UPLOAD';
     const utc = new Date().toISOString();
@@ -61,7 +61,7 @@ describe('utils', () => {
       expect(dispatch.callCount).to.equal(0);
       fn(err);
       expect(dispatch.callCount).to.equal(1);
-      expect(dispatch.firstCall.args[0]).to.deep.equal({
+      const expectedAction = {
         type: 'UPLOAD_FAILURE',
         error: true,
         payload: addInfoToError(displayErr, {
@@ -85,7 +85,19 @@ describe('utils', () => {
             }
           }
         }
+      };
+      const result = dispatch.firstCall.args[0];
+      expect(result.payload).to.deep.include({
+        message: errorText[errCode],
+        details: err.message,
+        utc: utc,
+        name: err.name,
+        code: errCode,
+        version: '0.100.0'
       });
+      expectedAction.payload = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
+      expect(result).to.deep.equal(expectedAction);
     });
 
     it('the returned function should use the argument error\'s code when present', () => {
@@ -97,7 +109,7 @@ describe('utils', () => {
       expect(dispatch.callCount).to.equal(0);
       fn(err);
       expect(dispatch.callCount).to.equal(1);
-      expect(dispatch.firstCall.args[0]).to.deep.equal({
+      const expectedAction = {
         type: 'UPLOAD_FAILURE',
         error: true,
         payload: addInfoToError(displayErr, {
@@ -121,7 +133,19 @@ describe('utils', () => {
             }
           }
         }
+      };
+      const result = dispatch.firstCall.args[0];
+      expect(result.payload).to.deep.include({
+        message: errorText[specificErrCode],
+        details: err.message,
+        utc: utc,
+        name: err.name,
+        code: specificErrCode,
+        version: '0.100.0'
       });
+      expectedAction.payload = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
+      expect(result).to.deep.equal(expectedAction);
     });
   });
 

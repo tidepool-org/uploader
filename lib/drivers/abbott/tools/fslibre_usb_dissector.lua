@@ -272,7 +272,10 @@ function fslibre_usb.init()
     pkt_state = {}
     partial_aap_buf = {}
 
-    --  register this disector for USB vendor:product 1a61:3650
+    --  register this disector for USB vendor:product 1a61:3650 (FreeStyle Libre)
     DissectorTable.get("usb.product"):add(0x1a613650, fslibre_usb)
+
+    --  register this disector for USB vendor:product 1a61:3670 (FreeStyle Libre Pro)
+    DissectorTable.get("usb.product"):add(0x1a613670, fslibre_usb)
 end
 

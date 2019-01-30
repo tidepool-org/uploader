@@ -17,7 +17,9 @@
 
 import _ from 'lodash';
 import cx from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import Select from 'react-select';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
@@ -25,6 +27,7 @@ import keytar from 'keytar';
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
 import debugMode from '../utils/debugMode';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
 
@@ -39,6 +42,9 @@ export default class Upload extends Component {
     // for example a clinic worker
     targetId: PropTypes.string,
     upload: PropTypes.object.isRequired,
+    addDevice: PropTypes.func.isRequired,
+    removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
@@ -52,6 +58,7 @@ export default class Upload extends Component {
       CARELINK_DOWNLOADING: 'Downloading CareLink export...',
       MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
       REMEMBER_SERIAL_NUMBER: 'Remember serial number',
+      MEDTRONIC_600_IS_LINKED: 'Meter and pump are linked',
       LABEL_UPLOAD: 'Upload',
       LABEL_IMPORT: 'Import',
       LABEL_OK: 'OK',
@@ -59,7 +66,11 @@ export default class Upload extends Component {
       LAST_UPLOAD: 'Last upload: ',
       DEVICE_UNKNOWN: 'Unknown device',
       UPLOAD_COMPLETE: 'Done!',
-      UPLOAD_PROGRESS: 'Uploading... '
+      UPLOAD_PROGRESS: 'Uploading... ',
+      NOTE: 'Note:',
+      FIRST_UPLOAD: 'We\'ve improved how devices upload. This upload will take \
+                     longer than usual, but your future uploads will be much, \
+                     much faster.'
     }
   };
 
@@ -67,18 +78,16 @@ export default class Upload extends Component {
     carelinkFormIncomplete: true,
     medtronicFormIncomplete: true,
     medtronicSerialNumberValue: '',
-    medtronicSerialNumberRemember: false
+    medtronicSerialNumberRemember: false,
+    medtronic600FormIncomplete: false,
+    medtronic600SerialNumberValue: '',
+    medtronic600SerialNumberValid: true,
+    medtronic600Linked: true,
+    medtronic600UploadPeriod: uploadDataPeriod.period
   };
 
   constructor(props) {
     super(props);
-    this.handleCareLinkUpload = this.handleCareLinkUpload.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
-    this.onBlockModeInputChange = this.onBlockModeInputChange.bind(this);
-    this.onCareLinkInputChange = this.onCareLinkInputChange.bind(this);
-    this.onMedtronicSerialNumberInputChange = this.onMedtronicSerialNumberInputChange.bind(this);
-    this.onMedtronicSerialNumberRememberChange = this.onMedtronicSerialNumberRememberChange.bind(this);
 
     this.populateRememberedSerialNumber();
   }
@@ -102,14 +111,19 @@ export default class Upload extends Component {
     });
   }
 
-  handleCareLinkUpload() {
-    const { refs } = this;
-    let options = {
-      username: refs.username.value,
-      password: refs.password.value
-    };
-    this.props.onUpload(options);
-  }
+  handleCareLinkUpload = () => {
+    /*
+    Once everyone has switched away from the CareLink option, this function, as
+    well as the props addDevice, removeDevice and onDone can be removed from
+    Upload, UploadList and MainPage components. See following PR for details:
+    https://github.com/tidepool-org/chrome-uploader/pull/602
+    */
+    var addDevice = this.props.addDevice.bind(null, this.props.targetId);
+    var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
+    addDevice('medtronic');
+    removeDevice('carelink');
+    this.props.onDone();
+  };
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
@@ -132,20 +146,31 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
-  handleReset(e) {
+  handleMedtronic600Upload() {
+    let options = {
+      serialNumber: this.state.medtronic600SerialNumberValue
+    };
+    this.props.onUpload(options);
+  }
+
+  handleReset = e => {
     if (e) {
       e.preventDefault();
     }
     this.setState({
       carelinkFormIncomplete: true,
       medtronicFormIncomplete: true,
-      medtronicSerialNumberValue: ''
+      medtronicSerialNumberValue: '',
+      medtronic600FormIncomplete: false,
+      medtronic600SerialNumberValue: '',
+      medtronic600SerialNumberValid: true,
+      medtronic600Linked: true
     });
     this.props.onReset();
     this.populateRememberedSerialNumber();
-  }
+  };
 
-  handleUpload(e) {
+  handleUpload = e => {
     const { upload } = this.props;
     if (e) {
       e.preventDefault();
@@ -159,17 +184,21 @@ export default class Upload extends Component {
       return this.handleMedtronicUpload();
     }
 
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      return this.handleMedtronic600Upload();
+    }
+
     var options = {};
     this.props.onUpload(options);
-  }
+  };
 
-  onBlockModeInputChange(e) {
+  onBlockModeInputChange = e => {
     const { upload } = this.props;
     let file = e.target.files[0];
     this.props.readFile(file, upload.source.extension);
-  }
+  };
 
-  onCareLinkInputChange() {
+  onCareLinkInputChange = () => {
     const { refs } = this;
     let username = refs.username && refs.username.value;
     let password = refs.password && refs.password.value;
@@ -180,9 +209,9 @@ export default class Upload extends Component {
     else {
       this.setState({carelinkFormIncomplete: false});
     }
-  }
+  };
 
-  onMedtronicSerialNumberRememberChange(e) {
+  onMedtronicSerialNumberRememberChange = e => {
     const checkbox = e.target;
     const checked = checkbox.checked;
 
@@ -194,12 +223,12 @@ export default class Upload extends Component {
     if(!checked) {
       keytar.deletePassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId);
     }
-  }
+  };
 
-  onMedtronicSerialNumberInputChange(e) {
+  onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
     const value = field.value;
-    const chars = value.split('');
+    const chars = _.split(value, '');
 
     // Check if input is purely numbers.
     // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
@@ -232,17 +261,84 @@ export default class Upload extends Component {
         medtronicFormIncomplete: true
       });
     }
-  }
+  };
+
+  onMedtronic600LinkedChange = e => {
+    const checkbox = e.target;
+    const { checked } = checkbox;
+
+    this.setState({
+      medtronic600Linked: checked,
+      medtronic600FormIncomplete: !checked,
+      medtronic600SerialNumberValue: checked ? '' :
+        this.state.medtronic600SerialNumberValue,
+      medtronic600SerialNumberValid: true,
+    });
+  };
+
+  onMedtronic600SerialNumberInputChange = e => {
+    const field = e.target;
+    // Capitalise any characters
+    const value = _.toUpper(field.value);
+
+    if (value.length > 10) {
+      return;
+    }
+
+    // The final valid match is /^\d{2}[0-9A-Z]\d{6}A-Z}/
+    // The following matches progressively as well.
+    // eslint-disable-next-line max-len
+    const regex = /^([A-Z]([A-Z]([0-9A-Z](\d(\d(\d(\d(\d(\d([A-Z])?)?)?)?)?)?)?)?)?)?$/;
+    const match = regex.exec(value);
+    const isCompleteMatch = match && !_.isUndefined(match[10]);
+    if (!match) {
+      this.setState({
+        medtronic600SerialNumberValid: false,
+      });
+    } else {
+      this.setState({
+        medtronic600SerialNumberValid: true,
+      });
+    }
+
+    if (field && value) {
+      if (value.length === 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: !isCompleteMatch,
+        });
+      }
+      else if (value.length < 10) {
+        this.setState({
+          medtronic600SerialNumberValue: value,
+          medtronic600FormIncomplete: true,
+        });
+      }
+    }
+    else {
+      this.setState({
+        medtronic600SerialNumberValue: '',
+        medtronic600SerialNumberValid: true,
+        medtronic600FormIncomplete: true
+      });
+    }
+  };
+
+  onMedtronic600UploadPeriodChange = period => {
+    this.setState({
+      medtronic600UploadPeriod: uploadDataPeriod.setPeriod(period)
+    });
+  };
 
   getDebugLinks(data) {
 
     let post_link = null;
 
-    if(Array.isArray(data) || Array.isArray(data.post_records)) {
+    if(_.isArray(data) || _.isArray(data.post_records)) {
 
       let filename = 'uploader-processed-records.json';
       let jsonData = null;
-      if (Array.isArray(data)) {
+      if (_.isArray(data)) {
         jsonData = JSON.stringify(data, undefined, 4);
       } else {
         jsonData = JSON.stringify(data.post_records, undefined, 4);
@@ -260,16 +356,13 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(Array.isArray(data.pages)) {
+    if(_.isArray(data.pages || data.aapPackets)) {
+      /*
+        we currently support binary blobs for Medtronic (.pages) and
+        Libre (.aapPackets)
+      */
       let filenameBinary = 'binary-blob.json';
-      let blob = { settings:data.settings, pages:data.pages };
-      if(Array.isArray(data.cbg_pages)) {
-        blob.cbg_pages = data.cbg_pages;
-      }
-      if(Array.isArray(data.isig_pages)) {
-        blob.isig_pages = data.isig_pages;
-      }
-      let jsonDataBinary = JSON.stringify(blob, undefined, 4);
+      let jsonDataBinary = JSON.stringify(data, undefined, 4);
       let blobBinary = new Blob([jsonDataBinary], {type: 'text/json'});
       let dataHrefBinary = URL.createObjectURL(blobBinary);
       binary_link = (
@@ -306,6 +399,7 @@ export default class Upload extends Component {
             {this.renderStatus()}
           </div>
           {this.renderProgress()}
+          {this.renderFirstUpload()}
           {this.renderActions()}
         </div>
       </div>
@@ -330,6 +424,8 @@ export default class Upload extends Component {
       <form className={styles.form}>
         {this.renderCareLinkInputs()}
         {this.renderMedtronicSerialNumberInput()}
+        {this.renderMedtronic600SerialNumberInput()}
+        {this.renderMedtronicUploadRangeSelect()}
         {this.renderBlockModeInput()}
         {this.renderButton()}
       </form>
@@ -368,12 +464,16 @@ export default class Upload extends Component {
     let disabled = upload.disabled || this.props.disabled;
 
     if (_.get(upload, 'source.type', null) === 'carelink') {
-      labelText = text.LABEL_IMPORT;
-      disabled = disabled || this.state.carelinkFormIncomplete;
+      labelText = 'Enable';
+      disabled = false;
     }
 
     if (_.get(upload, 'key', null) === 'medtronic') {
       disabled = disabled || this.state.medtronicFormIncomplete;
+    }
+
+    if (_.get(upload, 'key', null) === 'medtronic600') {
+      disabled = disabled || this.state.medtronic600FormIncomplete;
     }
 
     if (_.get(upload, 'source.type', null) === 'block') {
@@ -402,19 +502,8 @@ export default class Upload extends Component {
     return (
       <div>
         <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="username"
-            placeholder={this.props.text.CARELINK_USERNAME}/>
-        </div>
-        <div className={styles.textInputWrapper}>
-          <input
-            onChange={this.onCareLinkInputChange}
-            className={styles.textInput}
-            ref="password"
-            type="password"
-            placeholder={this.props.text.CARELINK_PASSWORD}/>
+          Medtronic has removed the CareLink export feature.
+          Click below to enable direct upload to Tidepool using a Contour Next Link.
         </div>
       </div>
     );
@@ -451,10 +540,77 @@ export default class Upload extends Component {
     );
   }
 
+  renderMedtronic600SerialNumberInput() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic600') {
+      return null;
+    }
+
+    const divHidden = cx({
+      [styles.hidden]: this.state.medtronic600Linked,
+    });
+    
+    const serialInputStyle = cx({
+      [styles.textInput]: this.state.medtronic600SerialNumberValid,
+      [styles.textInputError]: !this.state.medtronic600SerialNumberValid,
+    });
+
+    return (
+      <div>
+        <div className={styles.textInputWrapper}>
+          <div className={styles.rememberWrap}>
+            <input
+              type="checkbox"
+              id="medtronic600Linked"
+              onChange={this.onMedtronic600LinkedChange}
+              checked={this.state.medtronic600Linked} />
+            <label htmlFor="medtronic600Linked">
+              {this.props.text.MEDTRONIC_600_IS_LINKED}
+            </label>
+          </div>
+          <div className={divHidden}>
+            <p>Enter 10 character serial number.</p>
+            <input
+              type="text"
+              value={this.state.medtronic600SerialNumberValue}
+              onChange={this.onMedtronic600SerialNumberInputChange}
+              className={serialInputStyle}
+              placeholder={this.props.text.MEDTRONIC_SERIAL_NUMBER} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderMedtronicUploadRangeSelect() {
+    const { upload } = this.props;
+    if (_.get(upload, 'source.driverId', null) !== 'Medtronic600') {
+      return null;
+    }
+    const opts = [
+      { label: 'since last upload', value: uploadDataPeriod.PERIODS.DELTA },
+      { label: 'last 4 weeks', value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
+      { label: 'all data on pump', value: uploadDataPeriod.PERIODS.ALL }
+    ];
+    return (
+      <div className={styles.uploadPeriodRow}>
+        <div>Upload:</div>
+        <div className={styles.dropdown}>
+          <Select clearable={false}
+            name={'uploadDataPeriodSelect'}
+            options={opts}
+            simpleValue={true}
+            onChange={this.onMedtronic600UploadPeriodChange}
+            value={this.state.medtronic600UploadPeriod} />
+        </div>
+      </div>
+    );
+  }
+
   renderInstructions() {
     const { upload } = this.props;
     let details = upload.instructions || '';
-    if (Array.isArray(details)) {
+    if (_.isArray(details)) {
       return (
         <div className={styles.detail}>
           {_.get(details, 0, '')}<br/>
@@ -527,6 +683,18 @@ export default class Upload extends Component {
     }
 
     return <div className={styles.progress}><ProgressBar percentage={percentage}/></div>;
+  }
+
+  renderFirstUpload() {
+    const { upload } = this.props;
+
+    if (upload.uploading && upload.progress && upload.progress.isFirstUpload) {
+      return (
+        <div className={styles.detail}><b>{this.props.text.NOTE}</b>&nbsp;{this.props.text.FIRST_UPLOAD}</div>
+      );
+    } else {
+      return null;
+    }
   }
 
   renderReset() {
@@ -604,4 +772,4 @@ export default class Upload extends Component {
     return (_.get(upload, 'source.type', null) === 'carelink') &&
       (upload.isFetching);
   }
-};
+}

@@ -16,17 +16,18 @@
 */
 
 var _ = require('lodash');
+var PropTypes = require('prop-types');
 var React = require('react');
 
 var styles = require('../../styles/components/ViewDataLink.module.less');
 
-var ViewDataLink = React.createClass({
-  propTypes: {
-    href: React.PropTypes.string.isRequired,
-    onViewClicked: React.PropTypes.func.isRequired
-  },
+class ViewDataLink extends React.Component {
+  static propTypes = {
+    href: PropTypes.string.isRequired,
+    onViewClicked: PropTypes.func.isRequired
+  };
 
-  render: function() {
+  render() {
     return (
       <div className={styles.buttonWrap}>
         <a className={styles.button}
@@ -39,6 +40,6 @@ var ViewDataLink = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = ViewDataLink;

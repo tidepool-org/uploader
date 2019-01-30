@@ -106,6 +106,16 @@ describe('uploads', () => {
         type: actionTypes.UPLOAD_SUCCESS
       })).to.be.null;
     });
+
+    it('should handle UPLOAD_CANCELLED', () => {
+      const initialState = {
+        percentage: 100,
+        step: steps.start
+      };
+      expect(uploads.uploadProgress(initialState, {
+        type: actionTypes.UPLOAD_CANCELLED
+      })).to.be.null;
+    });
   });
 
   describe('uploadsByUser', () => {
@@ -631,6 +641,46 @@ describe('uploads', () => {
             data: data,
             history: [{start: time, finish: time}, 1, 2, 3],
             successful: true,
+            uploading: false
+          }
+        },
+        d4e5f6: {
+          another_pump: {history: []}
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+      expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history === result.a1b2c3.a_cgm.history).to.be.false;
+      expect(initialState.a1b2c3.a_cgm.history[0] === result.a1b2c3.a_cgm.history[0]).to.be.false;
+    });
+
+    it('should handle UPLOAD_CANCELLED', () => {
+      const data = [1,2,3,4,5];
+      let initialState = {
+        [userId]: {
+          a_pump: {disabled: true, history: []},
+          [deviceKey]: {
+            history: [{start: time},1,2,3],
+            uploading: true
+          }
+        },
+        d4e5f6: {
+          another_pump: {history: []}
+        }
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.UPLOAD_CANCELLED,
+        payload: { utc: time }
+      });
+      expect(result).to.deep.equal({
+        [userId]: {
+          a_pump: {history: []},
+          [deviceKey]: {
+            completed: true,
+            failed: false,
+            history: [{start: time, finish: time}, 1, 2, 3],
             uploading: false
           }
         },

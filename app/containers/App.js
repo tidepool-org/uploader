@@ -16,11 +16,13 @@
  */
 
 import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
+import { Route, Switch } from 'react-router-dom';
 
 const { Menu } = remote;
 
@@ -40,13 +42,22 @@ import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
+import MainPage from './MainPage';
+import Login from '../components/Login';
+import Loading from '../components/Loading';
+import SettingsPage from './SettingsPage';
+import ClinicUserSelectPage from './ClinicUserSelectPage';
+import ClinicUserEditPage from './ClinicUserEditPage';
+import NoUploadTargetsPage from './NoUploadTargetsPage';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
+import DeviceTimeModal from '../components/DeviceTimeModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -93,9 +104,6 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    this.handleDismissDropdown = this.handleDismissDropdown.bind(this);
-    this.handleContextMenu = this.handleContextMenu.bind(this);
-    this.setServer = this.setServer.bind(this);
     const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
     this.state = {
       server: initial_server
@@ -104,8 +112,9 @@ export class App extends Component {
 
   componentWillMount(){
     checkVersion(this.props.dispatch);
-    let api = this.props.route.api;
-    this.props.async.doAppInit(Object.assign({}, config), {
+    let api = this.props.api;
+    this.props.async.doAppInit(
+      _.assign({ environment: this.state.server }, config), {
       api: api,
       carelink,
       device,
@@ -116,28 +125,43 @@ export class App extends Component {
     window.addEventListener('contextmenu', this.handleContextMenu, false);
   }
 
-  setServer(info) {
+  setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
-    this.props.route.api.setHosts(serverinfo);
+    serverinfo.environment = info.label;
+    this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
-  }
+  };
+
+  setDataPeriod = info => {
+    console.log('fetch device data for', info.label);
+    uploadDataPeriod.setPeriod(info.id);
+  };
 
   render() {
     return (
       <div className={styles.app} onClick={this.handleDismissDropdown}>
         <Header location={this.props.location} />
-        {this.props.children}
+        <Switch>
+          <Route exact strict path="/" component={Loading} />
+          <Route path="/login" component={Login}/>
+          <Route path="/main" component={MainPage}/>
+          <Route path="/settings" component={SettingsPage}/>
+          <Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
+          <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
+          <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
+        </Switch>
         <Footer version={config.version} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />
         <UpdateDriverModal />
+        <DeviceTimeModal />
       </div>
     );
   }
 
-  handleContextMenu(e){
+  handleContextMenu = e => {
     e.preventDefault();
     const { clientX, clientY } = e;
     let template = [];
@@ -189,6 +213,34 @@ export class App extends Component {
         ]
       });
       template.push({
+        label: 'Upload Data',
+        submenu: [
+          {
+            label: 'Everything',
+            id: uploadDataPeriod.PERIODS.ALL,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.ALL
+          },
+          {
+            label: 'New since last upload',
+            id: uploadDataPeriod.PERIODS.DELTA,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.DELTA
+          },
+          {
+            label: 'Last 4 weeks',
+            id: uploadDataPeriod.PERIODS.FOUR_WEEKS,
+            visible: debugMode.isDebug,
+            click: this.setDataPeriod,
+            type: 'radio',
+            checked: uploadDataPeriod.period ===
+              uploadDataPeriod.PERIODS.FOUR_WEEKS
+          }
+        ]
+      });
+      template.push({
         label: 'Toggle Debug Mode',
         type: 'checkbox',
         checked: debugMode.isDebug,
@@ -199,15 +251,15 @@ export class App extends Component {
     }
     const menu = Menu.buildFromTemplate(template);
     menu.popup(remote.getCurrentWindow());
-  }
+  };
 
-  handleDismissDropdown() {
+  handleDismissDropdown = () => {
     const { dropdown } = this.props;
     // only toggle the dropdown by clicking elsewhere if it's open
     if (dropdown === true) {
       this.props.sync.toggleDropdown(dropdown);
     }
-  }
+  };
 
   renderVersionCheck() {
     const { readyToRenderVersionCheckOverlay, unsupported } = this.props;

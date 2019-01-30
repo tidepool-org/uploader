@@ -82,19 +82,19 @@ export function unsupported(state = true, action) {
 export function blipUrls(state = {}, action) {
   switch (action.type) {
     case actionTypes. SET_BLIP_VIEW_DATA_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         viewDataLink: action.payload.url
       });
     case actionTypes.SET_FORGOT_PASSWORD_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         forgotPassword: action.payload.url
       });
     case actionTypes.SET_SIGNUP_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         signUp: action.payload.url
       });
     case actionTypes.SET_NEW_PATIENT_URL:
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         newPatient: action.payload.url
       });
     default:
@@ -146,6 +146,7 @@ function uploading(state = false, action) {
     case actionTypes.READ_FILE_FAILURE:
     case actionTypes.UPLOAD_FAILURE:
     case actionTypes.UPLOAD_SUCCESS:
+    case actionTypes.UPLOAD_CANCELLED:
       return false;
     default:
       return state;
@@ -268,6 +269,29 @@ export function driverUpdateComplete(state = null, action) {
   switch (action.type) {
     case actionTypes.DRIVER_INSTALL:
       return true;
+    default:
+      return state;
+  }
+}
+
+export function showingDeviceTimePrompt(state = null, action) {
+  switch (action.type) {
+    case actionTypes.DEVICE_TIME_INCORRECT:
+      return { callback: action.payload.callback, cfg: action.payload.cfg, times: action.payload.times };
+    case actionTypes.DISMISS_DEVICE_TIME_PROMPT:
+      return false;
+    default:
+      return state;
+  }
+}
+
+export function isTimezoneFocused(state = false, action) {
+  switch (action.type) {
+    case actionTypes.UPLOAD_CANCELLED:
+      return true;
+    case actionTypes.TIMEZONE_BLUR:
+    case actionTypes.UPLOAD_REQUEST:
+      return false;
     default:
       return state;
   }

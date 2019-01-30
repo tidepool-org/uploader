@@ -48,7 +48,7 @@ describe('misc reducers', () => {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'mac'}
       });
-      let expectedResult = _.pick(devices, filterDevicesFn('mac'));
+      let expectedResult = _.pickBy(devices, filterDevicesFn('mac'));
       expect(actualResult).to.deep.equal(expectedResult);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
@@ -58,8 +58,9 @@ describe('misc reducers', () => {
         payload: {os: 'mac'}
       });
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
-      // because we do currently have devices unavailable on Mac
-      expect(Object.keys(actualResult).length).to.be.lessThan(Object.keys(devices).length);
+      // at least one device is unavailable on Mac, so available devices should be less than
+      // all devices
+      expect(_.keys(actualResult).length).to.be.lessThan(_.keys(devices).length);
     });
 
     it('should handle HIDE_UNAVAILABLE_DEVICES [win]', () => {
@@ -67,10 +68,11 @@ describe('misc reducers', () => {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'win'}
       });
-      let expectedResult = _.pick(devices, filterDevicesFn('win'));
+      let expectedResult = _.pickBy(devices, filterDevicesFn('win'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // because nothing currently is unavailable on Windows
-      expect(Object.keys(actualResult).length).to.equal(Object.keys(devices).length);
+      // at least one device may be unavailable on Windows, so available devices
+      // could be less or equal to total number of devices
+      expect(_.keys(actualResult).length).to.be.at.most(_.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
@@ -682,6 +684,50 @@ describe('misc reducers', () => {
       expect(misc.driverUpdateComplete(undefined, {
         type: actionTypes.DRIVER_INSTALL
       })).to.be.true;
+    });
+  });
+
+  describe('showingDeviceTimePrompt', () => {
+    it('should return the initial state', () => {
+      expect(misc.showingDeviceTimePrompt(undefined, {})).to.be.null;
+    });
+
+    it('should handle DEVICE_TIME_INCORRECT', () => {
+      const payload = { callback: () => { }, cfg: { conf: 'value' }, times: { time1: 'value1' }};
+      expect(misc.showingDeviceTimePrompt(undefined, {
+        type: actionTypes.DEVICE_TIME_INCORRECT,
+        payload
+      })).to.deep.equal(payload);
+    });
+
+    it('should handle DISMISS_DEVICE_TIME_PROMPT', () => {
+      expect(misc.showingDeviceTimePrompt(undefined, {
+        type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
+      })).to.be.false;
+    });
+  });
+
+  describe('isTimezoneFocused', () => {
+    it('should return the initial state', () => {
+      expect(misc.isTimezoneFocused(undefined, {})).to.be.false;
+    });
+
+    it('should handle UPLOAD_CANCELLED', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.UPLOAD_CANCELLED,
+      })).to.be.true;
+    });
+
+    it('should handle TIMEZONE_BLUR', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.TIMEZONE_BLUR,
+      })).to.be.false;
+    });
+
+    it('should handle UPLOAD_REQUEST', () => {
+      expect(misc.isTimezoneFocused(undefined, {
+        type: actionTypes.UPLOAD_REQUEST,
+      })).to.be.false;
     });
   });
 });

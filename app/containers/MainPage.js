@@ -36,32 +36,25 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClickChooseDevices = this.handleClickChooseDevices.bind(this);
-    this.handleClickChangePerson = this.handleClickChangePerson.bind(this);
-    this.handleClickEditUser = this.handleClickEditUser.bind(this);
-  }
-
-  handleClickEditUser() {
+  handleClickEditUser = () => {
     const { setPage } = this.props.async;
     setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_EDIT_INFO}});
-  }
+  };
 
-  handleClickChangePerson(metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) {
+  handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {
     const { setUploadTargetUser } = this.props.sync;
     const { setPage } = this.props.async;
     setUploadTargetUser(null);
     setPage(pages.CLINIC_USER_SELECT, undefined, metric);
-  }
+  };
 
-  handleClickChooseDevices(metric) {
+  handleClickChooseDevices = metric => {
     const { toggleDropdown } = this.props.sync;
     const { setPage } = this.props.async;
     // ensure dropdown closes after click
     setPage(pages.SETTINGS, true, metric);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
   renderTimezoneDropdown() {
     const { uploadTargetUser } = this.props;
@@ -76,7 +69,9 @@ export class MainPage extends Component {
         targetTimezone={this.props.selectedTimezone}
         updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
         updateProfileErrorMessage={this.props.updateProfileErrorMessage}
-        userDropdownShowing={this.props.showingUserSelectionDropdown} />
+        userDropdownShowing={this.props.showingUserSelectionDropdown}
+        onBlur={this.props.sync.timezoneBlur}
+        isTimezoneFocused={this.props.isTimezoneFocused} />
     );
   }
 
@@ -172,6 +167,9 @@ export class MainPage extends Component {
           onUpload={this.props.async.doUpload}
           readFile={this.props.async.readFile}
           targetId={this.props.uploadTargetUser}
+          addDevice={this.props.sync.addTargetDevice}
+          removeDevice={this.props.sync.removeTargetDevice}
+          onDone={this.props.async.clickDeviceSelectionDone}
           timezoneIsSelected={Boolean(this.props.selectedTimezone)}
           toggleErrorDetails={this.props.sync.toggleErrorDetails}
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}
@@ -200,7 +198,7 @@ export default connect(
       }
       let activeUploads = [];
       const targetUsersUploads = _.get(uploadsByUser, uploadTargetUser, []);
-      _.map(Object.keys(targetUsersUploads), (deviceKey) => {
+      _.map(_.keys(targetUsersUploads), (deviceKey) => {
         const upload = uploadsByUser[uploadTargetUser][deviceKey];
         const device = _.pick(devices[deviceKey], ['instructions', 'image', 'key', 'name', 'source']);
         const progress = upload.uploading ? {progress: state.uploadProgress} :
@@ -235,6 +233,7 @@ export default connect(
       allUsers: state.allUsers,
       blipUrls: state.blipUrls,
       isClinicAccount: isClinicAccount(state),
+      isTimezoneFocused: state.isTimezoneFocused,
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),
       showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),

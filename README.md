@@ -1,5 +1,7 @@
 # Tidepool Uploader
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/uploader.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
 [![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
@@ -22,14 +24,14 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
-1. Make sure you have node v7.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
-1. Check that you are also using npm v4.x, which should come with any node v7.x by default, but if not, run `npm install -g npm@4` to get the latest v4.x version.
+1. Make sure you have node v8.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
 1. Run the following command:
 ```bash
 $ npm run dev
 ```
+or
 ```bash
 $ yarn dev
 ```
@@ -39,7 +41,7 @@ $ yarn dev
 
 ## Config
 
-Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.io/starting-up-services/)), for example:
+Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.org/starting-up-services/)), for example:
 
 ```bash
 $ source config/local.sh
@@ -88,9 +90,9 @@ Aside from the (fairly minimal) JavaScript code style options we *enforce* throu
 
 ## Docs
 
-Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.io/](http://developer.tidepool.io/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
+Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.org](http://developer.tidepool.org/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
 
-See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
+See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.org/docs/).
 
 ## Publishing
 

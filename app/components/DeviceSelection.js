@@ -16,6 +16,7 @@
 */
 
 var _ = require('lodash');
+var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
@@ -30,24 +31,24 @@ var hostMap = {
   'linux': 'linux',
 };
 
-var DeviceSelection = React.createClass({
-  propTypes: {
-    disabled: React.PropTypes.bool.isRequired,
-    devices: React.PropTypes.object.isRequired,
-    targetDevices: React.PropTypes.array.isRequired,
+class DeviceSelection extends React.Component {
+  static propTypes = {
+    disabled: PropTypes.bool.isRequired,
+    devices: PropTypes.object.isRequired,
+    targetDevices: PropTypes.array.isRequired,
     // targetId can be null when logged in user is not a data storage account
     // for example a clinic worker
-    targetId: React.PropTypes.string,
-    timezoneIsSelected: React.PropTypes.bool.isRequired,
-    userDropdownShowing: React.PropTypes.bool.isRequired,
-    userIsSelected: React.PropTypes.bool.isRequired,
-    addDevice: React.PropTypes.func.isRequired,
-    removeDevice: React.PropTypes.func.isRequired,
-    onDone: React.PropTypes.func.isRequired,
-    isClinicAccount: React.PropTypes.bool.isRequired
-  },
+    targetId: PropTypes.string,
+    timezoneIsSelected: PropTypes.bool.isRequired,
+    userDropdownShowing: PropTypes.bool.isRequired,
+    userIsSelected: PropTypes.bool.isRequired,
+    addDevice: PropTypes.func.isRequired,
+    removeDevice: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
+    isClinicAccount: PropTypes.bool.isRequired
+  };
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var self = this;
 
     if (!this.props.userIsSelected && nextProps.userIsSelected) {
@@ -55,9 +56,9 @@ var DeviceSelection = React.createClass({
         self.props.addDevice(nextProps.targetId, device);
       });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var targetUser = this.props.targetId || 'noUserSelected';
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
@@ -75,7 +76,7 @@ var DeviceSelection = React.createClass({
     var targetDevices = this.props.targetDevices;
 
     var items = _.map(devices, function(device) {
-      var isChecked = _.contains(targetDevices, device.key);
+      var isChecked = _.includes(targetDevices, device.key);
 
       return (
         <div key={device.key}>
@@ -91,11 +92,8 @@ var DeviceSelection = React.createClass({
         </div>
       );
     });
-    // ensure that carelink is last
+
     var carelink = _.remove(items, {'key': 'carelink'});
-    if(!_.isEmpty(items)){
-      items = items.concat(carelink);
-    }
 
     // TODO: when this gets the ES6 treatment, use computed property syntax
     var formClassesObject = {};
@@ -125,11 +123,11 @@ var DeviceSelection = React.createClass({
         </div>
       </div>
     );
-  },
-
-  handleSubmit: function() {
-    this.props.onDone();
   }
-});
+
+  handleSubmit = () => {
+    this.props.onDone();
+  };
+}
 
 module.exports = DeviceSelection;
