@@ -87,7 +87,8 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
-        data: recs
+        data: recs,
+        originalError: err
       };
 
       if (!(process.env.NODE_ENV === 'test')) {
