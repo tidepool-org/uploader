@@ -766,7 +766,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version} | Original Error: Error :(`;
+      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
       __Rewire__('services', {
         api: {
           upload: {
