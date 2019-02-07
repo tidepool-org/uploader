@@ -255,9 +255,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_SERIAL_CONNECTION',
-          version: version,
-          originalError: err
+          version: version
         };
+        displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 

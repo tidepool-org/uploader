@@ -87,9 +87,9 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
-        data: recs,
-        originalError: err
+        data: recs
       };
+      displayErr.originalError = err;
 
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(

@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -71,11 +71,11 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.5",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.38.0",
+    "tidepool-platform-client": "0.39.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "3.3.2"
   },
-  "browserslist": "electron 4.0.1",
+  "browserslist": "electron 3.1",
   "build": {
     "productName": "Tidepool Uploader",
     "appId": "org.tidepool.TidepoolUploader",
@@ -190,7 +190,7 @@
     "css-loader": "0.28.11",
     "devtron": "1.4.0",
     "difflet": "1.0.1",
-    "electron": "4.0.1",
+    "electron": "3.1.1",
     "electron-builder": "20.38.4",
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "6.0.4",
