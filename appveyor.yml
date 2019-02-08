@@ -40,7 +40,7 @@ test_script:
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
   - cmd: ECHO Packaging %APPVEYOR_REPO_NAME%
-  - cmd: IF /I "%APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME%"=="%APPVEYOR_REPO_NAME%" ( yarn package ) ELSE (ECHO Forked repo; no package built.)
+  - cmd: IF /I "%APPVEYOR_REPO_NAME%"=="tidepool-org/chrome-uploader" ( yarn package ) ELSE (ECHO Forked repo; no package built.)
 #  - 7z a production.zip release
 
 notifications:
