@@ -747,21 +747,9 @@ describe('misc reducers', () => {
       );
     });
 
-    it('should handle AD_HOC_PAIRING_SUCCESS', () => {
+    it('should handle AD_HOC_PAIRING_DISMISSED', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {
-        type: actionTypes.AD_HOC_PAIRING_SUCCESS,
-      })).to.be.false;
-    });
-
-    it('should handle AD_HOC_PAIRING_FAILURE', () => {
-      expect(misc.showingAdHocPairingDialog(undefined, {
-        type: actionTypes.AD_HOC_PAIRING_FAILURE,
-      })).to.be.false;
-    });
-
-    it('should handle AD_HOC_PAIRING_CANCELLED', () => {
-      expect(misc.showingAdHocPairingDialog(undefined, {
-        type: actionTypes.AD_HOC_PAIRING_CANCELLED,
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
     });
   });

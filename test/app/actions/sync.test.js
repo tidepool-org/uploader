@@ -1488,48 +1488,18 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('adHocPairingSuccess', () => {
+  describe('adHocPairingDismissed', () => {
     it('should be an FSA', () => {
-      let action = syncActions.adHocPairingSuccess();
+      let action = syncActions.dismissedAdHocPairingDialog();
       expect(isFSA(action)).to.be.true;
     });
 
-    it('should create an action to indicate success of a 600 series ad hoc pairing', () => {
+    it('should create an action to indicate dismissing a 600 series ad hoc pairing', () => {
       const expectedAction = {
-        type: actionTypes.AD_HOC_PAIRING_SUCCESS,
-        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_SUCCESS]}
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED]}
       };
-      expect(syncActions.adHocPairingSuccess()).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('adHocPairingFailure', () => {
-    it('should be an FSA', () => {
-      let action = syncActions.adHocPairingFailure();
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to indicate failure of a 600 series ad hoc pairing', () => {
-      const expectedAction = {
-        type: actionTypes.AD_HOC_PAIRING_FAILURE,
-        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_FAILURE]}
-      };
-      expect(syncActions.adHocPairingFailure()).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('adHocPairingCancelled', () => {
-    it('should be an FSA', () => {
-      let action = syncActions.adHocPairingCancelled();
-      expect(isFSA(action)).to.be.true;
-    });
-
-    it('should create an action to indicate cancelling a 600 series ad hoc pairing', () => {
-      const expectedAction = {
-        type: actionTypes.AD_HOC_PAIRING_CANCELLED,
-        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_CANCELLED]}
-      };
-      expect(syncActions.adHocPairingCancelled()).to.deep.equal(expectedAction);
+      expect(syncActions.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
     });
   });
 

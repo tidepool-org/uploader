@@ -236,8 +236,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       progress: actionUtils.makeProgressFn(dispatch),
       displayTimeModal: actionUtils.makeDisplayTimeModal(dispatch),
       displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
-      adHocFailure: actionUtils.makeAdHocFailure(),
-      adHocSuccess: actionUtils.makeAdHocSuccess(),
       version: version
     });
     const { uploadsByUser } = getState();
