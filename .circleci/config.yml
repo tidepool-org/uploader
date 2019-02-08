@@ -38,4 +38,4 @@ jobs:
     - run: yarn test
     - run: greenkeeper-lockfile-upload
     # Package
-    - run: if [ $CIRCLE_PR_NUMBER > 0 ]; then yarn package; else echo "Forked repo; no package built."; fi
+    - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
