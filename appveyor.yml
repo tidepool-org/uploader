@@ -39,7 +39,8 @@ test_script:
 #  - yarn package-dev
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
-  - yarn package
+  - echo "Packaging from $APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME"
+  - if [ $APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME === $APPVEYOR_REPO_NAME ]; then yarn package; else echo "Forked repo; no package built."; fi
 #  - 7z a production.zip release
 
 notifications:
