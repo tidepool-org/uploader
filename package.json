@@ -54,7 +54,7 @@
     "lodash": "4.17.11",
     "plist": "3.0.1",
     "pl2303": "0.0.4",
-    "prop-types": "15.6.2",
+    "prop-types": "15.7.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-redux": "5.0.7",
