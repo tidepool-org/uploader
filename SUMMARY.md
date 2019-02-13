@@ -20,6 +20,7 @@
    * [Abbott FreeStyle Libre CGM](docs/checklists/abbottFreeStyleLibre.md)
    * [Abbott FreeStyle meters](docs/checklists/abbottFreeStyleLite.md)
    * [Abbott Precision Xtra](docs/checklists/abbottPrecisionXtra.md)
+   * [Accu-chek Aviva Connect & Guide (BGM)](docs/checklists/avivaConnectAndGuide.md)
    * [Animas Vibe CGM](docs/checklists/animasCGM.md)
    * [Animas Ping and Vibe Insulin Pumps](docs/checklists/animasPingAndVibe.md)
    * [Ascensia/Bayer Contour Next meters](docs/checklists/bayerContourNext.md)
