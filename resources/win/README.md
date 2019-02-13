@@ -4,13 +4,12 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ## Requirements
 
-- [Inno Setup](http://www.jrsoftware.org/isdl.php)
 - [WDK](https://msdn.microsoft.com/en-us/windows/hardware/gg454513.aspx) (Required for `inf2cat` and `signtool`)
 - [DigiCert High Assurance EV Root CA certificate](https://www.digicert.com/CACerts/DigiCertHighAssuranceEVRootCA.crt)
 
 ## Steps
 
-### Generate the .cat files from the two .inf files:
+### Generate the .cat files from the .inf files:
 - Bump version number in .inf file
 - `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,Vista_X86,Vista_X64,XP_X86,XP_X64`
 
@@ -25,6 +24,7 @@ To build and sign the driver, check that you have the specified requirements ins
 
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolvcp.cat`
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolhid.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolusb.cat`
 
 ### Verify that drivers are correctly signed:
 
@@ -36,19 +36,10 @@ To build and sign the driver, check that you have the specified requirements ins
 	signtool verify /kp /v /c tidepoolvcp.cat i386\tiusb.sys
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\ser2pl64.sys
 	signtool verify /kp /v /c tidepoolvcp.cat i386\ser2pl.sys
-
-## Run InnoSetup:
-- Double-click `innosetup`
-- Bump version number
-- Build -> Compile
-
-## Sign setup.exe:
-- Rename `Output\setup.exe` to `Output\TidepoolUSBDriverSetup.exe`
-- `signtool sign /v /s my /n "Tidepool Project" /t http://timestamp.digicert.com Output\TidepoolUSBDriver.exe`
+	signtool verify /kp /v /c tidepoolvcp.cat amd64\winusbcoinstaller2.dll
 
 ## Notes
 
-- The build process has only been tested on Windows 8.1.
 - If the drivers fail to install, make sure all devices are unplugged.
 - You must have administrator privileges to install drivers.
 - The DigiCert certificate can also be downloaded from the [DigiCert website](
