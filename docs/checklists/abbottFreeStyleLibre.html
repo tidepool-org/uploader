@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Dexcom CGM · GitBook</title>
+        <title>Abbott FreeStyle Libre CGM · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="insuletOmniPod.html" />
+    <link rel="next" href="abbottFreeStyleLite.html" />
     
     
-    <link rel="prev" href="bayerContourNext.html" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -310,7 +310,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.2.1" data-path="abbottFreeStyleLibre.html">
+        <li class="chapter active" data-level="2.2.1" data-path="abbottFreeStyleLibre.html">
             
                 <a href="abbottFreeStyleLibre.html">
             
@@ -401,7 +401,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2.8" data-path="dexcom.html">
+        <li class="chapter " data-level="2.2.8" data-path="dexcom.html">
             
                 <a href="dexcom.html">
             
@@ -747,7 +747,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Dexcom CGM</a>
+        <a href="../.." >Abbott FreeStyle Libre CGM</a>
     </h1>
 </div>
 
@@ -762,7 +762,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="dexcom-g4--g5">Dexcom G4 &amp; G5</h1>
+                                <h1 id="abbott-freestyle-libre-cgm--bgm">Abbott FreeStyle Libre (CGM &amp; BGM)</h1>
 <h2 id="checklist-for-cgm-implementation">Checklist for CGM Implementation</h2>
 <p>(Key:</p>
 <ul>
@@ -776,16 +776,21 @@
 <h4 id="cbg">CBG</h4>
 <ul>
 <li><code>[x]</code> cbg values</li>
-<li><code>[?]</code> units of cbg values (read from device, not hard-coded)</li>
+<li><code>[ ]</code> units of cbg values (read from device, not hard-coded)</li>
 <li><code>[x]</code> out-of-range values (LO or HI)</li>
-<li><code>[?]</code> out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)</li>
+<li><code>[x]</code> out-of-range value thresholds (e.g., often 40 for low and 400 for high on CGMs)</li>
 </ul>
 <p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<ul>
+<li>internal glucose unit is always mg/dL for this device, independent of display unit</li>
+<li>out-of-range thresholds are 41 mg/dL and 499 mg/dL</li>
+<li>out-of-range measurements are reported as values 40 or 500 respectively</li>
+</ul>
 <h4 id="device-events">Device Events</h4>
 <ul>
-<li><code>[x]</code> calibrations<ul>
-<li><code>[x]</code> calibration value</li>
-<li><code>[?]</code> units of calibration value (read from device, not hard-coded)</li>
+<li><code>[ ]</code> calibrations<ul>
+<li><code>[ ]</code> calibration value</li>
+<li><code>[ ]</code> units of calibration value (read from device, not hard-coded)</li>
 </ul>
 </li>
 <li><code>[x]</code> time changes (presence of which is also in the <a href="#bootstrapping-to-utc">BtUTC section</a> below)<ul>
@@ -797,45 +802,42 @@
 </li>
 </ul>
 <p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<p>We are including the following in the payload for Dexcom time changes:</p>
 <ul>
-<li>original system seconds (raw internal timestamp), used as the BtUTC index</li>
-<li>raw old display offset</li>
-<li>raw new display offset</li>
+<li>device does not need calibration</li>
 </ul>
 <h4 id="settings">Settings</h4>
 <ul>
-<li><code>[?]</code> units preference for BG display</li>
-<li><code>[?]</code> units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)</li>
+<li><code>[x]</code> units preference for BG display</li>
+<li><code>[x]</code> units of data being uploaded (will be mutated to mmol/L storage units if not mmol/L)</li>
 <li><code>[x]</code> transmitter ID</li>
-<li><code>[x]</code> low alert settings<ul>
-<li><code>[x]</code> enabled</li>
-<li><code>[x]</code> level/threshold</li>
-<li><code>[x]</code> snooze threshold</li>
+<li><code>[ ]</code> low alert settings<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> level/threshold</li>
+<li><code>[ ]</code> snooze threshold</li>
 </ul>
 </li>
-<li><code>[x]</code> high alert settings<ul>
-<li><code>[x]</code> enabled</li>
-<li><code>[x]</code> level/threshold</li>
-<li><code>[x]</code> snooze threshold</li>
+<li><code>[ ]</code> high alert settings<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> level/threshold</li>
+<li><code>[ ]</code> snooze threshold</li>
 </ul>
 </li>
-<li><code>[x]</code> rate-of-change alerts<ul>
-<li><code>[x]</code> fall rate alert<ul>
-<li><code>[x]</code> enabled</li>
-<li><code>[x]</code> rate threshold for alerting</li>
+<li><code>[ ]</code> rate-of-change alerts<ul>
+<li><code>[ ]</code> fall rate alert<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> rate threshold for alerting</li>
 </ul>
 </li>
-<li><code>[x]</code> rise rate alert<ul>
-<li><code>[x]</code> enabled</li>
-<li><code>[x]</code> rate threshold for alerting</li>
+<li><code>[ ]</code> rise rate alert<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> rate threshold for alerting</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><code>[x]</code> out-of-range alerts<ul>
-<li><code>[x]</code> enabled</li>
-<li><code>[x]</code> snooze time between alerts</li>
+<li><code>[ ]</code> out-of-range alerts<ul>
+<li><code>[ ]</code> enabled</li>
+<li><code>[ ]</code> snooze time between alerts</li>
 </ul>
 </li>
 <li><code>[ ]</code> predictive alerts<ul>
@@ -859,17 +861,11 @@
 </ul>
 <p>Settings history:</p>
 <ul>
-<li><code>[x]</code> device stores all changes to settings OR</li>
-<li><code>[ ]</code> device only returns current settings at time of upload</li>
+<li><code>[ ]</code> device stores all changes to settings OR</li>
+<li><code>[x]</code> device only returns current settings at time of upload</li>
 </ul>
 <p>No Tidepool data model (yet): volume and/or vibrate mode of all alerts (can/should go in <code>payload</code>).</p>
 <p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<p>We are including the following in the payload for Dexcom settings:</p>
-<ul>
-<li>language</li>
-<li>alarm profile name (e.g., &quot;Attentive,&quot; &quot;Hypo Repeat,&quot; etc.)</li>
-<li>internal timestamp</li>
-</ul>
 <h4 id="bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
 <ul>
 <li><code>[x]</code> index<ul>
@@ -890,12 +886,48 @@
 <li><code>[-]</code> activity/exercise</li>
 <li><code>[-]</code> food (e.g., Dexcom allows logging carb events)</li>
 <li><code>[-]</code> notes/other events</li>
+<li><code>[-]</code> insulin (rapid acting, long term)</li>
 </ul>
 <h3 id="tidepool-ingestion-api">Tidepool ingestion API</h3>
 <p>Choose one of the following:</p>
 <ul>
 <li><code>[x]</code> legacy &quot;jellyfish&quot; ingestion API</li>
-<li><code>[ ]</code> platform ingestion API</li>
+<li><code>*[ ]</code> platform ingestion API</li>
+</ul>
+<h3 id="known-implementation-issuestodos">Known implementation issues/TODOs</h3>
+<p><em>Use this space to describe device-specific known issues or implementation TODOs <strong>not</strong> contained in the above datatype-specific sections.</em></p>
+<h2 id="checklist-for-blood-glucose-meter-implementation">Checklist for Blood Glucose Meter Implementation</h2>
+<h3 id="required-if-present">Required if Present</h3>
+<ul>
+<li><code>[x]</code> smbg values</li>
+<li><code>[ ]</code> units of smbg values (read from device, not hard-coded)</li>
+<li><code>[x]</code> out-of-range values (LO or HI)</li>
+<li><code>[x]</code> out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)</li>
+<li><code>[x]</code> date &amp; time settings changes</li>
+<li><code>[x]</code> blood ketone values</li>
+<li><code>[ ]</code> units of blood ketone values (read from device, not hard-coded)</li>
+<li><code>[x]</code> ketone out-of-range values</li>
+<li><code>[x]</code> ketone out-of-range value thresholds</li>
+<li><code>[x]</code> use <code>common.checkDeviceTime(currentDeviceTime, timezone, cb)</code> to check against server time</li>
+</ul>
+<p>Device-specific? (Add any device-specific notes/additions here.)</p>
+<ul>
+<li>internal glucose unit is always mg/dL for this device, independent of display unit</li>
+<li>glucose out-of-range thresholds are 41 mg/dL and 499 mg/dL</li>
+<li>glucose out-of-range measurements are reported as values 40 or 500 respectively</li>
+<li>ketone out-of-range upper threshold is 8.0 mmol/L</li>
+</ul>
+<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
+<ul>
+<li><code>[x]</code> control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded</li>
+<li><code>[-]</code> device settings, other than date &amp; time (e.g., target blood glucose range)</li>
+<li><code>[-]</code> tag/note (e.g., pre- vs. post-meal)</li>
+</ul>
+<h3 id="tidepool-ingestion-api">Tidepool ingestion API</h3>
+<p>Choose one of the following:</p>
+<ul>
+<li><code>[x]</code> legacy &quot;jellyfish&quot; ingestion API</li>
+<li><code>*[ ]</code> platform ingestion API</li>
 </ul>
 <h3 id="known-implementation-issuestodos">Known implementation issues/TODOs</h3>
 <p><em>Use this space to describe device-specific known issues or implementation TODOs <strong>not</strong> contained in the above datatype-specific sections.</em></p>
@@ -926,12 +958,12 @@
 
             
                 
-                <a href="bayerContourNext.html" class="navigation navigation-prev " aria-label="Previous page: Ascensia/Bayer Contour Next meters">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: checklists">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="insuletOmniPod.html" class="navigation navigation-next " aria-label="Next page: Insulet OmniPod">
+                <a href="abbottFreeStyleLite.html" class="navigation navigation-next " aria-label="Next page: Abbott FreeStyle meters">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -942,7 +974,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Dexcom CGM","level":"2.2.8","depth":2,"next":{"title":"Insulet OmniPod","level":"2.2.9","depth":2,"path":"docs/checklists/insuletOmniPod.md","ref":"docs/checklists/insuletOmniPod.md","articles":[]},"previous":{"title":"Ascensia/Bayer Contour Next meters","level":"2.2.7","depth":2,"path":"docs/checklists/bayerContourNext.md","ref":"docs/checklists/bayerContourNext.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/checklists/dexcom.md","mtime":"2018-11-20T11:01:19.807Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T16:27:14.743Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Abbott FreeStyle Libre CGM","level":"2.2.1","depth":2,"next":{"title":"Abbott FreeStyle meters","level":"2.2.2","depth":2,"path":"docs/checklists/abbottFreeStyleLite.md","ref":"docs/checklists/abbottFreeStyleLite.md","articles":[]},"previous":{"title":"checklists","level":"2.2","depth":1,"path":"docs/checklists/README.md","ref":"docs/checklists/README.md","articles":[{"title":"Abbott FreeStyle Libre CGM","level":"2.2.1","depth":2,"path":"docs/checklists/abbottFreeStyleLibre.md","ref":"docs/checklists/abbottFreeStyleLibre.md","articles":[]},{"title":"Abbott FreeStyle meters","level":"2.2.2","depth":2,"path":"docs/checklists/abbottFreeStyleLite.md","ref":"docs/checklists/abbottFreeStyleLite.md","articles":[]},{"title":"Abbott Precision Xtra","level":"2.2.3","depth":2,"path":"docs/checklists/abbottPrecisionXtra.md","ref":"docs/checklists/abbottPrecisionXtra.md","articles":[]},{"title":"Accu-chek Aviva Connect & Guide (BGM)","level":"2.2.4","depth":2,"path":"docs/checklists/avivaConnectAndGuide.md","ref":"docs/checklists/avivaConnectAndGuide.md","articles":[]},{"title":"Animas Vibe CGM","level":"2.2.5","depth":2,"path":"docs/checklists/animasCGM.md","ref":"docs/checklists/animasCGM.md","articles":[]},{"title":"Animas Ping and Vibe Insulin Pumps","level":"2.2.6","depth":2,"path":"docs/checklists/animasPingAndVibe.md","ref":"docs/checklists/animasPingAndVibe.md","articles":[]},{"title":"Ascensia/Bayer Contour Next meters","level":"2.2.7","depth":2,"path":"docs/checklists/bayerContourNext.md","ref":"docs/checklists/bayerContourNext.md","articles":[]},{"title":"Dexcom CGM","level":"2.2.8","depth":2,"path":"docs/checklists/dexcom.md","ref":"docs/checklists/dexcom.md","articles":[]},{"title":"Insulet OmniPod","level":"2.2.9","depth":2,"path":"docs/checklists/insuletOmniPod.md","ref":"docs/checklists/insuletOmniPod.md","articles":[]},{"title":"Medtronic 5/7-series (pump data)","level":"2.2.10","depth":2,"path":"docs/checklists/medtronic.md","ref":"docs/checklists/medtronic.md","articles":[]},{"title":"Medtronic 5/7-series (CGM data)","level":"2.2.11","depth":2,"path":"docs/checklists/medtronicCGM.md","ref":"docs/checklists/medtronicCGM.md","articles":[]},{"title":"Medtronic 6-series (pump data)","level":"2.2.12","depth":2,"path":"docs/checklists/medtronic600.md","ref":"docs/checklists/medtronic600.md","articles":[]},{"title":"Medtronic 6-series (CGM data)","level":"2.2.13","depth":2,"path":"docs/checklists/medtronic600CGM.md","ref":"docs/checklists/medtronic600CGM.md","articles":[]},{"title":"OneTouch Ultra 2 meter","level":"2.2.14","depth":2,"path":"docs/checklists/oneTouchUltra2.md","ref":"docs/checklists/oneTouchUltra2.md","articles":[]},{"title":"OneTouch UltraMini meter","level":"2.2.15","depth":2,"path":"docs/checklists/oneTouchUltraMini.md","ref":"docs/checklists/oneTouchUltraMini.md","articles":[]},{"title":"OneTouch Verio & Verio Flex meters","level":"2.2.16","depth":2,"path":"docs/checklists/oneTouchVerio.md","ref":"docs/checklists/oneTouchVerio.md","articles":[]},{"title":"OneTouch VerioIQ meter","level":"2.2.17","depth":2,"path":"docs/checklists/oneTouchVerioIQ.md","ref":"docs/checklists/oneTouchVerioIQ.md","articles":[]},{"title":"Tandem G4 CGM","level":"2.2.18","depth":2,"path":"docs/checklists/tandemCGM.md","ref":"docs/checklists/tandemCGM.md","articles":[]},{"title":"Tandem Insulin Pumps","level":"2.2.19","depth":2,"path":"docs/checklists/tandem.md","ref":"docs/checklists/tandem.md","articles":[]},{"title":"Trividia TRUE METRIX meters","level":"2.2.20","depth":2,"path":"docs/checklists/trividiaTrueMetrix.md","ref":"docs/checklists/trividiaTrueMetrix.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/checklists/abbottFreeStyleLibre.md","mtime":"2019-02-14T16:26:32.224Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T16:27:14.743Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
