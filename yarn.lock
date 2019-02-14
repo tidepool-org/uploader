@@ -10240,9 +10240,9 @@ thunky@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.3.tgz#f5df732453407b09191dae73e2a8cc73f381a826"
 
-tidepool-platform-client@0.39.0:
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.39.0.tgz#ef6df8f605d3e6dc5cb4da586f0af09bce078da2"
+tidepool-platform-client@0.40.0:
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.40.0.tgz#823b5435e0e8da4410e9da01662bdb7897815717"
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
