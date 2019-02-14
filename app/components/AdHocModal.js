@@ -27,10 +27,10 @@ import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
 
 export class AdHocModal extends Component {
-  handleCancel = () => {
+  handleContinue = () => {
     const { showingAdHocPairingDialog, sync } = this.props;
     showingAdHocPairingDialog.callback('adHocModalClose');
-    sync.adHocPairingCancelled();
+    sync.dismissedAdHocPairingDialog();
   }
 
   render() {
@@ -45,7 +45,6 @@ export class AdHocModal extends Component {
         <div className={styles.modal}>
           <div className={styles.title}>
             <div>{'Allow the connection on the pump:'}</div>
-            <i className={styles.iconClose} onClick={this.handleCancel}></i>
           </div>
           <hr className={styles.hr} />
           <div className={styles.text}>
@@ -62,8 +61,8 @@ export class AdHocModal extends Component {
           </div>
           <hr className={styles.hr} />
           <div className={styles.actions}>
-            <button className={styles.buttonSecondary} disabled>
-              Searching for pump…
+            <button className={styles.buttonSecondary} onClick={this.handleContinue}>
+              Continue
             </button>
           </div>
         </div>

@@ -66,25 +66,13 @@ export function makeDisplayAdhocModal(dispatch) {
   };
 }
 
-export function makeAdHocSuccess(dispatch) {
-  return () => {
-    dispatch(syncActions.adHocPairingSuccess());
-  };
-}
-
-export function makeAdHocFailure(dispatch) {
-  return () => {
-    dispatch(syncActions.adHocPairingFailure());
-  };
-}
-
 export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
 
     if (err) {
-      if(err === 'deviceTimePromptClose' || err === 'adHocModalClose'){
+      if(err === 'deviceTimePromptClose'){
         return dispatch(syncActions.uploadCancelled(getUtc(utc)));
       }
       // the drivers sometimes just pass a string arg as err, instead of an actual error :/
