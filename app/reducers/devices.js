@@ -2,6 +2,13 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 const devices = {
+  accuchekusb: {
+    instructions: 'Plug in meter with micro-USB cable',
+    name: 'Roche Accu-Chek Guide & Aviva Connect',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
     isFetching: false,
