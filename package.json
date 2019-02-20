@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -195,7 +195,7 @@
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "6.0.4",
     "electron-updater": "4.0.6",
-    "enzyme": "3.8.0",
+    "enzyme": "3.9.0",
     "eslint": "5.0.1",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
@@ -218,7 +218,7 @@
     "less": "3.9.0",
     "less-loader": "4.1.0",
     "minimist": "1.2.0",
-    "mocha": "5.2.0",
+    "mocha": "6.0.0",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
@@ -234,7 +234,7 @@
     "webpack-dev-server": "2.9.4",
     "webpack-hot-middleware": "2.22.2",
     "webpack-merge": "4.1.2",
-    "xmlbuilder": "10.1.1"
+    "xmlbuilder": "11.0.0"
   },
   "devEngines": {
     "node": ">=7.9.x",
