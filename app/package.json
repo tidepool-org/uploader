@@ -15,7 +15,8 @@
     "node-hid": "0.7.6",
     "@ronomon/direct-io": "2.4.3",
     "serialport": "6.2.2",
-    "usb": "1.5.0"
+    "usb": "1.5.0",
+    "lzo-decompress": "0.1.2"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"
