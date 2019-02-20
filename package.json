@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -195,7 +195,7 @@
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "6.0.4",
     "electron-updater": "4.0.6",
-    "enzyme": "3.8.0",
+    "enzyme": "3.9.0",
     "eslint": "5.0.1",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
