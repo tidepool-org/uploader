@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
+/* global describe, it */
 
 import { expect } from 'chai';
 
