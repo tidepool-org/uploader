@@ -1055,7 +1055,7 @@ describe('medtronicSimulator.js', function() {
         simulator.basal(tempBasal);
         simulator.suspendResume(suspendResume);
         simulator.basal(suspendedBasal);
-        simulator.finalBasal();
+        simulator.finalize();
 
         var expectedTempBasal = _.cloneDeep(tempBasal.done());
         expectedTempBasal.suppressed.rate = 1.3;
