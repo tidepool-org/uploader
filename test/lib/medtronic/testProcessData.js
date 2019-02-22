@@ -563,10 +563,6 @@ describe('processData.js', function() {
 
         var result = proc.buildSettings([maxBasal3, maxBasal1, maxBasal2]);
 
-        for(var rec of result.postrecords) {
-          console.log(rec.basal.rateMaximum);
-        }
-
         expect(result.postrecords[1].basal.rateMaximum).to.deep.equals({'value': 2,'units':'Units/hour'});
         expect(result.postrecords[2].basal.rateMaximum).to.deep.equals({'value': 35,'units':'Units/hour'});
         expect(result.postrecords[3].basal.rateMaximum).to.deep.equals({'value':2.05,'units':'Units/hour'});
