@@ -86,7 +86,7 @@ describe('processData.js', function() {
         jsDate: new Date('2016-11-14T01:42:00.000Z')
       };
 
-      it('does not create two boluses when cancelled', function(){
+      it('should not create two boluses when cancelled', function(){
         var result = proc.buildBolusRecords([bolus1,bolus2]);
         expect(result).deep.equals([expected]);
       });
@@ -96,7 +96,7 @@ describe('processData.js', function() {
   describe('deviceEvent', function() {
     describe('low glucose suspend status', function() {
 
-      it('is suspended and resumed by user ', function() {
+      it('should handle being suspended and resumed by user ', function() {
 
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
@@ -180,7 +180,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('resumes automatically after two hours with no response by user', function () {
+      it('should resume automatically after two hours with no response by user', function () {
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
             type: {
@@ -262,7 +262,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('resumes automatically after two hours when user suspends', function() {
+      it('should resume automatically after two hours when user suspends', function() {
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
             type: {
@@ -336,7 +336,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('has user suspend followed by LGS suspend', function() {
+      it('should have user suspend followed by LGS suspend', function() {
 
         // user suspend
         var suspend1 = {
