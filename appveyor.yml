@@ -39,8 +39,7 @@ test_script:
 #  - yarn package-dev
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
-  - cmd: ECHO Packaging %APPVEYOR_REPO_NAME%
-  - cmd: IF /I "%APPVEYOR_REPO_NAME%"=="tidepool-org/chrome-uploader" ( yarn package ) ELSE (ECHO Forked repo; no package built.)
+  - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built.) ELSE ( yarn package )
 #  - 7z a production.zip release
 
 notifications:
