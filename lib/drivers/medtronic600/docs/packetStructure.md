@@ -108,7 +108,7 @@ An **NGP Message** is contained in the payload of a [MiniMed Message](#minmed-me
 | Command   | 1     | Byte       | *See table below* |
 | Size      | 1     | UInt8      | Size of the Payload and Checksum |
 | Payload   | Variable | Bytes      | Size specified by **Size - 2** |
-| CRC       | 2     | UInt16LE   | CCITT checksum of the **Payload** |
+| CRC       | 2     | UInt16LE   | CCITT checksum of the message (**Command**, **Size** and **Payload**) |
 
 #### Command
 | Value     | Operation |
