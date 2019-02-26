@@ -820,3 +820,22 @@ export function timezoneBlur() {
     meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
   };
 }
+
+/*
+* relating to ad hoc pairing dialog
+*/
+
+export function adHocPairingRequest(callback, cfg) {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedAdHocPairingDialog() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED] }
+  };
+}
