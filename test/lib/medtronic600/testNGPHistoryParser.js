@@ -303,7 +303,11 @@ describe('NGPHistoryParser.js', () => {
       const carbRatioChange = '61002180558481a3b285af0004000000000a020000000b04000007d00600000096';
       const bgTargetChange = '63002180558af8a3b285af00040000fa003c0200fa00fa04003c003c0600780064';
       const isfChange = '5f001680558aa4a3b285af0003000190020005040032';
-      const historyParser = new NGPHistoryParser(cfg, currentSettings, [isfChange, bgTargetChange, carbRatioChange]);
+      const historyParser = new NGPHistoryParser(
+        cfg,
+        currentSettings,
+        [isfChange, bgTargetChange, carbRatioChange],
+      );
       const events = [];
 
       historyParser.buildSettingsRecords(events);
