@@ -242,7 +242,7 @@ describe('NGPHistoryParser.js', () => {
     });
   });
 
-  describe('min/max values', () => {
+  describe('pumpSettings', () => {
     let currentSettings;
 
     beforeEach(() => {
@@ -299,51 +299,53 @@ describe('NGPHistoryParser.js', () => {
       };
     });
 
-    it('should handle min/max values for bolus wizard changes', () => {
-      const carbRatioChange = '61002180558481a3b285af0004000000000a020000000b04000007d00600000096';
-      const bgTargetChange = '63002180558af8a3b285af00040000fa003c0200fa00fa04003c003c0600780064';
-      const isfChange = '5f001680558aa4a3b285af0003000190020005040032';
-      const bolusWizardSettingsChange = '5d001380558b04a3b285af010000f0010001e0';
-      const historyParser = new NGPHistoryParser(
-        cfg,
-        currentSettings,
-        [isfChange, bgTargetChange, carbRatioChange, bolusWizardSettingsChange],
-      );
-      const events = [];
+    describe('min/max values', () => {
+      it('should handle min/max values for bolus wizard changes', () => {
+        const carbRatioChange = '61002180558481a3b285af0004000000000a020000000b04000007d00600000096';
+        const bgTargetChange = '63002180558af8a3b285af00040000fa003c0200fa00fa04003c003c0600780064';
+        const isfChange = '5f001680558aa4a3b285af0003000190020005040032';
+        const bolusWizardSettingsChange = '5d001380558b04a3b285af010000f0010001e0';
+        const historyParser = new NGPHistoryParser(
+          cfg,
+          currentSettings,
+          [isfChange, bgTargetChange, carbRatioChange, bolusWizardSettingsChange],
+        );
+        const events = [];
 
-      historyParser.buildSettingsRecords(events);
+        historyParser.buildSettingsRecords(events);
 
-      expect(events[0].bolus.calculator.insulin).to.deep.equal({ duration: 480, units: 'minutes' });
+        expect(events[0].bolus.calculator.insulin).to.deep.equal({ duration: 480, units: 'minutes' });
 
-      expect(events[1].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
-      expect(events[1].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
-      expect(events[1].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
+        expect(events[1].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
+        expect(events[1].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
+        expect(events[1].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
 
-      expect(events[2].bgTarget[0]).to.deep.equal({ start: 0, low: 60, high: 250 });
-      expect(events[2].bgTarget[1]).to.deep.equal({ start: 3600000, low: 250, high: 250 });
-      expect(events[2].bgTarget[2]).to.deep.equal({ start: 7200000, low: 60, high: 60 });
+        expect(events[2].bgTarget[0]).to.deep.equal({ start: 0, low: 60, high: 250 });
+        expect(events[2].bgTarget[1]).to.deep.equal({ start: 3600000, low: 250, high: 250 });
+        expect(events[2].bgTarget[2]).to.deep.equal({ start: 7200000, low: 60, high: 60 });
 
-      expect(events[3].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
-      expect(events[3].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
-    });
+        expect(events[3].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
+        expect(events[3].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
+      });
 
-    it('should handle max bolus of 0-25', () => {
-      const maxBolus1 = '590013805ec8c7a3b284fb0003d09000000000';
-      const maxBolus2 = '590013805ec8d7a3b284fb000000000003d090';
-      const maxBolus3 = '590013805ec8fda3b284fb0003d0900001a9c8';
+      it('should handle max bolus of 0-25', () => {
+        const maxBolus1 = '590013805ec8c7a3b284fb0003d09000000000';
+        const maxBolus2 = '590013805ec8d7a3b284fb000000000003d090';
+        const maxBolus3 = '590013805ec8fda3b284fb0003d0900001a9c8';
 
-      const historyParser = new NGPHistoryParser(
-        cfg,
-        currentSettings,
-        [maxBolus1, maxBolus2, maxBolus3],
-      );
-      const events = [];
+        const historyParser = new NGPHistoryParser(
+          cfg,
+          currentSettings,
+          [maxBolus1, maxBolus2, maxBolus3],
+        );
+        const events = [];
 
-      historyParser.buildSettingsRecords(events);
+        historyParser.buildSettingsRecords(events);
 
-      expect(events[0].bolus.amountMaximum).to.deep.equals({ value: 10.9, units: 'Units' });
-      expect(events[1].bolus.amountMaximum).to.deep.equals({ value: 25, units: 'Units' });
-      expect(events[2].bolus.amountMaximum).to.deep.equals({ value: 0, units: 'Units' });
+        expect(events[0].bolus.amountMaximum).to.deep.equals({ value: 10.9, units: 'Units' });
+        expect(events[1].bolus.amountMaximum).to.deep.equals({ value: 25, units: 'Units' });
+        expect(events[2].bolus.amountMaximum).to.deep.equals({ value: 0, units: 'Units' });
+      });
     });
   });
 });
