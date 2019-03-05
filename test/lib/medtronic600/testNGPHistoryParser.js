@@ -347,5 +347,26 @@ describe('NGPHistoryParser.js', () => {
         expect(events[2].bolus.amountMaximum).to.deep.equals({ value: 0, units: 'Units' });
       });
     });
+
+    it('should handle max basal of 0-35', () => {
+      const maxBasal1 = '580013805ed36fa3b284fb000347d800000000';
+      const maxBasal2 = '580013805ed37ea3b284fb00000000000000fa';
+      const maxBasal3 = '580013805ed393a3b284fb000000fa00055730';
+      const maxBasal4 = '580013805ed3b5a3b284fb00055730000178f4';
+
+      const historyParser = new NGPHistoryParser(
+        cfg,
+        currentSettings,
+        [maxBasal1, maxBasal2, maxBasal3, maxBasal4],
+      );
+      const events = [];
+
+      historyParser.buildSettingsRecords(events);
+
+      expect(events[0].basal.rateMaximum).to.deep.equals({ value: 9.65, units: 'Units/hour' });
+      expect(events[1].basal.rateMaximum).to.deep.equals({ value: 35, units: 'Units/hour' });
+      expect(events[2].basal.rateMaximum).to.deep.equals({ value: 0.025, units: 'Units/hour' });
+      expect(events[3].basal.rateMaximum).to.deep.equals({ value: 0, units: 'Units/hour' });
+    });
   });
 });
