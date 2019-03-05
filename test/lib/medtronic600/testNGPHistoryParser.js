@@ -326,5 +326,24 @@ describe('NGPHistoryParser.js', () => {
       expect(events[3].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
       expect(events[3].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
     });
+
+    it('should handle max bolus of 0-25', () => {
+      const maxBolus1 = '590013805ec8c7a3b284fb0003d09000000000';
+      const maxBolus2 = '590013805ec8d7a3b284fb000000000003d090';
+      const maxBolus3 = '590013805ec8fda3b284fb0003d0900001a9c8';
+
+      const historyParser = new NGPHistoryParser(
+        cfg,
+        currentSettings,
+        [maxBolus1, maxBolus2, maxBolus3],
+      );
+      const events = [];
+
+      historyParser.buildSettingsRecords(events);
+
+      expect(events[0].bolus.amountMaximum).to.deep.equals({ value: 10.9, units: 'Units' });
+      expect(events[1].bolus.amountMaximum).to.deep.equals({ value: 25, units: 'Units' });
+      expect(events[2].bolus.amountMaximum).to.deep.equals({ value: 0, units: 'Units' });
+    });
   });
 });
