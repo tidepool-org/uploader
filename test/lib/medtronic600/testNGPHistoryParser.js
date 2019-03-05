@@ -303,28 +303,28 @@ describe('NGPHistoryParser.js', () => {
       const carbRatioChange = '61002180558481a3b285af0004000000000a020000000b04000007d00600000096';
       const bgTargetChange = '63002180558af8a3b285af00040000fa003c0200fa00fa04003c003c0600780064';
       const isfChange = '5f001680558aa4a3b285af0003000190020005040032';
+      const bolusWizardSettingsChange = '5d001380558b04a3b285af010000f0010001e0';
       const historyParser = new NGPHistoryParser(
         cfg,
         currentSettings,
-        [isfChange, bgTargetChange, carbRatioChange],
+        [isfChange, bgTargetChange, carbRatioChange, bolusWizardSettingsChange],
       );
       const events = [];
 
       historyParser.buildSettingsRecords(events);
 
-      expect(events[0].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
-      expect(events[0].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
-      expect(events[0].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
+      expect(events[0].bolus.calculator.insulin).to.deep.equal({ duration: 480, units: 'minutes' });
 
-      expect(events[1].bgTarget[0]).to.deep.equal({ start: 0, low: 60, high: 250 });
-      expect(events[1].bgTarget[1]).to.deep.equal({ start: 3600000, low: 250, high: 250 });
-      expect(events[1].bgTarget[2]).to.deep.equal({ start: 7200000, low: 60, high: 60 });
+      expect(events[1].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
+      expect(events[1].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
+      expect(events[1].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
 
-      expect(events[2].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
-      expect(events[2].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
+      expect(events[2].bgTarget[0]).to.deep.equal({ start: 0, low: 60, high: 250 });
+      expect(events[2].bgTarget[1]).to.deep.equal({ start: 3600000, low: 250, high: 250 });
+      expect(events[2].bgTarget[2]).to.deep.equal({ start: 7200000, low: 60, high: 60 });
 
-      // TODO: insulin active durations not yet recorded
-      // expect(events[0].bolus.calculator.insulin).to.deep.equal({ duration: 8, units: 'hours' });
+      expect(events[3].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
+      expect(events[3].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
     });
   });
 });
