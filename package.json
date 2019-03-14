@@ -192,7 +192,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "electron": "3.1.1",
-    "electron-builder": "20.38.4",
+    "electron-builder": "20.39.0",
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "6.0.4",
     "electron-updater": "4.0.6",
