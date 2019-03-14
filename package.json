@@ -219,7 +219,7 @@
     "less": "3.9.0",
     "less-loader": "4.1.0",
     "minimist": "1.2.0",
-    "mocha": "6.0.0",
+    "mocha": "6.0.1",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
