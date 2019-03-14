@@ -34,5 +34,6 @@ module.exports = {
   E_SERIAL_CONNECTION: 'Hmm, we couldn\'t detect your device',
   E_SERVER_ERR: 'Sorry, the Tidepool servers appear to be down',
   E_UPLOAD_IN_PROGRESS: 'Sorry, an upload is already in progress',
+  E_UNPLUG_AND_RETRY: 'Please unplug device and try again',
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet'
 };
