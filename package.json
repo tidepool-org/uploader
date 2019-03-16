@@ -47,7 +47,7 @@
     "electron-debug": "2.0.0",
     "electron-is-dev": "1.0.1",
     "es6-error": "4.1.1",
-    "history": "4.7.2",
+    "history": "4.9.0",
     "iconv-lite": "0.4.24",
     "immutability-helper": "2.9.0",
     "is-electron": "2.2.0",
