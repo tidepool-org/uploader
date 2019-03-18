@@ -121,7 +121,7 @@ function sendtoMcAfee(downloadURL) {
         CONTACT_EMAIL,
       ],
       ToAddresses: [
-        'gerrit.niezen@gmail.com',
+        'gerrit.niezen@gmail.com', // TODO: change this!
       ]
     },
     Source: 'noreply@tidepool.org', /* required */
