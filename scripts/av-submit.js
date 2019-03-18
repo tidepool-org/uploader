@@ -121,13 +121,16 @@ function sendtoMcAfee(downloadURL) {
         CONTACT_EMAIL,
       ],
       ToAddresses: [
-        'gerrit.niezen@gmail.com', // TODO: change this!
+        'datasubmission@mcafee.com',
       ]
     },
     Source: 'noreply@tidepool.org', /* required */
     Template: 'mcafee-template', /* required */
     ConfigurationSetName: 'mcafee-email',
-    TemplateData: '{ \"contactName\":\"' + CONTACT_PERSON + '\", \"windowsLink\":\"' + downloadURL.windows + '\", \"macOSLink\":\"' + downloadURL.macOS + '\"}', /* required */
+    TemplateData: /* required */
+      '{ \"contactName\":\"' + CONTACT_PERSON +
+      '\", \"windowsLink\":\"' + downloadURL.windows +
+      '\", \"macOSLink\":\"' + downloadURL.macOS + '\"}',
     ReplyToAddresses: [
        'noreply@tidepool.org',
        CONTACT_EMAIL,
@@ -151,5 +154,5 @@ function sendtoMcAfee(downloadURL) {
 
 getDownloadURL((error, downloadURL) => {
   sendtoMcAfee(downloadURL);
-  //TODO: sendToKaspersky(downloadURL);
+  sendToKaspersky(downloadURL);
 });
