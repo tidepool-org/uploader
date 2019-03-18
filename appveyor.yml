@@ -42,7 +42,7 @@ test_script:
   - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built.) ELSE ( yarn package )
 #  - 7z a production.zip release
   # submit uploader release to antivirus vendors if tagged
-  - cmd: IF "%APPVEYOR_REPO_TAG%" EQU TRUE ( yarn av-whitelist ) ELSE ( echo Not a tagged release. )
+  - cmd: IF %APPVEYOR_REPO_TAG% ( yarn av-whitelist ) ELSE ( echo Not a tagged release. )
 
 notifications:
   - provider: Slack
