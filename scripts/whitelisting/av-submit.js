@@ -1,6 +1,6 @@
 /*
  * == BSD2 LICENSE ==
- * Copyright (c) 2017, Tidepool Project
+ * Copyright (c) 2019, Tidepool Project
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the associated License, which is identical to the BSD 2-Clause
@@ -13,12 +13,6 @@
  * You should have received a copy of the License along with this program; if
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
- */
-
- /*
- This script generates an XML file for the Kaspersky Antivirus Whitelist program,
- and uploads it to their FTP. It requires a password that can be set using the
- FTP_AV_PASSWORD_TIDEPOOL environment variable and is stored in 1Password.
  */
 
 const fs = require('fs');
@@ -141,16 +135,12 @@ function sendtoMcAfee(downloadURL) {
   const sendPromise = new aws.SES({apiVersion: '2010-12-01'})
                              .sendTemplatedEmail(params).promise();
 
-  // Handle promise's fulfilled/rejected states
-  sendPromise.then(
-    function(data) {
-      console.log(data);
-    }).catch(
-      function(err) {
-      console.error(err, err.stack);
-    });
-
-  }
+  sendPromise.then((data) => {
+    console.log('E-mail has been sent:', data);
+  }).catch((err) => {
+    console.error(err, err.stack);
+  });
+}
 
 getDownloadURL((error, downloadURL) => {
   sendtoMcAfee(downloadURL);
