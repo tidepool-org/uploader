@@ -533,7 +533,6 @@ ajv@^6.1.0, ajv@^6.5.5, ajv@^6.9.1:
 ajv@^6.9.2:
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.0.tgz#90d0d54439da587cd7e843bfb7045f50bd22bdf1"
-  integrity sha512-nffhOpkymDECQyR0mnsUtoCE8RlX38G0rYP+wgLWFyZuUyuuojSSvi/+euOiQBIn63whYwYVIIH1TvE3tu4OEg==
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
@@ -653,12 +652,10 @@ anymatch@^2.0.0:
 app-builder-bin@2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/app-builder-bin/-/app-builder-bin-2.6.4.tgz#011cd9e7e144d52b43fffa15aff8039804d3078a"
-  integrity sha512-wC9HYqiC1XqpunT/9y2VuF90KbarnIHL90Tv8BD3TITTgbVIdRTXAsvWvmaR/ImvAX0+l5Z3jZtXjdJ7Pw3bLQ==
 
 app-builder-lib@20.39.0, app-builder-lib@~20.39.0:
   version "20.39.0"
   resolved "https://registry.yarnpkg.com/app-builder-lib/-/app-builder-lib-20.39.0.tgz#197faba9cd7c32005d3882e6add051c4e182fdc3"
-  integrity sha512-lkxGyBrQwueYb3ViqHt5WjyzVVBQqXMXc7TF+JqkuuUWp5DF7SXAYZYd+rsR3gmCbdNxw4SPIEmWmm+I9LK2gw==
   dependencies:
     "7zip-bin" "~4.1.0"
     app-builder-bin "2.6.4"
@@ -2098,7 +2095,6 @@ bluebird-lst@^1.0.6:
 bluebird-lst@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/bluebird-lst/-/bluebird-lst-1.0.7.tgz#f0babade9ef1dce3989b603f3796ff3b16b90d50"
-  integrity sha512-5ix04IbXVIZ6nSRM4aZnwQfk40Td0D57WAl8LfhnICF6XwT4efCZYh0veOHvfDmgpbqE4ju5L5XEAMIcAe13Kw==
   dependencies:
     bluebird "^3.5.3"
 
@@ -2341,7 +2337,6 @@ buffer@^5.1.0, buffer@^5.2.1:
 builder-util-runtime@8.2.0, builder-util-runtime@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/builder-util-runtime/-/builder-util-runtime-8.2.0.tgz#e64c311b4f3643c8ccd8b8e5ba5bfb10801a6826"
-  integrity sha512-2Q3YrxANTrDs2NjSG5mbNGLPuUhPnSNYF9w5i4jWfHcNfQ3TgRrGXq4UfnkCiZVX8Axp4eAOSscaLLScKp/XLg==
   dependencies:
     bluebird-lst "^1.0.7"
     debug "^4.1.1"
@@ -2360,7 +2355,6 @@ builder-util-runtime@~8.1.0:
 builder-util@9.7.0, builder-util@~9.7.0:
   version "9.7.0"
   resolved "https://registry.yarnpkg.com/builder-util/-/builder-util-9.7.0.tgz#7aabec1136bf646023f2ebe231a26e82bb9d42cf"
-  integrity sha512-QA2RxbaSKvaFVNGcYsjmlkTn03tcdPxgIxHCOgw38G7NK91QWc76RBY9+T1sU8BLVEZJ4qNRWx+pd5rG9tTi+Q==
   dependencies:
     "7zip-bin" "~4.1.0"
     app-builder-bin "2.6.4"
@@ -3562,7 +3556,6 @@ discontinuous-range@1.0.0:
 dmg-builder@6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/dmg-builder/-/dmg-builder-6.6.0.tgz#301ae1239d3328864ae1419c1ff744b599a208d3"
-  integrity sha512-voodd3qdpdRiaciFZTfrFq/e82UPmUqSJq6R3Wc2Ql6XqXYLQcKo1h9rSZiivwls8PqE4Mk1IHTIOwmvJaq+MA==
   dependencies:
     app-builder-lib "~20.39.0"
     bluebird-lst "^1.0.7"
@@ -3719,7 +3712,6 @@ ejs@~2.5.6:
 electron-builder@20.39.0:
   version "20.39.0"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.39.0.tgz#ab2f5b556f36dea3947eb43ef312a955ba7f9d16"
-  integrity sha512-50SNZ/G+iE9MpTwxzeHt1Cqg8jZKeFLuJ9wubR4e/8VIzAe0ERUmwAQw+77UrlwXZD/PKKoYblc0Sr08Vm4exg==
   dependencies:
     app-builder-lib "20.39.0"
     bluebird-lst "^1.0.7"
@@ -3817,7 +3809,6 @@ electron-osx-sign@0.4.11:
 electron-publish@20.39.0:
   version "20.39.0"
   resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-20.39.0.tgz#a945d871b469b4160933d4e027612710b653f006"
-  integrity sha512-PWrGUru994CSmtsA56GnjyLB3EnIS3zyEmrW0hDXtwuctZLGMnrxjK/7WEORYkgTQ/GufD5b/8T05Q2Kr42nqQ==
   dependencies:
     bluebird-lst "^1.0.7"
     builder-util "~9.7.0"
@@ -4893,7 +4884,6 @@ fs-extra-p@^7.0.0:
 fs-extra-p@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra-p/-/fs-extra-p-7.0.1.tgz#4eec0b6dfa150fa90f6ddd773b4fb1d55cad54e3"
-  integrity sha512-yhd2OV0HnHt2oitlp+X9hl2ReX4X/7kQeL7/72qzPHTZj5eUPGzAKOvEglU02Fa1OeG2rSy/aKB4WGVaLiF8tw==
   dependencies:
     bluebird-lst "^1.0.7"
     fs-extra "^7.0.1"
@@ -5084,7 +5074,6 @@ get-caller-file@^1.0.1:
 get-caller-file@^2.0.1:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
-  integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
 get-func-name@^2.0.0:
   version "2.0.0"
@@ -6408,7 +6397,6 @@ lazy-val@^1.0.3:
 lazy-val@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-val/-/lazy-val-1.0.4.tgz#882636a7245c2cfe6e0a4e3ba6c5d68a137e5c65"
-  integrity sha512-u93kb2fPbIrfzBuLjZE+w+fJbUUMhNDXxNmMfaqNgpfQf1CO5ZSe2LfsnBqVAk7i/2NF48OSoRj+Xe2VT+lE8Q==
 
 lazystream@^1.0.0:
   version "1.0.0"
@@ -7010,7 +6998,6 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
 mocha@6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.0.1.tgz#c287da87913fa0edc4c44850ba8bc4fdbf20d3ea"
-  integrity sha512-tQzCxWqxSD6Oyg5r7Ptbev0yAMD8p+Vfh4snPFuiUsWqYj0eVYTDT2DkEY307FTj0WRlIWN9rWMMAUzRmijgVQ==
   dependencies:
     ansi-colors "3.2.3"
     browser-stdout "1.3.1"
@@ -8896,7 +8883,6 @@ read-cmd-shim@~1.0.1:
 read-config-file@3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/read-config-file/-/read-config-file-3.2.2.tgz#57bbff7dd97caf237d0d625bd541c6d0efb4d067"
-  integrity sha512-PuFpMgZF01VB0ydH1dfitAxCP/fh+qnfbA9cYNIPoxPbz0SMngsrafCtaHDWfER7MwlDz4fmrNBhPkakxxFpTg==
   dependencies:
     ajv "^6.9.2"
     ajv-keywords "^3.4.0"
@@ -9348,7 +9334,6 @@ require-main-filename@^1.0.1:
 require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
-  integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
 
 requires-port@^1.0.0:
   version "1.0.0"
@@ -9451,9 +9436,9 @@ rollbar-sourcemap-webpack-plugin@2.5.0:
     request "^2.85.0"
     verror "^1.6.1"
 
-rollbar@2.5.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.3.tgz#cc6e468dbb6334da856a0936672b7acdf7063b89"
+rollbar@2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.4.tgz#8b2ec6de999aaeee04c784110ecb40268a38c71d"
   dependencies:
     async "~1.2.1"
     console-polyfill "0.3.0"
@@ -11220,7 +11205,6 @@ yargs-parser@11.1.1, yargs-parser@^11.1.1:
 yargs-parser@^13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.0.0.tgz#3fc44f3e76a8bdb1cc3602e860108602e5ccde8b"
-  integrity sha512-w2LXjoL8oRdRQN+hOyppuXs+V/fVAYtpcrRxZuF7Kt/Oc+Jr2uAcVntaUTNT6w5ihoWfFDpNY8CPx1QskxZ/pw==
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
@@ -11265,7 +11249,6 @@ yargs@12.0.5, yargs@^12.0.1, yargs@^12.0.5:
 yargs@^13.2.1:
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
-  integrity sha512-WyEoxgyTD3w5XRpAQNYUB9ycVH/PQrToaTXdYXRdOXvEy1l19br+VJsc0vcO8PTGg5ro/l/GY7F/JMEBmI0BxA==
   dependencies:
     cliui "^4.0.0"
     find-up "^3.0.0"
