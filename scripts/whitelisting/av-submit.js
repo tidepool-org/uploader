@@ -30,7 +30,7 @@ function getDownloadURL(cb) {
   const options = {
     hostname: 'api.github.com',
     port: 443,
-    path: '/repos/' + ORG + '/' + REPO + '/releases/latest',
+    path: `/repos/${ORG}/${REPO}/releases/latest`,
     method: 'GET',
     headers: {
         'accept': 'application/json',
