@@ -8,7 +8,7 @@
   "license": "BSD-2-Clause",
   "repository": "tidepool-org/chrome-uploader",
   "scripts": {
-    "av-whitelist": "node ./scripts/av-submit.js",
+    "av-whitelist": "node ./scripts/whitelisting/av-submit.js",
     "build-docs": "./scripts/update-gh-pages.sh",
     "serve-docs": "./node_modules/.bin/gitbook serve",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 electron-mocha --renderer --retries 2 --require babel-register --recursive test/",
@@ -65,7 +65,7 @@
     "redux": "3.7.2",
     "redux-form": "7.4.0",
     "redux-thunk": "2.3.0",
-    "rollbar": "2.5.3",
+    "rollbar": "2.5.4",
     "rollbar-sourcemap-webpack-plugin": "2.5.0",
     "semver": "5.6.0",
     "source-map-support": "0.5.11",
@@ -165,6 +165,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
+    "aws-sdk": "2.422.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
