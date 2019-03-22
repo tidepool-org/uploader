@@ -11,7 +11,8 @@
       {
         "allowForLoopAfterthoughts": true
       }
-    ]
+    ],
+    "lodash/prefer-lodash-method": "off"
   },
   "overrides": [
     {
