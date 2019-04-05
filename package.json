@@ -164,7 +164,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "aws-sdk": "2.432.0",
+    "aws-sdk": "2.437.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
