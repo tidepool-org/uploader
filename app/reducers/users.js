@@ -48,6 +48,28 @@ export function allUsers(state = {}, action) {
   }
 }
 
+export function memberships(state = {}, action) {
+  switch (action.type) {
+    case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.SET_USER_INFO_FROM_TOKEN:
+    case actionTypes.SET_ALL_USERS: {
+      const { memberships } = action.payload;
+      let newState = {};
+      _.each(memberships, (membership) => {
+        newState[membership.userid] = _.assign({}, _.omit(membership, ['userid', 'profile']));
+      });
+      return newState;
+    }
+    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
+      const { account } = action.payload;
+      return update(state, { $merge: { [account.userid]: { permissions: { custodian: {}, upload: {}, view: {} } } } });
+    case actionTypes.LOGOUT_REQUEST:
+      return {};
+    default:
+      return state;
+  }
+}
+
 export function loggedInUser(state = null, action) {
   switch (action.type) {
     case actionTypes.LOGIN_SUCCESS:

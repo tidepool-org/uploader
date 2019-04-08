@@ -28,8 +28,8 @@ describe('users', () => {
     const user = {userid: 'a1b2c3', email: 'annie@foo.com'};
     const profile = {fullName: 'Annie Foo'};
     const memberships = [
-      {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}},
-      {userid: 'd4e5f6', profile: {b: 2}}
+      {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}, permissions: { root: {}}},
+      {userid: 'd4e5f6', profile: {b: 2}, permissions: { upload: {}, view: {}} }
     ];
     const account = {userid: 'jkl012', profile: {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }}};
     it('should return the initial state', () => {
@@ -107,6 +107,84 @@ describe('users', () => {
     it('should handle LOGOUT_REQUEST', () => {
       let initialState = {foo: 'bar'};
       let result = users.allUsers(initialState, {
+        type: actionTypes.LOGOUT_REQUEST
+      });
+      expect(result).to.deep.equal({});
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
+  });
+
+  describe('memberships', () => {
+    const user = { userid: 'a1b2c3', email: 'annie@foo.com' };
+    const profile = { fullName: 'Annie Foo' };
+    const memberships = [
+      { userid: 'a1b2c3', profile: { fullName: 'Annie Foo' }, permissions: { root: {} } },
+      { userid: 'd4e5f6', profile: { b: 2 }, permissions: { upload: {}, view: {} } }
+    ];
+    const account = { userid: 'jkl012', profile: { fullName: 'Jane Doe', patient: { birthday: '2010-01-01' } } };
+    it('should return the initial state', () => {
+      expect(users.memberships(undefined, {})).to.deep.equal({});
+    });
+
+    it('should handle LOGIN_SUCCESS', () => {
+      const action = {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      };
+      expect(users.memberships(undefined, action)).to.deep.equal({
+        a1b2c3: { permissions: { root: {} } },
+        d4e5f6: { permissions: { upload: {}, view: {} } }
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.memberships(initialState, action)).to.be.false;
+    });
+
+    it('should handle SET_USER_INFO_FROM_TOKEN', () => {
+      const action = {
+        type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: { user, profile, memberships }
+      };
+      expect(users.memberships(undefined, action)).to.deep.equal({
+        a1b2c3: { permissions: { root: {} } },
+        d4e5f6: { permissions: { upload: {}, view: {} } }
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.memberships(initialState, action)).to.be.false;
+    });
+
+    it('should handle SET_ALL_USERS', () => {
+      const action = {
+        type: actionTypes.SET_ALL_USERS,
+        payload: { user, profile, memberships }
+      };
+      expect(users.memberships(undefined, action)).to.deep.equal({
+        a1b2c3: { permissions: { root: {} } },
+        d4e5f6: { permissions: { upload: {}, view: {} } }
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.memberships(initialState, action)).to.be.false;
+    });
+
+    it('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      const action = {
+        type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+        payload: { account }
+      };
+      expect(users.memberships(undefined, action)).to.deep.equal({
+        jkl012: { permissions: { custodian: {}, upload: {}, view: {} }}
+      });
+      let initialState = {};
+      // test to be sure not *mutating* state object but rather returning new!
+      expect(initialState === users.memberships(initialState, action)).to.be.false;
+    });
+
+    it('should handle LOGOUT_REQUEST', () => {
+      let initialState = { foo: 'bar' };
+      let result = users.memberships(initialState, {
         type: actionTypes.LOGOUT_REQUEST
       });
       expect(result).to.deep.equal({});
