@@ -9966,7 +9966,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 rollbar-sourcemap-webpack-plugin@2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.5.1.tgz#694ca1e22cac320330e7ea9488f3ed2bb9ab1f16"
-  integrity sha512-DsGM0B0kVsmJOLcmUajN02/IdouNqwtewCywXiUNay+DMpLM+k+h7uwWPbWvYe4bdo4ew2Y15zGqNUy+sH++FQ==
   dependencies:
     async "^2.6.0"
     babel-runtime "^6.26.0"
