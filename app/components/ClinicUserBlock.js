@@ -47,7 +47,7 @@ class ClinicUserBlock extends React.Component {
     var isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
     var editClasses = cx({
       [styles.edit]: true,
-      [styles.disabled]: isUploadInProgress || !isCustodialAccount
+      [styles.disabled]: isUploadInProgress
     });
     
     return (

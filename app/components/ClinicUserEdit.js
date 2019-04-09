@@ -184,7 +184,7 @@ class ClinicUserEdit extends React.Component {
     const { handleSubmit, targetId, memberships } = this.props;
     const isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
     const titleText = targetId ? 'Edit patient account' : 'Create a new patient account';
-    const editable = !(targetId && !isCustodialAccount);
+    const editable = targetId ? isCustodialAccount : true;
 
     return (
       <div className={styles.main}>
