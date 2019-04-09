@@ -79,6 +79,7 @@ export function updateProfileErrorMessage(state = null, action) {
       const err = action.payload;
       return err.message;
     case actionTypes.UPDATE_PROFILE_REQUEST:
+    case actionTypes.SET_UPLOAD_TARGET_USER:
       return null;
     default:
       return state;
@@ -88,6 +89,7 @@ export function updateProfileErrorMessage(state = null, action) {
 export function updateProfileErrorDismissed(state = null, action) {
   switch (action.type) {
     case actionTypes.UPDATE_PROFILE_REQUEST:
+    case actionTypes.SET_UPLOAD_TARGET_USER:
       return null;
     case actionTypes.DISMISS_UPDATE_PROFILE_ERROR:
       return true;

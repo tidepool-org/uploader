@@ -85,8 +85,10 @@ class ClinicUserEdit extends React.Component {
   static propTypes = {
     createCustodialAccountErrorMessage: PropTypes.string,
     createCustodialAccountErrorDismissed: PropTypes.bool.isRequired,
+    dismissCreateCustodialAccountError: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
     updateProfileErrorDismissed: PropTypes.bool.isRequired,
+    dismissUpdateProfileError: PropTypes.func.isRequired,
     allUsers: PropTypes.object.isRequired,
     loggedInUser: PropTypes.string.isRequired,
     targetId: PropTypes.string,
@@ -150,7 +152,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.updateProfileErrorMessage}
+          {this.props.updateProfileErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
         </span>
       </div>
     );
