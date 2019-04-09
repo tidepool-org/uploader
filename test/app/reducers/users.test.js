@@ -260,6 +260,12 @@ describe('users', () => {
         type: actionTypes.UPDATE_PROFILE_REQUEST
       })).to.be.null;
     });
+
+    it('should handle SET_UPLOAD_TARGET_USER', () => {
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.SET_UPLOAD_TARGET_USER
+      })).to.be.null;
+    });
   });
 
   describe('updateProfileErrorDismissed', () => {
@@ -276,6 +282,12 @@ describe('users', () => {
     it('should handle UPDATE_PROFILE_REQUEST', () => {
       expect(users.updateProfileErrorDismissed(undefined, {
         type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+
+    it('should handle SET_UPLOAD_TARGET_USER', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.SET_UPLOAD_TARGET_USER
       })).to.be.null;
     });
   });
