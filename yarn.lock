@@ -9988,9 +9988,9 @@ rollbar-sourcemap-webpack-plugin@2.5.0:
     request "^2.85.0"
     verror "^1.6.1"
 
-rollbar@2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.4.tgz#8b2ec6de999aaeee04c784110ecb40268a38c71d"
+rollbar@2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.5.tgz#6e4a9ee4942a0a063e06af8ab58b946ce7f9be4e"
   dependencies:
     async "~1.2.1"
     console-polyfill "0.3.0"
