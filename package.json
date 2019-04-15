@@ -37,7 +37,6 @@
   "dependencies": {
     "async": "2.6.1",
     "babyparse": "0.4.6",
-    "blueimp-md5": "2.10.0",
     "bows": "1.7.0",
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
@@ -67,7 +66,7 @@
     "redux-thunk": "2.3.0",
     "rollbar": "2.5.4",
     "rollbar-sourcemap-webpack-plugin": "2.5.0",
-    "semver": "5.6.0",
+    "semver": "6.0.0",
     "source-map-support": "0.5.11",
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.5",
@@ -87,13 +86,13 @@
     "dmg": {
       "contents": [
         {
-          "x": 372,
+          "x": 381,
           "y": 190,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 150,
+          "x": 159,
           "y": 190,
           "type": "file"
         }
@@ -165,7 +164,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "aws-sdk": "2.426.0",
+    "aws-sdk": "2.432.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
@@ -196,18 +195,18 @@
     "electron": "3.1.1",
     "electron-builder": "20.39.0",
     "electron-devtools-installer": "2.2.4",
-    "electron-mocha": "6.0.4",
+    "electron-mocha": "7.0.0",
     "electron-updater": "4.0.6",
     "enzyme": "3.9.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
-    "eslint-import-resolver-webpack": "0.10.1",
+    "eslint-import-resolver-webpack": "0.11.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-lodash": "5.1.0",
     "eslint-plugin-mocha": "5.3.0",
-    "eslint-plugin-promise": "4.0.1",
+    "eslint-plugin-promise": "4.1.1",
     "eslint-plugin-react": "7.12.2",
     "express": "4.16.3",
     "extract-text-webpack-plugin": "3.0.2",
@@ -230,7 +229,7 @@
     "@ronomon/direct-io": "2.4.3",
     "salinity": "0.0.8",
     "serialport": "6.2.2",
-    "sinon": "7.3.0",
+    "sinon": "7.3.1",
     "sinon-chai": "3.2.0",
     "spectron": "5.0.0",
     "style-loader": "0.23.1",
