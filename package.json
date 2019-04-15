@@ -37,7 +37,6 @@
   "dependencies": {
     "async": "2.6.1",
     "babyparse": "0.4.6",
-    "blueimp-md5": "2.10.0",
     "bows": "1.7.0",
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
@@ -87,13 +86,13 @@
     "dmg": {
       "contents": [
         {
-          "x": 372,
+          "x": 381,
           "y": 190,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 150,
+          "x": 159,
           "y": 190,
           "type": "file"
         }
@@ -202,7 +201,7 @@
     "eslint": "5.14.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
-    "eslint-import-resolver-webpack": "0.10.1",
+    "eslint-import-resolver-webpack": "0.11.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-lodash": "5.1.0",
