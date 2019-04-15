@@ -44,7 +44,7 @@
     "cp2102": "0.0.2",
     "decompress": "4.2.0",
     "electron-debug": "2.0.0",
-    "electron-is-dev": "1.0.1",
+    "electron-is-dev": "1.1.0",
     "es6-error": "4.1.1",
     "history": "4.7.2",
     "iconv-lite": "0.4.24",
