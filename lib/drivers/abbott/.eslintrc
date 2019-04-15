@@ -59,6 +59,7 @@
     }
   ],
   "settings": {
-    "lodash": 3
+    "lodash": 3,
+    "import/resolver": node
   }
 }
