@@ -746,6 +746,10 @@ ansi-colors@^1.0.1:
   dependencies:
     ansi-wrap "^0.1.0"
 
+ansi-colors@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
+
 ansi-cyan@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ansi-cyan/-/ansi-cyan-0.1.1.tgz#538ae528af8982f28ae30d86f2f17456d2609873"
@@ -4063,9 +4067,9 @@ electron-is-accelerator@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/electron-is-accelerator/-/electron-is-accelerator-0.1.2.tgz#509e510c26a56b55e17f863a4b04e111846ab27b"
 
-electron-is-dev@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.0.1.tgz#6e0a184736fe7aea77d18210b0b0f6a02402c4bc"
+electron-is-dev@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.1.0.tgz#b15a2a600bdc48a51a857d460e05f15b19a2522c"
 
 electron-is-dev@^0.3.0:
   version "0.3.0"
@@ -4080,15 +4084,17 @@ electron-localshortcut@^3.0.0:
     keyboardevent-from-electron-accelerator "^1.1.0"
     keyboardevents-areequal "^0.2.1"
 
-electron-mocha@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/electron-mocha/-/electron-mocha-7.0.0.tgz#f1f892a543b836c9c38c698e1d99c1e08685848f"
+electron-mocha@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/electron-mocha/-/electron-mocha-8.0.1.tgz#2f218c5ff948e7e87bb5781b13e6d2adfdadbf34"
   dependencies:
-    commander "^2.19.0"
+    ansi-colors "^3.2.4"
     electron-window "^0.8.0"
     fs-extra "^7.0.1"
-    mocha "^6.0.2"
+    log-symbols "^2.2.0"
+    mocha "^6.1.1"
     which "^1.3.1"
+    yargs "^13.2.2"
 
 electron-osx-sign@0.4.11:
   version "0.4.11"
@@ -4404,16 +4410,17 @@ eslint-formatter-pretty@2.1.0:
     string-width "^2.0.0"
     supports-hyperlinks "^1.0.1"
 
-eslint-import-resolver-node@^0.3.1:
+eslint-import-resolver-node@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
+  integrity sha512-sfmTqJfPSizWu4aymbPr4Iidp5yKm8yDkHp+Ir3YiTHiiDfxh69mOUsmiqW6RZ9zRXFaF64GtYmN7e+8GHBv6Q==
   dependencies:
     debug "^2.6.9"
     resolve "^1.5.0"
 
-eslint-import-resolver-webpack@0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/eslint-import-resolver-webpack/-/eslint-import-resolver-webpack-0.10.1.tgz#4cbceed2c0c43e488a74775c30861e58e00fb290"
+eslint-import-resolver-webpack@0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-webpack/-/eslint-import-resolver-webpack-0.11.1.tgz#fcf1fd57a775f51e18f442915f85dd6ba45d2f26"
   dependencies:
     array-find "^1.0.0"
     debug "^2.6.8"
@@ -4423,30 +4430,33 @@ eslint-import-resolver-webpack@0.10.1:
     interpret "^1.0.0"
     lodash "^4.17.4"
     node-libs-browser "^1.0.0 || ^2.0.0"
-    resolve "^1.4.0"
+    resolve "^1.10.0"
     semver "^5.3.0"
 
-eslint-module-utils@^2.2.0:
+eslint-module-utils@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/eslint-module-utils/-/eslint-module-utils-2.3.0.tgz#546178dab5e046c8b562bbb50705e2456d7bda49"
+  integrity sha512-lmDJgeOOjk8hObTysjqH7wyMi+nsHwwvfBykwfhjR1LNdd7C2uFJBvx4OpWYpXOw4df1yE1cDEVd1yLHitk34w==
   dependencies:
     debug "^2.6.8"
     pkg-dir "^2.0.0"
 
-eslint-plugin-import@2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.14.0.tgz#6b17626d2e3e6ad52cfce8807a845d15e22111a8"
+eslint-plugin-import@2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.17.0.tgz#bdf6598aded839a27454d824b0758fd46f80eb72"
+  integrity sha512-JCsOtNwPYUoeZPlSr8t0+uCU5OVlHh+dIBn8Rw7FiOPjCECG+QzDIKDqshbyJE6CYoj9wpcstEl8vUY7rXkqVA==
   dependencies:
+    array-includes "^3.0.3"
     contains-path "^0.1.0"
-    debug "^2.6.8"
+    debug "^2.6.9"
     doctrine "1.5.0"
-    eslint-import-resolver-node "^0.3.1"
-    eslint-module-utils "^2.2.0"
-    has "^1.0.1"
-    lodash "^4.17.4"
-    minimatch "^3.0.3"
+    eslint-import-resolver-node "^0.3.2"
+    eslint-module-utils "^2.3.0"
+    has "^1.0.3"
+    lodash "^4.17.11"
+    minimatch "^3.0.4"
     read-pkg-up "^2.0.0"
-    resolve "^1.6.0"
+    resolve "^1.10.0"
 
 eslint-plugin-jsx-a11y@6.1.2:
   version "6.1.2"
@@ -4473,13 +4483,13 @@ eslint-plugin-mocha@5.3.0:
   dependencies:
     ramda "^0.26.1"
 
-eslint-plugin-promise@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.0.1.tgz#2d074b653f35a23d1ba89d8e976a985117d1c6a2"
+eslint-plugin-promise@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.1.1.tgz#1e08cb68b5b2cd8839f8d5864c796f56d82746db"
 
-eslint-plugin-react@7.12.2:
-  version "7.12.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.12.2.tgz#95a4d8117011787824625ea57be9e38401d33548"
+eslint-plugin-react@7.12.4:
+  version "7.12.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.12.4.tgz#b1ecf26479d61aee650da612e425c53a99f48c8c"
   dependencies:
     array-includes "^3.0.3"
     doctrine "^2.1.0"
@@ -4504,9 +4514,9 @@ eslint-scope@3.7.1:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-scope@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.0.tgz#50bf3071e9338bcdc43331794a0cb533f0136172"
+eslint-scope@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.3.tgz#ca03833310f6889a3264781aa82e63eb9cfe7848"
   dependencies:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
@@ -4519,9 +4529,9 @@ eslint-visitor-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
 
-eslint@5.14.0:
-  version "5.14.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.14.0.tgz#380739df2489dd846baea008638b036c1e987974"
+eslint@5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.16.0.tgz#a1e3ac1aae4a3fbd8296fcf8f7ab7314cbb6abea"
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.9.1"
@@ -4529,7 +4539,7 @@ eslint@5.14.0:
     cross-spawn "^6.0.5"
     debug "^4.0.1"
     doctrine "^3.0.0"
-    eslint-scope "^4.0.0"
+    eslint-scope "^4.0.3"
     eslint-utils "^1.3.1"
     eslint-visitor-keys "^1.0.0"
     espree "^5.0.1"
@@ -4543,7 +4553,7 @@ eslint@5.14.0:
     import-fresh "^3.0.0"
     imurmurhash "^0.1.4"
     inquirer "^6.2.2"
-    js-yaml "^3.12.0"
+    js-yaml "^3.13.0"
     json-stable-stringify-without-jsonify "^1.0.1"
     levn "^0.3.0"
     lodash "^4.17.11"
@@ -5025,6 +5035,12 @@ find-root@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
 
+find-up@3.0.0, find-up@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
+  dependencies:
+    locate-path "^3.0.0"
+
 find-up@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-1.1.2.tgz#6b2e9822b1a2ce0a60ab64d610eccad53cb24d0f"
@@ -5037,12 +5053,6 @@ find-up@^2.0.0, find-up@^2.1.0:
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
   dependencies:
     locate-path "^2.0.0"
-
-find-up@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/find-up/-/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
-  dependencies:
-    locate-path "^3.0.0"
 
 find@^0.2.4:
   version "0.2.9"
@@ -6524,9 +6534,23 @@ js-yaml@3.12.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+js-yaml@3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.0.tgz#38ee7178ac0eea2c97ff6d96fff4b18c7d8cf98e"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
 js-yaml@^3.12.0, js-yaml@^3.12.1:
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.1.tgz#295c8632a18a23e054cf5c9d3cecafe678167600"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.0.tgz#38ee7178ac0eea2c97ff6d96fff4b18c7d8cf98e"
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -6948,7 +6972,7 @@ log-ok@^0.1.1:
     ansi-green "^0.1.1"
     success-symbol "^0.1.0"
 
-log-symbols@2.2.0, log-symbols@^2.0.0, log-symbols@^2.1.0:
+log-symbols@2.2.0, log-symbols@^2.0.0, log-symbols@^2.1.0, log-symbols@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
   dependencies:
@@ -7265,7 +7289,7 @@ minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz#f6c00c1c0b082246e5c4d99dfb8c7c083b2b582a"
 
-minimatch@3.0.4, minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4, minimatch@~3.0.2, minimatch@~3.0.3:
+minimatch@3.0.4, minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.4, minimatch@~3.0.2, minimatch@~3.0.3:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   dependencies:
@@ -7374,20 +7398,20 @@ mocha@6.0.1:
     yargs-parser "11.1.1"
     yargs-unparser "1.5.0"
 
-mocha@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.0.2.tgz#cdc1a6fdf66472c079b5605bac59d29807702d2c"
+mocha@^6.1.1:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.1.2.tgz#31e960580ef709ef5f26bbe760547cf5207b44df"
   dependencies:
     ansi-colors "3.2.3"
     browser-stdout "1.3.1"
     debug "3.2.6"
     diff "3.5.0"
     escape-string-regexp "1.0.5"
-    findup-sync "2.0.0"
+    find-up "3.0.0"
     glob "7.1.3"
     growl "1.10.5"
     he "1.2.0"
-    js-yaml "3.12.0"
+    js-yaml "3.13.0"
     log-symbols "2.2.0"
     minimatch "3.0.4"
     mkdirp "0.5.1"
@@ -7398,8 +7422,8 @@ mocha@^6.0.2:
     supports-color "6.0.0"
     which "1.3.1"
     wide-align "1.1.3"
-    yargs "12.0.5"
-    yargs-parser "11.1.1"
+    yargs "13.2.2"
+    yargs-parser "13.0.0"
     yargs-unparser "1.5.0"
 
 moment-timezone@0.4.1:
@@ -9913,7 +9937,7 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
 
-resolve@^1.10.0, resolve@^1.3.2, resolve@^1.4.0, resolve@^1.5.0, resolve@^1.6.0, resolve@^1.9.0:
+resolve@^1.10.0, resolve@^1.3.2, resolve@^1.4.0, resolve@^1.5.0, resolve@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
   dependencies:
@@ -9977,9 +10001,9 @@ rollbar-sourcemap-webpack-plugin@2.5.1:
     request "^2.85.0"
     verror "^1.6.1"
 
-rollbar@2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.4.tgz#8b2ec6de999aaeee04c784110ecb40268a38c71d"
+rollbar@2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.5.5.tgz#6e4a9ee4942a0a063e06af8ab58b946ce7f9be4e"
   dependencies:
     async "~1.2.1"
     console-polyfill "0.3.0"
@@ -10446,9 +10470,10 @@ source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@0.5.11:
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.11.tgz#efac2ce0800355d026326a0ca23e162aeac9a4e2"
+source-map-support@0.5.12:
+  version "0.5.12"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.12.tgz#b4f3b10d51857a5af0138d3ce8003b201613d599"
+  integrity sha512-4h2Pbvyy15EE02G+JOZpUCmqWJuqrs+sEkzewTm++BPi7Hvn/HwcqLAcNxYAyI0x13CpPPn+kMjl+hplXMHITQ==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
@@ -10980,9 +11005,9 @@ thunky@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.3.tgz#f5df732453407b09191dae73e2a8cc73f381a826"
 
-tidepool-platform-client@0.40.0:
-  version "0.40.0"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.40.0.tgz#823b5435e0e8da4410e9da01662bdb7897815717"
+tidepool-platform-client@0.41.0:
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.41.0.tgz#8c23b3915ad2cf553387a7d87e581baca569c1e2"
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
@@ -11832,7 +11857,7 @@ yargs-parser@11.1.1, yargs-parser@^11.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@^13.0.0:
+yargs-parser@13.0.0, yargs-parser@^13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.0.0.tgz#3fc44f3e76a8bdb1cc3602e860108602e5ccde8b"
   dependencies:
@@ -11876,7 +11901,7 @@ yargs@12.0.5, yargs@^12.0.1, yargs@^12.0.5:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
 
-yargs@^13.2.1:
+yargs@13.2.2, yargs@^13.2.1, yargs@^13.2.2:
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
   dependencies:
