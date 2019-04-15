@@ -1,0 +1,8 @@
+packetdiag {
+	colwidth = 16
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x0131
+	3-4: Checksum  [rotate = 270]
+}

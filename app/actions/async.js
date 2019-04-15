@@ -82,7 +82,7 @@ export function doAppInit(opts, servicesToInit) {
               return dispatch(syncActions.initFailure(apiError));
             }
             log('Setting all api hosts');
-            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL']));
+            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
             dispatch(syncActions.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
