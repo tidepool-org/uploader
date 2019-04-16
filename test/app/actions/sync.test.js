@@ -646,6 +646,30 @@ describe('Synchronous Actions', () => {
 
         expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
       });
+
+      it('should create appropriate metric properties for 600 series upload limits', () => {
+        const time = '2016-01-01T12:05:00.123Z';
+        __Rewire__('uploadDataPeriod', { period: 1 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_REQUEST,
+          payload: { userId, deviceKey: device.key, utc: time },
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_REQUEST],
+            metric: {
+              eventName: 'Upload Attempted',
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                limit: 'all data'
+              }
+            }
+          }
+        };
+
+        expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
+      });
     });
 
     describe('uploadProgress', () => {
@@ -704,6 +728,33 @@ describe('Synchronous Actions', () => {
         };
         expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
       });
+
+      it('should create an action to record a successful 600 series upload w/ limit', () => {
+        const time = '2016-01-01T12:05:00.123Z';
+        __Rewire__('uploadDataPeriod', { period: 2 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_SUCCESS,
+          payload: { userId, deviceKey: device.key, data, utc: time},
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_SUCCESS],
+            metric: {
+              eventName: `${metrics.UPLOAD_SUCCESS}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                started: time,
+                finished: time,
+                processed: data.length,
+                limit: 'new data'
+              }
+            }
+          }
+        };
+
+        expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
+      });
     });
 
     describe('uploadFailure', () => {
@@ -753,6 +804,40 @@ describe('Synchronous Actions', () => {
         expectedAction.meta.metric.properties.error = action.payload;
         expect(action).to.deep.equal(expectedAction);
         expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+      });
+
+      it('should create an action to report an upload failure with limit for 600 series', () => {
+        __Rewire__('uploadDataPeriod', { period: 3 });
+        device.source.driverId = 'Medtronic600';
+        const expectedAction = {
+          type: actionTypes.UPLOAD_FAILURE,
+          error: true,
+          payload: resError,
+          meta: {
+            source: actionSources[actionTypes.UPLOAD_FAILURE],
+            metric: {
+              eventName: `${metrics.UPLOAD_FAILURE}`,
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                error: resError,
+                limit: '4 weeks'
+              }
+            }
+          }
+        };
+        const action = syncActions.uploadFailure(origError, errProps, device);
+        expect(action.payload).to.deep.include({
+          message: resError.message,
+          code: resError.code,
+          utc: resError.utc,
+          debug: resError.debug
+        });
+        expectedAction.payload = action.payload;
+        expectedAction.meta.metric.properties.error = action.payload;
+        expect(action).to.deep.equal(expectedAction);
+        expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+        __ResetDependency__('uploadDataPeriod');
       });
     });
 
@@ -1314,6 +1399,39 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
       };
       expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingRequest', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate start of a 600 series ad hoc pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST]}
+      };
+      expect(syncActions.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingDismissed', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissedAdHocPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate dismissing a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED]}
+      };
+      expect(syncActions.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
     });
   });
 

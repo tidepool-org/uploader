@@ -11,6 +11,10 @@
       {
         "allowForLoopAfterthoughts": true
       }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages"
     ]
   },
   "overrides": [

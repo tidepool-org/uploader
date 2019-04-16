@@ -16,6 +16,9 @@ if (process.env.NODE_ENV === 'production') {
               code_version: __VERSION_SHA__,
               guess_uncaught_frames: true
             }
+          },
+          server: {
+            root: 'webpack:///./'
           }
       },
       // to deal with URI's as local filesystem paths, we use the "many domain" transform:

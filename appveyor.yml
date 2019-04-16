@@ -3,7 +3,7 @@ image: Visual Studio 2017
 environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
   matrix:
-    - nodejs_version: 8.2.1
+    - nodejs_version: 10.11.0
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"
@@ -39,8 +39,10 @@ test_script:
 #  - yarn package-dev
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
-  - yarn package
+  - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built.) ELSE ( yarn package )
 #  - 7z a production.zip release
+  # submit uploader release to antivirus vendors if tagged
+  - cmd: IF /I %APPVEYOR_REPO_TAG% == True ( yarn av-whitelist ) ELSE ( echo Not a tagged release. )
 
 notifications:
   - provider: Slack

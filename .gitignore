@@ -27,6 +27,7 @@ main.js
 main.js.map
 
 lib/drivers/medtronic/cli/*.json
+lib/drivers/insulet/cli/*.ibf
 
 tmp
 npm-debug.log

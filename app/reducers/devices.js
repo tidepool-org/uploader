@@ -2,6 +2,13 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 const devices = {
+  accuchekusb: {
+    instructions: 'Plug in meter with micro-USB cable',
+    name: 'Roche Accu-Chek Guide & Aviva Connect',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
     image: {
@@ -50,7 +57,7 @@ const devices = {
     key: 'precisionxtra',
     name: 'Abbott Precision Xtra',
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
-    enabled: {mac: false, win: true}
+    enabled: {mac: false, win: true, linux: true}
   },
   tandem: {
     instructions: 'Plug in pump with micro-USB',
@@ -64,7 +71,7 @@ const devices = {
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
-    enabled: {mac: false, win: true}
+    enabled: {mac: false, win: true, linux: true}
   },
   abbottfreestylelibre: {
     instructions: 'Plug in meter with micro-USB cable',
@@ -85,14 +92,14 @@ const devices = {
     key: 'animas',
     name: 'Animas',
     source: {type: 'device', driverId: 'Animas'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverio: {
     instructions: 'Plug in meter with micro-USB',
     name: 'OneTouch Verio & Verio Flex',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: true, mac: true, win: false}
+    enabled: {linux: true, mac: true, win: true}
   },
   onetouchverioiq: {
     instructions: 'Plug in meter with mini-USB',

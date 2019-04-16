@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
+/* global describe, it */
 
 import { expect } from 'chai';
 
@@ -239,6 +239,134 @@ describe('NGPHistoryParser.js', () => {
 
       expect(JSON.parse(JSON.stringify(events))).to.deep.equal([expectedFirstBasal,
         expectedTempBasal]);
+    });
+  });
+
+  describe('pumpSettings', () => {
+    let currentSettings;
+
+    beforeEach(() => {
+      currentSettings = {
+        units: {
+          bg: 'mg/dL',
+          carb: 'grams',
+        },
+        currentNgpTimestamp: {
+          rtc: 2153075802,
+          offset: -1548581457,
+        },
+        currentDeviceTime: '2019-02-26T11:05:45.000Z',
+        activeSchedule: 'Pattern 1',
+        bgTarget: [
+          {
+            start: 0,
+            high: 110,
+            low: 90,
+          },
+        ],
+        carbRatio: [
+          {
+            start: 0,
+            amount: 16,
+          },
+        ],
+        insulinSensitivity: [
+          {
+            start: 0,
+            amount: 50,
+          },
+        ],
+        isBolusWizardEnabled: true,
+        durationOfInsulinAction: 240,
+        isExtendedBolusEnabled: false,
+        maxBolusAmount: 10,
+        tempBasalType: 0,
+        maxBasalAmount: 35,
+        pumpSerial: 'NG1422190H',
+        displayBgUnits: 0,
+        deviceManufacturers: [
+          'Medtronic',
+        ],
+        pumpModel: 'MMT-1780',
+        basalSchedules: {
+          'Pattern 1': [
+            {
+              start: 0,
+              rate: 0,
+            },
+          ],
+        },
+      };
+    });
+
+    describe('min/max values', () => {
+      it('should handle min/max values for bolus wizard changes', () => {
+        const carbRatioChange = '61002180558481a3b285af0004000000000a020000000b04000007d00600000096';
+        const bgTargetChange = '63002180558af8a3b285af00040000fa003c0200fa00fa04003c003c0600780064';
+        const isfChange = '5f001680558aa4a3b285af0003000190020005040032';
+        const bolusWizardSettingsChange = '5d001380558b04a3b285af010000f0010001e0';
+        const historyParser = new NGPHistoryParser(
+          cfg,
+          currentSettings,
+          [isfChange, bgTargetChange, carbRatioChange, bolusWizardSettingsChange],
+        );
+        const events = [];
+
+        historyParser.buildSettingsRecords(events);
+
+        expect(events[0].bolus.calculator.insulin).to.deep.equal({ duration: 480, units: 'minutes' });
+
+        expect(events[1].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
+        expect(events[1].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
+        expect(events[1].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
+
+        expect(events[2].bgTarget[0]).to.deep.equal({ start: 0, low: 60, high: 250 });
+        expect(events[2].bgTarget[1]).to.deep.equal({ start: 3600000, low: 250, high: 250 });
+        expect(events[2].bgTarget[2]).to.deep.equal({ start: 7200000, low: 60, high: 60 });
+
+        expect(events[3].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
+        expect(events[3].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 5 });
+      });
+
+      it('should handle max bolus of 0-25', () => {
+        const maxBolus1 = '590013805ec8c7a3b284fb0003d09000000000';
+        const maxBolus2 = '590013805ec8d7a3b284fb000000000003d090';
+        const maxBolus3 = '590013805ec8fda3b284fb0003d0900001a9c8';
+
+        const historyParser = new NGPHistoryParser(
+          cfg,
+          currentSettings,
+          [maxBolus1, maxBolus2, maxBolus3],
+        );
+        const events = [];
+
+        historyParser.buildSettingsRecords(events);
+
+        expect(events[0].bolus.amountMaximum).to.deep.equals({ value: 10.9, units: 'Units' });
+        expect(events[1].bolus.amountMaximum).to.deep.equals({ value: 25, units: 'Units' });
+        expect(events[2].bolus.amountMaximum).to.deep.equals({ value: 0, units: 'Units' });
+      });
+    });
+
+    it('should handle max basal of 0-35', () => {
+      const maxBasal1 = '580013805ed36fa3b284fb000347d800000000';
+      const maxBasal2 = '580013805ed37ea3b284fb00000000000000fa';
+      const maxBasal3 = '580013805ed393a3b284fb000000fa00055730';
+      const maxBasal4 = '580013805ed3b5a3b284fb00055730000178f4';
+
+      const historyParser = new NGPHistoryParser(
+        cfg,
+        currentSettings,
+        [maxBasal1, maxBasal2, maxBasal3, maxBasal4],
+      );
+      const events = [];
+
+      historyParser.buildSettingsRecords(events);
+
+      expect(events[0].basal.rateMaximum).to.deep.equals({ value: 9.65, units: 'Units/hour' });
+      expect(events[1].basal.rateMaximum).to.deep.equals({ value: 35, units: 'Units/hour' });
+      expect(events[2].basal.rateMaximum).to.deep.equals({ value: 0.025, units: 'Units/hour' });
+      expect(events[3].basal.rateMaximum).to.deep.equals({ value: 0, units: 'Units/hour' });
     });
   });
 });

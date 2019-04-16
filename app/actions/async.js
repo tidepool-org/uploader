@@ -176,7 +176,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
-      dialogDisplay: actionUtils.makeDisplayModal(dispatch),
+      displayTimeModal: actionUtils.makeDisplayTimeModal(dispatch),
+      displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
@@ -199,6 +200,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_SERIAL_CONNECTION',
           version: version
         };
+        displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
