@@ -139,7 +139,9 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "rfc3161TimeStampServer": "http://sha256timestamp.ws.symantec.com/sha256/timestamp",
+      "timeStampServer": "http://timestamp.digicert.com"
     },
     "mac": {
       "category": "public.app-category.tools",
