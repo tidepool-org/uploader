@@ -1201,7 +1201,6 @@ autoprefixer@^6.3.1:
 aws-sdk@2.438.0:
   version "2.438.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.438.0.tgz#197f0adff835a633dec067c19f0e0a6f460a3d2b"
-  integrity sha512-j+7zZYHekFFqoERSLDF1fDmC9awmZG2YJDoGuxBxwozi6Rg2GjyglwVehrNs3oC51UyrWhzWdn7jOVG6It5nmw==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -4414,7 +4413,6 @@ eslint-formatter-pretty@2.1.0:
 eslint-import-resolver-node@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
-  integrity sha512-sfmTqJfPSizWu4aymbPr4Iidp5yKm8yDkHp+Ir3YiTHiiDfxh69mOUsmiqW6RZ9zRXFaF64GtYmN7e+8GHBv6Q==
   dependencies:
     debug "^2.6.9"
     resolve "^1.5.0"
@@ -4437,7 +4435,6 @@ eslint-import-resolver-webpack@0.11.1:
 eslint-module-utils@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/eslint-module-utils/-/eslint-module-utils-2.3.0.tgz#546178dab5e046c8b562bbb50705e2456d7bda49"
-  integrity sha512-lmDJgeOOjk8hObTysjqH7wyMi+nsHwwvfBykwfhjR1LNdd7C2uFJBvx4OpWYpXOw4df1yE1cDEVd1yLHitk34w==
   dependencies:
     debug "^2.6.8"
     pkg-dir "^2.0.0"
@@ -4445,7 +4442,6 @@ eslint-module-utils@^2.3.0:
 eslint-plugin-import@2.17.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.17.0.tgz#bdf6598aded839a27454d824b0758fd46f80eb72"
-  integrity sha512-JCsOtNwPYUoeZPlSr8t0+uCU5OVlHh+dIBn8Rw7FiOPjCECG+QzDIKDqshbyJE6CYoj9wpcstEl8vUY7rXkqVA==
   dependencies:
     array-includes "^3.0.3"
     contains-path "^0.1.0"
@@ -10421,7 +10417,6 @@ source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
 source-map-support@0.5.12:
   version "0.5.12"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.12.tgz#b4f3b10d51857a5af0138d3ce8003b201613d599"
-  integrity sha512-4h2Pbvyy15EE02G+JOZpUCmqWJuqrs+sEkzewTm++BPi7Hvn/HwcqLAcNxYAyI0x13CpPPn+kMjl+hplXMHITQ==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
