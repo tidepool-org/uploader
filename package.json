@@ -37,7 +37,6 @@
   "dependencies": {
     "async": "2.6.1",
     "babyparse": "0.4.6",
-    "blueimp-md5": "2.10.0",
     "bows": "1.7.0",
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
@@ -165,7 +164,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "aws-sdk": "2.433.0",
+    "aws-sdk": "2.437.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
