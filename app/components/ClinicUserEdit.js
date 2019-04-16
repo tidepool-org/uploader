@@ -73,7 +73,7 @@ var options = _.map(MONTHS, function(item) {
 function renderInput(field){
   return (
     <div>
-      <input className={styles.input} {...field.input} type={field.type}/>
+      <input className={styles.input} {...field.input} type={field.type} disabled={field.disabled} />
       {field.meta.touched &&
        field.meta.error &&
        <div className={styles.validationError}>{field.meta.error}</div>}
@@ -85,8 +85,10 @@ class ClinicUserEdit extends React.Component {
   static propTypes = {
     createCustodialAccountErrorMessage: PropTypes.string,
     createCustodialAccountErrorDismissed: PropTypes.bool.isRequired,
+    dismissCreateCustodialAccountError: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
     updateProfileErrorDismissed: PropTypes.bool.isRequired,
+    dismissUpdateProfileError: PropTypes.func.isRequired,
     allUsers: PropTypes.object.isRequired,
     loggedInUser: PropTypes.string.isRequired,
     targetId: PropTypes.string,
@@ -103,8 +105,7 @@ class ClinicUserEdit extends React.Component {
   handleNext = (values) => {
     var name = values.fullName;
     var dateString = values.year+'-'+values.month+'-'+zeroPad(values.day);
-    var email = values.email;
-    var mrn = values.mrn;
+    var { email, mrn } = values;
     if(sundial.isValidDateForMask(dateString, 'YYYY-MM-DD')){
       var profile = {
         fullName: name,
@@ -150,7 +151,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.updateProfileErrorMessage}
+          {this.props.updateProfileErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
         </span>
       </div>
     );
@@ -159,11 +160,11 @@ class ClinicUserEdit extends React.Component {
   renderDateInputs = (fields) => (
     <div>
       <div className={styles.bdayWrap}>
-        <select className={styles.monthInput} {...fields.month.input}>
+        <select className={styles.monthInput} {...fields.month.input} disabled={fields.disabled}>
           {options}
         </select>
-        <input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text"/>
-        <input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text"/>
+        <input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text" disabled={fields.disabled}/>
+        <input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text" disabled={fields.disabled}/>
       </div>
       {this.renderDateError(fields)}
     </div>
@@ -182,8 +183,10 @@ class ClinicUserEdit extends React.Component {
   };
 
   render() {
-    var titleText = this.props.targetId ? 'Edit patient account' : 'Create a new patient account';
-    const { handleSubmit } = this.props;
+    const { handleSubmit, targetId, memberships } = this.props;
+    const isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
+    const titleText = targetId ? 'Edit patient account' : 'Create a new patient account';
+    const editable = targetId ? isCustodialAccount : true;
 
     return (
       <div className={styles.main}>
@@ -200,31 +203,31 @@ class ClinicUserEdit extends React.Component {
             <label className={styles.inputLabel} htmlFor="name">
               Patient Full Name
             </label>
-            <Field name="fullName" component={renderInput} />
+            <Field name="fullName" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="birthday">
               Patient Birthdate
             </label>
-            <Fields names={['month', 'day', 'year']} component={this.renderDateInputs} />
+            <Fields names={['month', 'day', 'year']} component={this.renderDateInputs} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="mrn">
               MRN (optional)
             </label>
-            <Field name="mrn" component={renderInput} />
+            <Field name="mrn" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="email">
               Patient Email (optional)
             </label>
-            <Field name="email" component={renderInput} />
+            <Field name="email" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.actions}>
             <div>
-            <button type="submit" className={styles.button}>
+              <button type="submit" className={styles.button} disabled={!editable}>
                 Save
-            </button>
+              </button>
             </div>
             <div>
               <div className={styles.cancel} onClick={this.handleCancel}>
