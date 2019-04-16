@@ -40,7 +40,7 @@
     "bows": "1.7.0",
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
-    "commander": "2.19.0",
+    "commander": "2.20.0",
     "cp2102": "0.0.2",
     "decompress": "4.2.0",
     "electron-debug": "2.2.0",
@@ -166,7 +166,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "aws-sdk": "2.432.0",
+    "aws-sdk": "2.437.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
