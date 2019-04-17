@@ -296,3 +296,14 @@ export function isTimezoneFocused(state = false, action) {
       return state;
   }
 }
+
+export function showingAdHocPairingDialog(state = false, action) {
+  switch (action.type) {
+    case actionTypes.AD_HOC_PAIRING_REQUEST:
+      return { callback: action.payload.callback, cfg: action.payload.cfg };
+    case actionTypes.AD_HOC_PAIRING_DISMISSED:
+      return false;
+    default:
+      return state;
+  }
+}

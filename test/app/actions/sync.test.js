@@ -1470,4 +1470,37 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('adHocPairingRequest', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate start of a 600 series ad hoc pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST]}
+      };
+      expect(syncActions.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingDismissed', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissedAdHocPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate dismissing a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED]}
+      };
+      expect(syncActions.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
+    });
+  });
+
 });
