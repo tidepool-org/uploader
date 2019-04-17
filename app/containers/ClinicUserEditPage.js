@@ -36,12 +36,13 @@ export class ClinicUserEditPage extends Component {
   };
 
   render() {
-    const { allUsers, uploadTargetUser } = this.props;
+    const { allUsers, uploadTargetUser, memberships } = this.props;
     return (
       <div>
         <ClinicUserEdit
           targetId={uploadTargetUser}
           allUsers={allUsers}
+          memberships={memberships}
           loggedInUser={this.props.loggedInUser}
           createUser={this.props.async.createCustodialAccount}
           updateUser={this.props.async.clickEditUserNext}
@@ -69,6 +70,7 @@ export default connect(
       updateProfileErrorDismissed: state.updateProfileErrorDismissed,
       createCustodialAccountErrorMessage: state.createCustodialAccountErrorMessage,
       createCustodialAccountErrorDismissed: state.createCustodialAccountErrorDismissed,
+      memberships: state.memberships,
     };
   },
   (dispatch) => {
