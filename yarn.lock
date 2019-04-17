@@ -12190,9 +12190,10 @@ thunky@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.3.tgz#f5df732453407b09191dae73e2a8cc73f381a826"
 
-tidepool-platform-client@0.41.0:
-  version "0.41.0"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.41.0.tgz#8c23b3915ad2cf553387a7d87e581baca569c1e2"
+tidepool-platform-client@0.42.0-add-deviceid.0:
+  version "0.42.0-add-deviceid.0"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.42.0-add-deviceid.0.tgz#e89eb1879cabcfc5651a08925b583fba813fa8b0"
+  integrity sha512-29W+rzV3iY8iqUF+4etL6IUrzj5m5z8oBC/kuFXBnWZ2ehnEc4GbTX3HY68f3RnYtMQohIflkBIXNagi9LRFsQ==
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
