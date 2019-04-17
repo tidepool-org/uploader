@@ -730,4 +730,27 @@ describe('misc reducers', () => {
       })).to.be.false;
     });
   });
+
+  describe('showingAdHocPairingDialog', () => {
+    it('should return the initial state', () => {
+      expect(misc.showingAdHocPairingDialog(undefined, {})).to.be.false;
+    });
+
+    it('should handle AD_HOC_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingAdHocPairingDialog(undefined, {
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    it('should handle AD_HOC_PAIRING_DISMISSED', () => {
+      expect(misc.showingAdHocPairingDialog(undefined, {
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+      })).to.be.false;
+    });
+  });
 });

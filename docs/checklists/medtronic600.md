@@ -150,7 +150,7 @@ Device-specific? (Add any device-specific notes/additions here.)
         - `[ ]` shape `{target: 100, range: 20}` OR
         - `[ ]` shape `{target: 100, high: 120}`
   - basal features:
-    - `[x]` temp basal type (`manual` or `percentage`)
+    - `[ ]` temp basal type (`manual` or `percentage`)
     - `[x]` max basal (as a u/hr rate)
   - bolus features:
     - `[x]` bolus "wizard"/calculator enabled
@@ -195,6 +195,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 
   - `[-]` various linked meter settings
   - `[-]` both `grams` and `exchanges` are possible units for carb ratios
+  - temp basal type is set per temp basal, and not as part of the settings
 
 #### Wizard
 
