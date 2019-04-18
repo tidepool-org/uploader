@@ -4,6 +4,13 @@ import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 import os from 'os';
 
 const devices = {
+  accuchekusb: {
+    instructions: 'Plug in meter with micro-USB cable',
+    name: 'Roche Accu-Chek Guide & Aviva Connect',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
     isFetching: false,
@@ -104,7 +111,7 @@ const devices = {
     name: 'OneTouch Verio & Verio Flex',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: true, mac: true, win: false}
+    enabled: {linux: true, mac: true, win: true}
   },
   onetouchverioiq: {
     instructions: 'Plug in meter with mini-USB',

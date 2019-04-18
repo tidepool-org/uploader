@@ -262,10 +262,12 @@ export function initSuccess() {
 }
 
 export function initFailure(err) {
+  const error = new Error(getAppInitErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.INIT_APP_FAILURE,
     error: true,
-    payload: new Error(getAppInitErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
   };
 }
@@ -604,10 +606,12 @@ export function updateProfileSuccess(profile, userId) {
 }
 
 export function updateProfileFailure(err) {
+  const error = new Error(getUpdateProfileErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.UPDATE_PROFILE_FAILURE,
     error: true,
-    payload: new Error(getUpdateProfileErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
   };
 }
@@ -635,10 +639,12 @@ export function createCustodialAccountSuccess(account) {
 }
 
 export function createCustodialAccountFailure(err) {
+  const error = new Error(getCreateCustodialAccountErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
     error: true,
-    payload: new Error(getCreateCustodialAccountErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
   };
 }
@@ -812,5 +818,24 @@ export function timezoneBlur() {
   return {
     type: actionTypes.TIMEZONE_BLUR,
     meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
+  };
+}
+
+/*
+* relating to ad hoc pairing dialog
+*/
+
+export function adHocPairingRequest(callback, cfg) {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedAdHocPairingDialog() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED] }
   };
 }

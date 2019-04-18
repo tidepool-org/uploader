@@ -54,9 +54,15 @@ export function makeProgressFn(dispatch) {
   };
 }
 
-export function makeDisplayModal(dispatch) {
+export function makeDisplayTimeModal(dispatch) {
   return (cb, cfg, times) => {
     dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
+  };
+}
+
+export function makeDisplayAdhocModal(dispatch) {
+  return (cb, cfg) => {
+    dispatch(syncActions.adHocPairingRequest(cb, cfg));
   };
 }
 
@@ -89,6 +95,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         version: version,
         data: recs
       };
+      displayErr.originalError = err;
 
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(
