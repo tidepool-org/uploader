@@ -81,6 +81,12 @@ const serverdata = {
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
     BLIP_URL: 'https://stg-app.tidepool.org'
   },
+  QA1: {
+    API_URL: 'https://qa1-api.tidepool.org',
+    UPLOAD_URL: 'https://qa1-uploads.tidepool.org',
+    DATA_URL: 'https://qa1-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1-app.tidepool.org'
+  },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
     UPLOAD_URL: 'https://int-uploads.tidepool.org',
@@ -199,6 +205,12 @@ export class App extends Component {
             click: this.setServer,
             type: 'radio',
             checked: this.state.server === 'Staging'
+          },
+          {
+            label: 'QA1',
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'QA1'
           },
           {
             label: 'Integration',
