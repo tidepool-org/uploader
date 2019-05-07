@@ -27,6 +27,7 @@ var styles = require('../../styles/components/ClinicUserBlock.module.less');
 class ClinicUserBlock extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
+    memberships: PropTypes.object.isRequired,
     targetId: PropTypes.string,
     timezoneDropdown: PropTypes.element,
     onEditUser: PropTypes.func.isRequired,
@@ -42,22 +43,27 @@ class ClinicUserBlock extends React.Component {
   };
 
   render() {
+    var { allUsers, isUploadInProgress, memberships, targetId } = this.props;
+    var isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
     var editClasses = cx({
       [styles.edit]: true,
-      [styles.disabled]: this.props.isUploadInProgress
+      [styles.disabled]: isUploadInProgress
     });
+    
     return (
       <div className={styles.main}>
         <div className={styles.nameWrap}>
           <div className={styles.name}>
-            {personUtils.patientFullName(_.get(this.props.allUsers, this.props.targetId))}
+            {personUtils.patientFullName(_.get(allUsers, targetId))}
           </div>
           <div className={styles.birthday}>
-            {this.formatBirthday(_.get(this.props.allUsers, [this.props.targetId, 'patient', 'birthday']))}
+            {this.formatBirthday(_.get(allUsers, [targetId, 'patient', 'birthday']))}
           </div>
-          <div className={editClasses} onClick={this.props.isUploadInProgress ? this.noopHandler : this.props.onEditUser}>
-            Edit Info
-          </div>
+          {isCustodialAccount &&
+            <div className={editClasses} onClick={isUploadInProgress ? this.noopHandler : this.props.onEditUser}>
+              Edit Info
+            </div>
+          }
         </div>
         {this.props.timezoneDropdown}
       </div>

@@ -128,6 +128,7 @@ export class MainPage extends Component {
       <ClinicUserBlock
         allUsers={this.props.allUsers}
         isUploadInProgress={this.props.uploadIsInProgress}
+        memberships={this.props.memberships}
         onEditUser={this.handleClickEditUser}
         targetId={this.props.uploadTargetUser}
         timezoneDropdown={timezoneDropdown} />
@@ -231,6 +232,7 @@ export default connect(
     return {
       activeUploads: getActiveUploads(state),
       allUsers: state.allUsers,
+      memberships: state.memberships,
       blipUrls: state.blipUrls,
       isClinicAccount: isClinicAccount(state),
       isTimezoneFocused: state.isTimezoneFocused,

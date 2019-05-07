@@ -54,9 +54,15 @@ export function makeProgressFn(dispatch) {
   };
 }
 
-export function makeDisplayModal(dispatch) {
+export function makeDisplayTimeModal(dispatch) {
   return (cb, cfg, times) => {
     dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
+  };
+}
+
+export function makeDisplayAdhocModal(dispatch) {
+  return (cb, cfg) => {
+    dispatch(syncActions.adHocPairingRequest(cb, cfg));
   };
 }
 
