@@ -1,0 +1,50 @@
+;*** Submission.ddf Tidepool USB drivers
+;
+.OPTION EXPLICIT     ; Generate errors
+.Set CabinetFileCountThreshold=0
+.Set FolderFileCountThreshold=0
+.Set FolderSizeThreshold=0
+.Set MaxCabinetSize=0
+.Set MaxDiskFileCount=0
+.Set MaxDiskSize=0
+.Set CompressionType=MSZIP
+.Set Cabinet=on
+.Set Compress=on
+;Specify file name for new cab file
+.Set CabinetNameTemplate=TidepoolUSBDriver.cab
+;Specify files to be included in cab file
+; Tidepool VCP driver
+.Set DestinationDir=tidepoolvcp
+i386\silabser.sys
+i386\ftser2k.sys
+i386\ftserui2.dll
+i386\ftcserco.dll
+i386\tiusb.i51
+i386\tiusb.sys
+i386\ser2pl.sys
+x86\WdfCoInstaller01009.dll
+x86\WdfCoInstaller01011.dll
+amd64\silabser.sys
+amd64\ftser2k.sys
+amd64\ftserui2.dll
+amd64\ftcserco.dll
+amd64\tiusb.i51
+amd64\tiusb.sys
+amd64\ser2pl.sys
+x64\WdfCoInstaller01009.dll
+x64\WdfCoInstaller01011.dll
+tidepoolvcp.inf
+; Tidepool HID driver
+.Set DestinationDir=tidepoolhid
+tidepoolhid.inf
+; Tidepool USB driver
+.Set DestinationDir=tidepoolusb
+amd64\libusbK.sys
+amd64\libusbK.dll
+amd64\libusb0.dll
+amd64\WdfCoInstaller01009.dll
+x86\libusbK.sys
+x86\libusb0_x86.dll
+x86\libusbK_x86.dll
+x86\WdfCoInstaller01009.dll
+tidepoolusb.inf
