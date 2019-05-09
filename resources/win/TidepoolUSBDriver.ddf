@@ -21,7 +21,7 @@ amd64\ftserui2.dll
 amd64\ftcserco.dll
 amd64\tiusb.i51
 amd64\tiusb.sys
-amd64\ser2pl.sys
+amd64\ser2pl64.sys
 x64\WdfCoInstaller01009.dll
 x64\WdfCoInstaller01011.dll
 tidepoolvcp.inf
