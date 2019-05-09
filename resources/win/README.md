@@ -5,7 +5,7 @@ To build and sign the driver, check that you have the specified requirements ins
 ## Requirements
 
 - [WDK](https://msdn.microsoft.com/en-us/windows/hardware/gg454513.aspx) (Required for `inf2cat` and `signtool`)
-- [DigiCert High Assurance EV Root CA certificate](https://www.digicert.com/CACerts/DigiCertHighAssuranceEVRootCA.crt)
+- [DigiCert High Assurance EV Root CA certificate](https://docs.microsoft.com/en-gb/windows-hardware/drivers/install/cross-certificates-for-kernel-mode-code-signing)
 
 ## Steps
 
@@ -22,9 +22,23 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ### Sign both the .cat files using signtool:
 
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolvcp.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolhid.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolusb.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolvcp.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolhid.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolusb.cat`
+
+### Submit Windows 10 drivers to hardware dashboard for attestation signing
+
+- `makecab /f TidepoolUSBDriver.ddf`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password)
+
+This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
+
+TODO: describe how we copy the signed drivers back into the right directory so that it can be included in our builds.
+
+For more details on attestation signing, see:
+- https://www.davidegrayson.com/signing/
+- https://docs.microsoft.com/en-gb/windows-hardware/drivers/dashboard/attestation-signing-a-kernel-driver-for-public-release#test-your-driver-on-windows-10
+
 
 ### Verify that drivers are correctly signed:
 
@@ -42,6 +56,3 @@ To build and sign the driver, check that you have the specified requirements ins
 
 - If the drivers fail to install, make sure all devices are unplugged.
 - You must have administrator privileges to install drivers.
-- The DigiCert certificate can also be downloaded from the [DigiCert website](
-https://www.digicert.com/code-signing/driver-signing-in-windows-using-signtool.htm#download_cross_certificate).
-- When you publish the new driver on the website, remember to also [whitelist](https://submit.symantec.com/whitelist/isv/) the driver with Symantec.
