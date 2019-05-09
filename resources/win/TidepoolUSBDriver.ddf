@@ -17,8 +17,6 @@
 ; Tidepool VCP driver
 .Set DestinationDir=tidepoolvcp
 tidepoolvcp.inf
-amd64\ser2pl64.sys
-i386\ser2pl.sys
 .Set DestinationDir=tidepoolvcp\amd64
 amd64\silabser.sys
 amd64\ftser2k.sys
@@ -26,6 +24,7 @@ amd64\ftserui2.dll
 amd64\ftcserco.dll
 amd64\tiusb.i51
 amd64\tiusb.sys
+amd64\ser2pl64.sys
 .Set DestinationDir=tidepoolvcp\x64
 x64\WdfCoInstaller01009.dll
 x64\WdfCoInstaller01011.dll
@@ -36,6 +35,7 @@ i386\ftserui2.dll
 i386\ftcserco.dll
 i386\tiusb.i51
 i386\tiusb.sys
+i386\ser2pl.sys
 .Set DestinationDir=tidepoolvcp\x86
 x86\WdfCoInstaller01009.dll
 x86\WdfCoInstaller01011.dll

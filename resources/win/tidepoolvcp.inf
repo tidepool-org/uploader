@@ -181,7 +181,6 @@ ftcserco.dll =2,i386
 tiusb.i51=2,i386
 tiusb.sys=2,i386
 ser2pl.sys=2,i386
-ser2pl.sys=2,win7x86
 
 [SourceDisksFiles.amd64]
 silabser.sys = 2,amd64
@@ -191,7 +190,6 @@ ftcserco.dll = 2,amd64
 tiusb.i51=2,amd64
 tiusb.sys=2,amd64
 ser2pl64.sys=2,amd64
-ser2pl64.sys=2,win7x64
 
 [DestinationDirs]
 Silabser.Files.Ext = 12
