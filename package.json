@@ -43,7 +43,7 @@
     "commander": "2.20.0",
     "cp2102": "0.0.2",
     "decompress": "4.2.0",
-    "electron-debug": "2.2.0",
+    "electron-debug": "3.0.0",
     "electron-is-dev": "1.1.0",
     "es6-error": "4.1.1",
     "history": "4.7.2",
