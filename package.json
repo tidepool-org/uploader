@@ -37,7 +37,7 @@
   "dependencies": {
     "@material-ui/core": "3.9.3",
     "@material-ui/icons": "3.0.2",
-    "async": "2.6.1",
+    "async": "3.0.1",
     "babyparse": "0.4.6",
     "bows": "1.7.0",
     "chrome-launcher": "0.10.2",
