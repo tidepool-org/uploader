@@ -68,7 +68,7 @@
     "redux-thunk": "2.3.0",
     "rollbar": "2.6.1",
     "rollbar-sourcemap-webpack-plugin": "2.5.1",
-    "semver": "6.0.0",
+    "semver": "6.1.1",
     "source-map-support": "0.5.12",
     "stack-trace": "0.0.10",
     "sudo-prompt": "8.2.5",
