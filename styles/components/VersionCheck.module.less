@@ -1,5 +1,31 @@
 @import '../core/variables.less';
 
+.modalWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: rgba(39, 27, 70, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  composes: flexColumn from '../core/layout.module.less';
+  min-width: 330px;
+  background-color: @gray-background;
+  border-radius: 5px;
+  border: solid 1px @gray-light;
+  padding: 30px;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  .icon {
+    color: @purple-medium;
+    font-size: 48px;
+  }
+}
+
 .purpleCentered {
   color: @purple-dark;
   text-align: center;
@@ -9,51 +35,21 @@
   background-color: rgba(255, 255, 255, 0.925);
 }
 
-.main {
-  position: absolute;
-  top: 0; left: 0;
 
-  width: 100%;
-  height: @app-height;
-}
 
 .failed {
-  composes: main;
-  composes: mostlyOpaqueBackground;
   composes: flexColumn from '../core/layout.module.less';
-  background-image: url(../../images/unhappy_meter.png);
-  background-position: center center;
-  background-size: 69px 166px;
-  background-repeat: no-repeat;
 }
 
 .offline {
-  composes: main;
-  composes: mostlyOpaqueBackground;
   composes: flexColumn from '../core/layout.module.less';
-  background-image: url(../../images/unhappy_device.png);
-  background-position: 50% 60%;
-  background-size: 105px 237px;
-  background-repeat: no-repeat;
-}
-
-.outdated {
-  composes: main;
-  composes: mostlyOpaqueBackground;
-  composes: flexColumn from '../core/layout.module.less';
-  background-image: url(../../images/happy_device.png);
-  background-position: 50% 60%;
-  background-size: 156px 213px;
-  background-repeat: no-repeat;
 }
 
 .text {
-  composes: flexColumn from '../core/layout.module.less';
-  min-height: 425px;
-  justify-content: center;
+  composes: small from '../core/typography.module.less';
 }
 
-.link {
+.link { 
   composes: link from '../core/typography.module.less';
 
   &:hover,
@@ -63,15 +59,21 @@
   }
 }
 
-.paragraph {
-  composes: purpleCentered;
-  margin: 0;
-  font-size: @font-size-large;
-  font-weight: bold;
+.lineOne {
+  composes: large from '../core/typography.module.less';
+  font-weight: 500;
+  margin: 8px 0;
+  color: #4f6a92;
+}
+
+.lineTwo {
+  composes: medium from '../core/typography.module.less';
+  font-weight: 500;
+  margin: 8px 0;
+  color: #7e98c3;
 }
 
 .mostImportant {
-  composes: paragraph;
   margin-top: 20px;
 }
 
