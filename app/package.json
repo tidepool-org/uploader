@@ -16,10 +16,10 @@
     "@ronomon/direct-io": "2.4.3",
     "serialport": "6.2.2",
     "usb": "1.5.0",
-    "lzo-decompress": "0.1.2"
+    "lzo-decompress": "0.1.2",
+    "node-mtp": "0.2.1"
   },
   "optionalDependencies": {
-    "node-mtp": "0.2.1",
     "winreg": "1.2.4"
   }
 }
