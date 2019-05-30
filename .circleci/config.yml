@@ -27,7 +27,6 @@ jobs:
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn global add greenkeeper-lockfile@1
     - run: greenkeeper-lockfile-update
-    - run: brew install pkg-config
     - run: yarn --frozen-lockfile
     - save_cache:
         key: dependency-cache-{{ checksum "package.json" }}
