@@ -950,10 +950,10 @@ node-hid@0.7.6:
     nan "^2.12.1"
     prebuild-install "^5.2.2"
 
-node-mtp@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.2.1.tgz#0ba781f39216899694c3dd2255dcde2ecd6c4ed5"
-  integrity sha512-+roIW8wXAEpB2ND5PtRBBna2ujcWfnFDgrXYN00wEE6f3Z2+1F5Z+8KtFvpQ6lWL4jNQvvb+fLhnFtGGCZhzJw==
+node-mtp@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.3.0.tgz#4999449a7eb0d1348ea41200f1ea448e5b2b6502"
+  integrity sha512-pSQoiiskEu86wakGlcveVkuhzTEIpQkqUnu4kd8ajSMguxuj5janM3UBkYmWFI3hNtWW4Q6UCstPUzdrcV8JWQ==
   dependencies:
     napi-macros "1.7.0"
     node-gyp-build "3.4.0"
