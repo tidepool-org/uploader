@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.15.0-omnipod-dash.3",
+  "version": "2.15.0-omnipod-dash.4",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.js",
   "author": {
@@ -19,7 +19,7 @@
     "lzo-decompress": "0.1.2"
   },
   "optionalDependencies": {
-    "node-mtp": "0.3.8",
+    "node-mtp": "0.3.9",
     "winreg": "1.2.4"
   }
 }
