@@ -22,9 +22,9 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ### Sign both the .cat files using signtool:
 
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolvcp.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolhid.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project tidepoolusb.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolvcp.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolhid.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolusb.cat`
 
 ### Submit Windows 10 drivers to hardware dashboard for attestation signing
 
@@ -33,12 +33,7 @@ To build and sign the driver, check that you have the specified requirements ins
 
 This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
 
-TODO: describe how we copy the signed drivers back into the right directory so that it can be included in our builds.
-
-For more details on attestation signing, see:
-- https://www.davidegrayson.com/signing/
-- https://docs.microsoft.com/en-gb/windows-hardware/drivers/dashboard/attestation-signing-a-kernel-driver-for-public-release#test-your-driver-on-windows-10
-
+Download the signed drivers from the hardware portal and update the `resources/win/win10` directory.
 
 ### Verify that drivers are correctly signed:
 
@@ -56,3 +51,7 @@ For more details on attestation signing, see:
 
 - If the drivers fail to install, make sure all devices are unplugged.
 - You must have administrator privileges to install drivers.
+
+For more details on attestation signing, see:
+- https://www.davidegrayson.com/signing/
+- https://docs.microsoft.com/en-gb/windows-hardware/drivers/dashboard/attestation-signing-a-kernel-driver-for-public-release#test-your-driver-on-windows-10
