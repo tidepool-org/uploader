@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.15.0-omnipod-dash.5",
+  "version": "2.15.0-omnipod-dash.6",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
