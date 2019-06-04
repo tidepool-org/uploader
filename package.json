@@ -202,7 +202,7 @@
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "8.0.1",
     "electron-updater": "4.0.6",
-    "enzyme": "3.9.0",
+    "enzyme": "3.10.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
