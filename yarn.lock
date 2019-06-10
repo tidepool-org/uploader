@@ -1291,9 +1291,10 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-aws-sdk@2.450.0:
-  version "2.450.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.450.0.tgz#5467484d7a08647d744229692bad96a03289e243"
+aws-sdk@2.472.0:
+  version "2.472.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.472.0.tgz#0da7062299125a85fdea5786d13019d80aac8ee4"
+  integrity sha512-uFatrjfMSwC34VxdG9ollX6K61e+iaoE5ZHQ/OKeSoWx9HXs3AwJqIS90iBLEhaAm2WoTMFYAv0irMC8eMCu3g==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
