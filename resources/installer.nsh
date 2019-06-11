@@ -39,6 +39,11 @@ RequestExecutionLevel admin
   Pop $1
   WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
 
+  ${If} ${IsWin10}
+    ; Windows 10 uses drivers with attestation signing
+    CopyFiles $DriverDir\win10\* $DriverDir
+  ${EndIf}
+
   ${If} ${RunningX64}
       ${If} ${IsWin7}
         ; 64-bit Windows 7
