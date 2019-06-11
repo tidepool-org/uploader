@@ -35,6 +35,8 @@
     "package-all": "npm run build && electron-builder -mwl"
   },
   "dependencies": {
+    "@material-ui/core": "3.9.3",
+    "@material-ui/icons": "3.0.2",
     "async": "2.6.1",
     "babyparse": "0.4.6",
     "bows": "1.7.0",
@@ -166,6 +168,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
+    "@ronomon/direct-io": "2.4.3",
     "aws-sdk": "2.450.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
@@ -195,7 +198,7 @@
     "difflet": "1.0.1",
     "drivelist": "6.4.3",
     "electron": "3.1.1",
-    "electron-builder": "20.40.2",
+    "electron-builder": "20.43.0",
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "8.0.1",
     "electron-updater": "4.0.6",
@@ -228,7 +231,6 @@
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
     "redux-mock-store": "1.5.1",
-    "@ronomon/direct-io": "2.4.3",
     "salinity": "0.0.8",
     "serialport": "6.2.2",
     "sinon": "7.3.2",
