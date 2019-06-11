@@ -169,7 +169,7 @@
   },
   "devDependencies": {
     "@ronomon/direct-io": "2.4.3",
-    "aws-sdk": "2.450.0",
+    "aws-sdk": "2.472.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "7.1.5",
