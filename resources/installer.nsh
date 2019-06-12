@@ -50,7 +50,7 @@ RequestExecutionLevel admin
         CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
         ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe /q"
+        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
       ${EndIf}
   ${Else}
       ${If} ${IsWin7}
@@ -58,7 +58,7 @@ RequestExecutionLevel admin
         CopyFiles $DriverDir\win7x86\* $DriverDir\i386
         ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe /q"
+        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
       ${EndIf}
   ${EndIf}
 
