@@ -50,7 +50,7 @@
     "es6-error": "4.1.1",
     "history": "4.7.2",
     "iconv-lite": "0.4.24",
-    "immutability-helper": "2.9.0",
+    "immutability-helper": "3.0.1",
     "is-electron": "2.2.0",
     "lodash": "4.17.11",
     "lzo-decompress": "0.1.2",
