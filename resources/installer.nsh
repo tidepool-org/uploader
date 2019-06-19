@@ -39,13 +39,18 @@ RequestExecutionLevel admin
   Pop $1
   WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
 
+  ${If} ${IsWin10}
+    ; Windows 10 uses drivers with attestation signing
+    CopyFiles $DriverDir\win10\* $DriverDir
+  ${EndIf}
+
   ${If} ${RunningX64}
       ${If} ${IsWin7}
         ; 64-bit Windows 7
         CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
         ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe /q"
+        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
       ${EndIf}
   ${Else}
       ${If} ${IsWin7}
@@ -53,7 +58,7 @@ RequestExecutionLevel admin
         CopyFiles $DriverDir\win7x86\* $DriverDir\i386
         ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe /q"
+        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
       ${EndIf}
   ${EndIf}
 
