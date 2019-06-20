@@ -43,7 +43,7 @@
     "chrome-launcher": "0.10.2",
     "classnames": "2.2.6",
     "commander": "2.20.0",
-    "cp2102": "0.0.2",
+    "cp2102": "0.0.3",
     "decompress": "4.2.0",
     "electron-debug": "2.2.0",
     "electron-is-dev": "1.1.0",
