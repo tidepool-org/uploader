@@ -863,9 +863,10 @@ ansi-colors@^1.0.1:
   dependencies:
     ansi-wrap "^0.1.0"
 
-ansi-colors@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
+ansi-colors@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.0.1.tgz#3dc29301836c6152f617a71466bde162a2e42582"
+  integrity sha512-1Qs1jdXEMSYwcVooLRfnCc5+e3365pw38v4AVkSsCxsjXRGKDTem5VLCl53SpHSpLnEy8O5DofJHZJELaRiJbg==
 
 ansi-cyan@^0.1.1:
   version "0.1.1"
@@ -4334,17 +4335,18 @@ electron-localshortcut@^3.1.0:
     keyboardevent-from-electron-accelerator "^1.1.0"
     keyboardevents-areequal "^0.2.1"
 
-electron-mocha@8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/electron-mocha/-/electron-mocha-8.0.2.tgz#1588a4f92998b93c5ba7c62aa577109cef06922a"
+electron-mocha@8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/electron-mocha/-/electron-mocha-8.0.3.tgz#1d71af3a3771fa283e07c297749d814c7ed1b309"
+  integrity sha512-0dIzFwUXyRotOkzOKTfPUip0SH9PjS5lhf475+rY1Z2IXj+wHt+nZtGbAZDpuHAj1TlkcyF6VPOUnZSQ/co2wg==
   dependencies:
-    ansi-colors "^3.2.4"
+    ansi-colors "^4.0.1"
     electron-window "^0.8.0"
-    fs-extra "^7.0.1"
-    log-symbols "^2.2.0"
-    mocha "^6.1.2"
+    fs-extra "^8.0.1"
+    log-symbols "^3.0.0"
+    mocha "^6.1.4"
     which "^1.3.1"
-    yargs "^13.2.2"
+    yargs "^13.2.4"
 
 electron-osx-sign@0.4.11:
   version "0.4.11"
@@ -7328,11 +7330,18 @@ log-ok@^0.1.1:
     ansi-green "^0.1.1"
     success-symbol "^0.1.0"
 
-log-symbols@2.2.0, log-symbols@^2.0.0, log-symbols@^2.1.0, log-symbols@^2.2.0:
+log-symbols@2.2.0, log-symbols@^2.0.0, log-symbols@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
   dependencies:
     chalk "^2.0.1"
+
+log-symbols@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-3.0.0.tgz#f3a08516a5dea893336a7dee14d18a1cfdab77c4"
+  integrity sha512-dSkNGuI7iG3mfvDzUuYZyvk5dD9ocYCYzNU6CYDE6+Xqd+gwme6Z00NS3dUh8mq/73HaEtT7m6W+yUPtU6BZnQ==
+  dependencies:
+    chalk "^2.4.2"
 
 log-utils@^0.2.1:
   version "0.2.1"
@@ -7747,9 +7756,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-mocha@6.1.4, mocha@^6.1.2:
+mocha@6.1.4, mocha@^6.1.4:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.1.4.tgz#e35fada242d5434a7e163d555c705f6875951640"
+  integrity sha512-PN8CIy4RXsIoxoFJzS4QNnCH4psUCPWc4/rPrst/ecSJJbLBkubMiyGCP2Kj/9YnWbotFqAoeXyXMucj7gwCFg==
   dependencies:
     ansi-colors "3.2.3"
     browser-stdout "1.3.1"
@@ -12438,7 +12448,7 @@ yargs-unparser@1.5.0:
     lodash "^4.17.11"
     yargs "^12.0.5"
 
-yargs@13.2.2, yargs@^13.2.2:
+yargs@13.2.2:
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
   dependencies:
