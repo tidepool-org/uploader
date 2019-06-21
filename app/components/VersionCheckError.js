@@ -22,6 +22,7 @@ import React, { Component } from 'react';
 import errorText from '../constants/errors';
 
 import styles from '../../styles/components/VersionCheck.module.less';
+import CloudOff from '@material-ui/icons/CloudOff';
 
 export default class VersionCheckError extends Component {
   static propTypes = {
@@ -34,8 +35,8 @@ export default class VersionCheckError extends Component {
       CONNECT: 'Please check your connection, quit & relaunch to try again.',
       ERROR_DETAILS: 'Details for Tidepool\'s developers:',
       OFFLINE: 'You\'re not connected to the Internet.',
-      SERVERS_DOWN: 'Tidepool\'s servers are down.',
-      TRY_AGAIN: 'In a few minutes, please quit & relaunch to try again.'
+      SERVERS_DOWN: 'We can\'t connect to Tidepool right now.',
+      TRY_AGAIN: 'Quit & relaunch the Uploader to try again.'
     }
   };
 
@@ -44,28 +45,38 @@ export default class VersionCheckError extends Component {
   }
 
   render() {
-    const { errorMessage } = this.props;
+    const { errorMessage } = this.props; 
     const userErrorText = this.props.errorText;
-    const offline = (errorMessage === errorText.E_OFFLINE);
+    const offline = errorMessage === errorText.E_OFFLINE;
     const errorDetails = offline ? null : (
       <div className={styles.error}>
         <p className={styles.errorText}>{userErrorText.ERROR_DETAILS}</p>
         <p className={styles.errorText}>{errorMessage}</p>
       </div>
     );
-    const firstLine = offline ? userErrorText.OFFLINE : userErrorText.SERVERS_DOWN;
-    const secondLine = offline ? userErrorText.CONNECT : userErrorText.TRY_AGAIN;
+    const firstLine = offline
+      ? userErrorText.OFFLINE
+      : userErrorText.SERVERS_DOWN;
+    const secondLine = offline
+      ? userErrorText.CONNECT
+      : userErrorText.TRY_AGAIN;
     const versionCheckClass = cx({
       [styles.failed]: !offline,
       [styles.offline]: offline
     });
+
     return (
-      <div className={versionCheckClass}>
-        <div className={styles.text}>
-          <p className={styles.paragraph}>{firstLine}</p>
-          <p className={styles.paragraph}>{secondLine}</p>
+      <div className={styles.modalWrap}>
+        <div className={styles.modal}>
+          <div className={versionCheckClass}>
+            <div className={styles.text}>
+              <CloudOff classes={{root: styles.icon}}/>
+              <p className={styles.lineOne}>{firstLine}</p>
+              <p className={styles.lineTwo}>{secondLine}</p>
+            </div>
+            {errorDetails}
+          </div>
         </div>
-        {errorDetails}
       </div>
     );
   }
