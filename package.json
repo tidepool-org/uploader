@@ -204,7 +204,7 @@
     "electron-mocha": "8.0.2",
     "electron-updater": "4.0.6",
     "enzyme": "3.10.0",
-    "eslint": "5.16.0",
+    "eslint": "6.0.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-formatter-pretty": "2.1.0",
     "eslint-import-resolver-webpack": "0.11.1",
