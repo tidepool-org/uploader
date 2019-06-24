@@ -236,7 +236,7 @@
     "serialport": "6.2.2",
     "sinon": "7.3.2",
     "sinon-chai": "3.2.0",
-    "spectron": "5.0.0",
+    "spectron": "7.0.0",
     "style-loader": "0.23.1",
     "url-loader": "2.0.0",
     "webpack": "3.8.1",
