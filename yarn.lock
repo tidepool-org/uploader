@@ -8587,10 +8587,10 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-open@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/open/-/open-6.0.0.tgz#cae5e2c1a3a1bfaee0d0acc8c4b7609374750346"
-  integrity sha512-/yb5mVZBz7mHLySMiSj2DcLtMBbFPJk5JBKEkHVZFxZAPzeg3L026O0T+lbdz1B2nyDnkClRSwRQJdeVUIF7zw==
+open@6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/open/-/open-6.3.0.tgz#60d0b845ee38fae0631f5d739a21bd40e3d2a527"
+  integrity sha512-6AHdrJxPvAXIowO/aIaeHZ8CeMdDf7qCyRNq8NwJpinmCdXhz+NZR7ie1Too94lpciCDsG+qHGO9Mt0svA4OqA==
   dependencies:
     is-wsl "^1.1.0"
 
