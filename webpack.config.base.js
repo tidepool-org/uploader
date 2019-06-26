@@ -14,7 +14,7 @@ export default {
       use: [{
         loader: 'babel-loader'
       }],
-      exclude: /node_modules\/(?!open)/
+      exclude: /node_modules/
     }]
   },
 
