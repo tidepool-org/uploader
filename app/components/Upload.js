@@ -79,7 +79,7 @@ export default class Upload extends Component {
     medtronic600SerialNumberValue: '',
     medtronic600SerialNumberValid: true,
     medtronic600Linked: true,
-    medtronic600UploadPeriod: uploadDataPeriod.period
+    medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
   };
 
   constructor(props) {
@@ -307,7 +307,7 @@ export default class Upload extends Component {
 
   onMedtronic600UploadPeriodChange = period => {
     this.setState({
-      medtronic600UploadPeriod: uploadDataPeriod.setPeriod(period)
+      medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
     });
   };
 
