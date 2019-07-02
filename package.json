@@ -54,7 +54,7 @@
     "is-electron": "2.2.0",
     "lodash": "4.17.11",
     "lzo-decompress": "0.1.2",
-    "pl2303": "0.0.4",
+    "pl2303": "0.0.5",
     "plist": "3.0.1",
     "prop-types": "15.7.0",
     "react": "16.4.0",
