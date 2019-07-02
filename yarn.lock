@@ -2453,6 +2453,7 @@ bindings@1.3.0:
 bindings@^1.3.0, bindings@^1.3.1, bindings@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.5.0.tgz#10353c9e945334bc0511a6d90b38fbc7c9c504df"
+  integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
 
@@ -3537,11 +3538,12 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-cp2102@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/cp2102/-/cp2102-0.0.2.tgz#5a37f302c2f5995321c504383cd8b80cfefcc895"
+cp2102@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/cp2102/-/cp2102-0.0.3.tgz#eaa5cf23362fabefe7ea649abb0d898a163cee28"
+  integrity sha512-B8JbUpFwmdFj3BPVPsjTiFVLXi8+DiI2TAou3OOBOZV+ancOvrCkaXZLUcHiInJhlQ4y8ORi/Bekp1aPhFvVlw==
   dependencies:
-    usb "1.5.0"
+    usb "1.6.0"
 
 crc32-stream@^2.0.0:
   version "2.0.0"
@@ -11899,13 +11901,6 @@ usb-cdc-acm@0.1.1:
     debug "^3.1.0"
     usb "^1.3.1"
 
-usb@1.5.0, usb@^1.3.1:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/usb/-/usb-1.5.0.tgz#3e07b23c6dacf06a7c8801ae913926702a818218"
-  dependencies:
-    nan "^2.8.0"
-    node-pre-gyp "^0.11.0"
-
 usb@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/usb/-/usb-1.6.0.tgz#bc5d4decf4ffca32d1136717edcf73366137a789"
@@ -11913,6 +11908,13 @@ usb@1.6.0:
     bindings "^1.4.0"
     nan "2.13.2"
     prebuild-install "^5.2.4"
+
+usb@^1.3.1:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/usb/-/usb-1.5.0.tgz#3e07b23c6dacf06a7c8801ae913926702a818218"
+  dependencies:
+    nan "^2.8.0"
+    node-pre-gyp "^0.11.0"
 
 use@^3.1.0:
   version "3.1.1"
