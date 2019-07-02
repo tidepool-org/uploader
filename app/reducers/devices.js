@@ -1,6 +1,8 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
+import os from 'os';
+
 const devices = {
   accuchekusb: {
     instructions: 'Plug in meter with micro-USB cable',
@@ -49,10 +51,10 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
+    instructions: os.platform() === 'win32' ? 'Plug in PDM with USB cable and choose .ibf file from PDM' : 'Plug in PDM with USB cable',
     key: 'omnipod',
     name: 'Insulet OmniPod',
-    source: {type: 'block', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    source: {type: os.platform() === 'win32' ? 'block' : 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
