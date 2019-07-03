@@ -281,12 +281,7 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
@@ -373,12 +368,7 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
