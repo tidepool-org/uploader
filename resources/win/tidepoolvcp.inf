@@ -110,6 +110,7 @@ Addservice = silabser,0x00000002,silabser.AddService
 [cdcacm.Dev.NT]
 Include=mdmcpq.inf
 Include=msports.inf
+CopyFiles=FakeModemCopyFileSection,SerialEnumerator.NT.Copy
 AddReg=cdcacm.Addreg
 
 [cdcacm.Dev.NT.Services]
@@ -138,7 +139,7 @@ StartType      = 3                  ; SERVICE_DEMAND_START
 ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
 ServiceBinary  = %12%\silabser.sys
 
-; common registry entries
+; common registry entries 
 [silabser.AddReg]
 HKR,,NTMPDriver,,silabser.sys
 HKR,,RateLimitPurgeMS, 0x10001, 0x64, 0x00, 0x00, 0x00
@@ -181,6 +182,7 @@ ftcserco.dll =2,i386
 tiusb.i51=2,i386
 tiusb.sys=2,i386
 ser2pl.sys=2,i386
+ser2pl.sys=2,win7x86
 
 [SourceDisksFiles.amd64]
 silabser.sys = 2,amd64
@@ -190,10 +192,11 @@ ftcserco.dll = 2,amd64
 tiusb.i51=2,amd64
 tiusb.sys=2,amd64
 ser2pl64.sys=2,amd64
+ser2pl64.sys=2,win7x64
 
 [DestinationDirs]
 Silabser.Files.Ext = 12
-FtdiPort.NT.Copy=10,system32\drivers
+FtdiPort.NT.Copy=10,system32\drivers 
 FtdiPort.NT.CopyUI=10,system32
 FtdiPort.NT.CopyCoInst=10,system32
 DefaultDestDir=12
@@ -201,7 +204,6 @@ TI.CopyFiles.NT=12
 TI.CopyFiles.NT.Coinstaller = 11
 ComPort.NTx86.Copy = 12
 ComPort.NTamd64.Copy = 12
-CoInstaller_CopyFiles.KMDF.1.11 = 11 ; windows\system32
 
 ;-------------- FTDI
 
@@ -265,6 +267,9 @@ HKR,,CoInstallers32,0x00010000,"ftcserco.Dll,FTCSERCoInstaller"
 
 ;-------------- SI Labs WDF Coinstaller installation
 
+[DestinationDirs]
+CoInstaller_CopyFiles.KMDF.1.11 = 11 ; windows\system32
+
 [silabser.NTx86.CoInstallers]
 AddReg=CoInstaller_AddReg.KMDF.1.11
 CopyFiles=CoInstaller_CopyFiles.KMDF.1.11
@@ -324,14 +329,14 @@ HKR, Parameters\Wdf, VerifierOn,      0x00010001, 1
 HKR, Parameters\Wdf, DbgBreakOnError, 0x00010001, 1
 HKR,,ImageFile,,"\SystemRoot\System32\drivers\tiusb.i51"
 HKR,,SetMSRLinesZero,%REG_BINARY%,0x00  ; 0x80=DCD 0x40=RI 0x20=DSR 0x10=CTS
-HKR,,SetMSRLinesOne, %REG_BINARY%,0x00  ; 0x80=DCD 0x40=RI 0x20=DSR 0x10=CTS
+HKR,,SetMSRLinesOne, %REG_BINARY%,0x00  ; 0x80=DCD 0x40=RI 0x20=DSR 0x10=CTS 
 HKR,,NumComPorts,%REG_DWORD%,1
 HKR,,NumLptPorts,%REG_DWORD%,0
 HKR,,TIDeviceType,,"TIUSB3410"
 HKR,,Port1DeviceHWID,,"VID_0451_com"
 ; ****
 ; This defines the name shown by the Found New HW wizard for the COM port child device:
-HKR,,ComPortChildDeviceText,,"UMP USB Serial Port"
+HKR,,ComPortChildDeviceText,,"UMP USB Serial Port" 
 
 [TI.CopyFiles.NT]
 tiusb.i51
@@ -390,19 +395,19 @@ HKR,,NTMPDriver,,ser2pl64.sys
 HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
 
 [Serial_Service_Inst.NTx86]
-DisplayName    = %Serial.SVCDESC%
+DisplayName    = %Serial.SVCDESC%                            
 ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
 StartType      = 3                  ; SERVICE_DEMAND_START
 ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\ser2pl.sys
+ServiceBinary  = %12%\ser2pl.sys                            
 LoadOrderGroup = Base
 
 [Serial_Service_Inst.NTAMD64]
-DisplayName    = %Serial.SVCDESC%
+DisplayName    = %Serial.SVCDESC%                            
 ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
 StartType      = 3                  ; SERVICE_DEMAND_START
 ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\ser2pl64.sys
+ServiceBinary  = %12%\ser2pl64.sys                            
 LoadOrderGroup = Base
 
 
