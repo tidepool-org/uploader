@@ -6,5 +6,8 @@
         "package.json"
       ]
     }
-  }
+  },
+  "ignore": [
+    "aws-sdk"
+  ]
 }

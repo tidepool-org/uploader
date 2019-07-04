@@ -42,7 +42,6 @@ import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import MainPage from './MainPage';
 import Login from '../components/Login';
@@ -80,6 +79,12 @@ const serverdata = {
     UPLOAD_URL: 'https://stg-uploads.tidepool.org',
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
     BLIP_URL: 'https://stg-app.tidepool.org'
+  },
+  QA1: {
+    API_URL: 'https://qa1-api.tidepool.org',
+    UPLOAD_URL: 'https://qa1-uploads.tidepool.org',
+    DATA_URL: 'https://qa1-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1-app.tidepool.org'
   },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
@@ -132,11 +137,6 @@ export class App extends Component {
     serverinfo.environment = info.label;
     this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
-  };
-
-  setDataPeriod = info => {
-    console.log('fetch device data for', info.label);
-    uploadDataPeriod.setPeriod(info.id);
   };
 
   render() {
@@ -201,6 +201,12 @@ export class App extends Component {
             checked: this.state.server === 'Staging'
           },
           {
+            label: 'QA1',
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'QA1'
+          },
+          {
             label: 'Integration',
             click: this.setServer,
             type: 'radio',
@@ -211,34 +217,6 @@ export class App extends Component {
             click: this.setServer,
             type: 'radio',
             checked: this.state.server === 'Production'
-          }
-        ]
-      });
-      template.push({
-        label: 'Upload Data',
-        submenu: [
-          {
-            label: 'Everything',
-            id: uploadDataPeriod.PERIODS.ALL,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.ALL
-          },
-          {
-            label: 'New since last upload',
-            id: uploadDataPeriod.PERIODS.DELTA,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.DELTA
-          },
-          {
-            label: 'Last 4 weeks',
-            id: uploadDataPeriod.PERIODS.FOUR_WEEKS,
-            visible: debugMode.isDebug,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period ===
-              uploadDataPeriod.PERIODS.FOUR_WEEKS
           }
         ]
       });
