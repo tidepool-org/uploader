@@ -5327,11 +5327,11 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-flux-standard-action@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/flux-standard-action/-/flux-standard-action-2.0.3.tgz#a73a6c4b25ea19d7051afe093ec108ff33dd8935"
+flux-standard-action@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/flux-standard-action/-/flux-standard-action-2.1.0.tgz#23713a545ee49d62bd067e77d63f8c691561c94c"
   dependencies:
-    lodash "^4.0.0"
+    lodash "^4.17.11"
 
 follow-redirects@^1.0.0:
   version "1.7.0"
@@ -7291,7 +7291,7 @@ lodash@3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.3.1.tgz#3b914d4a1bb27efcee076e0dfa58152018e2042e"
 
-lodash@4.17.11, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1, lodash@^4.8.0, lodash@~4.17.10:
+lodash@4.17.11, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1, lodash@^4.8.0, lodash@~4.17.10:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
