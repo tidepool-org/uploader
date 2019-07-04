@@ -61,6 +61,8 @@
 
 .input {
   composes: form-control from '../core/forms.less';
+  /* 33px = 2 * 15px padding plus border width */ 
+  width: calc(100% - 33px);
 }
 
 .dateInput {

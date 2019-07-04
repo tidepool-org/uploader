@@ -156,6 +156,31 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
       "fullName": "Doctor Doe"
     }
   },
+  "memberships": {
+    "77541c89ba": {
+      "permissions": {
+        "root": {}
+      }
+    },
+    "a6328f570d": {
+      "permissions": {
+        "upload": {},
+        "view": {}
+      }
+    },
+    "4a86ec44ff": {
+      "permissions": {
+        "upload": {},
+        "view": {}
+      }
+    },
+    "4fdc9dd8b4": {
+      "permissions": {
+        "upload": {},
+        "view": {}
+      }
+    }
+  },
   "loggedInUser": "4fdc9dd8b4",
   "loginErrorMessage": null,
   "updateProfileErrorMessage": null,
