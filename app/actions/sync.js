@@ -427,9 +427,10 @@ export function uploadProgress(step, percentage, isFirstUpload) {
 
 export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
-  const numRecs = data.length;
+  const numRecs = data.post_records.length;
   const properties = {
     type: _.get(device, 'source.type', undefined),
+    deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
     started: upload.history[0].start || '',
     finished: utc || '',
