@@ -244,7 +244,7 @@
     "webpack-dev-server": "2.9.4",
     "webpack-hot-middleware": "2.22.2",
     "webpack-merge": "4.1.2",
-    "xmlbuilder": "11.0.0"
+    "xmlbuilder": "13.0.2"
   },
   "devEngines": {
     "node": ">=7.9.x",
