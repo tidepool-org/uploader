@@ -8,6 +8,7 @@ import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
 import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
+import uploadDataPeriod from './utils/uploadDataPeriod';
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -69,6 +70,16 @@ const installExtensions = async () => {
       .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
       .catch(console.log);
   }
+};
+
+function addDataPeriodGlobalListener(menu) {
+  ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+    if (arg === uploadDataPeriod.PERIODS.ALL) {
+      menu.items[2].submenu.items[0].checked = true;
+    } else if (arg === uploadDataPeriod.PERIODS.DELTA) {
+      menu.items[2].submenu.items[1].checked = true;
+    }
+  });
 };
 
 app.on('ready', async () => {
@@ -226,6 +237,25 @@ app.on('ready', async () => {
         }
       ]
     }, {
+      label: '&Upload',
+      submenu: [{
+        label: 'All data',
+        type: 'radio',
+        click() {
+          console.log('Uploading all data');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.ALL, mainWindow);
+        }
+      }, {
+        label: 'Data since last upload',
+        type: 'radio',
+        click() {
+          console.log('Uploading only new records');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.DELTA, mainWindow);
+        }
+      }]
+    }, {
       label: 'Window',
       submenu: [{
         label: 'Minimize',
@@ -262,6 +292,7 @@ app.on('ready', async () => {
     }];
 
     menu = Menu.buildFromTemplate(template);
+    addDataPeriodGlobalListener(menu);
     Menu.setApplicationMenu(menu);
   } else {
     template = [{
@@ -310,6 +341,23 @@ app.on('ready', async () => {
         }
       }]
     }, {
+      label: '&Upload',
+      submenu: [{
+        label: 'All data',
+        type: 'radio',
+        click() {
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.ALL, mainWindow);
+        }
+      }, {
+        label: 'Data since last upload',
+        type: 'radio',
+        click() {
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.DELTA, mainWindow);
+        }
+      }]
+    }, {
       label: 'Help',
       submenu: [{
         label: 'Get Support',
@@ -335,6 +383,7 @@ app.on('ready', async () => {
       }]
     }];
     menu = Menu.buildFromTemplate(template);
+    addDataPeriodGlobalListener(menu);
     mainWindow.setMenu(menu);
   }
 });
