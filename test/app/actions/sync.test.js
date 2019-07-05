@@ -717,7 +717,7 @@ describe('Synchronous Actions', () => {
 
       it('should create appropriate metric properties for 600 series upload limits', () => {
         const time = '2016-01-01T12:05:00.123Z';
-        __Rewire__('uploadDataPeriod', { period: 1 });
+        __Rewire__('uploadDataPeriod', { periodMedtronic600: 1 });
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_REQUEST,
@@ -799,7 +799,7 @@ describe('Synchronous Actions', () => {
 
       it('should create an action to record a successful 600 series upload w/ limit', () => {
         const time = '2016-01-01T12:05:00.123Z';
-        __Rewire__('uploadDataPeriod', { period: 2 });
+        __Rewire__('uploadDataPeriod', { periodMedtronic600: 2 });
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_SUCCESS,
@@ -875,7 +875,7 @@ describe('Synchronous Actions', () => {
       });
 
       it('should create an action to report an upload failure with limit for 600 series', () => {
-        __Rewire__('uploadDataPeriod', { period: 3 });
+        __Rewire__('uploadDataPeriod', { periodMedtronic600: 3 });
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_FAILURE,
@@ -1467,6 +1467,39 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
       };
       expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingRequest', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.adHocPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate start of a 600 series ad hoc pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST]}
+      };
+      expect(syncActions.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('adHocPairingDismissed', () => {
+    it('should be an FSA', () => {
+      let action = syncActions.dismissedAdHocPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('should create an action to indicate dismissing a 600 series ad hoc pairing', () => {
+      const expectedAction = {
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED]}
+      };
+      expect(syncActions.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
     });
   });
 

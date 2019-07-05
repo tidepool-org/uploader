@@ -25,8 +25,8 @@ var builder = require('../../../lib/objectBuilder')();
 var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 
 describe('processData.js', function() {
-  var tzoUtil = new TZOUtil('GMT', '2016-12-01T00:00:00.000Z', []);
-  var cfg = { builder:builder, tzoUtil: tzoUtil };
+  var tzoUtil = new TZOUtil('Europe/London', '2019-02-22T14:00:00.000Z', []);
+  var cfg = { builder:builder, tzoUtil: tzoUtil, timezone: 'Europe/London' };
   var settings = { strokesPerUnit : 40, larger : true };
 
   beforeEach(function(){
@@ -86,7 +86,7 @@ describe('processData.js', function() {
         jsDate: new Date('2016-11-14T01:42:00.000Z')
       };
 
-      it('does not create two boluses when cancelled', function(){
+      it('should not create two boluses when cancelled', function(){
         var result = proc.buildBolusRecords([bolus1,bolus2]);
         expect(result).deep.equals([expected]);
       });
@@ -96,7 +96,7 @@ describe('processData.js', function() {
   describe('deviceEvent', function() {
     describe('low glucose suspend status', function() {
 
-      it('is suspended and resumed by user ', function() {
+      it('should handle being suspended and resumed by user ', function() {
 
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
@@ -180,7 +180,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('resumes automatically after two hours with no response by user', function () {
+      it('should resume automatically after two hours with no response by user', function () {
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
             type: {
@@ -262,7 +262,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('resumes automatically after two hours when user suspends', function() {
+      it('should resume automatically after two hours when user suspends', function() {
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
             type: {
@@ -336,7 +336,7 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('has user suspend followed by LGS suspend', function() {
+      it('should have user suspend followed by LGS suspend', function() {
 
         // user suspend
         var suspend1 = {
@@ -412,6 +412,160 @@ describe('processData.js', function() {
         var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
         expect(result[0]).to.deep.equal(expected);
 
+      });
+
+    });
+  });
+
+  describe('pumpSettings', function() {
+
+    beforeEach(function() {
+      var currentSettings = {
+        'modelNumber':'551',
+        'deviceManufacturers':['Medtronic'],
+        'serialNumber':'696693',
+        'strokesPerUnit':40,
+        'basalSchedules':{'standard':[{'start':0,'rate':0.2},{'start':10800000,'rate':0.45},{'start':28800000,'rate':0.8},{'start':43200000,'rate':0.975},{'start':50400000,'rate':0.3}],'pattern a':[{'start':0,'rate':1.5}],'pattern b':[{'start':0,'rate':0},{'start':54000000,'rate':2}]},
+        'bgTarget':[{'start':0,'low':60,'high':250},{'start':3600000,'low':250,'high':250},{'start':7200000,'low':60,'high':60},{'start':16200000,'low':113,'high':125},{'start':21600000,'low':84,'high':101},{'start':43200000,'low':90,'high':101},{'start':52200000,'low':95,'high':99},{'start':66600000,'low':95,'high':112}],
+        'carbRatio':[{'start':0,'amount':1},{'start':3600000,'amount':1.1},{'start':7200000,'amount':200},{'start':66600000,'amount':15},{'start':68400000,'amount':17},{'start':72000000,'amount':24},{'start':75600000,'amount':14},{'start':79200000,'amount':14}],
+        'units':{'bg':'mg/dL','carb':'grams'},
+        'insulinSensitivity':[{'start':0,'amount':400},{'start':3600000,'amount':10},{'start':7200000,'amount':61},{'start':14400000,'amount':41},{'start':21600000,'amount':64},{'start':25200000,'amount':47},{'start':30600000,'amount':64},{'start':61200000,'amount':50}],
+        'activeSchedule':'standard',
+        'currentDeviceTime':'2019-02-22T15:05:34.000Z',
+        'bolus':{
+          'amountMaximum':{'value':25,'units':'Units'},
+          'calculator':{'enabled':true,'insulin':{'duration':8,'units':'hours'}
+        },
+        'extended':{'enabled':true}},
+        'basal':{
+          'rateMaximum':{'value':2,'units':'Units/hour'},
+          'temporary':{'type':'percent'}
+        }
+      };
+      proc.init(cfg, currentSettings);
+
+    });
+
+    describe('min/max values', function() {
+
+      it('should handle min/max values for bolus wizard changes', function() {
+
+        var bolusWizardChange = {
+          head: [90, 15],
+          type: {
+              value: 90,
+              body_length: 137,
+              name: 'BOLUS_WIZARD_CHANGE',
+              head_length: 2,
+              date_length: 5
+          },
+          body: [ 133, 136, 0, 0, 10, 2, 0, 11, 4, 7, 208, 37, 0, 150, 38, 0, 170, 40, 0, 240, 42, 0, 140, 44, 0, 140, 0, 0, 64, 144, 2, 56, 6, 46, 8, 41, 12, 64, 14, 47, 17, 64, 34, 50, 0, 90, 100, 2, 98, 102, 4, 103, 110, 9, 113, 125, 12, 84, 101, 24, 90, 101, 29, 95, 99, 37, 95, 112, 133, 136, 0, 0, 10, 2, 0, 11, 4, 7, 208, 37, 0, 150, 38, 0, 170, 40, 0, 240, 42, 0, 140, 44, 0, 140, 0, 0, 64, 144, 2, 10, 4, 61, 8, 41, 12, 64, 14, 47, 17, 64, 34, 50, 0, 60, 250, 2, 250, 250, 4, 60, 60, 9, 113, 125, 12, 84, 101, 24, 90, 101, 29, 95, 99, 37, 95, 112, 136 ],
+          jsDate: new Date('2019-02-22T12:16:42.000Z'),
+          index: 42
+        };
+
+        var result = proc.buildSettings([bolusWizardChange]);
+
+        expect(result.postrecords[0].carbRatio[0]).to.deep.equal({ start: 0, amount: 1 });
+        expect(result.postrecords[0].carbRatio[1]).to.deep.equal({ start: 3600000, amount: 1.1 });
+        expect(result.postrecords[0].carbRatio[2]).to.deep.equal({ start: 7200000, amount: 200 });
+
+        expect(result.postrecords[0].insulinSensitivity[0]).to.deep.equal({ start: 0, amount: 400 });
+        expect(result.postrecords[0].insulinSensitivity[1]).to.deep.equal({ start: 3600000, amount: 10 });
+
+        expect(result.postrecords[0].bgTarget[0]).to.deep.equal({start: 0, low: 60, high: 250});
+        expect(result.postrecords[0].bgTarget[1]).to.deep.equal({start: 3600000, low: 250, high: 250});
+        expect(result.postrecords[0].bgTarget[2]).to.deep.equal({start: 7200000, low: 60, high: 60});
+
+        expect(result.postrecords[0].bolus.calculator.insulin).to.deep.equal({duration: 8, units: 'hours'});
+
+      });
+
+      it('should handle max bolus of 0-25', function() {
+
+        var maxBolus1 = {
+          head: [36, 31],
+          type: {
+              value: 36,
+              name: 'MAX_BOLUS',
+              head_length: 2,
+              date_length: 5,
+              body_length: 0
+          },
+          date: [ 51, 164, 79, 22, 19 ],
+          jsDate: new Date('2019-02-22T15:36:51.000Z'),
+          index: 47
+        };
+
+        var maxBolus2 = {
+          head: [36, 0],
+          type: {
+              value: 36,
+              name: 'MAX_BOLUS',
+              head_length: 2,
+              date_length: 5,
+              body_length: 0
+          },
+          date: [ 48, 164, 15, 22, 19],
+          jsDate: new Date('2019-02-22T15:36:48.000Z'),
+          index: 46
+        };
+
+        var result = proc.buildSettings([maxBolus2, maxBolus1]);
+
+        expect(result.postrecords[0].bolus.amountMaximum).to.deep.equals({value:25, units:'Units'});
+        expect(result.postrecords[2].bolus.amountMaximum).to.deep.equals({value:0, units:'Units'});
+      });
+
+      it('should handle max basal of 2-35', function() {
+
+        var maxBasal1 = {
+          head: [ 44, 120 ],
+           type: {
+               value: 44,
+               name: 'CHANGE_MAX_BASAL',
+               head_length: 2,
+               date_length: 5,
+               body_length: 0
+           },
+           date: [ 3, 141, 176, 22, 19 ],
+           jsDate: new Date('2019-02-22T16:13:03.000Z'),
+           index: 48
+        };
+
+        var maxBasal2 = {
+          head: [ 44, 80 ],
+          type: {
+              value: 44,
+              name: 'CHANGE_MAX_BASAL',
+              head_length: 2,
+              date_length: 5,
+              body_length: 0
+          },
+          date: [ 11, 141, 16, 22, 19 ],
+          jsDate: new Date('2019-02-22T16:13:11.000Z'),
+          index: 49
+        };
+
+        var maxBasal3 = {
+          head: [44, 82],
+          type: {
+              value: 44,
+              name: 'CHANGE_MAX_BASAL',
+              head_length: 2,
+              date_length: 5,
+              body_length: 0
+          },
+          date: [ 14, 141, 16, 22, 19 ],
+          jsDate: new Date('2019-02-22T16:13:14.000Z'),
+          index: 50,
+        };
+
+        var result = proc.buildSettings([maxBasal3, maxBasal1, maxBasal2]);
+
+        expect(result.postrecords[1].basal.rateMaximum).to.deep.equals({'value': 2,'units':'Units/hour'});
+        expect(result.postrecords[2].basal.rateMaximum).to.deep.equals({'value': 35,'units':'Units/hour'});
+        expect(result.postrecords[3].basal.rateMaximum).to.deep.equals({'value':2.05,'units':'Units/hour'});
       });
 
     });
