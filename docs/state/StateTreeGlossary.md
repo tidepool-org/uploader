@@ -16,6 +16,10 @@ In essence, the `allUsers` object is where all user information accessible to th
 
 Examples of properties that may be encoded in `allUsers` for a particular user include `fullName`, `emails`, a `patient` object that itself includes the PWD's `birthday` and `diagnosisData`. Also see the [example state tree](./ExampleStateTree.md) for full examples.
 
+### `memberships`
+
+*The `memberships` property is an object keyed by the user IDs of the logged-in user as well as all the PWDs the logged-in user has some permissions on. Each entry contains a `permissions` object which in turn has keys representing various permissions, each of which will have an empty object and the existence of the key indicates the presence of that permission. Some permissions include `custodian`, `view` and `upload`.
+
 #### `loggedInUser`
 
 *The property `loggedInUser` encodes the `userID` of the currently logged-in user.*

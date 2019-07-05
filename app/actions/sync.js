@@ -296,7 +296,7 @@ export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
   if (isClinicAccount) {
-    uploadDataPeriod.setPeriod(uploadDataPeriod.PERIODS.FOUR_WEEKS);
+    uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: actionTypes.LOGIN_SUCCESS,
@@ -402,7 +402,7 @@ export function uploadRequest(userId, device, utc) {
     source: `${actionUtils.getUploadTrackingId(device)}`
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_REQUEST,
@@ -436,7 +436,7 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     processed: numRecs || 0
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_SUCCESS,
@@ -459,7 +459,7 @@ export function uploadFailure(err, errProps, device) {
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_FAILURE,
@@ -818,5 +818,24 @@ export function timezoneBlur() {
   return {
     type: actionTypes.TIMEZONE_BLUR,
     meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
+  };
+}
+
+/*
+* relating to ad hoc pairing dialog
+*/
+
+export function adHocPairingRequest(callback, cfg) {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedAdHocPairingDialog() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED] }
   };
 }
