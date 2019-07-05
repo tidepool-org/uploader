@@ -227,7 +227,7 @@
     "less-loader": "4.1.0",
     "minimist": "1.2.0",
     "mocha": "6.1.4",
-    "node-hid": "0.7.6",
+    "node-hid": "0.7.9",
     "object-invariant-test-helper": "0.1.1",
     "open": "0.0.5",
     "react-hot-loader": "4.3.2",
