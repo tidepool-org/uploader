@@ -52,7 +52,7 @@
     "iconv-lite": "0.5.0",
     "immutability-helper": "3.0.1",
     "is-electron": "2.2.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.12",
     "lzo-decompress": "0.1.2",
     "pl2303": "0.0.5",
     "plist": "3.0.1",
