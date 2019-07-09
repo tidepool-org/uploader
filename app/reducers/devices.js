@@ -62,7 +62,7 @@ const devices = {
     key: 'dexcom',
     name: 'Dexcom',
     source: {type: 'device', driverId: 'Dexcom'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   precisionxtra: {
     instructions: 'Plug in meter with cable',
