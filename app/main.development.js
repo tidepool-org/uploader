@@ -74,10 +74,11 @@ const installExtensions = async () => {
 
 function addDataPeriodGlobalListener(menu) {
   ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+    const item = _.find(menu.items, ['id', 'upload']);
     if (arg === uploadDataPeriod.PERIODS.ALL) {
-      menu.items[2].submenu.items[0].checked = true;
+      item.submenu.items[0].checked = true;
     } else if (arg === uploadDataPeriod.PERIODS.DELTA) {
-      menu.items[2].submenu.items[1].checked = true;
+      item.submenu.items[1].checked = true;
     }
   });
 };
@@ -238,6 +239,7 @@ app.on('ready', async () => {
       ]
     }, {
       label: '&Upload',
+      id: 'upload',
       submenu: [{
         label: 'All data',
         type: 'radio',
@@ -337,6 +339,7 @@ app.on('ready', async () => {
       }]
     }, {
       label: '&Upload',
+      id: 'upload',
       submenu: [{
         label: 'All data',
         type: 'radio',
