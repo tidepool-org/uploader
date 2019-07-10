@@ -35,6 +35,8 @@ RequestExecutionLevel admin
   Var /GLOBAL Installer_x64
   Var /GLOBAL Installer_x86
 
+  ClearErrors
+
   StrCpy $DriverDir "$INSTDIR\resources\driver"
 
   ; Add our certificate to the local store to prevent unnecessary pop-up
@@ -75,6 +77,7 @@ RequestExecutionLevel admin
 
   IfErrors 0 +2
 	MessageBox MB_OK "Error occurred during installation." IDOK +2
+
   WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
 
 !macroend
