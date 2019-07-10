@@ -44,7 +44,7 @@ RequestExecutionLevel admin
 
   ${If} ${IsWin10}
     ; Windows 10 uses drivers with attestation signing
-    CopyFiles $DriverDir\win10\* $DriverDir
+    CopyFiles /SILENT $DriverDir\win10\* $DriverDir
   ${EndIf}
 
 
