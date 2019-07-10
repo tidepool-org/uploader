@@ -47,13 +47,13 @@ RequestExecutionLevel admin
     CopyFiles $DriverDir\win10\* $DriverDir
   ${EndIf}
 
-  ${If} ${IsSilent}
-    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"
-    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe /q"
-  ${Else}
-    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe"
-    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe"
-  ${EndIf}
+
+  StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"
+  StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe /q"
+
+  IfSilent +3 ; don't use quiet flag if not silent install
+  StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe"
+  StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe"
 
   ${If} ${RunningX64}
       ${If} ${IsWin7}
