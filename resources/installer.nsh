@@ -73,6 +73,8 @@ RequestExecutionLevel admin
       ${EndIf}
   ${EndIf}
 
+  IfErrors 0 +2
+	MessageBox MB_OK "Error occurred during installation." IDOK +2
   WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
 
 !macroend
