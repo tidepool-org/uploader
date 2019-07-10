@@ -32,6 +32,9 @@ RequestExecutionLevel admin
 !macro customInstall
 
   Var /GLOBAL DriverDir
+  Var /GLOBAL Installer_x64
+  Var /GLOBAL Installer_x86
+
   StrCpy $DriverDir "$INSTDIR\resources\driver"
 
   ; Add our certificate to the local store to prevent unnecessary pop-up
@@ -44,21 +47,29 @@ RequestExecutionLevel admin
     CopyFiles $DriverDir\win10\* $DriverDir
   ${EndIf}
 
+  ${If} ${IsSilent}
+    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"
+    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe /q"
+  ${Else}
+    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe"
+    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe"
+  ${EndIf}
+
   ${If} ${RunningX64}
       ${If} ${IsWin7}
         ; 64-bit Windows 7
         CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
-        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
+        ExecWait $Installer_x64
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x64.exe"
+        ExecWait $Installer_x64
       ${EndIf}
   ${Else}
       ${If} ${IsWin7}
         ; 32-bit Windows 7
         CopyFiles $DriverDir\win7x86\* $DriverDir\i386
-        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
+        ExecWait $Installer_x86
       ${Else}
-        ExecWait "$DriverDir\TidepoolUSBDriver_x86.exe"
+        ExecWait $Installer_x86
       ${EndIf}
   ${EndIf}
 
