@@ -76,8 +76,10 @@ function addDataPeriodGlobalListener(menu) {
   ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
     const item = _.find(menu.items, ['id', 'upload']);
     if (arg === uploadDataPeriod.PERIODS.ALL) {
+      console.log('Uploading all data');
       item.submenu.items[0].checked = true;
     } else if (arg === uploadDataPeriod.PERIODS.DELTA) {
+      console.log('Uploading only new records');
       item.submenu.items[1].checked = true;
     }
   });
@@ -344,6 +346,7 @@ app.on('ready', async () => {
         label: 'All data',
         type: 'radio',
         click() {
+          console.log('Uploading all data');
           uploadDataPeriod.setPeriodGlobal(
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
@@ -351,6 +354,7 @@ app.on('ready', async () => {
         label: 'Data since last upload',
         type: 'radio',
         click() {
+          console.log('Uploading only new records');
           uploadDataPeriod.setPeriodGlobal(
             uploadDataPeriod.PERIODS.DELTA, mainWindow);
         }
