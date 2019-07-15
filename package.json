@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.17.1",
+  "version": "2.17.1-dexcom-touchscreen.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
