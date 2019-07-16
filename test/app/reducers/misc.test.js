@@ -70,9 +70,9 @@ describe('misc reducers', () => {
       });
       let expectedResult = _.pickBy(devices, filterDevicesFn('win'));
       expect(actualResult).to.deep.equal(expectedResult);
-      // at least one device is unavailable on Windows, so available devices should be less than
-      // all devices
-      expect(_.keys(actualResult).length).to.be.lessThan(_.keys(devices).length);
+      // at least one device may be unavailable on Windows, so available devices
+      // could be less or equal to total number of devices
+      expect(_.keys(actualResult).length).to.be.at.most(_.keys(devices).length);
       // test to be sure not *mutating* state object but rather returning new!
       let prevState = devices;
       const tracked = mutationTracker.trackObj(prevState);
@@ -727,6 +727,29 @@ describe('misc reducers', () => {
     it('should handle UPLOAD_REQUEST', () => {
       expect(misc.isTimezoneFocused(undefined, {
         type: actionTypes.UPLOAD_REQUEST,
+      })).to.be.false;
+    });
+  });
+
+  describe('showingAdHocPairingDialog', () => {
+    it('should return the initial state', () => {
+      expect(misc.showingAdHocPairingDialog(undefined, {})).to.be.false;
+    });
+
+    it('should handle AD_HOC_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingAdHocPairingDialog(undefined, {
+        type: actionTypes.AD_HOC_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    it('should handle AD_HOC_PAIRING_DISMISSED', () => {
+      expect(misc.showingAdHocPairingDialog(undefined, {
+        type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
     });
   });

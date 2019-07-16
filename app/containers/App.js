@@ -57,6 +57,7 @@ import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
+import AdHocModal from '../components/AdHocModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -78,6 +79,12 @@ const serverdata = {
     UPLOAD_URL: 'https://stg-uploads.tidepool.org',
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
     BLIP_URL: 'https://stg-app.tidepool.org'
+  },
+  QA1: {
+    API_URL: 'https://qa1-api.tidepool.org',
+    UPLOAD_URL: 'https://qa1-uploads.tidepool.org',
+    DATA_URL: 'https://qa1-api.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1-app.tidepool.org'
   },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
@@ -112,7 +119,8 @@ export class App extends Component {
   componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
-    this.props.async.doAppInit(_.assign({}, config), {
+    this.props.async.doAppInit(
+      _.assign({ environment: this.state.server }, config), {
       api: api,
       carelink,
       device,
@@ -126,6 +134,7 @@ export class App extends Component {
   setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
+    serverinfo.environment = info.label;
     this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
   };
@@ -149,6 +158,7 @@ export class App extends Component {
         <UpdateModal />
         <UpdateDriverModal />
         <DeviceTimeModal />
+        <AdHocModal />
       </div>
     );
   }
@@ -189,6 +199,12 @@ export class App extends Component {
             click: this.setServer,
             type: 'radio',
             checked: this.state.server === 'Staging'
+          },
+          {
+            label: 'QA1',
+            click: this.setServer,
+            type: 'radio',
+            checked: this.state.server === 'QA1'
           },
           {
             label: 'Integration',

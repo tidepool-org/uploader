@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 896 408" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x013c
+	3: Pump Status [rotate = 270]
+	4-25: ?? [color = "#888888"]
+	26: Active Basal [rotate = 270]
+	27-30: Normal Rate
+	31-34: Temp Rate
+	35: Temp % [rotate = 270]
+	36-37: Temp\nmin.\nremain
+	38-41: Total basal\ndelivered
+	42: Battery % [rotate = 270]
+	43-46: Insulin remaining
+	47: Hours [rotate = 270]
+	48: Minutes [rotate = 270]
+	49-52: Active Insulin\n(IOB)
+	53-54: SGV
+	55-62: Timestamp of last SGV
+	63: PLGM status [rotate = 270]
+	64: CGM status [rotate = 270]
+	65-71: ?? [color = "#888888"]
+	72: BWZ status [rotate = 270]
+	73-74: BGL
+	75-95: ?? [color = "#888888"]
+	96-97: CCITT
+}
+</desc>
+  <path d="M 64 48 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="7" x="64" y="41">0</text>
+  <path d="M 88 64 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 64 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 64 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 64 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 64 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 64 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 64 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 48 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 64 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 64 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 64 L 328 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 352 64 L 352 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 376 64 L 376 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 400 64 L 400 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 64 L 424 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 48 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="448" y="41">16</text>
+  <path d="M 472 64 L 472 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 64 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 64 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 64 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 64 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 592 64 L 592 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 64 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 640 48 L 640 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 64 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 64 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 64 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 64 L 736 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 760 64 L 760 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 64 L 784 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 64 L 808 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 48 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="832" y="41">32</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="64" y="80" />
+  <path d="M 64 80 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 80 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 152 L 64 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 152 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,64,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="31" x="100" y="170">Seq #</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="88" y="80" />
+  <path d="M 88 80 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 80 L 136 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 152 L 88 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 152 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="40" x="112" y="121">0x013c</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="136" y="80" />
+  <path d="M 136 80 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 80 L 160 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 152 L 136 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 152 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,136,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="172" y="170">Pump Status</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="528" x="160" y="80" />
+  <path d="M 160 80 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 80 L 688 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 152 L 160 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 152 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="424" y="121">??</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="688" y="80" />
+  <path d="M 688 80 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 80 L 712 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 152 L 688 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 152 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,688,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="62" x="724" y="169">Active Basal</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="96" x="712" y="80" />
+  <path d="M 712 80 L 808 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 80 L 808 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 152 L 712 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 152 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="63" x="760" y="121">Normal Rate</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="72" x="64" y="152" />
+  <path d="M 64 152 L 136 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 152 L 136 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 224 L 64 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 224 L 64 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="56" x="100" y="194">Temp Rate</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="136" y="152" />
+  <path d="M 136 152 L 160 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 152 L 160 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 224 L 136 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 224 L 136 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,136,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="44" x="172" y="242">Temp %</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="160" y="152" />
+  <path d="M 160 152 L 208 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 152 L 208 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 224 L 160 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 224 L 160 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="29" x="184" y="182">Temp</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="22" x="184" y="194">min.</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="34" x="184" y="206">remain</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="96" x="208" y="152" />
+  <path d="M 208 152 L 304 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 152 L 304 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 224 L 208 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 224 L 208 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="54" x="256" y="187">Total basal</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="44" x="256" y="199">delivered</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="304" y="152" />
+  <path d="M 304 152 L 328 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 152 L 328 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 224 L 304 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 224 L 304 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,304,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="52" x="340" y="242">Battery %</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="96" x="328" y="152" />
+  <path d="M 328 152 L 424 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 152 L 424 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 224 L 328 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 224 L 328 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="81" x="376" y="194">Insulin remaining</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="424" y="152" />
+  <path d="M 424 152 L 448 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 152 L 448 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 224 L 424 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 224 L 424 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,424,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="30" x="460" y="241">Hours</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="448" y="152" />
+  <path d="M 448 152 L 472 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 472 152 L 472 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 472 224 L 448 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 224 L 448 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,448,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="40" x="484" y="241">Minutes</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="96" x="472" y="152" />
+  <path d="M 472 152 L 568 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 152 L 568 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 224 L 472 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 472 224 L 472 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="65" x="520" y="187">Active Insulin</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="30" x="520" y="200">(IOB)</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="568" y="152" />
+  <path d="M 568 152 L 616 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 152 L 616 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 224 L 568 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 224 L 568 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="23" x="592" y="193">SGV</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="616" y="152" />
+  <path d="M 616 152 L 808 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 152 L 808 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 224 L 616 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 224 L 616 152" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="118" x="712" y="194">Timestamp of last SGV</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="808" y="152" />
+  <path d="M 808 152 L 832 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 152 L 832 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 224 L 808 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 224 L 808 152" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,808,224)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="844" y="241">PLGM status</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="64" y="224" />
+  <path d="M 64 224 L 88 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 224 L 88 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 296 L 64 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 296 L 64 224" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,64,296)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="61" x="100" y="313">CGM status</text>
+  </g>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="168" x="88" y="224" />
+  <path d="M 88 224 L 256 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 224 L 256 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 296 L 88 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 88 296 L 88 224" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="172" y="265">??</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="256" y="224" />
+  <path d="M 256 224 L 280 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 224 L 280 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 296 L 256 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 296 L 256 224" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,256,296)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="60" x="292" y="313">BWZ status</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="280" y="224" />
+  <path d="M 280 224 L 328 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 224 L 328 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 296 L 280 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 296 L 280 224" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="21" x="304" y="265">BGL</text>
+  <rect fill="rgb(136,136,136)" height="72" stroke="rgb(136,136,136)" width="504" x="328" y="224" />
+  <path d="M 328 224 L 832 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 224 L 832 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 296 L 328 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 296 L 328 224" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="580" y="265">??</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="48" x="64" y="296" />
+  <path d="M 64 296 L 112 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 296 L 112 368" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 368 L 64 368" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 368 L 64 296" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="32" x="88" y="337">CCITT</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="24" x="808" y="80" />
+  <path d="M 808 80 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 80 L 832 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 832 152 L 808 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 152 L 808 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="23" x="820" y="108">Tem</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="23" x="820" y="122">p Ra</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="10" x="820" y="134">te</text>
+</svg>

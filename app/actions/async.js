@@ -82,7 +82,7 @@ export function doAppInit(opts, servicesToInit) {
               return dispatch(syncActions.initFailure(apiError));
             }
             log('Setting all api hosts');
-            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL']));
+            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
             dispatch(syncActions.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
@@ -234,7 +234,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
-      dialogDisplay: actionUtils.makeDisplayModal(dispatch),
+      displayTimeModal: actionUtils.makeDisplayTimeModal(dispatch),
+      displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
@@ -257,6 +258,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_SERIAL_CONNECTION',
           version: version
         };
+        displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 

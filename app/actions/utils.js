@@ -23,6 +23,10 @@ import sundial from 'sundial';
 import errorText from '../constants/errors';
 import * as syncActions from './sync';
 
+const isBrowser = typeof window !== 'undefined';
+// eslint-disable-next-line no-console
+const debug = isBrowser ? require('bows')('utils') : console.log;
+
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
     return _.map(targets, 'key');
@@ -50,9 +54,15 @@ export function makeProgressFn(dispatch) {
   };
 }
 
-export function makeDisplayModal(dispatch) {
+export function makeDisplayTimeModal(dispatch) {
   return (cb, cfg, times) => {
     dispatch(syncActions.deviceTimeIncorrect(cb, cfg, times));
+  };
+}
+
+export function makeDisplayAdhocModal(dispatch) {
+  return (cb, cfg) => {
+    dispatch(syncActions.adHocPairingRequest(cb, cfg));
   };
 }
 
@@ -60,6 +70,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+
     if (err) {
       if(err === 'deviceTimePromptClose'){
         return dispatch(syncActions.uploadCancelled(getUtc(utc)));
@@ -84,6 +95,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         version: version,
         data: recs
       };
+      displayErr.originalError = err;
 
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(

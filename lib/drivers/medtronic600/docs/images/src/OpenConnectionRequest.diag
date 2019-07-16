@@ -1,0 +1,6 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-31: HMAC of Contour Next Link 2.4 model and serial number
+}

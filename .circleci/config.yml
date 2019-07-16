@@ -20,8 +20,8 @@ jobs:
           set +e
           curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
           source ~/.nvm/nvm.sh
-          nvm install v8.2.1
-          nvm alias default v8.2.1
+          nvm install v10.11.0
+          nvm alias default v10.11.0
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
@@ -38,4 +38,4 @@ jobs:
     - run: yarn test
     - run: greenkeeper-lockfile-upload
     # Package
-    - run: yarn package
+    - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi

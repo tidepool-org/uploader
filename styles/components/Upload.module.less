@@ -111,6 +111,14 @@
   composes: form-control from '../core/forms.less';
 }
 
+.textInputError:extend(.textInput) {
+  border-color: @red !important;
+}
+
+.hidden {
+  display: none;
+}
+
 .buttonWrap {
   composes: flexRowWrap from '../core/layout.module.less';
   justify-content: flex-end;
@@ -167,4 +175,17 @@ input[type=file] {
 
 .dataDownloadLink {
   composes: link from '../core/typography.module.less';
+}
+
+.uploadPeriodRow {
+  composes: flexRowWrap from '../core/layout.module.less';
+  margin: 10px 0px 15px 0px;
+  color: @gray-medium;
+  justify-content: flex-end;
+}
+
+.dropdown {
+  margin-top: -10px;
+  margin-left: 5px;
+  width: 160px;  
 }
