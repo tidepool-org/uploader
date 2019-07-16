@@ -243,7 +243,7 @@
     "webpack-dev-middleware": "2.0.6",
     "webpack-dev-server": "2.9.4",
     "webpack-hot-middleware": "2.22.2",
-    "webpack-merge": "4.1.2",
+    "webpack-merge": "4.2.1",
     "xmlbuilder": "13.0.2"
   },
   "devEngines": {
