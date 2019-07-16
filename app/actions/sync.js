@@ -262,10 +262,12 @@ export function initSuccess() {
 }
 
 export function initFailure(err) {
+  const error = new Error(getAppInitErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.INIT_APP_FAILURE,
     error: true,
-    payload: new Error(getAppInitErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
   };
 }
@@ -294,7 +296,7 @@ export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
   if (isClinicAccount) {
-    uploadDataPeriod.setPeriod(uploadDataPeriod.PERIODS.FOUR_WEEKS);
+    uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: actionTypes.LOGIN_SUCCESS,
@@ -400,7 +402,7 @@ export function uploadRequest(userId, device, utc) {
     source: `${actionUtils.getUploadTrackingId(device)}`
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_REQUEST,
@@ -425,16 +427,17 @@ export function uploadProgress(step, percentage, isFirstUpload) {
 
 export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
-  const numRecs = data.length;
+  const numRecs = _.get(data, 'post_records.length', undefined);
   const properties = {
     type: _.get(device, 'source.type', undefined),
+    deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_SUCCESS,
@@ -457,7 +460,7 @@ export function uploadFailure(err, errProps, device) {
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_FAILURE,
@@ -604,10 +607,12 @@ export function updateProfileSuccess(profile, userId) {
 }
 
 export function updateProfileFailure(err) {
+  const error = new Error(getUpdateProfileErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.UPDATE_PROFILE_FAILURE,
     error: true,
-    payload: new Error(getUpdateProfileErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
   };
 }
@@ -635,10 +640,12 @@ export function createCustodialAccountSuccess(account) {
 }
 
 export function createCustodialAccountFailure(err) {
+  const error = new Error(getCreateCustodialAccountErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
     error: true,
-    payload: new Error(getCreateCustodialAccountErrorMessage(err.status || null)),
+    payload: error,
     meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
   };
 }
@@ -812,5 +819,24 @@ export function timezoneBlur() {
   return {
     type: actionTypes.TIMEZONE_BLUR,
     meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
+  };
+}
+
+/*
+* relating to ad hoc pairing dialog
+*/
+
+export function adHocPairingRequest(callback, cfg) {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedAdHocPairingDialog() {
+  return {
+    type: actionTypes.AD_HOC_PAIRING_DISMISSED,
+    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED] }
   };
 }
