@@ -169,7 +169,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "@ronomon/direct-io": "2.4.3",
+    "@ronomon/direct-io": "3.0.0",
     "aws-sdk": "2.472.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.2",
