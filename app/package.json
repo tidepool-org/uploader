@@ -13,7 +13,7 @@
     "drivelist": "6.4.3",
     "keytar": "4.2.1",
     "node-hid": "0.7.9",
-    "@ronomon/direct-io": "2.4.3",
+    "@ronomon/direct-io": "3.0.0",
     "serialport": "6.2.2",
     "usb": "1.5.0",
     "lzo-decompress": "0.1.2"
