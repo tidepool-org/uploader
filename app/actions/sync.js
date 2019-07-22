@@ -296,7 +296,7 @@ export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
   if (isClinicAccount) {
-    uploadDataPeriod.setPeriod(uploadDataPeriod.PERIODS.FOUR_WEEKS);
+    uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: actionTypes.LOGIN_SUCCESS,
@@ -402,7 +402,7 @@ export function uploadRequest(userId, device, utc) {
     source: `${actionUtils.getUploadTrackingId(device)}`
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_REQUEST,
@@ -427,16 +427,17 @@ export function uploadProgress(step, percentage, isFirstUpload) {
 
 export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
-  const numRecs = data.length;
+  const numRecs = _.get(data, 'post_records.length', undefined);
   const properties = {
     type: _.get(device, 'source.type', undefined),
+    deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_SUCCESS,
@@ -459,7 +460,7 @@ export function uploadFailure(err, errProps, device) {
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.period] });
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
     type: actionTypes.UPLOAD_FAILURE,

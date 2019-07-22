@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 const isElectron = require('is-electron');
-const { ipcRenderer, ipcMain } = require('electron');
+const { ipcRenderer, ipcMain, remote } = require('electron');
 let isRenderer = (process && process.type === 'renderer');
 
 const PERIODS = {
@@ -25,34 +25,86 @@ const PERIODS = {
 };
 
 if (isRenderer) {
-  let period = JSON.parse(localStorage.getItem('uploadDataPeriod')) ||
-    PERIODS.DELTA;
-
   const uploadDataPeriod = module.exports = {
-    period,
+    get periodGlobal() {
+      return remote.getGlobal('period');
+    },
+    get periodMedtronic600() {
+      return remote.getGlobal('periodMedtronic600');
+    },
     PERIODS,
-    setPeriod: function(toPeriod) {
-      ipcRenderer.send('setUploadDataPeriod', toPeriod);
-      localStorage.setItem('uploadDataPeriod', toPeriod);
-      uploadDataPeriod.period = toPeriod;
-      return uploadDataPeriod.period;
+    setPeriodMedtronic600: function(toPeriod) {
+      ipcRenderer.send('setUploadDataPeriodMedtronic600', toPeriod);
+      localStorage.setItem('uploadDataPeriodMedtronic600', toPeriod);
+      return remote.getGlobal('periodMedtronic600');
+    },
+    setPeriodGlobal: function(toPeriod) {
+      ipcRenderer.send('setUploadDataPeriodGlobal', toPeriod);
+      localStorage.setItem('uploadDataPeriodGlobal', toPeriod);
+      return remote.getGlobal('period');
     }
   };
+
+  // localStorage is not available in Electron main process, so we have to read
+  // and set it in the renderer process
+  ipcRenderer.send('setUploadDataPeriodMedtronic600',
+    JSON.parse(localStorage.getItem('uploadDataPeriodMedtronic600')) ||
+    PERIODS.DELTA
+  );
+  ipcRenderer.send('setUploadDataPeriodGlobal',
+    JSON.parse(localStorage.getItem('uploadDataPeriodGlobal')) ||
+    PERIODS.DELTA
+  );
+
+  ipcRenderer.on('savePeriodGlobal', (event, arg) => {
+    localStorage.setItem('uploadDataPeriodGlobal', arg);
+  });
+
+  ipcRenderer.on('savePeriodMedtronic600', (event, arg) => {
+    localStorage.setItem('uploadDataPeriodMedtronic600', arg);
+  });
+
 } else {
-  let period = PERIODS.DELTA;
+  // main process
 
   if (isElectron()) {
-    ipcMain.on('setUploadDataPeriod', (event, arg) => {
-      uploadDataPeriod.period = arg;
-    });
-  }
+    global.periodMedtronic600 = PERIODS.DELTA;
+    global.period = PERIODS.DELTA;
 
-  const uploadDataPeriod = module.exports = {
-    period,
-    PERIODS,
-    setPeriod: function(toPeriod) {
-      uploadDataPeriod.period = toPeriod;
-      return uploadDataPeriod.period;
-    }
-  };
+    ipcMain.on('setUploadDataPeriodMedtronic600', (event, arg) => {
+      global.periodMedtronic600 = arg;
+    });
+    ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+      global.period = arg;
+    });
+
+    const uploadDataPeriod = module.exports = {
+      get periodGlobal() {
+        return global.period;
+      },
+      get periodMedtronic600() {
+        return global.periodMedtronic600;
+      },
+      PERIODS,
+      // since the main process does not have access to localStorage,
+      // we have to send the values back to the renderer process to save it
+      setPeriodMedtronic600: function(toPeriod, window) {
+        global.periodMedtronic600 = toPeriod;
+        window.webContents.send('savePeriodMedtronic600', toPeriod);
+        return global.periodMedtronic600;
+      },
+      setPeriodGlobal: function(toPeriod, window) {
+        global.period = toPeriod;
+        window.webContents.send('savePeriodGlobal', toPeriod);
+        return global.period;
+      }
+    };
+  } else {
+    // we're running as a Node process (e.g. running as a script),
+    // so just default to delta
+    const uploadDataPeriod = module.exports = {
+      periodMedtronic600: PERIODS.DELTA,
+      periodGlobal: PERIODS.DELTA,
+    };
+  }
 }
