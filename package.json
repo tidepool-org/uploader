@@ -171,7 +171,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "@ronomon/direct-io": "2.4.3",
+    "@ronomon/direct-io": "3.0.0",
     "aws-sdk": "2.472.0",
     "babel-core": "6.26.3",
     "babel-eslint": "10.0.1",
@@ -200,7 +200,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "drivelist": "6.4.3",
-    "electron": "5.0.4",
+    "electron": "5.0.7",
     "electron-builder": "20.43.0",
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "8.0.2",
