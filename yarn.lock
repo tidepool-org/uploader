@@ -11004,6 +11004,7 @@ sumchecker@^2.0.2:
 sundial@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.6.0.tgz#b3bd3f61f3eed78d42723e1e5867052d48fbd1a8"
+  integrity sha1-s70/YfPu141Ccj4eWGcFLUj70ag=
   dependencies:
     moment-timezone "0.4.1"
 
