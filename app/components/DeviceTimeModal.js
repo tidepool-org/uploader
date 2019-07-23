@@ -49,7 +49,7 @@ export class DeviceTimeModal extends Component {
 
   handleContinue = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
-    showingDeviceTimePrompt.callback(null);
+    showingDeviceTimePrompt.callback('updateTime');
     sync.dismissedDeviceTimePrompt();
   }
 
@@ -64,13 +64,13 @@ export class DeviceTimeModal extends Component {
     if ( !this.isAnimas() ) {
       buttons.push(
         <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
-          Upload anyway
+          Update time on device
         </button>,
       );
     }
     buttons.push(
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Cancel this upload
+        Correct the timezone
       </button>
     );
 
