@@ -4597,7 +4597,6 @@ eslint-plugin-lodash@5.1.0:
 eslint-plugin-mocha@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-6.0.0.tgz#0a2af057280962e9deab929361141865b2b8a761"
-  integrity sha512-Qgy1q64cTKqiHiYP3ZPAcMlEoPejeM7GLKDs2pvYG/fXbVDYDJw7ELlHlbn3147SL9+cPSqat7uCCbbNmVpc1g==
   dependencies:
     ramda "^0.26.1"
 
@@ -10189,9 +10188,9 @@ rollbar-sourcemap-webpack-plugin@2.5.1:
     request "^2.85.0"
     verror "^1.6.1"
 
-rollbar@2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.8.1.tgz#f2a3edc58a8d00d4e1aab22d51ce9705858853cd"
+rollbar@2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.9.0.tgz#ec68b3838b38ea012895ee26600c839b354c881b"
   dependencies:
     async "~1.2.1"
     buffer-from ">=1.1"
