@@ -63,10 +63,10 @@ import styles from '../../styles/components/App.module.less';
 
 const serverdata = {
   Local: {
-    API_URL: 'http://localhost',
-    UPLOAD_URL: 'http://localhost',
-    DATA_URL: 'http://localhost',
-    BLIP_URL: 'http://localhost'
+    API_URL: 'http://localhost:3000',
+    UPLOAD_URL: 'http://localhost:3000',
+    DATA_URL: 'http://localhost:3000',
+    BLIP_URL: 'http://localhost:3000'
   },
   Development: {
     API_URL: 'https://dev-api.tidepool.org',
