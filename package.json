@@ -40,7 +40,7 @@
     "async": "2.6.1",
     "babyparse": "0.4.6",
     "bows": "1.7.0",
-    "chrome-launcher": "0.11.1",
+    "chrome-launcher": "0.11.2",
     "classnames": "2.2.6",
     "commander": "2.20.0",
     "cp2102": "0.0.3",
