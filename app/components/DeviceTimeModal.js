@@ -41,10 +41,10 @@ export class DeviceTimeModal extends Component {
     return 'unknown';
   }
 
-  isAnimas = () => {
+  isDevice = (name) => {
     const { showingDeviceTimePrompt } = this.props;
     const {deviceInfo} = showingDeviceTimePrompt.cfg;
-    return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === 'Animas';
+    return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === name;
   }
 
   handleContinue = () => {
@@ -61,16 +61,22 @@ export class DeviceTimeModal extends Component {
 
   getActions = () => {
     const buttons = [];
-    if ( !this.isAnimas() ) {
+    if ( !this.isDevice('Animas') &&
+         !this.isDevice('InsuletOmniPod') &&
+         !this.isDevice('Medtronic') &&     // these two lines should be removed
+         !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
+         !this.isDevice('Tandem') &&
+         !this.isDevice('TrueMetrix')
+      ) {
       buttons.push(
         <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
-          Update time on device
+          Fix device time and upload
         </button>,
       );
     }
     buttons.push(
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Correct the timezone
+        Cancel upload
       </button>
     );
 
