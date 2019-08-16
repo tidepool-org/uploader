@@ -28,14 +28,14 @@ import styles from '../../styles/components/DeviceTimeModal.module.less';
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
-    const { deviceTags } = showingDeviceTimePrompt.cfg;
-    if(_.indexOf(deviceTags, 'insulin-pump') !== -1){
+    const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
+    if(_.indexOf(tags, 'insulin-pump') !== -1){
       return 'insulin-pump';
     }
-    if(_.indexOf(deviceTags, 'cgm') !== -1){
+    if(_.indexOf(tags, 'cgm') !== -1){
       return 'cgm';
     }
-    if(_.indexOf(deviceTags, 'bgm') !== -1){
+    if(_.indexOf(tags, 'bgm') !== -1){
       return 'bgm';
     }
     return 'unknown';
