@@ -104,11 +104,10 @@ export class DeviceTimeModal extends Component {
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
-            Is your CGM time set correctly? If not:
+            Is your time zone set correctly? If not:
             <br/>
             <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
+            <div><span className={styles.numeral}>2.</span> Change the time zone in the Uploader</div>
             </div>
           </div>
         );
@@ -117,11 +116,13 @@ export class DeviceTimeModal extends Component {
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
-            Is your meter time set correctly? If not:
+            Is your time zone set correctly? If not:
             <br/>
             <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
+            <div><span className={styles.numeral}>2.</span> Change the time zone in the Uploader</div>
+            <br/>
+            Note that if the time on your device is incorrect, the timestamps of<br/>
+            historical readings may be incorrect even if you correct the device time.
             </div>
           </div>
         );
