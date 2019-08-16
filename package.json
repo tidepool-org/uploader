@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.18.0",
+  "version": "2.18.0-wrong-time.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
