@@ -5176,7 +5176,6 @@ flush-write-stream@^1.0.0:
 flux-standard-action@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/flux-standard-action/-/flux-standard-action-2.1.1.tgz#b2e204145ea8e4294d6b0f178d8e8c416802948f"
-  integrity sha512-W86GzmXmIiTVq/dpYVd2HtTIUX9c35Iq3ao3xR6qcKtuXgbu+BDEj72op5VnEIe/kpuSbhl+I8kT1iS2hpcusw==
   dependencies:
     lodash "^4.17.15"
 
@@ -7128,10 +7127,6 @@ lodash.without@~4.4.0:
 lodash@3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.3.1.tgz#3b914d4a1bb27efcee076e0dfa58152018e2042e"
-
-lodash@4.17.11:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 lodash@4.17.15, lodash@^4.17.15:
   version "4.17.15"
@@ -11687,6 +11682,10 @@ uuid@3.1.0, uuid@~3.1.0:
 uuid@3.3.2, uuid@^3.0.0, uuid@^3.1.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
+
+uuid@3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
 
 uuid@^2.0.2:
   version "2.0.3"
