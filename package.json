@@ -199,7 +199,7 @@
     "difflet": "1.0.1",
     "drivelist": "6.4.3",
     "electron": "3.1.1",
-    "electron-builder": "21.1.0",
+    "electron-builder": "21.2.0",
     "electron-devtools-installer": "2.2.4",
     "electron-mocha": "8.1.1",
     "electron-updater": "4.1.2",
