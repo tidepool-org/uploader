@@ -30,13 +30,13 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt } = this.props;
     const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
     if(_.indexOf(tags, 'insulin-pump') !== -1){
-      return 'insulin-pump';
+      return { value: 'insulin-pump', text: 'pump' };
     }
     if(_.indexOf(tags, 'cgm') !== -1){
-      return 'cgm';
+      return { value: 'cgm', text: 'CGM' };
     }
     if(_.indexOf(tags, 'bgm') !== -1){
-      return 'bgm';
+      return { value: 'bgm', text: 'meter' };
     }
     return 'unknown';
   }
@@ -60,7 +60,11 @@ export class DeviceTimeModal extends Component {
   }
 
   getActions = () => {
+    const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
+    const type = this.determineDeviceType();
     const buttons = [];
+    const footnote = type.value === 'bgm' ? '*' : '';
+    let buttonText = '';
     if ( !this.isDevice('Animas') &&
          !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
@@ -69,15 +73,29 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('TrueMetrix')
       ) {
       buttons.push(
-        <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
-          Fix device time and upload
-        </button>,
+        <div className={styles.buttonGroup}>
+        <div>Is the time on your {type.text} incorrect?</div>
+        <div>
+        <button key='continue' className={styles.button} onClick={this.handleContinue}>
+          Automatically update time to<br/>
+          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, and upload
+        </button>
+        </div>
+        </div>
       );
+    } else {
+      buttonText = 'and/or device time';
     }
     buttons.push(
+      <div className={styles.buttonGroup}>
+      <div>Are you in {timezone}?</div>
+      <div>
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Cancel upload
+        Cancel, and update time zone<br/>
+        {buttonText}
       </button>
+      </div>
+      </div>
     );
 
     return buttons;
@@ -85,44 +103,16 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
+    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
-    switch (type) {
-      case 'insulin-pump':
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            Is your pump time set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
-            </div>
-          </div>
-        );
-        break;
-      case 'cgm':
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            Is your time zone set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Change the time zone in the Uploader</div>
-            </div>
-          </div>
-        );
-        break;
+    switch (type.value) {
       case 'bgm':
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
-            Is your time zone set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Change the time zone in the Uploader</div>
-            <br/>
-            Note that if the time on your device is incorrect, the timestamps of<br/>
-            historical readings may be incorrect even if you correct the device time.
+            * Changing your device time will not change any previous records.<br/>
+            All future readings will be in {timezone}. Click here to <br/>
+            learn more about meters and device time.
             </div>
           </div>
         );
@@ -131,25 +121,6 @@ export class DeviceTimeModal extends Component {
         break;
     }
     return message;
-  }
-
-  getTitle = () => {
-    const type = this.determineDeviceType();
-    let title;
-    switch (type) {
-      case 'insulin-pump':
-        title = 'Your pump doesn\'t appear to be in';
-        break;
-      case 'cgm':
-        title = 'Your CGM doesn\'t appear to be in';
-        break;
-      case 'bgm':
-        title = 'Your meter doesn\'t appear to be in';
-        break;
-      default:
-        break;
-    }
-    return title;
   }
 
   render() {
@@ -161,7 +132,7 @@ export class DeviceTimeModal extends Component {
 
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
 
-    const title = this.getTitle();
+    const type = this.determineDeviceType();
     const message = this.getMessage();
     const actions = this.getActions();
 
@@ -169,25 +140,25 @@ export class DeviceTimeModal extends Component {
       <div className={styles.modalWrap}>
         <div className={styles.modal}>
           <div className={styles.title}>
-            <div>{title}</div>
+            <div>Your {type.text} doesn't appear to be in</div>
             <div className={styles.highlight}>{`${timezone}:`}</div>
           </div>
           <hr className={styles.hr} />
           <div className={styles.text}>
             <div className={styles.timeCompare}>
               <div>{timezone}:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'h:mm a')}</div>
+              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
             </div>
             <div className={styles.timeCompare}>
               <div>Device time:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'h:mm a')}</div>
+              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
             </div>
           </div>
           <hr className={styles.hr} />
-          {message}
           <div className={styles.actions}>
             {actions}
           </div>
+          {message}
         </div>
       </div>
     );
