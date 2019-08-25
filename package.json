@@ -172,7 +172,7 @@
     "@ronomon/direct-io": "2.4.3",
     "aws-sdk": "2.472.0",
     "babel-core": "6.26.3",
-    "babel-eslint": "10.0.2",
+    "babel-eslint": "10.0.3",
     "babel-loader": "7.1.5",
     "babel-plugin-add-module-exports": "1.0.0",
     "babel-plugin-dev-expression": "0.2.2",
