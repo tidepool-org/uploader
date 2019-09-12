@@ -1,0 +1,52 @@
+#!/bin/bash
+echo '===================installing dependencies===================';
+sudo apt-get install -y git curl gcc g++ make libavutil-dev  libsecret-1-dev libudev-dev;
+echo '=====================adding yarn repo========================';
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -;
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list;
+echo '=================adding nodejs repo=======================';
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -;
+sudo apt-get update;
+sudo apt install -y yarn nodejs;
+echo '=====================cloning source=========================';
+git clone https://github.com/tidepool-org/chrome-uploader;
+cd chrome-uploader;
+echo '====================compiling======================='
+yarn install;
+yarn run build;
+npm install html-webpack-plugin;
+echo '======================installing into system========================';
+sudo mkdir /usr/share/tidepool-uploader;
+sudo tar -cpf /usr/share/tidepool-uploader/app.tar ./*;
+cd ..;
+rm -rf ./chrome-uploader;
+cd  /usr/share/tidepool-uploader
+sudo tar -xpf /usr/share/tidepool-uploader/app.tar;
+sudo rm -f ./app.tar
+echo '=================making tidepool command==================='
+echo '#!/bin/bash' >  ~/tidepool;
+echo 'cd /usr/share/tidepool-uploader' >> ~/tidepool;
+echo 'yarn run start'>> ~/tidepool;
+sudo chmod +x ~/tidepool;
+sudo cp ~/tidepool /usr/bin/tidepool;
+echo '======================installing gksu(has to run root to read usb)================================='
+echo 'deb http://archive.ubuntu.com/ubuntu/ artful main universe' | sudo tee /etc/apt/sources.list.d/artful.list;
+sudo apt-get update;
+sudo apt-get install -y gksu;
+echo '============making desktop file for your app archive(so itll show up in your menu bar)=============='
+cd ~;
+sudo echo '[Desktop Entry]' > tidepool.desktop
+sudo echo 'Encoding=UTF-8'  >> tidepool.desktop
+sudo echo 'Version=2.19.0' >> tidepool.desktop
+sudo echo 'Name=Tidepool Uploader' >> tidepool.desktop
+sudo echo 'Comment=tidepool uploader app' >> tidepool.desktop
+sudo echo 'Exec=gksu tidepool' >> tidepool.desktop
+sudo echo 'Icon=tidepool-t-logo.41feef82.png' >> tidepool.desktop
+sudo echo 'Terminal=false' >> tidepool.desktop
+sudo echo 'Type=Application' >> tidepool.desktop
+sudo echo 'Categories=Network;Medical;Health;' >> tidepool.desktop
+sudo cp ./tidepool.desktop /usr/share/applications/tidepool.desktop
+mkdir ./.icons
+cd .icons
+wget https://www.tidepool.org/static/media/tidepool-t-logo.41feef82.png
+echo '============finished:)=========='
