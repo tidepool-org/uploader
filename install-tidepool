@@ -28,24 +28,24 @@ echo '#!/bin/bash' >  ~/tidepool;
 echo 'cd /usr/share/tidepool-uploader' >> ~/tidepool;
 echo 'yarn run start'>> ~/tidepool;
 sudo chmod +x ~/tidepool;
-sudo cp ~/tidepool /usr/bin/tidepool;
+sudo mv ~/tidepool /usr/bin/tidepool;
 echo '======================installing gksu(has to run root to read usb)================================='
 echo 'deb http://archive.ubuntu.com/ubuntu/ artful main universe' | sudo tee /etc/apt/sources.list.d/artful.list;
 sudo apt-get update;
 sudo apt-get install -y gksu;
 echo '============making desktop file for your app archive(so itll show up in your menu bar)=============='
 cd ~;
-sudo echo '[Desktop Entry]' > tidepool.desktop
-sudo echo 'Encoding=UTF-8'  >> tidepool.desktop
-sudo echo 'Version=2.19.0' >> tidepool.desktop
-sudo echo 'Name=Tidepool Uploader' >> tidepool.desktop
-sudo echo 'Comment=tidepool uploader app' >> tidepool.desktop
-sudo echo 'Exec=gksu tidepool' >> tidepool.desktop
-sudo echo 'Icon=tidepool-t-logo.41feef82.png' >> tidepool.desktop
-sudo echo 'Terminal=false' >> tidepool.desktop
-sudo echo 'Type=Application' >> tidepool.desktop
-sudo echo 'Categories=Network;Medical;Health;' >> tidepool.desktop
-sudo cp ./tidepool.desktop /usr/share/applications/tidepool.desktop
+echo '[Desktop Entry]' > tidepool.desktop
+echo 'Encoding=UTF-8'  >> tidepool.desktop
+echo 'Version=2.19.0' >> tidepool.desktop
+echo 'Name=Tidepool Uploader' >> tidepool.desktop
+echo 'Comment=tidepool uploader app' >> tidepool.desktop
+echo 'Exec=gksu tidepool' >> tidepool.desktop
+echo 'Icon=tidepool-t-logo.41feef82.png' >> tidepool.desktop
+echo 'Terminal=false' >> tidepool.desktop
+echo 'Type=Application' >> tidepool.desktop
+echo 'Categories=Network;Medical;Health;' >> tidepool.desktop
+sudo mv ./tidepool.desktop /usr/share/applications/tidepool.desktop
 mkdir ./.icons
 cd .icons
 wget https://www.tidepool.org/static/media/tidepool-t-logo.41feef82.png
