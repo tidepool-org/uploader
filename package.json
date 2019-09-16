@@ -6,7 +6,7 @@
   "main": "main.js",
   "author": "Kent Quirk",
   "license": "BSD-2-Clause",
-  "repository": "tidepool-org/chrome-uploader",
+  "repository": "tidepool-org/uploader",
   "scripts": {
     "av-whitelist": "node ./scripts/whitelisting/av-submit.js",
     "build-docs": "./scripts/update-gh-pages.sh",
