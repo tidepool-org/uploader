@@ -116,7 +116,7 @@ The `forgotPassword` and `signUp` links are built as part of the app initializat
 
 The `viewDataLink` is built every time the `uploadTargetUser` is chosen or changed.
 
-**NB:** Storing these URLs as state is not ideal. Both the forgot password and sign-up URLs are essentially *derived* state - derived from a combination of route paths (e.g., `/signup`), which are constants, and a single piece of state - the server environment. The `viewDataLink` is also derived state from a combination of route paths, the server environment, and the `uploadTargetUser`. For now, we are keeping these URLs in the state tree because we do *not* represent the server environment in the state tree. We don't represent the server environment in the state tree because we have code running separately from the main application (in the Chrome App's "background page") that provides a hidden interface (for internal Tidepool use) for changing the server environment.
+**NB:** Storing these URLs as state is not ideal. Both the forgot password and sign-up URLs are essentially *derived* state - derived from a combination of route paths (e.g., `/signup`), which are constants, and a single piece of state - the server environment. The `viewDataLink` is also derived state from a combination of route paths, the server environment, and the `uploadTargetUser`. For now, we are keeping these URLs in the state tree because we do *not* represent the server environment in the state tree.
 
 #### `devices`
 
