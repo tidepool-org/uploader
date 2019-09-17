@@ -1,12 +1,12 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.19.0",
+  "version": "2.20.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
   "author": "Kent Quirk",
   "license": "BSD-2-Clause",
-  "repository": "tidepool-org/chrome-uploader",
+  "repository": "tidepool-org/uploader",
   "scripts": {
     "av-whitelist": "node ./scripts/whitelisting/av-submit.js",
     "build-docs": "./scripts/update-gh-pages.sh",
@@ -42,13 +42,13 @@
     "bows": "1.7.0",
     "chrome-launcher": "0.11.2",
     "classnames": "2.2.6",
-    "commander": "3.0.0",
+    "commander": "3.0.1",
     "cp2102": "0.0.3",
     "decompress": "4.2.0",
     "electron-debug": "2.2.0",
     "electron-is-dev": "1.1.0",
     "es6-error": "4.1.1",
-    "history": "4.9.0",
+    "history": "4.10.1",
     "iconv-lite": "0.5.0",
     "immutability-helper": "3.0.1",
     "is-electron": "2.2.0",
@@ -85,6 +85,7 @@
       "buildResources": "resources",
       "output": "release"
     },
+    "afterSign": "scripts/notarize.js",
     "dmg": {
       "contents": [
         {
@@ -142,7 +143,9 @@
           ]
         }
       ],
-      "publisherName": ["Tidepool Project"],
+      "publisherName": [
+        "Tidepool Project"
+      ],
       "rfc3161TimeStampServer": "http://sha256timestamp.ws.symantec.com/sha256/timestamp",
       "timeStampServer": "http://timestamp.digicert.com"
     },
@@ -193,16 +196,17 @@
     "babili-webpack-plugin": "0.1.2",
     "chai": "4.1.2",
     "concurrently": "4.1.2",
-    "cross-env": "5.2.0",
+    "cross-env": "5.2.1",
     "css-loader": "0.28.11",
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "drivelist": "6.4.3",
     "electron": "3.1.1",
-    "electron-builder": "20.44.4",
+    "electron-builder": "21.2.0",
     "electron-devtools-installer": "2.2.4",
-    "electron-mocha": "8.1.1",
-    "electron-updater": "4.0.14",
+    "electron-mocha": "8.1.2",
+    "electron-notarize": "0.1.1",
+    "electron-updater": "4.1.2",
     "enzyme": "3.10.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "16.1.0",
@@ -212,8 +216,8 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-lodash": "6.0.0",
     "eslint-plugin-mocha": "6.0.0",
-    "eslint-plugin-react": "7.14.3",
     "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-react": "7.14.3",
     "express": "4.17.1",
     "extract-text-webpack-plugin": "3.0.2",
     "fbjs-scripts": "1.2.0",
@@ -234,7 +238,7 @@
     "redux-mock-store": "1.5.3",
     "salinity": "0.0.8",
     "serialport": "6.2.2",
-    "sinon": "7.4.1",
+    "sinon": "7.4.2",
     "sinon-chai": "3.2.0",
     "spectron": "8.0.0",
     "style-loader": "0.23.1",
