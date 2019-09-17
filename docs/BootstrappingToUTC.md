@@ -65,7 +65,7 @@ Each instance of the `TimezoneOffsetUtil` keeps track of which method for genera
 
 #### Expectations for `timeChange` events
 
-The partially built `timeChange` events composing the array of `changes` provided as the third argument to a new `TimezoneOffsetUtil` instance should have the following listed fields set through use of the uploader's [objectBuilder](https://github.com/tidepool-org/chrome-uploader/blob/master/lib/objectBuilder.js). All timestamps should be [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601 'Wikipedia: ISO 8601')-formatted, without timezone offset information - e.g., `2015-01-01T12:00:00`.
+The partially built `timeChange` events composing the array of `changes` provided as the third argument to a new `TimezoneOffsetUtil` instance should have the following listed fields set through use of the uploader's [objectBuilder](https://github.com/tidepool-org/uploader/blob/master/lib/objectBuilder.js). All timestamps should be [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601 'Wikipedia: ISO 8601')-formatted, without timezone offset information - e.g., `2015-01-01T12:00:00`.
 
 - `deviceTime` = timestamp
 - `change` = an object that itself has the following fields:
