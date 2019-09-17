@@ -129,7 +129,7 @@ export class App extends Component {
       log: this.log
     });
 
-    dns.resolveSrv('uploads-srv.tidepool.org', (err, servers) => {
+    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
       for (let server of servers) {
         const name = server.name.substr(0, server.name.indexOf('.'));
         serverdata[name] = {
