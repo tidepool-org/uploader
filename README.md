@@ -1,9 +1,9 @@
 # Tidepool Uploader
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/chrome-uploader.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/uploader.svg)](https://greenkeeper.io/)
 
-[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master)
+[![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
@@ -17,7 +17,7 @@ This README is focused on just the details of getting the uploader running local
 - [Tests](#tests)
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
-- [Publishing](#publishing-to-the-develstaging-testing--development-chrome-store-account-or-production)
+- [Publishing](#publishing)
 
 * * * * *
 
