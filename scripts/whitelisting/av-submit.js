@@ -22,7 +22,7 @@ const https = require('https');
 const aws = require('aws-sdk');
 
 const ORG = 'tidepool-org';
-const REPO = 'chrome-uploader';
+const REPO = 'uploader';
 const CONTACT_PERSON = 'Gerrit Niezen';
 const CONTACT_EMAIL = 'gerrit@tidepool.org';
 
