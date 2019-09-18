@@ -701,7 +701,10 @@ describe('Synchronous Actions', () => {
       const upload = {
         history: [{start: time}]
       };
-      const data = [1,2,3,4,5];
+      const data = {
+        post_records: [1,2,3,4,5],
+        deviceModel: 'acme'
+      };
       it('should be an FSA', () => {
         let action = syncActions.uploadSuccess(userId, device, upload, data);
 
@@ -718,10 +721,11 @@ describe('Synchronous Actions', () => {
               eventName: `${metrics.UPLOAD_SUCCESS}`,
               properties: {
                 type: device.source.type,
+                deviceModel: 'acme',
                 source: device.source.driverId,
                 started: time,
                 finished: time,
-                processed: data.length
+                processed: data.post_records.length
               }
             }
           }
@@ -742,10 +746,11 @@ describe('Synchronous Actions', () => {
               eventName: `${metrics.UPLOAD_SUCCESS}`,
               properties: {
                 type: device.source.type,
+                deviceModel: 'acme',
                 source: device.source.driverId,
                 started: time,
                 finished: time,
-                processed: data.length,
+                processed: data.post_records.length,
                 limit: 'new data'
               }
             }

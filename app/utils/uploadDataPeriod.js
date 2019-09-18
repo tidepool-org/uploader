@@ -80,10 +80,10 @@ if (isRenderer) {
 
     const uploadDataPeriod = module.exports = {
       get periodGlobal() {
-        return global.periodMedtronic600;
+        return global.period;
       },
       get periodMedtronic600() {
-        return global.period;
+        return global.periodMedtronic600;
       },
       PERIODS,
       // since the main process does not have access to localStorage,

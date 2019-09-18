@@ -1168,7 +1168,7 @@ describe('Asynchronous Actions', () => {
         },
         device: {
           detect: (foo, bar, cb) => cb(null, {}),
-          upload: (foo, bar, cb) => cb(null, [1,2,3,4,5])
+          upload: (foo, bar, cb) => cb(null, { post_records: [1,2,3,4,5], deviceModel: 'acme' })
         }
       });
       const expectedActions = [
@@ -1197,13 +1197,14 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.UPLOAD_SUCCESS,
-          payload: { userId, deviceKey, utc: time, data: [1,2,3,4,5] },
+          payload: { userId, deviceKey, utc: time, data: { deviceModel: 'acme', post_records: [1,2,3,4,5] } },
           meta: {
             source: actionSources[actionTypes.UPLOAD_SUCCESS],
             metric: {
               eventName: 'Upload Successful',
               properties: {
                 type: targetDevice.source.type,
+                deviceModel: 'acme',
                 source: targetDevice.source.driverId,
                 started: time,
                 finished: time,
