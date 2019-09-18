@@ -6,7 +6,7 @@ In order to be future-compatible with Bluetooth-enabled devices that may communi
 
 The device driver is the (obvious) first step in data processing. The driver for each device extracts the raw data and begins the process of building the JavaScript objects that will become the JSON objects uploaded to jellyfish.
 
-Every device driver should be configured with an instance of the [objectBuilder](https://github.com/tidepool-org/chrome-uploader/blob/master/lib/objectBuilder.js) (often referred to just as the 'builder' and stored in `cfg.builder`). An instance of the builder contains functions for building every type (or sub-type) of object in the ingestion data model; these functions contain some built-in validation for required fields, but not for the contents of any (optional or required) field(s).
+Every device driver should be configured with an instance of the [objectBuilder](https://github.com/tidepool-org/uploader/blob/master/lib/objectBuilder.js) (often referred to just as the 'builder' and stored in `cfg.builder`). An instance of the builder contains functions for building every type (or sub-type) of object in the ingestion data model; these functions contain some built-in validation for required fields, but not for the contents of any (optional or required) field(s).
 
 In the cases of datatypes that are simple, point-in-time events that do not meaningfully interact with other events (for example, smbg readings), *all* of the building of the corresponding Tidepool JavaScript objects should be done in the device driver. There may be exceptions, but in many cases the following types will fall into this category:
 
