@@ -130,13 +130,13 @@ export class App extends Component {
     });
 
     dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      for (let server of servers) {
-        const name = server.name.substr(0, server.name.indexOf('.'));
-        serverdata[name] = {
-          API_URL: 'https://' + server.name,
-          UPLOAD_URL: 'https://' + server.name,
-          DATA_URL: server.name + '/dataservices',
-          BLIP_URL: 'https://' + server.name,
+      for (let server of servers) {  
+        const url = 'https://' + server.name + ':' + server.port;
+        serverdata[server.name] = {
+          API_URL: url,
+          UPLOAD_URL: url,
+          DATA_URL: url + '/dataservices',
+          BLIP_URL: url,
         };
       }
     });
