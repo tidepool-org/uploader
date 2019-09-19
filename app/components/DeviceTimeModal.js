@@ -64,7 +64,6 @@ export class DeviceTimeModal extends Component {
     const type = this.determineDeviceType();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
-    let buttonText = '';
     if ( !this.isDevice('Animas') &&
          !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
@@ -83,16 +82,16 @@ export class DeviceTimeModal extends Component {
         </div>
         </div>
       );
-    } else {
-      buttonText = 'and/or device time';
     }
     buttons.push(
       <div className={styles.buttonGroup}>
-      <div>Are you in {timezone}?</div>
+      <div>
+        Are you in {timezone}? Double-check<br/>
+        selected time zone and current device time.
+      </div>
       <div>
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Cancel, and update time zone<br/>
-        {buttonText}
+        Cancel upload
       </button>
       </div>
       </div>
