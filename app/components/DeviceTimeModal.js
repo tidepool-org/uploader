@@ -73,7 +73,7 @@ export class DeviceTimeModal extends Component {
       ) {
       buttons.push(
         <div className={styles.buttonGroup}>
-        <div>Is the time on your {type.text} incorrect?</div>
+        <div>Is the time on your {type.text} incorrect?<br/>&nbsp;</div>
         <div>
         <button key='continue' className={styles.button} onClick={this.handleContinue}>
           Automatically update time to<br/>
