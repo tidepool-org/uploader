@@ -72,9 +72,9 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('TrueMetrix')
       ) {
       buttons.push(
-        <div className={styles.buttonGroup}>
+        <div className={styles.buttonGroup} key='continue' >
         Is the time on your {type.text} incorrect?<br/>&nbsp;
-        <button key='continue' className={styles.button} onClick={this.handleContinue}>
+        <button className={styles.button} onClick={this.handleContinue}>
           Automatically update time to<br/>
           {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, and upload
         </button>
@@ -82,11 +82,11 @@ export class DeviceTimeModal extends Component {
       );
     }
     buttons.push(
-      <div className={styles.buttonGroup}>
+      <div className={styles.buttonGroup} key='cancel'>
       Are you in {timezone}? Double-check<br/>
       selected time zone and current device time.
-      <button key='cancel' className={styles.button} onClick={this.handleCancel}>
-        Cancel upload
+      <button className={styles.button} onClick={this.handleCancel}>
+        Cancel this upload
       </button>
       </div>
     );
