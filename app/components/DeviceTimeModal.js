@@ -73,27 +73,21 @@ export class DeviceTimeModal extends Component {
       ) {
       buttons.push(
         <div className={styles.buttonGroup}>
-        <div>Is the time on your {type.text} incorrect?<br/>&nbsp;</div>
-        <div>
+        Is the time on your {type.text} incorrect?<br/>&nbsp;
         <button key='continue' className={styles.button} onClick={this.handleContinue}>
           Automatically update time to<br/>
           {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, and upload
         </button>
         </div>
-        </div>
       );
     }
     buttons.push(
       <div className={styles.buttonGroup}>
-      <div>
-        Are you in {timezone}? Double-check<br/>
-        selected time zone and current device time.
-      </div>
-      <div>
+      Are you in {timezone}? Double-check<br/>
+      selected time zone and current device time.
       <button key='cancel' className={styles.button} onClick={this.handleCancel}>
         Cancel upload
       </button>
-      </div>
       </div>
     );
 
