@@ -130,8 +130,9 @@ export class App extends Component {
     });
 
     dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      for (let server of servers) {  
-        const url = 'https://' + server.name + ':' + server.port;
+      for (let server of servers) {
+        const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+        const url = protocol + server.name + ':' + server.port;
         serverdata[server.name] = {
           API_URL: url,
           UPLOAD_URL: url,
