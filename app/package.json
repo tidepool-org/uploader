@@ -16,7 +16,8 @@
     "@ronomon/direct-io": "2.4.3",
     "serialport": "6.2.2",
     "usb": "1.5.0",
-    "lzo-decompress": "0.1.2"
+    "lzo-decompress": "0.1.2",
+    "ble-glucose": "../../ble-glucose"
   },
   "optionalDependencies": {
     "node-mtp": "0.3.14",

@@ -21,6 +21,13 @@ const devices = {
     source: {type: 'carelink'},
     enabled: {mac: true, win: true, linux: true}
   },
+  caresens: {
+    instructions: 'Go to Settings, select Bluetooth - Pair',
+    name: 'CareSens N Premier',
+    key: 'caresensble',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
     image: {
