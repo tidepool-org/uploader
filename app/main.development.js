@@ -124,6 +124,21 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+  app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+    event.preventDefault();
+    console.log('Device list:', deviceList);
+    // let result = deviceList.find((device) => {
+    //   return device.deviceName === 'test'
+    // })
+    let result = deviceList[0];
+    if (!result) {
+      callback('');
+    } else {
+      callback(result.deviceId);
+    }
+  });
+
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
