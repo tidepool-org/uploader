@@ -151,6 +151,8 @@
     },
     "mac": {
       "category": "public.app-category.tools",
+      "entitlements": "resources/mac/entitlements.mac.plist",
+      "entitlementsInherit": "resources/mac/entitlements.mac.plist",
       "target": [
         {
           "target": "zip",
