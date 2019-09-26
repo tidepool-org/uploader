@@ -104,8 +104,8 @@ export class DeviceTimeModal extends Component {
           <div className={styles.text}>
             <div className={styles.body}>
             * Changing your device time will not change any previous records.<br/>
-            All future readings will be in {timezone}. Click here to <br/>
-            learn more about meters and device time.
+            All future readings will be in {timezone}.
+            <a href=''>Click to learn more about meters and device time.</a>
             </div>
           </div>
         );
