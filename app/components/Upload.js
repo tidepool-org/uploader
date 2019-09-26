@@ -30,6 +30,7 @@ import debugMode from '../utils/debugMode';
 import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
+import BLE from '../../../ble-glucose'; // TODO: change from local
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 
@@ -153,6 +154,16 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  async handleBluetoothUpload() {
+    // We have to do the Bluetooth scan here, as it can only occur in response
+    // to a user request, i.e., clicking the Upload button
+    this.ble = new BLE();
+    let options = {
+      bleDevice: await this.ble.scan()
+    };
+    this.props.onUpload(options);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -186,6 +197,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'medtronic600') {
       return this.handleMedtronic600Upload();
+    }
+
+    if (_.get(upload, 'key', null) === 'caresensble') {
+      return this.handleBluetoothUpload();
     }
 
     var options = {};

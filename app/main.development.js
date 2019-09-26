@@ -36,6 +36,9 @@ let menu;
 let template;
 let mainWindow = null;
 
+// Web Bluetooth should only be an experimental feature on Linux
+app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
@@ -124,14 +127,10 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  app.commandLine.appendSwitch('enable-experimental-web-platform-features');
   mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
     event.preventDefault();
     console.log('Device list:', deviceList);
-    // let result = deviceList.find((device) => {
-    //   return device.deviceName === 'test'
-    // })
-    let result = deviceList[0];
+    let [result] = deviceList;
     if (!result) {
       callback('');
     } else {
