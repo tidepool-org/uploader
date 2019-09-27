@@ -21,7 +21,7 @@ const devices = {
     source: {type: 'carelink'},
     enabled: {mac: true, win: true, linux: true}
   },
-  caresens: {
+  caresensble: {
     instructions: 'Go to Settings, select Bluetooth - Pair',
     name: 'CareSens N Premier',
     key: 'caresensble',
