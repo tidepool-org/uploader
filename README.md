@@ -17,7 +17,7 @@ This README is focused on just the details of getting the uploader running local
 - [Tests](#tests)
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
-- [Publishing](#publishing-(Tidepool-specific))
+- [Publishing](#publishing)
 
 * * * * *
 
@@ -94,9 +94,9 @@ Docs reside in several places in this repository, such as `docs/` and `lib/drive
 
 See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.org/docs/).
 
-## Publishing (Tidepool-specific)
+## Publishing
 
-Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
+This section is Tidepool-specific. Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
 
 1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
 1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
