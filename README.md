@@ -17,7 +17,7 @@ This README is focused on just the details of getting the uploader running local
 - [Tests](#tests)
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
-- [Publishing](#publishing)
+- [Publishing](#publishing-(Tidepool-specific))
 
 * * * * *
 
