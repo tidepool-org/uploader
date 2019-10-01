@@ -23,6 +23,7 @@ import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
+import dns from 'dns';
 
 const { Menu } = remote;
 
@@ -128,6 +129,19 @@ export class App extends Component {
       log: this.log
     });
 
+    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+      for (let server of servers) {
+        const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+        const url = protocol + server.name + ':' + server.port;
+        serverdata[server.name] = {
+          API_URL: url,
+          UPLOAD_URL: url,
+          DATA_URL: url + '/dataservices',
+          BLIP_URL: url,
+        };
+      }
+    });
+
     window.addEventListener('contextmenu', this.handleContextMenu, false);
   }
 
@@ -179,46 +193,18 @@ export class App extends Component {
       });
     }
     if (this.props.location.pathname === pagesMap.LOGIN) {
+      const submenus = [];
+      for (let server of _.keys(serverdata)) {
+        submenus.push({
+          label: server,
+          click: this.setServer,
+          type: 'radio',
+          checked: this.state.server === server
+        });
+      }
       template.push({
         label: 'Change server',
-        submenu: [
-          {
-            label: 'Local',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Local'
-          },
-          {
-            label: 'Development',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Development'
-          },
-          {
-            label: 'Staging',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Staging'
-          },
-          {
-            label: 'QA1',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'QA1'
-          },
-          {
-            label: 'Integration',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Integration'
-          },
-          {
-            label: 'Production',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Production'
-          }
-        ]
+        submenu: submenus,
       });
       template.push({
         label: 'Toggle Debug Mode',
