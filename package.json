@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.20.0",
+  "version": "2.21.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -151,6 +151,8 @@
     },
     "mac": {
       "category": "public.app-category.tools",
+      "entitlements": "resources/mac/entitlements.mac.plist",
+      "entitlementsInherit": "resources/mac/entitlements.mac.plist",
       "target": [
         {
           "target": "zip",
