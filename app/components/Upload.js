@@ -30,7 +30,7 @@ import debugMode from '../utils/debugMode';
 import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
-import BLE from '../../../ble-glucose'; // TODO: change from local
+import BLE from 'ble-glucose';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 
