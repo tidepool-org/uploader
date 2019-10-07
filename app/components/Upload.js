@@ -155,12 +155,9 @@ export default class Upload extends Component {
   }
 
   async handleBluetoothUpload() {
-    // We have to do the Bluetooth scan here, as it can only occur in response
-    // to a user request, i.e., clicking the Upload button
     let options = {
       ble : new BLE(),
     };
-    await options.ble.scan();
     this.props.onUpload(options);
   }
 
