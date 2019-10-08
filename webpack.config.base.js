@@ -42,5 +42,5 @@ export default {
 
   plugins: [],
 
-  externals: _.keys(_.merge({}, externals, additionalExternals) || {})
+  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]//_.keys(_.merge({}, externals, additionalExternals) || {})
 };

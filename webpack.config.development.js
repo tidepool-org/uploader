@@ -34,6 +34,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 }
 
 export default merge(baseConfig, {
+  mode: 'development',
   devtool: '#cheap-module-source-map',
 
   entry: [
@@ -48,6 +49,13 @@ export default merge(baseConfig, {
 
   module: {
     rules: [
+      // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
+      {
+        test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+        resolve: {
+          aliasFields: ['main']
+        }
+      },
       {
         test: /\.global\.css$/,
         use: [{
@@ -67,10 +75,11 @@ export default merge(baseConfig, {
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
             sourceMap: true,
             importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
           }
         }]
       },
@@ -82,10 +91,11 @@ export default merge(baseConfig, {
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
             sourceMap: true,
-            importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
+            importLoaders: 1
           }
         }, {
           loader: 'less-loader',
@@ -153,7 +163,10 @@ export default merge(baseConfig, {
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
         use: [{
-          loader: 'url-loader'
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+          }
         }]
       }
 

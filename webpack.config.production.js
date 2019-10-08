@@ -4,13 +4,13 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
 import cp from 'child_process';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -38,6 +38,19 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 
 
 export default merge(baseConfig, {
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
+  },
+
   devtool: 'source-map',
 
   entry: ['babel-polyfill', './app/index'],
@@ -52,29 +65,34 @@ export default merge(baseConfig, {
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
-            options: {
-              hmr: false
-            }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
           },
-          use: 'css-loader'
-        })
+          {
+            loader: 'css-loader'
+          }
+        ]
       },
 
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
-            options: {
-              hmr: false
-            }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
           },
-          use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        })
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: {
+                localIdentName: '[local]___[hash:base64:5]',
+              },
+              importLoaders: 1
+            }
+          }
+        ]
       },
 
       {
@@ -87,9 +105,10 @@ export default merge(baseConfig, {
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
-            importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
+            importLoaders: 1
           }
         }, {
           loader: 'less-loader'
@@ -98,10 +117,17 @@ export default merge(baseConfig, {
 
       {
         test: /^((?!module).)*\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'less-loader']
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'less-loader'
+          }
+        ]
       },
 
       // Fonts
@@ -177,7 +203,7 @@ export default merge(baseConfig, {
     deadcode: false,
   }),
   */
-  new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+  //new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
   /**
   * Dynamically generate index.html page
   */
@@ -192,7 +218,10 @@ export default merge(baseConfig, {
     accessToken: ROLLBAR_POST_TOKEN,
     version: VERSION_SHA,
     publicPath: 'http://dynamichost/dist'
-  })],
+  }),
+
+  new MiniCssExtractPlugin({ filename: 'style.css' })
+],
 
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
   target: 'electron-renderer',

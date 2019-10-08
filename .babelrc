@@ -42,7 +42,7 @@
         ],
         [
           "webpack-loaders",
-          { "config": "webpack.config.test.js", "verbose": false }
+          { "config": "webpack.config.test.js", "verbose": true }
         ],
         "babel-plugin-rewire",
         [
