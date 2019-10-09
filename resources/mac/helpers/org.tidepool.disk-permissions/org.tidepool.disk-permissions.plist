@@ -8,7 +8,7 @@
     <string>org.tidepool.disk-permissions</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Library/PrivilegedHelperTools/org.tidepool.disk-permissions.sh</string>
+        <string>/Library/PrivilegedHelperTools/org.tidepool.disk-permissions</string>
     </array>
     <key>KeepAlive</key>
     <false/>
