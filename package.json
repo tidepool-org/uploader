@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.21.0",
+  "version": "2.21.0-catalina-changes.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
