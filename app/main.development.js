@@ -131,6 +131,7 @@ app.on('ready', async () => {
     event.preventDefault();
     console.log('Device list:', deviceList);
     let [result] = deviceList;
+    global.bluetoothDeviceId = result.deviceId;
     if (!result) {
       callback('');
     } else {
