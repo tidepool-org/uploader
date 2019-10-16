@@ -23,6 +23,7 @@ import Select from 'react-select';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
+import BLE from 'ble-glucose';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
@@ -30,9 +31,9 @@ import debugMode from '../utils/debugMode';
 import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
-import BLE from 'ble-glucose';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
+const ble = new BLE();
 
 export default class Upload extends Component {
   static propTypes = {
@@ -89,6 +90,7 @@ export default class Upload extends Component {
 
   constructor(props) {
     super(props);
+    this.ble = ble;
 
     this.populateRememberedSerialNumber();
   }
@@ -156,7 +158,7 @@ export default class Upload extends Component {
 
   async handleBluetoothUpload() {
     let options = {
-      ble : new BLE(),
+      ble : this.ble,
     };
     this.props.onUpload(options);
   }

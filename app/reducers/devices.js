@@ -22,7 +22,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   caresensble: {
-    instructions: 'Go to Settings, select Bluetooth - Pair',
+    instructions: 'Once paired, hold in right arrow until "BT Send" appears on the screen',
     name: 'CareSens N Premier',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
