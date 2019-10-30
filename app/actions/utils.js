@@ -99,7 +99,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
 
       if (errCode === 'E_BLUETOOTH_PAIR') {
         displayErr.message = 'Couldn\'t connect to device.';
-        displayErr.link = 'https://tidepool.org';  // FIXME
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
         displayErr.linkText = 'Is it paired?';
       }
 
