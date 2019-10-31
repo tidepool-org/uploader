@@ -146,7 +146,7 @@
       "publisherName": [
         "Tidepool Project"
       ],
-      "rfc3161TimeStampServer": "http://sha256timestamp.ws.symantec.com/sha256/timestamp",
+      "rfc3161TimeStampServer": "http://timestamp.digicert.com",
       "timeStampServer": "http://timestamp.digicert.com"
     },
     "mac": {
