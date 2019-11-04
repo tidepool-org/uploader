@@ -3,7 +3,7 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [Abbott FreeStyle Lite & Freedom Lite (BGM)](abbottFreeStyleLite.md)
    * [Abbott FreeStyle Libre (CGM & BGM data)](abbottFreeStyleLibre.md)
    * [Abbott Precision Xtra (blood glucose & ketone meter)](abbottPrecisionXtra.md)
-   * [Accu-chek Aviva Connect & Guide (BGM)](avivaConnectAndGuide.md)
+   * [Accu-chek Aviva Connect, Guide & Guide Me (BGM)](avivaConnectAndGuide.md)
    * [Animas Vibe (CGM data)](animasCGM.md)
    * [Animas Ping and Vibe Insulin Pumps](animasPingAndVibe.md)
    * [Ascensia/Bayer Contour Next (BGM)](bayerContourNext.md)
