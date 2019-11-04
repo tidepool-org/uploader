@@ -371,7 +371,7 @@ describe('medtronic600Simulator.js', () => {
             .set('deviceTime', '2017-02-09T13:48:07')
             .set('clockDriftOffset', 0)
             .set('payload', {
-              logIndices: [2183919351],
+              logIndices: [2183917165],
             });
 
           simulator.basal(basal1);
@@ -470,7 +470,7 @@ describe('medtronic600Simulator.js', () => {
           .set('deviceTime', '2017-02-09T20:12:43')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183942427],
+            logIndices: [2183941664],
           });
         delete expectedThirdBasal.index;
 
@@ -544,7 +544,7 @@ describe('medtronic600Simulator.js', () => {
             .set('duration', 2940000)
             .set('clockDriftOffset', 0)
             .set('payload', {
-              logIndices: [2182919924],
+              logIndices: [2182919264],
             });
           delete expectedThirdBasal.index;
 
@@ -596,7 +596,7 @@ describe('medtronic600Simulator.js', () => {
             .set('deviceTime', '2017-02-10T08:59:24')
             .set('clockDriftOffset', 0)
             .set('payload', {
-              logIndices: [2183988428],
+              logIndices: [2183986628],
             });
           delete expectedSecondBasal.index;
 
@@ -657,7 +657,7 @@ describe('medtronic600Simulator.js', () => {
           .with_rate(1.2)
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183459447],
+            logIndices: [2183457647],
           });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
@@ -1099,7 +1099,7 @@ describe('medtronic600Simulator.js', () => {
           .set('deviceTime', '2017-02-04T17:33:00')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183500844],
+            logIndices: [2183499066],
           });
         delete expectedFourthBasal.index;
 
@@ -1237,7 +1237,7 @@ describe('medtronic600Simulator.js', () => {
             .set('deviceTime', '2017-02-10T07:42:17')
             .set('clockDriftOffset', 0)
             .set('payload', {
-              logIndices: [2183981984],
+              logIndices: [2183981264],
             });
           delete expectedFourthBasal.index;
 
@@ -1379,7 +1379,7 @@ describe('medtronic600Simulator.js', () => {
             .set('time', '2018-05-18T15:04:17.000Z')
             .set('deviceTime', '2018-05-18T15:04:17')
             .set('payload', {
-              logIndices: [2223927121],
+              logIndices: [2223916064],
             });
           delete expectedFourthBasal.index;
 

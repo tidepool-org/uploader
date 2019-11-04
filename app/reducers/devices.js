@@ -51,7 +51,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: 'Plug in PDM with mini-USB and choose .ibf file from PDM',
+    instructions: os.platform() === 'win32' ? 'Plug in PDM with USB cable and choose .ibf file from PDM' : 'Plug in PDM with USB cable',
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: os.platform() === 'win32' ? 'block' : 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
@@ -62,7 +62,7 @@ const devices = {
     key: 'dexcom',
     name: 'Dexcom',
     source: {type: 'device', driverId: 'Dexcom'},
-    enabled: {mac: true, win: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   precisionxtra: {
     instructions: 'Plug in meter with cable',

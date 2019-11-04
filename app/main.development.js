@@ -74,10 +74,13 @@ const installExtensions = async () => {
 
 function addDataPeriodGlobalListener(menu) {
   ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+    const item = _.find(menu.items, ['id', 'upload']);
     if (arg === uploadDataPeriod.PERIODS.ALL) {
-      menu.items[2].submenu.items[0].checked = true;
+      console.log('Uploading all data');
+      item.submenu.items[0].checked = true;
     } else if (arg === uploadDataPeriod.PERIODS.DELTA) {
-      menu.items[2].submenu.items[1].checked = true;
+      console.log('Uploading only new records');
+      item.submenu.items[1].checked = true;
     }
   });
 };
@@ -238,6 +241,7 @@ app.on('ready', async () => {
       ]
     }, {
       label: '&Upload',
+      id: 'upload',
       submenu: [{
         label: 'All data',
         type: 'radio',
@@ -281,12 +285,7 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
@@ -342,10 +341,12 @@ app.on('ready', async () => {
       }]
     }, {
       label: '&Upload',
+      id: 'upload',
       submenu: [{
         label: 'All data',
         type: 'radio',
         click() {
+          console.log('Uploading all data');
           uploadDataPeriod.setPeriodGlobal(
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
@@ -353,6 +354,7 @@ app.on('ready', async () => {
         label: 'Data since last upload',
         type: 'radio',
         click() {
+          console.log('Uploading only new records');
           uploadDataPeriod.setPeriodGlobal(
             uploadDataPeriod.PERIODS.DELTA, mainWindow);
         }
@@ -373,12 +375,7 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
@@ -420,8 +417,8 @@ autoUpdater.on('update-available', (ev, info) => {
   {
     "version":"0.310.0-alpha",
     "releaseDate":"2017-04-03T22:29:55.809Z",
-    "url":"https://github.com/tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
-    "releaseJsonUrl":"https://github.com//tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/latest-mac.json"
+    "url":"https://github.com/tidepool-org/uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
+    "releaseJsonUrl":"https://github.com//tidepool-org/uploader/releases/download/v0.310.0-alpha/latest-mac.json"
   }
    */
 });

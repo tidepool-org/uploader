@@ -1221,7 +1221,7 @@ describe('Asynchronous Actions', () => {
           },
           device: {
             detect: (foo, bar, cb) => cb(null, {}),
-            upload: (foo, bar, cb) => cb(null, [1,2,3,4,5])
+            upload: (foo, bar, cb) => cb(null, { post_records: [1,2,3,4,5], deviceModel: 'acme' })
           }
         });
         const expectedActions = [
@@ -1250,12 +1250,13 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPLOAD_SUCCESS,
-            payload: { userId, deviceKey, utc: time, data: [1,2,3,4,5] },
+            payload: { userId, deviceKey, utc: time, data: { deviceModel: 'acme', post_records: [1,2,3,4,5] } },
             meta: {
               source: actionSources[actionTypes.UPLOAD_SUCCESS],
               metric: {
                 eventName: 'Upload Successful',
                 properties: {
+                  deviceModel: 'acme',
                   type: targetDevice.source.type,
                   source: targetDevice.source.driverId,
                   started: time,
@@ -1682,7 +1683,7 @@ describe('Asynchronous Actions', () => {
             }
           },
           carelink: {
-            upload: (foo, bar, cb) => cb(null, [1,2,3,4])
+            upload: (foo, bar, cb) => cb(null, { post_records: [1,2,3,4] })
           }
         });
         const expectedActions = [
@@ -1720,12 +1721,13 @@ describe('Asynchronous Actions', () => {
           },
           {
             type: actionTypes.UPLOAD_SUCCESS,
-            payload: { userId, deviceKey, utc: time, data: [1,2,3,4] },
+            payload: { userId, deviceKey, utc: time, data: { post_records: [1,2,3,4] } },
             meta: {
               source: actionSources[actionTypes.UPLOAD_SUCCESS],
               metric: {
                 eventName: 'Upload Successful',
                 properties: {
+                  deviceModel: undefined,
                   type: targetDevice.source.type,
                   source: 'CareLink',
                   started: time,
