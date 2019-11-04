@@ -23,15 +23,15 @@ var expect = require('salinity').expect;
 var pwdSimulator = require('../../../lib/drivers/insulet/insuletSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
-describe('insuletSimulator.js', function() {
+describe('insuletSimulator.js', () => {
   var simulator = null;
 
-  beforeEach(function(){
+  beforeEach(() => {
     simulator = pwdSimulator.make();
   });
 
-  describe('smbg', function(){
-    it('passes through', function(){
+  describe('smbg', () => {
+    test('passes through', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -48,8 +48,8 @@ describe('insuletSimulator.js', function() {
     });
   });
 
-  describe('bolus', function(){
-    describe('normal', function() {
+  describe('bolus', () => {
+    describe('normal', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -68,33 +68,42 @@ describe('insuletSimulator.js', function() {
         durationLeft: 0
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('is amended with an expectedNormal when followed by a bolus termination event', function(){
-        simulator.bolus(_.cloneDeep(val));
-        simulator.bolusTermination(term);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0})]);
-      });
+      test(
+        'is amended with an expectedNormal when followed by a bolus termination event',
+        () => {
+          simulator.bolus(_.cloneDeep(val));
+          simulator.bolusTermination(term);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0})]);
+        }
+      );
 
-      it('is amended with an expectedNormal when followed by a bolus termination even when it has zero volume', function() {
-        var zeroBolus = _.assign({}, val, {normal: 0.0});
-        simulator.bolus(zeroBolus);
-        simulator.bolusTermination(term);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, zeroBolus, {expectedNormal: 2.7})]);
-      });
+      test(
+        'is amended with an expectedNormal when followed by a bolus termination even when it has zero volume',
+        () => {
+          var zeroBolus = _.assign({}, val, {normal: 0.0});
+          simulator.bolus(zeroBolus);
+          simulator.bolusTermination(term);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, zeroBolus, {expectedNormal: 2.7})]);
+        }
+      );
 
-      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
-        var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
-        simulator.bolus(val);
-        simulator.bolus(zeroBolus);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
+      test(
+        'does not pass through a zero-volume bolus that does not have an expectedNormal',
+        () => {
+          var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
+          simulator.bolus(val);
+          simulator.bolus(zeroBolus);
+          expect(simulator.getEvents()).deep.equals([val]);
+        }
+      );
     });
 
-    describe('square', function(){
+    describe('square', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -107,27 +116,30 @@ describe('insuletSimulator.js', function() {
         subType: 'square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('is amended with expectedExtended and expectedDuration when followed by a bolus termination', function(){
-        var term = {
-          time: '2014-09-25T01:30:00.000Z',
-          type: 'termination',
-          subType: 'bolus',
-          missedInsulin: 1.4,
-          durationLeft: 1800000
-        };
+      test(
+        'is amended with expectedExtended and expectedDuration when followed by a bolus termination',
+        () => {
+          var term = {
+            time: '2014-09-25T01:30:00.000Z',
+            type: 'termination',
+            subType: 'bolus',
+            missedInsulin: 1.4,
+            durationLeft: 1800000
+          };
 
-        simulator.bolus(val);
-        simulator.bolusTermination(term);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedExtended: 2.8, expectedDuration: 3600000})]);
-      });
+          simulator.bolus(val);
+          simulator.bolusTermination(term);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedExtended: 2.8, expectedDuration: 3600000})]);
+        }
+      );
     });
 
-    describe('dual', function(){
+    describe('dual', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -140,36 +152,39 @@ describe('insuletSimulator.js', function() {
         type: 'bolus',
         subType: 'dual/square'
       };
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('is amended with an expectedNormal, expectedExtended, and expectedDuration when two bolus terminations follow (interrupted during up-front delivery)', function(){
-        var term1 = {
-          time: '2014-09-25T01:00:05.000Z',
-          type: 'termination',
-          subType: 'bolus',
-          missedInsulin: 2.7,
-          durationLeft: 0
-        };
-        var term2 = {
-          time: '2014-09-25T01:00:05.000Z',
-          type: 'termination',
-          subType: 'bolus',
-          missedInsulin: 1.4,
-          durationLeft: 3600000
-        };
+      test(
+        'is amended with an expectedNormal, expectedExtended, and expectedDuration when two bolus terminations follow (interrupted during up-front delivery)',
+        () => {
+          var term1 = {
+            time: '2014-09-25T01:00:05.000Z',
+            type: 'termination',
+            subType: 'bolus',
+            missedInsulin: 2.7,
+            durationLeft: 0
+          };
+          var term2 = {
+            time: '2014-09-25T01:00:05.000Z',
+            type: 'termination',
+            subType: 'bolus',
+            missedInsulin: 1.4,
+            durationLeft: 3600000
+          };
 
-        simulator.bolus(val);
-        simulator.bolusTermination(term1);
-        simulator.bolusTermination(term2);
-        expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0, expectedExtended: 2.8, expectedDuration: 3600000})]);
-      });
+          simulator.bolus(val);
+          simulator.bolusTermination(term1);
+          simulator.bolusTermination(term2);
+          expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0, expectedExtended: 2.8, expectedDuration: 3600000})]);
+        }
+      );
     });
   });
 
-  describe('wizard', function() {
+  describe('wizard', () => {
     var bolus = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -206,15 +221,15 @@ describe('insuletSimulator.js', function() {
       type: 'wizard'
     };
 
-    it('passes through with a bolus', function() {
+    test('passes through with a bolus', () => {
       simulator.wizard(val);
       expect(simulator.getEvents()).deep.equals([val]);
     });
   });
 
-  describe('deviceEvent', function() {
-    describe('alarm', function() {
-      it('passes through', function() {
+  describe('deviceEvent', () => {
+    describe('alarm', () => {
+      test('passes through', () => {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -230,75 +245,84 @@ describe('insuletSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('throws an error without a status if `stopsDelivery` in payload and `index` available', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'InsOmn1234',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          },
-          index: 10
-        };
-
-        var fn = function() { simulator.alarm(val); };
-        expect(fn).to.throw(Error);
-      });
-
-      it('passes through if `stopsDelivery` in payload but no `index` available', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'InsOmn1234',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          }
-        };
-
-        simulator.alarm(val);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
-
-      it('passes through if `stopsDelivery` in payload and `status` exists', function() {
-        var val = {
-          time: '2014-09-25T01:00:00.000Z',
-          deviceTime: '2014-09-25T01:00:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'InsOmn1234',
-          type: 'deviceEvent',
-          subType: 'alarm',
-          alarmType: 'occlusion',
-          payload: {
-            stopsDelivery: true
-          },
-          status: {
+      test(
+        'throws an error without a status if `stopsDelivery` in payload and `index` available',
+        () => {
+          var val = {
             time: '2014-09-25T01:00:00.000Z',
             deviceTime: '2014-09-25T01:00:00',
             timezoneOffset: 0,
+            conversionOffset: 0,
             deviceId: 'InsOmn1234',
             type: 'deviceEvent',
-            subType: 'status',
-            status: 'suspended'
-          }
-        };
+            subType: 'alarm',
+            alarmType: 'occlusion',
+            payload: {
+              stopsDelivery: true
+            },
+            index: 10
+          };
 
-        simulator.alarm(val);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
+          var fn = function() { simulator.alarm(val); };
+          expect(fn).to.throw(Error);
+        }
+      );
+
+      test(
+        'passes through if `stopsDelivery` in payload but no `index` available',
+        () => {
+          var val = {
+            time: '2014-09-25T01:00:00.000Z',
+            deviceTime: '2014-09-25T01:00:00',
+            timezoneOffset: 0,
+            conversionOffset: 0,
+            deviceId: 'InsOmn1234',
+            type: 'deviceEvent',
+            subType: 'alarm',
+            alarmType: 'occlusion',
+            payload: {
+              stopsDelivery: true
+            }
+          };
+
+          simulator.alarm(val);
+          expect(simulator.getEvents()).deep.equals([val]);
+        }
+      );
+
+      test(
+        'passes through if `stopsDelivery` in payload and `status` exists',
+        () => {
+          var val = {
+            time: '2014-09-25T01:00:00.000Z',
+            deviceTime: '2014-09-25T01:00:00',
+            timezoneOffset: 0,
+            conversionOffset: 0,
+            deviceId: 'InsOmn1234',
+            type: 'deviceEvent',
+            subType: 'alarm',
+            alarmType: 'occlusion',
+            payload: {
+              stopsDelivery: true
+            },
+            status: {
+              time: '2014-09-25T01:00:00.000Z',
+              deviceTime: '2014-09-25T01:00:00',
+              timezoneOffset: 0,
+              deviceId: 'InsOmn1234',
+              type: 'deviceEvent',
+              subType: 'status',
+              status: 'suspended'
+            }
+          };
+
+          simulator.alarm(val);
+          expect(simulator.getEvents()).deep.equals([val]);
+        }
+      );
     });
 
-    describe('changeReservoir', function() {
+    describe('changeReservoir', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -309,7 +333,7 @@ describe('insuletSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it('passes through with a status', function() {
+      test('passes through with a status', () => {
         var suspend = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -327,13 +351,13 @@ describe('insuletSimulator.js', function() {
         expect(simulator.getEvents()).deep.equals([withStatus]);
       });
 
-      it('throws an error without a status', function() {
+      test('throws an error without a status', () => {
         var fn = function() { simulator.changeReservoir(val); };
         expect(fn).to.throw(Error);
       });
     });
 
-    describe('status', function() {
+    describe('status', () => {
       var suspend = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -355,42 +379,45 @@ describe('insuletSimulator.js', function() {
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
-      it('a suspend passes through', function() {
+      test('a suspend passes through', () => {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it('a resume passes through', function() {
+      test('a resume passes through', () => {
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
-      it('a resume includes a previous when preceded by a suspend', function() {
+      test('a resume includes a previous when preceded by a suspend', () => {
         simulator.suspend(suspend);
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
-        var suspend2 = {
-          time: '2014-09-25T01:05:00.000Z',
-          deviceTime: '2014-09-25T01:05:00',
-          timezoneOffset: 0,
-          conversionOffset: 0,
-          deviceId: 'InsOmn1234',
-          type: 'deviceEvent',
-          subType: 'status',
-          status: 'suspended',
-          reason: {suspended: 'automatic'}
-        };
-        simulator.suspend(suspend);
-        simulator.suspend(suspend2);
-        simulator.resume(resume);
-        expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
-      });
+      test(
+        'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
+        () => {
+          var suspend2 = {
+            time: '2014-09-25T01:05:00.000Z',
+            deviceTime: '2014-09-25T01:05:00',
+            timezoneOffset: 0,
+            conversionOffset: 0,
+            deviceId: 'InsOmn1234',
+            type: 'deviceEvent',
+            subType: 'status',
+            status: 'suspended',
+            reason: {suspended: 'automatic'}
+          };
+          simulator.suspend(suspend);
+          simulator.suspend(suspend2);
+          simulator.resume(resume);
+          expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
+        }
+      );
     });
 
-    describe('timeChange', function() {
+    describe('timeChange', () => {
       var change = {
         time: '2014-09-25T01:05:00.000Z',
         deviceTime: '2014-09-25T01:05:00',
@@ -405,14 +432,14 @@ describe('insuletSimulator.js', function() {
           agent: 'manual'
         }
       };
-      it('passes through', function() {
+      test('passes through', () => {
         simulator.changeDeviceTime(change);
         expect(simulator.getEvents()).deep.equals([change]);
       });
     });
   });
 
-  describe('settings', function() {
+  describe('settings', () => {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -433,13 +460,13 @@ describe('insuletSimulator.js', function() {
       conversionOffset: 0
     };
 
-    it('passes through', function() {
+    test('passes through', () => {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
   });
 
-  describe('basal', function() {
+  describe('basal', () => {
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
@@ -462,7 +489,7 @@ describe('insuletSimulator.js', function() {
       .with_scheduleName('Alice')
       .with_rate(0.90);
 
-    it('sets duration using a following basal', function() {
+    test('sets duration using a following basal', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       simulator.basal(basal1);
@@ -470,7 +497,7 @@ describe('insuletSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
     });
 
-    it('sets previous on basals other than the first', function() {
+    test('sets previous on basals other than the first', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       var expectedSecondBasal = _.cloneDeep(basal2);
@@ -493,82 +520,85 @@ describe('insuletSimulator.js', function() {
       ]);
     });
 
-    it('fills in the suppressed.scheduleName for a temp basal by percentage', function() {
-      var settings = {
-        time: '2014-09-25T01:00:00.000Z',
-        deviceTime: '2014-09-25T01:00:00',
-        activeSchedule: 'billy',
-        units: { 'bg': 'mg/dL' },
-        basalSchedules: {
-          'billy': [
-            { start: 0, rate: 1.0 },
-            { start: 21600000, rate: 1.1 },
-            { start: 43200000, rate: 1.2 },
-            { start: 64800000, rate: 1.3 }
-          ],
-          'bob': [
-            { start: 0, rate: 0.0}
-          ]
-        },
-        timezoneOffset: 0,
-        conversionOffset: 0
-      };
-      var regBasal1 = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:05:00.000Z')
-        .with_deviceTime('2014-09-25T18:05:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_scheduleName('billy');
-      var tempBasal = builder.makeTempBasal()
-        .with_time('2014-09-25T18:10:00.000Z')
-        .with_deviceTime('2014-09-25T18:10:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(0.65)
-        .with_percent(0.5)
-        .with_duration(1800000);
-      var suppressed = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:10:00.000Z')
-        .with_deviceTime('2014-09-25T18:10:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_duration(1800000);
-      tempBasal.with_suppressed(suppressed);
-      var regBasal2 = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:40:00.000Z')
-        .with_deviceTime('2014-09-25T18:40:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_scheduleName('billy');
-      var thisSim = pwdSimulator.make({settings: settings});
-      var expectedFirstBasal = _.cloneDeep(regBasal1);
-      expectedFirstBasal = expectedFirstBasal.set('duration', 300000).done();
-      var expectedSecondBasal = _.cloneDeep(tempBasal);
-      expectedSecondBasal.set('previous', expectedFirstBasal);
-      expectedSecondBasal.suppressed = expectedSecondBasal.suppressed
-        .set('scheduleName', 'billy').done();
-      expectedSecondBasal = expectedSecondBasal.done();
-      var expectedThirdBasal = _.cloneDeep(regBasal2);
-      expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
-        .set('previous', _.omit(expectedSecondBasal, 'previous'))
-        .done();
-      expectedThirdBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
-      thisSim.basal(regBasal1);
-      thisSim.basal(tempBasal);
-      thisSim.basal(regBasal2);
-      thisSim.finalBasal();
-      expect(thisSim.getEvents()).deep.equals([
-        expectedFirstBasal,
-        expectedSecondBasal,
-        expectedThirdBasal
-      ]);
-    });
+    test(
+      'fills in the suppressed.scheduleName for a temp basal by percentage',
+      () => {
+        var settings = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          activeSchedule: 'billy',
+          units: { 'bg': 'mg/dL' },
+          basalSchedules: {
+            'billy': [
+              { start: 0, rate: 1.0 },
+              { start: 21600000, rate: 1.1 },
+              { start: 43200000, rate: 1.2 },
+              { start: 64800000, rate: 1.3 }
+            ],
+            'bob': [
+              { start: 0, rate: 0.0}
+            ]
+          },
+          timezoneOffset: 0,
+          conversionOffset: 0
+        };
+        var regBasal1 = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:05:00.000Z')
+          .with_deviceTime('2014-09-25T18:05:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.3)
+          .with_scheduleName('billy');
+        var tempBasal = builder.makeTempBasal()
+          .with_time('2014-09-25T18:10:00.000Z')
+          .with_deviceTime('2014-09-25T18:10:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(0.65)
+          .with_percent(0.5)
+          .with_duration(1800000);
+        var suppressed = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:10:00.000Z')
+          .with_deviceTime('2014-09-25T18:10:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.3)
+          .with_duration(1800000);
+        tempBasal.with_suppressed(suppressed);
+        var regBasal2 = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:40:00.000Z')
+          .with_deviceTime('2014-09-25T18:40:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.3)
+          .with_scheduleName('billy');
+        var thisSim = pwdSimulator.make({settings: settings});
+        var expectedFirstBasal = _.cloneDeep(regBasal1);
+        expectedFirstBasal = expectedFirstBasal.set('duration', 300000).done();
+        var expectedSecondBasal = _.cloneDeep(tempBasal);
+        expectedSecondBasal.set('previous', expectedFirstBasal);
+        expectedSecondBasal.suppressed = expectedSecondBasal.suppressed
+          .set('scheduleName', 'billy').done();
+        expectedSecondBasal = expectedSecondBasal.done();
+        var expectedThirdBasal = _.cloneDeep(regBasal2);
+        expectedThirdBasal = expectedThirdBasal.set('duration', 19200000)
+          .set('previous', _.omit(expectedSecondBasal, 'previous'))
+          .done();
+        expectedThirdBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
+        thisSim.basal(regBasal1);
+        thisSim.basal(tempBasal);
+        thisSim.basal(regBasal2);
+        thisSim.finalBasal();
+        expect(thisSim.getEvents()).deep.equals([
+          expectedFirstBasal,
+          expectedSecondBasal,
+          expectedThirdBasal
+        ]);
+      }
+    );
   });
 
-  describe('finalBasal', function() {
+  describe('finalBasal', () => {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -596,66 +626,78 @@ describe('insuletSimulator.js', function() {
       .with_rate(1.3)
       .with_scheduleName('billy');
 
-    it('a single basal passes through with a call to finalBasal when settings available', function() {
-      var thisSim = pwdSimulator.make({settings: settings});
-      thisSim.basal(basal);
-      thisSim.finalBasal();
-      var expectedBasal = _.cloneDeep(basal);
-      expectedBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
-      expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
-      expect(thisSim.getEvents()).deep.equals([expectedBasal]);
-    });
+    test(
+      'a single basal passes through with a call to finalBasal when settings available',
+      () => {
+        var thisSim = pwdSimulator.make({settings: settings});
+        thisSim.basal(basal);
+        thisSim.finalBasal();
+        var expectedBasal = _.cloneDeep(basal);
+        expectedBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
+        expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
+        expect(thisSim.getEvents()).deep.equals([expectedBasal]);
+      }
+    );
 
-    it('a single basal gets annotated with a call to finalBasal when settings available but rate doesn\'t match', function() {
-      var thisSim = pwdSimulator.make({settings: settings});
-      var thisBasal = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:00:00.000Z')
-        .with_deviceTime('2014-09-25T18:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.0)
-        .with_scheduleName('billy');
-      thisSim.basal(thisBasal);
-      thisSim.finalBasal();
-      var expectedBasal = _.cloneDeep(thisBasal);
-      expectedBasal = expectedBasal.set('duration', 0).done();
-      expectedBasal.annotations = [{code: 'insulet/basal/off-schedule-rate'}, {code: 'basal/unknown-duration'}];
-      expect(thisSim.getEvents()).deep.equals([expectedBasal]);
-    });
+    test(
+      'a single basal gets annotated with a call to finalBasal when settings available but rate doesn\'t match',
+      () => {
+        var thisSim = pwdSimulator.make({settings: settings});
+        var thisBasal = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:00:00.000Z')
+          .with_deviceTime('2014-09-25T18:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.0)
+          .with_scheduleName('billy');
+        thisSim.basal(thisBasal);
+        thisSim.finalBasal();
+        var expectedBasal = _.cloneDeep(thisBasal);
+        expectedBasal = expectedBasal.set('duration', 0).done();
+        expectedBasal.annotations = [{code: 'insulet/basal/off-schedule-rate'}, {code: 'basal/unknown-duration'}];
+        expect(thisSim.getEvents()).deep.equals([expectedBasal]);
+      }
+    );
 
-    it('a single basal gets annotated with a call to finalBasal when settings available but scheduleName doesn\'t match', function() {
-      var thisSim = pwdSimulator.make({settings: settings});
-      var thisBasal = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:00:00.000Z')
-        .with_deviceTime('2014-09-25T18:00:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3)
-        .with_scheduleName('bob');
-      thisSim.basal(thisBasal);
-      thisSim.finalBasal();
-      var expectedBasal = _.cloneDeep(thisBasal);
-      expectedBasal = expectedBasal.set('duration', 0).done();
-      expectedBasal.annotations = [{code: 'insulet/basal/off-schedule-rate'}, {code: 'basal/unknown-duration'}];
-      expect(thisSim.getEvents()).deep.equals([expectedBasal]);
-    });
+    test(
+      'a single basal gets annotated with a call to finalBasal when settings available but scheduleName doesn\'t match',
+      () => {
+        var thisSim = pwdSimulator.make({settings: settings});
+        var thisBasal = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:00:00.000Z')
+          .with_deviceTime('2014-09-25T18:00:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.3)
+          .with_scheduleName('bob');
+        thisSim.basal(thisBasal);
+        thisSim.finalBasal();
+        var expectedBasal = _.cloneDeep(thisBasal);
+        expectedBasal = expectedBasal.set('duration', 0).done();
+        expectedBasal.annotations = [{code: 'insulet/basal/off-schedule-rate'}, {code: 'basal/unknown-duration'}];
+        expect(thisSim.getEvents()).deep.equals([expectedBasal]);
+      }
+    );
 
-    it('a single basal gets null duration and annotated with a call to finalBasal when settings unavailable', function() {
-      var thisBasal = builder.makeScheduledBasal()
-        .with_time('2014-09-25T18:05:00.000Z')
-        .with_deviceTime('2014-09-25T18:05:00')
-        .with_timezoneOffset(0)
-        .with_conversionOffset(0)
-        .with_rate(1.3);
-      simulator.basal(thisBasal);
-      simulator.finalBasal();
-      var expectedBasal = _.cloneDeep(thisBasal);
-      expectedBasal = expectedBasal.set('duration', 0).done();
-      expectedBasal.annotations = [{code: 'basal/unknown-duration'}];
-      expect(simulator.getEvents()).deep.equals([expectedBasal]);
-    });
+    test(
+      'a single basal gets null duration and annotated with a call to finalBasal when settings unavailable',
+      () => {
+        var thisBasal = builder.makeScheduledBasal()
+          .with_time('2014-09-25T18:05:00.000Z')
+          .with_deviceTime('2014-09-25T18:05:00')
+          .with_timezoneOffset(0)
+          .with_conversionOffset(0)
+          .with_rate(1.3);
+        simulator.basal(thisBasal);
+        simulator.finalBasal();
+        var expectedBasal = _.cloneDeep(thisBasal);
+        expectedBasal = expectedBasal.set('duration', 0).done();
+        expectedBasal.annotations = [{code: 'basal/unknown-duration'}];
+        expect(simulator.getEvents()).deep.equals([expectedBasal]);
+      }
+    );
 
-    it('a temp basal is completed ', function() {
+    test('a temp basal is completed ', () => {
       var temp = builder.makeTempBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -670,7 +712,7 @@ describe('insuletSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
 
-    it('a suspend basal is given a null duration and annotated', function() {
+    test('a suspend basal is given a null duration and annotated', () => {
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -685,7 +727,7 @@ describe('insuletSimulator.js', function() {
     });
   });
 
-  describe('event interplay', function() {
+  describe('event interplay', () => {
     var suspend = builder.makeDeviceEventSuspend()
       .with_time('2014-09-25T01:50:00.000Z')
       .with_deviceTime('2014-09-25T01:50:00')
@@ -716,46 +758,52 @@ describe('insuletSimulator.js', function() {
       .with_scheduleName('Alice')
       .with_rate(0.85);
 
-    it('if a new pod is activated, a resume is fabricated before basal resumes', function() {
-      simulator.podActivation(resume);
-      simulator.basal(basal1);
-      simulator.basal(basal2);
-      simulator.finalBasal();
-      var expectedResume = _.cloneDeep(resume);
-      expectedResume = expectedResume.done();
-      var expectedFirstBasal = _.cloneDeep(basal1);
-      expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
-      var expectedSecondBasal = _.cloneDeep(basal2);
-      expectedSecondBasal = expectedSecondBasal.set('previous', expectedFirstBasal)
-        .set('duration', 0).done();
-      expectedSecondBasal.annotations = [{code: 'basal/unknown-duration'}];
-      expect(simulator.getEvents()).deep.equals([
-        expectedResume,
-        expectedFirstBasal,
-        expectedSecondBasal
-      ]);
-    });
+    test(
+      'if a new pod is activated, a resume is fabricated before basal resumes',
+      () => {
+        simulator.podActivation(resume);
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+        simulator.finalBasal();
+        var expectedResume = _.cloneDeep(resume);
+        expectedResume = expectedResume.done();
+        var expectedFirstBasal = _.cloneDeep(basal1);
+        expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
+        var expectedSecondBasal = _.cloneDeep(basal2);
+        expectedSecondBasal = expectedSecondBasal.set('previous', expectedFirstBasal)
+          .set('duration', 0).done();
+        expectedSecondBasal.annotations = [{code: 'basal/unknown-duration'}];
+        expect(simulator.getEvents()).deep.equals([
+          expectedResume,
+          expectedFirstBasal,
+          expectedSecondBasal
+        ]);
+      }
+    );
 
-    it('if a new pod is activated and the pump is suspended, a resume is fabricated with the suspend as its previous before basal resumes', function() {
-      simulator.suspend(suspend);
-      simulator.podActivation(resume);
-      simulator.basal(basal1);
-      simulator.basal(basal2);
-      simulator.finalBasal();
-      var expectedResume = _.cloneDeep(resume);
-      expectedResume = expectedResume.set('previous', suspend).done();
-      var expectedFirstBasal = _.cloneDeep(basal1);
-      expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
-      var expectedSecondBasal = _.cloneDeep(basal2);
-      expectedSecondBasal = expectedSecondBasal.set('previous', expectedFirstBasal)
-        .set('duration', 0).done();
-      expectedSecondBasal.annotations = [{code: 'basal/unknown-duration'}];
-      expect(simulator.getEvents()).deep.equals([
-        suspend,
-        expectedResume,
-        expectedFirstBasal,
-        expectedSecondBasal
-      ]);
-    });
+    test(
+      'if a new pod is activated and the pump is suspended, a resume is fabricated with the suspend as its previous before basal resumes',
+      () => {
+        simulator.suspend(suspend);
+        simulator.podActivation(resume);
+        simulator.basal(basal1);
+        simulator.basal(basal2);
+        simulator.finalBasal();
+        var expectedResume = _.cloneDeep(resume);
+        expectedResume = expectedResume.set('previous', suspend).done();
+        var expectedFirstBasal = _.cloneDeep(basal1);
+        expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
+        var expectedSecondBasal = _.cloneDeep(basal2);
+        expectedSecondBasal = expectedSecondBasal.set('previous', expectedFirstBasal)
+          .set('duration', 0).done();
+        expectedSecondBasal.annotations = [{code: 'basal/unknown-duration'}];
+        expect(simulator.getEvents()).deep.equals([
+          suspend,
+          expectedResume,
+          expectedFirstBasal,
+          expectedSecondBasal
+        ]);
+      }
+    );
   });
 });

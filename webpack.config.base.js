@@ -12,7 +12,8 @@ export default {
     rules: [{
       test: /\.jsx?$/,
       use: [{
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        options: {cacheDirectory: true}
       }],
       exclude: /node_modules/
     }]

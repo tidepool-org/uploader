@@ -8,12 +8,15 @@ import webpack from 'webpack';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
+import spawn from 'child_process';
+import path from 'path';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
+const publicPath = `http://localhost:${port}/dist`;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -33,18 +36,20 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-export default merge(baseConfig, {
+export default merge.smart(baseConfig, {
   mode: 'development',
   devtool: '#cheap-module-source-map',
 
   entry: [
-    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
-    'babel-polyfill',
-    './app/index'
+    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
+    `webpack-dev-server/client?http://localhost:${port}/`,
+    'webpack/hot/only-dev-server',
+    require.resolve('./app/index')
   ],
 
   output: {
-    publicPath: `http://localhost:${port}/dist/`
+    publicPath: `http://localhost:${port}/dist/`,
+    filename: 'bundle.dev.js'
   },
 
   module: {
@@ -172,10 +177,16 @@ export default merge(baseConfig, {
 
     ]
   },
-
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+  },
   plugins: [
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: true
+    }),
     /**
      * If you are using the CLI, the webpack process will not exit with an error
      * code by enabling this plugin.
@@ -208,5 +219,41 @@ export default merge(baseConfig, {
   target: 'electron-renderer',
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+  },
+  devServer: {
+    clientLogLevel: 'debug',
+    port,
+    publicPath,
+    compress: true,
+    noInfo: true,
+    stats: 'errors-only',
+    inline: false,
+    lazy: false,
+    hot: true,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    contentBase: path.join(__dirname, 'dist'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      ignored: /node_modules/,
+      poll: 100
+    },
+    historyApiFallback: {
+      verbose: true,
+      disableDotRule: false
+    },
+    before() {
+      if (process.env.START_HOT) {
+        console.log('Starting Main Process...');
+        spawn('npm', ['run', 'start-main-dev'], {
+          shell: true,
+          env: process.env,
+          stdio: 'inherit'
+        })
+          .on('close', code => process.exit(code))
+          .on('error', spawnError => console.error(spawnError));
+      } else {
+        console.log('not starting main process');
+      }
+    }
   }
 });

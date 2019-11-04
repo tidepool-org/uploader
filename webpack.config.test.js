@@ -1,9 +1,9 @@
 /** Used in .babelrc for 'test' environment */
 
 // for babel-plugin-webpack-loaders
-require('babel-register');
+require('@babel/register');
 const devConfig = require('./webpack.config.development');
-devConfig.entry.push('./test/index.js');
+//devConfig.entry.push('./test/index.js');
 module.exports = {
   mode: 'development',
   entry: devConfig.entry,

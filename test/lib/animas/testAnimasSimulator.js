@@ -23,14 +23,14 @@ var expect = require('salinity').expect;
 var pwdSimulator = require('../../../lib/drivers/animas/animasSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
-describe('animasSimulator.js', function() {
+describe('animasSimulator.js', () => {
   var simulator = null;
 
-  beforeEach(function(){
+  beforeEach(() => {
     simulator = pwdSimulator.make();
   });
 
-  describe('smbg', function(){
+  describe('smbg', () => {
 
     var manual = {
       time: '2014-09-25T01:00:00.000Z',
@@ -56,7 +56,7 @@ describe('animasSimulator.js', function() {
       value: 1.3
     };
 
-    it('passes through', function(){
+    test('passes through', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -72,13 +72,13 @@ describe('animasSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('drops manual if same value linked within 15 minutes', function(){
+    test('drops manual if same value linked within 15 minutes', () => {
       simulator.smbg(linked);
       simulator.smbg(manual);
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('does not drop duplicate linked values', function(){
+    test('does not drop duplicate linked values', () => {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
@@ -88,8 +88,8 @@ describe('animasSimulator.js', function() {
     });
   });
 
-  describe('bolus', function(){
-    describe('normal', function() {
+  describe('bolus', () => {
+    describe('normal', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -101,20 +101,23 @@ describe('animasSimulator.js', function() {
         subType: 'normal'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
-        var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
-        simulator.bolus(val);
-        simulator.bolus(zeroBolus);
-        expect(simulator.getEvents()).deep.equals([val]);
-      });
+      test(
+        'does not pass through a zero-volume bolus that does not have an expectedNormal',
+        () => {
+          var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
+          simulator.bolus(val);
+          simulator.bolus(zeroBolus);
+          expect(simulator.getEvents()).deep.equals([val]);
+        }
+      );
     });
 
-    describe('square', function(){
+    describe('square', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -127,13 +130,13 @@ describe('animasSimulator.js', function() {
         subType: 'square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
-    describe('dual', function(){
+    describe('dual', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -147,14 +150,14 @@ describe('animasSimulator.js', function() {
         subType: 'dual/square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
   });
 
-  describe('wizard', function() {
+  describe('wizard', () => {
     var bolus = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -191,12 +194,12 @@ describe('animasSimulator.js', function() {
       type: 'wizard'
     };
 
-    it('passes through with a bolus', function() {
+    test('passes through with a bolus', () => {
       simulator.wizard(val);
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('does not pass through a zero-volume wizard bolus', function() {
+    test('does not pass through a zero-volume wizard bolus', () => {
       var zeroWizard = _.assign({}, bolus, {normal: 0.0});
       simulator.bolus(val);
       simulator.bolus(zeroWizard);
@@ -204,9 +207,9 @@ describe('animasSimulator.js', function() {
     });
   });
 
-  describe('deviceEvent', function() {
-    describe('alarm', function() {
-      it('passes through', function() {
+  describe('deviceEvent', () => {
+    describe('alarm', () => {
+      test('passes through', () => {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -223,7 +226,7 @@ describe('animasSimulator.js', function() {
       });
     });
 
-    describe('status', function() {
+    describe('status', () => {
       var suspend = builder.makeDeviceEventSuspend()
         .with_time('2014-09-25T01:00:00.000Z')
         .with_deviceTime('2014-09-25T01:00:00')
@@ -244,17 +247,17 @@ describe('animasSimulator.js', function() {
         .with_reason({suspended: 'manual', resumed: 'manual'})
         .done();
 
-      it('a single suspend with annotation passes through', function() {
+      test('a single suspend with annotation passes through', () => {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it('a combined suspend/resume passes through', function() {
+      test('a combined suspend/resume passes through', () => {
         simulator.suspend(suspendresume);
         expect(simulator.getEvents()).deep.equals([suspendresume]);
       });
 
-      it('generates annotation for out-of-sequence events', function() {
+      test('generates annotation for out-of-sequence events', () => {
         var suspendresume2 = builder.makeDeviceEventSuspendResume()
           .with_time('2014-09-25T04:00:00.000Z')
           .with_deviceTime('2014-09-25T04:00:00')
@@ -281,7 +284,7 @@ describe('animasSimulator.js', function() {
     });
   });
 
-  describe('settings', function() {
+  describe('settings', () => {
     var settings = {
       type: 'pumpSettings',
       time: '2014-09-25T01:00:00.000Z',
@@ -315,14 +318,14 @@ describe('animasSimulator.js', function() {
       conversionOffset: 0
     };
 
-    it('passes through', function() {
+    test('passes through', () => {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
 
   });
 
-  describe('basal', function() {
+  describe('basal', () => {
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
@@ -345,7 +348,7 @@ describe('animasSimulator.js', function() {
       .with_scheduleName('Alice')
       .with_rate(0.90);
 
-    it('sets duration using a following basal', function() {
+    test('sets duration using a following basal', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       simulator.basal(basal1);
@@ -353,7 +356,7 @@ describe('animasSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
     });
 
-    it('limits duration to five days for flat-rate basals', function() {
+    test('limits duration to five days for flat-rate basals', () => {
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-01T02:00:00.000Z') // more than five days before basal1
         .with_deviceTime('2014-09-01T02:00:00')
@@ -371,7 +374,7 @@ describe('animasSimulator.js', function() {
 
     });
 
-    it('generates annotation for out-of-sequence events', function() {
+    test('generates annotation for out-of-sequence events', () => {
       basal1.set('index', 1);
       basal2.set('index', 3);
       basal3.set('index', 2);
@@ -389,7 +392,7 @@ describe('animasSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal, expectedSecondBasal]);
     });
 
-    it('sets suspended basal', function() {
+    test('sets suspended basal', () => {
       var suspendResume = builder.makeDeviceEventSuspendResume()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -419,7 +422,7 @@ describe('animasSimulator.js', function() {
 
     });
 
-    it('temp basal', function() {
+    test('temp basal', () => {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -454,8 +457,8 @@ describe('animasSimulator.js', function() {
     });
   });
 
-  describe('event interplay', function() {
-    it('basal is suspended by alarm', function() {
+  describe('event interplay', () => {
+    test('basal is suspended by alarm', () => {
 
       var alarm = {
         time: '2014-09-25T01:00:00.000Z',

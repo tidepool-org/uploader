@@ -24,18 +24,18 @@ var proc = require('../../../lib/drivers/medtronic/processData.js');
 var builder = require('../../../lib/objectBuilder')();
 var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 
-describe('processData.js', function() {
+describe('processData.js', () => {
   var tzoUtil = new TZOUtil('Europe/London', '2019-02-22T14:00:00.000Z', []);
   var cfg = { builder:builder, tzoUtil: tzoUtil, timezone: 'Europe/London' };
   var settings = { strokesPerUnit : 40, larger : true };
 
-  beforeEach(function(){
+  beforeEach(() => {
     proc.init(cfg, settings);
   });
 
-  describe('bolus', function(){
+  describe('bolus', () => {
 
-    describe('dual', function(){
+    describe('dual', () => {
 
       var bolus1 = {
           head: [ 1, 0, 20, 0, 1, 0, 8, 1 ],
@@ -86,17 +86,17 @@ describe('processData.js', function() {
         jsDate: new Date('2016-11-14T01:42:00.000Z')
       };
 
-      it('should not create two boluses when cancelled', function(){
+      test('should not create two boluses when cancelled', () => {
         var result = proc.buildBolusRecords([bolus1,bolus2]);
         expect(result).deep.equals([expected]);
       });
     });
   });
 
-  describe('deviceEvent', function() {
-    describe('low glucose suspend status', function() {
+  describe('deviceEvent', () => {
+    describe('low glucose suspend status', () => {
 
-      it('should handle being suspended and resumed by user ', function() {
+      test('should handle being suspended and resumed by user ', () => {
 
         var suspend1 = {
             head: [ 0x1E, 0x02 ],
@@ -180,163 +180,169 @@ describe('processData.js', function() {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      it('should resume automatically after two hours with no response by user', function () {
-        var suspend1 = {
-            head: [ 0x1E, 0x02 ],
-            type: {
-                value: 0X1E,
-                name: 'PUMP_SUSPEND'
-            },
-            jsDate: new Date('2016-12-14T15:35:51.000Z'),
-            index: 1
-        };
+      test(
+          'should resume automatically after two hours with no response by user',
+          () => {
+            var suspend1 = {
+                head: [ 0x1E, 0x02 ],
+                type: {
+                    value: 0X1E,
+                    name: 'PUMP_SUSPEND'
+                },
+                jsDate: new Date('2016-12-14T15:35:51.000Z'),
+                index: 1
+            };
 
-        var suspend2 = {
-            head: [ 0x1E, 0x44 ],
-            type: {
-                value: 0X1E,
-                name: 'PUMP_SUSPEND'
-            },
-            jsDate: new Date('2016-12-14T15:37:51.000Z'),
-            index: 2
-        };
+            var suspend2 = {
+                head: [ 0x1E, 0x44 ],
+                type: {
+                    value: 0X1E,
+                    name: 'PUMP_SUSPEND'
+                },
+                jsDate: new Date('2016-12-14T15:37:51.000Z'),
+                index: 2
+            };
 
-        var resume1 = {
-            head: [ 0x1F, 0x88 ],
-            type: {
-                value: 0X1F,
-                name: 'PUMP_RESUME'
-            },
-            jsDate: new Date('2016-12-14T17:35:00.000Z'),
-            index: 3
-        };
+            var resume1 = {
+                head: [ 0x1F, 0x88 ],
+                type: {
+                    value: 0X1F,
+                    name: 'PUMP_RESUME'
+                },
+                jsDate: new Date('2016-12-14T17:35:00.000Z'),
+                index: 3
+            };
 
-        var resume2 = {
-            head: [ 0x1F, 0xC0 ],
-            type: {
-                value: 0X1F,
-                name: 'PUMP_RESUME'
-            },
-            jsDate: new Date('2016-12-14T17:40:46.000Z'),
-            index: 4
-        };
+            var resume2 = {
+                head: [ 0x1F, 0xC0 ],
+                type: {
+                    value: 0X1F,
+                    name: 'PUMP_RESUME'
+                },
+                jsDate: new Date('2016-12-14T17:40:46.000Z'),
+                index: 4
+            };
 
-        var resume3 = {
-            head: [ 0x1F, 0xC0 ],
-            type: {
-                value: 0X1F,
-                name: 'PUMP_RESUME'
-            },
-            jsDate: new Date('2016-12-14T17:40:52.000Z'),
-            index: 5
-        };
+            var resume3 = {
+                head: [ 0x1F, 0xC0 ],
+                type: {
+                    value: 0X1F,
+                    name: 'PUMP_RESUME'
+                },
+                jsDate: new Date('2016-12-14T17:40:52.000Z'),
+                index: 5
+            };
 
-        var expected = {
-    			'time': '2016-12-14T15:35:51.000Z',
-    			'timezoneOffset': 0,
-    			'clockDriftOffset': 0,
-    			'conversionOffset': 0,
-    			'deviceTime': '2016-12-14T15:35:51',
-    			'type': 'deviceEvent',
-    			'subType': 'status',
-    			'status': 'suspended',
-          'index' : 1,
-          'resumeIndex' : 3,
-    			'reason': {
-    				'suspended': 'automatic',
-    				'resumed': 'automatic'
-    			},
-    			'duration': 7149000,
-    			'payload': {
-    				'reasons': [
-    					'Suspend no response',
-    					'Automatic resume after no response'
-    				],
-    				'logIndices': [
-    					1
-    				]
-    			}
-    		};
+            var expected = {
+                    'time': '2016-12-14T15:35:51.000Z',
+                    'timezoneOffset': 0,
+                    'clockDriftOffset': 0,
+                    'conversionOffset': 0,
+                    'deviceTime': '2016-12-14T15:35:51',
+                    'type': 'deviceEvent',
+                    'subType': 'status',
+                    'status': 'suspended',
+              'index' : 1,
+              'resumeIndex' : 3,
+                    'reason': {
+                        'suspended': 'automatic',
+                        'resumed': 'automatic'
+                    },
+                    'duration': 7149000,
+                    'payload': {
+                        'reasons': [
+                            'Suspend no response',
+                            'Automatic resume after no response'
+                        ],
+                        'logIndices': [
+                            1
+                        ]
+                    }
+                };
 
-        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,resume1,resume2,resume3]);
-        expect(result[0]).to.deep.equal(expected);
-      });
+            var result = proc.buildSuspendResumeRecords([suspend1,suspend2,resume1,resume2,resume3]);
+            expect(result[0]).to.deep.equal(expected);
+          }
+      );
 
-      it('should resume automatically after two hours when user suspends', function() {
-        var suspend1 = {
-            head: [ 0x1E, 0x02 ],
-            type: {
-                value: 0X1E,
-                name: 'PUMP_SUSPEND'
-            },
-            jsDate: new Date('2016-12-14T18:00:22.000Z'),
-            index: 1
-        };
+      test(
+          'should resume automatically after two hours when user suspends',
+          () => {
+            var suspend1 = {
+                head: [ 0x1E, 0x02 ],
+                type: {
+                    value: 0X1E,
+                    name: 'PUMP_SUSPEND'
+                },
+                jsDate: new Date('2016-12-14T18:00:22.000Z'),
+                index: 1
+            };
 
-        var suspend2 = {
-            head: [ 0x1E, 0x43 ],
-            type: {
-                value: 0X1E,
-                name: 'PUMP_SUSPEND'
-            },
-            jsDate: new Date('2016-12-14T18:00:32.000Z'),
-            index: 2
-        };
+            var suspend2 = {
+                head: [ 0x1E, 0x43 ],
+                type: {
+                    value: 0X1E,
+                    name: 'PUMP_SUSPEND'
+                },
+                jsDate: new Date('2016-12-14T18:00:32.000Z'),
+                index: 2
+            };
 
-        var suspend3 = {
-            head: [ 0x1E, 0x65 ],
-            type: {
-                value: 0X1E,
-                name: 'PUMP_SUSPEND'
-            },
-            jsDate: new Date('2016-12-14T18:00:37.000Z'),
-            index: 3
-        };
+            var suspend3 = {
+                head: [ 0x1E, 0x65 ],
+                type: {
+                    value: 0X1E,
+                    name: 'PUMP_SUSPEND'
+                },
+                jsDate: new Date('2016-12-14T18:00:37.000Z'),
+                index: 3
+            };
 
-        var resume1 = {
-            head: [ 0x1F, 0xA7 ],
-            type: {
-                value: 0X1F,
-                name: 'PUMP_RESUME'
-            },
-            jsDate: new Date('2016-12-14T20:00:00.000Z'),
-            index: 4
-        };
+            var resume1 = {
+                head: [ 0x1F, 0xA7 ],
+                type: {
+                    value: 0X1F,
+                    name: 'PUMP_RESUME'
+                },
+                jsDate: new Date('2016-12-14T20:00:00.000Z'),
+                index: 4
+            };
 
-        var expected = {
+            var expected = {
 
-    			'time': '2016-12-14T18:00:22.000Z',
-    			'timezoneOffset': 0,
-    			'clockDriftOffset': 0,
-    			'conversionOffset': 0,
-    			'deviceTime': '2016-12-14T18:00:22',
-    			'type': 'deviceEvent',
-    			'subType': 'status',
-    			'status': 'suspended',
-    			'reason': {
-    				'suspended': 'automatic',
-    				'resumed': 'automatic'
-    			},
-    			'duration': 7178000,
-          'index' : 1,
-          'resumeIndex' : 4,
-    			'payload': {
-    				'reasons': [
-              'Suspend low glucose',
-              'Suspend user selected',
-              'Automatic resume after user suspend'
-    				],
-    				'logIndices': [
-    					1
-    				]
-    			}
-    		};
+                    'time': '2016-12-14T18:00:22.000Z',
+                    'timezoneOffset': 0,
+                    'clockDriftOffset': 0,
+                    'conversionOffset': 0,
+                    'deviceTime': '2016-12-14T18:00:22',
+                    'type': 'deviceEvent',
+                    'subType': 'status',
+                    'status': 'suspended',
+                    'reason': {
+                        'suspended': 'automatic',
+                        'resumed': 'automatic'
+                    },
+                    'duration': 7178000,
+              'index' : 1,
+              'resumeIndex' : 4,
+                    'payload': {
+                        'reasons': [
+                  'Suspend low glucose',
+                  'Suspend user selected',
+                  'Automatic resume after user suspend'
+                        ],
+                        'logIndices': [
+                            1
+                        ]
+                    }
+                };
 
-        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
-        expect(result[0]).to.deep.equal(expected);
-      });
+            var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
+            expect(result[0]).to.deep.equal(expected);
+          }
+      );
 
-      it('should have user suspend followed by LGS suspend', function() {
+      test('should have user suspend followed by LGS suspend', () => {
 
         // user suspend
         var suspend1 = {
@@ -417,9 +423,9 @@ describe('processData.js', function() {
     });
   });
 
-  describe('pumpSettings', function() {
+  describe('pumpSettings', () => {
 
-    beforeEach(function() {
+    beforeEach(() => {
       var currentSettings = {
         'modelNumber':'551',
         'deviceManufacturers':['Medtronic'],
@@ -446,9 +452,9 @@ describe('processData.js', function() {
 
     });
 
-    describe('min/max values', function() {
+    describe('min/max values', () => {
 
-      it('should handle min/max values for bolus wizard changes', function() {
+      test('should handle min/max values for bolus wizard changes', () => {
 
         var bolusWizardChange = {
           head: [90, 15],
@@ -481,7 +487,7 @@ describe('processData.js', function() {
 
       });
 
-      it('should handle max bolus of 0-25', function() {
+      test('should handle max bolus of 0-25', () => {
 
         var maxBolus1 = {
           head: [36, 31],
@@ -517,7 +523,7 @@ describe('processData.js', function() {
         expect(result.postrecords[2].bolus.amountMaximum).to.deep.equals({value:0, units:'Units'});
       });
 
-      it('should handle max basal of 2-35', function() {
+      test('should handle max basal of 2-35', () => {
 
         var maxBasal1 = {
           head: [ 44, 120 ],

@@ -50,103 +50,109 @@ describe('utils', () => {
     });
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
-    it('should return a function', () => {
+    test('should return a function', () => {
       expect(typeof fn).to.equal('function');
     });
 
-    it('the returned function should use the configured errCode on error if error does not have a code', () => {
-      const err = new Error('Uh oh...');
-      const displayErr = new Error(errorText[errCode]);
+    test(
+      'the returned function should use the configured errCode on error if error does not have a code',
+      () => {
+        const err = new Error('Uh oh...');
+        const displayErr = new Error(errorText[errCode]);
 
-      expect(dispatch.callCount).to.equal(0);
-      fn(err);
-      expect(dispatch.callCount).to.equal(1);
-      const expectedAction = {
-        type: 'UPLOAD_FAILURE',
-        error: true,
-        payload: addInfoToError(displayErr, {
+        expect(dispatch.callCount).to.equal(0);
+        fn(err);
+        expect(dispatch.callCount).to.equal(1);
+        const expectedAction = {
+          type: 'UPLOAD_FAILURE',
+          error: true,
+          payload: addInfoToError(displayErr, {
+            details: err.message,
+            utc: utc,
+            name: err.name,
+            step: null,
+            datasetId: null,
+            requestTrace: null,
+            code: errCode,
+            version: '0.100.0'
+          }),
+          meta: {
+            source: 'USER_VISIBLE',
+            metric: {
+              eventName: 'Upload Failed',
+              properties: {
+                type: 'device',
+                source: 'bar',
+                error: displayErr,
+              }
+            }
+          }
+        };
+        const result = dispatch.firstCall.args[0];
+        expect(result.payload).to.deep.include({
+          message: errorText[errCode],
           details: err.message,
           utc: utc,
           name: err.name,
-          step: null,
-          datasetId: null,
-          requestTrace: null,
           code: errCode,
           version: '0.100.0'
-        }),
-        meta: {
-          source: 'USER_VISIBLE',
-          metric: {
-            eventName: 'Upload Failed',
-            properties: {
-              type: 'device',
-              source: 'bar',
-              error: displayErr,
+        });
+        expectedAction.payload = result.payload;
+        expectedAction.meta.metric.properties.error = result.payload;
+        expect(result).to.deep.equal(expectedAction);
+      }
+    );
+
+    test(
+      'the returned function should use the argument error\'s code when present',
+      () => {
+        const err = new Error('Uh oh...');
+        const specificErrCode = 'E_CARELINK_UNSUPPORTED';
+        err.code = specificErrCode;
+        const displayErr = new Error(errorText[specificErrCode]);
+
+        expect(dispatch.callCount).to.equal(0);
+        fn(err);
+        expect(dispatch.callCount).to.equal(1);
+        const expectedAction = {
+          type: 'UPLOAD_FAILURE',
+          error: true,
+          payload: addInfoToError(displayErr, {
+            details: err.message,
+            utc: utc,
+            name: err.name,
+            step: null,
+            datasetId: null,
+            requestTrace: null,
+            code: specificErrCode,
+            version: '0.100.0'
+          }),
+          meta: {
+            source: 'USER_VISIBLE',
+            metric: {
+              eventName: 'Upload Failed',
+              properties: {
+                type: 'device',
+                source: 'bar',
+                error: displayErr,
+              }
             }
           }
-        }
-      };
-      const result = dispatch.firstCall.args[0];
-      expect(result.payload).to.deep.include({
-        message: errorText[errCode],
-        details: err.message,
-        utc: utc,
-        name: err.name,
-        code: errCode,
-        version: '0.100.0'
-      });
-      expectedAction.payload = result.payload;
-      expectedAction.meta.metric.properties.error = result.payload;
-      expect(result).to.deep.equal(expectedAction);
-    });
-
-    it('the returned function should use the argument error\'s code when present', () => {
-      const err = new Error('Uh oh...');
-      const specificErrCode = 'E_CARELINK_UNSUPPORTED';
-      err.code = specificErrCode;
-      const displayErr = new Error(errorText[specificErrCode]);
-
-      expect(dispatch.callCount).to.equal(0);
-      fn(err);
-      expect(dispatch.callCount).to.equal(1);
-      const expectedAction = {
-        type: 'UPLOAD_FAILURE',
-        error: true,
-        payload: addInfoToError(displayErr, {
+        };
+        const result = dispatch.firstCall.args[0];
+        expect(result.payload).to.deep.include({
+          message: errorText[specificErrCode],
           details: err.message,
           utc: utc,
           name: err.name,
-          step: null,
-          datasetId: null,
-          requestTrace: null,
           code: specificErrCode,
           version: '0.100.0'
-        }),
-        meta: {
-          source: 'USER_VISIBLE',
-          metric: {
-            eventName: 'Upload Failed',
-            properties: {
-              type: 'device',
-              source: 'bar',
-              error: displayErr,
-            }
-          }
-        }
-      };
-      const result = dispatch.firstCall.args[0];
-      expect(result.payload).to.deep.include({
-        message: errorText[specificErrCode],
-        details: err.message,
-        utc: utc,
-        name: err.name,
-        code: specificErrCode,
-        version: '0.100.0'
-      });
-      expectedAction.payload = result.payload;
-      expectedAction.meta.metric.properties.error = result.payload;
-      expect(result).to.deep.equal(expectedAction);
-    });
+        });
+        expectedAction.payload = result.payload;
+        expectedAction.meta.metric.properties.error = result.payload;
+        expect(result).to.deep.equal(expectedAction);
+      }
+    );
   });
 
   describe('mergeProfileUpdates', () => {
@@ -164,7 +170,7 @@ describe('utils', () => {
       username: 'joe@example.com'
     };
 
-    it('should merge profile updates', () => {
+    test('should merge profile updates', () => {
       var update = {fullName: 'New Joe'};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],
@@ -181,7 +187,7 @@ describe('utils', () => {
       });
     });
 
-    it('should merge patient updates', () => {
+    test('should merge patient updates', () => {
       var update = {patient: {birthday: '1981-02-05'}};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],
@@ -198,7 +204,7 @@ describe('utils', () => {
       });
     });
 
-    it('should replace emails array on update', () => {
+    test('should replace emails array on update', () => {
       var update = {emails:['joe2@example.com']};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe2@example.com'],
@@ -215,7 +221,7 @@ describe('utils', () => {
       });
     });
 
-    it('should replace targetDevices array on update', () => {
+    test('should replace targetDevices array on update', () => {
       var update = {patient: {targetDevices: ['tandem']}};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],

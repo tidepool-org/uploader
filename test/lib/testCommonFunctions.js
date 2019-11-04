@@ -24,12 +24,12 @@ var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
 var common = require('../../lib/commonFunctions');
 
-describe('commonFunctions.js', function(){
+describe('commonFunctions.js', () => {
 
-  describe('finalScheduledBasal', function(){
+  describe('finalScheduledBasal', () => {
 
     var basal;
-    beforeEach(function(){
+    beforeEach(() => {
       basal = builder.makeScheduledBasal()
         .with_deviceTime('2015-11-05T17:36:39')
         .with_time('2015-11-05T17:36:39.000Z')
@@ -39,7 +39,7 @@ describe('commonFunctions.js', function(){
         .with_timezoneOffset(0);
     });
 
-    it('fabricates final basal duration from two schedule segments', function(){
+    test('fabricates final basal duration from two schedule segments', () => {
       var settings = {
         basalSchedules: {
           'Test': [
@@ -59,63 +59,72 @@ describe('commonFunctions.js', function(){
       expect(finalBasal.duration).to.equal(1000);
     });
 
-    it('fabricates final basal duration from only one schedule segment', function(){
-      var settings = {
-        basalSchedules: {
-          'Test': [
-            {
-              rate: 0.3,
-              start: 0
-            }
-          ]
-        }
-      };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-      expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
-      expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
-    });
+    test(
+      'fabricates final basal duration from only one schedule segment',
+      () => {
+        var settings = {
+          basalSchedules: {
+            'Test': [
+              {
+                rate: 0.3,
+                start: 0
+              }
+            ]
+          }
+        };
+        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+        expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
+        expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
+      }
+    );
 
-    it('final basal has zero duration when it has an off-schedule rate', function() {
-      var settings = {
-        basalSchedules: {
-          'Test': [
-            {
-              rate: 0.5,
-              start: 0
-            }
-          ]
-        }
-      };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-      // TODO: to make the following test more robust, consider using chai-things (new dependency)
-      // that supports assertions on array elements, e.g.:
-      // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
-      expect(finalBasal.annotations[0].code).to.equal('test/basal/off-schedule-rate');
-      expect(finalBasal.annotations[1].code).to.equal('basal/unknown-duration');
-      expect(finalBasal.duration).to.equal(0);
-    });
+    test(
+      'final basal has zero duration when it has an off-schedule rate',
+      () => {
+        var settings = {
+          basalSchedules: {
+            'Test': [
+              {
+                rate: 0.5,
+                start: 0
+              }
+            ]
+          }
+        };
+        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+        // TODO: to make the following test more robust, consider using chai-things (new dependency)
+        // that supports assertions on array elements, e.g.:
+        // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
+        expect(finalBasal.annotations[0].code).to.equal('test/basal/off-schedule-rate');
+        expect(finalBasal.annotations[1].code).to.equal('basal/unknown-duration');
+        expect(finalBasal.duration).to.equal(0);
+      }
+    );
 
-    it('final basal has zero duration if no schedule and duration found', function(){
-      var settings = {
-        basalSchedules: {
-          'NotTest': [
-            {
-              rate: 0.3,
-              start: 0
-            }
-          ]
-        }
-      };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-      expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
-      expect(finalBasal.duration).to.equal(0);
-    });
+    test(
+      'final basal has zero duration if no schedule and duration found',
+      () => {
+        var settings = {
+          basalSchedules: {
+            'NotTest': [
+              {
+                rate: 0.3,
+                start: 0
+              }
+            ]
+          }
+        };
+        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+        expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
+        expect(finalBasal.duration).to.equal(0);
+      }
+    );
   });
 
-  describe('computeMillisInCurrentDay', function(){
+  describe('computeMillisInCurrentDay', () => {
 
     var basal;
-    beforeEach(function(){
+    beforeEach(() => {
       basal = builder.makeScheduledBasal()
         .with_deviceTime('2015-11-05T17:00:00')
         .with_time('2015-11-05T17:00:00.000Z')
@@ -125,11 +134,11 @@ describe('commonFunctions.js', function(){
         .with_timezoneOffset(0);
     });
 
-    it('returns milliseconds in current day', function(){
+    test('returns milliseconds in current day', () => {
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
 
-    it('rounds to nearest 15 minutes for clock skew', function(){
+    test('rounds to nearest 15 minutes for clock skew', () => {
       basal.with_time('2015-11-05T17:05:00.000Z')
            .with_conversionOffset(420000);
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);

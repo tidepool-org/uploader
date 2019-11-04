@@ -22,117 +22,117 @@ var expect = require('salinity').expect;
 var struct = require('../../lib/struct.js');
 
 
-describe('struct.js', function(){
+describe('struct.js', () => {
 
   var theStruct;
 
-  beforeEach(function(){
+  beforeEach(() => {
     theStruct = struct();
   });
 
-  describe('extractString', function(){
-    it('exists', function(){
+  describe('extractString', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractString');
     });
   });
-  describe('extractZString', function(){
-    it('exists', function(){
+  describe('extractZString', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractZString');
     });
   });
-  describe('extractInt', function(){
-    it('exists', function(){
+  describe('extractInt', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractInt');
     });
   });
-  describe('extractShort', function(){
-    it('exists', function(){
+  describe('extractShort', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractShort');
     });
   });
-  describe('extractFloat', function(){
-    it('exists', function(){
+  describe('extractFloat', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractFloat');
     });
   });
-  describe('extractBEFloat', function(){
-    it('exists', function(){
+  describe('extractBEFloat', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractBEFloat');
     });
   });
-  describe('extractByte', function(){
-    it('exists', function(){
+  describe('extractByte', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractByte');
     });
   });
-  describe('extractBEInt', function(){
-    it('exists', function(){
+  describe('extractBEInt', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractBEInt');
     });
   });
-  describe('storeShort', function(){
-    it('exists', function(){
+  describe('storeShort', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeShort');
     });
   });
-  describe('storeBEShort', function(){
-    it('exists', function(){
+  describe('storeBEShort', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeBEShort');
     });
   });
-  describe('storeFloat', function(){
-    it('exists', function(){
+  describe('storeFloat', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeFloat');
     });
   });
-  describe('storeBEFloat', function(){
-    it('exists', function(){
+  describe('storeBEFloat', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeBEFloat');
     });
   });
-  describe('storeByte', function(){
-    it('exists', function(){
+  describe('storeByte', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeByte');
     });
   });
-  describe('extractBytes', function(){
-    it('exists', function(){
+  describe('extractBytes', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('extractBytes');
     });
   });
-  describe('storeString', function(){
-    it('exists', function(){
+  describe('storeString', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('storeString');
     });
   });
-  describe('pack', function(){
-    it('exists', function(){
+  describe('pack', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('pack');
     });
   });
-  describe('createUnpacker', function(){
-    it('exists', function(){
+  describe('createUnpacker', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('createUnpacker');
     });
   });
-  describe('unpack', function(){
-    it('exists', function(){
+  describe('unpack', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('unpack');
     });
   });
-  describe('structlen', function(){
-    it('exists', function(){
+  describe('structlen', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('structlen');
     });
   });
-  describe('copyBytes', function(){
-    it('exists', function(){
+  describe('copyBytes', () => {
+    test('exists', () => {
       expect(theStruct).itself.to.respondTo('copyBytes');
     });
   });
   // The legal type characters are and their meaning are described at the top of the struct.js file.
-  describe('structlen and format parsing', function(){
-    it('work properly', function(){
+  describe('structlen and format parsing', () => {
+    test('work properly', () => {
       expect(theStruct.structlen('b6.Si')).to.equal(13);
       expect(theStruct.structlen('y6.Si')).to.equal(13);
       expect(theStruct.structlen('bsSiInNhHfF.')).to.equal(34);
@@ -145,43 +145,43 @@ describe('struct.js', function(){
       expect(theStruct.structlen('Z')).to.equal(1);
     });
   });
-  describe('pack', function(){
-    it('works for b', function(){
+  describe('pack', () => {
+    test('works for b', () => {
       var buf = new Uint8Array(5);
       var len = theStruct.pack(buf, 0, '5b', 0x48, 0x65, 0x6c, 0x6c, 0x6f);
       expect(len).to.equal(5);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('Hello');
     });
-    it('works for s', function(){
+    test('works for s', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, '2s', 0x6574, 0x7473);
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
-    it('works for S', function(){
+    test('works for S', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, '2S', 0x7465, 0x7374);
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
-    it('works for i', function(){
+    test('works for i', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'i', 0x74736574);
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('test');
     });
-    it('can handle all the bits', function(){
+    test('can handle all the bits', () => {
       var buf = new Uint8Array(16);
       var len = theStruct.pack(buf, 0, '4i', 0x55555555, 0xAAAAAAAA, 0xFFFFFFFF, 0);
       expect(len).to.equal(16);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u0055\u0055\u0055\u0055\u00AA\u00AA\u00AA\u00AA\u00FF\u00FF\u00FF\u00FF\u0000\u0000\u0000\u0000');
     });
-    it('works for B', function(){
+    test('works for B', () => {
       var buf = new Uint8Array(4);
       var inputBuf = [1, 2, 3, 4];
       var len = theStruct.pack(buf, 0, '4B', inputBuf);
@@ -190,49 +190,49 @@ describe('struct.js', function(){
       var expected = String.fromCharCode.apply(null, inputBuf);
       expect(result).to.equal(expected);
     });
-    it('works for z', function(){
+    test('works for z', () => {
       var buf = new Uint8Array(8);
       var len = theStruct.pack(buf, 0, '8z', 'banana');
       expect(len).to.equal(8);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('banana\u0000\u0000');
     });
-    it('works for z even if too long', function(){
+    test('works for z even if too long', () => {
       var buf = new Uint8Array(8);
       var len = theStruct.pack(buf, 0, '8z', 'verylongstring');
       expect(len).to.equal(8);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('verylong');
     });
-    it('does big positives properly for h', function(){
+    test('does big positives properly for h', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'h', 65534);
       expect(len).to.equal(2);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u0000\u0000');
     });
-    it('does negatives properly for h', function(){
+    test('does negatives properly for h', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'h', -2);
       expect(len).to.equal(2);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u0000\u0000');
     });
-    it('does negatives properly for n', function(){
+    test('does negatives properly for n', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'n', -2);
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u00FE\u00FF\u00FF\u00FF');
     });
-    it('works for f', function(){
+    test('works for f', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'f', -1.5);
       expect(len).to.equal(4);
       var s = String.fromCharCode.apply(null, buf);
       expect(s).to.equal('\u0000\u0000\u00C0\u00BF');
     });
-    it('works for F', function(){
+    test('works for F', () => {
       var buf = new Uint8Array(4);
       var len = theStruct.pack(buf, 0, 'F', -2.5);
       expect(len).to.equal(4);
@@ -240,8 +240,8 @@ describe('struct.js', function(){
       expect(s).to.equal('\u00C0\u0020\u0000\u0000');
     });
   });
-  describe('unpack', function(){
-    it('works for b', function(){
+  describe('unpack', () => {
+    test('works for b', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -253,7 +253,7 @@ describe('struct.js', function(){
       expect(result.c).to.equal(0xAA);
       expect(result.d).to.equal(1);
     });
-    it('works for y', function(){
+    test('works for y', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0x80;
       buf[1] = 0x7F;
@@ -265,7 +265,7 @@ describe('struct.js', function(){
       expect(result.c).to.equal(0);
       expect(result.d).to.equal(1);
     });
-    it('works for B', function(){
+    test('works for B', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -277,7 +277,7 @@ describe('struct.js', function(){
       expect(result.a[2]).to.equal(0xAA);
       expect(result.a[3]).to.equal(1);
     });
-    it('ignores .', function(){
+    test('ignores .', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -288,7 +288,7 @@ describe('struct.js', function(){
       expect(result.b).to.equal(0x55);
       expect(result.c).to.equal(1);
     });
-    it('works for s', function(){
+    test('works for s', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -298,7 +298,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(0x55ff);
       expect(result.b).to.equal(0x01aa);
     });
-    it('works for S', function(){
+    test('works for S', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -308,7 +308,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(0xff55);
       expect(result.b).to.equal(0xaa01);
     });
-    it('works for h', function(){
+    test('works for h', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xfe;
       buf[1] = 0xff;
@@ -318,7 +318,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(-2);
       expect(result.b).to.equal(258);
     });
-    it('works for H', function(){
+    test('works for H', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0xfe;
@@ -328,7 +328,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(-2);
       expect(result.b).to.equal(258);
     });
-    it('works for i', function(){
+    test('works for i', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -337,7 +337,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, 'i', ['a']);
       expect(result.a).to.equal(0x01aa55ff);
     });
-    it('works for I', function(){
+    test('works for I', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;
       buf[1] = 0x55;
@@ -346,7 +346,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, 'I', ['a']);
       expect(result.a).to.equal(0xff55aa01);
     });
-    it('works for n', function(){
+    test('works for n', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0xfe;
       buf[1] = 0xff;
@@ -360,7 +360,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(-2);
       expect(result.b).to.equal(258);
     });
-    it('works for N', function(){
+    test('works for N', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0xff;
       buf[1] = 0xff;
@@ -374,7 +374,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(-2);
       expect(result.b).to.equal(258);
     });
-    it('works for z with null term', function(){
+    test('works for z with null term', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -387,7 +387,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '8z', ['s']);
       expect(result.s).to.equal('Hello');
     });
-    it('works for z truncated', function(){
+    test('works for z truncated', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -400,7 +400,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '4z', ['s']);
       expect(result.s).to.equal('Hell');
     });
-    it('works for z truncated with offset', function(){
+    test('works for z truncated with offset', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -413,7 +413,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 1, '4z', ['s']);
       expect(result.s).to.equal('ello');
     });
-    it('works for Z', function(){
+    test('works for Z', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x48;
       buf[1] = 0x65;
@@ -426,7 +426,7 @@ describe('struct.js', function(){
       var result = theStruct.unpack(buf, 0, '8Z', ['s']);
       expect(result.s).to.equal('Hello\u0000\u0001\u0002');
     });
-    it('works for f', function() {
+    test('works for f', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x00;
       buf[1] = 0x00;
@@ -440,7 +440,7 @@ describe('struct.js', function(){
       expect(result.a).to.equal(1.625);
       expect(result.b).to.equal(1.25);
     });
-    it('works for F', function() {
+    test('works for F', () => {
       var buf = new Uint8Array(8);
       buf[0] = 0x3F;
       buf[1] = 0xD0;
@@ -455,8 +455,8 @@ describe('struct.js', function(){
       expect(result.b).to.equal(1.25);
     });
   });
-  describe('general test of pack/unpack', function(){
-    it('works', function(){
+  describe('general test of pack/unpack', () => {
+    test('works', () => {
       var buf = new Uint8Array(32);
       var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6,-127);
       expect(len).to.equal(26);
@@ -473,8 +473,8 @@ describe('struct.js', function(){
       expect(result.j).to.equal(-127);
     });
   });
-  describe('test of packString', function(){
-    it('basically works', function(){
+  describe('test of packString', () => {
+    test('basically works', () => {
       var s = 'ABC';
       var buf = theStruct.packString(s);
       expect(buf.byteLength).to.equal(3);
@@ -484,8 +484,8 @@ describe('struct.js', function(){
       expect(data[2]).to.equal(67);
     });
   });
-  describe('general test of unpack builder', function(){
-    it('works', function(){
+  describe('general test of unpack builder', () => {
+    test('works', () => {
       var buf = new Uint8Array(32);
       var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6, -127);
       expect(len).to.equal(26);
@@ -506,7 +506,7 @@ describe('struct.js', function(){
       expect(result.i).to.equal(-6);
       expect(result.j).to.equal(-127);
     });
-    it('can use your object', function(){
+    test('can use your object', () => {
       var buf = new Uint8Array(32);
       var len = theStruct.pack(buf, 0, 'bsShHiInNy', 254, 65534, 65533, -3, -4, 65537, 65538, -5, -6, -127);
       expect(len).to.equal(26);

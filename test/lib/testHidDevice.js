@@ -26,32 +26,32 @@ var expect = require('salinity').expect;
 
 var hidDevice = require('../../lib/hidDevice.js');
 
-describe('hidDevice.js', function(){
+describe('hidDevice.js', () => {
 
   var device;
   var config = {};
 
-  beforeEach(function(){
+  beforeEach(() => {
     device = hidDevice(config);
   });
 
-  describe('connect', function(){
-    it('exists', function(){
+  describe('connect', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('connect');
     });
   });
-  describe('disconnect', function(){
-    it('exists', function(){
+  describe('disconnect', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('disconnect');
     });
   });
-  describe('receive', function(){
-    it('exists', function(){
+  describe('receive', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('receive');
     });
   });
-  describe('send', function(){
-    it('exists', function(){
+  describe('send', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('send');
     });
   });

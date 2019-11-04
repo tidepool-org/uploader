@@ -53,7 +53,7 @@ export default merge(baseConfig, {
 
   devtool: 'source-map',
 
-  entry: ['babel-polyfill', './app/index'],
+  entry: ['./app/index'],
 
   output: {
     path: path.join(__dirname, 'app/dist'),

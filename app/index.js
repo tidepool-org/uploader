@@ -1,6 +1,7 @@
 import rollbar from './utils/rollbar';
 import _ from 'lodash';
-import React from 'react';
+import React, { Fragment } from 'react';
+import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
@@ -30,11 +31,15 @@ ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
 
+const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
+
 render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
-    </ConnectedRouter>
-  </Provider>,
+  <AppContainer>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
+      </ConnectedRouter>
+    </Provider>
+  </AppContainer>,
   document.getElementById('app')
 );
