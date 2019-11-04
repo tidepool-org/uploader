@@ -105,7 +105,7 @@ export class DeviceTimeModal extends Component {
             <div className={styles.body}>
             * Changing your device time will not change any previous records.<br/>
             All future readings will be in {timezone}.
-            <a href=''>Click to learn more about meters and device time.</a>
+            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>Click to learn more about meters and device time.</a>
             </div>
           </div>
         );
