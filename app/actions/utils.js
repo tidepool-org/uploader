@@ -97,6 +97,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       };
       displayErr.originalError = err;
 
+      if (errCode === 'E_BLUETOOTH_PAIR') {
+        displayErr.message = 'Couldn\'t connect to device.';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
+        displayErr.linkText = 'Is it paired?';
+      }
+
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(
           _.filter(
