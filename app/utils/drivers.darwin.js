@@ -27,12 +27,12 @@ export function checkVersion(dispatch) {
 
   dispatch(sync.checkingForDriverUpdate());
 
-  function setInstallOpts(iconsPath, scriptPath, extractPath) {
+  function setInstallOpts(iconsPath, scriptPath) {
     const options = {
       name: 'Tidepool Driver Installer',
       icns: iconsPath
     };
-    const execString = scriptPath.replace(/ /g, '\\ ') + ' ' + extractPath.replace(/ /g, '\\ ');
+    const execString = scriptPath.replace(/ /g, '\\ ');
     dispatch(sync.driverUpdateShellOpts({options,execString}));
   }
 
@@ -72,31 +72,19 @@ export function checkVersion(dispatch) {
   }
 
   const appFolder = path.dirname(remote.app.getAppPath());
-  let zipPath = path.join(appFolder, 'driver/extensions.zip');
-  let extractPath = path.join(appFolder, 'driver/');
-  let driverPath = path.join(extractPath, 'extensions');
   let helperPath = path.join(appFolder, 'driver/helpers/');
   let iconsPath = path.join(appFolder, '/Tidepool Uploader.icns');
   let scriptPath = path.join(appFolder, 'driver/updateDrivers.sh');
 
   if (isDev) {
     const rootDir = path.resolve(appFolder, '../../../../../../');
-    zipPath = path.resolve(rootDir, 'resources/mac/extensions.zip');
-    extractPath = path.resolve(rootDir, 'build/driver/');
-    driverPath = path.join(extractPath, 'extensions');
-    helperPath = path.join(extractPath, 'resources/mac/helpers/');
+    helperPath = path.join(rootDir, 'resources/mac/helpers/');
     iconsPath = path.join(rootDir, 'resources/icon.icns');
     scriptPath = path.resolve(rootDir, 'resources/mac/updateDrivers.sh');
   }
 
-  decompress(zipPath, extractPath).then(files => {
-    const driverList = fs.readdirSync(driverPath).filter(e => path.extname(e) === '.kext' );
-    const helperList = fs.readdirSync(helperPath).filter(e => e[0] !== '.');
-
-    if (hasOldDriver(driverPath, driverList, '/Library/Extensions/', '/Contents/Info.plist') ||
-      hasOldDriver(helperPath, helperList, '/Library/LaunchDaemons/', null)) {
-      setInstallOpts(iconsPath, scriptPath, extractPath);
-    }
-  });
-
+  const helperList = fs.readdirSync(helperPath).filter(e => e[0] !== '.');
+  if (hasOldDriver(helperPath, helperList, '/Library/LaunchDaemons/', null)) {
+    setInstallOpts(iconsPath, scriptPath);
+  }
 }
