@@ -1,4 +1,4 @@
-## Accu-Chek Aviva Connect & Guide
+## Accu-Chek Aviva Connect, Guide & Guide Me
 
 (Key:
 
