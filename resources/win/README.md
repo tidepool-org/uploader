@@ -20,7 +20,7 @@ To build and sign the driver, check that you have the specified requirements ins
 - Also install the DigiCert High Assurance EV Root CA certificate downloaded above, as it's needed to cross-sign the Tidepool certificate.
 - You can verify the certificates are installed by running `certmgr`.
 
-### Sign both the .cat files using signtool:
+### Sign all the .cat files using signtool:
 
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolvcp.cat`
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolhid.cat`
