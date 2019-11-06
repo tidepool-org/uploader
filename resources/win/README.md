@@ -22,14 +22,17 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ### Sign all the .cat files using signtool:
 
+In `resources\win`:
+
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolvcp.cat`
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolhid.cat`
 - `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolusb.cat`
 
 ### Submit Windows 10 drivers to hardware dashboard for attestation signing
 
+- `cd win10`
 - `makecab /f TidepoolUSBDriver.ddf`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password)
+- `signtool sign /v /ac "..\DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 4297DE953C8CF10065C31AA717E1302FCD1B9FE4 disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate)
 
 This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
 
