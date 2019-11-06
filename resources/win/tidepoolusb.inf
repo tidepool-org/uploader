@@ -24,7 +24,7 @@ Class       = "libusbK Usb Devices"
 ClassGuid   = {ECFB0CFD-74C4-4f52-BBF7-343461CD72AC}
 Provider    = "libusbK"
 CatalogFile = tidepoolusb.cat
-DriverVer   = 03/05/2019, 3.0.7.1
+DriverVer   = 11/06/2019, 3.0.7.2
 DriverPackageDisplayName = "Tidepool USB Driver (libusbK)"
 
 ; ============== Class section ==================
