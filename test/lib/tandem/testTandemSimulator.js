@@ -66,8 +66,7 @@ describe('tandemSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'does not pass through a zero-volume bolus that does not have an expectedNormal',
+      test(  'does not pass through a zero-volume bolus that does not have an expectedNormal',
         () => {
           var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
           simulator.bolus(val);
@@ -241,8 +240,7 @@ describe('tandemSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      test(
-        'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
+      test(  'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
         () => {
           var suspend2 = {
             time: '2014-09-25T01:05:00.000Z',
@@ -804,9 +802,7 @@ describe('tandemSimulator.js', () => {
   });
 
   describe('event interplay', () => {
-    test(
-      'new-day event does not pass through as scheduled basal when pump is suspended',
-      () => {
+    test('new-day event does not pass through as scheduled basal when pump is suspended', () => {
 
         var basal = builder.makeScheduledBasal()
           .with_time('2014-09-25T15:00:00.000Z')

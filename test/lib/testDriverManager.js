@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 

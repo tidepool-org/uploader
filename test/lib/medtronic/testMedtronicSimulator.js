@@ -119,8 +119,7 @@ describe('medtronicSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'does not pass through a zero-volume bolus that does not have an expectedNormal',
+      test(  'does not pass through a zero-volume bolus that does not have an expectedNormal',
         () => {
           var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
           simulator.bolus(val);
@@ -702,8 +701,7 @@ describe('medtronicSimulator.js', () => {
         ]);
       });
 
-      test(
-        'checks temp basal schedule change that only happens after midnight',
+      test(  'checks temp basal schedule change that only happens after midnight',
         () => {
 
           settings.basalSchedules.standard[0].rate = 1.3; // scheduled rate does not change at midnight
@@ -741,8 +739,7 @@ describe('medtronicSimulator.js', () => {
         }
       );
 
-      test(
-        'restarts temp basal after resume, with schedule change during suspend',
+      test(  'restarts temp basal after resume, with schedule change during suspend',
         () => {
 
           settings.basalSchedules.standard[2].start = 66300000; // schedule changes during suspend at 18h25
@@ -808,8 +805,7 @@ describe('medtronicSimulator.js', () => {
         }
       );
 
-      test(
-        'restarts temp basal after resume, with schedule change before suspend',
+      test(  'restarts temp basal after resume, with schedule change before suspend',
         () => {
 
           settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
@@ -879,8 +875,7 @@ describe('medtronicSimulator.js', () => {
         }
       );
 
-      test(
-        'rewinds and primes the pump, but there are no basal records yet',
+      test(  'rewinds and primes the pump, but there are no basal records yet',
         () => {
           simulator.rewind(reservoirChange);
           simulator.prime(prime);
@@ -888,8 +883,7 @@ describe('medtronicSimulator.js', () => {
         }
       );
 
-      test(
-        'restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)',
+      test(  'restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)',
         () => {
 
           settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
@@ -959,8 +953,7 @@ describe('medtronicSimulator.js', () => {
         }
       );
 
-      test(
-        'restarts temp basal after resume, followed by a reservoir change',
+      test(  'restarts temp basal after resume, followed by a reservoir change',
         () => {
 
           var suspendResume = builder.makeDeviceEventSuspendResume()
@@ -1153,8 +1146,7 @@ describe('medtronicSimulator.js', () => {
         ]);
       });
 
-      test(
-        'should run over midnight but is cancelled before schedule change at midnight',
+      test(  'should run over midnight but is cancelled before schedule change at midnight',
         () => {
 
           tempBasal = builder.makeTempBasal()
@@ -1276,8 +1268,7 @@ describe('medtronicSimulator.js', () => {
         ]);
       });
 
-      test(
-        'runs over midnight and is cancelled after schedule change at midnight',
+      test(  'runs over midnight and is cancelled after schedule change at midnight',
         () => {
 
           tempBasal = builder.makeTempBasal()
@@ -1474,8 +1465,7 @@ describe('medtronicSimulator.js', () => {
         ]);
       });
 
-      test(
-        'has two schedule changes before midnight and extends past midnight',
+      test(  'has two schedule changes before midnight and extends past midnight',
         () => {
 
           var settings = builder.makePumpSettings()
@@ -1711,8 +1701,7 @@ describe('medtronicSimulator.js', () => {
         ]);
       });
 
-      test(
-        'is cancelled and has a one-second gap before a scheduled basal',
+      test(  'is cancelled and has a one-second gap before a scheduled basal',
         () => {
 
           tempBasal.duration = 1200000;

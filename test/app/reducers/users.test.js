@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
@@ -410,9 +409,7 @@ describe('users', () => {
       });
     });
 
-    test(
-      'should handle LOGIN_SUCCESS and collapse bayer meters and abbottfreestylefreedomlite',
-      () => {
+    test('should handle LOGIN_SUCCESS and collapse bayer meters and abbottfreestylefreedomlite', () => {
         expect(users.targetDevices(undefined, {
           type: actionTypes.LOGIN_SUCCESS,
           payload: { memberships: [
@@ -517,9 +514,7 @@ describe('users', () => {
       });
     });
 
-    test(
-      'should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)',
-      () => {
+    test('should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)', () => {
         const initialState = {
           noUserSelected: ['a_pump', 'a_cgm'],
           a1b2c3: ['a_pump', 'a_cgm', 'a_meter']
@@ -621,9 +616,7 @@ describe('users', () => {
       expect(initialState.d4e5f6 === result.d4e5f6).to.be.false;
     });
 
-    test(
-      'should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)',
-      () => {
+    test('should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)', () => {
         const initialState = {
           noUserSelected: 'Pacific/Honolulu',
           a1b2c3: 'US/Eastern'
@@ -684,9 +677,7 @@ describe('users', () => {
       })).to.deep.equal(['a1b2c3', 'd4e5f6']);
     });
 
-    test(
-      'should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD]',
-      () => {
+    test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD]', () => {
         const profile = {a: 1};
         expect(users.targetUsersForUpload(undefined, {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
@@ -765,9 +756,7 @@ describe('users', () => {
       })).to.equal(user.userid);
     });
 
-    test(
-      'should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to only one]',
-      () => {
+    test('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to only one]', () => {
         const profile = {a: 1};
         const memberships = [
           {userid: 'a1b2c3'},
@@ -780,9 +769,7 @@ describe('users', () => {
       }
     );
 
-    test(
-      'should handle LOGIN_SUCCESS [loggedInUser is clinic, can upload to only one]',
-      () => {
+    test('should handle LOGIN_SUCCESS [loggedInUser is clinic, can upload to only one]', () => {
         const user = {userid: 'a1b2c3', roles: ['clinic']};
         const profile = {a: 1};
         const memberships = [
@@ -796,9 +783,7 @@ describe('users', () => {
       }
     );
 
-    test(
-      'should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]',
-      () => {
+    test('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]', () => {
         const profile = {a: 1};
         const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
         expect(users.uploadTargetUser(undefined, {
@@ -830,9 +815,7 @@ describe('users', () => {
       })).to.equal(user.userid);
     });
 
-    test(
-      'should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to only one]',
-      () => {
+    test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to only one]', () => {
         const profile = {a: 1};
         const memberships = [
           {userid: 'a1b2c3'},
@@ -845,9 +828,7 @@ describe('users', () => {
       }
     );
 
-    test(
-      'should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to > 1]',
-      () => {
+    test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to > 1]', () => {
         const profile = {a: 1};
         const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
         expect(users.uploadTargetUser(undefined, {

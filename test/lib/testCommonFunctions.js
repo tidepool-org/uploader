@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
@@ -59,9 +58,7 @@ describe('commonFunctions.js', () => {
       expect(finalBasal.duration).to.equal(1000);
     });
 
-    test(
-      'fabricates final basal duration from only one schedule segment',
-      () => {
+    test('fabricates final basal duration from only one schedule segment', () => {
         var settings = {
           basalSchedules: {
             'Test': [
@@ -78,9 +75,7 @@ describe('commonFunctions.js', () => {
       }
     );
 
-    test(
-      'final basal has zero duration when it has an off-schedule rate',
-      () => {
+    test('final basal has zero duration when it has an off-schedule rate', () => {
         var settings = {
           basalSchedules: {
             'Test': [
@@ -101,9 +96,7 @@ describe('commonFunctions.js', () => {
       }
     );
 
-    test(
-      'final basal has zero duration if no schedule and duration found',
-      () => {
+    test('final basal has zero duration if no schedule and duration found', () => {
         var settings = {
           basalSchedules: {
             'NotTest': [

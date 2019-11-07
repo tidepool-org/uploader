@@ -73,8 +73,7 @@ describe('insuletSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'is amended with an expectedNormal when followed by a bolus termination event',
+      test(  'is amended with an expectedNormal when followed by a bolus termination event',
         () => {
           simulator.bolus(_.cloneDeep(val));
           simulator.bolusTermination(term);
@@ -82,8 +81,7 @@ describe('insuletSimulator.js', () => {
         }
       );
 
-      test(
-        'is amended with an expectedNormal when followed by a bolus termination even when it has zero volume',
+      test(  'is amended with an expectedNormal when followed by a bolus termination even when it has zero volume',
         () => {
           var zeroBolus = _.assign({}, val, {normal: 0.0});
           simulator.bolus(zeroBolus);
@@ -92,8 +90,7 @@ describe('insuletSimulator.js', () => {
         }
       );
 
-      test(
-        'does not pass through a zero-volume bolus that does not have an expectedNormal',
+      test(  'does not pass through a zero-volume bolus that does not have an expectedNormal',
         () => {
           var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
           simulator.bolus(val);
@@ -121,8 +118,7 @@ describe('insuletSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'is amended with expectedExtended and expectedDuration when followed by a bolus termination',
+      test(  'is amended with expectedExtended and expectedDuration when followed by a bolus termination',
         () => {
           var term = {
             time: '2014-09-25T01:30:00.000Z',
@@ -157,8 +153,7 @@ describe('insuletSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'is amended with an expectedNormal, expectedExtended, and expectedDuration when two bolus terminations follow (interrupted during up-front delivery)',
+      test(  'is amended with an expectedNormal, expectedExtended, and expectedDuration when two bolus terminations follow (interrupted during up-front delivery)',
         () => {
           var term1 = {
             time: '2014-09-25T01:00:05.000Z',
@@ -245,8 +240,7 @@ describe('insuletSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'throws an error without a status if `stopsDelivery` in payload and `index` available',
+      test(  'throws an error without a status if `stopsDelivery` in payload and `index` available',
         () => {
           var val = {
             time: '2014-09-25T01:00:00.000Z',
@@ -268,8 +262,7 @@ describe('insuletSimulator.js', () => {
         }
       );
 
-      test(
-        'passes through if `stopsDelivery` in payload but no `index` available',
+      test(  'passes through if `stopsDelivery` in payload but no `index` available',
         () => {
           var val = {
             time: '2014-09-25T01:00:00.000Z',
@@ -290,8 +283,7 @@ describe('insuletSimulator.js', () => {
         }
       );
 
-      test(
-        'passes through if `stopsDelivery` in payload and `status` exists',
+      test(  'passes through if `stopsDelivery` in payload and `status` exists',
         () => {
           var val = {
             time: '2014-09-25T01:00:00.000Z',
@@ -395,8 +387,7 @@ describe('insuletSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      test(
-        'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
+      test(  'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
         () => {
           var suspend2 = {
             time: '2014-09-25T01:05:00.000Z',
@@ -520,9 +511,7 @@ describe('insuletSimulator.js', () => {
       ]);
     });
 
-    test(
-      'fills in the suppressed.scheduleName for a temp basal by percentage',
-      () => {
+    test('fills in the suppressed.scheduleName for a temp basal by percentage', () => {
         var settings = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -626,9 +615,7 @@ describe('insuletSimulator.js', () => {
       .with_rate(1.3)
       .with_scheduleName('billy');
 
-    test(
-      'a single basal passes through with a call to finalBasal when settings available',
-      () => {
+    test('a single basal passes through with a call to finalBasal when settings available', () => {
         var thisSim = pwdSimulator.make({settings: settings});
         thisSim.basal(basal);
         thisSim.finalBasal();
@@ -639,9 +626,7 @@ describe('insuletSimulator.js', () => {
       }
     );
 
-    test(
-      'a single basal gets annotated with a call to finalBasal when settings available but rate doesn\'t match',
-      () => {
+    test('a single basal gets annotated with a call to finalBasal when settings available but rate doesn\'t match', () => {
         var thisSim = pwdSimulator.make({settings: settings});
         var thisBasal = builder.makeScheduledBasal()
           .with_time('2014-09-25T18:00:00.000Z')
@@ -659,9 +644,7 @@ describe('insuletSimulator.js', () => {
       }
     );
 
-    test(
-      'a single basal gets annotated with a call to finalBasal when settings available but scheduleName doesn\'t match',
-      () => {
+    test('a single basal gets annotated with a call to finalBasal when settings available but scheduleName doesn\'t match', () => {
         var thisSim = pwdSimulator.make({settings: settings});
         var thisBasal = builder.makeScheduledBasal()
           .with_time('2014-09-25T18:00:00.000Z')
@@ -679,9 +662,7 @@ describe('insuletSimulator.js', () => {
       }
     );
 
-    test(
-      'a single basal gets null duration and annotated with a call to finalBasal when settings unavailable',
-      () => {
+    test('a single basal gets null duration and annotated with a call to finalBasal when settings unavailable', () => {
         var thisBasal = builder.makeScheduledBasal()
           .with_time('2014-09-25T18:05:00.000Z')
           .with_deviceTime('2014-09-25T18:05:00')
@@ -758,9 +739,7 @@ describe('insuletSimulator.js', () => {
       .with_scheduleName('Alice')
       .with_rate(0.85);
 
-    test(
-      'if a new pod is activated, a resume is fabricated before basal resumes',
-      () => {
+    test('if a new pod is activated, a resume is fabricated before basal resumes', () => {
         simulator.podActivation(resume);
         simulator.basal(basal1);
         simulator.basal(basal2);
@@ -781,9 +760,7 @@ describe('insuletSimulator.js', () => {
       }
     );
 
-    test(
-      'if a new pod is activated and the pump is suspended, a resume is fabricated with the suspend as its previous before basal resumes',
-      () => {
+    test('if a new pod is activated and the pump is suspended, a resume is fabricated with the suspend as its previous before basal resumes', () => {
         simulator.suspend(suspend);
         simulator.podActivation(resume);
         simulator.basal(basal1);

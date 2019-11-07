@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -54,9 +53,7 @@ describe('utils', () => {
       expect(typeof fn).to.equal('function');
     });
 
-    test(
-      'the returned function should use the configured errCode on error if error does not have a code',
-      () => {
+    test('the returned function should use the configured errCode on error if error does not have a code', () => {
         const err = new Error('Uh oh...');
         const displayErr = new Error(errorText[errCode]);
 
@@ -103,9 +100,7 @@ describe('utils', () => {
       }
     );
 
-    test(
-      'the returned function should use the argument error\'s code when present',
-      () => {
+    test('the returned function should use the argument error\'s code when present', () => {
         const err = new Error('Uh oh...');
         const specificErrCode = 'E_CARELINK_UNSUPPORTED';
         err.code = specificErrCode;

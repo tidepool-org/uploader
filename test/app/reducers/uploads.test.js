@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 import { expect } from 'chai';
 
@@ -397,9 +396,7 @@ describe('uploads', () => {
       expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
     });
 
-    test(
-      'should handle RESET_UPLOAD [resetting another when block mode successful not reset]',
-      () => {
+    test('should handle RESET_UPLOAD [resetting another when block mode successful not reset]', () => {
         let initialState = {
           [userId]: {[deviceKey]: {
             completed: true,

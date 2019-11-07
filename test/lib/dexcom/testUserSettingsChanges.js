@@ -110,9 +110,7 @@ describe('userSettingsChanges.js', () => {
       });
     });
 
-    test(
-      'only creates timeChange records when the displayOffset has changed',
-      () => {
+    test('only creates timeChange records when the displayOffset has changed', () => {
         var res = userSettingsChanges(settings, {builder: builder});
         var expectedChange = {
           deviceTime: '2014-12-25T13:34:45',
@@ -141,9 +139,7 @@ describe('userSettingsChanges.js', () => {
       });
     });
 
-    test(
-      'ignores records with a transmitterId of `60000` (default, not yet set up)',
-      () => {
+    test('ignores records with a transmitterId of `60000` (default, not yet set up)', () => {
         var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
         thisSettings[0].transmitterId = 6291456;
         thisSettings[1].transmitterId = 6291456;
@@ -163,18 +159,14 @@ describe('userSettingsChanges.js', () => {
       expect(res.settingChanges[1].payload.internalTime).to.equal('2014-12-31T21:26:56');
     });
 
-    test(
-      'produces one settings object at earliest data when no changes',
-      () => {
+    test('produces one settings object at earliest data when no changes', () => {
         var res = userSettingsChanges(mockSettingsNoChanges, {builder: builder});
         expect(res.settingChanges.length).to.equal(1);
         expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
       }
     );
 
-    test(
-      'de-dupes settings so that only *changes* to settings are returned',
-      () => {
+    test('de-dupes settings so that only *changes* to settings are returned', () => {
         var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
         thisSettings[3].fallRateEnabled = true;
         thisSettings[3].riseRateEnabled = true;

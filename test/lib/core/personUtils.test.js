@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 import { expect } from 'chai';
 
 import personUtils from '../../../lib/core/personUtils';

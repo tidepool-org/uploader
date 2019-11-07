@@ -180,8 +180,7 @@ describe('processData.js', () => {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      test(
-          'should resume automatically after two hours with no response by user',
+      test(    'should resume automatically after two hours with no response by user',
           () => {
             var suspend1 = {
                 head: [ 0x1E, 0x02 ],
@@ -265,8 +264,7 @@ describe('processData.js', () => {
           }
       );
 
-      test(
-          'should resume automatically after two hours when user suspends',
+      test(    'should resume automatically after two hours when user suspends',
           () => {
             var suspend1 = {
                 head: [ 0x1E, 0x02 ],

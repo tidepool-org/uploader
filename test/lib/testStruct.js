@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
@@ -145,7 +144,7 @@ describe('struct.js', () => {
       expect(theStruct.structlen('Z')).to.equal(1);
     });
   });
-  describe('pack', () => {
+  describe('pack functionality', () => {
     test('works for b', () => {
       var buf = new Uint8Array(5);
       var len = theStruct.pack(buf, 0, '5b', 0x48, 0x65, 0x6c, 0x6c, 0x6f);
@@ -240,7 +239,7 @@ describe('struct.js', () => {
       expect(s).to.equal('\u00C0\u0020\u0000\u0000');
     });
   });
-  describe('unpack', () => {
+  describe('unpack functionality', () => {
     test('works for b', () => {
       var buf = new Uint8Array(4);
       buf[0] = 0xff;

@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var _ = require('lodash');
 var sinon = require('sinon');
@@ -91,9 +90,7 @@ describe('TimezoneOffsetUtil.js', () => {
   );
 
   describe('records', () => {
-    test(
-      'adds `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)',
-      () => {
+    test('adds `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs to the `changes` provided (and calls `.done()`)', () => {
         var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
@@ -161,9 +158,7 @@ describe('TimezoneOffsetUtil.js', () => {
       }
     );
 
-    test(
-      'makes the `changes` provided (with additional attrs added) publicly available as `records`',
-      () => {
+    test('makes the `changes` provided (with additional attrs added) publicly available as `records`', () => {
         var belatedDST = builder.makeDeviceEventTimeChange()
           .with_change({
             from: '2015-03-08T12:01:21',
@@ -197,9 +192,7 @@ describe('TimezoneOffsetUtil.js', () => {
       expect(typeof util.findOffsetDifferences).to.equal('function');
     });
 
-    test(
-      'returns the offsetDifference between two deviceTimes in minutes',
-      () => {
+    test('returns the offsetDifference between two deviceTimes in minutes', () => {
         var a = {
           change: {
             from: '2015-01-01T00:00:00',
@@ -217,9 +210,7 @@ describe('TimezoneOffsetUtil.js', () => {
       }
     );
 
-    test(
-      'returns the rawDifference between two deviceTimes in milliseconds',
-      () => {
+    test('returns the rawDifference between two deviceTimes in milliseconds', () => {
         var a = {
           change: {
             from: '2015-01-01T00:00:00',
@@ -278,8 +269,7 @@ describe('TimezoneOffsetUtil.js', () => {
     });
 
     describe('uses the appropriate offset from UTC given (non-empty) `changes` provided', () => {
-      test(
-        'under clock drift adjustment only, timezoneOffset doesn\'t change even if DST',
+      test(  'under clock drift adjustment only, timezoneOffset doesn\'t change even if DST',
         () => {
           var clockDriftAdjust = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -330,8 +320,7 @@ describe('TimezoneOffsetUtil.js', () => {
         });
       });
 
-      test(
-        'under mixture of clock drift and real changes, intervals are contiguous',
+      test(  'under mixture of clock drift and real changes, intervals are contiguous',
         () => {
           var clockDriftAdjust1 = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -431,8 +420,7 @@ describe('TimezoneOffsetUtil.js', () => {
         });
       });
 
-      test(
-        'under travel across the date line (eastward), timezoneOffset changes',
+      test(  'under travel across the date line (eastward), timezoneOffset changes',
         () => {
           // i.e., JHB comes to visit
           var fromNZ = builder.makeDeviceEventTimeChange()
@@ -459,8 +447,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(
-        'under travel across the date line (westward), timezoneOffset changes',
+      test(  'under travel across the date line (westward), timezoneOffset changes',
         () => {
           // i.e., Left Coaster goes to NZ
           var toNZ = builder.makeDeviceEventTimeChange()
@@ -487,8 +474,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(
-        'under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does',
+      test(  'under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does',
         () => {
           // TODO: these don't work without the indices given to the lookup function
           // is this expected? is there a way to do the offsetIntervals differently to fix it?
@@ -537,8 +523,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(
-        'under 23-hour change, timezoneOffset doesn\'t change but conversionOffset does',
+      test(  'under 23-hour change, timezoneOffset doesn\'t change but conversionOffset does',
         () => {
           var twentyThree = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -564,8 +549,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(
-        'when no `index`, uses first UTC timestamp that fits in an offsetInterval',
+      test(  'when no `index`, uses first UTC timestamp that fits in an offsetInterval',
         () => {
           var ambiguousDeviceTime = '2015-04-01T12:00:00';
           var amNotPM = builder.makeDeviceEventTimeChange()
@@ -606,9 +590,7 @@ describe('TimezoneOffsetUtil.js', () => {
       expect(typeof noChangesUtil.fillInUTCInfo).to.equal('function');
     });
 
-    test(
-      'throws an error if something other than an object provided as first param',
-      () => {
+    test('throws an error if something other than an object provided as first param', () => {
         var fn1 = function() { noChangesUtil.fillInUTCInfo(1, new Date()); };
         expect(fn1).to.throw('Must provide an object!');
         var fn2 = function() { noChangesUtil.fillInUTCInfo([1,2,3], new Date()); };
@@ -621,17 +603,13 @@ describe('TimezoneOffsetUtil.js', () => {
       expect(fn).to.throw('Object must not be empty!');
     });
 
-    test(
-      'throws an error if a valid JavaScript Date not provided as second param',
-      () => {
+    test('throws an error if a valid JavaScript Date not provided as second param', () => {
         var fn = function() { noChangesUtil.fillInUTCInfo({type: 'foo'}, 'bar'); };
         expect(fn).to.throw('Date must be provided!');
       }
     );
 
-    test(
-      'properly recognizes 0 as an index and passes it to `lookup` function',
-      () => {
+    test('properly recognizes 0 as an index and passes it to `lookup` function', () => {
         var stubLookup = sinon.spy(noChangesUtil, 'lookup');
         var obj = {
           type: 'foo',
@@ -645,9 +623,7 @@ describe('TimezoneOffsetUtil.js', () => {
       }
     );
 
-    test(
-      'mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function',
-      () => {
+    test('mutates the object passed in, adding `time`, `timezoneOffset`, `clockDriftOffset`, and `conversionOffset` attrs by way of lookup function', () => {
         var obj = {
           type: 'foo',
           index: 10

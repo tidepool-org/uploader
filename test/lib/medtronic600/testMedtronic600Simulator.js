@@ -15,9 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
-// Mocha doesn't like arrow functions: https://mochajs.org/#arrow-functions
 /* eslint-disable prefer-arrow-callback,func-names,space-before-function-paren */
 
 import _ from 'lodash';
@@ -101,14 +98,11 @@ describe('medtronic600Simulator.js', () => {
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    test(
-      'should drop manual if the same value is linked within 15 minutes',
-      () => {
-        simulator.smbg(linked);
-        simulator.smbg(manual);
-        expect(simulator.getEvents()).deep.equals([linked]);
-      }
-    );
+    test('should drop manual if the same value is linked within 15 minutes', () => {
+      simulator.smbg(linked);
+      simulator.smbg(manual);
+      expect(simulator.getEvents()).deep.equals([linked]);
+    });
 
     test('should drop exact duplicate linked values', () => {
       simulator.smbg(linked);
@@ -136,8 +130,7 @@ describe('medtronic600Simulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(
-        'should not pass through a zero-volume bolus that does not have an expectedNormal',
+      test('should not pass through a zero-volume bolus that does not have an expectedNormal',
         () => {
           const zeroBolus = _.assign({}, val, {
             normal: 0.0,
@@ -147,8 +140,7 @@ describe('medtronic600Simulator.js', () => {
           simulator.bolus(val);
           simulator.bolus(zeroBolus);
           expect(simulator.getEvents()).deep.equals([val]);
-        }
-      );
+        });
     });
 
     describe('square', () => {
@@ -329,8 +321,7 @@ describe('medtronic600Simulator.js', () => {
     });
 
     describe('temp basal', () => {
-      test(
-        'should correct a restored scheduled basal start time after a temp basal',
+      test('should correct a restored scheduled basal start time after a temp basal',
         () => {
           const basal1 = simulator.config.builder.makeTempBasal()
             .with_time('2017-02-09T13:11:41.000Z')
@@ -380,11 +371,9 @@ describe('medtronic600Simulator.js', () => {
           expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
             expectedSecondBasal.done(),
           ]);
-        }
-      );
+        });
 
-      test(
-        'should ignore a segment change event when that segment is already active',
+      test('should ignore a segment change event when that segment is already active',
         () => {
           const basal1 = simulator.config.builder.makeTempBasal()
             .with_time('2017-02-09T13:11:41.000Z')
@@ -410,8 +399,7 @@ describe('medtronic600Simulator.js', () => {
           simulator.basal(basal1);
           simulator.basal(basal2);
           expect(simulator.getEvents().length === 1);
-        }
-      );
+        });
 
       test('should check for basal schedule changes', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
@@ -483,8 +471,7 @@ describe('medtronic600Simulator.js', () => {
         ]);
       });
 
-      test(
-        'should change temp basal rate for percentage basals across a basal schedule change',
+      test('should change temp basal rate for percentage basals across a basal schedule change',
         () => {
           const basal1 = simulator.config.builder.makeTempBasal()
             .with_time('2017-01-28T22:41:00.000Z')
@@ -554,11 +541,9 @@ describe('medtronic600Simulator.js', () => {
           expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
             expectedSecondBasal.done(), expectedThirdBasal.done(),
           ]);
-        }
-      );
+        });
 
-      test(
-        'should handle temp basals ending near schedule change boundaries',
+      test('should handle temp basals ending near schedule change boundaries',
         () => {
           const basal1 = simulator.config.builder.makeTempBasal()
             .with_time('2017-02-10T08:29:24.000Z')
@@ -612,8 +597,7 @@ describe('medtronic600Simulator.js', () => {
           expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
             expectedSecondBasal.done(), expectedThirdBasal.done(),
           ]);
-        }
-      );
+        });
 
       test('should handle back to back temp basals', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
@@ -800,8 +784,7 @@ describe('medtronic600Simulator.js', () => {
         ]);
       });
 
-      test(
-        'should handle a pump suspend that crosses multiple schedule changes',
+      test('should handle a pump suspend that crosses multiple schedule changes',
         () => {
           const basal1 = simulator.config.builder.makeScheduledBasal()
             .with_time('2017-05-18T00:00:00.000Z')
@@ -900,8 +883,7 @@ describe('medtronic600Simulator.js', () => {
             expectedFirstSuspendedBasal.done(), expectedSecondSuspendedBasal.done(),
             expectedThirdSuspendedBasal.done(), expectedSecondBasal.done(),
           ]);
-        }
-      );
+        });
 
       test('should handle back to back pump suspends', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
@@ -1116,8 +1098,7 @@ describe('medtronic600Simulator.js', () => {
         ]);
       });
 
-      test(
-        'should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change',
+      test('should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change',
         () => {
           const basal1 = simulator.config.builder.makeScheduledBasal()
             .with_time('2017-02-10T06:00:00.000Z')
@@ -1254,11 +1235,9 @@ describe('medtronic600Simulator.js', () => {
             expectedFirstSuspendedBasal.done(),
             expectedSecondSuspendedBasal.done(), expectedFourthBasal.done(),
           ]);
-        }
-      );
+        });
 
-      test(
-        'should handle a pump suspend that starts during a temp basal and finishes before the end of the temp basal, including a scheduled basal change',
+      test('should handle a pump suspend that starts during a temp basal and finishes before the end of the temp basal, including a scheduled basal change',
         () => {
           const basal1 = simulator.config.builder.makeScheduledBasal()
             .with_time('2018-05-18T06:00:00.000Z')
@@ -1398,8 +1377,7 @@ describe('medtronic600Simulator.js', () => {
             expectedSecondSuspendedBasal.done(), expectedThirdBasal.done(),
             expectedFourthBasal.done(), expectedFifthBasal.done(),
           ]);
-        }
-      );
+        });
 
       describe('first basal is a suspend', () => {
         test('should handle suspended first basal schedule', () => {
@@ -1494,8 +1472,7 @@ describe('medtronic600Simulator.js', () => {
     });
 
     describe('Auto-Mode basal', () => {
-      test(
-        'should add a gap between two Auto-Mode basals that are more than six minutes apart',
+      test('should add a gap between two Auto-Mode basals that are more than six minutes apart',
         () => {
           const basal1 = simulator.config.builder.makeAutomatedBasal()
             .with_time('2017-02-09T13:11:41.000Z')
@@ -1541,8 +1518,7 @@ describe('medtronic600Simulator.js', () => {
           expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done(),
             expectedSecondBasal.done(), expectedThirdBasal.done(),
           ]);
-        }
-      );
+        });
     });
   });
 

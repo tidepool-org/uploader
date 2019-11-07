@@ -37,9 +37,7 @@ describe('objectBuildingLogic', () => {
       expect(typeof logic.calculateNetRecommendation).to.equal('function');
     });
 
-    test(
-      'should subtract total IOB from suggested correction when a BG is input',
-      () => {
+    test('should subtract total IOB from suggested correction when a BG is input', () => {
         expect(logic.calculateNetRecommendation(wizDetails)).to.equal(5.5);
       }
     );
@@ -49,17 +47,13 @@ describe('objectBuildingLogic', () => {
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
-    test(
-      'should subtract leftover suggestion from bolus when correction IOB is >= suggested correction',
-      () => {
+    test('should subtract leftover suggestion from bolus when correction IOB is >= suggested correction', () => {
         var details = _.assign({}, wizDetails, {corr_units_iob: 2.5});
         expect(logic.calculateNetRecommendation(details)).to.equal(4.5);
       }
     );
 
-    test(
-      'should subtract total IOB from bolus if meal IOB is < suggested correction',
-      () => {
+    test('should subtract total IOB from bolus if meal IOB is < suggested correction', () => {
         var details = _.assign({}, wizDetails, {meal_units_iob: 0.5});
         expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
       }
