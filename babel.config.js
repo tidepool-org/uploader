@@ -1,87 +1,111 @@
+/* eslint global-require: off */
+const developmentEnvironments = ['development', 'test'];
+
+const developmentPlugins = [require('react-hot-loader/babel')];
+
+const productionPlugins = [
+  require('babel-plugin-dev-expression'),
+
+  // babel-preset-react-optimize
+  require('@babel/plugin-transform-react-constant-elements'),
+  require('@babel/plugin-transform-react-inline-elements'),
+  require('babel-plugin-transform-react-remove-prop-types')
+];
+
 module.exports = api => {
+  const development = api.env(developmentEnvironments);
   api.cache.never();
   return {
-  'presets': [
-    ['@babel/preset-env', { 'targets': { 'electron': '3.1.1' }, 'useBuiltIns': 'usage', 'corejs':2, 'modules': 'commonjs' }],
-    ['@babel/preset-react', {'development': true}]
-  ],
-  'retainLines': true,
-  'plugins': [
-    // Stage 0
-    '@babel/plugin-proposal-function-bind',
-
-    // Stage 1
-    '@babel/plugin-proposal-export-default-from',
-    '@babel/plugin-proposal-logical-assignment-operators',
-    ['@babel/plugin-proposal-optional-chaining', { 'loose': false }],
-    [
-      '@babel/plugin-proposal-pipeline-operator',
-      { 'proposal': 'minimal' }
+    presets: [
+      [
+        require('@babel/preset-env'), 
+        { 
+          targets: { 'electron': require('electron/package.json').version }, 
+          useBuiltIns: 'usage', 
+          corejs: 2, 
+          modules: 'commonjs' 
+        }
+      ],
+      [require('@babel/preset-react'), { development }]
     ],
-    [
-      '@babel/plugin-proposal-nullish-coalescing-operator',
-      { 'loose': false }
+    retainLines: true,
+    plugins: [
+      [
+        require('babel-plugin-add-module-exports')
+      ],
+      // Stage 0
+      require('@babel/plugin-proposal-function-bind'),
+
+      // Stage 1
+      require('@babel/plugin-proposal-export-default-from'),
+      require('@babel/plugin-proposal-logical-assignment-operators'),
+      [require('@babel/plugin-proposal-optional-chaining'), { loose: false }],
+      [
+        require('@babel/plugin-proposal-pipeline-operator'),
+        { proposal: 'minimal' }
+      ],
+      [
+        require('@babel/plugin-proposal-nullish-coalescing-operator'),
+        { loose: false }
+      ],
+      require('@babel/plugin-proposal-do-expressions'),
+
+      // Stage 2
+      [require('@babel/plugin-proposal-decorators'), { legacy: true }],
+      require('@babel/plugin-proposal-function-sent'),
+      require('@babel/plugin-proposal-export-namespace-from'),
+      require('@babel/plugin-proposal-numeric-separator'),
+      require('@babel/plugin-proposal-throw-expressions'),
+
+      // Stage 3
+      require('@babel/plugin-syntax-dynamic-import'),
+      require('@babel/plugin-syntax-import-meta'),
+      [require('@babel/plugin-proposal-class-properties'), { loose: true }],
+      require('@babel/plugin-proposal-json-strings'),
+
+      ...(development ? developmentPlugins : productionPlugins)
     ],
-    '@babel/plugin-proposal-do-expressions',
-
-    // Stage 2
-    ['@babel/plugin-proposal-decorators', { 'legacy': true }],
-    '@babel/plugin-proposal-function-sent',
-    '@babel/plugin-proposal-export-namespace-from',
-    '@babel/plugin-proposal-numeric-separator',
-    '@babel/plugin-proposal-throw-expressions',
-
-    // Stage 3
-    '@babel/plugin-syntax-dynamic-import',
-    '@babel/plugin-syntax-import-meta',
-    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-    '@babel/plugin-proposal-json-strings'
-  ],
-  'env': {
-    'production': {
-      'presets': ['react-optimize'],
-      'plugins': [
-        'babel-plugin-dev-expression',
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-transform-classes'
-      ]
-    },
-    'development': {
-      'plugins': [
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-transform-classes',
-        [
-          'transform-define',
-          {
-            '__VERSION_SHA__': 'abcd'
-          }
-        ],
-        'react-hot-loader/babel'
-      ]
-    },
-    'test': {
-      'plugins': [
-        [
-          'module-resolver',
-          {
-            'root': ['./app/node_modules'],
-            'alias': {
-              'node-hid': './app/node_modules/node-hid',
-              'serialport': './app/node_modules/serialport'
+    env: {
+      production: {
+        plugins: [
+          require('@babel/plugin-proposal-class-properties'),
+          require('@babel/plugin-transform-classes')
+        ]
+      },
+      development: {
+        plugins: [
+          require('@babel/plugin-proposal-class-properties'),
+          require('@babel/plugin-transform-classes'),
+          [
+            require('babel-plugin-transform-define'),
+            {
+              '__VERSION_SHA__': 'abcd'
             }
-          }
-        ],
-        'babel-plugin-rewire',
-        [
-          'transform-define',
-          {
-            '__VERSION_SHA__': 'abcd',
-            'process.env.DEBUG_ERROR': false
-          }
-        ],
-        'react-hot-loader/babel'
-      ]
+          ],
+        ]
+      },
+      test: {
+        plugins: [
+          [
+            require('babel-plugin-module-resolver'),
+            {
+              'root': ['./app/node_modules'],
+              'alias': {
+                'node-hid': './app/node_modules/node-hid',
+                'serialport': './app/node_modules/serialport'
+              }
+            }
+          ],
+          require('babel-plugin-rewire'),
+          [
+            require('babel-plugin-transform-define'),
+            {
+              '__VERSION_SHA__': 'abcd',
+              'process.env.DEBUG_ERROR': false
+            }
+          ]
+        ]
+      }
     }
-  }
-};
+  };
 };

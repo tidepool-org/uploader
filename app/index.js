@@ -8,7 +8,7 @@ import { Route } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import { ipcRenderer } from 'electron';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
@@ -19,7 +19,7 @@ import './app.global.css';
 import '../styles/main.less';
 
 
-const history = createHistory();
+const history = createHashHistory();
 
 const store = configureStore(undefined, history);
 store.dispatch(push('/'));

@@ -4,29 +4,41 @@
 
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-import BabiliPlugin from 'babili-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-export default merge(baseConfig, {
+
+export default merge.smart(baseConfig, {
   devtool: 'source-map',
 
-  entry: ['./app/main.development'],
+  mode: 'production',
 
-  // 'main.js' in root
+  entry: ['./app/main.dev'],
+
   output: {
     path: __dirname,
-    filename: './app/main.js'
+    filename: './app/main.prod.js'
+  },
+
+  optimization: {
+    minimizer: process.env.E2E_BUILD
+      ? []
+      : [
+          new TerserPlugin({
+            parallel: true,
+            sourceMap: true,
+            cache: true
+          })
+        ]
   },
 
   plugins: [
-    /**
-     * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
-
-    new BabiliPlugin({
-      // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
-      deadcode: false,
+    new BundleAnalyzerPlugin({
+      analyzerMode:
+        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+      openAnalyzer: process.env.OPEN_ANALYZER === 'true'
     }),
-    */
     /**
      * Create global constants which can be configured at compile time.
      *

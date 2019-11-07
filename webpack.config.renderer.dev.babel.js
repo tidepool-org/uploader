@@ -8,7 +8,7 @@ import webpack from 'webpack';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
-import spawn from 'child_process';
+import { spawn } from 'child_process';
 import path from 'path';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
@@ -49,7 +49,7 @@ export default merge.smart(baseConfig, {
 
   output: {
     publicPath: `http://localhost:${port}/dist/`,
-    filename: 'bundle.dev.js'
+    filename: 'renderer.dev.js'
   },
 
   module: {
@@ -183,7 +183,6 @@ export default merge.smart(baseConfig, {
     }
   },
   plugins: [
-    // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
     new webpack.HotModuleReplacementPlugin({
       multiStep: true
     }),
@@ -227,7 +226,7 @@ export default merge.smart(baseConfig, {
     compress: true,
     noInfo: true,
     stats: 'errors-only',
-    inline: false,
+    inline: true,
     lazy: false,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },

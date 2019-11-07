@@ -4,6 +4,7 @@
 
 import _ from 'lodash';
 import path from 'path';
+import webpack from 'webpack';
 import { dependencies as externals } from './app/package.json';
 import { optionalDependencies as additionalExternals } from './app/package.json';
 
@@ -13,7 +14,9 @@ export default {
       test: /\.jsx?$/,
       use: [{
         loader: 'babel-loader',
-        options: {cacheDirectory: true}
+        options: {
+          cacheDirectory: true
+        }
       }],
       exclude: /node_modules/
     }]
@@ -21,8 +24,6 @@ export default {
 
   output: {
     path: path.join(__dirname, 'app'),
-    filename: 'bundle.js',
-
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2'
   },
@@ -41,7 +42,13 @@ export default {
   },
   resolveLoader: { },
 
-  plugins: [],
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'production'
+    }),
 
-  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]//_.keys(_.merge({}, externals, additionalExternals) || {})
+    new webpack.NamedModulesPlugin()
+  ],
+
+  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
 };
