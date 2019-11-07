@@ -12,7 +12,8 @@
     "import/extensions": [
       "error",
       "ignorePackages"
-    ]
+    ],
+    "arrow-parens": "warn"
   },
   "settings": {
     "lodash": 3
