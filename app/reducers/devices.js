@@ -23,7 +23,7 @@ const devices = {
   },
   caresensble: {
     instructions: 'Once paired, hold in right arrow until "BT Send" appears on the screen',
-    name: 'CareSens N Premier',
+    name: 'CareSens N Premier & Dual (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
