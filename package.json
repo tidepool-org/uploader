@@ -296,7 +296,7 @@
     },
     "verbose": true,
     "testMatch": [
-      "<rootDir>/(test/**//*.js)"
+      "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/"
