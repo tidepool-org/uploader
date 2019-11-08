@@ -13,7 +13,8 @@
       "error",
       "ignorePackages"
     ],
-    "arrow-parens": "warn"
+    "arrow-parens": "warn",
+    "operator-linebreak": "warn"
   },
   "settings": {
     "lodash": 3

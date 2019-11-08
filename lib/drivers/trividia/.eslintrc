@@ -10,6 +10,8 @@
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
+    "operator-linebreak": "warn",
+    "implicit-arrow-linebreak": "warn"
   },
   "settings": {
     "lodash": 3
