@@ -1484,11 +1484,11 @@ describe('medtronicSimulator.js', () => {
           .with_conversionOffset(0)
           .with_duration(28782000)
           .set('suppressed', {
-                    'type': 'basal',
-                    'deliveryType': 'scheduled',
-                    'rate': 0.9,
-                    'scheduleName': 'standard'
-                })
+                              'type': 'basal',
+                              'deliveryType': 'scheduled',
+                              'rate': 0.9,
+                              'scheduleName': 'standard'
+                          })
           .set('index', 0);
 
 
@@ -1504,11 +1504,11 @@ describe('medtronicSimulator.js', () => {
           .with_duration(7200000)
           .with_payload({duration: 20602000, logIndices: [0]})
           .set('suppressed', {
-                    'type': 'basal',
-                    'deliveryType': 'scheduled',
-                    'rate': 0.95,
-                    'scheduleName': 'standard'
-                });
+                              'type': 'basal',
+                              'deliveryType': 'scheduled',
+                              'rate': 0.95,
+                              'scheduleName': 'standard'
+                          });
         expectedBasal2.clockDriftOffset = 0;
         delete expectedBasal1.index;
         expectedBasal2.suppressed.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];

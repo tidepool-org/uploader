@@ -232,31 +232,31 @@ describe('processData.js', () => {
         };
 
         var expected = {
-                'time': '2016-12-14T15:35:51.000Z',
-                'timezoneOffset': 0,
-                'clockDriftOffset': 0,
-                'conversionOffset': 0,
-                'deviceTime': '2016-12-14T15:35:51',
-                'type': 'deviceEvent',
-                'subType': 'status',
-                'status': 'suspended',
+                      'time': '2016-12-14T15:35:51.000Z',
+                      'timezoneOffset': 0,
+                      'clockDriftOffset': 0,
+                      'conversionOffset': 0,
+                      'deviceTime': '2016-12-14T15:35:51',
+                      'type': 'deviceEvent',
+                      'subType': 'status',
+                      'status': 'suspended',
           'index' : 1,
           'resumeIndex' : 3,
-                'reason': {
-                    'suspended': 'automatic',
-                    'resumed': 'automatic'
-                },
-                'duration': 7149000,
-                'payload': {
-                    'reasons': [
-                        'Suspend no response',
-                        'Automatic resume after no response'
-                    ],
-                    'logIndices': [
-                        1
-                    ]
-                }
-            };
+                      'reason': {
+                          'suspended': 'automatic',
+                          'resumed': 'automatic'
+                      },
+                      'duration': 7149000,
+                      'payload': {
+                          'reasons': [
+                              'Suspend no response',
+                              'Automatic resume after no response'
+                          ],
+                          'logIndices': [
+                              1
+                          ]
+                      }
+                  };
 
         var result = proc.buildSuspendResumeRecords([suspend1,suspend2,resume1,resume2,resume3]);
         expect(result[0]).to.deep.equal(expected);
@@ -305,32 +305,32 @@ describe('processData.js', () => {
 
         var expected = {
 
-                'time': '2016-12-14T18:00:22.000Z',
-                'timezoneOffset': 0,
-                'clockDriftOffset': 0,
-                'conversionOffset': 0,
-                'deviceTime': '2016-12-14T18:00:22',
-                'type': 'deviceEvent',
-                'subType': 'status',
-                'status': 'suspended',
-                'reason': {
-                    'suspended': 'automatic',
-                    'resumed': 'automatic'
-                },
-                'duration': 7178000,
+                      'time': '2016-12-14T18:00:22.000Z',
+                      'timezoneOffset': 0,
+                      'clockDriftOffset': 0,
+                      'conversionOffset': 0,
+                      'deviceTime': '2016-12-14T18:00:22',
+                      'type': 'deviceEvent',
+                      'subType': 'status',
+                      'status': 'suspended',
+                      'reason': {
+                          'suspended': 'automatic',
+                          'resumed': 'automatic'
+                      },
+                      'duration': 7178000,
           'index' : 1,
           'resumeIndex' : 4,
-                'payload': {
-                    'reasons': [
+                      'payload': {
+                          'reasons': [
               'Suspend low glucose',
               'Suspend user selected',
               'Automatic resume after user suspend'
-                    ],
-                    'logIndices': [
-                        1
-                    ]
-                }
-            };
+                          ],
+                          'logIndices': [
+                              1
+                          ]
+                      }
+                  };
 
         var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
         expect(result[0]).to.deep.equal(expected);

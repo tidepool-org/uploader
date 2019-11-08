@@ -597,15 +597,14 @@ describe('insuletSimulator.js', () => {
       .with_scheduleName('billy');
 
     test('a single basal passes through with a call to finalBasal when settings available', () => {
-        var thisSim = pwdSimulator.make({settings: settings});
-        thisSim.basal(basal);
-        thisSim.finalBasal();
-        var expectedBasal = _.cloneDeep(basal);
-        expectedBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
-        expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
-        expect(thisSim.getEvents()).deep.equals([expectedBasal]);
-      }
-    );
+      var thisSim = pwdSimulator.make({settings: settings});
+      thisSim.basal(basal);
+      thisSim.finalBasal();
+      var expectedBasal = _.cloneDeep(basal);
+      expectedBasal.annotations = [{code: 'final-basal/fabricated-from-schedule'}];
+      expectedBasal = expectedBasal.set('duration', 21600000-300000).done();
+      expect(thisSim.getEvents()).deep.equals([expectedBasal]);
+    });
 
     test('a single basal gets annotated with a call to finalBasal when settings available but rate doesn\'t match', () => {
       var thisSim = pwdSimulator.make({settings: settings});

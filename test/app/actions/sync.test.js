@@ -399,11 +399,11 @@ describe('Synchronous Actions', () => {
       });
 
       test('should create an action to record the start of app initialization',  () => {
-          const expectedAction = {
-            type: actionTypes.INIT_APP_REQUEST,
-            meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
-          };
-          expect(syncActions.initRequest()).to.deep.equal(expectedAction);
+        const expectedAction = {
+          type: actionTypes.INIT_APP_REQUEST,
+          meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
+        };
+        expect(syncActions.initRequest()).to.deep.equal(expectedAction);
       });
     });
 
