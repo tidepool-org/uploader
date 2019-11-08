@@ -91,15 +91,12 @@ describe('userSettingsChanges.js', () => {
     expect(typeof userSettingsChanges).to.equal('function');
   });
 
-  test(
-    'returns an object with `timeChanges` and `settingsChange` attributes',
-    () => {
-      var res = userSettingsChanges([]);
-      expect(typeof res).to.equal('object');
-      expect(res.timeChanges).to.exist;
-      expect(res.settingChanges).to.exist;
-    }
-  );
+  test('returns an object with `timeChanges` and `settingsChange` attributes', () => {
+    var res = userSettingsChanges([]);
+    expect(typeof res).to.equal('object');
+    expect(res.timeChanges).to.exist;
+    expect(res.settingChanges).to.exist;
+  });
 
   describe('timeChanges', () => {
     var res = userSettingsChanges(settings, {builder: builder});
@@ -111,19 +108,18 @@ describe('userSettingsChanges.js', () => {
     });
 
     test('only creates timeChange records when the displayOffset has changed', () => {
-        var res = userSettingsChanges(settings, {builder: builder});
-        var expectedChange = {
-          deviceTime: '2014-12-25T13:34:45',
-          change: {
-            agent: 'manual',
-            from: '2014-12-25T13:34:45',
-            to: '2014-12-25T15:34:01'
-          }
-        };
-        expect(res.timeChanges.length).to.equal(2);
-        expect(_.pick(res.timeChanges[0], ['deviceTime', 'change'])).to.deep.equal(expectedChange);
-      }
-    );
+      var res = userSettingsChanges(settings, {builder: builder});
+      var expectedChange = {
+        deviceTime: '2014-12-25T13:34:45',
+        change: {
+          agent: 'manual',
+          from: '2014-12-25T13:34:45',
+          to: '2014-12-25T15:34:01'
+        }
+      };
+      expect(res.timeChanges.length).to.equal(2);
+      expect(_.pick(res.timeChanges[0], ['deviceTime', 'change'])).to.deep.equal(expectedChange);
+    });
   });
 
   describe('settingChanges', () => {
@@ -140,15 +136,14 @@ describe('userSettingsChanges.js', () => {
     });
 
     test('ignores records with a transmitterId of `60000` (default, not yet set up)', () => {
-        var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
-        thisSettings[0].transmitterId = 6291456;
-        thisSettings[1].transmitterId = 6291456;
-        thisSettings[2].transmitterId = 6291456;
-        var res = userSettingsChanges(thisSettings, {builder: builder});
-        expect(res.settingChanges.length).to.equal(1);
-        expect(res.settingChanges[0].payload.internalTime).to.equal('2014-12-25T21:34:45');
-      }
-    );
+      var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
+      thisSettings[0].transmitterId = 6291456;
+      thisSettings[1].transmitterId = 6291456;
+      thisSettings[2].transmitterId = 6291456;
+      var res = userSettingsChanges(thisSettings, {builder: builder});
+      expect(res.settingChanges.length).to.equal(1);
+      expect(res.settingChanges[0].payload.internalTime).to.equal('2014-12-25T21:34:45');
+    });
 
     test('ignores records with an incomplete `setUpState`', () => {
       var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
@@ -160,39 +155,37 @@ describe('userSettingsChanges.js', () => {
     });
 
     test('produces one settings object at earliest data when no changes', () => {
-        var res = userSettingsChanges(mockSettingsNoChanges, {builder: builder});
-        expect(res.settingChanges.length).to.equal(1);
-        expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
-      }
-    );
+      var res = userSettingsChanges(mockSettingsNoChanges, {builder: builder});
+      expect(res.settingChanges.length).to.equal(1);
+      expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
+    });
 
     test('de-dupes settings so that only *changes* to settings are returned', () => {
-        var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
-        thisSettings[3].fallRateEnabled = true;
-        thisSettings[3].riseRateEnabled = true;
-        thisSettings[3].lowAlarmValue = 80;
-        thisSettings[3].highAlarmValue = 200;
-        // continue changes to final settings object, which should then be de-duped since nothing's changed
-        thisSettings[4].fallRateEnabled = true;
-        thisSettings[4].riseRateEnabled = true;
-        thisSettings[4].lowAlarmValue = 80;
-        thisSettings[4].highAlarmValue = 200;
-        var convertedTransmitterId = '637QJ';
-        var res = userSettingsChanges(thisSettings, {builder: builder});
-        expect(res.settingChanges.length).to.equal(2);
-        expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
-        expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
-        expect(res.settingChanges[0].rateOfChangeAlerts.fallRate.enabled).to.be.false;
-        expect(res.settingChanges[0].rateOfChangeAlerts.riseRate.enabled).to.be.false;
-        expect(res.settingChanges[0].lowAlerts.level).to.equal(70);
-        expect(res.settingChanges[0].highAlerts.level).to.equal(180);
-        expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
-        expect(res.settingChanges[1].payload.internalTime).to.equal('2014-12-25T21:34:45');
-        expect(res.settingChanges[1].rateOfChangeAlerts.fallRate.enabled).to.be.true;
-        expect(res.settingChanges[1].rateOfChangeAlerts.riseRate.enabled).to.be.true;
-        expect(res.settingChanges[1].lowAlerts.level).to.equal(80);
-        expect(res.settingChanges[1].highAlerts.level).to.equal(200);
-      }
-    );
+      var thisSettings = _.map(mockSettingsNoChanges, function(obj) { return _.cloneDeep(obj); });
+      thisSettings[3].fallRateEnabled = true;
+      thisSettings[3].riseRateEnabled = true;
+      thisSettings[3].lowAlarmValue = 80;
+      thisSettings[3].highAlarmValue = 200;
+      // continue changes to final settings object, which should then be de-duped since nothing's changed
+      thisSettings[4].fallRateEnabled = true;
+      thisSettings[4].riseRateEnabled = true;
+      thisSettings[4].lowAlarmValue = 80;
+      thisSettings[4].highAlarmValue = 200;
+      var convertedTransmitterId = '637QJ';
+      var res = userSettingsChanges(thisSettings, {builder: builder});
+      expect(res.settingChanges.length).to.equal(2);
+      expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
+      expect(res.settingChanges[0].payload.internalTime).to.equal('2014-11-23T06:55:07');
+      expect(res.settingChanges[0].rateOfChangeAlerts.fallRate.enabled).to.be.false;
+      expect(res.settingChanges[0].rateOfChangeAlerts.riseRate.enabled).to.be.false;
+      expect(res.settingChanges[0].lowAlerts.level).to.equal(70);
+      expect(res.settingChanges[0].highAlerts.level).to.equal(180);
+      expect(res.settingChanges[0].transmitterId).to.equal(convertedTransmitterId);
+      expect(res.settingChanges[1].payload.internalTime).to.equal('2014-12-25T21:34:45');
+      expect(res.settingChanges[1].rateOfChangeAlerts.fallRate.enabled).to.be.true;
+      expect(res.settingChanges[1].rateOfChangeAlerts.riseRate.enabled).to.be.true;
+      expect(res.settingChanges[1].lowAlerts.level).to.equal(80);
+      expect(res.settingChanges[1].highAlerts.level).to.equal(200);
+    });
   });
 });

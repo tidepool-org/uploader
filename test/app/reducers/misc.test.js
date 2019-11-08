@@ -149,15 +149,14 @@ describe('misc reducers', () => {
     });
 
     test('should handle VERSION_CHECK_FAILURE [uploader version doesn\'t meet minimum]', () => {
-        const currentVersion = '0.99.0', requiredVersion = '0.100.0';
-        const err = new UnsupportedError(currentVersion, requiredVersion);
-        expect(misc.unsupported(undefined, {
-          type: actionTypes.VERSION_CHECK_FAILURE,
-          error: true,
-          payload: err
-        })).to.be.true;
-      }
-    );
+      const currentVersion = '0.99.0', requiredVersion = '0.100.0';
+      const err = new UnsupportedError(currentVersion, requiredVersion);
+      expect(misc.unsupported(undefined, {
+        type: actionTypes.VERSION_CHECK_FAILURE,
+        error: true,
+        payload: err
+      })).to.be.true;
+    });
 
     test('should handle VERSION_CHECK_SUCCESS', () => {
       expect(misc.unsupported(undefined, {

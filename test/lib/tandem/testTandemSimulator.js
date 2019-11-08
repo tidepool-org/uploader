@@ -66,14 +66,12 @@ describe('tandemSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(  'does not pass through a zero-volume bolus that does not have an expectedNormal',
-        () => {
-          var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
-          simulator.bolus(val);
-          simulator.bolus(zeroBolus);
-          expect(simulator.getEvents()).deep.equals([val]);
-        }
-      );
+      test('does not pass through a zero-volume bolus that does not have an expectedNormal', () => {
+        var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
+        simulator.bolus(val);
+        simulator.bolus(zeroBolus);
+        expect(simulator.getEvents()).deep.equals([val]);
+      });
     });
 
     describe('square', () => {
@@ -240,25 +238,23 @@ describe('tandemSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      test(  'uses the timestamp of the first suspend if multiple suspends appear before a single resume',
-        () => {
-          var suspend2 = {
-            time: '2014-09-25T01:05:00.000Z',
-            deviceTime: '2014-09-25T01:05:00',
-            timezoneOffset: 0,
-            conversionOffset: 0,
-            deviceId: 'tandem12345',
-            type: 'deviceEvent',
-            subType: 'status',
-            status: 'suspended',
-            reason: {suspended: 'automatic'}
-          };
-          simulator.suspend(suspend);
-          simulator.suspend(suspend2);
-          simulator.resume(resume);
-          expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
-        }
-      );
+      test('uses the timestamp of the first suspend if multiple suspends appear before a single resume', () => {
+        var suspend2 = {
+          time: '2014-09-25T01:05:00.000Z',
+          deviceTime: '2014-09-25T01:05:00',
+          timezoneOffset: 0,
+          conversionOffset: 0,
+          deviceId: 'tandem12345',
+          type: 'deviceEvent',
+          subType: 'status',
+          status: 'suspended',
+          reason: {suspended: 'automatic'}
+        };
+        simulator.suspend(suspend);
+        simulator.suspend(suspend2);
+        simulator.resume(resume);
+        expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
+      });
     });
 
     describe('timeChange', () => {
@@ -804,43 +800,42 @@ describe('tandemSimulator.js', () => {
   describe('event interplay', () => {
     test('new-day event does not pass through as scheduled basal when pump is suspended', () => {
 
-        var basal = builder.makeScheduledBasal()
-          .with_time('2014-09-25T15:00:00.000Z')
-          .with_deviceTime('2014-09-25T15:00:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .with_rate(1.3);
+      var basal = builder.makeScheduledBasal()
+        .with_time('2014-09-25T15:00:00.000Z')
+        .with_deviceTime('2014-09-25T15:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
 
-        var suspendEvent = builder.makeDeviceEventSuspend()
-          .with_reason({suspended: 'manual'})
-          .with_time('2014-09-25T18:05:00.000Z')
-          .with_deviceTime('2014-09-25T18:05:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .done();
+      var suspendEvent = builder.makeDeviceEventSuspend()
+        .with_reason({suspended: 'manual'})
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .done();
 
-        var suspend = builder.makeSuspendBasal()
-          .with_time('2014-09-25T18:05:00.000Z')
-          .with_deviceTime('2014-09-25T18:05:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0);
+      var suspend = builder.makeSuspendBasal()
+        .with_time('2014-09-25T18:05:00.000Z')
+        .with_deviceTime('2014-09-25T18:05:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0);
 
-        var newDay = builder.makeScheduledBasal()
-          .with_time('2014-09-26T00:00:00.000Z')
-          .with_deviceTime('2014-09-26T00:00:00')
-          .with_timezoneOffset(0)
-          .with_conversionOffset(0)
-          .with_rate(1.3);
-        newDay.set('type', 'new-day');
+      var newDay = builder.makeScheduledBasal()
+        .with_time('2014-09-26T00:00:00.000Z')
+        .with_deviceTime('2014-09-26T00:00:00')
+        .with_timezoneOffset(0)
+        .with_conversionOffset(0)
+        .with_rate(1.3);
+      newDay.set('type', 'new-day');
 
-        simulator.basal(basal);
-        simulator.suspend(suspendEvent);
-        simulator.basal(suspend);
-        simulator.newDay(newDay);
+      simulator.basal(basal);
+      simulator.suspend(suspendEvent);
+      simulator.basal(suspend);
+      simulator.newDay(newDay);
 
-        expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
-      }
-    );
+      expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
+    });
 
     test('a new-day event during a cancelled temp basal', () => {
       var tempBasalStart = {

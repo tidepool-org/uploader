@@ -410,23 +410,22 @@ describe('users', () => {
     });
 
     test('should handle LOGIN_SUCCESS and collapse bayer meters and abbottfreestylefreedomlite', () => {
-        expect(users.targetDevices(undefined, {
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: { memberships: [
-            {userid: 'a1b2c3', profile: {foo: 'bar'}},
-            {userid: 'd4e5f6', profile: { patient: { a: 1, targetDevices: [
-              'bayercontourusb', 'bayercontournextlink', 'bayercontournextusb', 'a_cgm'
-            ]}}},
-            {userid: 'g7h8i0', profile: { patient: {b: 2, targetDevices: ['abbottfreestylefreedomlite']}}},
-            {userid: 'j9k1l2', profile: { patient: {c: 3, targetDevices: ['bayercontour']}}}
-          ]}
-        })).to.deep.equal({
-          d4e5f6: ['bayercontournext', 'a_cgm'],
-          g7h8i0: ['abbottfreestylelite'],
-          j9k1l2: ['bayercontour']
-        });
-      }
-    );
+      expect(users.targetDevices(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { memberships: [
+          {userid: 'a1b2c3', profile: {foo: 'bar'}},
+          {userid: 'd4e5f6', profile: { patient: { a: 1, targetDevices: [
+            'bayercontourusb', 'bayercontournextlink', 'bayercontournextusb', 'a_cgm'
+          ]}}},
+          {userid: 'g7h8i0', profile: { patient: {b: 2, targetDevices: ['abbottfreestylefreedomlite']}}},
+          {userid: 'j9k1l2', profile: { patient: {c: 3, targetDevices: ['bayercontour']}}}
+        ]}
+      })).to.deep.equal({
+        d4e5f6: ['bayercontournext', 'a_cgm'],
+        g7h8i0: ['abbottfreestylelite'],
+        j9k1l2: ['bayercontour']
+      });
+    });
 
     test('should handle LOGOUT_REQUEST', () => {
       let initialState = {
@@ -515,20 +514,19 @@ describe('users', () => {
     });
 
     test('should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)', () => {
-        const initialState = {
-          noUserSelected: ['a_pump', 'a_cgm'],
-          a1b2c3: ['a_pump', 'a_cgm', 'a_meter']
-        };
-        let result = users.targetDevices(initialState, {
-          type: actionTypes.STORING_USERS_TARGETS
-        });
-        expect(result).to.deep.equal({
-          a1b2c3: ['a_pump', 'a_cgm', 'a_meter']
-        });
-        // tests to be sure not *mutating* state object but rather returning new!
-        expect(initialState === result).to.be.false;
-      }
-    );
+      const initialState = {
+        noUserSelected: ['a_pump', 'a_cgm'],
+        a1b2c3: ['a_pump', 'a_cgm', 'a_meter']
+      };
+      let result = users.targetDevices(initialState, {
+        type: actionTypes.STORING_USERS_TARGETS
+      });
+      expect(result).to.deep.equal({
+        a1b2c3: ['a_pump', 'a_cgm', 'a_meter']
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
   });
 
   describe('targetTimezones', () => {
@@ -617,20 +615,19 @@ describe('users', () => {
     });
 
     test('should handle STORING_USERS_TARGETS (by clearing noUserSelected devices)', () => {
-        const initialState = {
-          noUserSelected: 'Pacific/Honolulu',
-          a1b2c3: 'US/Eastern'
-        };
-        let result = users.targetTimezones(initialState, {
-          type: actionTypes.STORING_USERS_TARGETS
-        });
-        expect(result).to.deep.equal({
-          a1b2c3: 'US/Eastern'
-        });
-        // tests to be sure not *mutating* state object but rather returning new!
-        expect(initialState === result).to.be.false;
-      }
-    );
+      const initialState = {
+        noUserSelected: 'Pacific/Honolulu',
+        a1b2c3: 'US/Eastern'
+      };
+      let result = users.targetTimezones(initialState, {
+        type: actionTypes.STORING_USERS_TARGETS
+      });
+      expect(result).to.deep.equal({
+        a1b2c3: 'US/Eastern'
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+    });
   });
 
   describe('targetUsersForUpload', () => {
@@ -678,13 +675,12 @@ describe('users', () => {
     });
 
     test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD]', () => {
-        const profile = {a: 1};
-        expect(users.targetUsersForUpload(undefined, {
-          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: { user, profile, memberships }
-        })).to.deep.equal(['d4e5f6']);
-      }
-    );
+      const profile = {a: 1};
+      expect(users.targetUsersForUpload(undefined, {
+        type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: { user, profile, memberships }
+      })).to.deep.equal(['d4e5f6']);
+    });
 
     test('should handle SET_ALL_USERS', () => {
       const profile = {a: 1};
@@ -757,41 +753,38 @@ describe('users', () => {
     });
 
     test('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to only one]', () => {
-        const profile = {a: 1};
-        const memberships = [
-          {userid: 'a1b2c3'},
-          {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
-        ];
-        expect(users.uploadTargetUser(undefined, {
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: { user, profile, memberships }
-        })).to.equal(memberships[1].userid);
-      }
-    );
+      const profile = {a: 1};
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      })).to.equal(memberships[1].userid);
+    });
 
     test('should handle LOGIN_SUCCESS [loggedInUser is clinic, can upload to only one]', () => {
-        const user = {userid: 'a1b2c3', roles: ['clinic']};
-        const profile = {a: 1};
-        const memberships = [
-          {userid: 'a1b2c3'},
-          {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
-        ];
-        expect(users.uploadTargetUser(undefined, {
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: { user, profile, memberships }
-        })).to.be.null;
-      }
-    );
+      const user = {userid: 'a1b2c3', roles: ['clinic']};
+      const profile = {a: 1};
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      })).to.be.null;
+    });
 
     test('should handle LOGIN_SUCCESS [loggedInUser is not PWD, can upload to > 1]', () => {
-        const profile = {a: 1};
-        const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
-        expect(users.uploadTargetUser(undefined, {
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: { user, profile, memberships }
-        })).to.be.null;
-      }
-    );
+      const profile = {a: 1};
+      const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: { user, profile, memberships }
+      })).to.be.null;
+    });
 
     test('should handle LOGOUT_REQUEST', () => {
       expect(users.uploadTargetUser('d4e5f6', {
@@ -816,26 +809,24 @@ describe('users', () => {
     });
 
     test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to only one]', () => {
-        const profile = {a: 1};
-        const memberships = [
-          {userid: 'a1b2c3'},
-          {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
-        ];
-        expect(users.uploadTargetUser(undefined, {
-          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: { user, profile, memberships }
-        })).to.equal(memberships[1].userid);
-      }
-    );
+      const profile = {a: 1};
+      const memberships = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6', profile: {patient: {diagnosisDate: '1999-01-01'}}}
+      ];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: { user, profile, memberships }
+      })).to.equal(memberships[1].userid);
+    });
 
     test('should handle SET_USER_INFO_FROM_TOKEN [loggedInUser is not PWD, can upload to > 1]', () => {
-        const profile = {a: 1};
-        const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
-        expect(users.uploadTargetUser(undefined, {
-          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: { user, profile, memberships }
-        })).to.be.null;
-      }
-    );
+      const profile = {a: 1};
+      const memberships = [{userid: 'd4e5f6'}, {foo: 'bar'}];
+      expect(users.uploadTargetUser(undefined, {
+        type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+        payload: { user, profile, memberships }
+      })).to.be.null;
+    });
   });
 });

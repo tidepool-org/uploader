@@ -1874,7 +1874,7 @@ describe('Asynchronous Actions', () => {
 
   describe('clickDeviceSelectionDone', () => {
     describe('no targets in local storage', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
         const profile = {
           fullName: 'John',
           patient: {
@@ -1940,7 +1940,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('existing targets in local storage', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
         const profile = {
           fullName: 'John',
           patient: {
@@ -2015,7 +2015,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('profile API endpoint failure', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_PAGE (redirect to main page)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_PAGE (redirect to main page)', () => {
         const err = new Error(getUpdateProfileErrorMessage());
         const expectedActions = [
           {
@@ -2079,7 +2079,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('profile API endpoint failure (unauthorized)', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
         const profile = {
           fullName: 'John',
           patient: {
@@ -2147,7 +2147,7 @@ describe('Asynchronous Actions', () => {
 
   describe('clickEditUserNext', () => {
     describe('update profile success, user has devices selected', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (main)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (main)', () => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe'};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
@@ -2219,7 +2219,7 @@ describe('Asynchronous Actions', () => {
       });
     });
     describe('update profile success, user doesn\'t have devices selected', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings)', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings)', () => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe'};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
@@ -2318,7 +2318,7 @@ describe('Asynchronous Actions', () => {
       });
     });
     describe('update profile failure, unauthorized', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings) ', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (settings) ', () => {
         const profile = {fullName: 'Jane Doe'};
         const expectedActions = [
           {
@@ -2371,7 +2371,7 @@ describe('Asynchronous Actions', () => {
 
   describe('setTargetTimezone', () => {
     describe('update profile success', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
         const profile = {
           fullName: 'John',
           patient: {
@@ -2426,7 +2426,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('update profile failure', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_TARGET_TIMEZONE', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILURE, SET_TARGET_TIMEZONE', () => {
         const expectedActions = [
           {
             type: actionTypes.UPDATE_PROFILE_REQUEST,
@@ -2478,7 +2478,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('update profile failure (unauthorized)', () => {
-      test(  'should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_TARGET_TIMEZONE', () => {
         const profile = {
           fullName: 'John',
           patient: {
@@ -2543,7 +2543,7 @@ describe('Asynchronous Actions', () => {
       }
     };
     describe('no targets retrieved from local storage, no targets exist in state', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page)', () => {
         const expectedActions = [
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
@@ -2576,7 +2576,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('no targets retrieved from local storage, targets exist in state but no user targeted for upload by default', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page for user selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_PAGE (redirect to settings page for user selection)', () => {
         const expectedActions = [
           {
             type: actionTypes.RETRIEVING_USERS_TARGETS,
@@ -2622,7 +2622,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('no targets retrieved from local storage, targets exist in state but user targeted has no supported devices', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', () => {
         const devicesByUser = {
           abc123: ['carelink'],
           def456: ['dexcom', 'omnipod']
@@ -2681,7 +2681,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('no targets retrieved from local storage, targets exist in state and user targeted for upload is all set to upload', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', () => {
         const devicesByUser = {
           abc123: ['carelink'],
           def456: ['dexcom', 'omnipod']
@@ -2740,7 +2740,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, but no user targeted for upload by default', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for user selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for user selection)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -2803,7 +2803,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -2897,7 +2897,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is missing timezone, update profile unauthorized error', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -2991,7 +2991,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload has no supported devices', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for device selection)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for device selection)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -3061,7 +3061,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is all set to upload', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -3152,7 +3152,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('targets retrieved, user targeted for upload is all set to upload, update profile unauthorized error', () => {
-      test(  'should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
+      test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -3245,7 +3245,7 @@ describe('Asynchronous Actions', () => {
 
   describe('createCustodialAccount', () => {
     describe('create account success', () => {
-      test(  'should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', () => {
+      test('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', () => {
         const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
         const profile = {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }};
         const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
@@ -3300,7 +3300,7 @@ describe('Asynchronous Actions', () => {
       });
     });
     describe('create account failure', () => {
-      test(  'should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_FAILURE ', () => {
+      test('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_FAILURE ', () => {
         const profile = {fullName: 'Jane Doe'};
         const expectedActions = [
           {
@@ -3340,7 +3340,7 @@ describe('Asynchronous Actions', () => {
       }
     };
     describe('new target user has selected devices and timezone', () => {
-      test(  'should dispatch just SET_UPLOAD_TARGET_USER and SET_BLIP_VIEW_DATA_URL', () => {
+      test('should dispatch just SET_UPLOAD_TARGET_USER and SET_BLIP_VIEW_DATA_URL', () => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -3377,7 +3377,7 @@ describe('Asynchronous Actions', () => {
     });
 
     describe('new target user has not selected devices', () => {
-      test(  'should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', () => {
+      test('should dispatch SET_UPLOAD_TARGET_USER, SET_BLIP_VIEW_DATA_URL, and SET_PAGE (redirect to settings)', () => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,
@@ -3595,7 +3595,7 @@ describe('Asynchronous Actions', () => {
 
   describe('clickAddNewUser', () => {
     describe('link clicked', () => {
-      test(  'should dispatch SET_UPLOAD_TARGET_USER and SET_PAGE (CLINIC_USER_EDIT)', () => {
+      test('should dispatch SET_UPLOAD_TARGET_USER and SET_PAGE (CLINIC_USER_EDIT)', () => {
         const expectedActions = [
           {
             type: actionTypes.SET_UPLOAD_TARGET_USER,

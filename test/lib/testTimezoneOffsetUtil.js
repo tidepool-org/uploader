@@ -269,7 +269,7 @@ describe('TimezoneOffsetUtil.js', () => {
     });
 
     describe('uses the appropriate offset from UTC given (non-empty) `changes` provided', () => {
-      test(  'under clock drift adjustment only, timezoneOffset doesn\'t change even if DST',
+      test('under clock drift adjustment only, timezoneOffset doesn\'t change even if DST',
         () => {
           var clockDriftAdjust = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -320,7 +320,7 @@ describe('TimezoneOffsetUtil.js', () => {
         });
       });
 
-      test(  'under mixture of clock drift and real changes, intervals are contiguous',
+      test('under mixture of clock drift and real changes, intervals are contiguous',
         () => {
           var clockDriftAdjust1 = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -420,7 +420,7 @@ describe('TimezoneOffsetUtil.js', () => {
         });
       });
 
-      test(  'under travel across the date line (eastward), timezoneOffset changes',
+      test('under travel across the date line (eastward), timezoneOffset changes',
         () => {
           // i.e., JHB comes to visit
           var fromNZ = builder.makeDeviceEventTimeChange()
@@ -447,7 +447,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(  'under travel across the date line (westward), timezoneOffset changes',
+      test('under travel across the date line (westward), timezoneOffset changes',
         () => {
           // i.e., Left Coaster goes to NZ
           var toNZ = builder.makeDeviceEventTimeChange()
@@ -474,7 +474,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(  'under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does',
+      test('under huge change (month, year), timezoneOffset doesn\'t change but conversionOffset does',
         () => {
           // TODO: these don't work without the indices given to the lookup function
           // is this expected? is there a way to do the offsetIntervals differently to fix it?
@@ -523,7 +523,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(  'under 23-hour change, timezoneOffset doesn\'t change but conversionOffset does',
+      test('under 23-hour change, timezoneOffset doesn\'t change but conversionOffset does',
         () => {
           var twentyThree = builder.makeDeviceEventTimeChange()
             .with_change({
@@ -549,7 +549,7 @@ describe('TimezoneOffsetUtil.js', () => {
         }
       );
 
-      test(  'when no `index`, uses first UTC timestamp that fits in an offsetInterval',
+      test('when no `index`, uses first UTC timestamp that fits in an offsetInterval',
         () => {
           var ambiguousDeviceTime = '2015-04-01T12:00:00';
           var amNotPM = builder.makeDeviceEventTimeChange()

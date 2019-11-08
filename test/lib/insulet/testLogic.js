@@ -38,9 +38,8 @@ describe('objectBuildingLogic', () => {
     });
 
     test('should subtract total IOB from suggested correction when a BG is input', () => {
-        expect(logic.calculateNetRecommendation(wizDetails)).to.equal(5.5);
-      }
-    );
+      expect(logic.calculateNetRecommendation(wizDetails)).to.equal(5.5);
+    });
 
     test('should not take IOB into account if no BG value was input', () => {
       var details = _.assign({}, wizDetails, {current_bg: 65535});
@@ -48,16 +47,14 @@ describe('objectBuildingLogic', () => {
     });
 
     test('should subtract leftover suggestion from bolus when correction IOB is >= suggested correction', () => {
-        var details = _.assign({}, wizDetails, {corr_units_iob: 2.5});
-        expect(logic.calculateNetRecommendation(details)).to.equal(4.5);
-      }
-    );
+      var details = _.assign({}, wizDetails, {corr_units_iob: 2.5});
+      expect(logic.calculateNetRecommendation(details)).to.equal(4.5);
+    });
 
     test('should subtract total IOB from bolus if meal IOB is < suggested correction', () => {
-        var details = _.assign({}, wizDetails, {meal_units_iob: 0.5});
-        expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
-      }
-    );
+      var details = _.assign({}, wizDetails, {meal_units_iob: 0.5});
+      expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
+    });
 
     test('should add a negative correction to the total if present', () => {
       var details = _.assign({}, wizDetails, {current_bg: 50, corr_units_suggested: -1.0});

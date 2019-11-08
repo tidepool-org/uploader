@@ -54,100 +54,98 @@ describe('utils', () => {
     });
 
     test('the returned function should use the configured errCode on error if error does not have a code', () => {
-        const err = new Error('Uh oh...');
-        const displayErr = new Error(errorText[errCode]);
+      const err = new Error('Uh oh...');
+      const displayErr = new Error(errorText[errCode]);
 
-        expect(dispatch.callCount).to.equal(0);
-        fn(err);
-        expect(dispatch.callCount).to.equal(1);
-        const expectedAction = {
-          type: 'UPLOAD_FAILURE',
-          error: true,
-          payload: addInfoToError(displayErr, {
-            details: err.message,
-            utc: utc,
-            name: err.name,
-            step: null,
-            datasetId: null,
-            requestTrace: null,
-            code: errCode,
-            version: '0.100.0'
-          }),
-          meta: {
-            source: 'USER_VISIBLE',
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: 'device',
-                source: 'bar',
-                error: displayErr,
-              }
-            }
-          }
-        };
-        const result = dispatch.firstCall.args[0];
-        expect(result.payload).to.deep.include({
-          message: errorText[errCode],
+      expect(dispatch.callCount).to.equal(0);
+      fn(err);
+      expect(dispatch.callCount).to.equal(1);
+      const expectedAction = {
+        type: 'UPLOAD_FAILURE',
+        error: true,
+        payload: addInfoToError(displayErr, {
           details: err.message,
           utc: utc,
           name: err.name,
+          step: null,
+          datasetId: null,
+          requestTrace: null,
           code: errCode,
           version: '0.100.0'
-        });
-        expectedAction.payload = result.payload;
-        expectedAction.meta.metric.properties.error = result.payload;
-        expect(result).to.deep.equal(expectedAction);
-      }
-    );
-
-    test('the returned function should use the argument error\'s code when present', () => {
-        const err = new Error('Uh oh...');
-        const specificErrCode = 'E_CARELINK_UNSUPPORTED';
-        err.code = specificErrCode;
-        const displayErr = new Error(errorText[specificErrCode]);
-
-        expect(dispatch.callCount).to.equal(0);
-        fn(err);
-        expect(dispatch.callCount).to.equal(1);
-        const expectedAction = {
-          type: 'UPLOAD_FAILURE',
-          error: true,
-          payload: addInfoToError(displayErr, {
-            details: err.message,
-            utc: utc,
-            name: err.name,
-            step: null,
-            datasetId: null,
-            requestTrace: null,
-            code: specificErrCode,
-            version: '0.100.0'
-          }),
-          meta: {
-            source: 'USER_VISIBLE',
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: 'device',
-                source: 'bar',
-                error: displayErr,
-              }
+        }),
+        meta: {
+          source: 'USER_VISIBLE',
+          metric: {
+            eventName: 'Upload Failed',
+            properties: {
+              type: 'device',
+              source: 'bar',
+              error: displayErr,
             }
           }
-        };
-        const result = dispatch.firstCall.args[0];
-        expect(result.payload).to.deep.include({
-          message: errorText[specificErrCode],
+        }
+      };
+      const result = dispatch.firstCall.args[0];
+      expect(result.payload).to.deep.include({
+        message: errorText[errCode],
+        details: err.message,
+        utc: utc,
+        name: err.name,
+        code: errCode,
+        version: '0.100.0'
+      });
+      expectedAction.payload = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
+      expect(result).to.deep.equal(expectedAction);
+    });
+
+    test('the returned function should use the argument error\'s code when present', () => {
+      const err = new Error('Uh oh...');
+      const specificErrCode = 'E_CARELINK_UNSUPPORTED';
+      err.code = specificErrCode;
+      const displayErr = new Error(errorText[specificErrCode]);
+
+      expect(dispatch.callCount).to.equal(0);
+      fn(err);
+      expect(dispatch.callCount).to.equal(1);
+      const expectedAction = {
+        type: 'UPLOAD_FAILURE',
+        error: true,
+        payload: addInfoToError(displayErr, {
           details: err.message,
           utc: utc,
           name: err.name,
+          step: null,
+          datasetId: null,
+          requestTrace: null,
           code: specificErrCode,
           version: '0.100.0'
-        });
-        expectedAction.payload = result.payload;
-        expectedAction.meta.metric.properties.error = result.payload;
-        expect(result).to.deep.equal(expectedAction);
-      }
-    );
+        }),
+        meta: {
+          source: 'USER_VISIBLE',
+          metric: {
+            eventName: 'Upload Failed',
+            properties: {
+              type: 'device',
+              source: 'bar',
+              error: displayErr,
+            }
+          }
+        }
+      };
+      const result = dispatch.firstCall.args[0];
+      expect(result.payload).to.deep.include({
+        message: errorText[specificErrCode],
+        details: err.message,
+        utc: utc,
+        name: err.name,
+        code: specificErrCode,
+        version: '0.100.0'
+      });
+      expectedAction.payload = result.payload;
+      expectedAction.meta.metric.properties.error = result.payload;
+      expect(result).to.deep.equal(expectedAction);
+    });
   });
 
   describe('mergeProfileUpdates', () => {

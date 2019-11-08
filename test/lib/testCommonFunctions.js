@@ -59,59 +59,56 @@ describe('commonFunctions.js', () => {
     });
 
     test('fabricates final basal duration from only one schedule segment', () => {
-        var settings = {
-          basalSchedules: {
-            'Test': [
-              {
-                rate: 0.3,
-                start: 0
-              }
-            ]
-          }
-        };
-        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-        expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
-        expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
-      }
-    );
+      var settings = {
+        basalSchedules: {
+          'Test': [
+            {
+              rate: 0.3,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
+      expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
+    });
 
     test('final basal has zero duration when it has an off-schedule rate', () => {
-        var settings = {
-          basalSchedules: {
-            'Test': [
-              {
-                rate: 0.5,
-                start: 0
-              }
-            ]
-          }
-        };
-        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-        // TODO: to make the following test more robust, consider using chai-things (new dependency)
-        // that supports assertions on array elements, e.g.:
-        // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
-        expect(finalBasal.annotations[0].code).to.equal('test/basal/off-schedule-rate');
-        expect(finalBasal.annotations[1].code).to.equal('basal/unknown-duration');
-        expect(finalBasal.duration).to.equal(0);
-      }
-    );
+      var settings = {
+        basalSchedules: {
+          'Test': [
+            {
+              rate: 0.5,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      // TODO: to make the following test more robust, consider using chai-things (new dependency)
+      // that supports assertions on array elements, e.g.:
+      // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
+      expect(finalBasal.annotations[0].code).to.equal('test/basal/off-schedule-rate');
+      expect(finalBasal.annotations[1].code).to.equal('basal/unknown-duration');
+      expect(finalBasal.duration).to.equal(0);
+    });
 
     test('final basal has zero duration if no schedule and duration found', () => {
-        var settings = {
-          basalSchedules: {
-            'NotTest': [
-              {
-                rate: 0.3,
-                start: 0
-              }
-            ]
-          }
-        };
-        var finalBasal = common.finalScheduledBasal(basal,settings,'test');
-        expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
-        expect(finalBasal.duration).to.equal(0);
-      }
-    );
+      var settings = {
+        basalSchedules: {
+          'NotTest': [
+            {
+              rate: 0.3,
+              start: 0
+            }
+          ]
+        }
+      };
+      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
+      expect(finalBasal.duration).to.equal(0);
+    });
   });
 
   describe('computeMillisInCurrentDay', () => {

@@ -397,14 +397,33 @@ describe('uploads', () => {
     });
 
     test('should handle RESET_UPLOAD [resetting another when block mode successful not reset]', () => {
-        let initialState = {
-          [userId]: {[deviceKey]: {
-            completed: true,
-            data: [8,10],
-            history: [{start: time, finish: time}],
-            successful: true,
-            uploading: false
-          },
+      let initialState = {
+        [userId]: {[deviceKey]: {
+          completed: true,
+          data: [8,10],
+          history: [{start: time, finish: time}],
+          successful: true,
+          uploading: false
+        },
+        another_pump: {
+          choosingFile: false,
+          completed: true,
+          data: [2,4,6],
+          file: {data: [1,2,3], name: 'foo.ibf'},
+          history: [{start: time, finish: time}],
+          readingFile: false,
+          successful: true,
+          uploading: false
+        }
+      }};
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.RESET_UPLOAD,
+        payload: { userId, deviceKey }
+      });
+      expect(result).to.deep.equal({
+        [userId]: {[deviceKey]: {
+          history: [{start: time, finish: time}]
+        },
           another_pump: {
             choosingFile: false,
             completed: true,
@@ -415,33 +434,13 @@ describe('uploads', () => {
             successful: true,
             uploading: false
           }
-        }};
-        let result = uploads.uploadsByUser(initialState, {
-          type: actionTypes.RESET_UPLOAD,
-          payload: { userId, deviceKey }
-        });
-        expect(result).to.deep.equal({
-          [userId]: {[deviceKey]: {
-            history: [{start: time, finish: time}]
-          },
-            another_pump: {
-              choosingFile: false,
-              completed: true,
-              data: [2,4,6],
-              file: {data: [1,2,3], name: 'foo.ibf'},
-              history: [{start: time, finish: time}],
-              readingFile: false,
-              successful: true,
-              uploading: false
-            }
-          }
-        });
-        // tests to be sure not *mutating* state object but rather returning new!
-        expect(initialState === result).to.be.false;
-        expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
-        expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
-      }
-    );
+        }
+      });
+      // tests to be sure not *mutating* state object but rather returning new!
+      expect(initialState === result).to.be.false;
+      expect(initialState.a1b2c3 === result.a1b2c3).to.be.false;
+      expect(initialState.a1b2c3.a_cgm === result.a1b2c3.a_cgm).to.be.false;
+    });
 
     test('should handle RESET_UPLOAD [upload failed]', () => {
       let initialState = {

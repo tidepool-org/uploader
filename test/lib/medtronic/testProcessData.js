@@ -180,165 +180,161 @@ describe('processData.js', () => {
         expect(result[0]).to.deep.equal(expected);
       });
 
-      test(    'should resume automatically after two hours with no response by user',
-          () => {
-            var suspend1 = {
-                head: [ 0x1E, 0x02 ],
-                type: {
-                    value: 0X1E,
-                    name: 'PUMP_SUSPEND'
+      test('should resume automatically after two hours with no response by user', () => {
+        var suspend1 = {
+            head: [ 0x1E, 0x02 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T15:35:51.000Z'),
+            index: 1
+        };
+
+        var suspend2 = {
+            head: [ 0x1E, 0x44 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T15:37:51.000Z'),
+            index: 2
+        };
+
+        var resume1 = {
+            head: [ 0x1F, 0x88 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T17:35:00.000Z'),
+            index: 3
+        };
+
+        var resume2 = {
+            head: [ 0x1F, 0xC0 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T17:40:46.000Z'),
+            index: 4
+        };
+
+        var resume3 = {
+            head: [ 0x1F, 0xC0 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T17:40:52.000Z'),
+            index: 5
+        };
+
+        var expected = {
+                'time': '2016-12-14T15:35:51.000Z',
+                'timezoneOffset': 0,
+                'clockDriftOffset': 0,
+                'conversionOffset': 0,
+                'deviceTime': '2016-12-14T15:35:51',
+                'type': 'deviceEvent',
+                'subType': 'status',
+                'status': 'suspended',
+          'index' : 1,
+          'resumeIndex' : 3,
+                'reason': {
+                    'suspended': 'automatic',
+                    'resumed': 'automatic'
                 },
-                jsDate: new Date('2016-12-14T15:35:51.000Z'),
-                index: 1
+                'duration': 7149000,
+                'payload': {
+                    'reasons': [
+                        'Suspend no response',
+                        'Automatic resume after no response'
+                    ],
+                    'logIndices': [
+                        1
+                    ]
+                }
             };
 
-            var suspend2 = {
-                head: [ 0x1E, 0x44 ],
-                type: {
-                    value: 0X1E,
-                    name: 'PUMP_SUSPEND'
+        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,resume1,resume2,resume3]);
+        expect(result[0]).to.deep.equal(expected);
+      });
+
+      test('should resume automatically after two hours when user suspends', () => {
+        var suspend1 = {
+            head: [ 0x1E, 0x02 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:22.000Z'),
+            index: 1
+        };
+
+        var suspend2 = {
+            head: [ 0x1E, 0x43 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:32.000Z'),
+            index: 2
+        };
+
+        var suspend3 = {
+            head: [ 0x1E, 0x65 ],
+            type: {
+                value: 0X1E,
+                name: 'PUMP_SUSPEND'
+            },
+            jsDate: new Date('2016-12-14T18:00:37.000Z'),
+            index: 3
+        };
+
+        var resume1 = {
+            head: [ 0x1F, 0xA7 ],
+            type: {
+                value: 0X1F,
+                name: 'PUMP_RESUME'
+            },
+            jsDate: new Date('2016-12-14T20:00:00.000Z'),
+            index: 4
+        };
+
+        var expected = {
+
+                'time': '2016-12-14T18:00:22.000Z',
+                'timezoneOffset': 0,
+                'clockDriftOffset': 0,
+                'conversionOffset': 0,
+                'deviceTime': '2016-12-14T18:00:22',
+                'type': 'deviceEvent',
+                'subType': 'status',
+                'status': 'suspended',
+                'reason': {
+                    'suspended': 'automatic',
+                    'resumed': 'automatic'
                 },
-                jsDate: new Date('2016-12-14T15:37:51.000Z'),
-                index: 2
+                'duration': 7178000,
+          'index' : 1,
+          'resumeIndex' : 4,
+                'payload': {
+                    'reasons': [
+              'Suspend low glucose',
+              'Suspend user selected',
+              'Automatic resume after user suspend'
+                    ],
+                    'logIndices': [
+                        1
+                    ]
+                }
             };
 
-            var resume1 = {
-                head: [ 0x1F, 0x88 ],
-                type: {
-                    value: 0X1F,
-                    name: 'PUMP_RESUME'
-                },
-                jsDate: new Date('2016-12-14T17:35:00.000Z'),
-                index: 3
-            };
-
-            var resume2 = {
-                head: [ 0x1F, 0xC0 ],
-                type: {
-                    value: 0X1F,
-                    name: 'PUMP_RESUME'
-                },
-                jsDate: new Date('2016-12-14T17:40:46.000Z'),
-                index: 4
-            };
-
-            var resume3 = {
-                head: [ 0x1F, 0xC0 ],
-                type: {
-                    value: 0X1F,
-                    name: 'PUMP_RESUME'
-                },
-                jsDate: new Date('2016-12-14T17:40:52.000Z'),
-                index: 5
-            };
-
-            var expected = {
-                    'time': '2016-12-14T15:35:51.000Z',
-                    'timezoneOffset': 0,
-                    'clockDriftOffset': 0,
-                    'conversionOffset': 0,
-                    'deviceTime': '2016-12-14T15:35:51',
-                    'type': 'deviceEvent',
-                    'subType': 'status',
-                    'status': 'suspended',
-              'index' : 1,
-              'resumeIndex' : 3,
-                    'reason': {
-                        'suspended': 'automatic',
-                        'resumed': 'automatic'
-                    },
-                    'duration': 7149000,
-                    'payload': {
-                        'reasons': [
-                            'Suspend no response',
-                            'Automatic resume after no response'
-                        ],
-                        'logIndices': [
-                            1
-                        ]
-                    }
-                };
-
-            var result = proc.buildSuspendResumeRecords([suspend1,suspend2,resume1,resume2,resume3]);
-            expect(result[0]).to.deep.equal(expected);
-          }
-      );
-
-      test(    'should resume automatically after two hours when user suspends',
-          () => {
-            var suspend1 = {
-                head: [ 0x1E, 0x02 ],
-                type: {
-                    value: 0X1E,
-                    name: 'PUMP_SUSPEND'
-                },
-                jsDate: new Date('2016-12-14T18:00:22.000Z'),
-                index: 1
-            };
-
-            var suspend2 = {
-                head: [ 0x1E, 0x43 ],
-                type: {
-                    value: 0X1E,
-                    name: 'PUMP_SUSPEND'
-                },
-                jsDate: new Date('2016-12-14T18:00:32.000Z'),
-                index: 2
-            };
-
-            var suspend3 = {
-                head: [ 0x1E, 0x65 ],
-                type: {
-                    value: 0X1E,
-                    name: 'PUMP_SUSPEND'
-                },
-                jsDate: new Date('2016-12-14T18:00:37.000Z'),
-                index: 3
-            };
-
-            var resume1 = {
-                head: [ 0x1F, 0xA7 ],
-                type: {
-                    value: 0X1F,
-                    name: 'PUMP_RESUME'
-                },
-                jsDate: new Date('2016-12-14T20:00:00.000Z'),
-                index: 4
-            };
-
-            var expected = {
-
-                    'time': '2016-12-14T18:00:22.000Z',
-                    'timezoneOffset': 0,
-                    'clockDriftOffset': 0,
-                    'conversionOffset': 0,
-                    'deviceTime': '2016-12-14T18:00:22',
-                    'type': 'deviceEvent',
-                    'subType': 'status',
-                    'status': 'suspended',
-                    'reason': {
-                        'suspended': 'automatic',
-                        'resumed': 'automatic'
-                    },
-                    'duration': 7178000,
-              'index' : 1,
-              'resumeIndex' : 4,
-                    'payload': {
-                        'reasons': [
-                  'Suspend low glucose',
-                  'Suspend user selected',
-                  'Automatic resume after user suspend'
-                        ],
-                        'logIndices': [
-                            1
-                        ]
-                    }
-                };
-
-            var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
-            expect(result[0]).to.deep.equal(expected);
-          }
-      );
+        var result = proc.buildSuspendResumeRecords([suspend1,suspend2,suspend3,resume1]);
+        expect(result[0]).to.deep.equal(expected);
+      });
 
       test('should have user suspend followed by LGS suspend', () => {
 

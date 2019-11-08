@@ -106,14 +106,12 @@ describe('animasSimulator.js', () => {
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      test(  'does not pass through a zero-volume bolus that does not have an expectedNormal',
-        () => {
-          var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
-          simulator.bolus(val);
-          simulator.bolus(zeroBolus);
-          expect(simulator.getEvents()).deep.equals([val]);
-        }
-      );
+      test('does not pass through a zero-volume bolus that does not have an expectedNormal', () => {
+        var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
+        simulator.bolus(val);
+        simulator.bolus(zeroBolus);
+        expect(simulator.getEvents()).deep.equals([val]);
+      });
     });
 
     describe('square', () => {

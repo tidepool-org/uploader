@@ -398,7 +398,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record the start of app initialization',  () => {
+      test('should create an action to record the start of app initialization',  () => {
           const expectedAction = {
             type: actionTypes.INIT_APP_REQUEST,
             meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
@@ -414,7 +414,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record the successful completion of app initialization',  () => {
+      test('should create an action to record the successful completion of app initialization',  () => {
         const expectedAction = {
           type: actionTypes.INIT_APP_SUCCESS,
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
@@ -431,7 +431,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record early exit from app initialization due to error',  () => {
+      test('should create an action to record early exit from app initialization due to error',  () => {
         const expectedAction = {
           type: actionTypes.INIT_APP_FAILURE,
           error: true,
@@ -456,7 +456,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
+      test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
           payload: { user, profile, memberships },
@@ -494,7 +494,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(syncActions.loginSuccess({ user, profile, memberships }))).to.be.true;
       });
 
-      test(  'should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
+      test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.LOGIN_SUCCESS,
           payload: { user, profile, memberships },
@@ -540,7 +540,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to request logout and clear logged-in user related state',  () => {
+      test('should create an action to request logout and clear logged-in user related state',  () => {
         const expectedAction = {
           type: actionTypes.LOGOUT_REQUEST,
           meta: {
@@ -602,7 +602,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record an attempt to fetch data from CareLink',  () => {
+      test('should create an action to record an attempt to fetch data from CareLink',  () => {
         const expectedAction = {
           type: actionTypes.CARELINK_FETCH_REQUEST,
           payload: { userId, deviceKey },
@@ -620,7 +620,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record a successful fetch from CareLink',  () => {
+      test('should create an action to record a successful fetch from CareLink',  () => {
         const expectedAction = {
           type: actionTypes.CARELINK_FETCH_SUCCESS,
           payload: { userId, deviceKey },
@@ -642,7 +642,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record the failure of an attempt to fetch data from CareLink',  () => {
+      test('should create an action to record the failure of an attempt to fetch data from CareLink',  () => {
         const expectedAction = {
           type: actionTypes.CARELINK_FETCH_FAILURE,
           error: true,
@@ -669,7 +669,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action reporting an aborted upload (b/c another upload in progress)',  () => {
+      test('should create an action reporting an aborted upload (b/c another upload in progress)',  () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_ABORTED,
           error: true,
@@ -714,7 +714,7 @@ describe('Synchronous Actions', () => {
         expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
       });
 
-      test(  'should create appropriate metric properties for 600 series upload limits',  () => {
+      test('should create appropriate metric properties for 600 series upload limits',  () => {
         const time = '2016-01-01T12:05:00.123Z';
         __Rewire__('uploadDataPeriod', { periodMedtronic600: 1 });
         device.source.driverId = 'Medtronic600';
@@ -747,7 +747,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to update the step and percentage complete for the upload in progress',  () => {
+      test('should create an action to update the step and percentage complete for the upload in progress',  () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_PROGRESS,
           payload: { step, percentage, isFirstUpload },
@@ -800,7 +800,7 @@ describe('Synchronous Actions', () => {
         expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
       });
 
-      test(  'should create an action to record a successful 600 series upload w/ limit',  () => {
+      test('should create an action to record a successful 600 series upload w/ limit',  () => {
         const time = '2016-01-01T12:05:00.123Z';
         __Rewire__('uploadDataPeriod', { periodMedtronic600: 2 });
         device.source.driverId = 'Medtronic600';
@@ -878,7 +878,7 @@ describe('Synchronous Actions', () => {
         expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
       });
 
-      test(  'should create an action to report an upload failure with limit for 600 series',  () => {
+      test('should create an action to report an upload failure with limit for 600 series',  () => {
         __Rewire__('uploadDataPeriod', { periodMedtronic600: 3 });
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
@@ -966,7 +966,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record file selection for a block-mode device',  () => {
+      test('should create an action to record file selection for a block-mode device',  () => {
         const expectedAction = {
           type: actionTypes.CHOOSING_FILE,
           payload: { userId, deviceKey },
@@ -985,7 +985,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to report user error in choosing a file with the wrong extension',  () => {
+      test('should create an action to report user error in choosing a file with the wrong extension',  () => {
         const expectedAction = {
           type: actionTypes.READ_FILE_ABORTED,
           error: true,
@@ -1028,7 +1028,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record data of successfully read file',  () => {
+      test('should create an action to record data of successfully read file',  () => {
         const expectedAction = {
           type: actionTypes.READ_FILE_SUCCESS,
           payload: { userId, deviceKey, filedata },
@@ -1070,7 +1070,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record the start of the uploader supported version check',  () => {
+      test('should create an action to record the start of the uploader supported version check',  () => {
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_REQUEST,
           meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
@@ -1087,7 +1087,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to mark the current uploader\'s version as supported',  () => {
+      test('should create an action to mark the current uploader\'s version as supported',  () => {
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_SUCCESS,
           meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
@@ -1111,7 +1111,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to record an unsuccessful attempt to check the uploader\'s version',  () => {
+      test('should create an action to record an unsuccessful attempt to check the uploader\'s version',  () => {
         const err = new Error('API error');
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_FAILURE,
@@ -1130,7 +1130,7 @@ describe('Synchronous Actions', () => {
         expect(action).to.deep.equal(expectedAction);
       });
 
-      test(  'should create an action to mark the current uploader\'s version as unsupported',  () => {
+      test('should create an action to mark the current uploader\'s version as unsupported',  () => {
         const err = new UnsupportedError(currentVersion, requiredVersion);
         const expectedAction = {
           type: actionTypes.VERSION_CHECK_FAILURE,
@@ -1161,7 +1161,7 @@ describe('Synchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
 
-      test(  'should create an action to announce the side effet of storing users\' targets locally',  () => {
+      test('should create an action to announce the side effet of storing users\' targets locally',  () => {
         const expectedAction = {
           type: actionTypes.RETRIEVING_USERS_TARGETS,
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
