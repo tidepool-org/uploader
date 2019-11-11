@@ -37,8 +37,11 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 }
 
 export default merge.smart(baseConfig, {
+  devtool: 'inline-source-map',//'#cheap-module-source-map',
+
   mode: 'development',
-  devtool: '#cheap-module-source-map',
+
+  target: 'electron-renderer',
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
@@ -54,6 +57,16 @@ export default merge.smart(baseConfig, {
 
   module: {
     rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true
+          }
+        }
+      },
       // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
       {
         test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
@@ -186,12 +199,9 @@ export default merge.smart(baseConfig, {
     new webpack.HotModuleReplacementPlugin({
       multiStep: true
     }),
-    /**
-     * If you are using the CLI, the webpack process will not exit with an error
-     * code by enabling this plugin.
-     * https://github.com/webpack/docs/wiki/list-of-plugins#noerrorsplugin
-     */
-     new webpack.NoEmitOnErrorsPlugin(),
+
+    new webpack.NoEmitOnErrorsPlugin(),
+
      /**
      * Create global constants which can be configured at compile time.
      *
@@ -208,17 +218,17 @@ export default merge.smart(baseConfig, {
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
+
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
   ],
-  /**
-   * https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-   */
-  target: 'electron-renderer',
+
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+    __filename: false
   },
+
   devServer: {
     clientLogLevel: 'debug',
     port,
