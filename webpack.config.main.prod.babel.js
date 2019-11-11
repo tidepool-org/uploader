@@ -14,6 +14,8 @@ export default merge.smart(baseConfig, {
 
   mode: 'production',
 
+  target: 'electron-main',
+
   entry: ['./app/main.dev'],
 
   output: {
@@ -39,6 +41,7 @@ export default merge.smart(baseConfig, {
         process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
       openAnalyzer: process.env.OPEN_ANALYZER === 'true'
     }),
+
     /**
      * Create global constants which can be configured at compile time.
      *
@@ -54,12 +57,6 @@ export default merge.smart(baseConfig, {
       __ROLLBAR_POST_TOKEN__: JSON.stringify(process.env.ROLLBAR_POST_TOKEN),
     })
   ],
-
-  /**
-   * Set target to Electron specific node.js env.
-   * https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-   */
-  target: 'electron-main',
 
   /**
    * Disables webpack processing of __dirname and __filename.

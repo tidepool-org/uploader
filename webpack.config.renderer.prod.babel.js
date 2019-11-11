@@ -12,6 +12,7 @@ import cp from 'child_process';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -39,39 +40,11 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 
 
 export default merge.smart(baseConfig, {
-  optimization: {
-    minimizer: process.env.E2E_BUILD
-      ? []
-      : [
-          new TerserPlugin({
-            parallel: true,
-            sourceMap: true,
-            cache: true
-          }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-              map: {
-                inline: false,
-                annotation: true
-              }
-            }
-          })
-        ],
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
-    },
-  },
-
   devtool: 'source-map',
 
   mode: 'production',
+
+  target: 'electron-renderer',
 
   entry: ['./app/index'],
 
@@ -209,6 +182,26 @@ export default merge.smart(baseConfig, {
     ]
   },
 
+  optimization: {
+    minimizer: process.env.E2E_BUILD
+      ? []
+      : [
+          new TerserPlugin({
+            parallel: true,
+            sourceMap: true,
+            cache: true
+          }),
+          new OptimizeCSSAssetsPlugin({
+            cssProcessorOptions: {
+              map: {
+                inline: false,
+                annotation: true
+              }
+            }
+          })
+        ]
+  },
+
   plugins: [
     /**
     * Create global constants which can be configured at compile time.
@@ -237,6 +230,10 @@ export default merge.smart(baseConfig, {
       inject: false
     }),
 
+    new MiniCssExtractPlugin({ 
+      filename: 'style.css' 
+    }),
+
     /** Upload sourcemap to Rollbar */
     ...(ROLLBAR_POST_TOKEN ? [new RollbarSourceMapPlugin({
       accessToken: ROLLBAR_POST_TOKEN,
@@ -244,11 +241,13 @@ export default merge.smart(baseConfig, {
       publicPath: 'http://dynamichost/dist'
     })] : []),
 
-    new MiniCssExtractPlugin({ filename: 'style.css' })
+    new BundleAnalyzerPlugin({
+      analyzerMode:
+        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+      openAnalyzer: process.env.OPEN_ANALYZER === 'true'
+    })
   ],
 
-  // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-  target: 'electron-renderer',
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
   }
