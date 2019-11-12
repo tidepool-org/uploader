@@ -191,7 +191,8 @@ export default merge.smart(baseConfig, {
             sourceMap: true,
             cache: true,
             terserOptions: {
-              keep_classnames: true // we check against some classnames
+              keep_classnames: true, // we check against some classnames
+              keep_fnames: true
             },
             extractComments: false
           }),
