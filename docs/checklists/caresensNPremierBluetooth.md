@@ -1,4 +1,4 @@
-## Accu-Chek Aviva Connect, Guide & Guide Me
+## CareSens N Premier meter over Bluetooth LE
 
 (Key:
 
@@ -11,21 +11,21 @@
 ### Required if Present
 
 - `[x]` smbg values
-- `[ ]` units of smbg values (read from device, not hard-coded)
+- `[x]` units of smbg values (read from device, not hard-coded)
 - `[x]` out-of-range values (LO or HI)
-- `[x]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
-- `[ ]` date & time settings changes
+- `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+- `[-]` date & time settings changes
 - `[ ]` blood ketone values
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
-- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
+- `[-]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ### No Tidepool Data Model Yet
 
-- `[ ]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
-- `[ ]` device settings, other than date & time (e.g., target blood glucose range)
-- `[?]` tag/note (e.g., pre- vs. post-meal)
+- `[x]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
+- `[-]` device settings, other than date & time (e.g., target blood glucose range)
+- `[-]` tag/note (e.g., pre- vs. post-meal)
 
 ### Tidepool ingestion API
 
