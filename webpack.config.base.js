@@ -19,6 +19,13 @@ export default {
         }
       }],
       exclude: /node_modules/
+    },
+    // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
+    {
+      test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+      resolve: {
+        aliasFields: ['main']
+      }
     }]
   },
 
