@@ -192,7 +192,8 @@ export default merge.smart(baseConfig, {
             cache: true,
             terserOptions: {
               keep_classnames: true // we check against some classnames
-            }
+            },
+            extractComments: false
           }),
           new OptimizeCSSAssetsPlugin({
             cssProcessorOptions: {
