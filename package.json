@@ -146,9 +146,7 @@
       ],
       "publisherName": [
         "Tidepool Project"
-      ],
-      "rfc3161TimeStampServer": "http://timestamp.digicert.com",
-      "timeStampServer": "http://timestamp.digicert.com"
+      ]
     },
     "mac": {
       "category": "public.app-category.tools",
