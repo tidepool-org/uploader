@@ -18,21 +18,18 @@ module.exports = api => {
   return {
     presets: [
       [
-        require('@babel/preset-env'), 
+        require('@babel/preset-env'),
         { 
-          targets: { 'electron': require('electron/package.json').version }, 
-          useBuiltIns: 'usage', 
-          corejs: 2, 
-          modules: 'commonjs' 
+          targets: { 'electron': require('electron/package.json').version },
+          useBuiltIns: 'usage',
+          corejs: 2,
+          modules: 'commonjs'
         }
       ],
       [require('@babel/preset-react'), { development }]
     ],
     retainLines: true,
     plugins: [
-      [
-        require('babel-plugin-add-module-exports')
-      ],
       // Stage 0
       require('@babel/plugin-proposal-function-bind'),
 
@@ -63,19 +60,13 @@ module.exports = api => {
       [require('@babel/plugin-proposal-class-properties'), { loose: true }],
       require('@babel/plugin-proposal-json-strings'),
 
-      ...(development ? developmentPlugins : productionPlugins)
+      ...(development ? developmentPlugins : productionPlugins),
+      require('babel-plugin-add-module-exports'),
+      require('@babel/plugin-transform-classes'),
     ],
     env: {
-      production: {
-        plugins: [
-          require('@babel/plugin-proposal-class-properties'),
-          require('@babel/plugin-transform-classes')
-        ]
-      },
       development: {
         plugins: [
-          require('@babel/plugin-proposal-class-properties'),
-          require('@babel/plugin-transform-classes'),
           [
             require('babel-plugin-transform-define'),
             {
