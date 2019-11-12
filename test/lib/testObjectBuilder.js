@@ -622,7 +622,7 @@ describe('objectBuilder.js', () => {
       var upload = bob.makeUpload();
 
 
-      expect(upload.deviceId).to.equal(REQUIRED);
+      expect(upload.deviceId).to.equal(OPTIONAL);
       expect(upload.type).to.equal('upload');
       expect(upload.time).to.equal(REQUIRED);
       expect(upload.timezoneOffset).to.equal(REQUIRED);
@@ -638,7 +638,7 @@ describe('objectBuilder.js', () => {
       expect(upload.deviceTags).to.equal(REQUIRED);
       expect(upload.deviceManufacturers).to.equal(REQUIRED);
       expect(upload.deviceModel).to.equal(REQUIRED);
-      expect(upload.deviceSerialNumber).to.equal(REQUIRED);
+      expect(upload.deviceSerialNumber).to.equal(OPTIONAL);
 
       expect(upload.source).to.equal(OPTIONAL);
       expect(upload.payload).to.equal(OPTIONAL);

@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.22.0-webpack-update",
+  "version": "2.22.3-webpack-update",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -39,6 +39,7 @@
     "@material-ui/icons": "3.0.2",
     "async": "2.6.1",
     "babyparse": "0.4.6",
+    "ble-glucose": "0.2.2",
     "bows": "1.7.2",
     "chrome-launcher": "0.12.0",
     "classnames": "2.2.6",
@@ -150,9 +151,7 @@
       ],
       "publisherName": [
         "Tidepool Project"
-      ],
-      "rfc3161TimeStampServer": "http://timestamp.digicert.com",
-      "timeStampServer": "http://timestamp.digicert.com"
+      ]
     },
     "mac": {
       "category": "public.app-category.tools",

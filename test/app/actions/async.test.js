@@ -640,6 +640,8 @@ describe('Asynchronous Actions', () => {
     test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_FAILURE, UPLOAD_ABORTED', () => {
       const requiredVersion = '0.99.0';
       const currentVersion = '0.50.0';
+      const time = '2016-01-01T12:05:00.123Z';
+      const deviceKey = 'a_pump';
       __Rewire__('services', {
         api: {
           upload: {
@@ -675,7 +677,7 @@ describe('Asynchronous Actions', () => {
         semver: currentVersion
       });
       const store = mockStore({});
-      store.dispatch(asyncActions.doUpload());
+      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:(new UnsupportedError(currentVersion, requiredVersion)).message});
       expectedActions[1].payload = actions[1].payload;
@@ -690,6 +692,8 @@ describe('Asynchronous Actions', () => {
       const initialState = {
         working: {uploading: true}
       };
+      const deviceKey = 'a_pump';
+      const time = '2016-01-01T12:05:00.123Z';
       __Rewire__('services', {
         api: {
           upload: {
@@ -717,7 +721,7 @@ describe('Asynchronous Actions', () => {
         semver: '0.100.0'
       });
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload());
+      store.dispatch(asyncActions.doUpload(deviceKey,{}, time));
       const actions = store.getActions();
       expect(actions[2].payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
       expectedActions[2].payload = actions[2].payload;
