@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.js",
@@ -146,9 +146,7 @@
       ],
       "publisherName": [
         "Tidepool Project"
-      ],
-      "rfc3161TimeStampServer": "http://timestamp.digicert.com",
-      "timeStampServer": "http://timestamp.digicert.com"
+      ]
     },
     "mac": {
       "category": "public.app-category.tools",
