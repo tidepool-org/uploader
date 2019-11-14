@@ -72,7 +72,7 @@
     "semver": "6.3.0",
     "source-map-support": "0.5.16",
     "stack-trace": "0.0.10",
-    "sudo-prompt": "9.0.0",
+    "sudo-prompt": "9.1.0",
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.41.0",
     "usb-cdc-acm": "0.1.1",
