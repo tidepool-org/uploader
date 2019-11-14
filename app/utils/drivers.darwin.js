@@ -27,12 +27,12 @@ export function checkVersion(dispatch) {
 
   dispatch(sync.checkingForDriverUpdate());
 
-  function setInstallOpts(iconsPath, scriptPath) {
+  function setInstallOpts(iconsPath, scriptPath, driverPath) {
     const options = {
       name: 'Tidepool Driver Installer',
       icns: iconsPath
     };
-    const execString = scriptPath.replace(/ /g, '\\ ');
+    const execString = scriptPath.replace(/ /g, '\\ ') + ' ' + driverPath.replace(/ /g, '\\ ');
     dispatch(sync.driverUpdateShellOpts({options,execString}));
   }
 
@@ -73,11 +73,13 @@ export function checkVersion(dispatch) {
 
   const appFolder = path.dirname(remote.app.getAppPath());
   let helperPath = path.join(appFolder, 'driver/helpers/');
+  let driverPath = path.join(appFolder, 'driver/');
   let iconsPath = path.join(appFolder, '/Tidepool Uploader.icns');
   let scriptPath = path.join(appFolder, 'driver/updateDrivers.sh');
 
   if (isDev) {
     const rootDir = path.resolve(appFolder, '../../../../../../');
+    driverPath = path.resolve(rootDir, 'build/driver/');
     helperPath = path.join(rootDir, 'resources/mac/helpers/');
     iconsPath = path.join(rootDir, 'resources/icon.icns');
     scriptPath = path.resolve(rootDir, 'resources/mac/updateDrivers.sh');
@@ -85,6 +87,6 @@ export function checkVersion(dispatch) {
 
   const helperList = fs.readdirSync(helperPath).filter(e => e[0] !== '.');
   if (hasOldDriver(helperPath, helperList, '/Library/LaunchDaemons/', null)) {
-    setInstallOpts(iconsPath, scriptPath);
+    setInstallOpts(iconsPath, scriptPath, driverPath);
   }
 }
