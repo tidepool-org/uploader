@@ -1,5 +1,5 @@
 app/dist/
-app/main.js
+app/main.prod.js
 node_modules/
 dist/
 web/
