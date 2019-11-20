@@ -39,7 +39,7 @@
     "@material-ui/icons": "3.0.2",
     "async": "2.6.1",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.2.3",
+    "ble-glucose": "0.2.4",
     "bows": "1.7.0",
     "chrome-launcher": "0.12.0",
     "classnames": "2.2.6",

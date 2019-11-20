@@ -2781,10 +2781,10 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.2.3.tgz#ccb4a584fbf7ca61e515efa0a48fd42de602691b"
-  integrity sha512-vG1kAbrtxEMUELXZvYa+XfN1qi+lqW1NMOILYsiMwtRbJy/EX5r6ewvurZaJy7dWvQi7rDyPAyK2Meb6RB09gg==
+ble-glucose@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.2.4.tgz#8485204c2b4dc8688a30fab5066dcf31f800d8d7"
+  integrity sha512-gd8c9l9anE9Dbn29q8eGl/ZVL8jplqGfeSE63g9WlYRlZ1x9JqSpuHMbxPOCBLze5opaHAQQF6YkIDV0nlFHRg==
   dependencies:
     lodash "4.17.15"
     sundial "1.6.0"
