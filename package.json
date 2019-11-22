@@ -202,7 +202,7 @@
     "@babel/preset-env": "7.7.1",
     "@babel/preset-react": "7.7.0",
     "@babel/register": "7.7.0",
-    "@babel/runtime-corejs2": "7.7.2",
+    "@babel/runtime-corejs2": "7.7.4",
     "@jest-runner/electron": "2.0.2",
     "@ronomon/direct-io": "2.4.3",
     "aws-sdk": "2.472.0",
