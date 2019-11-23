@@ -9541,7 +9541,7 @@ nan@2.13.2:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
   integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
 
-nan@^2.10.0, nan@^2.11.0, nan@^2.12.1, nan@^2.13.2, nan@^2.9.2:
+nan@^2.10.0, nan@^2.11.0, nan@^2.12.1, nan@^2.14.0, nan@^2.9.2:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -9691,14 +9691,14 @@ node-gyp@~3.6.0, node-gyp@~3.6.2:
     tar "^2.0.0"
     which "1"
 
-node-hid@0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-0.7.9.tgz#cc0cdf1418a286a7667f0b63642b5eeb544ccd05"
-  integrity sha512-vJnonTqmq3frCyTumJqG4g2IZcny3ynkfmbfDfQ90P3ZhRzcWYS/Um1ux6HFmAxmkaQnrZqIYHcGpL7kdqY8jA==
+node-hid@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.0.0.tgz#e69340cb8eac7a4aed5620510d0e87ffe2474fbc"
+  integrity sha512-KOkrN0nn82ffj30iYAmzJmif6h0/5r3NlG68NJQf8hxYpy3pzkr7TjjOL4fgoB4Ehc4YIdinP1F6pGOJqdModg==
   dependencies:
     bindings "^1.5.0"
-    nan "^2.13.2"
-    prebuild-install "^5.3.0"
+    nan "^2.14.0"
+    prebuild-install "^5.3.3"
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -11308,10 +11308,31 @@ prebuild-install@^4.0.0:
     tunnel-agent "^0.6.0"
     which-pm-runs "^1.0.0"
 
-prebuild-install@^5.2.4, prebuild-install@^5.3.0:
+prebuild-install@^5.2.4:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.2.tgz#6392e9541ac0b879ef0f22b3d65037417eb2035e"
   integrity sha512-INDfXzTPnhT+WYQemqnAXlP7SvfiFMopMozSgXCZ+RDLb279gKfIuLk4o7PgEawLp3WrMgIYGBpkxpraROHsSA==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
+    noop-logger "^0.1.1"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
+    which-pm-runs "^1.0.0"
+
+prebuild-install@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.3.tgz#ef4052baac60d465f5ba6bf003c9c1de79b9da8e"
+  integrity sha512-GV+nsUXuPW2p8Zy7SarF/2W/oiK8bFQgJcncoJ0d7kRpekEA0ftChjfEaF9/Y+QJEc/wFR7RAEa8lYByuUIe2g==
   dependencies:
     detect-libc "^1.0.3"
     expand-template "^2.0.3"
