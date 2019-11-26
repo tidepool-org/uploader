@@ -115,7 +115,7 @@ app.on('ready', async () => {
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      open(url, chromeInstalls[0], function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);

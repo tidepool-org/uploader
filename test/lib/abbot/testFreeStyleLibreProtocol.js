@@ -27,13 +27,13 @@ describe('freeStyleLibreProtocol.js', () => {
   describe('non-static', () => {
     let protocol;
 
-    beforeEach(function(){
+    beforeEach(() => {
       protocol = new FreeStyleLibreProtocol(cfg);
     });
 
     describe('parse text responses', () => {
 
-      it('should parse and return valid text responses', () => {
+      test('should parse and return valid text responses', () => {
         const inputData = [
           ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD OK\r\n', 'DB Record Number = 226988'],
           ['2.1.2\r\nCKSM:00000108\r\nCMD OK\r\n', '2.1.2']
@@ -46,7 +46,7 @@ describe('freeStyleLibreProtocol.js', () => {
       });
 
 
-      it('should not accept invalid text responses', () => {
+      test('should not accept invalid text responses', () => {
         const inputData = [
           ['DB Record Number = 226988\r\nCKSM:00000765\r\nCMD Fail!\r\n', Error],
           ['2.1.2\r\nCKSM:00000111\r\nCMD OK\r\n', Error],
@@ -66,7 +66,7 @@ describe('freeStyleLibreProtocol.js', () => {
 
     describe('validate binary protocol checksum', () => {
 
-      it('should produce valid checksums', () => {
+      test('should produce valid checksums', () => {
         // data captured using Wireshark: mapping from AAP packet string to its corresponding ATP CRC32
         const ATP_CRC_LOOKUP = {
           '\x34': 0x0032c637,
@@ -101,7 +101,7 @@ describe('freeStyleLibreProtocol.js', () => {
 
     describe('validate text protocol checksum', () => {
 
-      it('should accept valid checksums', () => {
+      test('should accept valid checksums', () => {
         const inputData = [
           ['', 0],
           ['\x01\x02\x03\x04\x05', 15]
@@ -113,7 +113,7 @@ describe('freeStyleLibreProtocol.js', () => {
         );
       });
 
-      it('should decline invalid checksums', () => {
+      test('should decline invalid checksums', () => {
         const inputData = [
           ['', 10],
           ['\x01\x02\x03\x04\x05', 0],

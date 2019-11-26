@@ -24,11 +24,11 @@ var pwdSimulator = require('../../../lib/drivers/medtronic/medtronicSimulator.js
 var builder = require('../../../lib/objectBuilder')();
 var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
 
-describe('medtronicSimulator.js', function() {
+describe('medtronicSimulator.js', () => {
   var simulator = null;
   var tzoUtil = new TZOUtil('GMT', '2015-06-01T00:00:00.000Z', []);
 
-  beforeEach(function(){
+  beforeEach(() => {
 
     simulator = pwdSimulator.make({
       builder:builder,
@@ -43,7 +43,7 @@ describe('medtronicSimulator.js', function() {
 
   });
 
-  describe('smbg', function(){
+  describe('smbg', () => {
 
     var manual = {
       time: '2014-09-25T01:00:00.000Z',
@@ -69,7 +69,7 @@ describe('medtronicSimulator.js', function() {
       value: 1.3
     };
 
-    it('passes through', function(){
+    test('passes through', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -85,13 +85,13 @@ describe('medtronicSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('drops manual if same value linked within 15 minutes', function(){
+    test('drops manual if same value linked within 15 minutes', () => {
       simulator.smbg(linked);
       simulator.smbg(manual);
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('does not drop duplicate linked values', function(){
+    test('does not drop duplicate linked values', () => {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
@@ -101,8 +101,8 @@ describe('medtronicSimulator.js', function() {
     });
   });
 
-  describe('bolus', function(){
-    describe('normal', function() {
+  describe('bolus', () => {
+    describe('normal', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -114,12 +114,12 @@ describe('medtronicSimulator.js', function() {
         subType: 'normal'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
+      test('does not pass through a zero-volume bolus that does not have an expectedNormal', () => {
         var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
         simulator.bolus(val);
         simulator.bolus(zeroBolus);
@@ -127,7 +127,7 @@ describe('medtronicSimulator.js', function() {
       });
     });
 
-    describe('square', function(){
+    describe('square', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -140,13 +140,13 @@ describe('medtronicSimulator.js', function() {
         subType: 'square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
-    describe('dual', function(){
+    describe('dual', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -160,17 +160,17 @@ describe('medtronicSimulator.js', function() {
         subType: 'dual/square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
   });
 
-  describe('wizard', function() {
+  describe('wizard', () => {
 
     var bolus, wizard, expectedWizard;
-    beforeEach(function(){
+    beforeEach(() => {
       bolus = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -214,7 +214,7 @@ describe('medtronicSimulator.js', function() {
       delete expectedWizard.bolus.iob;
     });
 
-    it('bolus record gets added to wizard', function() {
+    test('bolus record gets added to wizard', () => {
       simulator.wizard(wizard);
       simulator.bolus(bolus);
       expect(simulator.getEvents()).deep.equals([expectedWizard.done()]);
@@ -222,9 +222,9 @@ describe('medtronicSimulator.js', function() {
   });
 
 
-  describe('deviceEvent', function() {
-    describe('alarm', function() {
-      it('passes through', function() {
+  describe('deviceEvent', () => {
+    describe('alarm', () => {
+      test('passes through', () => {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -241,9 +241,9 @@ describe('medtronicSimulator.js', function() {
       });
     });
 
-    describe('time-change', function() {
+    describe('time-change', () => {
 
-      it('splits temp basal in two with time change', function() {
+      test('splits temp basal in two with time change', () => {
         var basal1 = builder.makeScheduledBasal()
           .with_time('2014-09-25T02:00:00.000Z')
           .with_deviceTime('2014-09-25T02:00:00')
@@ -318,7 +318,7 @@ describe('medtronicSimulator.js', function() {
   });
 
 
-  describe('settings', function() {
+  describe('settings', () => {
 
     var settings = builder.makePumpSettings()
       .with_units({ bg: 'mg/dL' })
@@ -376,14 +376,14 @@ describe('medtronicSimulator.js', function() {
       .with_timezoneOffset(0)
       .with_conversionOffset(0);
 
-    it('passes through', function() {
+    test('passes through', () => {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings.done()]);
     });
 
   });
 
-  describe('basal', function() {
+  describe('basal', () => {
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
@@ -406,7 +406,7 @@ describe('medtronicSimulator.js', function() {
       .with_scheduleName('Alice')
       .with_rate(0.90);
 
-    it('sets duration using a following basal', function() {
+    test('sets duration using a following basal', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       simulator.basal(basal1);
@@ -414,7 +414,7 @@ describe('medtronicSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
     });
 
-    it('limits duration to five days for flat-rate basals', function() {
+    test('limits duration to five days for flat-rate basals', () => {
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-01T02:00:00.000Z') // more than five days before basal1
         .with_deviceTime('2014-09-01T02:00:00')
@@ -433,7 +433,7 @@ describe('medtronicSimulator.js', function() {
     });
 
 
-    it('sets suppressed info for suspended basal', function() {
+    test('sets suppressed info for suspended basal', () => {
 
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-25T01:00:00.000Z')
@@ -490,7 +490,7 @@ describe('medtronicSimulator.js', function() {
 
     });
 
-    describe('temp basal', function() {
+    describe('temp basal', () => {
 
       var basal1 = null,
           tempBasal = null,
@@ -503,7 +503,7 @@ describe('medtronicSimulator.js', function() {
           prime = null,
           reservoirChange = null;
 
-      beforeEach( function() {
+      beforeEach(() => {
         basal1 = builder.makeScheduledBasal()
           .with_time('2014-09-25T18:05:00.000Z')
           .with_deviceTime('2014-09-25T18:05:00')
@@ -607,7 +607,7 @@ describe('medtronicSimulator.js', function() {
         tempBasalOverMidnight.jsDate = new Date(tempBasalOverMidnight.deviceTime);
       });
 
-      it('adds suppressed info', function() {
+      test('adds suppressed info', () => {
 
         var expectedTempBasal = tempBasal.set('suppressed',{
           type: 'basal',
@@ -629,7 +629,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('checks for schedule change', function() {
+      test('checks for schedule change', () => {
 
         tempBasal.jsDate = new Date(tempBasal.deviceTime);
 
@@ -665,7 +665,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('checks for schedule change over midnight', function() {
+      test('checks for schedule change over midnight', () => {
 
         simulator.pumpSettings(settings);
         simulator.basal(basal1);
@@ -699,7 +699,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('checks temp basal schedule change that only happens after midnight', function() {
+      test('checks temp basal schedule change that only happens after midnight', () => {
 
         settings.basalSchedules.standard[0].rate = 1.3; // scheduled rate does not change at midnight
         settings.basalSchedules.standard[1].start = 3600000; // schedule only changes at 1am
@@ -735,7 +735,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('restarts temp basal after resume, with schedule change during suspend', function() {
+      test('restarts temp basal after resume, with schedule change during suspend', () => {
 
         settings.basalSchedules.standard[2].start = 66300000; // schedule changes during suspend at 18h25
 
@@ -799,7 +799,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('restarts temp basal after resume, with schedule change before suspend', function() {
+      test('restarts temp basal after resume, with schedule change before suspend', () => {
 
         settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
 
@@ -867,13 +867,13 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('rewinds and primes the pump, but there are no basal records yet', function() {
+      test('rewinds and primes the pump, but there are no basal records yet', () => {
         simulator.rewind(reservoirChange);
         simulator.prime(prime);
         expect(simulator.getEvents()).deep.equals([reservoirChange, prime]);
       });
 
-      it('restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)', function() {
+      test('restarts temp basal after resume, with schedule change before automatic suspend (reservoir change)', () => {
 
         settings.basalSchedules.standard[2].start = 65700000; // schedule changes before suspend at 18h15
 
@@ -941,7 +941,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('restarts temp basal after resume, followed by a reservoir change', function() {
+      test('restarts temp basal after resume, followed by a reservoir change', () => {
 
         var suspendResume = builder.makeDeviceEventSuspendResume()
           .with_time('2014-09-25T18:20:00.000Z')
@@ -1030,7 +1030,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('is suspended but not resumed before upload', function() {
+      test('is suspended but not resumed before upload', () => {
 
         var suspendResume = builder.makeDeviceEventSuspendResume()
           .with_time('2014-09-25T18:20:00.000Z')
@@ -1088,7 +1088,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('is cancelled after schedule change', function() {
+      test('is cancelled after schedule change', () => {
 
         var cancelTempBasal = builder.makeTempBasal()
           .with_time('2014-09-25T18:20:00.000Z')
@@ -1132,7 +1132,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('should run over midnight but is cancelled before schedule change at midnight', function() {
+      test('should run over midnight but is cancelled before schedule change at midnight', () => {
 
         tempBasal = builder.makeTempBasal()
           .with_time('2014-09-25T23:35:08.000Z')
@@ -1173,7 +1173,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('is updated after a schedule change', function() {
+      test('is updated after a schedule change', () => {
 
         // schedule change from 0.2 -> 0.375 at 3h00
 
@@ -1252,7 +1252,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('runs over midnight and is cancelled after schedule change at midnight', function() {
+      test('runs over midnight and is cancelled after schedule change at midnight', () => {
 
         tempBasal = builder.makeTempBasal()
           .with_time('2014-09-25T23:35:08.000Z')
@@ -1312,7 +1312,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('ends during suspend', function() {
+      test('ends during suspend', () => {
 
         var suspendResume = builder.makeDeviceEventSuspendResume()
           .with_time('2014-09-25T18:20:00.000Z')
@@ -1378,7 +1378,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('has an unknown duration', function() {
+      test('has an unknown duration', () => {
 
         var tempBasalUnknownDuration = builder.makeTempBasal()
           .with_time('2014-09-25T18:40:00.000Z')
@@ -1408,7 +1408,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('is updated with zero percent instead of rate', function() {
+      test('is updated with zero percent instead of rate', () => {
 
         var tempBasal2 = builder.makeTempBasal()
           .with_time('2014-09-25T18:30:00.000Z')
@@ -1447,7 +1447,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('has two schedule changes before midnight and extends past midnight', function() {
+      test('has two schedule changes before midnight and extends past midnight', () => {
 
         var settings = builder.makePumpSettings()
           .with_units({ bg: 'mg/dL' })
@@ -1484,11 +1484,11 @@ describe('medtronicSimulator.js', function() {
           .with_conversionOffset(0)
           .with_duration(28782000)
           .set('suppressed', {
-    				'type': 'basal',
-    				'deliveryType': 'scheduled',
-    				'rate': 0.9,
-    				'scheduleName': 'standard'
-    			})
+                              'type': 'basal',
+                              'deliveryType': 'scheduled',
+                              'rate': 0.9,
+                              'scheduleName': 'standard'
+                          })
           .set('index', 0);
 
 
@@ -1504,11 +1504,11 @@ describe('medtronicSimulator.js', function() {
           .with_duration(7200000)
           .with_payload({duration: 20602000, logIndices: [0]})
           .set('suppressed', {
-    				'type': 'basal',
-    				'deliveryType': 'scheduled',
-    				'rate': 0.95,
-    				'scheduleName': 'standard'
-    			});
+                              'type': 'basal',
+                              'deliveryType': 'scheduled',
+                              'rate': 0.95,
+                              'scheduleName': 'standard'
+                          });
         expectedBasal2.clockDriftOffset = 0;
         delete expectedBasal1.index;
         expectedBasal2.suppressed.annotations = [{'code': 'medtronic/basal/fabricated-from-schedule'}];
@@ -1568,7 +1568,7 @@ describe('medtronicSimulator.js', function() {
 
       });
 
-      it('extends past midnight with schedule change after midnight', function() {
+      test('extends past midnight with schedule change after midnight', () => {
 
         var settings = builder.makePumpSettings()
           .with_units({ bg: 'mg/dL' })
@@ -1654,7 +1654,7 @@ describe('medtronicSimulator.js', function() {
 
       });
 
-      it('has a one-second gap before a scheduled basal', function() {
+      test('has a one-second gap before a scheduled basal', () => {
         var basal = builder.makeScheduledBasal()
           .with_time('2014-09-25T18:40:01.000Z')
           .with_deviceTime('2014-09-25T18:40:01')
@@ -1681,7 +1681,7 @@ describe('medtronicSimulator.js', function() {
         ]);
       });
 
-      it('is cancelled and has a one-second gap before a scheduled basal', function() {
+      test('is cancelled and has a one-second gap before a scheduled basal', () => {
 
         tempBasal.duration = 1200000;
         tempBasal.expectedDuration = 1800000;
@@ -1716,8 +1716,8 @@ describe('medtronicSimulator.js', function() {
 
   });
 
-  describe('device event', function() {
-    it('basal is suspended by alarm', function() {
+  describe('device event', () => {
+    test('basal is suspended by alarm', () => {
 
       var basal1 = builder.makeScheduledBasal()
         .with_time('2014-09-25T01:00:00.000Z')

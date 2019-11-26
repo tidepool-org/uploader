@@ -15,25 +15,24 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var _ = require('lodash');
 var expect = require('salinity').expect;
 
 var objectBuilder = require('../../lib/objectBuilder.js');
 
-describe('objectBuilder.js', function(){
+describe('objectBuilder.js', () => {
   var objBuilder = null;
   var REQUIRED = '**REQUIRED**';
   var OPTIONAL = '**OPTIONAL**';
   var bob;
 
-  beforeEach(function(){
+  beforeEach(() => {
     bob = objectBuilder();
   });
 
-  describe('setDefaults', function(){
-    it('works', function(){
+  describe('setDefaults', () => {
+    test('works', () => {
 
       var defaults = {deviceId:'123-gg-33-4rrr'};
 
@@ -46,16 +45,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeBloodKetone', function(){
+  describe('makeBloodKetone', () => {
 
     var defaults = {deviceId:'makeBloodKetone'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var bk = bob.makeBloodKetone();
 
       expect(bk.deviceId).to.equal(defaults.deviceId);
@@ -72,16 +71,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeCBG', function(){
+  describe('makeCBG', () => {
 
     var defaults = {deviceId:'makeCBG'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var cbg = bob.makeCBG();
 
       expect(cbg.deviceId).to.equal(defaults.deviceId);
@@ -98,16 +97,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeCGMSettings', function(){
+  describe('makeCGMSettings', () => {
 
     var defaults = {deviceId:'makeCGMSettings'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var settings = bob.makeCGMSettings();
 
       expect(settings.deviceId).to.equal(defaults.deviceId);
@@ -131,16 +130,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceEventAlarm', function(){
+  describe('makeDeviceEventAlarm', () => {
 
     var defaults = {deviceId:'makeDeviceEventAlarm'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var alarm = bob.makeDeviceEventAlarm();
 
       expect(alarm.deviceId).to.equal(defaults.deviceId);
@@ -158,16 +157,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceEventCalibration', function(){
+  describe('makeDeviceEventCalibration', () => {
 
     var defaults = {deviceId:'makeDeviceEventCalibration'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var cal = bob.makeDeviceEventCalibration();
 
       expect(cal.deviceId).to.equal(defaults.deviceId);
@@ -185,16 +184,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceEventReservoirChange', function(){
+  describe('makeDeviceEventReservoirChange', () => {
 
     var defaults = {deviceId:'makeDeviceEventReservoirChange'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var reschange = bob.makeDeviceEventReservoirChange();
 
       expect(reschange.deviceId).to.equal(defaults.deviceId);
@@ -211,16 +210,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makedeviceEventResume', function(){
+  describe('makedeviceEventResume', () => {
 
     var defaults = {deviceId:'makeDeviceEventResume'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var resumeMeta = bob.makeDeviceEventResume();
 
       expect(resumeMeta.deviceId).to.equal(defaults.deviceId);
@@ -239,16 +238,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makedeviceEventSuspend', function(){
+  describe('makedeviceEventSuspend', () => {
 
     var defaults = {deviceId:'makeDeviceEventSuspend'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var suspendMeta = bob.makeDeviceEventSuspend();
 
       expect(suspendMeta.deviceId).to.equal(defaults.deviceId);
@@ -267,16 +266,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDeviceEventTimeChange', function(){
+  describe('makeDeviceEventTimeChange', () => {
 
     var defaults = {deviceId:'makeDeviceEventTimeChange'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var timechange = bob.makeDeviceEventTimeChange();
 
       expect(timechange.deviceId).to.equal(defaults.deviceId);
@@ -293,16 +292,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeDualBolus', function(){
+  describe('makeDualBolus', () => {
 
     var defaults = {deviceId:'makeDualBolus'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var dualBolus = bob.makeDualBolus();
 
       expect(dualBolus.deviceId).to.equal(defaults.deviceId);
@@ -324,16 +323,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeFood', function(){
+  describe('makeFood', () => {
 
     var defaults = {deviceId:'makeFood'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var food = bob.makeFood();
 
       expect(food.deviceId).to.equal(defaults.deviceId);
@@ -349,16 +348,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeNormalBolus', function(){
+  describe('makeNormalBolus', () => {
 
     var defaults = {deviceId:'makeNormalBolus'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var normal = bob.makeNormalBolus();
 
       expect(normal.deviceId).to.equal(defaults.deviceId);
@@ -376,16 +375,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeNote', function(){
+  describe('makeNote', () => {
 
     var defaults = {deviceId:'makeNormalBolus'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var note = bob.makeNote();
 
       expect(note.deviceId).to.equal(defaults.deviceId);
@@ -401,16 +400,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makePumpSettings', function(){
+  describe('makePumpSettings', () => {
 
     var defaults = {deviceId:'makePumpSettings'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var settings = bob.makePumpSettings();
 
       expect(settings.deviceId).to.equal(defaults.deviceId);
@@ -431,16 +430,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeScheduledBasal', function(){
+  describe('makeScheduledBasal', () => {
 
     var defaults = {deviceId:'makeScheduledBasal'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var schedBasal = bob.makeScheduledBasal();
 
       expect(schedBasal.deviceId).to.equal(defaults.deviceId);
@@ -460,16 +459,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeSMBG', function(){
+  describe('makeSMBG', () => {
 
     var defaults = {deviceId:'makeSMBG'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var smbg = bob.makeSMBG();
 
       expect(smbg.deviceId).to.equal(defaults.deviceId);
@@ -487,16 +486,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeSquareBolus', function(){
+  describe('makeSquareBolus', () => {
 
     var defaults = {deviceId:'makeSquareBolus'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var square = bob.makeSquareBolus();
 
 
@@ -517,16 +516,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeSuspendBasal', function(){
+  describe('makeSuspendBasal', () => {
 
     var defaults = {deviceId:'makeSuspendBasal'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var suspendBasal = bob.makeSuspendBasal();
 
       expect(suspendBasal.deviceId).to.equal(defaults.deviceId);
@@ -546,16 +545,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeTempBasal', function(){
+  describe('makeTempBasal', () => {
 
     var defaults = {deviceId:'makeTempBasal'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var temp = bob.makeTempBasal();
 
       expect(temp.deviceId).to.equal(defaults.deviceId);
@@ -577,16 +576,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeWizard', function(){
+  describe('makeWizard', () => {
 
     var defaults = {deviceId:'makeWizard'};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var wiz = bob.makeWizard();
 
       expect(wiz.deviceId).to.equal(defaults.deviceId);
@@ -610,16 +609,16 @@ describe('objectBuilder.js', function(){
     });
   });
 
-  describe('makeUpload', function(){
+  describe('makeUpload', () => {
 
     var defaults = {};
 
-    beforeEach(function(){
+    beforeEach(() => {
       bob = objectBuilder();
       bob.setDefaults(defaults);
     });
 
-    it('works', function(){
+    test('works', () => {
       var upload = bob.makeUpload();
 
 
