@@ -298,14 +298,14 @@ export function doUpload(deviceKey, opts, utc) {
       } catch (err) {
         console.log('Error:', err);
 
+        let btErr = new Error(errorText.E_BLUETOOTH_OFF);
         let errProps = {
           details: err.message,
           utc: actionUtils.getUtc(utc),
-          code: 'E_BLUETOOTH_PAIR',
+          code: 'E_BLUETOOTH_OFF',
         };
 
-        dispatch(syncActions.uploadFailure(err, errProps, devices[deviceKey]));
-        return dispatch(syncActions.uploadAborted());
+        return dispatch(syncActions.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');
     }

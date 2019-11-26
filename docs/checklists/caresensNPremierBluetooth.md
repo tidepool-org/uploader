@@ -1,4 +1,4 @@
-## CareSens N Premier meter over Bluetooth LE
+## CareSens N Premier & Dual meters over Bluetooth LE
 
 (Key:
 

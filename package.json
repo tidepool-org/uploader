@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.22.2",
+  "version": "2.23.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -39,7 +39,7 @@
     "@material-ui/icons": "3.0.2",
     "async": "2.6.1",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.2.2",
+    "ble-glucose": "0.2.5",
     "bows": "1.7.2",
     "chrome-launcher": "0.12.0",
     "classnames": "2.2.6",

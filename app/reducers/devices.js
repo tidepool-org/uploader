@@ -6,7 +6,7 @@ import os from 'os';
 const devices = {
   accuchekusb: {
     instructions: 'Plug in meter with micro-USB cable',
-    name: 'Roche Accu-Chek Guide & Aviva Connect',
+    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true}
@@ -23,10 +23,10 @@ const devices = {
   },
   caresensble: {
     instructions: 'Once paired, hold in right arrow until "BT Send" appears on the screen',
-    name: 'CareSens N Premier',
+    name: 'CareSens N Premier & Dual (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: false, linux: true}
   },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
