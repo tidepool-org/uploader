@@ -4,13 +4,15 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
 import cp from 'child_process';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -37,14 +39,19 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
 }
 
 
-export default merge(baseConfig, {
+export default merge.smart(baseConfig, {
   devtool: 'source-map',
 
-  entry: ['babel-polyfill', './app/index'],
+  mode: 'production',
+
+  target: 'electron-renderer',
+
+  entry: ['./app/index'],
 
   output: {
     path: path.join(__dirname, 'app/dist'),
-    publicPath: '../dist/'
+    publicPath: '../dist/',
+    filename: 'renderer.prod.js'
   },
 
   module: {
@@ -52,56 +59,80 @@ export default merge(baseConfig, {
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
-            options: {
-              hmr: false
-            }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
           },
-          use: 'css-loader'
-        })
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
 
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
-            options: {
-              hmr: false
-            }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
           },
-          use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        })
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: {
+                localIdentName: '[local]___[hash:base64:5]',
+              },
+              importLoaders: 1
+            }
+          }
+        ]
       },
 
       {
         test: /\.module\.less$/,
         use: [{
-          loader: 'style-loader',
-          options: {
-            hmr: false
-          }
+          loader: MiniCssExtractPlugin.loader
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
             importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
+            sourceMap: true,
           }
         }, {
-          loader: 'less-loader'
+          loader: 'less-loader',
+          options: {
+            sourceMap: true
+          }
         }]
       },
 
       {
         test: /^((?!module).)*\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'less-loader']
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
 
       // Fonts
@@ -151,6 +182,31 @@ export default merge(baseConfig, {
     ]
   },
 
+  optimization: {
+    minimizer: process.env.E2E_BUILD
+      ? []
+      : [
+          new TerserPlugin({
+            parallel: true,
+            sourceMap: true,
+            cache: true,
+            terserOptions: {
+              keep_classnames: true, // we check against some classnames
+              keep_fnames: true
+            },
+            extractComments: false
+          }),
+          new OptimizeCSSAssetsPlugin({
+            cssProcessorOptions: {
+              map: {
+                inline: false,
+                annotation: true
+              }
+            }
+          })
+        ]
+  },
+
   plugins: [
     /**
     * Create global constants which can be configured at compile time.
@@ -169,33 +225,34 @@ export default merge(baseConfig, {
       __ROLLBAR_POST_TOKEN__: JSON.stringify(ROLLBAR_POST_TOKEN),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
+    
     /**
-    * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
+    * Dynamically generate index.html page
+    */
+    new HtmlWebpackPlugin({
+      filename: '../app.html',
+      template: 'app/app.html',
+      inject: false
+    }),
 
-    new BabiliPlugin({
-    // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
-    deadcode: false,
-  }),
-  */
-  new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
-  /**
-  * Dynamically generate index.html page
-  */
-  new HtmlWebpackPlugin({
-    filename: '../app.html',
-    template: 'app/app.html',
-    inject: false
-  }),
+    new MiniCssExtractPlugin({ 
+      filename: 'style.css' 
+    }),
 
-  /** Upload sourcemap to Rollbar */
-  new RollbarSourceMapPlugin({
-    accessToken: ROLLBAR_POST_TOKEN,
-    version: VERSION_SHA,
-    publicPath: 'http://dynamichost/dist'
-  })],
+    /** Upload sourcemap to Rollbar */
+    ...(ROLLBAR_POST_TOKEN ? [new RollbarSourceMapPlugin({
+      accessToken: ROLLBAR_POST_TOKEN,
+      version: VERSION_SHA,
+      publicPath: 'http://dynamichost/dist'
+    })] : []),
 
-  // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-  target: 'electron-renderer',
+    new BundleAnalyzerPlugin({
+      analyzerMode:
+        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+      openAnalyzer: process.env.OPEN_ANALYZER === 'true'
+    })
+  ],
+
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
   }

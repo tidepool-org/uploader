@@ -3,7 +3,7 @@
   "productName": "tidepool-uploader",
   "version": "2.23.1",
   "description": "Tidepool Project Universal Uploader",
-  "main": "./main.js",
+  "main": "./main.prod.js",
   "author": {
     "name": "Tidepool Project",
     "email": "gerrit@tidepool.org"

@@ -22,15 +22,15 @@ var expect = require('salinity').expect;
 
 var driver = require('../../../lib/drivers/insulet/insuletDriver.js');
 
-describe('insuletDriver.js', function() {
+describe('insuletDriver.js', () => {
   var insuletDriver;
 
-  beforeEach(function(){
+  beforeEach(() => {
     insuletDriver = driver({});
   });
 
-  describe('decodeSerial', function(){
-    it('decodes 0x20409A4', function(){
+  describe('decodeSerial', () => {
+    test('decodes 0x20409A4', () => {
       expect(insuletDriver._decodeSerial(0x20409A4)).to.equal('010002-00617');
     });
   });
