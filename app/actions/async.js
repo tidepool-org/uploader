@@ -288,7 +288,7 @@ export function doUpload(deviceKey, opts, utc) {
 
     const { devices, uploadTargetUser, working } = getState();
 
-    if (opts.ble) {
+    if (opts && opts.ble) {
       // we need to to scan for Bluetooth devices before the version check,
       // otherwise it doesn't count as a response to a user request anymore
       dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
