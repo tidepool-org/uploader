@@ -1065,10 +1065,10 @@
     jest-message-util "^24.0.0"
     node-ipc "^9.1.1"
 
-"@jest-runner/electron@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@jest-runner/electron/-/electron-2.0.2.tgz#75048860a176ad7fdb307f4dde47142a308ab679"
-  integrity sha512-lmF6HY8ZpOi54t7xICzA0oONRuAqVNfwPMJQAT+cjTbqrR0KDSSGcy7QLjD0fkl0aCR59e4weGp/uCrS502iqQ==
+"@jest-runner/electron@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@jest-runner/electron/-/electron-2.0.3.tgz#2bb62f9a43ca3e9efd1af1bb781c69eecf413346"
+  integrity sha512-DKGwxriQsYGIqNWRIMdS0vm/pGH/kLk2tpZ+UdF+jtHSPfVayzrMocM3apdJodnKKYdFAW+0N9/cbBJseLgI1Q==
   dependencies:
     "@jest-runner/core" "^2.0.0"
     "@jest-runner/rpc" "^2.0.0"
