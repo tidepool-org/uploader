@@ -262,7 +262,7 @@
     "sinon-chai": "3.3.0",
     "spectron": "9.0.0",
     "style-loader": "1.0.0",
-    "terser-webpack-plugin": "2.2.1",
+    "terser-webpack-plugin": "2.2.3",
     "url-loader": "2.2.0",
     "webpack": "4.41.2",
     "webpack-bundle-analyzer": "3.6.0",
