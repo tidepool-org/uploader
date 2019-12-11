@@ -255,7 +255,7 @@
     "object-invariant-test-helper": "0.1.1",
     "open": "7.0.0",
     "optimize-css-assets-webpack-plugin": "5.0.3",
-    "redux-mock-store": "1.5.3",
+    "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
     "serialport": "6.2.2",
     "sinon": "7.5.0",
