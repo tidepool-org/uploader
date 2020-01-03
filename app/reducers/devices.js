@@ -147,7 +147,14 @@ const devices = {
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
-  }
+  },
+  abbottprecisionneo: {
+    instructions: 'Plug in meter with micro-USB cable',
+    key: 'abbottprecisionneo',
+    name: 'Abbott FreeStyle Precision/Optium Neo',
+    source: {type: 'device', driverId: 'AbbottPrecisionNeo'},
+    enabled: {linux: true, mac: true, win: true}
+  },
 };
 
 export default devices;
