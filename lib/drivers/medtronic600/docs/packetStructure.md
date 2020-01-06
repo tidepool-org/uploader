@@ -372,7 +372,7 @@ A **Bolus Wizard Carb Ratios Response** is contained in the payload of a [Transm
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
 | Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
-| Command   | 2     | UInt16BE   | `0x0132` |
+| Command   | 2     | UInt16BE   | `0x012C` |
 | Inner CCITT  | 2     | UInt16BE   | CCITT checksum of Byte 5 onwards, not including the CCITT at the end |
 | # Items  | 1     | UInt8      | The number of Bolus Wizard targets |
 | Ratio TGT 1 grams  | 4     | UInt32BE   | The first carb ratio (in grams) |
