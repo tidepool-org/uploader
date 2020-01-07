@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 import _ from 'lodash';
 import sinon from 'sinon';
@@ -50,11 +49,11 @@ describe('utils', () => {
     });
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
-    it('should return a function', () => {
+    test('should return a function', () => {
       expect(typeof fn).to.equal('function');
     });
 
-    it('the returned function should use the configured errCode on error if error does not have a code', () => {
+    test('the returned function should use the configured errCode on error if error does not have a code', () => {
       const err = new Error('Uh oh...');
       const displayErr = new Error(errorText[errCode]);
 
@@ -100,7 +99,7 @@ describe('utils', () => {
       expect(result).to.deep.equal(expectedAction);
     });
 
-    it('the returned function should use the argument error\'s code when present', () => {
+    test('the returned function should use the argument error\'s code when present', () => {
       const err = new Error('Uh oh...');
       const specificErrCode = 'E_CARELINK_UNSUPPORTED';
       err.code = specificErrCode;
@@ -164,7 +163,7 @@ describe('utils', () => {
       username: 'joe@example.com'
     };
 
-    it('should merge profile updates', () => {
+    test('should merge profile updates', () => {
       var update = {fullName: 'New Joe'};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],
@@ -181,7 +180,7 @@ describe('utils', () => {
       });
     });
 
-    it('should merge patient updates', () => {
+    test('should merge patient updates', () => {
       var update = {patient: {birthday: '1981-02-05'}};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],
@@ -198,7 +197,7 @@ describe('utils', () => {
       });
     });
 
-    it('should replace emails array on update', () => {
+    test('should replace emails array on update', () => {
       var update = {emails:['joe2@example.com']};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe2@example.com'],
@@ -215,7 +214,7 @@ describe('utils', () => {
       });
     });
 
-    it('should replace targetDevices array on update', () => {
+    test('should replace targetDevices array on update', () => {
       var update = {patient: {targetDevices: ['tandem']}};
       expect(utils.mergeProfileUpdates(_.cloneDeep(profile), update)).to.deep.equal({
         emails: ['joe@example.com'],

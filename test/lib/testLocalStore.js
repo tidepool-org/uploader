@@ -21,18 +21,18 @@ var expect = require('chai').expect;
 
 var localStore = require('../../lib/core/localStore');
 
-describe('localStore', function() {
-  it('is an object', function() {
+describe('localStore', () => {
+  test('is an object', () => {
     expect(typeof localStore).equals('object');
   });
 
-  describe('localStore.init', function() {
-    it('is a function', function() {
+  describe('localStore.init', () => {
+    test('is a function', () => {
       expect(localStore.init).to.exist;
       expect(typeof localStore.init).equals('function');
     });
 
-    it('accepts options and calls cb', function() {
+    test('accepts options and calls cb', () => {
       var key = 'Hello';
       var cb = function() { key = 'world'; };
       localStore.init({foo: 'bar'}, cb);
@@ -40,42 +40,42 @@ describe('localStore', function() {
     });
   });
 
-  describe('localStore.getInitialState', function() {
-    it('is a function', function() {
+  describe('localStore.getInitialState', () => {
+    test('is a function', () => {
       expect(localStore.getInitialState).to.exist;
       expect(typeof localStore.getInitialState).equals('function');
     });
   });
 
-  describe('localStore.getItem', function() {
+  describe('localStore.getItem', () => {
     var data = 'awesome_data';
 
-    before(function(){
+    beforeAll(function(){
       localStore.setItem('blocks', data);
     });
 
-    it('is a function', function() {
+    test('is a function', () => {
       expect(localStore.getItem).to.exist;
       expect(typeof localStore.getItem).equals('function');
     });
 
-    it('retrieves an item from the store', function() {
+    test('retrieves an item from the store', () => {
       expect(localStore.getItem('blocks', console.log)).deep.equals(data);
     });
   });
 
-  describe('localStore.setItem', function() {
-    it('is a function', function() {
+  describe('localStore.setItem', () => {
+    test('is a function', () => {
       expect(localStore.setItem).to.exist;
       expect(typeof localStore.setItem).equals('function');
     });
 
-    it('adds an item to the store', function() {
+    test('adds an item to the store', () => {
       localStore.setItem('foo', 'bar');
       expect(localStore.getItem('foo')).equals('bar');
     });
 
-    it('overwrites an existing item', function() {
+    test('overwrites an existing item', () => {
       localStore.setItem('foo', 'blocks');
       expect(localStore.getItem('foo')).equals('blocks');
     });

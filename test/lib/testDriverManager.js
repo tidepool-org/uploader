@@ -15,31 +15,30 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
 var driverManager = require('../../lib/driverManager.js');
 
 
-describe('driverManager.js', function(){
+describe('driverManager.js', () => {
 
   var manager;
   var config = {};
   var drivers = {};
 
-  beforeEach(function(){
+  beforeEach(() => {
     manager = driverManager(drivers, config);
   });
 
-  describe('detect', function(){
-    it('exists', function(){
+  describe('detect', () => {
+    test('exists', () => {
       expect(manager).itself.to.respondTo('detect');
     });
   });
 
-  describe('process', function(){
-    it('exists', function(){
+  describe('process', () => {
+    test('exists', () => {
       expect(manager).itself.to.respondTo('process');
     });
   });

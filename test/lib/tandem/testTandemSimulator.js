@@ -23,15 +23,15 @@ var expect = require('salinity').expect;
 var pwdSimulator = require('../../../lib/drivers/tandem/tandemSimulator.js');
 var builder = require('../../../lib/objectBuilder')();
 
-describe('tandemSimulator.js', function() {
+describe('tandemSimulator.js', () => {
   var simulator = null;
 
-  beforeEach(function(){
+  beforeEach(() => {
     simulator = pwdSimulator.make();
   });
 
-  describe('smbg', function(){
-    it('passes through', function(){
+  describe('smbg', () => {
+    test('passes through', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -48,8 +48,8 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  describe('bolus', function(){
-    describe('normal', function() {
+  describe('bolus', () => {
+    describe('normal', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -61,12 +61,12 @@ describe('tandemSimulator.js', function() {
         subType: 'normal'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('does not pass through a zero-volume bolus that does not have an expectedNormal', function() {
+      test('does not pass through a zero-volume bolus that does not have an expectedNormal', () => {
         var zeroBolus = _.assign({}, val, {normal: 0.0, time: '2014-09-25T01:05:00.000Z', deviceTime: '2014-09-25T01:05:00'});
         simulator.bolus(val);
         simulator.bolus(zeroBolus);
@@ -74,7 +74,7 @@ describe('tandemSimulator.js', function() {
       });
     });
 
-    describe('square', function(){
+    describe('square', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -87,13 +87,13 @@ describe('tandemSimulator.js', function() {
         subType: 'square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
-    describe('dual', function(){
+    describe('dual', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -107,14 +107,14 @@ describe('tandemSimulator.js', function() {
         subType: 'dual/square'
       };
 
-      it('passes through', function(){
+      test('passes through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
   });
 
-  describe('wizard', function() {
+  describe('wizard', () => {
     var bolus = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -151,12 +151,12 @@ describe('tandemSimulator.js', function() {
       type: 'wizard'
     };
 
-    it('passes through with a bolus', function() {
+    test('passes through with a bolus', () => {
       simulator.wizard(val);
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('does not pass through a zero-volume wizard bolus', function() {
+    test('does not pass through a zero-volume wizard bolus', () => {
       var zeroWizard = _.assign({}, bolus, {normal: 0.0});
       simulator.bolus(val);
       simulator.bolus(zeroWizard);
@@ -164,9 +164,9 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  describe('deviceEvent', function() {
-    describe('alarm', function() {
-      it('passes through', function() {
+  describe('deviceEvent', () => {
+    describe('alarm', () => {
+      test('passes through', () => {
         var val = {
           time: '2014-09-25T01:00:00.000Z',
           deviceTime: '2014-09-25T01:00:00',
@@ -183,7 +183,7 @@ describe('tandemSimulator.js', function() {
       });
     });
 
-    describe('changeReservoir', function() {
+    describe('changeReservoir', () => {
       var val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -194,13 +194,13 @@ describe('tandemSimulator.js', function() {
         subType: 'reservoirChange'
       };
 
-      it('passes through', function() {
+      test('passes through', () => {
         simulator.cartridgeChange(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
-    describe('status', function() {
+    describe('status', () => {
       var suspend = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -222,23 +222,23 @@ describe('tandemSimulator.js', function() {
       var expectedResume = _.assign({}, resume);
       expectedResume = expectedResume.set('previous', suspend).done();
 
-      it('a suspend passes through', function() {
+      test('a suspend passes through', () => {
         simulator.suspend(suspend);
         expect(simulator.getEvents()).deep.equals([suspend]);
       });
 
-      it('a resume passes through', function() {
+      test('a resume passes through', () => {
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([resume.done()]);
       });
 
-      it('a resume includes a previous when preceded by a suspend', function() {
+      test('a resume includes a previous when preceded by a suspend', () => {
         simulator.suspend(suspend);
         simulator.resume(resume);
         expect(simulator.getEvents()).deep.equals([suspend, expectedResume]);
       });
 
-      it('uses the timestamp of the first suspend if multiple suspends appear before a single resume', function() {
+      test('uses the timestamp of the first suspend if multiple suspends appear before a single resume', () => {
         var suspend2 = {
           time: '2014-09-25T01:05:00.000Z',
           deviceTime: '2014-09-25T01:05:00',
@@ -257,7 +257,7 @@ describe('tandemSimulator.js', function() {
       });
     });
 
-    describe('timeChange', function() {
+    describe('timeChange', () => {
       var change = {
         time: '2014-09-25T01:05:00.000Z',
         deviceTime: '2014-09-25T01:05:00',
@@ -272,14 +272,14 @@ describe('tandemSimulator.js', function() {
           agent: 'manual'
         }
       };
-      it('passes through', function() {
+      test('passes through', () => {
         simulator.changeDeviceTime(change);
         expect(simulator.getEvents()).deep.equals([change]);
       });
     });
   });
 
-  describe('settings', function() {
+  describe('settings', () => {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -325,14 +325,14 @@ describe('tandemSimulator.js', function() {
       conversionOffset: 0
     };
 
-    it('passes through', function() {
+    test('passes through', () => {
       simulator.pumpSettings(settings);
       expect(simulator.getEvents()).deep.equals([settings]);
     });
 
   });
 
-  describe('basal', function() {
+  describe('basal', () => {
     var basal1 = builder.makeScheduledBasal()
       .with_time('2014-09-25T02:00:00.000Z')
       .with_deviceTime('2014-09-25T02:00:00')
@@ -356,7 +356,7 @@ describe('tandemSimulator.js', function() {
       .with_scheduleName('Alice')
       .with_rate(0.90);
 
-    it('sets duration using a following basal', function() {
+    test('sets duration using a following basal', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       simulator.basal(basal1);
@@ -364,7 +364,7 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal]);
     });
 
-    it('sets previous on basals other than the first', function() {
+    test('sets previous on basals other than the first', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);
       expectedFirstBasal = expectedFirstBasal.set('duration', 3600000).done();
       var expectedSecondBasal = _.cloneDeep(basal2);
@@ -387,7 +387,7 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    it('temp basal has percentage and payload', function() {
+    test('temp basal has percentage and payload', () => {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -436,7 +436,7 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    it('temp basal without basal rate change', function() {
+    test('temp basal without basal rate change', () => {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T01:05:00.000Z')
         .with_deviceTime('2014-09-25T01:05:00')
@@ -494,7 +494,7 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    it('temp basal crossing multiple segments', function() {
+    test('temp basal crossing multiple segments', () => {
       var suppressed = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:00:00.000Z')
         .with_deviceTime('2014-09-25T18:00:00')
@@ -554,7 +554,7 @@ describe('tandemSimulator.js', function() {
       ]);
     });
 
-    it('ignore duplicate suspended basals', function() {
+    test('ignore duplicate suspended basals', () => {
 
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-25T15:00:00.000Z')
@@ -595,8 +595,8 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  describe('newDay', function() {
-    it('fabricated from new day event', function () {
+  describe('newDay', () => {
+    test('fabricated from new day event', () => {
       var currBasal = builder.makeScheduledBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -623,7 +623,7 @@ describe('tandemSimulator.js', function() {
 
     });
 
-    it('a new-day event during a temp basal', function() {
+    test('a new-day event during a temp basal', () => {
       var tempBasalStart = {
             type: 'temp-basal',
             subType: 'start',
@@ -683,7 +683,7 @@ describe('tandemSimulator.js', function() {
 
   });
 
-  describe('finalBasal', function() {
+  describe('finalBasal', () => {
     var settings = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -711,7 +711,7 @@ describe('tandemSimulator.js', function() {
       .with_rate(1.3)
       .with_scheduleName('billy');
 
-    it('a temp basal is completed ', function() {
+    test('a temp basal is completed ', () => {
       var temp = builder.makeTempBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -726,7 +726,7 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
 
-    it('a temp basal was terminated early', function() {
+    test('a temp basal was terminated early', () => {
       var tempBasalStart = {
             type: 'temp-basal',
             subType: 'start',
@@ -757,7 +757,7 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
     });
 
-    it('upload during temp basal', function() {
+    test('upload during temp basal', () => {
       var tempBasalStart = {
             type: 'temp-basal',
             subType: 'start',
@@ -782,7 +782,7 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
     });
 
-    it('a suspend basal is given a null duration and annotated', function() {
+    test('a suspend basal is given a null duration and annotated', () => {
       var suspend = builder.makeSuspendBasal()
         .with_time('2014-09-25T18:05:00.000Z')
         .with_deviceTime('2014-09-25T18:05:00')
@@ -797,8 +797,8 @@ describe('tandemSimulator.js', function() {
     });
   });
 
-  describe('event interplay', function() {
-    it('new-day event does not pass through as scheduled basal when pump is suspended', function() {
+  describe('event interplay', () => {
+    test('new-day event does not pass through as scheduled basal when pump is suspended', () => {
 
       var basal = builder.makeScheduledBasal()
         .with_time('2014-09-25T15:00:00.000Z')
@@ -837,7 +837,7 @@ describe('tandemSimulator.js', function() {
       expect(simulator.getEvents()).deep.equals([basal.done(),suspendEvent]);
     });
 
-    it('a new-day event during a cancelled temp basal', function() {
+    test('a new-day event during a cancelled temp basal', () => {
       var tempBasalStart = {
             type: 'temp-basal',
             subType: 'start',

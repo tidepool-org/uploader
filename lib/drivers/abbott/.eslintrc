@@ -6,13 +6,20 @@
     "ecmaVersion": 6
   },
   "rules": {
+    "max-len": "warn",
+    "import/order": "warn",
     "no-plusplus": [
       "error",
       {
         "allowForLoopAfterthoughts": true
       }
     ],
-    "lodash/prefer-lodash-method": "off"
+    "lodash/prefer-lodash-method": "off",
+    "arrow-parens": "warn",
+    "operator-linebreak": "warn",
+    "no-else-return": "warn",
+    "object-curly-newline": "warn",
+    "implicit-arrow-linebreak": "warn"
   },
   "overrides": [
     {
