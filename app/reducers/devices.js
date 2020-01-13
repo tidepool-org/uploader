@@ -2,6 +2,7 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
 import os from 'os';
+import osName from 'os-name';
 
 const devices = {
   accuchekusb: {
@@ -61,7 +62,7 @@ const devices = {
     instructions: os.platform() === 'win32' ? 'Plug in PDM with USB cable and choose .ibf file from PDM' : 'Plug in PDM with USB cable',
     key: 'omnipod',
     name: 'Insulet OmniPod',
-    source: {type: os.platform() === 'win32' ? 'block' : 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    source: {type: osName() === 'Windows 7' ? 'block' : 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
