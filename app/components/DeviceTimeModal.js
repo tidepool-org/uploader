@@ -28,28 +28,28 @@ import styles from '../../styles/components/DeviceTimeModal.module.less';
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
-    const { deviceTags } = showingDeviceTimePrompt.cfg;
-    if(_.indexOf(deviceTags, 'insulin-pump') !== -1){
-      return 'insulin-pump';
+    const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
+    if(_.indexOf(tags, 'insulin-pump') !== -1){
+      return { value: 'insulin-pump', text: 'pump' };
     }
-    if(_.indexOf(deviceTags, 'cgm') !== -1){
-      return 'cgm';
+    if(_.indexOf(tags, 'cgm') !== -1){
+      return { value: 'cgm', text: 'CGM' };
     }
-    if(_.indexOf(deviceTags, 'bgm') !== -1){
-      return 'bgm';
+    if(_.indexOf(tags, 'bgm') !== -1){
+      return { value: 'bgm', text: 'meter' };
     }
     return 'unknown';
   }
 
-  isAnimas = () => {
+  isDevice = (name) => {
     const { showingDeviceTimePrompt } = this.props;
     const {deviceInfo} = showingDeviceTimePrompt.cfg;
-    return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === 'Animas';
+    return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === name;
   }
 
   handleContinue = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
-    showingDeviceTimePrompt.callback(null);
+    showingDeviceTimePrompt.callback('updateTime');
     sync.dismissedDeviceTimePrompt();
   }
 
@@ -60,18 +60,35 @@ export class DeviceTimeModal extends Component {
   }
 
   getActions = () => {
+    const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
+    const type = this.determineDeviceType();
     const buttons = [];
-    if ( !this.isAnimas() ) {
+    const footnote = type.value === 'bgm' ? '*' : '';
+    if ( !this.isDevice('Animas') &&
+         !this.isDevice('InsuletOmniPod') &&
+         !this.isDevice('Medtronic') &&     // these two lines should be removed
+         !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
+         !this.isDevice('Tandem') &&
+         !this.isDevice('TrueMetrix')
+      ) {
       buttons.push(
-        <button key='continue' className={styles.buttonSecondary} onClick={this.handleContinue}>
-          Upload anyway
-        </button>,
+        <div className={styles.buttonGroup} key='continue' >
+        Is the time on your {type.text} incorrect?<br/>&nbsp;
+        <button className={styles.button} onClick={this.handleContinue}>
+          Automatically update time to<br/>
+          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, and upload
+        </button>
+        </div>
       );
     }
     buttons.push(
-      <button key='cancel' className={styles.button} onClick={this.handleCancel}>
+      <div className={styles.buttonGroup} key='cancel'>
+      Are you in {timezone}? Double-check<br/>
+      selected time zone and current device time.
+      <button className={styles.button} onClick={this.handleCancel}>
         Cancel this upload
       </button>
+      </div>
     );
 
     return buttons;
@@ -79,43 +96,16 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
+    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
-    switch (type) {
-      case 'insulin-pump':
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            Is your pump time set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
-            </div>
-          </div>
-        );
-        break;
-      case 'cgm':
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            Is your CGM time set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
-            </div>
-          </div>
-        );
-        break;
+    switch (type.value) {
       case 'bgm':
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
-            Is your meter time set correctly? If not:
-            <br/>
-            <div><span className={styles.numeral}>1.</span> Cancel the current upload</div>
-            <div><span className={styles.numeral}>2.</span> Check the time on your device</div>
-            <div><span className={styles.numeral}>3.</span> Check the time zone in the Uploader</div>
+            * Changing your device time will not change any previous records.<br/>
+            All future readings will be in {timezone}.
+            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>Click to learn more about meters and device time.</a>
             </div>
           </div>
         );
@@ -124,25 +114,6 @@ export class DeviceTimeModal extends Component {
         break;
     }
     return message;
-  }
-
-  getTitle = () => {
-    const type = this.determineDeviceType();
-    let title;
-    switch (type) {
-      case 'insulin-pump':
-        title = 'Your pump doesn\'t appear to be in';
-        break;
-      case 'cgm':
-        title = 'Your CGM doesn\'t appear to be in';
-        break;
-      case 'bgm':
-        title = 'Your meter doesn\'t appear to be in';
-        break;
-      default:
-        break;
-    }
-    return title;
   }
 
   render() {
@@ -154,7 +125,7 @@ export class DeviceTimeModal extends Component {
 
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
 
-    const title = this.getTitle();
+    const type = this.determineDeviceType();
     const message = this.getMessage();
     const actions = this.getActions();
 
@@ -162,25 +133,25 @@ export class DeviceTimeModal extends Component {
       <div className={styles.modalWrap}>
         <div className={styles.modal}>
           <div className={styles.title}>
-            <div>{title}</div>
+            <div>Your {type.text} doesn't appear to be in</div>
             <div className={styles.highlight}>{`${timezone}:`}</div>
           </div>
           <hr className={styles.hr} />
           <div className={styles.text}>
             <div className={styles.timeCompare}>
               <div>{timezone}:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'h:mm a')}</div>
+              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
             </div>
             <div className={styles.timeCompare}>
               <div>Device time:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'h:mm a')}</div>
+              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
             </div>
           </div>
           <hr className={styles.hr} />
-          {message}
           <div className={styles.actions}>
             {actions}
           </div>
+          {message}
         </div>
       </div>
     );
