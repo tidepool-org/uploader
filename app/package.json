@@ -10,12 +10,12 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "6.4.3",
+    "drivelist": "8.0.9",
     "keytar": "4.10.0",
-    "node-hid": "0.7.9",
+    "node-hid": "1.1.0",
     "@ronomon/direct-io": "3.0.0",
-    "serialport": "8.0.0",
-    "usb": "1.6.0",
+    "serialport": "8.0.6",
+    "usb": "1.6.2",
     "lzo-decompress": "0.1.2"
   },
   "optionalDependencies": {
