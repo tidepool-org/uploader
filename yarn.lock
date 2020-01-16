@@ -12559,7 +12559,7 @@ request-promise-native@^1.0.5:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@^2.45.0, request@^2.74.0, request@^2.83.0, request@^2.85.0, request@^2.87.0:
+request@^2.45.0, request@^2.74.0, request@^2.83.0, request@^2.87.0, request@^2.88.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
   integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
@@ -12778,10 +12778,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rollbar-sourcemap-webpack-plugin@2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.5.1.tgz#694ca1e22cac320330e7ea9488f3ed2bb9ab1f16"
-  integrity sha512-DsGM0B0kVsmJOLcmUajN02/IdouNqwtewCywXiUNay+DMpLM+k+h7uwWPbWvYe4bdo4ew2Y15zGqNUy+sH++FQ==
+rollbar-sourcemap-webpack-plugin@2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.5.3.tgz#77ed12a95f6d6651c36b76722bbdd281478874ff"
+  integrity sha512-ra/jKTF17/a2BdK5JweBp0cOF6wgp3rp89I044Sw8YmyFRZxw+rXuNUZee1rSuT54zIDGuC6QGZ/VOo2OIJB5Q==
   dependencies:
     async "^2.6.0"
     babel-runtime "^6.26.0"
@@ -12790,7 +12790,7 @@ rollbar-sourcemap-webpack-plugin@2.5.1:
     lodash.isfunction "^3.0.9"
     lodash.isstring "^4.0.1"
     lodash.reduce "^4.3.0"
-    request "^2.85.0"
+    request "^2.88.0"
     verror "^1.6.1"
 
 rollbar@2.14.4:
