@@ -9134,13 +9134,13 @@ lru-cache@~4.0.1:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
 
-lzo-decompress@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.2.tgz#ed6bb2c51c9ec786815c8e0b42fa6fcb8be482a1"
-  integrity sha512-hwZOB61BN+SzsR4PGldRucyCoIRWWlAN4lhkTDI7+TIQZBkjDpzQOGUYK378I3p3YcdnmgUz1WOKExz4K+pe9w==
+lzo-decompress@0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.8.tgz#4b5c5a5d4f3a6bd323fcd934e9a53cb1f08eafb1"
+  integrity sha512-nlLXay68ayoCxRa3hQOC+pJw7I6+Ht6cOiH4CT0HKWSlNvJpFDJlDjgpLr6otheyI+5+sipusvfT2+Y2ZYNL/Q==
   dependencies:
-    napi-macros "1.7.0"
-    node-gyp-build "3.5.0"
+    napi-macros "2.0.0"
+    node-gyp-build "4.2.0"
 
 macos-release@^2.2.0:
   version "2.3.0"
@@ -9670,10 +9670,10 @@ napi-build-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.1.tgz#1381a0f92c39d66bf19852e7873432fc2123e508"
   integrity sha512-boQj1WFgQH3v4clhu3mTNfP+vOBxorDlE8EKiMjUlLG3C4qAESnn9AxIOkFgTR2c9LtzNjPrjS60cT27ZKBhaA==
 
-napi-macros@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/napi-macros/-/napi-macros-1.7.0.tgz#6d556b1616f694f561b048211a9d8d1941700814"
-  integrity sha512-aXsAk51RqOamRUVmqRFJ4LR35T6jHPo6WHyHjzLqHrueDqud0vIqPrRBSCjVL9LtH+8cRjI+4oH9uW9fHG4zKg==
+napi-macros@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/napi-macros/-/napi-macros-2.0.0.tgz#2b6bae421e7b96eb687aa6c77a7858640670001b"
+  integrity sha512-A0xLykHtARfueITVDernsAWdtIMbOJgKgcluwENp3AlsKN/PloyO10HtmoqnFAQAcxPkgZN7wdfPfEd0zNGxbg==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -9770,10 +9770,10 @@ node-forge@0.9.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.0.tgz#d624050edbb44874adca12bb9a52ec63cb782579"
   integrity sha512-7ASaDa3pD+lJ3WvXFsxekJQelBKRpne+GOVbLbtHYdd7pFspyeuJHnWfLplGf3SwKGbfs/aYl5V/JCIaHVUKKQ==
 
-node-gyp-build@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-3.5.0.tgz#92f7c6517d1f90e2795a1cd49a59c6487b4f1cdb"
-  integrity sha512-qjEE8eIWVyqZhkAFUzytGpOGvLHeX5kXBB6MYyTOCPZBrBlsLyXAAzTsp/hWMbVlg8kVpzDJCZZowIrnKpwmqQ==
+node-gyp-build@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.0.tgz#2c2b05f461f4178641a6ce2d7159f04094e9376d"
+  integrity sha512-4oiumOLhCDU9Rronz8PZ5S4IvT39H5+JEv/hps9V8s7RSLhsac0TCP78ulnHXOo8X1wdpPiTayGlM1jr4IbnaQ==
 
 node-gyp@~3.6.0, node-gyp@~3.6.2:
   version "3.6.3"
