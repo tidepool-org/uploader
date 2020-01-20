@@ -58,7 +58,7 @@
     "immutability-helper": "3.0.1",
     "is-electron": "2.2.0",
     "lodash": "4.17.15",
-    "lzo-decompress": "0.1.8",
+    "lzo-decompress": "0.1.12",
     "node-powershell": "4.0.0",
     "os-name": "3.1.0",
     "pl2303": "0.0.5",
@@ -85,7 +85,7 @@
     "usb-cdc-acm": "0.1.1",
     "uuid": "3.3.3"
   },
-  "browserslist": "electron 3.1",
+  "browserslist": "electron 7.1.9",
   "build": {
     "productName": "Tidepool Uploader",
     "appId": "org.tidepool.TidepoolUploader",

@@ -9024,10 +9024,10 @@ lru-cache@~4.0.1:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
 
-lzo-decompress@0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.8.tgz#4b5c5a5d4f3a6bd323fcd934e9a53cb1f08eafb1"
-  integrity sha512-nlLXay68ayoCxRa3hQOC+pJw7I6+Ht6cOiH4CT0HKWSlNvJpFDJlDjgpLr6otheyI+5+sipusvfT2+Y2ZYNL/Q==
+lzo-decompress@0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.12.tgz#a0def991b3b67cfd9079ff751cd183ae556e8cfe"
+  integrity sha512-YqN0rSIY4BX5AUBFRk2miGgAh7bLj1KrxcNIXQpAQwJFlgXsGP4RcTSu9TmyxTWpN2q9wJbrkwFFmKl5Pi6cEA==
   dependencies:
     napi-macros "2.0.0"
     node-gyp-build "4.2.0"
