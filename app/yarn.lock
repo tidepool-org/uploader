@@ -325,10 +325,10 @@ keytar@4.10.0:
     nan "2.14.0"
     prebuild-install "5.3.0"
 
-lzo-decompress@0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.12.tgz#a0def991b3b67cfd9079ff751cd183ae556e8cfe"
-  integrity sha512-YqN0rSIY4BX5AUBFRk2miGgAh7bLj1KrxcNIXQpAQwJFlgXsGP4RcTSu9TmyxTWpN2q9wJbrkwFFmKl5Pi6cEA==
+lzo-decompress@0.1.14:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-0.1.14.tgz#08ab9b913cd356299e1d6dc27e3fa19b3774cce5"
+  integrity sha512-/WlE5gXLVgtaMNy6nAS/aRmex2DTn93iAFnbt2egcKML4TYPPUyrubUSzx3/QYmG42Mmm0VET3stgNcRdfpAGw==
   dependencies:
     napi-macros "2.0.0"
     node-gyp-build "4.2.0"
