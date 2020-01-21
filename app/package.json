@@ -16,7 +16,7 @@
     "@ronomon/direct-io": "3.0.0",
     "serialport": "8.0.6",
     "usb": "1.6.2",
-    "lzo-decompress": "0.1.14"
+    "lzo-decompress": "1.0.1"
   },
   "optionalDependencies": {
     "node-mtp": "0.3.14",
