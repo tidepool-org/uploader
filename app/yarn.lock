@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ronomon/direct-io@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ronomon/direct-io/-/direct-io-3.0.0.tgz#53d22801f94cdfedf28aaac3a8ad50b0e35c4ea8"
-  integrity sha512-YDiHOK2y3viQ163QYZp3G5bRdkmptK20awWjRGdoFUKRlu5K26kCQmk92QHZy/rz7k5NXg9Jrvc1jbODo87qWg==
+"@ronomon/direct-io@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@ronomon/direct-io/-/direct-io-3.0.1.tgz#d7bc72b710030469225bfb9c6b6d57554dedae0c"
+  integrity sha512-NkKB32bjq7RfMdAMiWayphMlVWzsfPiKelK+btXLqggv1vDVgv2xELqeo0z4uYLLt86fVReLPxQj7qpg0zWvow==
   dependencies:
     "@ronomon/queue" "^3.0.1"
 
@@ -317,13 +317,13 @@ isarray@~1.0.0:
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
-keytar@4.10.0:
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/keytar/-/keytar-4.10.0.tgz#03897398b22d6e60dbd0b381c088b2495ff32ce5"
-  integrity sha512-oL6dF4FMX8G80zL5e1CPIUEKwZCe9XZw6JZI5YesNstamzJbyZduj7NMUEX2l72BLyWQibyZOvipmof0QbsbRQ==
+keytar@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/keytar/-/keytar-5.0.0.tgz#c89b6b7a4608fd7af633d9f8474b1a7eb97cbe6f"
+  integrity sha512-a5UheK59YOlJf9i+2Osaj/kkH6mK0RCHVMtJ84u6ZfbfRIbOJ/H4b5VlOF/LgNHF6s78dRSBzZnvIuPiBKv6wg==
   dependencies:
     nan "2.14.0"
-    prebuild-install "5.3.0"
+    prebuild-install "5.3.3"
 
 lzo-decompress@1.0.1:
   version "1.0.1"
@@ -470,7 +470,28 @@ os-homedir@^1.0.1:
   resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
   integrity sha1-/7xJiDNuDoM94MFox+8VISGqf7M=
 
-prebuild-install@5.3.0, prebuild-install@^5.2.4, prebuild-install@^5.3.0:
+prebuild-install@5.3.3, prebuild-install@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.3.tgz#ef4052baac60d465f5ba6bf003c9c1de79b9da8e"
+  integrity sha512-GV+nsUXuPW2p8Zy7SarF/2W/oiK8bFQgJcncoJ0d7kRpekEA0ftChjfEaF9/Y+QJEc/wFR7RAEa8lYByuUIe2g==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
+    noop-logger "^0.1.1"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
+    which-pm-runs "^1.0.0"
+
+prebuild-install@^5.2.4, prebuild-install@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.0.tgz#58b4d8344e03590990931ee088dd5401b03004c8"
   integrity sha512-aaLVANlj4HgZweKttFNUVNRxDukytuIuxeK2boIMHjagNJCiVKWFsKF4tCE3ql3GbrD2tExPQ7/pwtEJcHNZeg==
@@ -489,27 +510,6 @@ prebuild-install@5.3.0, prebuild-install@^5.2.4, prebuild-install@^5.3.0:
     rc "^1.2.7"
     simple-get "^2.7.0"
     tar-fs "^1.13.0"
-    tunnel-agent "^0.6.0"
-    which-pm-runs "^1.0.0"
-
-prebuild-install@^5.3.3:
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.3.tgz#ef4052baac60d465f5ba6bf003c9c1de79b9da8e"
-  integrity sha512-GV+nsUXuPW2p8Zy7SarF/2W/oiK8bFQgJcncoJ0d7kRpekEA0ftChjfEaF9/Y+QJEc/wFR7RAEa8lYByuUIe2g==
-  dependencies:
-    detect-libc "^1.0.3"
-    expand-template "^2.0.3"
-    github-from-package "0.0.0"
-    minimist "^1.2.0"
-    mkdirp "^0.5.1"
-    napi-build-utils "^1.0.1"
-    node-abi "^2.7.0"
-    noop-logger "^0.1.1"
-    npmlog "^4.0.1"
-    pump "^3.0.0"
-    rc "^1.2.7"
-    simple-get "^3.0.3"
-    tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
     which-pm-runs "^1.0.0"
 

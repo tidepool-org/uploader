@@ -1315,10 +1315,10 @@
     prop-types "^15.6.0"
     react-is "^16.6.3"
 
-"@ronomon/direct-io@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ronomon/direct-io/-/direct-io-3.0.0.tgz#53d22801f94cdfedf28aaac3a8ad50b0e35c4ea8"
-  integrity sha512-YDiHOK2y3viQ163QYZp3G5bRdkmptK20awWjRGdoFUKRlu5K26kCQmk92QHZy/rz7k5NXg9Jrvc1jbODo87qWg==
+"@ronomon/direct-io@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@ronomon/direct-io/-/direct-io-3.0.1.tgz#d7bc72b710030469225bfb9c6b6d57554dedae0c"
+  integrity sha512-NkKB32bjq7RfMdAMiWayphMlVWzsfPiKelK+btXLqggv1vDVgv2xELqeo0z4uYLLt86fVReLPxQj7qpg0zWvow==
   dependencies:
     "@ronomon/queue" "^3.0.1"
 
