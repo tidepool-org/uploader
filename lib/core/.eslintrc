@@ -24,7 +24,6 @@
   "overrides": [
     {
       "files": [
-        "api.js",
         "carelink.js",
       ],
       "rules": {
