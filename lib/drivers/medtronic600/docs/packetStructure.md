@@ -372,14 +372,16 @@ A **Bolus Wizard Carb Ratios Response** is contained in the payload of a [Transm
 | Field     | Bytes | Data Type  |   Comments   |
 |-----------|:-----:|:----------:|--------------|
 | Sequence Number  | 1     | UInt8      | Transmit Packet Request Sequence Number |
-| Command   | 2     | UInt16BE   | `0x0132` |
+| Command   | 2     | UInt16BE   | `0x012C` |
 | Inner CCITT  | 2     | UInt16BE   | CCITT checksum of Byte 5 onwards, not including the CCITT at the end |
 | # Items  | 1     | UInt8      | The number of Bolus Wizard targets |
 | Ratio TGT 1 grams  | 4     | UInt32BE   | The first carb ratio (in grams) |
-| Unknown bytes  | 4     | Bytes      | Meaning unknown, but could be a ratio if Exchanges are used |
+| Ratio TGT 1 units | 4     | UInt32BE   | The first exchange ratio (in 1000 units per exchange) |
 | Ratio 1 Time  | 1     | UInt8      | Time from which this ratio applies, in half hour units.<br>For example, `0` means midnight, `1` means 00:30, and so on |
 | ...  | Variable | Bytes      | If **# Items** is greater than 1, the pattern (Bytes 6 to 14, shown in green) are repeated for their respective target details. |
 | CCITT  | 2     | UInt16BE   | CCITT checksum of this message, not including the Checksum |
+
+Note that only either the carb ratio or the exchange ratio field is used, depending on the carb unit selected in the pump settings. The unused field will always be zero.
 
 ### Bolus Wizard Sensitivity Factors Command
 A **Bolus Wizard Sensitivity Factors Command** is contained in the payload of a [Transmit Packet Request](#transmit-packet-request).
