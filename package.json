@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.24.0",
+  "version": "2.25.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -59,6 +59,7 @@
     "is-electron": "2.2.0",
     "lodash": "4.17.15",
     "lzo-decompress": "0.1.2",
+    "node-powershell": "4.0.0",
     "os-name": "3.1.0",
     "pl2303": "0.0.5",
     "plist": "3.0.1",
