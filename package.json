@@ -203,7 +203,7 @@
     "@babel/polyfill": "7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-react": "7.8.3",
-    "@babel/register": "7.7.0",
+    "@babel/register": "7.8.3",
     "@babel/runtime-corejs2": "7.7.2",
     "@jest-runner/electron": "2.0.2",
     "@ronomon/direct-io": "2.4.3",
