@@ -225,7 +225,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "drivelist": "8.0.9",
-    "electron": "7.1.11",
+    "electron": "8.0.0",
     "electron-builder": "22.2.0",
     "electron-devtools-installer": "2.2.4",
     "electron-notarize": "0.2.0",
