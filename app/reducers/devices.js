@@ -56,7 +56,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: 'Plug in PDM with USB cable',
+    instructions: ['Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.', 'DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.'],
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
