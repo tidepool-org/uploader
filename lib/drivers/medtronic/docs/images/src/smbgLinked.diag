@@ -1,0 +1,14 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x3F (packet type)
+	8-10: ???
+	11-15: amount\n(high)
+	
+	16-31: date/time
+	32-34: amount\n(low) [rotate=270]
+	35-55: date/time
+	
+	56-79: meter serial number
+}

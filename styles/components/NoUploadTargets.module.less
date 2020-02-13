@@ -1,0 +1,52 @@
+/**
+* Copyright (c) 2016, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.main {
+  composes: whiteBox from '../core/layout.module.less';
+  composes: centerContainer from '../core/layout.module.less';
+  width: 515px;
+  height: 445px;
+  margin-top: 20px;
+}
+
+.paragraph {
+  text-align: center;
+  width: 290px;
+  margin: 0 auto;
+}
+
+.link {
+  composes: link from '../core/typography.module.less';
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.linkCentered {
+  text-align: center;
+}
+
+.buttonCta {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  width: 300px;
+  padding: 15px 0;
+  font-size: @font-size-large;
+  margin: 0 auto 25px;
+}

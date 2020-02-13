@@ -1,0 +1,54 @@
+{
+  "user": {
+    "userid": "9508844d",
+    "username": "futejok@foobar.com",
+    "termsAccepted": "2015-12-05T13:09:50-08:00",
+    "emails": [
+      "futejok@foobar.com"
+    ]
+  },
+  "profile": {
+    "fullName": "Jeffrey Gene Lyons"
+  },
+  "memberships": [
+    {
+      "userid": "9508844d",
+      "profile": {
+        "fullName": "Jeffrey Gene Lyons"
+      }
+    },
+    {
+      "userid": "01188072",
+      "profile": {
+        "fullName": "Lily Garza",
+        "patient": {
+          "about": "Jewsein haszuk suspogpid ejeew zeiheegu.",
+          "birthday": "1978-01-13",
+          "diagnosisDate": "1988-01-22"
+        }
+      }
+    },
+    {
+      "userid": "53ef303b",
+      "profile": {
+        "fullName": "Birdie Luella Jones",
+        "patient": {
+          "about": "Wu jeohe siniece lawbe wukhuw.",
+          "birthday": "1964-01-02",
+          "diagnosisDate": "1977-01-13"
+        }
+      }
+    },
+    {
+      "userid": "cbccfb03",
+      "profile": {
+        "fullName": "Douglas Ruiz",
+        "patient": {
+          "about": "Ge ruti peva heranadi zaotcu.",
+          "birthday": "1969-08-12",
+          "diagnosisDate": "1977-08-13"
+        }
+      }
+    }
+  ]
+}

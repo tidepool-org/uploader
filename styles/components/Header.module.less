@@ -1,0 +1,77 @@
+/**
+* Copyright (c) 2016, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+.header {
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+  padding-bottom: 10px;
+  width: 100%;
+  max-width: 550px;
+  margin: 0px auto;
+}
+
+.headerRow {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.signup {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.logoWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.logo {
+  width: 340px;
+  height: 36px;
+}
+
+.smallLogoWrapper {
+  margin-top: 30px;
+  margin-bottom: 55px;
+}
+
+.smallLogo {
+  width: 230px;
+}
+
+.heroText {
+  composes: flexRow from '../core/layout.module.less';
+  composes: large from '../core/typography.module.less';
+  justify-content: center;
+  margin: 35px auto 50px auto;
+}
+
+.signupLink {
+  composes: invertLink from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.signupIcon {
+  composes: icon-add from '../core/icons.module.less';
+  font-style: normal;
+}

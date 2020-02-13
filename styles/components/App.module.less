@@ -1,0 +1,59 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.app {
+  composes: base from '../core/typography.module.less';
+  composes: flexColumn from '../core/layout.module.less';
+  height: 100%;
+}
+
+// Page
+// ====================================
+
+.page {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.loading {
+  composes: page;
+  width: 300px;
+  text-align: center;
+}
+
+.mainWrap {
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+}
+
+.changePerson {
+  composes: link small from '../core/typography.module.less';
+  composes: pageRow from '../core/layout.module.less';
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.linkDisabled {
+  &:hover {
+    cursor: not-allowed;
+  }
+}

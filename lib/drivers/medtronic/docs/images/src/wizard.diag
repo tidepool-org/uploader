@@ -1,0 +1,30 @@
+{
+	colwidth = 32
+	node_height = 72
+
+	0-7: 0x5B (packet type)
+	8-15: bg (low)
+
+	16-55: date/time
+
+	56-63: carbInput (low)
+	64-65: BG units [rotate=270]
+	66-67: ??
+	68-69: carbInput\n (high) [rotate=270]
+	70-71: bgInput\n (high) [rotate=270]
+	72-76: ??
+	77-87: insulinCarbRatio
+
+
+	88-95: insulinSensitivity
+	96-103: bgTarget.low
+	104-111: recommended.correction (low)
+	112-127: recommended.carb
+
+	128: ??
+	129-131: recommend\ned.correction\n (high) [rotate=270]
+	132-135: ??
+	136-151: insulinOnBoard
+	152-167: recommended.net
+	168-175: bgTarget.high
+}

@@ -1,0 +1,12 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x03 (packet type)
+	8-15: ??
+	16-23: type
+	24-31: ??
+	32-39: amount
+	
+	40-79: date/time
+}

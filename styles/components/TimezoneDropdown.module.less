@@ -1,0 +1,81 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+@import '../core/icons.module.less';
+
+.timezoneDropdown {
+  composes: whiteBox from '../core/layout.module.less';
+  border-bottom: none;
+  padding-bottom: 10px;
+  margin-bottom: 0px;
+}
+
+.clinic {
+  padding: 10px 0 0 0;
+  border: none;
+  .timezone {
+    margin-bottom: 0px;
+  }
+}
+
+.userDropdownShowing {
+  border-top: none;
+}
+
+.timezone {
+  composes: flexRowWrap from '../core/layout.module.less';
+  margin: 10px 0px 7px 0px;
+}
+
+.label {
+  composes: small gray from '../core/typography.module.less';
+  vertical-align: middle;
+}
+
+.list {
+  margin-top: -10px;
+  margin-left: 15px;
+  width: 260px;  
+}
+
+.listNoValue {
+  :global(.Select-control){
+    border-color: @purple-medium;
+    box-shadow: 0 0 10px @purple-medium;
+  }
+}
+
+.timeDetail {
+  composes: small from '../core/typography.module.less';
+  color: @purple-dark;
+  margin-top: 10px;
+  flex-basis: 100%;
+}
+
+.error {
+  composes: timeDetail;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  color: red;
+}
+
+.iconClose {
+  composes: icon-close from '../core/icons.module.less';
+}
+
+.iconClose:hover {
+  color: #999;
+}

@@ -1,0 +1,80 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.loginPage {
+  composes: page from './App.module.less';
+  width: 300px;
+}
+
+.link {
+  composes: link from '../core/typography.module.less';
+}
+
+.form {
+  composes: boxFlex from '../core/layout.module.less';
+  border-color: @purple-light;
+}
+
+.inputWrap {
+  composes: flexColumn from '../core/layout.module.less';
+  margin-bottom: 15px;
+}
+
+.input {
+  composes: form-control from '../core/forms.less';
+}
+
+.actions {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.remember {
+  composes: flexRowWrap from '../core/layout.module.less';
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    margin: 0;
+    margin-right: 5px;
+  }
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
+
+.forgot {
+  composes: tiny from '../core/typography.module.less';
+}
+
+.forgotLink {
+  composes: invertLink from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.error {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: flex-end;
+  color: @red;
+  margin-top: 10px;
+}

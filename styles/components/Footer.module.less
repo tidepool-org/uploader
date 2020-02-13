@@ -1,0 +1,61 @@
+/**
+* Copyright (c) 2016, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+.footer {
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: 30px;
+}
+
+.footerRow {
+  composes: flexRow from '../core/layout.module.less';
+  width: 100%;
+  max-width: 550px;
+  margin: 0px auto;
+  justify-content: space-between;
+  align-self: flex-end;
+  align-items: center;
+}
+
+.footerLink {
+  composes: invertLink gray from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.jdrfContainer {
+  composes: flexRow from '../core/layout.module.less';
+  align-items: center;
+}
+
+.jdrfText {
+  composes: gray from '../core/typography.module.less';
+}
+
+.jdrfImage {
+  width: 82px;
+  height: 24px;
+  padding-left: 7px;
+}
+
+.version {
+  composes: lightGray from '../core/typography.module.less';
+  margin: 10px auto;
+}

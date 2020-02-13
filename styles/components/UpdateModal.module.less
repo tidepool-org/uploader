@@ -1,0 +1,54 @@
+@import '../core/variables.less';
+
+.purpleCentered {
+  color: @purple-dark;
+  text-align: center;
+}
+
+.modalWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  composes: flexColumn from '../core/layout.module.less';
+  min-width: 330px;
+  background-color: @gray-background;
+  border-radius: 5px;
+  border: solid 1px @gray-light;
+  padding: 5px;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+}
+
+.title {
+  composes: small bold from '../core/typography.module.less';
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.text {
+  composes: small from '../core/typography.module.less';
+  text-align: center;
+  max-width: 260px;
+}
+
+.actions {
+  padding: 15px;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  margin: 6px;
+}
+
+.buttonSecondary {
+  composes: btn btnSecondary from '../core/buttons.module.less';
+  margin: 6px;
+}

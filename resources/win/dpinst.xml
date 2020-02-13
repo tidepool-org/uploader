@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<dpinst>
+<legacyMode/>
+<enableNotListedLanguages/>
+<language code="0x0401">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0804">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0404">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0405">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0406">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0407">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0408">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0409">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0C0A">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x040B">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x040C">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x040D">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x040E">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0410">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0411">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0412">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0414">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0413">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0415">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0416">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0816">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x0419">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x041D">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+<language code="0x041F">
+<dpinstTitle>Tidepool USB Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Tidepool USB Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the Tidepool USB driver for your diabetes device.</welcomeIntro>
+<finishTitle>Completing the Installation of the Tidepool USB Driver</finishTitle>
+</language>
+</dpinst>

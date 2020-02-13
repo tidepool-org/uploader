@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 1664 1416" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>{
+	colwidth = 64
+	node_height = 72
+	
+	0-7: packet type
+	8-15: ??
+	
+	16-31: date/time
+	32-34: active\nschedule [rotate=270]
+	35-55: date/time
+	
+	56-1151: schedules (1 byte offset, 1 byte rate, 1 byte q) x 48
+	
+	
+}
+</desc>
+  <path d="M 64 48 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="7" x="64" y="41">0</text>
+  <path d="M 88 64 L 88 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 112 64 L 112 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 136 64 L 136 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 160 64 L 160 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 184 64 L 184 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 208 64 L 208 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 232 64 L 232 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 64 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 280 64 L 280 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 304 64 L 304 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 328 64 L 328 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 352 64 L 352 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 376 64 L 376 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 400 64 L 400 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 424 64 L 424 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 48 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 472 64 L 472 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 496 64 L 496 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 520 64 L 520 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 544 64 L 544 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 568 64 L 568 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 592 64 L 592 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 616 64 L 616 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 640 64 L 640 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 664 64 L 664 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 688 64 L 688 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 712 64 L 712 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 64 L 736 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 760 64 L 760 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 784 64 L 784 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 808 64 L 808 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 48 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="832" y="41">32</text>
+  <path d="M 856 64 L 856 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 880 64 L 880 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 904 64 L 904 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 928 64 L 928 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 952 64 L 952 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 976 64 L 976 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1000 64 L 1000 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1024 64 L 1024 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1048 64 L 1048 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1072 64 L 1072 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1096 64 L 1096 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1120 64 L 1120 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1144 64 L 1144 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1168 64 L 1168 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1192 64 L 1192 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1216 48 L 1216 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1240 64 L 1240 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1264 64 L 1264 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1288 64 L 1288 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1312 64 L 1312 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1336 64 L 1336 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1360 64 L 1360 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1384 64 L 1384 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1408 64 L 1408 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1432 64 L 1432 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1456 64 L 1456 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1480 64 L 1480 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1504 64 L 1504 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1528 64 L 1528 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1552 64 L 1552 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1576 64 L 1576 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 48 L 1600 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="1600" y="41">64</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="64" y="80" />
+  <path d="M 64 80 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 80 L 256 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 152 L 64 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 152 L 64 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="60" x="160" y="122">packet type</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="256" y="80" />
+  <path d="M 256 80 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 80 L 448 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 152 L 256 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 256 152 L 256 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="14" x="352" y="121">??</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="384" x="448" y="80" />
+  <path d="M 448 80 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 80 L 832 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 152 L 448 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 448 152 L 448 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="50" x="640" y="122">date/time</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="72" x="832" y="80" />
+  <path d="M 832 80 L 904 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 904 80 L 904 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 904 152 L 832 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 832 152 L 832 80" fill="none" stroke="rgb(0,0,0)" />
+  <g transform="rotate(270,832,152)">
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="30" x="868" y="187">active</text>
+    <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="43" x="868" y="199">schedule</text>
+  </g>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="504" x="904" y="80" />
+  <path d="M 904 80 L 1408 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1408 80 L 1408 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1408 152 L 904 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 904 152 L 904 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="50" x="1156" y="122">date/time</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="1304" />
+  <path d="M 64 1304 L 1600 1304" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1304 L 1600 1376" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1376 L 64 1376" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1376 L 64 1304" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="1346">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="192" x="1408" y="80" />
+  <path d="M 1408 80 L 1600 80" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 80 L 1600 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 152 L 1408 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1408 152 L 1408 80" fill="none" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="191" x="1504" y="115">schedules (1 byte offset, 1 byte rate,</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="82" x="1504" y="128"> 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="152" />
+  <path d="M 64 152 L 1600 152" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 152 L 1600 224" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 224 L 64 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 224 L 64 152" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="194">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="224" />
+  <path d="M 64 224 L 1600 224" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 224 L 1600 296" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 296 L 64 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 296 L 64 224" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="266">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="296" />
+  <path d="M 64 296 L 1600 296" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 296 L 1600 368" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 368 L 64 368" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 368 L 64 296" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="338">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="368" />
+  <path d="M 64 368 L 1600 368" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 368 L 1600 440" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 440 L 64 440" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 440 L 64 368" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="410">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="440" />
+  <path d="M 64 440 L 1600 440" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 440 L 1600 512" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 512 L 64 512" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 512 L 64 440" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="482">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="512" />
+  <path d="M 64 512 L 1600 512" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 512 L 1600 584" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 584 L 64 584" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 584 L 64 512" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="554">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="584" />
+  <path d="M 64 584 L 1600 584" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 584 L 1600 656" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 656 L 64 656" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 656 L 64 584" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="626">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="656" />
+  <path d="M 64 656 L 1600 656" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 656 L 1600 728" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 728 L 64 728" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 728 L 64 656" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="698">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="728" />
+  <path d="M 64 728 L 1600 728" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 728 L 1600 800" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 800 L 64 800" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 800 L 64 728" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="770">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="800" />
+  <path d="M 64 800 L 1600 800" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 800 L 1600 872" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 872 L 64 872" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 872 L 64 800" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="842">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="872" />
+  <path d="M 64 872 L 1600 872" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 872 L 1600 944" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 944 L 64 944" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 944 L 64 872" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="914">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="944" />
+  <path d="M 64 944 L 1600 944" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 944 L 1600 1016" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 1016 L 64 1016" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1016 L 64 944" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="986">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="1016" />
+  <path d="M 64 1016 L 1600 1016" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1016 L 1600 1088" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 1088 L 64 1088" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1088 L 64 1016" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="1058">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="1088" />
+  <path d="M 64 1088 L 1600 1088" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1088 L 1600 1160" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 1160 L 64 1160" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1160 L 64 1088" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="1130">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="1160" />
+  <path d="M 64 1160 L 1600 1160" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1160 L 1600 1232" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 1232 L 64 1232" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1232 L 64 1160" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="1202">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+  <rect fill="rgb(255,255,255)" height="72" stroke="rgb(255,255,255)" width="1536" x="64" y="1232" />
+  <path d="M 64 1232 L 1600 1232" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 1600 1232 L 1600 1304" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <path d="M 1600 1304 L 64 1304" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 64 1304 L 64 1232" fill="none" stroke="rgb(0,0,0)" stroke-dasharray="4" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="273" x="832" y="1274">schedules (1 byte offset, 1 byte rate, 1 byte q) x 48</text>
+</svg>

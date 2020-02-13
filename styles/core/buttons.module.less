@@ -1,0 +1,92 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import 'variables.less';
+
+// Base button
+// ====================================
+
+.btn,
+a.btn {
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  white-space: nowrap;
+  background-image: none;
+  text-decoration: none;
+
+  border: @btn-border-size solid transparent;
+  border-radius: 3px;
+
+  font-size: inherit;
+  line-height: (@btn-height - 2*@btn-border-size);
+  padding: 0;
+  min-width: 124px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0;
+    text-decoration: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    opacity: .65;
+  }
+}
+
+a.btn {
+  min-width: 120px;
+}
+
+// Button styles
+// ====================================
+
+// Main action button style
+.btnPrimary,
+a.btnPrimary {
+  background-color: @purple-medium;
+  color: #fff;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: @purple-dark;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: fade(@purple-medium, 20%);
+  }
+}
+
+.btnSecondary,
+a.btnSecondary {
+  color: @text-color;
+  background-color: @gray-background;
+  border-color: @gray-light;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: @purple-light;
+  }
+}

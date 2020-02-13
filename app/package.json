@@ -1,0 +1,25 @@
+{
+  "name": "tidepool-uploader",
+  "productName": "tidepool-uploader",
+  "version": "2.25.0-electron-update.1",
+  "description": "Tidepool Project Universal Uploader",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Tidepool Project",
+    "email": "gerrit@tidepool.org"
+  },
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "drivelist": "8.0.9",
+    "keytar": "5.1.0",
+    "node-hid": "1.1.0",
+    "@ronomon/direct-io": "3.0.1",
+    "serialport": "8.0.7",
+    "usb": "1.6.2",
+    "lzo-decompress": "1.0.1"
+  },
+  "optionalDependencies": {
+    "node-mtp": "0.3.14",
+    "winreg": "1.2.4"
+  }
+}

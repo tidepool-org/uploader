@@ -1,0 +1,14 @@
+packetdiag {
+	colwidth = 16
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x030C
+	3: Data Type [rotate = 270]
+	4: 0x04 [rotate = 270]
+	5-8: From RTC [rotate = 270]
+	9-12: To RTC [rotate = 270]
+	13: 0x00 [rotate = 270]
+	14: 0x00 [rotate = 270]
+	15-16: Checksum  [rotate = 270]
+}

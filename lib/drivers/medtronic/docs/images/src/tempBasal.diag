@@ -1,0 +1,11 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x33 (packet type)
+	8-15: rate /\npercentage [rotate=270]
+	
+	16-55: date/time
+
+	56-60: type
+}

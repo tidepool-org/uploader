@@ -1,0 +1,191 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+
+.main {
+  composes: flexRowWrap from '../core/layout.module.less';
+}
+
+.column {
+  composes: flexColumn from '../core/layout.module.less';
+  // Same width, and stretch
+  flex-grow: 1;
+  flex-basis: 0px;
+}
+
+.left {
+  composes: column;
+  padding-right: 5px;
+}
+
+.right {
+  composes: column;
+  padding-left: 5px;
+}
+
+.name {
+  composes: small bold from '../core/typography.module.less';
+}
+
+.detail {
+  composes: small gray from '../core/typography.module.less';
+
+  img {
+    margin-top: 10px;
+  }
+}
+
+.statusSection {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.status {
+  composes: flexRow from '../core/layout.module.less';
+  flex-shrink: 1;
+  // Reset button height
+  min-height: 24px;
+  // elide long text
+  p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin: 0px;
+  }
+}
+
+.blockMode {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+  margin: 0px;
+}
+
+.preparing {
+  composes: blockMode;
+  color: @purple-light;
+}
+
+.reset {
+  composes: btn from '../core/buttons.module.less';
+}
+
+.resetSuccess, .resetError {
+  composes: btn btnSecondary from '../core/buttons.module.less';
+}
+
+.progress {
+  composes: flex from '../core/layout.module.less';
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.form {
+  composes: boxFlex from '../core/layout.module.less';
+}
+
+.textInputWrapper {
+  composes: boxFlex from '../core/layout.module.less';
+  margin-bottom: 15px;
+}
+
+.textInput {
+  composes: form-control from '../core/forms.less';
+}
+
+.textInputError:extend(.textInput) {
+  border-color: @red !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.buttonWrap {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: flex-end;
+}
+
+.rememberWrap {
+  margin-top: 7px;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+}
+
+input[type=file] {
+  &:focus {
+    // Disable default WebKit focus style
+    outline: 0;
+    border-color: @form-control-border-color;
+  }
+}
+
+.inputWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  flex-direction: row-reverse;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+}
+
+// hide Chrome-default filepicker button
+.fileinput::-webkit-file-upload-button {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.fileinput::before {
+  visibility: visible;
+  color: #fff;
+  content: 'Choose file';
+  margin-left: 25px;
+  vertical-align: middle;
+}
+
+.fileinput {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  padding: 0px;
+  color: transparent;
+  border: none;
+  height: 34px;
+  width: 116px;
+}
+
+.dataDownloadLink {
+  composes: link from '../core/typography.module.less';
+}
+
+.uploadPeriodRow {
+  composes: flexRowWrap from '../core/layout.module.less';
+  margin: 10px 0px 15px 0px;
+  color: @gray-medium;
+  justify-content: flex-end;
+}
+
+.dropdown {
+  margin-top: -10px;
+  margin-left: 5px;
+  width: 160px;  
+}

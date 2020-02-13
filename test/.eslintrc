@@ -1,0 +1,15 @@
+{
+  "env": {
+    "es6": true,
+    "jest/globals": true
+  },
+  "plugins": [
+    "jest"
+  ],
+  "rules": {
+    "no-unused-expressions": 0,
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error"
+  }
+}

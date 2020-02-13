@@ -1,0 +1,9 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x16 (packet type)
+	8-15: duration
+	
+	16-55: date/time
+}

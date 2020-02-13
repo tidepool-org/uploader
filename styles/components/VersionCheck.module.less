@@ -1,0 +1,92 @@
+@import '../core/variables.less';
+
+.modalWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: rgba(39, 27, 70, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  composes: flexColumn from '../core/layout.module.less';
+  min-width: 330px;
+  background-color: @gray-background;
+  border-radius: 5px;
+  border: solid 1px @gray-light;
+  padding: 30px;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  .icon {
+    color: @purple-medium;
+    font-size: 48px;
+  }
+}
+
+.purpleCentered {
+  color: @purple-dark;
+  text-align: center;
+}
+
+.mostlyOpaqueBackground {
+  background-color: rgba(255, 255, 255, 0.925);
+}
+
+
+
+.failed {
+  composes: flexColumn from '../core/layout.module.less';
+}
+
+.offline {
+  composes: flexColumn from '../core/layout.module.less';
+}
+
+.text {
+  composes: small from '../core/typography.module.less';
+}
+
+.link { 
+  composes: link from '../core/typography.module.less';
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.lineOne {
+  composes: large from '../core/typography.module.less';
+  font-weight: 500;
+  margin: 8px 0;
+  color: #4f6a92;
+}
+
+.lineTwo {
+  composes: medium from '../core/typography.module.less';
+  font-weight: 500;
+  margin: 8px 0;
+  color: #7e98c3;
+}
+
+.mostImportant {
+  margin-top: 20px;
+}
+
+.error {
+  position: absolute;
+  top: 600px; left: 0px;
+
+  width: 100%;
+  min-height: 80px;
+}
+
+.errorText {
+  composes: purpleCentered;
+  composes: tiny from '../core/typography.module.less';
+  margin: 0;
+}

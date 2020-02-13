@@ -1,0 +1,99 @@
+@import '../core/variables.less';
+
+.modalWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  composes: boxFlex flexColumn from '../core/layout.module.less';
+  min-width: 400px;
+  background-color: @gray-background;
+  border-radius: 5px;
+  border: solid 1px @gray-light;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+}
+
+.hr {
+  width: 100%;
+  margin: 15px 0;
+}
+
+.highlight {
+  composes: small bold from '../core/typography.module.less';
+  color: @purple-medium;
+}
+
+.numeral {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.list {
+  padding-left: 15px;
+}
+
+.list > li {
+  text-align: start;
+}
+
+.title {
+  composes: small bold from '../core/typography.module.less';
+  composes: boxFlex from '../core/layout.module.less';
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.text {
+  composes: small from '../core/typography.module.less';
+  width: 100%;
+}
+
+.timeCompare {
+  display:flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.body {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.actions {
+  display:flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  margin: 6px;
+  padding: 0 15px;
+  line-height: 25px;
+  height: 55px;
+  width: 230px;
+}
+
+.buttonGroup {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.buttonSecondary {
+  composes: btn btnSecondary from '../core/buttons.module.less';
+  margin: 6px;
+  padding: 0 10px;
+}

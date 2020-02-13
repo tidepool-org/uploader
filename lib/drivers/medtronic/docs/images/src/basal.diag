@@ -1,0 +1,16 @@
+{
+	colwidth = 32
+	node_height = 72
+	
+	0-7: 0x7B (packet type)
+	8-15: ??
+	
+	16-31: date/time
+	32-34: schedule\nname [rotate=270]
+	35-55: date/time
+
+
+	56-63: offset
+	64-71: rate
+	72-79: ??
+}
