@@ -96,7 +96,10 @@ app.on('ready', async () => {
     show: false,
     width: 663,
     height: 769,
-    resizable: resizable
+    resizable: resizable,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
