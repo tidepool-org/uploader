@@ -256,7 +256,7 @@
     "minimist": "1.2.0",
     "node-hid": "1.1.0",
     "object-invariant-test-helper": "0.1.1",
-    "open": "7.0.0",
+    "open": "7.0.2",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
