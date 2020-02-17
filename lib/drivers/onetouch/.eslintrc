@@ -12,10 +12,6 @@
         "allowForLoopAfterthoughts": true
       }
     ],
-    "import/extensions": [
-      "error",
-      "ignorePackages"
-    ],
     "import/order": "warn",
     "max-len": "warn",
     "import/no-extraneous-dependencies": "warn",
