@@ -15,24 +15,23 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
 var statusManager = require('../../lib/statusManager.js');
 
 
-describe('statusManager.js', function(){
+describe('statusManager.js', () => {
 
   var manager;
   var config = {};
 
-  beforeEach(function(){
+  beforeEach(() => {
     manager = statusManager(config);
   });
 
-  describe('progressForStep', function(){
-    it('exists', function(){
+  describe('progressForStep', () => {
+    test('exists', () => {
       expect(manager).itself.to.respondTo('progressForStep');
     });
   });

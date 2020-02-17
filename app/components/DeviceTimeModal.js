@@ -96,22 +96,26 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
-    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone, deviceInfo } } } = this.props;
     let message;
-    switch (type.value) {
-      case 'bgm':
+    if (type.value === 'bgm') {
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
             * Changing your device time will not change any previous records.<br/>
             All future readings will be in {timezone}.
-            <a href=''>Click to learn more about meters and device time.</a>
+            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>Click to learn more about meters and device time.</a>
             </div>
           </div>
         );
-        break;
-      default:
-        break;
+    } else if (deviceInfo.model === 'Dash') {
+      message = (
+        <div className={styles.text}>
+          <div className={styles.body}>
+          Did you remember to tap Export on the PDM before clicking Upload?
+          </div>
+        </div>
+      );
     }
     return message;
   }

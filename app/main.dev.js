@@ -36,6 +36,9 @@ let menu;
 let template;
 let mainWindow = null;
 
+// Web Bluetooth should only be an experimental feature on Linux
+app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
@@ -93,7 +96,10 @@ app.on('ready', async () => {
     show: false,
     width: 663,
     height: 769,
-    resizable: resizable
+    resizable: resizable,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -112,7 +118,13 @@ app.on('ready', async () => {
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      open(url, chromeInstalls[0], function(error){
+      let app;
+      if(platform === 'win32'){
+        app = `"${chromeInstalls[0]}"`; 
+      } else {
+        app = chromeInstalls[0];
+      }
+      open(url, {app}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
@@ -122,6 +134,18 @@ app.on('ready', async () => {
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+    event.preventDefault();
+    console.log('Device list:', deviceList);
+    let [result] = deviceList;
+    global.bluetoothDeviceId = result.deviceId;
+    if (!result) {
+      callback('');
+    } else {
+      callback(result.deviceId);
+    }
   });
 
   if (process.env.NODE_ENV === 'development') {

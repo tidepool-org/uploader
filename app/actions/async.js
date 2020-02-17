@@ -275,6 +275,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       var errorMessage = 'E_DEVICE_UPLOAD';
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
+      } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
+        errorMessage = 'E_BLUETOOTH_PAIR';
       }
       device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
     });
@@ -282,7 +284,32 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
 }
 
 export function doUpload(deviceKey, opts, utc) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+
+    const { devices, uploadTargetUser, working } = getState();
+
+    if (opts && opts.ble) {
+      // we need to to scan for Bluetooth devices before the version check,
+      // otherwise it doesn't count as a response to a user request anymore
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+      console.log('Scanning..');
+      try {
+        await opts.ble.scan();
+      } catch (err) {
+        console.log('Error:', err);
+
+        let btErr = new Error(errorText.E_BLUETOOTH_OFF);
+        let errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_BLUETOOTH_OFF',
+        };
+
+        return dispatch(syncActions.uploadFailure(btErr, errProps, devices[deviceKey]));
+      }
+      console.log('Done.');
+    }
+
     dispatch(syncActions.versionCheckRequest());
     const { api } = services;
     const version = versionInfo.semver;
@@ -310,7 +337,6 @@ export function doUpload(deviceKey, opts, utc) {
         return dispatch(syncActions.uploadAborted());
       }
 
-      const { devices, uploadTargetUser, working } = getState();
       if (working.uploading === true) {
         return dispatch(syncActions.uploadAborted());
       }

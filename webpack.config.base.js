@@ -4,6 +4,7 @@
 
 import _ from 'lodash';
 import path from 'path';
+import webpack from 'webpack';
 import { dependencies as externals } from './app/package.json';
 import { optionalDependencies as additionalExternals } from './app/package.json';
 
@@ -12,16 +13,24 @@ export default {
     rules: [{
       test: /\.jsx?$/,
       use: [{
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true
+        }
       }],
       exclude: /node_modules/
+    },
+    // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
+    {
+      test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+      resolve: {
+        aliasFields: ['main']
+      }
     }]
   },
 
   output: {
     path: path.join(__dirname, 'app'),
-    filename: 'bundle.js',
-
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2'
   },
@@ -40,7 +49,13 @@ export default {
   },
   resolveLoader: { },
 
-  plugins: [],
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'production'
+    }),
 
-  externals: _.keys(_.merge({}, externals, additionalExternals) || {})
+    new webpack.NamedModulesPlugin()
+  ],
+
+  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
 };
