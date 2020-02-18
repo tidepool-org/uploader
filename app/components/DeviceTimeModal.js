@@ -96,10 +96,9 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
-    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone, deviceInfo } } } = this.props;
     let message;
-    switch (type.value) {
-      case 'bgm':
+    if (type.value === 'bgm') {
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
@@ -109,9 +108,14 @@ export class DeviceTimeModal extends Component {
             </div>
           </div>
         );
-        break;
-      default:
-        break;
+    } else if (deviceInfo.model === 'Dash') {
+      message = (
+        <div className={styles.text}>
+          <div className={styles.body}>
+          Did you remember to tap Export on the PDM before clicking Upload?
+          </div>
+        </div>
+      );
     }
     return message;
   }
