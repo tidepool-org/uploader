@@ -191,8 +191,7 @@ export default merge.smart(baseConfig, {
             sourceMap: true,
             cache: true,
             terserOptions: {
-              keep_classnames: true, // we check against some classnames
-              keep_fnames: true
+              mangle: false
             },
             extractComments: false
           }),
@@ -225,7 +224,7 @@ export default merge.smart(baseConfig, {
       __ROLLBAR_POST_TOKEN__: JSON.stringify(ROLLBAR_POST_TOKEN),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
-    
+
     /**
     * Dynamically generate index.html page
     */
@@ -235,8 +234,8 @@ export default merge.smart(baseConfig, {
       inject: false
     }),
 
-    new MiniCssExtractPlugin({ 
-      filename: 'style.css' 
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
     }),
 
     /** Upload sourcemap to Rollbar */
