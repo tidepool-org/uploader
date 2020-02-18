@@ -9,6 +9,8 @@ import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -120,7 +122,7 @@ app.on('ready', async () => {
     } else {
       let app;
       if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`; 
+        app = `"${chromeInstalls[0]}"`;
       } else {
         app = chromeInstalls[0];
       }
