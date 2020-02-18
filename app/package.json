@@ -10,13 +10,13 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "6.4.3",
-    "keytar": "4.2.1",
-    "node-hid": "0.7.9",
-    "@ronomon/direct-io": "2.4.3",
-    "serialport": "6.2.2",
-    "usb": "1.5.0",
-    "lzo-decompress": "0.1.2"
+    "drivelist": "8.0.9",
+    "keytar": "5.1.0",
+    "node-hid": "1.1.0",
+    "@ronomon/direct-io": "3.0.1",
+    "serialport": "8.0.7",
+    "usb": "1.6.2",
+    "lzo-decompress": "1.0.1"
   },
   "optionalDependencies": {
     "node-mtp": "0.3.14",
