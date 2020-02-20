@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
 import os from 'os';
+import osName from 'os-name';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
@@ -34,7 +35,7 @@ export default class Footer extends Component {
     let osArch = '';
 
     if (debugMode.isDebug) {
-      osArch = ` ${os.platform()}-${os.arch()}-${os.release()}`;
+      osArch = `  (${osName()} - ${os.arch()})`;
     }
 
     return (
