@@ -221,10 +221,10 @@ detect-libc@^1.0.3:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
 
-drivelist@8.0.9:
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/drivelist/-/drivelist-8.0.9.tgz#9fc8bfb19b21656e84dbc2b56e14773a348971af"
-  integrity sha512-s25SFYuMDD7WK+/CaOZpXCXCpBU0aJwBwGlg0AkO8ttVTIGEJSdBgjQQdBFeR0Z9Pl/BRGst7YIScv4q2LLo6w==
+drivelist@8.0.10:
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/drivelist/-/drivelist-8.0.10.tgz#d2445c557ad14fd59e2fecc784fcba1752305044"
+  integrity sha512-2A/NCMn9jQ/9J1B8zohS8rnXQKDM6ZixLAlYS/rBeZV2NuSXJCMr/M8kKdr4vy95oOxKXi8NXk+IVrHCS3bung==
   dependencies:
     bindings "^1.3.0"
     debug "^3.1.0"
