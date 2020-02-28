@@ -201,7 +201,7 @@
     "@babel/plugin-transform-react-constant-elements": "7.8.3",
     "@babel/plugin-transform-react-inline-elements": "7.8.3",
     "@babel/polyfill": "7.8.3",
-    "@babel/preset-env": "7.7.1",
+    "@babel/preset-env": "7.8.6",
     "@babel/preset-react": "7.7.0",
     "@babel/register": "7.7.0",
     "@babel/runtime-corejs2": "7.7.2",
