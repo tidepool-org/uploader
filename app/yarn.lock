@@ -317,10 +317,10 @@ isarray@~1.0.0:
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
-keytar@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/keytar/-/keytar-5.1.0.tgz#d572ed9250ff2b4c8d729621397e00b17bfa5581"
-  integrity sha512-SptCrRDqLbTeOMB2Z9UmVOS+OKguIrMft+EUaCB8xJPiFMjy6Jnmjgv/LA0rg1ENgLelzwSsC5PSQXF0uoqNDQ==
+keytar@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/keytar/-/keytar-5.3.0.tgz#40f1158f93c9110178e748b70129f89ba90d3468"
+  integrity sha512-/gGxnCGF4jjQgws8DNxsbPamXCf4X29U2B2M2ceEcfBCHfSVfcrZ130CSqhbJ1/ETa/TzUCyUCCNjQtpIWkKgg==
   dependencies:
     nan "2.14.0"
     prebuild-install "5.3.3"
