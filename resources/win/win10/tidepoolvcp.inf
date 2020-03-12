@@ -240,10 +240,12 @@ AddReg=FtdiPort.NT.HW.AddReg
 [FtdiPort.NTx86.Services]
 AddService = FTSER2K, 0x00000002, FtdiPort.NT.AddService
 DelService = FTSERIAL
+AddService=serenum,,SerenumService
 
 [FtdiPort.NTamd64.Services]
 AddService = FTSER2K, 0x00000002, FtdiPort.NT.AddService
 DelService = FTSERIAL
+AddService=serenum,,SerenumService
 
 [FtdiPort.NT.HW.AddReg]
 HKR,,"UpperFilters",0x00010000,"serenum"
