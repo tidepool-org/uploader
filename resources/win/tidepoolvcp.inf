@@ -105,7 +105,6 @@ StartType      = 3 ; SERVICE_DEMAND_START
 ErrorControl   = 1 ; SERVICE_ERROR_NORMAL
 ServiceBinary  = %10%\system32\drivers\ftser2k.sys
 LoadOrderGroup = Base
-AddReg=FtdiPort.NT.AddService.AddReg
 
 [silabser.NTx86]
 AddReg=silabser.AddReg
