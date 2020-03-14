@@ -43,7 +43,7 @@
     "bows": "1.7.2",
     "chrome-launcher": "0.13.0",
     "classnames": "2.2.6",
-    "commander": "4.1.1",
+    "commander": "5.0.0",
     "core-js": "2.6.10",
     "cp2102": "0.0.3",
     "decompress": "4.2.0",
