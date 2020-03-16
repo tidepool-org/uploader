@@ -53,6 +53,8 @@
     "electron-updater": "4.2.2",
     "es6-error": "4.1.1",
     "history": "4.10.1",
+    "i18next": "19.3.2",
+    "i18next-node-fs-backend": "2.1.3",
     "iconv-lite": "0.5.1",
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.0.1",

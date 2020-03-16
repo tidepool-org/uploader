@@ -12,6 +12,11 @@ import uploadDataPeriod from './utils/uploadDataPeriod';
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
 
+// multi-language
+const i18n = require('i18next');
+const i18nextBackend = require('i18next-node-fs-backend');
+import i18nextOptions from './utils/config.i18next';
+
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
   rollbar = new Rollbar({
@@ -92,8 +97,18 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
-  const resizable = (process.env.NODE_ENV === 'development');
 
+  i18n.use(i18nextBackend);
+  // Initialize
+  if (!i18n.isInitialized) {
+    i18n.init(i18nextOptions, function (err, t) {
+      createWindow();
+    });
+  }
+});
+
+function createWindow() {
+  const resizable = (process.env.NODE_ENV === 'development');
   mainWindow = new BrowserWindow({
     show: false,
     width: 663,
@@ -166,12 +181,12 @@ app.on('ready', async () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Tidepool Uploader',
+      label: i18n.t('Tidepool Uploader'),
       submenu: [{
-        label: 'About Tidepool Uploader',
+        label: i18n.t('About Tidepool Uploader'),
         selector: 'orderFrontStandardAboutPanel:'
       }, {
-        label: 'Check for Updates',
+        label: i18n.t('Check for Updates'),
         click() {
           manualCheck = true;
           autoUpdater.checkForUpdates();
@@ -179,20 +194,20 @@ app.on('ready', async () => {
       }, {
         type: 'separator'
       }, {
-        label: 'Hide Tidepool Uploader',
+        label: i18n.t('Hide Tidepool Uploader'),
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {
-        label: 'Hide Others',
+        label: i18n.t('Hide Others'),
         accelerator: 'Command+Shift+H',
         selector: 'hideOtherApplications:'
       }, {
-        label: 'Show All',
+        label: i18n.t('Show All'),
         selector: 'unhideAllApplications:'
       }, {
         type: 'separator'
       }, {
-        label: 'Quit',
+        label: i18n.t('Quit'),
         accelerator: 'Command+Q',
         click() {
           app.quit();
@@ -269,7 +284,7 @@ app.on('ready', async () => {
       label: '&Upload',
       id: 'upload',
       submenu: [{
-        label: 'All data',
+        label: i18n.t('All data'),
         type: 'radio',
         click() {
           console.log('Uploading all data');
@@ -369,7 +384,7 @@ app.on('ready', async () => {
       label: '&Upload',
       id: 'upload',
       submenu: [{
-        label: 'All data',
+        label: i18n.t('All data'),
         type: 'radio',
         click() {
           console.log('Uploading all data');
@@ -409,7 +424,7 @@ app.on('ready', async () => {
     addDataPeriodGlobalListener(menu);
     mainWindow.setMenu(menu);
   }
-});
+}
 
 function checkUpdates(){
   // in production NODE_ENV we check for updates, but not if NODE_ENV is 'development'
@@ -475,3 +490,19 @@ if(!app.isDefaultProtocolClient('tidepoolupload')){
 app.on('window-all-closed', () => {
   app.quit();
 });
+
+app.on('activate', () => {
+  // for macOS because, normally  it's not common to recreate a window in the app
+  if (mainWindow === null) {
+    console.log("not activate .. mainWindow");
+    i18n.use(i18nextBackend);
+    // Initialize
+    if (!i18n.isInitialized) {
+      i18n.init(i18nextOptions, function (err, t) {
+          createWindow();
+      });
+    } else {
+      createWindow();
+    }
+  }
+})
