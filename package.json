@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.26.0-contour.7",
+  "version": "2.26.0-contour.8",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
