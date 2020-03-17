@@ -101,6 +101,7 @@ app.on('ready', async () => {
   i18n.use(i18nextBackend);
   // Initialize
   if (!i18n.isInitialized) {
+    setLanguage();
     i18n.init(i18nextOptions, function (err, t) {
       createWindow();
     });
@@ -494,10 +495,10 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // for macOS because, normally  it's not common to recreate a window in the app
   if (mainWindow === null) {
-    console.log("not activate .. mainWindow");
     i18n.use(i18nextBackend);
     // Initialize
     if (!i18n.isInitialized) {
+      setLanguage();
       i18n.init(i18nextOptions, function (err, t) {
           createWindow();
       });
@@ -506,3 +507,11 @@ app.on('activate', () => {
     }
   }
 })
+
+function setLanguage() {
+  let lng = app.getLocale()
+  // remove country in language locale
+  if (lng.includes("-"))
+    lng = (lng.split("-").length > 0) ? lng.split("-")[0] : lng
+  i18nextOptions["lng"] = lng
+}

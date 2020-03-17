@@ -1,11 +1,11 @@
 {
 	"Tidepool Uploader": "Tidepool Uploader3",
-	"About Tidepool Uploader": "",
+	"About Tidepool Uploader": "Sobre Tidepool Uploader",
 	"Check for Updates": "Revisar si hay actualizaciones",
-	"Hide Tidepool Uploader": "",
+	"Hide Tidepool Uploader": "Ocultar Tidepool Uploader",
 	"All data": "Todos los datos",
-	"Hide Others": "",
-	"Show All": "",
+	"Hide Others": "Ocultar otros",
+	"Show All": "Mostrar todo",
 	"Quit": "Quitar",
 	"Edit": "Editar",
 	"Undo": "Deshacer",
@@ -22,7 +22,7 @@
 	"Data since last upload": "",
 	"Window": "",
 	"Close": "",
-	"separator": "",
+	"separator": "separador",
 	"Bring All to Front": "",
 	"&File": "",
 	"&Open": "",
@@ -31,6 +31,6 @@
 	"Toggle &Full Screen": "",
 	"Toggle &Developer Tools": "",
 	"Help": "Ayuda",
-	"Get Support": "",
+	"Get Support": "Soporte",
 	"Privacy Policy": "Política de privacidad"
 }

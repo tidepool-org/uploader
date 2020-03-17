@@ -1,4 +1,4 @@
-const i18nextOptions = module.exports = {
+let i18nextOptions = module.exports = {
   backend:{
     loadPath: './locales/{{lng}}/{{ns}}.json',
     addPath: './locales/{{lng}}/{{ns}}.missing.json'
@@ -6,11 +6,14 @@ const i18nextOptions = module.exports = {
   interpolation: {
     escapeValue: false
   },
-  lng: "es",
+  lng: "en",
   saveMissing: true,
-  fallbackLng: "es",
+  fallbackLng: "en",
   returnEmptyString: false,
   whitelist: ["en", "es"],
+  keySeparator: false,
+  nsSeparator: '|',
+  debug: false,
   react: {
     wait: true,
     withRef: true,
