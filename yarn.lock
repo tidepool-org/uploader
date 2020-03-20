@@ -13538,10 +13538,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.7.0.tgz#26efd65a4f106f8893f515351cc6e0821183c8ff"
-  integrity sha512-/V0x4Cmx3bdnmHDoRowdS2UKmY+cvshx1SpSc8h5Gd7/LcA/vb98DUTDgeqjH9PrA4bJm4vkXfqC/1irGmtAHA==
+rollbar-sourcemap-webpack-plugin@2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.8.0.tgz#540011a1d4b7417f6480df75b0235396546a4905"
+  integrity sha512-g5O1vZ+ExQKULcCtEAiS9Fb2GcvYz9PoIAh9M2Jvr5NBvfghtgoNbUjrWRfwa3zCy1PRhIVdRNeL1PO/vd+E4Q==
   dependencies:
     async "^3.1.1"
     cross-env "^7.0.0"
