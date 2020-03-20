@@ -62,6 +62,7 @@ export class DeviceTimeModal extends Component {
   getActions = () => {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
+    const reminder = this.getReminder();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
     if ( !this.isDevice('Animas') &&
@@ -85,6 +86,7 @@ export class DeviceTimeModal extends Component {
       <div className={styles.buttonGroup} key='cancel'>
       Are you in {timezone}? Double-check<br/>
       selected time zone and current device time.
+      {reminder}
       <button className={styles.button} onClick={this.handleCancel}>
         Cancel this upload
       </button>
@@ -96,7 +98,7 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
-    const { showingDeviceTimePrompt: { cfg: { timezone, deviceInfo } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
     if (type.value === 'bgm') {
         message = (
@@ -108,17 +110,24 @@ export class DeviceTimeModal extends Component {
             </div>
           </div>
         );
-    } else if (deviceInfo.model === 'Dash') {
-      message = (
+    }
+    return message;
+  }
+
+  getReminder = () => {
+    const { showingDeviceTimePrompt: { cfg: { deviceInfo } } } = this.props;
+    let reminder;
+    if (deviceInfo.model === 'Dash') {
+      reminder = (
         <div className={styles.text}>
           <div className={styles.body}>
-          Did you remember to tap Export on the PDM before clicking Upload?
+          Remember to tap "Export" on the PDM before clicking "Upload".
           </div>
         </div>
       );
     }
-    return message;
-  }
+    return reminder;
+  };
 
   render() {
     const { showingDeviceTimePrompt } = this.props;
@@ -130,8 +139,8 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
 
     const type = this.determineDeviceType();
-    const message = this.getMessage();
     const actions = this.getActions();
+    const message = this.getMessage();
 
     return (
       <div className={styles.modalWrap}>
