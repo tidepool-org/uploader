@@ -247,7 +247,7 @@
     "flux-standard-action": "2.1.1",
     "ftp": "0.3.10",
     "gitbook-cli": "2.3.2",
-    "html-webpack-plugin": "3.2.0",
+    "html-webpack-plugin": "4.0.0",
     "jest": "24.9.0",
     "json-loader": "0.5.7",
     "less": "3.10.3",
