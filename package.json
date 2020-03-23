@@ -52,7 +52,7 @@
     "electron-log": "4.0.7",
     "electron-updater": "4.2.2",
     "es6-error": "4.1.1",
-    "ftdi-js": "0.0.3",
+    "ftdi-js": "0.0.4",
     "history": "4.10.1",
     "iconv-lite": "0.5.1",
     "identity-obj-proxy": "3.0.0",
