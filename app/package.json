@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.27.0-contour.11",
+  "version": "2.27.0-contour.12",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
