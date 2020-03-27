@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.26.0",
+  "version": "2.27.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -225,7 +225,7 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "drivelist": "8.0.10",
-    "electron": "8.1.0",
+    "electron": "8.1.1",
     "electron-builder": "22.3.6",
     "electron-devtools-installer": "2.2.4",
     "electron-notarize": "0.2.0",
