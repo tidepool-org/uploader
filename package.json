@@ -86,8 +86,7 @@
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.42.0",
     "usb-cdc-acm": "0.1.1",
-    "uuid": "7.0.0",
-    "snyk": "^1.305.0"
+    "uuid": "7.0.0"
   },
   "browserslist": "electron 7.1.9",
   "build": {
@@ -266,6 +265,7 @@
     "serialport": "8.0.7",
     "sinon": "9.0.0",
     "sinon-chai": "3.5.0",
+    "snyk": "1.305.0",
     "spectron": "10.0.1",
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "2.3.5",
