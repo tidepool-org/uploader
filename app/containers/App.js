@@ -123,16 +123,33 @@ export class App extends Component {
       log: this.log
     });
 
+    const addServers = (servers) => {
+      if (servers && servers.length && servers.length > 0) {
+        for (let server of servers) {
+          const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+          const url = protocol + server.name + ':' + server.port;
+          serverdata[server.name] = {
+            API_URL: url,
+            UPLOAD_URL: url,
+            DATA_URL: url + '/dataservices',
+            BLIP_URL: url,
+          };
+        }
+      } else {
+        this.log('No servers found');
+      }
+    };
+
     dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      for (let server of servers) {
-        const protocol = server.name === 'localhost' ? 'http://' : 'https://';
-        const url = protocol + server.name + ':' + server.port;
-        serverdata[server.name] = {
-          API_URL: url,
-          UPLOAD_URL: url,
-          DATA_URL: url + '/dataservices',
-          BLIP_URL: url,
-        };
+      if (err) {
+        this.log(`DNS resolver error: ${err}. Retrying...`);
+        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+          if (!err2) {
+           addServers(servers2);
+          }
+        });
+      } else {
+        addServers(servers);
       }
     });
 
