@@ -113,13 +113,12 @@ app.on('ready', async () => {
         type: 'info',
         title: 'Please update to a modern operating system',
         message:
-          `On January 14, 2020, Microsoft stopped updating or providing support
-for Windows 7.
+          `Windows 7 won't be patched for any new viruses or security problems
+going forward.
 
 While Windows 7 will continue to work, Microsoft recommends you
 start planning to upgrade to Windows 10, or an alternative
-operating system, as soon as possible, as Windows 7 won\'t be
-patched for any new viruses or security problems going forward.`,
+operating system, as soon as possible.`,
         buttons: ['Continue']
       };
       await dialog.showMessageBox(options);
