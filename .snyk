@@ -1,0 +1,21 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:hoek:20180212':
+    - gitbook-cli > npm > node-gyp > request > hawk > hoek:
+        patched: '2020-03-30T10:35:56.490Z'
+    - gitbook-cli > npm > node-gyp > request > hawk > boom > hoek:
+        patched: '2020-03-30T10:35:56.490Z'
+    - gitbook-cli > npm > node-gyp > request > hawk > sntp > hoek:
+        patched: '2020-03-30T10:35:56.490Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - gitbook-cli > npm > pacote > make-fetch-happen > https-proxy-agent:
+        patched: '2020-03-30T10:35:56.490Z'
+  'npm:mime:20170907':
+    - tidepool-platform-client > superagent > mime:
+        patched: '2020-03-30T10:35:56.490Z'
+  'npm:tunnel-agent:20170305':
+    - gitbook-cli > npmi > npm > request > tunnel-agent:
+        patched: '2020-03-30T10:35:56.490Z'

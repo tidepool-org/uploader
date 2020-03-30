@@ -31,7 +31,9 @@
     "package-win": "npm run build && electron-builder --win --x64",
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
-    "package-all": "npm run build && electron-builder -mwl"
+    "package-all": "npm run build && electron-builder -mwl",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
@@ -66,7 +68,7 @@
     "plist": "3.0.1",
     "prop-types": "15.7.2",
     "react": "16.4.0",
-    "react-dom": "16.4.0",
+    "react-dom": "16.4.2",
     "react-hot-loader": "4.12.17",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
@@ -84,7 +86,8 @@
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.42.0",
     "usb-cdc-acm": "0.1.1",
-    "uuid": "7.0.0"
+    "uuid": "7.0.0",
+    "snyk": "^1.305.0"
   },
   "browserslist": "electron 7.1.9",
   "build": {
@@ -309,5 +312,6 @@
     ],
     "runner": "@jest-runner/electron",
     "testEnvironment": "@jest-runner/electron/environment"
-  }
+  },
+  "snyk": true
 }
