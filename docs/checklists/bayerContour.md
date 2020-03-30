@@ -1,4 +1,4 @@
-## CareSens N Premier & Dual meters over Bluetooth LE
+## Checklist for Blood Glucose Meter Implementation
 
 (Key:
 
@@ -13,18 +13,18 @@
 - `[x]` smbg values
 - `[x]` units of smbg values (read from device, not hard-coded)
 - `[x]` out-of-range values (LO or HI)
-- `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
-- `[-]` date & time settings changes
+- `[x]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
+- `[ ]` date & time settings changes
 - `[ ]` blood ketone values
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[ ]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
-- `[-]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
+- `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ### No Tidepool Data Model Yet
 
 - `[x]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
-- `[-]` device settings, other than date & time (e.g., target blood glucose range)
+- `[ ]` device settings, other than date & time (e.g., target blood glucose range)
 - `[-]` tag/note (e.g., pre- vs. post-meal)
 
 ### Tidepool ingestion API
@@ -37,5 +37,3 @@ Choose one of the following:
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
-
-It is not possible to distinguish between CareSens models when uploading via Bluetooth, as the Bluetooth advertising name for Premier and Dual meters uses the same format ("CareSens + 4 digits")
