@@ -111,6 +111,13 @@ const devices = {
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
+  bayercontour: {
+    instructions: 'Plug in meter with cable and make sure meter is switched on',
+    key: 'bayercontour',
+    name: 'Ascensia (Bayer) Contour Next EZ, Contour or Contour Link',
+    source: {type: 'device', driverId: 'BayerContour'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   animas: {
     instructions: 'Suspend and align back of pump with IR dongle front',
     key: 'animas',

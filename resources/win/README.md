@@ -11,7 +11,7 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ### Generate the .cat files from the .inf files:
 - Bump version number in .inf file
-- `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,Vista_X86,Vista_X64,XP_X86,XP_X64`
+- `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,10_X86,10_X64,Server10_X64`
 
 ### Install certificates:
 
@@ -24,9 +24,9 @@ To build and sign the driver, check that you have the specified requirements ins
 
 In `resources\win`:
 
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolvcp.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolhid.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" tidepoolusb.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolvcp.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolhid.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolusb.cat`
 
 ### Submit Windows 10 drivers to hardware dashboard for attestation signing
 
