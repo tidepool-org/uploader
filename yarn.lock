@@ -7165,10 +7165,10 @@ fstream@^1.0.0, fstream@^1.0.12, fstream@~1.0.10, fstream@~1.0.11:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-ftdi-js@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.4.tgz#408d20978f496644cfeeef78cef8785a2ef674fd"
-  integrity sha512-jeam4UwVV6CP+Sx7MMAhwT1HnPdWJ0qPqwRG1gfAaWjWPL8KWNjTKJVwp3P5+ggokhRISMrTY+xh4OcZdFZmww==
+ftdi-js@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.5.tgz#8688d4338248d4aa565c6990cc2ef32fe3d12e79"
+  integrity sha512-T8j6DJX+B+P1Xt/1g+Bm2ElCAKgMMz+N2lr0ygknjkUrL055D6h4Wyc3A8gfizfVQ7kOYzRE97K13jFHo1VfEQ==
   dependencies:
     webusb "2.0.1"
 
