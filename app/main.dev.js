@@ -16,6 +16,7 @@ autoUpdater.logger.transports.file.level = 'info';
 const i18n = require('i18next');
 const i18nextBackend = require('i18next-node-fs-backend');
 import i18nextOptions from './utils/config.i18next';
+global.i18n = i18n;
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -106,6 +107,7 @@ app.on('ready', async () => {
       createWindow();
     });
   }
+  global.i18n = i18n;
 });
 
 function createWindow() {

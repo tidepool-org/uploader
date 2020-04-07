@@ -23,6 +23,9 @@ import { bindActionCreators } from 'redux';
 import actions from '../actions/';
 const asyncActions = actions.async;
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( "i18n");
+
 export class Login extends Component {
   renderForgotPasswordLink() {
     return (
@@ -83,7 +86,7 @@ export class Login extends Component {
             <div>
               <div className={styles.remember}>
                 <input type="checkbox" ref={(input) => { this.remember = input; }} id="remember"/>
-                <label htmlFor="remember">Remember me</label>
+                <label htmlFor="remember">{i18n.t('Remember me')}</label>
               </div>
               <div className={styles.forgot}>{this.renderForgotPasswordLink()}</div>
             </div>
