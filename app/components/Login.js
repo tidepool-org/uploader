@@ -24,7 +24,7 @@ import actions from '../actions/';
 const asyncActions = actions.async;
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n");
+const i18n = remote.getGlobal( 'i18n' );
 
 export class Login extends Component {
   renderForgotPasswordLink() {

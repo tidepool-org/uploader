@@ -27,7 +27,7 @@ import config from '../../lib/config.js';
 import styles from '../../styles/components/UpdateModal.module.less';
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n");
+const i18n = remote.getGlobal( 'i18n' );
 
 export class UpdateModal extends Component {
   handleInstall = () => {

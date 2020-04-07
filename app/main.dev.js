@@ -513,7 +513,7 @@ app.on('activate', () => {
 function setLanguage() {
   let lng = app.getLocale()
   // remove country in language locale
-  if (lng.includes("-"))
-    lng = (lng.split("-").length > 0) ? lng.split("-")[0] : lng
-  i18nextOptions["lng"] = lng
+  if (lng.includes('-'))
+    lng = (lng.split('-').length > 0) ? lng.split('-')[0] : lng
+  i18nextOptions['lng'] = lng
 }

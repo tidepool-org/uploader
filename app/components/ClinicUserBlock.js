@@ -23,7 +23,7 @@ var personUtils = require('../../lib/core/personUtils');
 var cx = require('classnames');
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n" );
+const i18n = remote.getGlobal( 'i18n' );
 
 var styles = require('../../styles/components/ClinicUserBlock.module.less');
 

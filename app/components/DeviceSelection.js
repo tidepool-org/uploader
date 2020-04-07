@@ -21,7 +21,7 @@ var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n" );
+const i18n = remote.getGlobal( 'i18n' );
 
 import { urls } from '../constants/otherConstants';
 

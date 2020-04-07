@@ -26,7 +26,7 @@ import { sync as syncActions } from '../actions/';
 import styles from '../../styles/components/DeviceTimeModal.module.less';
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n" );
+const i18n = remote.getGlobal( 'i18n' );
 
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {

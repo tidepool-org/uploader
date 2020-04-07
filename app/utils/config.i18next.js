@@ -6,11 +6,11 @@ let i18nextOptions = module.exports = {
   interpolation: {
     escapeValue: false
   },
-  lng: "en",
+  lng: 'en',
   saveMissing: true,
-  fallbackLng: "en",
+  fallbackLng: 'en',
   returnEmptyString: false,
-  whitelist: ["en", "es"],
+  whitelist: ['en', 'es'],
   keySeparator: false,
   nsSeparator: '|',
   debug: false,

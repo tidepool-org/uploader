@@ -33,7 +33,7 @@ import uploadDataPeriod from '../utils/uploadDataPeriod';
 import styles from '../../styles/components/Upload.module.less';
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal("i18n");
+const i18n = remote.getGlobal( 'i18n' );
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();

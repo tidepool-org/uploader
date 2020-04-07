@@ -23,7 +23,7 @@ import { urls } from '../constants/otherConstants';
 import styles from '../../styles/components/NoUploadTargets.module.less';
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal("i18n");
+const i18n = remote.getGlobal( 'i18n' );
 
 export default class NoUploadTargets extends Component {
   static propTypes = {

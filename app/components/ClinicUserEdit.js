@@ -26,7 +26,7 @@ var personUtils = require('../../lib/core/personUtils');
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
 import { remote } from 'electron';
-const i18n = remote.getGlobal( "i18n" );
+const i18n = remote.getGlobal( 'i18n' );
 
 function zeroPad(value){
   return _.padStart(value, 2, '0');
