@@ -61,7 +61,7 @@
   "* Changing your device time will not change any previous records.":"",
   "All future readings will be in {{timezone}}.":"Todas las lecturas futuras estarán en {{timezone}}.",
   "Click to learn more about meters and device time.":"",
-  "Did you remember to tap Export on the PDM before clicking Upload?":"",
+  "Remember to tap \"Export\" on the PDM before clicking \"Upload\".":"",
   "Your {{text}} doesn\\'t appear to be in":"",
   "Device time:":"Tiempo del dispositivo",
   "Get Support":"",

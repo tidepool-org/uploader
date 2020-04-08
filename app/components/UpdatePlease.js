@@ -39,13 +39,15 @@ export default class UpdatePlease extends Component {
   render() {
     const { knowledgeBaseLink, updateText } = this.props;
     return (
-      <div className={styles.outdated}>
-        <div className={styles.text}>
-          <p className={styles.paragraph}>{updateText.NEEDS_UPDATED}</p>
-          <p className={styles.paragraph}>{updateText.IMPROVEMENTS}</p>
-          <p className={styles.mostImportant}>
-            {i18n.t('Follow')} <a className={styles.link} href={knowledgeBaseLink} target="_blank">{i18n.t('these instructions')}</a> {i18n.t('to do so.')}}
-          </p>
+      <div className={styles.modalWrap}>
+        <div className={styles.modal}>
+          <div className={styles.text}>
+            <p className={styles.lineOne}>{updateText.NEEDS_UPDATED}</p>
+            <p className={styles.lineTwo}>{updateText.IMPROVEMENTS}</p>
+            <p className={styles.mostImportant}>
+             {i18n.t('Follow')} <a className={styles.link} href={knowledgeBaseLink} target="_blank">{i18n.t('these instructions')}</a> {i18n.t('to do so.')}}
+            </p>
+          </div>
         </div>
       </div>
     );
