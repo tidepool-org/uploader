@@ -114,10 +114,13 @@ class TimezoneDropdown extends React.Component {
 
   renderSuggestedTime = () => {
     if(this.props.targetTimezone){
-      let timeTitle = this.props.isClinicAccount ? i18n.t('The device times should be approximately') : i18n.t('Your device times should be approximately')
+      let textClinic = i18n.t('The device times should be approximately');
+      let textPatient = i18n.t('Your device times should be approximately');
+      let text = this.props.isClinicAccount ? textClinic : textPatient;
+      let timez = this.props.targetTimezone;
       return (
         <div className={styles.timeDetail}>
-          {timeTitle} {sundial.formatInTimezone(new Date(), this.props.targetTimezone, 'h:mm a')}
+          {text} {sundial.formatInTimezone(new Date(), timez, 'h:mm a')}
         </div>
       );
     } else {

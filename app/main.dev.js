@@ -100,6 +100,8 @@ app.on('ready', async () => {
   await installExtensions();
 
   i18n.use(i18nextBackend);
+  console.log('====== APP');
+  console.log(app.getLocale());
   // Initialize
   if (!i18n.isInitialized) {
     setLanguage();
@@ -495,7 +497,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // for macOS because, normally  it's not common to recreate a window in the app
+  // for mac because, normally it's not common to recreate a window in the app
   if (mainWindow === null) {
     i18n.use(i18nextBackend);
     // Initialize
@@ -508,12 +510,13 @@ app.on('activate', () => {
       createWindow();
     }
   }
-})
+});
 
 function setLanguage() {
-  let lng = app.getLocale()
+  let lng = app.getLocale();
   // remove country in language locale
-  if (lng.includes('-'))
-    lng = (lng.split('-').length > 0) ? lng.split('-')[0] : lng
-  i18nextOptions['lng'] = lng
+  if (_.includes(lng,'-'))
+    lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
+
+  i18nextOptions['lng'] = lng;
 }
