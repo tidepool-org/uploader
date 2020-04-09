@@ -101,8 +101,6 @@ app.on('ready', async () => {
   await installExtensions();
 
   i18n.use(i18nextBackend);
-  console.log('====== APP');
-  console.log(app.getLocale());
   // Initialize
   if (!i18n.isInitialized) {
     setLanguage();

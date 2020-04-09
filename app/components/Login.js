@@ -30,16 +30,16 @@ export class Login extends Component {
   renderForgotPasswordLink() {
     return (
       <a className={styles.forgotLink} href={this.props.forgotPasswordUrl} target="_blank">
-        {'Forgot password?'}
+        {i18n.t('Forgot password?')}
       </a>
     );
   }
 
   renderButton() {
-    var text = 'Log in';
+    var text = i18n.t('Log in');
 
     if (this.props.isFetching) {
-      text = 'Logging in...';
+      text = i18n.t('Logging in...');
     }
 
     return (

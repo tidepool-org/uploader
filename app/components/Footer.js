@@ -51,7 +51,7 @@ export default class Footer extends Component {
             <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">{i18n.t('Privacy and Terms of Use')}</a>
           </div>
           <div className={styles.jdrfContainer}>
-            <span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src={logo}/>
+            <span className={styles.jdrfText}>{i18n.t('Made possible by')}</span><img className={styles.jdrfImage} src={logo}/>
           </div>
         </div>
         <div className={styles.footerRow}>
