@@ -73,7 +73,7 @@ export default class Upload extends Component {
       UPLOAD_COMPLETE: i18n.t('Done!'),
       UPLOAD_PROGRESS: i18n.t('Uploading... '),
       NOTE: i18n.t('Note:'),
-      FIRST_UPLOAD: i18n.t('We\'ve improved how devices upload. This upload will take \ longer than usual, but your future uploads will be much, \ much faster.')
+      FIRST_UPLOAD: i18n.t('We\'ve improved how devices upload. This upload will take longer than usual, but your future uploads will be much, much faster.')
     }
   };
 
