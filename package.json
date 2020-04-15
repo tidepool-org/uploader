@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.28.0",
+  "version": "2.28.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -267,7 +267,7 @@
     "terser-webpack-plugin": "2.3.5",
     "url-loader": "2.2.0",
     "webpack": "4.42.0",
-    "webpack-bundle-analyzer": "3.6.1",
+    "webpack-bundle-analyzer": "3.7.0",
     "webpack-cli": "3.3.10",
     "webpack-dev-middleware": "3.7.2",
     "webpack-dev-server": "3.10.2",
