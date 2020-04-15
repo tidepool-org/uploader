@@ -6229,10 +6229,10 @@ eslint-plugin-jsx-a11y@6.2.3:
     has "^1.0.3"
     jsx-ast-utils "^2.2.1"
 
-eslint-plugin-lodash@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-lodash/-/eslint-plugin-lodash-7.0.0.tgz#4a82934a1269f1687fd4f06adecc4a55c5ec776d"
-  integrity sha512-cG0qCNIIG80eFVDxGuS6i8zaRq7YbKIqEB9lqkBW7yR042vUfIHasdXkLLVD1GLNfI8w4KHsgy06kWPrrv27oQ==
+eslint-plugin-lodash@7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-lodash/-/eslint-plugin-lodash-7.1.0.tgz#5ad9bf1240a01c6c3f94e956213e2d6422af3192"
+  integrity sha512-BRkEI/+ZjmeDCM1DfzR+NVwYkC/+ChJhaOSm3Xm7rer/fs89TKU6AMtkQiDdqQel1wZ4IJM+B6hlep9xwVKaMQ==
 
 eslint-plugin-promise@4.2.1:
   version "4.2.1"
