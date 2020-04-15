@@ -137,13 +137,7 @@ operating system, as soon as possible.`,
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      let app;
-      if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`;
-      } else {
-        app = chromeInstalls[0];
-      }
-      open(url, {app}, function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
