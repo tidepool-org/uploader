@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
@@ -24,12 +23,12 @@ var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
 var common = require('../../lib/commonFunctions');
 
-describe('commonFunctions.js', function(){
+describe('commonFunctions.js', () => {
 
-  describe('finalScheduledBasal', function(){
+  describe('finalScheduledBasal', () => {
 
     var basal;
-    beforeEach(function(){
+    beforeEach(() => {
       basal = builder.makeScheduledBasal()
         .with_deviceTime('2015-11-05T17:36:39')
         .with_time('2015-11-05T17:36:39.000Z')
@@ -39,7 +38,7 @@ describe('commonFunctions.js', function(){
         .with_timezoneOffset(0);
     });
 
-    it('fabricates final basal duration from two schedule segments', function(){
+    test('fabricates final basal duration from two schedule segments', () => {
       var settings = {
         basalSchedules: {
           'Test': [
@@ -59,7 +58,7 @@ describe('commonFunctions.js', function(){
       expect(finalBasal.duration).to.equal(1000);
     });
 
-    it('fabricates final basal duration from only one schedule segment', function(){
+    test('fabricates final basal duration from only one schedule segment', () => {
       var settings = {
         basalSchedules: {
           'Test': [
@@ -75,7 +74,7 @@ describe('commonFunctions.js', function(){
       expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
     });
 
-    it('final basal has zero duration when it has an off-schedule rate', function() {
+    test('final basal has zero duration when it has an off-schedule rate', () => {
       var settings = {
         basalSchedules: {
           'Test': [
@@ -95,7 +94,7 @@ describe('commonFunctions.js', function(){
       expect(finalBasal.duration).to.equal(0);
     });
 
-    it('final basal has zero duration if no schedule and duration found', function(){
+    test('final basal has zero duration if no schedule and duration found', () => {
       var settings = {
         basalSchedules: {
           'NotTest': [
@@ -112,10 +111,10 @@ describe('commonFunctions.js', function(){
     });
   });
 
-  describe('computeMillisInCurrentDay', function(){
+  describe('computeMillisInCurrentDay', () => {
 
     var basal;
-    beforeEach(function(){
+    beforeEach(() => {
       basal = builder.makeScheduledBasal()
         .with_deviceTime('2015-11-05T17:00:00')
         .with_time('2015-11-05T17:00:00.000Z')
@@ -125,14 +124,13 @@ describe('commonFunctions.js', function(){
         .with_timezoneOffset(0);
     });
 
-    it('returns milliseconds in current day', function(){
+    test('returns milliseconds in current day', () => {
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
 
-    it('rounds to nearest 15 minutes for clock skew', function(){
+    test('rounds to nearest 15 minutes for clock skew', () => {
       basal.with_time('2015-11-05T17:05:00.000Z')
            .with_conversionOffset(420000);
-      console.log(basal);
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
   });

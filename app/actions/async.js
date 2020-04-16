@@ -82,7 +82,7 @@ export function doAppInit(opts, servicesToInit) {
               return dispatch(syncActions.initFailure(apiError));
             }
             log('Setting all api hosts');
-            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL']));
+            api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
             dispatch(syncActions.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
@@ -234,7 +234,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       targetId: uploadTargetUser,
       timezone: targetTimezones[uploadTargetUser],
       progress: actionUtils.makeProgressFn(dispatch),
-      dialogDisplay: actionUtils.makeDisplayModal(dispatch),
+      displayTimeModal: actionUtils.makeDisplayTimeModal(dispatch),
+      displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
@@ -257,6 +258,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_SERIAL_CONNECTION',
           version: version
         };
+        displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -273,6 +275,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       var errorMessage = 'E_DEVICE_UPLOAD';
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
+      } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
+        errorMessage = 'E_BLUETOOTH_PAIR';
       }
       device.upload(driverId, opts, actionUtils.makeUploadCb(dispatch, getState, errorMessage , utc));
     });
@@ -280,7 +284,32 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
 }
 
 export function doUpload(deviceKey, opts, utc) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+
+    const { devices, uploadTargetUser, working } = getState();
+
+    if (opts && opts.ble) {
+      // we need to to scan for Bluetooth devices before the version check,
+      // otherwise it doesn't count as a response to a user request anymore
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+      console.log('Scanning..');
+      try {
+        await opts.ble.scan();
+      } catch (err) {
+        console.log('Error:', err);
+
+        let btErr = new Error(errorText.E_BLUETOOTH_OFF);
+        let errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_BLUETOOTH_OFF',
+        };
+
+        return dispatch(syncActions.uploadFailure(btErr, errProps, devices[deviceKey]));
+      }
+      console.log('Done.');
+    }
+
     dispatch(syncActions.versionCheckRequest());
     const { api } = services;
     const version = versionInfo.semver;
@@ -308,7 +337,6 @@ export function doUpload(deviceKey, opts, utc) {
         return dispatch(syncActions.uploadAborted());
       }
 
-      const { devices, uploadTargetUser, working } = getState();
       if (working.uploading === true) {
         return dispatch(syncActions.uploadAborted());
       }

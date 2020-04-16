@@ -1,0 +1,14 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0: Seq # [rotate = 270]
+	1-2: 0x012C
+	3-4: Inner\nCCITT
+	5: # Items [rotate = 270]
+	6-9: Carb Ratio\nTGT 1\ngrams [rotate = 270, color = "#EBF1DF"]
+	10-13: Exchg Ratio\nTGT 1\nunits [rotate = 270, color = "#EBF1DF"]
+	14: TGT 1 Time [rotate = 270, color = "#EBF1DF"]
+	15-17: ... [style = "dashed"]
+	18-19: CCITT
+}

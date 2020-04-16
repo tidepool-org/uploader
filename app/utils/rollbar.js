@@ -16,6 +16,9 @@ if (process.env.NODE_ENV === 'production') {
               code_version: __VERSION_SHA__,
               guess_uncaught_frames: true
             }
+          },
+          server: {
+            root: 'webpack:///./'
           }
       },
       // to deal with URI's as local filesystem paths, we use the "many domain" transform:
@@ -26,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
           for (var i = 0; i < trace.frames.length; i++) {
             var filename = trace.frames[i].filename;
             if (filename) {
-              trace.frames[i].filename = 'http://dynamichost/dist/bundle.js';
+              trace.frames[i].filename = 'http://dynamichost/dist/renderer.prod.js';
             }
           }
         }

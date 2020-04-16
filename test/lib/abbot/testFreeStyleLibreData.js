@@ -93,11 +93,11 @@ describe('freeStyleLibreData.js', () => {
   describe('non-static', () => {
     let fsLibreData;
 
-    beforeEach(function(){
+    beforeEach(() => {
       fsLibreData = new FreeStyleLibreData(cfg);
     });
 
-    it('should correctly restore 32bit records numbers', () => {
+    test('should correctly restore 32bit records numbers', () => {
       const data = {
         aapPackets: [
           deserialize(factoryConfigJson),
@@ -126,7 +126,7 @@ describe('freeStyleLibreData.js', () => {
       });
     });
 
-    it('should reject altered records (by CRC16)', () => {
+    test('should reject altered records (by CRC16)', () => {
       const data = {
         aapPackets: [
           deserialize(factoryConfigJson),
@@ -154,7 +154,7 @@ describe('freeStyleLibreData.js', () => {
 
   describe('static', () => {
 
-    it('should validate DB record CRC16', () => {
+    test('should validate DB record CRC16', () => {
       deserialize(historicalRecordsJson).forEach(packet => {
         const crc16 = packet.data.readUInt16LE(HISTORICAL_RECORD_CRC_OFFSET);
         const data = packet.data.slice(RECORD_HEADER_OFFSET, HISTORICAL_RECORD_CRC_OFFSET);
@@ -162,7 +162,7 @@ describe('freeStyleLibreData.js', () => {
       });
     });
 
-    it('should only annotate out-of-range BG values', () => {
+    test('should only annotate out-of-range BG values', () => {
       const inputData = [
         [GLUCOSE_LO, true],
         [GLUCOSE_HI, true],

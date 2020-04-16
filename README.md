@@ -1,9 +1,9 @@
 # Tidepool Uploader
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/chrome-uploader.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/uploader.svg)](https://greenkeeper.io/)
 
-[![CircleCI](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master)
+[![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
@@ -17,14 +17,14 @@ This README is focused on just the details of getting the uploader running local
 - [Tests](#tests)
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
-- [Publishing](#publishing-to-the-develstaging-testing--development-chrome-store-account-or-production)
+- [Publishing](#publishing)
 
 * * * * *
 
 ## How to set it up
 
 1. Clone this repository.
-1. Make sure you have node v8.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
+1. Make sure you have node v12.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
 1. Run the following command:
@@ -41,7 +41,7 @@ $ yarn dev
 
 ## Config
 
-Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.io/starting-up-services/)), for example:
+Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.org/starting-up-services/)), for example:
 
 ```bash
 $ source config/local.sh
@@ -90,18 +90,17 @@ Aside from the (fairly minimal) JavaScript code style options we *enforce* throu
 
 ## Docs
 
-Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.io/](http://developer.tidepool.io/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
+Docs reside in several places in this repository, such as `docs/` and `lib/drivers/docs`. They are built as a static site with [GitBook](https://www.gitbook.com/ 'GitBook') and served at [developer.tidepool.org](http://developer.tidepool.org/) via [GitHub Pages](https://pages.github.com/ 'GitHub Pages').
 
-See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.io/docs/).
+See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.org/docs/).
 
 ## Publishing
 
-Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
+This section is Tidepool-specific. Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
 
 1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
 1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
 1. When your pull request is approved and merged to `master`, go to the draft release and type in the version for the tag name, ensure that you're targeting the `master` branch, fill out the release notes and publish the release. This will create the tag for you.
-1. After you've smoke tested the release, run `yarn av-whitelist` to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the `FTP_AV_PASSWORD_TIDEPOOL` environment variable and is stored in 1Password. 
 
 For a non-production release (alpha, dev, etc.)
 
@@ -180,6 +179,10 @@ To package apps with options:
 ```bash
 $ npm run package -- --[option]
 ```
+
+To package the app on your local machine, you need to set the `ROLLBAR_POST_TOKEN` environment variable to send telemetry data to Rollbar. You can get one for free from https://rollbar.com
+
+macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables `APPLEID` and `APPLEIDPASS`. Note that you need to set an app-specific password in https://appleid.apple.com for this to work.
 
 ## Further commands
 

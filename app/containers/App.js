@@ -23,6 +23,7 @@ import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
+import dns from 'dns';
 
 const { Menu } = remote;
 
@@ -57,6 +58,7 @@ import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
+import AdHocModal from '../components/AdHocModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -112,12 +114,43 @@ export class App extends Component {
   componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
-    this.props.async.doAppInit(_.assign({}, config), {
+    this.props.async.doAppInit(
+      _.assign({ environment: this.state.server }, config), {
       api: api,
       carelink,
       device,
       localStore,
       log: this.log
+    });
+
+    const addServers = (servers) => {
+      if (servers && servers.length && servers.length > 0) {
+        for (let server of servers) {
+          const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+          const url = protocol + server.name + ':' + server.port;
+          serverdata[server.name] = {
+            API_URL: url,
+            UPLOAD_URL: url,
+            DATA_URL: url + '/dataservices',
+            BLIP_URL: url,
+          };
+        }
+      } else {
+        this.log('No servers found');
+      }
+    };
+
+    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+      if (err) {
+        this.log(`DNS resolver error: ${err}. Retrying...`);
+        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+          if (!err2) {
+           addServers(servers2);
+          }
+        });
+      } else {
+        addServers(servers);
+      }
     });
 
     window.addEventListener('contextmenu', this.handleContextMenu, false);
@@ -126,6 +159,7 @@ export class App extends Component {
   setServer = info => {
     console.log('will use', info.label, 'server');
     var serverinfo = serverdata[info.label];
+    serverinfo.environment = info.label;
     this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
   };
@@ -149,6 +183,7 @@ export class App extends Component {
         <UpdateModal />
         <UpdateDriverModal />
         <DeviceTimeModal />
+        <AdHocModal />
       </div>
     );
   }
@@ -169,40 +204,18 @@ export class App extends Component {
       });
     }
     if (this.props.location.pathname === pagesMap.LOGIN) {
+      const submenus = [];
+      for (let server of _.keys(serverdata)) {
+        submenus.push({
+          label: server,
+          click: this.setServer,
+          type: 'radio',
+          checked: this.state.server === server
+        });
+      }
       template.push({
         label: 'Change server',
-        submenu: [
-          {
-            label: 'Local',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Local'
-          },
-          {
-            label: 'Development',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Development'
-          },
-          {
-            label: 'Staging',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Staging'
-          },
-          {
-            label: 'Integration',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Integration'
-          },
-          {
-            label: 'Production',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Production'
-          }
-        ]
+        submenu: submenus,
       });
       template.push({
         label: 'Toggle Debug Mode',

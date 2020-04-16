@@ -1,0 +1,9 @@
+packetdiag {
+	colwidth = 32
+	node_height = 72
+
+	0-7: CNL MAC
+	8-15: Pump MAC
+	16-17: Link Counter [rotate = 270]
+	18: Mode Flags [rotate = 270]
+}

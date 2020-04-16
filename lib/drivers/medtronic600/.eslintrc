@@ -1,0 +1,27 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": ["lodash"],
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "rules": {
+    "no-plusplus": ["error", {
+      "allowForLoopAfterthoughts": true
+    }],
+    "max-len": "warn",
+    "max-classes-per-file": "warn",
+    "import/order": "warn",
+    "operator-linebreak": "warn",
+    "arrow-parens": "warn",
+    "no-else-return": "warn",
+    "lines-between-class-members": "warn",
+    "function-paren-newline": "warn",
+    "comma-style": "warn",
+    "implicit-arrow-linebreak": "warn"
+  },
+  "settings": {
+    "lodash": 3,
+    "import/resolver": node
+  }
+}

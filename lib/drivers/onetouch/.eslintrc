@@ -11,7 +11,14 @@
       {
         "allowForLoopAfterthoughts": true
       }
-    ]
+    ],
+    "import/order": "warn",
+    "max-len": "warn",
+    "import/no-extraneous-dependencies": "warn",
+    "max-classes-per-file": "warn",
+    "operator-linebreak": "warn",
+    "arrow-parens": "warn",
+    "object-curly-newline": "warn"
   },
   "overrides": [
     {
