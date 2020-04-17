@@ -10579,17 +10579,6 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-nock@^11.7.2:
-  version "11.8.2"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-11.8.2.tgz#7845608d57769f41375b63521a7e6b554f4cdbb2"
-  integrity sha512-udrFXJ/aqPM9NmrKOcNJ67lvrs/zroNq2sbumhaMPW5JLNy/6LsWiZEwU9DiQIUHOcOCR4MPeqIG7uQNbDGExA==
-  dependencies:
-    debug "^4.1.0"
-    json-stringify-safe "^5.0.1"
-    lodash "^4.17.13"
-    mkdirp "^0.5.0"
-    propagate "^2.0.0"
-
 node-abi@^2.7.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.11.0.tgz#b7dce18815057544a049be5ae75cd1fdc2e9ea59"
@@ -12475,11 +12464,6 @@ prop-types@15.7.2, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, p
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-propagate@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/propagate/-/propagate-2.0.1.tgz#40cdedab18085c792334e64f0ac17256d38f9a45"
-  integrity sha512-vGrhOavPSTz4QVNuBNdcNXePNdNMaO1xj9yBeH1ScQPjk/rhg9sSlCXPhMkFuaNNW/syTvYqsnbIJxMBfRbbag==
-
 proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
@@ -13620,10 +13604,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.8.0.tgz#540011a1d4b7417f6480df75b0235396546a4905"
-  integrity sha512-g5O1vZ+ExQKULcCtEAiS9Fb2GcvYz9PoIAh9M2Jvr5NBvfghtgoNbUjrWRfwa3zCy1PRhIVdRNeL1PO/vd+E4Q==
+rollbar-sourcemap-webpack-plugin@2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.10.0.tgz#9b4c04ca4f4a3b05e88c4d9bdc13ade7929b2d0b"
+  integrity sha512-zo32g94KS0GlljCmcWdcqfkJBGHZv+xz1FJl22UvrIjO8ioir2t/+ReTe72H3ypykmiuomoGNdbfgiOxfgF0uw==
   dependencies:
     async "^3.1.1"
     cross-env "^7.0.0"
@@ -13632,7 +13616,6 @@ rollbar-sourcemap-webpack-plugin@2.8.0:
     lodash.isfunction "^3.0.9"
     lodash.isstring "^4.0.1"
     lodash.reduce "^4.3.0"
-    nock "^11.7.2"
     request "^2.88.0"
     rimraf "^3.0.1"
     verror "^1.6.1"
