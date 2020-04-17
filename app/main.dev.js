@@ -113,13 +113,12 @@ app.on('ready', async () => {
         type: 'info',
         title: 'Please update to a modern operating system',
         message:
-          `On January 14, 2020, Microsoft stopped updating or providing support
-for Windows 7.
+          `Windows 7 won't be patched for any new viruses or security problems
+going forward.
 
 While Windows 7 will continue to work, Microsoft recommends you
 start planning to upgrade to Windows 10, or an alternative
-operating system, as soon as possible, as Windows 7 won\'t be
-patched for any new viruses or security problems going forward.`,
+operating system, as soon as possible.`,
         buttons: ['Continue']
       };
       await dialog.showMessageBox(options);
@@ -138,13 +137,7 @@ patched for any new viruses or security problems going forward.`,
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      let app;
-      if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`;
-      } else {
-        app = chromeInstalls[0];
-      }
-      open(url, {app}, function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
