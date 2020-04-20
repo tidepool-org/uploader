@@ -85,7 +85,7 @@
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.0"
   },
-  "browserslist": "electron 8.2.3",
+  "browserslist": "last 2 electron major versions",
   "build": {
     "productName": "Tidepool Uploader",
     "appId": "org.tidepool.TidepoolUploader",
