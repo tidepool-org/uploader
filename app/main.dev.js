@@ -1,7 +1,8 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog } from 'electron';
 import os from 'os';
+import osName from 'os-name';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
@@ -59,21 +60,14 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-
-    // TODO: Use async interation statement.
-    //       Waiting on https://github.com/tc39/proposal-async-iteration
-    //       Promises will fail silently, which isn't what we want in development
-    return Promise
-      .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+    try {
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      console.log(`Added Extension:  ${name}`);
+    } catch (err) {
+      console.log('An error occurred: ', err);
+    }
   }
 };
 
@@ -106,7 +100,23 @@ app.on('ready', async () => {
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.webContents.on('did-finish-load', async () => {
+    if (osName() === 'Windows 7') {
+      const options = {
+        type: 'info',
+        title: 'Please update to a modern operating system',
+        message:
+          `Windows 7 won't be patched for any new viruses or security problems
+going forward.
+
+While Windows 7 will continue to work, Microsoft recommends you
+start planning to upgrade to Windows 10, or an alternative
+operating system, as soon as possible.`,
+        buttons: ['Continue']
+      };
+      await dialog.showMessageBox(options);
+    }
+
     mainWindow.show();
     mainWindow.focus();
     checkUpdates();
@@ -120,13 +130,7 @@ app.on('ready', async () => {
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      let app;
-      if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`;
-      } else {
-        app = chromeInstalls[0];
-      }
-      open(url, {app}, function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
