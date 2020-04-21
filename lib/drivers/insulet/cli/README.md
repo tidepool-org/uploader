@@ -2,7 +2,7 @@
 
 Uploads raw insulet file into the tidepool platform
 
-### Setup 
+### Setup
 
 Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. To set config values (do this before building the app), you can use Shell scripts that export environment variables, for example:
 
@@ -13,7 +13,7 @@ $ source config/local.sh
 ### Usage
 
 ```
-node ibf_loader.js -f /path/to/Insulet-file.ibf -u <your_username> -p <your_pw>
+node ibf_loader.js -r babel-register -f /path/to/Insulet-file.ibf -u <your_username> -p <your_pw>
 
 ```
 
@@ -21,13 +21,12 @@ node ibf_loader.js -f /path/to/Insulet-file.ibf -u <your_username> -p <your_pw>
   - short code -f
   - path to the insulet ibf file path
 - --username 	
-  - short code -u 
+  - short code -u
   - username who that data is being loaded for
 - --password 	
-  - short code -p 
+  - short code -p
   - password for this user
 - --timezone 	
-  - short code -t 
+  - short code -t
   - named timezone
   - default is config.DEFAULT_TIMEZONE
-

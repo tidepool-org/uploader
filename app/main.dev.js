@@ -1,13 +1,17 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog } from 'electron';
 import os from 'os';
+import osName from 'os-name';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
 import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
+import uploadDataPeriod from './utils/uploadDataPeriod';
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -35,6 +39,9 @@ let menu;
 let template;
 let mainWindow = null;
 
+// Web Bluetooth should only be an experimental feature on Linux
+app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
@@ -53,22 +60,28 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-
-    // TODO: Use async interation statement.
-    //       Waiting on https://github.com/tc39/proposal-async-iteration
-    //       Promises will fail silently, which isn't what we want in development
-    return Promise
-      .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+    try {
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      console.log(`Added Extension:  ${name}`);
+    } catch (err) {
+      console.log('An error occurred: ', err);
+    }
   }
+};
+
+function addDataPeriodGlobalListener(menu) {
+  ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+    const item = _.find(menu.items, ['id', 'upload']);
+    if (arg === uploadDataPeriod.PERIODS.ALL) {
+      console.log('Uploading all data');
+      item.submenu.items[0].checked = true;
+    } else if (arg === uploadDataPeriod.PERIODS.DELTA) {
+      console.log('Uploading only new records');
+      item.submenu.items[1].checked = true;
+    }
+  });
 };
 
 app.on('ready', async () => {
@@ -79,12 +92,31 @@ app.on('ready', async () => {
     show: false,
     width: 663,
     height: 769,
-    resizable: resizable
+    resizable: resizable,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.webContents.on('did-finish-load', async () => {
+    if (osName() === 'Windows 7') {
+      const options = {
+        type: 'info',
+        title: 'Please update to a modern operating system',
+        message:
+          `Windows 7 won't be patched for any new viruses or security problems
+going forward.
+
+While Windows 7 will continue to work, Microsoft recommends you
+start planning to upgrade to Windows 10, or an alternative
+operating system, as soon as possible.`,
+        buttons: ['Continue']
+      };
+      await dialog.showMessageBox(options);
+    }
+
     mainWindow.show();
     mainWindow.focus();
     checkUpdates();
@@ -98,7 +130,7 @@ app.on('ready', async () => {
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      open(url, chromeInstalls[0], function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
@@ -108,6 +140,18 @@ app.on('ready', async () => {
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+    event.preventDefault();
+    console.log('Device list:', deviceList);
+    let [result] = deviceList;
+    global.bluetoothDeviceId = result.deviceId;
+    if (!result) {
+      callback('');
+    } else {
+      callback(result.deviceId);
+    }
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -226,6 +270,26 @@ app.on('ready', async () => {
         }
       ]
     }, {
+      label: '&Upload',
+      id: 'upload',
+      submenu: [{
+        label: 'All data',
+        type: 'radio',
+        click() {
+          console.log('Uploading all data');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.ALL, mainWindow);
+        }
+      }, {
+        label: 'Data since last upload',
+        type: 'radio',
+        click() {
+          console.log('Uploading only new records');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.DELTA, mainWindow);
+        }
+      }]
+    }, {
       label: 'Window',
       submenu: [{
         label: 'Minimize',
@@ -251,17 +315,13 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
 
     menu = Menu.buildFromTemplate(template);
+    addDataPeriodGlobalListener(menu);
     Menu.setApplicationMenu(menu);
   } else {
     template = [{
@@ -310,6 +370,26 @@ app.on('ready', async () => {
         }
       }]
     }, {
+      label: '&Upload',
+      id: 'upload',
+      submenu: [{
+        label: 'All data',
+        type: 'radio',
+        click() {
+          console.log('Uploading all data');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.ALL, mainWindow);
+        }
+      }, {
+        label: 'Data since last upload',
+        type: 'radio',
+        click() {
+          console.log('Uploading only new records');
+          uploadDataPeriod.setPeriodGlobal(
+            uploadDataPeriod.PERIODS.DELTA, mainWindow);
+        }
+      }]
+    }, {
       label: 'Help',
       submenu: [{
         label: 'Get Support',
@@ -325,16 +405,12 @@ app.on('ready', async () => {
       }, {
         label: 'Privacy Policy',
         click() {
-          shell.openExternal('https://tidepool.org/legal/privacy-policy-2-0');
-        }
-      }, {
-        label: 'Report an issue...',
-        click() {
-          shell.openExternal('https://github.com/tidepool-org/chrome-uploader/issues');
+          shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
       }]
     }];
     menu = Menu.buildFromTemplate(template);
+    addDataPeriodGlobalListener(menu);
     mainWindow.setMenu(menu);
   }
 });
@@ -371,8 +447,8 @@ autoUpdater.on('update-available', (ev, info) => {
   {
     "version":"0.310.0-alpha",
     "releaseDate":"2017-04-03T22:29:55.809Z",
-    "url":"https://github.com/tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
-    "releaseJsonUrl":"https://github.com//tidepool-org/chrome-uploader/releases/download/v0.310.0-alpha/latest-mac.json"
+    "url":"https://github.com/tidepool-org/uploader/releases/download/v0.310.0-alpha/tidepool-uploader-dev-0.310.0-alpha-mac.zip",
+    "releaseJsonUrl":"https://github.com//tidepool-org/uploader/releases/download/v0.310.0-alpha/latest-mac.json"
   }
    */
 });

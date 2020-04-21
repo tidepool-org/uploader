@@ -23,6 +23,7 @@ import Select from 'react-select';
 
 import sundial from 'sundial';
 import keytar from 'keytar';
+import BLE from 'ble-glucose';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
@@ -32,6 +33,7 @@ import uploadDataPeriod from '../utils/uploadDataPeriod';
 import styles from '../../styles/components/Upload.module.less';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
+const ble = new BLE();
 
 export default class Upload extends Component {
   static propTypes = {
@@ -83,11 +85,12 @@ export default class Upload extends Component {
     medtronic600SerialNumberValue: '',
     medtronic600SerialNumberValid: true,
     medtronic600Linked: true,
-    medtronic600UploadPeriod: uploadDataPeriod.period
+    medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
   };
 
   constructor(props) {
     super(props);
+    this.ble = ble;
 
     this.populateRememberedSerialNumber();
   }
@@ -153,6 +156,13 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  async handleBluetoothUpload() {
+    let options = {
+      ble : this.ble,
+    };
+    this.props.onUpload(options);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -186,6 +196,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'medtronic600') {
       return this.handleMedtronic600Upload();
+    }
+
+    if (_.get(upload, 'key', null) === 'caresensble') {
+      return this.handleBluetoothUpload();
     }
 
     var options = {};
@@ -326,7 +340,7 @@ export default class Upload extends Component {
 
   onMedtronic600UploadPeriodChange = period => {
     this.setState({
-      medtronic600UploadPeriod: uploadDataPeriod.setPeriod(period)
+      medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
     });
   };
 
@@ -549,7 +563,7 @@ export default class Upload extends Component {
     const divHidden = cx({
       [styles.hidden]: this.state.medtronic600Linked,
     });
-    
+
     const serialInputStyle = cx({
       [styles.textInput]: this.state.medtronic600SerialNumberValid,
       [styles.textInputError]: !this.state.medtronic600SerialNumberValid,
