@@ -13656,10 +13656,10 @@ rollbar-sourcemap-webpack-plugin@2.7.0:
     rimraf "^3.0.1"
     verror "^1.6.1"
 
-rollbar@2.14.4:
-  version "2.14.4"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.14.4.tgz#b89f6ddd57adb88ae48f6d8c46619ef44fb27888"
-  integrity sha512-96m2/pBV8UioBjmqa7/WXiPIcumuuGvmfiB9WHRdVBdHcAuBhYBivWl+NMmS/op2XZ54qAmJyd3uThW6SSKvzQ==
+rollbar@2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.15.1.tgz#96456309b21fb198e83a5958fb4511894d75797d"
+  integrity sha512-RloDruuBw842sryrwDU/7sB8CYqazQfKvRwQVazgBJvEDBkUlNJTGoxxHP1HApTcDJ9W7BIU6fYcWayQyM09dA==
   dependencies:
     async "~1.2.1"
     buffer-from "~1.1.1"
