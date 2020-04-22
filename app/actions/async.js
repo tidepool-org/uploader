@@ -288,7 +288,7 @@ export function doUpload(deviceKey, opts, utc) {
 
     const { devices, uploadTargetUser, working } = getState();
 
-    if (opts.ble) {
+    if (opts && opts.ble) {
       // we need to to scan for Bluetooth devices before the version check,
       // otherwise it doesn't count as a response to a user request anymore
       dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
@@ -298,14 +298,14 @@ export function doUpload(deviceKey, opts, utc) {
       } catch (err) {
         console.log('Error:', err);
 
+        let btErr = new Error(errorText.E_BLUETOOTH_OFF);
         let errProps = {
           details: err.message,
           utc: actionUtils.getUtc(utc),
-          code: 'E_BLUETOOTH_PAIR',
+          code: 'E_BLUETOOTH_OFF',
         };
 
-        dispatch(syncActions.uploadFailure(err, errProps, devices[deviceKey]));
-        return dispatch(syncActions.uploadAborted());
+        return dispatch(syncActions.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');
     }

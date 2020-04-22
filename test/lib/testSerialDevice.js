@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 var expect = require('salinity').expect;
 
@@ -38,72 +37,72 @@ flush: flush,
 */
 
 
-describe('serialDevice.js', function(){
+describe('serialDevice.js', () => {
 
   var device;
   var config = {};
 
-  beforeEach(function(){
+  beforeEach(() => {
     device = serialDevice(config);
   });
 
-  describe('setBitrate', function(){
-    it('exists', function(){
+  describe('setBitrate', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('setBitrate');
     });
   });
-  describe('connect', function(){
-    it('exists', function(){
+  describe('connect', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('connect');
     });
   });
-  describe('changeBitRate', function(){
-    it('exists', function(){
+  describe('changeBitRate', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('changeBitRate');
     });
   });
-  describe('discardBytes', function(){
-    it('exists', function(){
+  describe('discardBytes', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('discardBytes');
     });
   });
-  describe('readSerial', function(){
-    it('exists', function(){
+  describe('readSerial', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('readSerial');
     });
   });
-  describe('writeSerial', function(){
-    it('exists', function(){
+  describe('writeSerial', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('writeSerial');
     });
   });
-  describe('setPacketHandler', function(){
-    it('exists', function(){
+  describe('setPacketHandler', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('setPacketHandler');
     });
   });
-  describe('clearPacketHandler', function(){
-    it('exists', function(){
+  describe('clearPacketHandler', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('clearPacketHandler');
     });
   });
-  describe('hasAvailablePacket', function(){
-    it('exists', function(){
+  describe('hasAvailablePacket', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('hasAvailablePacket');
     });
   });
-  describe('peekPacket', function(){
-    it('exists', function(){
+  describe('peekPacket', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('peekPacket');
     });
   });
-  describe('nextPacket', function(){
-    it('exists', function(){
+  describe('nextPacket', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('nextPacket');
     });
   });
-  describe('flush', function(){
-    it('exists', function(){
+  describe('flush', () => {
+    test('exists', () => {
       expect(device).itself.to.respondTo('flush');
     });
   });

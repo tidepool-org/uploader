@@ -15,19 +15,18 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 import { expect } from 'chai';
 
 import personUtils from '../../../lib/core/personUtils';
 
 describe('personUtils', () => {
   describe('patientFullName', () => {
-    it('(normal account) should return the fullName for the person', () => {
+    test('(normal account) should return the fullName for the person', () => {
       const person = { fullName: 'Joe Smith' };
       expect(personUtils.patientFullName(person)).to.equal('Joe Smith');
     });
 
-    it('(fake child account) should return the patient profile fullName', () => {
+    test('(fake child account) should return the patient profile fullName', () => {
       const person = {
         fullName: 'Jane Smith',
         patient: {
@@ -40,7 +39,7 @@ describe('personUtils', () => {
   });
 
   describe('userHasRole', () => {
-    it('should return true if role is present on user', () => {
+    test('should return true if role is present on user', () => {
       const user = {
         roles: ['clinic']
       };
@@ -48,7 +47,7 @@ describe('personUtils', () => {
       expect(personUtils.userHasRole(user, role)).to.be.true;
     });
 
-    it('should return false if user has no roles', () => {
+    test('should return false if user has no roles', () => {
       const user = {
         fullName: 'Joe Smith'
       };
@@ -56,7 +55,7 @@ describe('personUtils', () => {
       expect(personUtils.userHasRole(user, role)).to.be.false;
     });
 
-    it('should return false if user lacks role', () => {
+    test('should return false if user lacks role', () => {
       const user = {
         roles: ['awesome']
       };

@@ -1,12 +1,10 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 
-import os from 'os';
-
 const devices = {
   accuchekusb: {
     instructions: 'Plug in meter with micro-USB cable',
-    name: 'Roche Accu-Chek Guide & Aviva Connect',
+    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true}
@@ -23,10 +21,10 @@ const devices = {
   },
   caresensble: {
     instructions: 'Once paired, hold in right arrow until "BT Send" appears on the screen',
-    name: 'CareSens N Premier',
+    name: 'CareSens N Premier & Dual (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: false, linux: true}
   },
   medtronic: {
     instructions: 'Connect your Contour Next Link to your computer',
@@ -58,10 +56,10 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: os.platform() === 'win32' ? 'Plug in PDM with USB cable and choose .ibf file from PDM' : 'Plug in PDM with USB cable',
+    instructions: ['Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.', 'DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.'],
     key: 'omnipod',
     name: 'Insulet OmniPod',
-    source: {type: os.platform() === 'win32' ? 'block' : 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
@@ -99,11 +97,25 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true}
   },
+  abbottfreestyleneo: {
+    instructions: 'Plug in meter with micro-USB cable',
+    key: 'abbottfreestyleneo',
+    name: 'Abbott FreeStyle Precision/Optium Neo',
+    source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
+    enabled: {linux: true, mac: true, win: true}
+  },
   bayercontournext: {
     instructions: 'Plug meter into USB port',
     key: 'bayercontournext',
     name: 'Ascensia (Bayer) Contour Next',
     source: {type: 'device', driverId: 'BayerContourNext'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  bayercontour: {
+    instructions: 'Plug in meter with cable and make sure meter is switched on',
+    key: 'bayercontour',
+    name: 'Ascensia (Bayer) Contour Next EZ, Contour or Contour Link',
+    source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
   animas: {
@@ -147,7 +159,7 @@ const devices = {
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
-  }
+  },
 };
 
 export default devices;
