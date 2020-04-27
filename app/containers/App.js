@@ -23,6 +23,7 @@ import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
+import dns from 'dns';
 
 const { Menu } = remote;
 
@@ -42,7 +43,6 @@ import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import MainPage from './MainPage';
 import Login from '../components/Login';
@@ -80,12 +80,6 @@ const serverdata = {
     UPLOAD_URL: 'https://stg-uploads.tidepool.org',
     DATA_URL: 'https://stg-api.tidepool.org/dataservices',
     BLIP_URL: 'https://stg-app.tidepool.org'
-  },
-  QA1: {
-    API_URL: 'https://qa1-api.tidepool.org',
-    UPLOAD_URL: 'https://qa1-uploads.tidepool.org',
-    DATA_URL: 'https://qa1-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://qa1-app.tidepool.org'
   },
   Integration: {
     API_URL: 'https://int-api.tidepool.org',
@@ -129,6 +123,36 @@ export class App extends Component {
       log: this.log
     });
 
+    const addServers = (servers) => {
+      if (servers && servers.length && servers.length > 0) {
+        for (let server of servers) {
+          const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+          const url = protocol + server.name + ':' + server.port;
+          serverdata[server.name] = {
+            API_URL: url,
+            UPLOAD_URL: url,
+            DATA_URL: url + '/dataservices',
+            BLIP_URL: url,
+          };
+        }
+      } else {
+        this.log('No servers found');
+      }
+    };
+
+    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+      if (err) {
+        this.log(`DNS resolver error: ${err}. Retrying...`);
+        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+          if (!err2) {
+           addServers(servers2);
+          }
+        });
+      } else {
+        addServers(servers);
+      }
+    });
+
     window.addEventListener('contextmenu', this.handleContextMenu, false);
   }
 
@@ -138,11 +162,6 @@ export class App extends Component {
     serverinfo.environment = info.label;
     this.props.api.setHosts(serverinfo);
     this.setState({server: info.label});
-  };
-
-  setDataPeriod = info => {
-    console.log('fetch device data for', info.label);
-    uploadDataPeriod.setPeriod(info.id);
   };
 
   render() {
@@ -185,74 +204,18 @@ export class App extends Component {
       });
     }
     if (this.props.location.pathname === pagesMap.LOGIN) {
+      const submenus = [];
+      for (let server of _.keys(serverdata)) {
+        submenus.push({
+          label: server,
+          click: this.setServer,
+          type: 'radio',
+          checked: this.state.server === server
+        });
+      }
       template.push({
         label: 'Change server',
-        submenu: [
-          {
-            label: 'Local',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Local'
-          },
-          {
-            label: 'Development',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Development'
-          },
-          {
-            label: 'Staging',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Staging'
-          },
-          {
-            label: 'QA1',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'QA1'
-          },
-          {
-            label: 'Integration',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Integration'
-          },
-          {
-            label: 'Production',
-            click: this.setServer,
-            type: 'radio',
-            checked: this.state.server === 'Production'
-          }
-        ]
-      });
-      template.push({
-        label: 'Upload Data',
-        submenu: [
-          {
-            label: 'Everything',
-            id: uploadDataPeriod.PERIODS.ALL,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.ALL
-          },
-          {
-            label: 'New since last upload',
-            id: uploadDataPeriod.PERIODS.DELTA,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period === uploadDataPeriod.PERIODS.DELTA
-          },
-          {
-            label: 'Last 4 weeks',
-            id: uploadDataPeriod.PERIODS.FOUR_WEEKS,
-            visible: debugMode.isDebug,
-            click: this.setDataPeriod,
-            type: 'radio',
-            checked: uploadDataPeriod.period ===
-              uploadDataPeriod.PERIODS.FOUR_WEEKS
-          }
-        ]
+        submenu: submenus,
       });
       template.push({
         label: 'Toggle Debug Mode',

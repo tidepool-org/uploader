@@ -15,9 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/* global beforeEach, describe, it */
-
-// Mocha doesn't like arrow functions: https://mochajs.org/#arrow-functions
 /* eslint-disable prefer-arrow-callback,func-names,space-before-function-paren */
 
 import _ from 'lodash';
@@ -45,14 +42,14 @@ function updateExpected(expectedEvent) {
   delete expectedEvent.index;
 }
 
-describe('medtronic600Simulator.js', function() {
+describe('medtronic600Simulator.js', () => {
   let simulator = null;
   const tzoUtil = new TZOUtil('GMT', '2015-06-01T00:00:00.000Z', []);
   const settings = {
     currentNgpTimestamp: new NGPTimestamp(2186757135, -1643995250),
   };
 
-  beforeEach(function() {
+  beforeEach(() => {
     simulator = new Medtronic600Simulator({
       builder: builder(),
       tzoUtil,
@@ -60,7 +57,7 @@ describe('medtronic600Simulator.js', function() {
     });
   });
 
-  describe('smbg', function() {
+  describe('smbg', () => {
     const manual = {
       time: '2014-09-25T01:00:00.000Z',
       deviceTime: '2014-09-25T01:00:00',
@@ -85,7 +82,7 @@ describe('medtronic600Simulator.js', function() {
       value: 1.3,
     };
 
-    it('should pass through', function() {
+    test('should pass through', () => {
       const val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -101,13 +98,13 @@ describe('medtronic600Simulator.js', function() {
       expect(simulator.getEvents()).deep.equals([val]);
     });
 
-    it('should drop manual if the same value is linked within 15 minutes', function() {
+    test('should drop manual if the same value is linked within 15 minutes', () => {
       simulator.smbg(linked);
       simulator.smbg(manual);
       expect(simulator.getEvents()).deep.equals([linked]);
     });
 
-    it('should drop exact duplicate linked values', function() {
+    test('should drop exact duplicate linked values', () => {
       simulator.smbg(linked);
       simulator.smbg(linked);
 
@@ -115,8 +112,8 @@ describe('medtronic600Simulator.js', function() {
     });
   });
 
-  describe('bolus', function() {
-    describe('normal', function() {
+  describe('bolus', () => {
+    describe('normal', () => {
       const val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -128,12 +125,12 @@ describe('medtronic600Simulator.js', function() {
         subType: 'normal',
       };
 
-      it('should pass through', function() {
+      test('should pass through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
 
-      it('should not pass through a zero-volume bolus that does not have an expectedNormal', function() {
+      test('should not pass through a zero-volume bolus that does not have an expectedNormal', () => {
         const zeroBolus = _.assign({}, val, {
           normal: 0.0,
           time: '2014-09-25T01:05:00.000Z',
@@ -145,7 +142,7 @@ describe('medtronic600Simulator.js', function() {
       });
     });
 
-    describe('square', function() {
+    describe('square', () => {
       const val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -158,13 +155,13 @@ describe('medtronic600Simulator.js', function() {
         subType: 'square',
       };
 
-      it('should pass through', function() {
+      test('should pass through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
 
-    describe('dual', function() {
+    describe('dual', () => {
       const val = {
         time: '2014-09-25T01:00:00.000Z',
         deviceTime: '2014-09-25T01:00:00',
@@ -178,15 +175,15 @@ describe('medtronic600Simulator.js', function() {
         subType: 'dual/square',
       };
 
-      it('should pass through', function() {
+      test('should pass through', () => {
         simulator.bolus(val);
         expect(simulator.getEvents()).deep.equals([val]);
       });
     });
   });
 
-  describe('wizard', function() {
-    it('should pass through', function() {
+  describe('wizard', () => {
+    test('should pass through', () => {
       const wizard = {
         bgTarget: {
           high: 5.5,
@@ -236,7 +233,7 @@ describe('medtronic600Simulator.js', function() {
     });
   });
 
-  describe('settings', function() {
+  describe('settings', () => {
     const pumpSettings = {
       type: 'pumpSettings',
       time: '2014-09-25T01:00:00.000Z',
@@ -291,14 +288,14 @@ describe('medtronic600Simulator.js', function() {
       conversionOffset: 0,
     };
 
-    it('should pass through', function() {
+    test('should pass through', () => {
       simulator.pumpSettings(pumpSettings);
       expect(simulator.getEvents()).deep.equals([pumpSettings]);
     });
   });
 
-  describe('basal', function() {
-    it('should set duration using a following basal', function() {
+  describe('basal', () => {
+    test('should set duration using a following basal', () => {
       const basal1 = simulator.config.builder.makeScheduledBasal()
         .with_time('2014-09-25T02:00:00.000Z')
         .with_deviceTime('2014-09-25T02:00:00')
@@ -322,8 +319,8 @@ describe('medtronic600Simulator.js', function() {
       expect(simulator.getEvents()).deep.equals([expectedFirstBasal.done()]);
     });
 
-    describe('temp basal', function() {
-      it('should correct a restored scheduled basal start time after a temp basal', function() {
+    describe('temp basal', () => {
+      test('should correct a restored scheduled basal start time after a temp basal', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
@@ -363,7 +360,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-09T13:48:07')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183919351],
+            logIndices: [2183917165],
           });
 
         simulator.basal(basal1);
@@ -374,7 +371,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should ignore a segment change event when that segment is already active', function() {
+      test('should ignore a segment change event when that segment is already active', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
@@ -401,7 +398,7 @@ describe('medtronic600Simulator.js', function() {
         expect(simulator.getEvents().length === 1);
       });
 
-      it('should check for basal schedule changes', function() {
+      test('should check for basal schedule changes', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-09T19:27:43.000Z')
           .with_deviceTime('2017-02-09T19:27:43')
@@ -458,7 +455,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-09T20:12:43')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183942427],
+            logIndices: [2183941664],
           });
         delete expectedThirdBasal.index;
 
@@ -471,7 +468,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should change temp basal rate for percentage basals across a basal schedule change', function() {
+      test('should change temp basal rate for percentage basals across a basal schedule change', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-01-28T22:41:00.000Z')
           .with_deviceTime('2017-01-28T22:41:00')
@@ -530,7 +527,7 @@ describe('medtronic600Simulator.js', function() {
           .set('duration', 2940000)
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2182919924],
+            logIndices: [2182919264],
           });
         delete expectedThirdBasal.index;
 
@@ -542,7 +539,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle temp basals ending near schedule change boundaries', function() {
+      test('should handle temp basals ending near schedule change boundaries', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-10T08:29:24.000Z')
           .with_deviceTime('2017-02-10T08:29:24')
@@ -579,7 +576,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-10T08:59:24')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183988428],
+            logIndices: [2183986628],
           });
         delete expectedSecondBasal.index;
 
@@ -597,7 +594,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle back to back temp basals', function() {
+      test('should handle back to back temp basals', () => {
         const basal1 = simulator.config.builder.makeTempBasal()
           .with_time('2017-02-04T05:33:03.000Z')
           .with_deviceTime('2017-02-04T05:33:03')
@@ -639,7 +636,7 @@ describe('medtronic600Simulator.js', function() {
           .with_rate(1.2)
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183459447],
+            logIndices: [2183457647],
           });
 
         const expectedThirdBasal = _.cloneDeep(basal2);
@@ -653,8 +650,8 @@ describe('medtronic600Simulator.js', function() {
       });
     });
 
-    describe('pump suspend', function() {
-      it('should set suppressed info for suspended basal', function() {
+    describe('pump suspend', () => {
+      test('should set suppressed info for suspended basal', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2014-09-25T01:00:00.000Z')
           .with_deviceTime('2014-09-25T01:00:00')
@@ -717,7 +714,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should set a restored scheduled basal after a pump suspend', function() {
+      test('should set a restored scheduled basal after a pump suspend', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-09T15:00:00.000Z')
           .with_deviceTime('2017-02-09T15:00:00')
@@ -782,7 +779,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle a pump suspend that crosses multiple schedule changes', function() {
+      test('should handle a pump suspend that crosses multiple schedule changes', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-05-18T00:00:00.000Z')
           .with_deviceTime('2017-05-18T00:00:00')
@@ -882,7 +879,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle back to back pump suspends', function() {
+      test('should handle back to back pump suspends', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-01T20:00:00.000Z')
           .with_deviceTime('2017-02-01T20:00:00')
@@ -981,7 +978,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle a pump suspend during a temp basal', function() {
+      test('should handle a pump suspend during a temp basal', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-04T17:00:00.000Z')
           .with_deviceTime('2017-02-04T17:00:00')
@@ -1078,7 +1075,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-04T17:33:00')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183500844],
+            logIndices: [2183499066],
           });
         delete expectedFourthBasal.index;
 
@@ -1095,7 +1092,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change', function() {
+      test('should handle a pump suspend that starts during a temp basal and finishes after the end of the temp basal, including a scheduled basal change', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2017-02-10T06:00:00.000Z')
           .with_deviceTime('2017-02-10T06:00:00')
@@ -1214,7 +1211,7 @@ describe('medtronic600Simulator.js', function() {
           .set('deviceTime', '2017-02-10T07:42:17')
           .set('clockDriftOffset', 0)
           .set('payload', {
-            logIndices: [2183981984],
+            logIndices: [2183981264],
           });
         delete expectedFourthBasal.index;
 
@@ -1233,7 +1230,7 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      it('should handle a pump suspend that starts during a temp basal and finishes before the end of the temp basal, including a scheduled basal change', function() {
+      test('should handle a pump suspend that starts during a temp basal and finishes before the end of the temp basal, including a scheduled basal change', () => {
         const basal1 = simulator.config.builder.makeScheduledBasal()
           .with_time('2018-05-18T06:00:00.000Z')
           .with_deviceTime('2018-05-18T06:00:00')
@@ -1353,7 +1350,7 @@ describe('medtronic600Simulator.js', function() {
           .set('time', '2018-05-18T15:04:17.000Z')
           .set('deviceTime', '2018-05-18T15:04:17')
           .set('payload', {
-            logIndices: [2223927121],
+            logIndices: [2223916064],
           });
         delete expectedFourthBasal.index;
 
@@ -1374,8 +1371,8 @@ describe('medtronic600Simulator.js', function() {
         ]);
       });
 
-      describe('first basal is a suspend', function () {
-        it('should handle suspended first basal schedule', function() {
+      describe('first basal is a suspend', () => {
+        test('should handle suspended first basal schedule', () => {
           const suspendedBasal = simulator.config.builder.makeSuspendBasal()
             .with_time('2017-09-04T18:00:00.000Z')
             .with_deviceTime('2017-09-04T14:00:00')
@@ -1439,7 +1436,7 @@ describe('medtronic600Simulator.js', function() {
           ]);
         });
 
-        it('should ignore an isolated first suspended basal', function() {
+        test('should ignore an isolated first suspended basal', () => {
           const suspendedBasal = simulator.config.builder.makeSuspendBasal()
             .with_time('2018-03-21T18:49:42.000Z')
             .with_deviceTime('2018-03-21T12:49:42')
@@ -1466,8 +1463,8 @@ describe('medtronic600Simulator.js', function() {
       });
     });
 
-    describe('Auto-Mode basal', function() {
-      it('should add a gap between two Auto-Mode basals that are more than six minutes apart', function() {
+    describe('Auto-Mode basal', () => {
+      test('should add a gap between two Auto-Mode basals that are more than six minutes apart', () => {
         const basal1 = simulator.config.builder.makeAutomatedBasal()
           .with_time('2017-02-09T13:11:41.000Z')
           .with_deviceTime('2017-02-09T13:11:41')
@@ -1516,5 +1513,5 @@ describe('medtronic600Simulator.js', function() {
     });
   });
 
-  describe('device event', function() {});
+  describe('device event', () => {});
 });

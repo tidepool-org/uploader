@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
           for (var i = 0; i < trace.frames.length; i++) {
             var filename = trace.frames[i].filename;
             if (filename) {
-              trace.frames[i].filename = 'http://dynamichost/dist/bundle.js';
+              trace.frames[i].filename = 'http://dynamichost/dist/renderer.prod.js';
             }
           }
         }

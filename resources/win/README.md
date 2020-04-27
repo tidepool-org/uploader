@@ -5,13 +5,13 @@ To build and sign the driver, check that you have the specified requirements ins
 ## Requirements
 
 - [WDK](https://msdn.microsoft.com/en-us/windows/hardware/gg454513.aspx) (Required for `inf2cat` and `signtool`)
-- [DigiCert High Assurance EV Root CA certificate](https://www.digicert.com/CACerts/DigiCertHighAssuranceEVRootCA.crt)
+- [DigiCert High Assurance EV Root CA certificate](https://docs.microsoft.com/en-gb/windows-hardware/drivers/install/cross-certificates-for-kernel-mode-code-signing)
 
 ## Steps
 
 ### Generate the .cat files from the .inf files:
 - Bump version number in .inf file
-- `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,Vista_X86,Vista_X64,XP_X86,XP_X64`
+- `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,10_X86,10_X64,Server10_X64`
 
 ### Install certificates:
 
@@ -20,11 +20,23 @@ To build and sign the driver, check that you have the specified requirements ins
 - Also install the DigiCert High Assurance EV Root CA certificate downloaded above, as it's needed to cross-sign the Tidepool certificate.
 - You can verify the certificates are installed by running `certmgr`.
 
-### Sign both the .cat files using signtool:
+### Sign all the .cat files using signtool:
 
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolvcp.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolhid.cat`
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /s my /n "Tidepool Project" /t http://timestamp.digicert.com tidepoolusb.cat`
+In `resources\win`:
+
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolvcp.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolhid.cat`
+- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A tidepoolusb.cat`
+
+### Submit Windows 10 drivers to hardware dashboard for attestation signing
+
+- `cd win10`
+- `makecab /f TidepoolUSBDriver.ddf`
+- `signtool sign /v /ac "..\DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 4297DE953C8CF10065C31AA717E1302FCD1B9FE4 disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate)
+
+This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
+
+Download the signed drivers from the hardware portal and update the `resources/win/win10` directory.
 
 ### Verify that drivers are correctly signed:
 
@@ -42,6 +54,7 @@ To build and sign the driver, check that you have the specified requirements ins
 
 - If the drivers fail to install, make sure all devices are unplugged.
 - You must have administrator privileges to install drivers.
-- The DigiCert certificate can also be downloaded from the [DigiCert website](
-https://www.digicert.com/code-signing/driver-signing-in-windows-using-signtool.htm#download_cross_certificate).
-- When you publish the new driver on the website, remember to also [whitelist](https://submit.symantec.com/whitelist/isv/) the driver with Symantec.
+
+For more details on attestation signing, see:
+- https://www.davidegrayson.com/signing/
+- https://docs.microsoft.com/en-gb/windows-hardware/drivers/dashboard/attestation-signing-a-kernel-driver-for-public-release#test-your-driver-on-windows-10

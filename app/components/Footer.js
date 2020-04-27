@@ -18,9 +18,12 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
+import os from 'os';
+import osName from 'os-name';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
+import debugMode from '../utils/debugMode';
 
 export default class Footer extends Component {
   static propTypes = {
@@ -29,6 +32,12 @@ export default class Footer extends Component {
 
   render() {
     const version = this.props.version;
+    let osArch = '';
+
+    if (debugMode.isDebug) {
+      osArch = `  (${osName()} - ${os.arch()})`;
+    }
+
     return (
       <div className={styles.footer}>
         <div className={styles.footerRow}>
@@ -43,7 +52,7 @@ export default class Footer extends Component {
           </div>
         </div>
         <div className={styles.footerRow}>
-          <div className={styles.version}>{`v${version}`}</div>
+          <div className={styles.version}>{`v${version}${osArch}`}</div>
         </div>
       </div>
     );

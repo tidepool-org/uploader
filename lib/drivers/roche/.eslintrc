@@ -9,10 +9,8 @@
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
-    "import/extensions": [
-      "error",
-      "ignorePackages"
-    ]
+    "arrow-parens": "warn",
+    "operator-linebreak": "warn"
   },
   "settings": {
     "lodash": 3
