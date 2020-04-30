@@ -77,7 +77,7 @@
     "rollbar": "2.15.1",
     "rollbar-sourcemap-webpack-plugin": "2.10.1",
     "semver": "7.3.2",
-    "source-map-support": "0.5.18",
+    "source-map-support": "0.5.19",
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.0.0",
     "sundial": "1.6.0",
