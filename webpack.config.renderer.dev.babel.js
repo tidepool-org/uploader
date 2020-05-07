@@ -8,12 +8,15 @@ import webpack from 'webpack';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
+import { spawn } from 'child_process';
+import path from 'path';
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
+const publicPath = `http://localhost:${port}/dist`;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -33,21 +36,44 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-export default merge(baseConfig, {
-  devtool: '#cheap-module-source-map',
+export default merge.smart(baseConfig, {
+  devtool: 'inline-source-map',//'#cheap-module-source-map',
+
+  mode: 'development',
+
+  target: 'electron-renderer',
 
   entry: [
-    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
-    'babel-polyfill',
-    './app/index'
+    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
+    `webpack-dev-server/client?http://localhost:${port}/`,
+    'webpack/hot/only-dev-server',
+    require.resolve('./app/index')
   ],
 
   output: {
-    publicPath: `http://localhost:${port}/dist/`
+    publicPath: `http://localhost:${port}/dist/`,
+    filename: 'renderer.dev.js'
   },
 
   module: {
     rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true
+          }
+        }
+      },
+      // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
+      {
+        test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+        resolve: {
+          aliasFields: ['main']
+        }
+      },
       {
         test: /\.global\.css$/,
         use: [{
@@ -67,10 +93,11 @@ export default merge(baseConfig, {
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
             sourceMap: true,
             importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
           }
         }]
       },
@@ -82,10 +109,11 @@ export default merge(baseConfig, {
         }, {
           loader: 'css-loader',
           options: {
-            modules: true,
+            modules: {
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            },
             sourceMap: true,
-            importLoaders: 1,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
+            importLoaders: 1
           }
         }, {
           loader: 'less-loader',
@@ -153,22 +181,27 @@ export default merge(baseConfig, {
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
         use: [{
-          loader: 'url-loader'
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+          }
         }]
       }
 
     ]
   },
-
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+  },
   plugins: [
-    // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
-    new webpack.HotModuleReplacementPlugin(),
-    /**
-     * If you are using the CLI, the webpack process will not exit with an error
-     * code by enabling this plugin.
-     * https://github.com/webpack/docs/wiki/list-of-plugins#noerrorsplugin
-     */
-     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: true
+    }),
+
+    new webpack.NoEmitOnErrorsPlugin(),
+
      /**
      * Create global constants which can be configured at compile time.
      *
@@ -185,15 +218,51 @@ export default merge(baseConfig, {
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     }),
+
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
   ],
-  /**
-   * https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
-   */
-  target: 'electron-renderer',
+
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+    __filename: false
+  },
+
+  devServer: {
+    clientLogLevel: 'debug',
+    port,
+    publicPath,
+    compress: true,
+    noInfo: true,
+    stats: 'errors-only',
+    inline: true,
+    lazy: false,
+    hot: true,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    contentBase: path.join(__dirname, 'dist'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      ignored: /node_modules/,
+      poll: 100
+    },
+    historyApiFallback: {
+      verbose: true,
+      disableDotRule: false
+    },
+    before() {
+      if (process.env.START_HOT) {
+        console.log('Starting Main Process...');
+        spawn('npm', ['run', 'start-main-dev'], {
+          shell: true,
+          env: process.env,
+          stdio: 'inherit'
+        })
+          .on('close', code => process.exit(code))
+          .on('error', spawnError => console.error(spawnError));
+      } else {
+        console.log('not starting main process');
+      }
+    }
   }
 });

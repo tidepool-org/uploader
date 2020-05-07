@@ -15,7 +15,6 @@
  * == BSD2 LICENSE ==
  */
 
-/*eslint-env mocha*/
 
 import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
@@ -39,11 +38,11 @@ describe('misc reducers', () => {
         return false;
       };
     }
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.devices(undefined, {})).to.deep.equal(devices);
     });
 
-    it('should handle HIDE_UNAVAILABLE_DEVICES [mac]', () => {
+    test('should handle HIDE_UNAVAILABLE_DEVICES [mac]', () => {
       let actualResult = misc.devices(undefined, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'mac'}
@@ -63,7 +62,7 @@ describe('misc reducers', () => {
       expect(_.keys(actualResult).length).to.be.lessThan(_.keys(devices).length);
     });
 
-    it('should handle HIDE_UNAVAILABLE_DEVICES [win]', () => {
+    test('should handle HIDE_UNAVAILABLE_DEVICES [win]', () => {
       let actualResult = misc.devices(undefined, {
         type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
         payload: {os: 'win'}
@@ -85,11 +84,11 @@ describe('misc reducers', () => {
   });
 
   describe('dropdown', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.dropdown(undefined, {})).to.be.false;
     });
 
-    it('should handle TOGGLE_DROPDOWN', () => {
+    test('should handle TOGGLE_DROPDOWN', () => {
       expect(misc.dropdown(undefined, {
         type: actionTypes.TOGGLE_DROPDOWN,
         payload: {isVisible: true}
@@ -100,7 +99,7 @@ describe('misc reducers', () => {
       })).to.be.false;
     });
 
-    it('should handle LOGOUT_REQUEST', () => {
+    test('should handle LOGOUT_REQUEST', () => {
       expect(misc.dropdown(undefined, {
         type: actionTypes.LOGOUT_REQUEST
       })).to.be.false;
@@ -114,11 +113,11 @@ describe('misc reducers', () => {
   });
 
   describe('os', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.os(undefined, {})).to.be.null;
     });
 
-    it('should handle SET_OS', () => {
+    test('should handle SET_OS', () => {
       expect(misc.os(undefined, {
         type: actionTypes.SET_OS,
         payload: {os: 'test'}
@@ -127,11 +126,11 @@ describe('misc reducers', () => {
   });
 
   describe('unsupported', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.unsupported(undefined, {})).to.be.true;
     });
 
-    it('should handle INIT_APP_FAILURE', () => {
+    test('should handle INIT_APP_FAILURE', () => {
       const err = new Error('Offline!');
       expect(misc.unsupported(undefined, {
         type: actionTypes.INIT_APP_FAILURE,
@@ -140,7 +139,7 @@ describe('misc reducers', () => {
       })).to.deep.equal(err);
     });
 
-    it('should handle VERSION_CHECK_FAILURE [API error]', () => {
+    test('should handle VERSION_CHECK_FAILURE [API error]', () => {
       const err = new Error('API error!');
       expect(misc.unsupported(undefined, {
         type: actionTypes.VERSION_CHECK_FAILURE,
@@ -149,7 +148,7 @@ describe('misc reducers', () => {
       })).to.deep.equal(err);
     });
 
-    it('should handle VERSION_CHECK_FAILURE [uploader version doesn\'t meet minimum]', () => {
+    test('should handle VERSION_CHECK_FAILURE [uploader version doesn\'t meet minimum]', () => {
       const currentVersion = '0.99.0', requiredVersion = '0.100.0';
       const err = new UnsupportedError(currentVersion, requiredVersion);
       expect(misc.unsupported(undefined, {
@@ -159,7 +158,7 @@ describe('misc reducers', () => {
       })).to.be.true;
     });
 
-    it('should handle VERSION_CHECK_SUCCESS', () => {
+    test('should handle VERSION_CHECK_SUCCESS', () => {
       expect(misc.unsupported(undefined, {
         type: actionTypes.VERSION_CHECK_SUCCESS
       })).to.be.false;
@@ -167,11 +166,11 @@ describe('misc reducers', () => {
   });
 
   describe('blipUrls', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.blipUrls(undefined, {})).to.deep.equal({});
     });
 
-    it('should handle SET_BLIP_VIEW_DATA_URL', () => {
+    test('should handle SET_BLIP_VIEW_DATA_URL', () => {
       const VIEW_DATA_LINK = 'http://www.acme.com/patients/a1b2c3/data';
       const actionPayload = {url: VIEW_DATA_LINK};
       expect(misc.blipUrls(undefined, {
@@ -188,7 +187,7 @@ describe('misc reducers', () => {
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
-    it('should handle SET_FORGOT_PASSWORD_URL', () => {
+    test('should handle SET_FORGOT_PASSWORD_URL', () => {
       const FORGOT_PWD = 'http://www.acme.com/forgot-password';
       const actionPayload = {url: FORGOT_PWD};
       expect(misc.blipUrls(undefined, {
@@ -205,7 +204,7 @@ describe('misc reducers', () => {
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
-    it('should handle SET_SIGNUP_URL', () => {
+    test('should handle SET_SIGNUP_URL', () => {
       const SIGN_UP = 'http://www.acme.com/sign-up';
       const actionPayload = {url: SIGN_UP};
       expect(misc.blipUrls(undefined, {
@@ -222,7 +221,7 @@ describe('misc reducers', () => {
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
-    it('should handle SET_NEW_PATIENT_URL', () => {
+    test('should handle SET_NEW_PATIENT_URL', () => {
       const NEW_PATIENT = 'http://www.acme.com/patients/new';
       const actionPayload = {url: NEW_PATIENT};
       expect(misc.blipUrls(undefined, {
@@ -241,7 +240,7 @@ describe('misc reducers', () => {
   });
 
   describe('working', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.working(undefined, {})).to.deep.equal({
         checkingDriverUpdate: false,
         checkingElectronUpdate: false,
@@ -252,7 +251,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle INIT_APP_FAILURE', () => {
+    test('should handle INIT_APP_FAILURE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_FAILURE
       })).to.deep.equal({
@@ -265,7 +264,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle INIT_APP_REQUEST', () => {
+    test('should handle INIT_APP_REQUEST', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_REQUEST
       })).to.deep.equal({
@@ -278,7 +277,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle INIT_APP_SUCCESS', () => {
+    test('should handle INIT_APP_SUCCESS', () => {
       expect(misc.working(undefined, {
         type: actionTypes.INIT_APP_SUCCESS
       })).to.deep.equal({
@@ -291,7 +290,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle LOGIN_FAILURE', () => {
+    test('should handle LOGIN_FAILURE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_FAILURE
       })).to.deep.equal({
@@ -304,7 +303,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle LOGIN_REQUEST', () => {
+    test('should handle LOGIN_REQUEST', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_REQUEST
       })).to.deep.equal({
@@ -317,7 +316,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle LOGIN_SUCCESS', () => {
+    test('should handle LOGIN_SUCCESS', () => {
       expect(misc.working(undefined, {
         type: actionTypes.LOGIN_SUCCESS
       })).to.deep.equal({
@@ -330,7 +329,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle READ_FILE_ABORTED', () => {
+    test('should handle READ_FILE_ABORTED', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_ABORTED
       })).to.deep.equal({
@@ -343,7 +342,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle READ_FILE_FAILURE', () => {
+    test('should handle READ_FILE_FAILURE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.READ_FILE_FAILURE
       })).to.deep.equal({
@@ -356,7 +355,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle VERSION_CHECK_FAILURE', () => {
+    test('should handle VERSION_CHECK_FAILURE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_FAILURE
       })).to.deep.equal({
@@ -369,7 +368,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle VERSION_CHECK_REQUEST', () => {
+    test('should handle VERSION_CHECK_REQUEST', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_REQUEST
       })).to.deep.equal({
@@ -382,7 +381,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle VERSION_CHECK_SUCCESS', () => {
+    test('should handle VERSION_CHECK_SUCCESS', () => {
       expect(misc.working(undefined, {
         type: actionTypes.VERSION_CHECK_SUCCESS
       })).to.deep.equal({
@@ -395,7 +394,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle UPLOAD_FAILURE', () => {
+    test('should handle UPLOAD_FAILURE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_FAILURE
       })).to.deep.equal({
@@ -408,7 +407,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle UPLOAD_REQUEST', () => {
+    test('should handle UPLOAD_REQUEST', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_REQUEST
       })).to.deep.equal({
@@ -421,7 +420,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle UPLOAD_SUCCESS', () => {
+    test('should handle UPLOAD_SUCCESS', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPLOAD_SUCCESS
       })).to.deep.equal({
@@ -434,7 +433,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle CHECKING_FOR_UPDATES', () => {
+    test('should handle CHECKING_FOR_UPDATES', () => {
       expect(misc.working(undefined, {
         type: actionTypes.CHECKING_FOR_UPDATES
       })).to.deep.equal({
@@ -447,7 +446,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle UPDATE_AVAILABLE', () => {
+    test('should handle UPDATE_AVAILABLE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPDATE_AVAILABLE
       })).to.deep.equal({
@@ -460,7 +459,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle UPDATE_NOT_AVAILABLE', () => {
+    test('should handle UPDATE_NOT_AVAILABLE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.UPDATE_NOT_AVAILABLE
       })).to.deep.equal({
@@ -473,7 +472,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle AUTOUPDATE_ERROR', () => {
+    test('should handle AUTOUPDATE_ERROR', () => {
       expect(misc.working(undefined, {
         type: actionTypes.AUTOUPDATE_ERROR
       })).to.deep.equal({
@@ -486,7 +485,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
+    test('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.CHECKING_FOR_DRIVER_UPDATE
       })).to.deep.equal({
@@ -499,7 +498,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle DRIVER_UPDATE_AVAILABLE', () => {
+    test('should handle DRIVER_UPDATE_AVAILABLE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.DRIVER_UPDATE_AVAILABLE
       })).to.deep.equal({
@@ -512,7 +511,7 @@ describe('misc reducers', () => {
       });
     });
 
-    it('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
+    test('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
       expect(misc.working(undefined, {
         type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE
       })).to.deep.equal({
@@ -528,17 +527,17 @@ describe('misc reducers', () => {
   });
 
   describe('electronUpdateManualChecked', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.electronUpdateManualChecked(undefined, {})).to.be.null;
     });
 
-    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+    test('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
       expect(misc.electronUpdateManualChecked(undefined, {
         type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
       })).to.be.true;
     });
 
-    it('should handle DISMISS_UPDATE_NOT_AVAILABLE', () => {
+    test('should handle DISMISS_UPDATE_NOT_AVAILABLE', () => {
       expect(misc.electronUpdateManualChecked(undefined, {
         type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE
       })).to.be.null;
@@ -546,17 +545,17 @@ describe('misc reducers', () => {
   });
 
   describe('electronUpdateAvailableDismissed', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.electronUpdateAvailableDismissed(undefined, {})).to.be.null;
     });
 
-    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+    test('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
       expect(misc.electronUpdateAvailableDismissed(undefined, {
         type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
       })).to.be.null;
     });
 
-    it('should handle DISMISS_UPDATE_AVAILABLE', () => {
+    test('should handle DISMISS_UPDATE_AVAILABLE', () => {
       expect(misc.electronUpdateAvailableDismissed(undefined, {
         type: actionTypes.DISMISS_UPDATE_AVAILABLE
       })).to.be.true;
@@ -564,29 +563,29 @@ describe('misc reducers', () => {
   });
 
   describe('electronUpdateAvailable', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.electronUpdateAvailable(undefined, {})).to.be.null;
     });
 
-    it('should handle AUTO_UPDATE_CHECKING_FOR_UPDATES', () => {
+    test('should handle AUTO_UPDATE_CHECKING_FOR_UPDATES', () => {
       expect(misc.electronUpdateAvailable(undefined, {
         type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES
       })).to.be.null;
     });
 
-    it('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
+    test('should handle MANUAL_UPDATE_CHECKING_FOR_UPDATES', () => {
       expect(misc.electronUpdateAvailable(undefined, {
         type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES
       })).to.be.null;
     });
 
-    it('should handle UPDATE_AVAILABLE', () => {
+    test('should handle UPDATE_AVAILABLE', () => {
       expect(misc.electronUpdateAvailable(undefined, {
         type: actionTypes.UPDATE_AVAILABLE
       })).to.be.true;
     });
 
-    it('should handle UPDATE_NOT_AVAILABLE', () => {
+    test('should handle UPDATE_NOT_AVAILABLE', () => {
       expect(misc.electronUpdateAvailable(undefined, {
         type: actionTypes.UPDATE_NOT_AVAILABLE
       })).to.be.false;
@@ -594,23 +593,23 @@ describe('misc reducers', () => {
   });
 
   describe('electronUpdateDownloaded', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.electronUpdateDownloaded(undefined, {})).to.be.null;
     });
 
-    it('should handle UPDATE_AVAILABLE', () => {
+    test('should handle UPDATE_AVAILABLE', () => {
       expect(misc.electronUpdateDownloaded(undefined, {
         type: actionTypes.UPDATE_AVAILABLE
       })).to.be.null;
     });
 
-    it('should handle UPDATE_DOWNLOADED', () => {
+    test('should handle UPDATE_DOWNLOADED', () => {
       expect(misc.electronUpdateDownloaded(undefined, {
         type: actionTypes.UPDATE_DOWNLOADED
       })).to.be.true;
     });
 
-    it('should handle AUTOUPDATE_ERROR', () => {
+    test('should handle AUTOUPDATE_ERROR', () => {
       expect(misc.electronUpdateDownloaded(undefined, {
         type: actionTypes.AUTOUPDATE_ERROR
       })).to.be.false;
@@ -618,11 +617,11 @@ describe('misc reducers', () => {
   });
 
   describe('driverUpdateAvailable', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.driverUpdateAvailable(undefined, {})).to.be.null;
     });
 
-    it('should handle DRIVER_UPDATE_AVAILABLE', () => {
+    test('should handle DRIVER_UPDATE_AVAILABLE', () => {
       const payload = {'example':'info'};
       expect(misc.driverUpdateAvailable(undefined, {
         type: actionTypes.DRIVER_UPDATE_AVAILABLE,
@@ -630,13 +629,13 @@ describe('misc reducers', () => {
       })).to.deep.equal(payload);
     });
 
-    it('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
+    test('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
       expect(misc.driverUpdateAvailable(undefined, {
         type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE
       })).to.be.false;
     });
 
-    it('should handle DRIVER_INSTALL', () => {
+    test('should handle DRIVER_INSTALL', () => {
       expect(misc.driverUpdateAvailable(undefined, {
         type: actionTypes.DRIVER_INSTALL
       })).to.be.false;
@@ -644,17 +643,17 @@ describe('misc reducers', () => {
   });
 
   describe('driverUpdateAvailableDismissed', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.driverUpdateAvailableDismissed(undefined, {})).to.be.null;
     });
 
-    it('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
+    test('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
       expect(misc.driverUpdateAvailableDismissed(undefined, {
         type: actionTypes.CHECKING_FOR_DRIVER_UPDATE
       })).to.be.false;
     });
 
-    it('should handle DISMISS_DRIVER_UPDATE_AVAILABLE', () => {
+    test('should handle DISMISS_DRIVER_UPDATE_AVAILABLE', () => {
       expect(misc.driverUpdateAvailableDismissed(undefined, {
         type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE
       })).to.be.true;
@@ -662,11 +661,11 @@ describe('misc reducers', () => {
   });
 
   describe('driverUpdateShellOpts', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.driverUpdateShellOpts(undefined, {})).to.be.null;
     });
 
-    it('should handle DRIVER_INSTALL_SHELL_OPTS', () => {
+    test('should handle DRIVER_INSTALL_SHELL_OPTS', () => {
       const payload = {'example':'info'};
       expect(misc.driverUpdateShellOpts(undefined, {
         type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
@@ -676,11 +675,11 @@ describe('misc reducers', () => {
   });
 
   describe('driverUpdateComplete', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.driverUpdateComplete(undefined, {})).to.be.null;
     });
 
-    it('should handle DRIVER_INSTALL', () => {
+    test('should handle DRIVER_INSTALL', () => {
       expect(misc.driverUpdateComplete(undefined, {
         type: actionTypes.DRIVER_INSTALL
       })).to.be.true;
@@ -688,11 +687,11 @@ describe('misc reducers', () => {
   });
 
   describe('showingDeviceTimePrompt', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.showingDeviceTimePrompt(undefined, {})).to.be.null;
     });
 
-    it('should handle DEVICE_TIME_INCORRECT', () => {
+    test('should handle DEVICE_TIME_INCORRECT', () => {
       const payload = { callback: () => { }, cfg: { conf: 'value' }, times: { time1: 'value1' }};
       expect(misc.showingDeviceTimePrompt(undefined, {
         type: actionTypes.DEVICE_TIME_INCORRECT,
@@ -700,7 +699,7 @@ describe('misc reducers', () => {
       })).to.deep.equal(payload);
     });
 
-    it('should handle DISMISS_DEVICE_TIME_PROMPT', () => {
+    test('should handle DISMISS_DEVICE_TIME_PROMPT', () => {
       expect(misc.showingDeviceTimePrompt(undefined, {
         type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
       })).to.be.false;
@@ -708,23 +707,23 @@ describe('misc reducers', () => {
   });
 
   describe('isTimezoneFocused', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.isTimezoneFocused(undefined, {})).to.be.false;
     });
 
-    it('should handle UPLOAD_CANCELLED', () => {
+    test('should handle UPLOAD_CANCELLED', () => {
       expect(misc.isTimezoneFocused(undefined, {
         type: actionTypes.UPLOAD_CANCELLED,
       })).to.be.true;
     });
 
-    it('should handle TIMEZONE_BLUR', () => {
+    test('should handle TIMEZONE_BLUR', () => {
       expect(misc.isTimezoneFocused(undefined, {
         type: actionTypes.TIMEZONE_BLUR,
       })).to.be.false;
     });
 
-    it('should handle UPLOAD_REQUEST', () => {
+    test('should handle UPLOAD_REQUEST', () => {
       expect(misc.isTimezoneFocused(undefined, {
         type: actionTypes.UPLOAD_REQUEST,
       })).to.be.false;
@@ -732,11 +731,11 @@ describe('misc reducers', () => {
   });
 
   describe('showingAdHocPairingDialog', () => {
-    it('should return the initial state', () => {
+    test('should return the initial state', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {})).to.be.false;
     });
 
-    it('should handle AD_HOC_PAIRING_REQUEST', () => {
+    test('should handle AD_HOC_PAIRING_REQUEST', () => {
       const callback = () => { };
       const cfg = { conf: 'object' };
       expect(misc.showingAdHocPairingDialog(undefined, {
@@ -747,7 +746,7 @@ describe('misc reducers', () => {
       );
     });
 
-    it('should handle AD_HOC_PAIRING_DISMISSED', () => {
+    test('should handle AD_HOC_PAIRING_DISMISSED', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {
         type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
