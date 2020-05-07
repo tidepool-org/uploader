@@ -14791,10 +14791,10 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-sudo-prompt@9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-9.1.0.tgz#9618823e748ce19e2d9e481feaf3ada7d52df52f"
-  integrity sha512-bJigY3ELFd2ZA7gfyQ4wMZIp1EICPFQcMe3RgSz5OQTzrPPaeryhgaxbInO/G62vpiqJs37qlGdb9TaqHeF2yA==
+sudo-prompt@9.2.1:
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-9.2.1.tgz#77efb84309c9ca489527a4e749f287e6bdd52afd"
+  integrity sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==
 
 sumchecker@^2.0.2:
   version "2.0.2"
