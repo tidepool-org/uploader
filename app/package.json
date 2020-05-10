@@ -14,7 +14,7 @@
     "keytar": "5.6.0",
     "node-hid": "1.1.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "8.0.8",
+    "serialport": "9.0.0",
     "usb": "1.6.3",
     "lzo-decompress": "1.0.1"
   },
