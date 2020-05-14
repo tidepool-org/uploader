@@ -239,7 +239,7 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-lodash": "7.1.0",
     "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react": "7.20.0",
     "esm": "3.2.25",
     "express": "4.17.1",
     "fbjs-scripts": "1.2.0",
