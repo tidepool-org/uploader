@@ -13718,10 +13718,10 @@ rollbar-sourcemap-webpack-plugin@2.10.2:
     request "^2.88.0"
     verror "^1.6.1"
 
-rollbar@2.15.1:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.15.1.tgz#96456309b21fb198e83a5958fb4511894d75797d"
-  integrity sha512-RloDruuBw842sryrwDU/7sB8CYqazQfKvRwQVazgBJvEDBkUlNJTGoxxHP1HApTcDJ9W7BIU6fYcWayQyM09dA==
+rollbar@2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.16.0.tgz#9b6724f63516e677e08ee57e1f7a0dd8d3f156fc"
+  integrity sha512-O/d6/gPbmVfyhazTx8TGThMACmQd6W6NnZWwNlyfu4IrxYFWgktQp+xCEBPDuJsfiecnYcZj5baW2Ei5I7/Vwg==
   dependencies:
     async "~1.2.1"
     buffer-from "~1.1.1"
