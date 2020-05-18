@@ -250,7 +250,7 @@
     "html-webpack-plugin": "3.2.0",
     "jest": "24.9.0",
     "json-loader": "0.5.7",
-    "less-loader": "6.0.0",
+    "less-loader": "6.1.0",
     "mini-css-extract-plugin": "0.9.0",
     "node-hid": "1.1.0",
     "object-invariant-test-helper": "0.1.1",
