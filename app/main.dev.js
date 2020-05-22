@@ -60,21 +60,14 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-
-    // TODO: Use async interation statement.
-    //       Waiting on https://github.com/tc39/proposal-async-iteration
-    //       Promises will fail silently, which isn't what we want in development
-    return Promise
-      .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+    try {
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      console.log(`Added Extension:  ${name}`);
+    } catch (err) {
+      console.log('An error occurred: ', err);
+    }
   }
 };
 
@@ -137,13 +130,7 @@ operating system, as soon as possible.`,
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      let app;
-      if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`;
-      } else {
-        app = chromeInstalls[0];
-      }
-      open(url, {app}, function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
