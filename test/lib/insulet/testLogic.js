@@ -22,8 +22,8 @@ var expect = require('salinity').expect;
 
 var logic = require('../../../lib/drivers/insulet/objectBuildingLogic');
 
-describe('objectBuildingLogic', function() {
-  describe('calculateNetRecommendation', function() {
+describe('objectBuildingLogic', () => {
+  describe('calculateNetRecommendation', () => {
     var wizDetails = {
       carb_bolus_units_suggested: 5.0,
       corr_units_suggested: 2.0,
@@ -32,36 +32,36 @@ describe('objectBuildingLogic', function() {
       current_bg: 150
     };
 
-    it('should be a function', function() {
+    test('should be a function', () => {
       expect(logic.calculateNetRecommendation).to.exist;
       expect(typeof logic.calculateNetRecommendation).to.equal('function');
     });
 
-    it('should subtract total IOB from suggested correction when a BG is input', function() {
+    test('should subtract total IOB from suggested correction when a BG is input', () => {
       expect(logic.calculateNetRecommendation(wizDetails)).to.equal(5.5);
     });
 
-    it('should not take IOB into account if no BG value was input', function() {
+    test('should not take IOB into account if no BG value was input', () => {
       var details = _.assign({}, wizDetails, {current_bg: 65535});
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
-    it('should subtract leftover suggestion from bolus when correction IOB is >= suggested correction', function() {
+    test('should subtract leftover suggestion from bolus when correction IOB is >= suggested correction', () => {
       var details = _.assign({}, wizDetails, {corr_units_iob: 2.5});
       expect(logic.calculateNetRecommendation(details)).to.equal(4.5);
     });
 
-    it('should subtract total IOB from bolus if meal IOB is < suggested correction', function() {
+    test('should subtract total IOB from bolus if meal IOB is < suggested correction', () => {
       var details = _.assign({}, wizDetails, {meal_units_iob: 0.5});
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
-    it('should add a negative correction to the total if present', function() {
+    test('should add a negative correction to the total if present', () => {
       var details = _.assign({}, wizDetails, {current_bg: 50, corr_units_suggested: -1.0});
       expect(logic.calculateNetRecommendation(details)).to.equal(2.5);
     });
 
-    it('should never recommended a net negative bolus', function() {
+    test('should never recommended a net negative bolus', () => {
       var details = _.assign({}, wizDetails, {meal_units_iob: 1.0, carb_bolus_units_suggested: 0.0});
       expect(logic.calculateNetRecommendation(details)).to.equal(0.0);
     });
