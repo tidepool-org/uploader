@@ -20,7 +20,6 @@ import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
 import isDev from 'electron-is-dev';
-import decompress from 'decompress';
 import * as sync from '../actions/sync';
 
 export function checkVersion(dispatch) {
