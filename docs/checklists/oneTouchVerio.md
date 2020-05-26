@@ -1,4 +1,4 @@
-# LifeScan OneTouch Verio & Verio Flex
+# LifeScan OneTouch Verio, Verio Flex and Verio Reflect
 
 ## Checklist for Blood Glucose Meter Implementation
 

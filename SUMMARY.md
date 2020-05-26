@@ -32,7 +32,7 @@
    * [Medtronic 6-series (CGM data)](docs/checklists/medtronic600CGM.md)
    * [OneTouch Ultra 2 meter](docs/checklists/oneTouchUltra2.md)
    * [OneTouch UltraMini meter](docs/checklists/oneTouchUltraMini.md)
-   * [OneTouch Verio & Verio Flex meters](docs/checklists/oneTouchVerio.md)
+   * [OneTouch Verio, Verio Flex and Verio Reflect meters](docs/checklists/oneTouchVerio.md)
    * [OneTouch VerioIQ meter](docs/checklists/oneTouchVerioIQ.md)
    * [Tandem G4 CGM](docs/checklists/tandemCGM.md)
    * [Tandem Insulin Pumps](docs/checklists/tandem.md)
