@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.30.0-verio-catalina.2",
+  "version": "2.30.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
