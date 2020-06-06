@@ -73,7 +73,7 @@ export class UpdateModal extends Component {
           }
         } else { // no update available
           title = i18n.t('Uploader is up-to-date!');
-          text = `You are running version ${config.version}, the most recent one.`;
+          text = i18n.t('You are running version {{text}}, the most recent one.', { text: config.version });
           actions = (
             <button className={styles.button} onClick={sync.dismissUpdateNotAvailable}>
               {i18n.t('Okay!')}

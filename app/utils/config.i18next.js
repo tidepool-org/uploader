@@ -1,5 +1,5 @@
 let i18nextOptions = module.exports = {
-  backend:{
+  backend: {
     loadPath: './locales/{{lng}}/{{ns}}.json',
     addPath: './locales/{{lng}}/{{ns}}.missing.json'
   },
@@ -14,6 +14,7 @@ let i18nextOptions = module.exports = {
   keySeparator: false,
   nsSeparator: '|',
   debug: false,
+  wait: true,
   react: {
     wait: true,
     withRef: true,

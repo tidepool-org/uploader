@@ -166,8 +166,8 @@ class ClinicUserEdit extends React.Component {
         <select className={styles.monthInput} {...fields.month.input} disabled={fields.disabled}>
           {options}
         </select>
-        <input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text" disabled={fields.disabled}/>
-        <input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text" disabled={fields.disabled}/>
+        <input className={styles.dateInput} placeholder={i18n.t('Day')} {...fields.day.input} type="text" disabled={fields.disabled}/>
+        <input className={styles.dateInput} placeholder={i18n.t('Year')} {...fields.year.input} type="text" disabled={fields.disabled}/>
       </div>
       {this.renderDateError(fields)}
     </div>

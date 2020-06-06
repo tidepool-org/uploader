@@ -77,10 +77,10 @@ export class Login extends Component {
       <div className={styles.loginPage}>
         <form className={styles.form}>
           <div className={styles.inputWrap}>
-            <input className={styles.input} ref={(input) => { this.username = input; }} placeholder="Email"/>
+            <input className={styles.input} ref={(input) => { this.username = input; }} placeholder={i18n.t('Email')}/>
           </div>
           <div className={styles.inputWrap}>
-            <input className={styles.input} ref={(input) => { this.password = input; }} placeholder="Password" type="password"/>
+            <input className={styles.input} ref={(input) => { this.password = input; }} placeholder={i18n.t('Password')} type="password"/>
           </div>
           <div className={styles.actions}>
             <div>

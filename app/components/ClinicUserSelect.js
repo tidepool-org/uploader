@@ -102,7 +102,7 @@ class ClinicUserSelect extends React.Component {
     return (
       <Select
         name={'uploadTargetSelect'}
-        placeholder={'Search'}
+        placeholder={i18n.t('Search')}
         className={styles.Select}
         clearable={false}
         simpleValue={true}

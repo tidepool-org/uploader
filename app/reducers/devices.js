@@ -1,7 +1,7 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-
 import { remote } from 'electron';
+
 const i18n = remote.getGlobal( 'i18n' );
 
 const devices = {

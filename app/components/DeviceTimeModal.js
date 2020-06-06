@@ -77,7 +77,7 @@ export class DeviceTimeModal extends Component {
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
-        {i18n.t('Is the time on your {{text}} incorrect?',{text:type.text})}<br/>&nbsp;
+        {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
         <button className={styles.button} onClick={this.handleContinue}>
           {i18n.t('Automatically update time to')}<br/>
           {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
@@ -108,7 +108,7 @@ export class DeviceTimeModal extends Component {
           <div className={styles.text}>
             <div className={styles.body}>
             {i18n.t('* Changing your device time will not change any previous records.')}<br/>
-            {i18n.t('All future readings will be in {{timezone}}.',{timezone:timezone})}
+            {i18n.t('All future readings will be in {{timezone}}.', { timezone: timezone })}
             <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Click to learn more about meters and device time.')}</a>
             </div>
           </div>

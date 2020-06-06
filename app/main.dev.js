@@ -10,14 +10,14 @@ import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
+import i18n from 'i18next';
+import i18nextBackend from 'i18next-fs-backend';
+import i18nextOptions from './utils/config.i18next';
+
+global.i18n = i18n;
+
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
-
-// multi-language
-const i18n = require('i18next');
-const i18nextBackend = require('i18next-node-fs-backend');
-import i18nextOptions from './utils/config.i18next';
-global.i18n = i18n;
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -92,16 +92,7 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
-
-  i18n.use(i18nextBackend);
-  // Initialize
-  if (!i18n.isInitialized) {
-    setLanguage();
-    i18n.init(i18nextOptions, function (err, t) {
-      createWindow();
-    });
-  }
-  global.i18n = i18n;
+  setLanguage();
 });
 
 function createWindow() {
@@ -221,52 +212,52 @@ operating system, as soon as possible.`,
         }
       }]
     }, {
-      label: 'Edit',
+      label: i18n.t('Edit'),
       submenu: [{
-        label: 'Undo',
+        label: i18n.t('Undo'),
         accelerator: 'Command+Z',
         selector: 'undo:'
       }, {
-        label: 'Redo',
+        label: i18n.t('Redo'),
         accelerator: 'Shift+Command+Z',
         selector: 'redo:'
       }, {
         type: 'separator'
       }, {
-        label: 'Cut',
+        label: i18n.t('Cut'),
         accelerator: 'Command+X',
         selector: 'cut:'
       }, {
-        label: 'Copy',
+        label: i18n.t('Copy'),
         accelerator: 'Command+C',
         selector: 'copy:'
       }, {
-        label: 'Paste',
+        label: i18n.t('Paste'),
         accelerator: 'Command+V',
         selector: 'paste:'
       }, {
-        label: 'Select All',
+        label: i18n.t('Select All'),
         accelerator: 'Command+A',
         selector: 'selectAll:'
       }]
     }, {
-      label: 'View',
+      label: i18n.t('View'),
       submenu: (process.env.NODE_ENV === 'development') ?
       [
         {
-          label: 'Reload',
+          label: i18n.t('Reload'),
           accelerator: 'Command+R',
           click() {
             mainWindow.webContents.reload();
           }
         }, {
-          label: 'Toggle Full Screen',
+          label: i18n.t('Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click() {
             mainWindow.setFullScreen(!mainWindow.isFullScreen());
           }
         }, {
-          label: 'Toggle Developer Tools',
+          label: i18n.t('Toggle Developer Tools'),
           accelerator: 'Alt+Command+I',
           click() {
             mainWindow.toggleDevTools();
@@ -274,13 +265,13 @@ operating system, as soon as possible.`,
         }
       ] : [
         {
-          label: 'Toggle Full Screen',
+          label: i18n.t('Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click() {
             mainWindow.setFullScreen(!mainWindow.isFullScreen());
           }
         }, {
-          label: 'Toggle Developer Tools',
+          label: i18n.t('Toggle Developer Tools'),
           accelerator: 'Alt+Command+I',
           click() {
             mainWindow.toggleDevTools();
@@ -288,7 +279,7 @@ operating system, as soon as possible.`,
         }
       ]
     }, {
-      label: '&Upload',
+      label: i18n.t('&Upload'),
       id: 'upload',
       submenu: [{
         label: i18n.t('All data'),
@@ -299,7 +290,7 @@ operating system, as soon as possible.`,
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
       }, {
-        label: 'Data since last upload',
+        label: i18n.t('Data since last upload'),
         type: 'radio',
         click() {
           console.log('Uploading only new records');
@@ -308,30 +299,30 @@ operating system, as soon as possible.`,
         }
       }]
     }, {
-      label: 'Window',
+      label: i18n.t('Window'),
       submenu: [{
-        label: 'Minimize',
+        label: i18n.t('Minimize'),
         accelerator: 'Command+M',
         selector: 'performMiniaturize:'
       }, {
-        label: 'Close',
+        label: i18n.t('Close'),
         accelerator: 'Command+W',
         selector: 'performClose:'
       }, {
         type: 'separator'
       }, {
-        label: 'Bring All to Front',
+        label: i18n.t('Bring All to Front'),
         selector: 'arrangeInFront:'
       }]
     }, {
-      label: 'Help',
+      label: i18n.t('Help'),
       submenu: [{
-        label: 'Get Support',
+        label: i18n.t('Get Support'),
         click() {
           shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Privacy Policy',
+        label: i18n.t('Privacy Policy'),
         click() {
           shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
@@ -343,52 +334,52 @@ operating system, as soon as possible.`,
     Menu.setApplicationMenu(menu);
   } else {
     template = [{
-      label: '&File',
+      label: i18n.t('&File'),
       submenu: [{
-        label: '&Open',
+        label: i18n.t('&Open'),
         accelerator: 'Ctrl+O'
       }, {
-        label: '&Close',
+        label:  i18n.t('&Close'),
         accelerator: 'Ctrl+W',
         click() {
           mainWindow.close();
         }
       }]
     }, {
-      label: '&View',
+      label: i18n.t('&View'),
       submenu: (process.env.NODE_ENV === 'development') ? [{
-        label: '&Reload',
+        label: i18n.t('&Reload'),
         accelerator: 'Ctrl+R',
         click() {
           mainWindow.webContents.reload();
         }
       }, {
-        label: 'Toggle &Full Screen',
+        label: i18n.t('Toggle &Full Screen'),
         accelerator: 'F11',
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
-        label: 'Toggle &Developer Tools',
+        label: i18n.t('Toggle &Developer Tools'),
         accelerator: 'Alt+Ctrl+I',
         click() {
           mainWindow.toggleDevTools();
         }
       }] : [{
-        label: 'Toggle &Full Screen',
+        label: i18n.t('Toggle &Full Screen'),
         accelerator: 'F11',
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
-        label: 'Toggle &Developer Tools',
+        label: i18n.t('Toggle &Developer Tools'),
         accelerator: 'Alt+Ctrl+I',
         click() {
           mainWindow.toggleDevTools();
         }
       }]
     }, {
-      label: '&Upload',
+      label: i18n.t('&Upload'),
       id: 'upload',
       submenu: [{
         label: i18n.t('All data'),
@@ -399,7 +390,7 @@ operating system, as soon as possible.`,
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
       }, {
-        label: 'Data since last upload',
+        label: i18n.t('Data since last upload'),
         type: 'radio',
         click() {
           console.log('Uploading only new records');
@@ -408,20 +399,20 @@ operating system, as soon as possible.`,
         }
       }]
     }, {
-      label: 'Help',
+      label: i18n.t('Help'),
       submenu: [{
-        label: 'Get Support',
+        label: i18n.t('Get Support'),
         click() {
           shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Check for Updates',
+        label: i18n.t('Check for Updates'),
         click() {
           manualCheck = true;
           autoUpdater.checkForUpdates();
         }
       }, {
-        label: 'Privacy Policy',
+        label: i18n.t('Privacy Policy'),
         click() {
           shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
@@ -501,24 +492,29 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // for mac because, normally it's not common to recreate a window in the app
   if (mainWindow === null) {
-    i18n.use(i18nextBackend);
-    // Initialize
-    if (!i18n.isInitialized) {
-      setLanguage();
-      i18n.init(i18nextOptions, function (err, t) {
-          createWindow();
-      });
-    } else {
-      createWindow();
-    }
+    createWindow();
   }
 });
 
 function setLanguage() {
-  let lng = app.getLocale();
-  // remove country in language locale
-  if (_.includes(lng,'-'))
-    lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
+  if (process.env.I18N_ENABLED === 'true') {
+    let lng = app.getLocale();
+    // remove country in language locale
+    if (_.includes(lng,'-'))
+      lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
 
-  i18nextOptions['lng'] = lng;
+    i18nextOptions['lng'] = lng;
+    console.log(lng);
+  }
+
+  if (!i18n.Initialize) {
+    i18n.use(i18nextBackend).init(i18nextOptions, function(err, t) {
+      if (err) {
+        console.log('An error occurred in i18next:', err);
+      }
+
+      global.i18n = i18n;
+      createWindow();
+    });
+  }
 }

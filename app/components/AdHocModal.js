@@ -53,11 +53,11 @@ export class AdHocModal extends Component {
           <div className={styles.text}>
             <div className={styles.body}>
               <div className={styles.step}>
-              <div><span className={styles.numeral}>1.</span> {i18n.t('Scroll down')}</div>
+                <div><span className={styles.numeral}>1.</span> {i18n.t('Scroll down')}</div>
                 <div><img className={styles.image} src={step1_img} /></div>
               </div>
               <div className={styles.step}>
-                <div><span className={styles.numeral}>2.</span> {i18n.t('Select Yes')}</div>
+                <div><span className={styles.numeral}>2.</span> {i18n.t('Select \"Yes\"')}</div>
                 <div><img className={styles.image} src={step2_img} /></div>
               </div>
             </div>

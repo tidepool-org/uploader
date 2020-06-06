@@ -135,7 +135,7 @@ export default class LoggedInAs extends Component {
         onClick={uploadInProgress ? this.noopHandler : this.handleLogout}
         title={uploadInProgress ? i18n.t('Upload in progress!\nPlease wait to log out.') : ''}>
         <i className={styles.logoutIcon}></i>
-        Logout
+        {i18n.t('Logout')}
       </a>
     );
   }
