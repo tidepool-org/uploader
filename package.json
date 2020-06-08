@@ -83,7 +83,7 @@
     "sundial": "1.6.0",
     "tidepool-platform-client": "0.42.0",
     "usb-cdc-acm": "0.1.1",
-    "uuid": "7.0.0"
+    "uuid": "7.0.3"
   },
   "browserslist": "last 2 electron major versions",
   "build": {
