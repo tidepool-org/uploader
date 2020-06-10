@@ -9831,7 +9831,7 @@ lockfile@~1.0.1, lockfile@~1.0.3:
   dependencies:
     signal-exit "^3.0.2"
 
-lodash-es@^4.17.10, lodash-es@^4.17.5, lodash-es@^4.2.1:
+lodash-es@^4.17.15, lodash-es@^4.17.5, lodash-es@^4.2.1:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
@@ -13223,18 +13223,19 @@ reduce-component@1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-component/-/reduce-component-1.0.1.tgz#e0c93542c574521bea13df0f9488ed82ab77c5da"
   integrity sha1-4Mk1QsV0UhvqE98PlIjtgqt3xdo=
 
-redux-form@7.4.0:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.4.0.tgz#5772f152b808954f0debcf918cb78f055c279717"
-  integrity sha512-ppFEdbxS+HggJcS+HF37Gwyuh35/54hAZ2e1DvLBEzfw8sTqvas67A1YmfpK9thHj2XyLkwPOSbxgfObfkP+BQ==
+redux-form@7.4.3:
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.4.3.tgz#74cd5b460bfbb476987a54841c33e99136800c31"
+  integrity sha512-h2LEGdEQ9XaX2wXZnf6zIUFSETk4jDqG4NUKwqkSfOJZDxT3H2hJmKVZI76j/YsE/8E3eY6yPoAENCxjLi1p+Q==
   dependencies:
     es6-error "^4.1.1"
     hoist-non-react-statics "^2.5.4"
     invariant "^2.2.4"
     is-promise "^2.1.0"
-    lodash "^4.17.10"
-    lodash-es "^4.17.10"
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
     prop-types "^15.6.1"
+    react-lifecycles-compat "^3.0.4"
 
 redux-mock-store@1.5.4:
   version "1.5.4"
