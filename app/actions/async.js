@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import semver from 'semver';
 import os from 'os';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import sundial from 'sundial';
 
