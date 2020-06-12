@@ -8135,7 +8135,14 @@ iconv-lite@0.4.24, iconv-lite@^0.4.17, iconv-lite@^0.4.24, iconv-lite@^0.4.4, ic
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv-lite@0.5.1, iconv-lite@^0.5.1:
+iconv-lite@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.0.tgz#66a93b80df0bd05d2a43a7426296b7f91073f125"
+  integrity sha512-43ZpGYZ9QtuutX5l6WC1DSO8ane9N+Ct5qPLF2OV7vM9abM69gnAbVkh66ibaZd3aOGkoP1ZmringlKhLBkw2Q==
+  dependencies:
+    safer-buffer ">= 2.1.2 < 3"
+
+iconv-lite@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.5.1.tgz#b2425d3c7b18f7219f2ca663d103bddb91718d64"
   integrity sha512-ONHr16SQvKZNSqjQT9gy5z24Jw+uqfO02/ngBSBoqChZ+W8qXX7GPRa1RoUnzGADw8K63R1BXUMzarCVQBpY8Q==
@@ -13777,10 +13784,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.10.3:
-  version "2.10.3"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.10.3.tgz#4f652f3dbaf32d0d4f2194c5b5b28db0a4af12ca"
-  integrity sha512-mppHGJNrZ25BWSN8meUQDp3o0IonNTkIrOPW2lcXsrMX6OihMZYrA1CTmTxAnhkzRJUnDeTxDGfbISKSVWh7iw==
+rollbar-sourcemap-webpack-plugin@2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.1.tgz#461127518e9df03af77dad7e4d55feec430e1425"
+  integrity sha512-vxMWfHCRRPCfPflkuoJE2zTtqCqWHyLIGpf6mlKpeDHQosTeivWAR9SriiJ0WEFIpVAU6fEuVU9KJaciD1pYaQ==
   dependencies:
     async "^3.1.1"
     lodash.find "^4.3.0"
