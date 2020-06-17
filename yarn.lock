@@ -6006,10 +6006,10 @@ electron-updater@4.3.2:
     lodash.isequal "^4.5.0"
     semver "^7.3.2"
 
-electron@8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-8.3.0.tgz#c2b565a4c10d6d287d20164bcd5a478468b940a9"
-  integrity sha512-XRjiIJICZCgUr2vKSUI2PTkfP0gPFqCtqJUaTJSfCTuE3nTrxBKOUNeRMuCzEqspKkpFQU3SB3MdbMSHmZARlQ==
+electron@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-8.3.2.tgz#4b0c02e6e1b2194c37220e42d13d08f7b74fd2ea"
+  integrity sha512-U4JrglY8X2bED0R1BRX8ovGYDk2cpR1vFn0aIsYbrCbHLGfAXdNuAcs40s3yBhiknvvaqQV+wu4Becokv1hs7A==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
