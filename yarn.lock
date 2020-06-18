@@ -6307,10 +6307,10 @@ eslint-config-airbnb@18.0.1:
     object.assign "^4.1.0"
     object.entries "^1.1.0"
 
-eslint-formatter-pretty@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-formatter-pretty/-/eslint-formatter-pretty-3.0.0.tgz#493fce2cce105634026f0eb0931fab90260fb1ff"
-  integrity sha512-KtVXVIB/R5EON2RL/quU0PfM1l+jYDRG/16E+8wLDuLpWosc5TuDPCWFu+hPL5Q5y1v1pgnn3nQu8yUDrkh7SA==
+eslint-formatter-pretty@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-formatter-pretty/-/eslint-formatter-pretty-3.0.1.tgz#97603fcb2ddcc6dd60662d6e9f327a734cc55a54"
+  integrity sha512-hhQ/ASD4i6BAEalcEfUxesFtJFftT8xFsimCzUpPbTzygJ4J17yCGcJ3XKCB2g7XTJTv0pi7rVTadfHVmtfSRA==
   dependencies:
     ansi-escapes "^4.2.1"
     chalk "^3.0.0"
