@@ -1,6 +1,6 @@
 # Summary
 
-* [Tidepool uploader developer guide](docs/StartHere.md)
+* [Tidepool uploader developer guide](docs/README.md)
   * [Overview of features](docs/guide/FeatureOverview.md)
   * [App & directory structure](docs/guide/DirectoryStructure.md)
   * [Architecture](docs/guide/Architecture.md)
