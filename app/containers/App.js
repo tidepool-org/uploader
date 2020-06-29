@@ -111,7 +111,7 @@ export class App extends Component {
     };
   }
 
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
     this.props.async.doAppInit(
