@@ -175,10 +175,13 @@
         "dir"
       ]
     },
-    "publish": {
-      "provider": ["github", "s3"],
-      "bucket": "tidepool-downloads"
-    }
+    "publish": [
+      "github",
+      {
+        "provider": "s3",
+        "bucket": "tidepool-downloads"
+      }
+    ]
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
