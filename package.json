@@ -177,7 +177,7 @@
     },
     "publish": {
       "provider": ["github", "s3"],
-      "bucket": "tidepool-downloads",
+      "bucket": "tidepool-downloads"
     }
   },
   "bin": {
