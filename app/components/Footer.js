@@ -33,9 +33,11 @@ export default class Footer extends Component {
   render() {
     const version = this.props.version;
     let osArch = '';
+    let environment = '';
 
     if (debugMode.isDebug) {
       osArch = `  (${osName()} - ${os.arch()})`;
+      environment = `  - ${this.props.environment}`;
     }
 
     return (
@@ -52,7 +54,7 @@ export default class Footer extends Component {
           </div>
         </div>
         <div className={styles.footerRow}>
-          <div className={styles.version}>{`v${version}${osArch}`}</div>
+          <div className={styles.version}>{`v${version}${osArch}${environment}`}</div>
         </div>
       </div>
     );
