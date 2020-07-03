@@ -10,7 +10,7 @@ services:
     image: "tidepool/uploader:latest"
     container_name: "uploader"
     environment: 
-      - API_URL=${API_URL:-http://localhcat /etc/os-releaseost:3000}
+      - API_URL=${API_URL:-http://localhost:3000}
       - UPLOAD_URL=${UPLOAD_URL:-http://localhost:3000}
       - DATA_URL=${DATA_URL:-http://localhost:3000}
       - BLIP_URL=${BLIP_URL:-http://localhost:3000}
