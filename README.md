@@ -39,6 +39,28 @@ $ yarn dev
 
 **NB:** React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
 
+### Docker for Linux
+
+If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distrubutions you can try to build a local docker image which is based on Ubuntu 18.04 and use the yarn/npm commands interactively.
+
+1. Build the image
+    `docker-compose build`
+
+2. Run it
+    `docker-compose up -d`
+
+Work with it interactively.
+
+    Even if you kill the TidePool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
+
+    **Examples**
+
+    Interactively select the yarn target: `docker exec -it uploader bash -c "yarn run"`
+
+    Rebuild: `docker exec -it uploader bash -c "yarn build"`
+
+    Start the Dev GUI: `docker exec -it uploader bash -c "yarn dev"`
+
 ## Config
 
 Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.org/starting-up-services/)), for example:
