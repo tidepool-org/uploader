@@ -54,7 +54,7 @@ If you are running Linux you probably need to be using an Ubuntu distribution or
 
 3. Work with it interactively. 
 
-    Even if you kill the TidePool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
+    Even if you kill the Tidepool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
 
     **Examples**
 
