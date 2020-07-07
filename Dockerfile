@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV NODE_VERSION "v12.18.1"
+ENV NODE_VERSION "v12.13.0"
 
 # Lots of packages. Some dependencies and stuff for GUI.
 RUN apt-get -qq -y update && \

@@ -43,7 +43,7 @@ $ yarn dev
 
 If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distrubutions you can try to build a local docker image which is based on Ubuntu 18.04 and use the yarn/npm commands interactively.
 
-**NOTE:** You need to add udev rules to your host for uploads to actually work. You can find the udev rules in this [gist](https://gist.github.com/gniezen/2a40b7c191a27de94962a49c46a602df). The file should be placed in `/etc/udev/rules.d/` and the host should be rebooted.
+**NOTE:** You need to add udev rules to your host for uploads to actually work. You can find the udev rules [here](resources/linux/51-tidepool-uploader.rules). The file should be placed in `/etc/udev/rules.d/` and the host should be rebooted.
 
 
 1. Build the image
