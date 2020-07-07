@@ -47,12 +47,12 @@ If you are running Linux you probably need to be using an Ubuntu distribution or
 
 
 1. Build the image
-    `docker-compose build`
-
+    `docker-compose build` 
+    
 2. Run it
-    `docker-compose up -d`
+    `docker-compose up -d` 
 
-Work with it interactively.
+3. Work with it interactively. 
 
     Even if you kill the TidePool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
 
