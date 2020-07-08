@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+  uploader:
+    network_mode: host
+    ipc: host
+    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "tidepool/uploader:latest"
+    container_name: "uploader"
+    environment: 
+      - API_URL=${API_URL:-http://localhost:3000}
+      - UPLOAD_URL=${UPLOAD_URL:-http://localhost:3000}
+      - DATA_URL=${DATA_URL:-http://localhost:3000}
+      - BLIP_URL=${BLIP_URL:-http://localhost:3000}
+      - DEBUG_ERROR=${DEBUG_ERROR:-false}
+      - REDUX_LOG=${REDUX_LOG:-false}
+      - REDUX_DEV_UI=${REDUX_DEV_UI:-false}
+      - DISPLAY=unix$DISPLAY
+      - ROLLBAR_POST_TOKEN=${ROLLBAR_POST_TOKEN}
+    volumes: 
+      - .:/home/node/uploader
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
