@@ -52,7 +52,7 @@ class TimezoneDropdown extends React.Component {
     isTimezoneFocused: PropTypes.bool.isRequired
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.targetId && nextProps.targetId !== null) {
       if (this.props.targetTimezone !== null) {
         this.props.onTimezoneChange(
