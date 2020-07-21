@@ -179,7 +179,7 @@
       "github",
       {
         "provider": "s3",
-        "bucket": "tidepool-downloads"
+        "bucket": "downloads.tidepool.org"
       }
     ]
   },
