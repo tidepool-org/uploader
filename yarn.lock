@@ -13917,10 +13917,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.1.tgz#461127518e9df03af77dad7e4d55feec430e1425"
-  integrity sha512-vxMWfHCRRPCfPflkuoJE2zTtqCqWHyLIGpf6mlKpeDHQosTeivWAR9SriiJ0WEFIpVAU6fEuVU9KJaciD1pYaQ==
+rollbar-sourcemap-webpack-plugin@2.11.3:
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.3.tgz#10125459dae4a101ddce0873edf1c1ae939779c0"
+  integrity sha512-ZYcMkq/oeHN3RY3qwxkLKSM+nNkgx/Pa8fgGGeTqHhGHDQSiiJVXonD9I+w19hm+3Nn2EcfGGqAWTn+j/cwnTg==
   dependencies:
     async "^3.1.1"
     lodash.find "^4.3.0"
