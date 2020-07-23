@@ -95,7 +95,7 @@ export default class Upload extends Component {
     this.populateRememberedSerialNumber();
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
       // Initialize the UI state. Needed for logout/login scenarios
       this.handleReset();
    }
