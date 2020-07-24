@@ -205,7 +205,7 @@
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.4",
     "@babel/register": "7.10.4",
-    "@babel/runtime-corejs2": "7.10.4",
+    "@babel/runtime-corejs2": "7.10.5",
     "@jest-runner/electron": "2.0.3",
     "@ronomon/direct-io": "3.0.1",
     "aws-sdk": "2.636.0",
