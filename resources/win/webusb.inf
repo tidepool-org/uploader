@@ -28,7 +28,7 @@ AddReg = ClassInstall_AddReg
 [ClassInstall_AddReg]
 HKR,,,,%ClassName%
 HKR,,NoInstallClass,,1
-HKR,,IconPath,%REG_MULTI_SZ%,"%SystemRoot%\system32\setupapi.dll,-20"
+HKR,,IconPath,%REG_MULTI_SZ%,"%%SystemRoot%%\system32\setupapi.dll,-20"
 HKR,,LowerLogoVersion,,5.2
 
 ; =================== Installation ===================
