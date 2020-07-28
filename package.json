@@ -54,7 +54,7 @@
     "es6-error": "4.1.1",
     "ftdi-js": "0.0.6",
     "history": "4.10.1",
-    "iconv-lite": "0.6.0",
+    "iconv-lite": "0.6.2",
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.0",
@@ -74,8 +74,8 @@
     "redux": "3.7.2",
     "redux-form": "8.3.6",
     "redux-thunk": "2.3.0",
-    "rollbar": "2.16.2",
-    "rollbar-sourcemap-webpack-plugin": "2.11.1",
+    "rollbar": "2.18.0",
+    "rollbar-sourcemap-webpack-plugin": "2.11.3",
     "semver": "7.3.2",
     "source-map-support": "0.5.19",
     "stack-trace": "0.0.10",
@@ -153,7 +153,8 @@
       ],
       "publisherName": [
         "Tidepool Project"
-      ]
+      ],
+      "rfc3161TimeStampServer": "http://timestamp.digicert.com"
     },
     "mac": {
       "category": "public.app-category.tools",
@@ -227,11 +228,11 @@
     "drivelist": "8.0.10",
     "electron": "8.3.4",
     "electron-builder": "22.6.1",
-    "electron-devtools-installer": "3.0.0",
+    "electron-devtools-installer": "3.1.1",
     "electron-notarize": "0.3.0",
     "enzyme": "3.11.0",
     "eslint": "6.8.0",
-    "eslint-config-airbnb": "18.0.1",
+    "eslint-config-airbnb": "18.2.0",
     "eslint-formatter-pretty": "3.0.1",
     "eslint-import-resolver-webpack": "0.12.2",
     "eslint-plugin-import": "2.21.2",

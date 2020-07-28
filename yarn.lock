@@ -4852,7 +4852,7 @@ configstore@^5.0.1:
     write-file-atomic "^3.0.0"
     xdg-basedir "^4.0.0"
 
-confusing-browser-globals@^1.0.7:
+confusing-browser-globals@^1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.9.tgz#72bc13b483c0276801681871d4898516f8f54fdd"
   integrity sha512-KbS1Y0jMtyPgIxjO7ZzMAuUpAKMt1SzCL9fsrKsX6b0zJPTaT0SiSPmewwVZg9UAO83HVIlEhZF84LIjZ0lmAw==
@@ -5937,14 +5937,14 @@ electron-debug@3.0.1:
     electron-is-dev "^1.1.0"
     electron-localshortcut "^3.1.0"
 
-electron-devtools-installer@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-3.0.0.tgz#b5c439708746ed36f7b0220e18657567bca275d8"
-  integrity sha512-zll3w/8PvnPiGmL5tBtgSSoSjWnUljsOjJYsYYU12PKLljzWyfD6S75LKTZFn21VYxVbae2OwmjM5uFStLp6nQ==
+electron-devtools-installer@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-3.1.1.tgz#7b56c8c86475c5e4e10de6917d150c53c9ceb55e"
+  integrity sha512-g2D4J6APbpsiIcnLkFMyKZ6bOpEJ0Ltcc2m66F7oKUymyGAt628OWeU9nRZoh1cNmUs/a6Cls2UfOmsZtE496Q==
   dependencies:
     rimraf "^3.0.2"
     semver "^7.2.1"
-    unzip-crx "^0.2.0"
+    unzip-crx-3 "^0.2.0"
 
 electron-download@^4.1.1:
   version "4.1.1"
@@ -6346,23 +6346,23 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-airbnb-base@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-14.0.0.tgz#8a7bcb9643d13c55df4dd7444f138bf4efa61e17"
-  integrity sha512-2IDHobw97upExLmsebhtfoD3NAKhV4H0CJWP3Uprd/uk+cHuWYOczPVxQ8PxLFUAw7o3Th1RAU8u1DoUpr+cMA==
+eslint-config-airbnb-base@^14.2.0:
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-14.2.0.tgz#fe89c24b3f9dc8008c9c0d0d88c28f95ed65e9c4"
+  integrity sha512-Snswd5oC6nJaevs3nZoLSTvGJBvzTfnBqOIArkf3cbyTyq9UD79wOk8s+RiL6bhca0p/eRO6veczhf6A/7Jy8Q==
   dependencies:
-    confusing-browser-globals "^1.0.7"
+    confusing-browser-globals "^1.0.9"
     object.assign "^4.1.0"
-    object.entries "^1.1.0"
+    object.entries "^1.1.2"
 
-eslint-config-airbnb@18.0.1:
-  version "18.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-18.0.1.tgz#a3a74cc29b46413b6096965025381df8fb908559"
-  integrity sha512-hLb/ccvW4grVhvd6CT83bECacc+s4Z3/AEyWQdIT2KeTsG9dR7nx1gs7Iw4tDmGKozCNHFn4yZmRm3Tgy+XxyQ==
+eslint-config-airbnb@18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-18.2.0.tgz#8a82168713effce8fc08e10896a63f1235499dcd"
+  integrity sha512-Fz4JIUKkrhO0du2cg5opdyPKQXOI2MvF8KUvN2710nJMT6jaRUpRE2swrJftAjVGL7T1otLM5ieo5RqS1v9Udg==
   dependencies:
-    eslint-config-airbnb-base "^14.0.0"
+    eslint-config-airbnb-base "^14.2.0"
     object.assign "^4.1.0"
-    object.entries "^1.1.0"
+    object.entries "^1.1.2"
 
 eslint-formatter-pretty@3.0.1:
   version "3.0.1"
@@ -8232,12 +8232,12 @@ iconv-lite@0.4.24, iconv-lite@^0.4.17, iconv-lite@^0.4.24, iconv-lite@^0.4.4, ic
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv-lite@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.0.tgz#66a93b80df0bd05d2a43a7426296b7f91073f125"
-  integrity sha512-43ZpGYZ9QtuutX5l6WC1DSO8ane9N+Ct5qPLF2OV7vM9abM69gnAbVkh66ibaZd3aOGkoP1ZmringlKhLBkw2Q==
+iconv-lite@0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.2.tgz#ce13d1875b0c3a674bd6a04b7f76b01b1b6ded01"
+  integrity sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
   dependencies:
-    safer-buffer ">= 2.1.2 < 3"
+    safer-buffer ">= 2.1.2 < 3.0.0"
 
 iconv-lite@^0.5.1:
   version "0.5.1"
@@ -13917,10 +13917,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.1.tgz#461127518e9df03af77dad7e4d55feec430e1425"
-  integrity sha512-vxMWfHCRRPCfPflkuoJE2zTtqCqWHyLIGpf6mlKpeDHQosTeivWAR9SriiJ0WEFIpVAU6fEuVU9KJaciD1pYaQ==
+rollbar-sourcemap-webpack-plugin@2.11.3:
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.3.tgz#10125459dae4a101ddce0873edf1c1ae939779c0"
+  integrity sha512-ZYcMkq/oeHN3RY3qwxkLKSM+nNkgx/Pa8fgGGeTqHhGHDQSiiJVXonD9I+w19hm+3Nn2EcfGGqAWTn+j/cwnTg==
   dependencies:
     async "^3.1.1"
     lodash.find "^4.3.0"
@@ -13930,10 +13930,10 @@ rollbar-sourcemap-webpack-plugin@2.11.1:
     request "^2.88.0"
     verror "^1.6.1"
 
-rollbar@2.16.2:
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.16.2.tgz#bd7335367aa9f96a881c375d4ea0d6b858ab9f53"
-  integrity sha512-c0a8MriV+HOn//yCc8kDzyxULk8/tUNAAo3jpoebS0h6KSAzzgwLH+d0DpcjfVmgbd8aXHbUVx5M/mMnz0bgow==
+rollbar@2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.18.0.tgz#97c517f5de818fdf66094f6a0ee6b29af25defc5"
+  integrity sha512-BJzcnRtGM5PvkPgmt3ulohU2bF1Kwc5PQxBDAA6xT7AI/qWNoosyhHKxmZz7RiaMwnMjY9wEYvxCeFM+uTjCOw==
   dependencies:
     async "~1.2.1"
     buffer-from "~1.1.1"
@@ -14011,7 +14011,7 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-"safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
+"safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
@@ -15801,10 +15801,10 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-unzip-crx@^0.2.0:
+unzip-crx-3@^0.2.0:
   version "0.2.0"
-  resolved "https://registry.yarnpkg.com/unzip-crx/-/unzip-crx-0.2.0.tgz#4c0baa8bdac756256754beca7843c13d7b858c18"
-  integrity sha1-TAuqi9rHViVnVL7KeEPBPXuFjBg=
+  resolved "https://registry.yarnpkg.com/unzip-crx-3/-/unzip-crx-3-0.2.0.tgz#d5324147b104a8aed9ae8639c95521f6f7cda292"
+  integrity sha512-0+JiUq/z7faJ6oifVB5nSwt589v1KCduqIJupNVDoWSXZtWDmjDGO3RAEOvwJ07w90aoXoP4enKsR7ecMrJtWQ==
   dependencies:
     jszip "^3.1.0"
     mkdirp "^0.5.1"
