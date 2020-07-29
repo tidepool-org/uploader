@@ -50,7 +50,7 @@ class DeviceSelection extends React.Component {
     isClinicAccount: PropTypes.bool.isRequired
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     var self = this;
 
     if (!this.props.userIsSelected && nextProps.userIsSelected) {

@@ -29,6 +29,13 @@ const devices = {
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
   },
+  caresens: {
+    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    name: 'CareSens N Premier & Dual',
+    key: 'caresens',
+    source: {type: 'device', driverId: 'CareSens'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
     image: {
@@ -130,7 +137,7 @@ const devices = {
   },
   onetouchverio: {
     instructions: i18n.t('Plug in meter with micro-USB'),
-    name: 'OneTouch Verio & Verio Flex',
+    name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
     enabled: {linux: true, mac: true, win: true}

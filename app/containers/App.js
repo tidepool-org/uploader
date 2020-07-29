@@ -105,13 +105,13 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
+    const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
     this.state = {
       server: initial_server
     };
   }
 
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
     this.props.async.doAppInit(
@@ -177,7 +177,7 @@ export class App extends Component {
           <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
           <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
         </Switch>
-        <Footer version={config.version} />
+        <Footer version={config.version} environment={this.state.server} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />

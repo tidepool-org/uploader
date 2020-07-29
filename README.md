@@ -1,6 +1,6 @@
 # Tidepool Uploader
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/tidepool-org/uploader.svg)](https://greenkeeper.io/)
+
 
 [![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
 [![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
@@ -38,6 +38,31 @@ $ yarn dev
 (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)
 
 **NB:** React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use 'Reload' to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.
+
+### Docker for Linux
+
+If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distrubutions you can try to build a local docker image which is based on Ubuntu 18.04 and use the yarn/npm commands interactively.
+
+**NOTE:** You need to add udev rules to your host for uploads to actually work. You can find the udev rules [here](resources/linux/51-tidepool-uploader.rules). The file should be placed in `/etc/udev/rules.d/` and the host should be rebooted.
+
+
+1. Build the image
+    `docker-compose build` 
+    
+2. Run it
+    `docker-compose up -d` 
+
+3. Work with it interactively. 
+
+    Even if you kill the Tidepool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
+
+    **Examples**
+
+    Interactively select the yarn target: `docker exec -it uploader bash -c "yarn run"`
+
+    Rebuild: `docker exec -it uploader bash -c "yarn build"`
+
+    Start the Dev GUI: `docker exec -it uploader bash -c "yarn dev"`
 
 ## Config
 
