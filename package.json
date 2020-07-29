@@ -134,7 +134,8 @@
           "!*.md"
         ]
       },
-      "sounds/"
+      "sounds/",
+      "locales/"
     ],
     "win": {
       "target": [

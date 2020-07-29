@@ -1,7 +1,8 @@
+let path = (process.env.NODE_ENV === 'production') ? 'resources': '.';
 let i18nextOptions = module.exports = {
   backend: {
-    loadPath: './locales/{{lng}}/{{ns}}.json',
-    addPath: './locales/{{lng}}/{{ns}}.missing.json'
+    loadPath: path + '/locales/{{lng}}/{{ns}}.json',
+    addPath: path + '/locales/{{lng}}/{{ns}}.missing.json'
   },
   interpolation: {
     escapeValue: false
