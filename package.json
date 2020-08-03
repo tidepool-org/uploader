@@ -175,7 +175,14 @@
         },
         "dir"
       ]
-    }
+    },
+    "publish": [
+      "github",
+      {
+        "provider": "s3",
+        "bucket": "downloads.tidepool.org"
+      }
+    ]
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"

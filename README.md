@@ -47,12 +47,12 @@ If you are running Linux you probably need to be using an Ubuntu distribution or
 
 
 1. Build the image
-    `docker-compose build` 
-    
-2. Run it
-    `docker-compose up -d` 
+    `docker-compose build`
 
-3. Work with it interactively. 
+2. Run it
+    `docker-compose up -d`
+
+3. Work with it interactively.
 
     Even if you kill the Tidepool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.
 
@@ -134,6 +134,25 @@ For a non-production release (alpha, dev, etc.)
 1. When you want to publish your non-production release, go to your draft and type in the version for the tag name, ensure that you're targeting the branch that you're currently releasing from, mark the release as a `pre-release`, fill out the release notes and publish the release. This will create the tag for you on the branch that you want.
 
 The Uploader has a self-update mechanism that will look at the latest release and compare versions, downloading and prompting the user to update if a newer version is available. For production releases, only official releases will be considered. For non-production releases (`-alpha`, `-beta.2`, etc.) releases marked as `pre-release` will also be checked, matching against the string portion of the post-hyphen version segment. For more detail about this behavior see [the electron-builder docs concerning auto-update options]( https://github.com/electron-userland/electron-builder/wiki/Auto-Update#appupdater--internaleventemitter)
+
+### CI server environment variables
+
+We use the following environment variables on the CI servers:
+
+| Variable | CI Server | Use |
+|----------|-----------|-------|
+| APPLEID                  | CircleCI | Notarization |
+| APPLEIDPASS              | CircleCI | Notarization |
+| AWS_ACCESS_KEY_ID        | Both     | S3 builds and AV e-mails |
+| AWS_SECRET_ACESS_KEY     | Both     | S3 builds and AV e-mails |
+| CSC_FOR_PULL_REQUEST     | Both     | `true`, code signing for PR |
+| CSC_KEY_PASSWORD         | Both     | Certificate password |
+| CSC_LINK                 | Both     | Code signing certificate |
+| DEBUG                    | CircleCI | Set to `electron-builder` |
+| GH_TOKEN                 | Both     | For GitHub builds |
+| PUBLISH_FOR_PULL_REQUEST | Both     | `true`, build artefact for PR |
+| ROLLBAR_POST_TOKEN       | Both     | Rollbar logging |
+| FTP_AV_PASSWORD_TIDEPOOL | Appveyor | AV submission |
 
 ## Editor Configuration
 **Atom**
