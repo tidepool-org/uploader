@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.32.0",
+  "version": "2.33.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -175,7 +175,14 @@
         },
         "dir"
       ]
-    }
+    },
+    "publish": [
+      "github",
+      {
+        "provider": "s3",
+        "bucket": "downloads.tidepool.org"
+      }
+    ]
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
