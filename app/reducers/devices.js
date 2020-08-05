@@ -167,6 +167,20 @@ const devices = {
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
   },
+  weitai: {
+    instructions: "Connect your Equil to your computer",
+    name: "Equil",
+    image: {
+      src: weitaipump,
+      height: 200,
+      width: 200,
+      alt: "Weitai link",
+    },
+    key: "Weitai",
+    selectName: "Equil Insulin Patch Pump/Equil Insulin Micro Pump",
+    source: { type: "device", driverId: "Weitai" },
+    enabled: { mac: true, win: true, linux: true },
+  }
 };
 
 export default devices;
