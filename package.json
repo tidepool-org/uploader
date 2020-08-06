@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.32.0",
+  "version": "2.33.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -60,7 +60,7 @@
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "lzo-decompress": "1.0.1",
     "node-powershell": "4.0.0",
     "os-name": "3.1.0",
@@ -178,7 +178,14 @@
         },
         "dir"
       ]
-    }
+    },
+    "publish": [
+      "github",
+      {
+        "provider": "s3",
+        "bucket": "downloads.tidepool.org"
+      }
+    ]
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -208,7 +215,7 @@
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.4",
     "@babel/register": "7.10.4",
-    "@babel/runtime-corejs2": "7.10.4",
+    "@babel/runtime-corejs2": "7.10.5",
     "@jest-runner/electron": "2.0.3",
     "@ronomon/direct-io": "3.0.1",
     "aws-sdk": "2.636.0",
@@ -238,7 +245,7 @@
     "eslint-config-airbnb": "18.2.0",
     "eslint-formatter-pretty": "3.0.1",
     "eslint-import-resolver-webpack": "0.12.2",
-    "eslint-plugin-import": "2.21.2",
+    "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-jest": "23.17.1",
     "eslint-plugin-lodash": "7.1.0",
@@ -267,7 +274,7 @@
     "sinon-chai": "3.5.0",
     "spectron": "10.0.1",
     "style-loader": "1.2.1",
-    "terser-webpack-plugin": "3.0.5",
+    "terser-webpack-plugin": "3.0.7",
     "url-loader": "2.3.0",
     "webpack": "4.43.0",
     "webpack-bundle-analyzer": "3.8.0",
