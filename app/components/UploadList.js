@@ -129,7 +129,7 @@ export default class UploadList extends Component {
     const errorMessage = (
       <div className={styles.errorMessageWrapper}>
         <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}</span>
-        <span className={styles.errorMessageFriendly}>{upload.error.message}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
+        <span className={styles.errorMessageFriendly}>{i18n.t(upload.error.message)}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
       </div>
     );
     const showErrorsText = upload.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;

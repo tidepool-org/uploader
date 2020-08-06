@@ -628,13 +628,13 @@ export default class Upload extends Component {
     if (_.isArray(details)) {
       return (
         <div className={styles.detail}>
-          {_.get(details, 0, '')}<br/>
-          {_.get(details, 1, '')}
+          {i18n.t(_.get(details, 0, ''))}<br/>
+          {i18n.t(_.get(details, 1, ''))}
         </div>
       );
     }
     return (
-      <div className={styles.detail}>{details}</div>
+      <div className={styles.detail}>{i18n.t(details)}</div>
     );
   }
 

@@ -504,7 +504,6 @@ function setLanguage() {
       lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
 
     i18nextOptions['lng'] = lng;
-    console.log(lng);
   }
 
   if (!i18n.Initialize) {
