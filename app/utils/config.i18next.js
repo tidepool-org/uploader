@@ -15,10 +15,5 @@ let i18nextOptions = module.exports = {
   keySeparator: false,
   nsSeparator: '|',
   debug: false,
-  wait: true,
-  react: {
-    wait: true,
-    withRef: true,
-    defaultTransParent: 'div'
-  }
+  wait: true
 };
