@@ -38,5 +38,5 @@ module.exports = {
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
-  E_WEITAI_NO_UPLOAD: "No new recoder to upload!"
+  E_WEITAI_NO_UPLOAD: 'No new recoder to upload!'
 };
