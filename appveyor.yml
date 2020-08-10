@@ -40,6 +40,7 @@ test_script:
 #  - 7z a development.zip release
 #  - rmdir /S /Q release
   - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built.) ELSE ( yarn package )
+  - cmd: yarn publish-s3 # TODO: move to tagged release if working
 #  - 7z a production.zip release
   # submit uploader release to antivirus vendors if tagged
   - cmd: IF /I %APPVEYOR_REPO_TAG% == True ( yarn av-whitelist ) ELSE ( echo Not a tagged release. )

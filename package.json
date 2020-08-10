@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.33.0",
+  "version": "2.33.0-s3-test.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -28,6 +28,7 @@
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
     "package": "npm run build-quiet && electron-builder -p always",
+    "publish-s3": "electron-builder -p always -c.publish.provider=s3 -c.publish.bucket=downloads.tidepool.org",
     "package-win": "npm run build && electron-builder --win --x64",
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
@@ -175,14 +176,7 @@
         },
         "dir"
       ]
-    },
-    "publish": [
-      "github",
-      {
-        "provider": "s3",
-        "bucket": "downloads.tidepool.org"
-      }
-    ]
+    }
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
