@@ -177,7 +177,7 @@ const devices = {
       width: 200,
       alt: 'Weitai link',
     },
-    key: 'Weitai',
+    key: 'weitai',
     selectName: 'Equil Insulin Patch Pump/Equil Insulin Micro Pump',
     source: { type: 'device', driverId: 'Weitai' },
     enabled: { mac: true, win: true, linux: true },
