@@ -38,5 +38,9 @@ jobs:
     - run: yarn test
     - run: greenkeeper-lockfile-upload
     # Package
-    - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
-    - run: yarn publish-s3 # TODO: only on tagged release
+    - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then
+             yarn package;
+             # Publish to S3 on tagged release
+             if [-z "$CIRCLE_TAG" ]; then yarn publish-s3; else echo "Not a tagged release."; fi
+           else echo "Forked repo; no package built."; fi
+    
