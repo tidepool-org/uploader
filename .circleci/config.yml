@@ -1,6 +1,9 @@
 version: 2
 jobs:
   build:
+    filters:
+      tags:
+        only: /^v.*/
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
