@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.32.0-webmtp.3",
+  "version": "2.33.0-webmtp.3",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
