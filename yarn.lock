@@ -16173,12 +16173,12 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webmtp@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.0.7.tgz#29bdb3f9693b21bf8d50b92e996977b87aefbaef"
-  integrity sha512-W5jfN2uZFeiIHVkVrQcJiaM9xb86D2zAk90p87k1k3VqLS2l5w33IYaI+lHRbPgBEoX50PnLlYQ6yQtMZ9w5KQ==
+webmtp@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.0.8.tgz#078ea806db0c8464926c9f6ae1a1ab062aad4e7c"
+  integrity sha512-43HX3KEy5xtbTXgUyGVZhJop4K6g7HJKEvCOU7Dh+Rmo19qQxGyRm/Wu7/hoFP7vnUmP+CPS+gmz6zt9HFRVvA==
   dependencies:
-    webusb "2.0.2"
+    webusb "2.1.0"
 
 webpack-bundle-analyzer@3.8.0:
   version "3.8.0"
@@ -16359,10 +16359,10 @@ webusb@2.0.1:
     "@types/w3c-web-usb" "^1.0.4"
     usb "^1.6.0"
 
-webusb@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/webusb/-/webusb-2.0.2.tgz#99183eef6943b8abf33f5ea48a99a7ce902027c8"
-  integrity sha512-dzJjGih8rkZ/CAeIQnuOPxbcEW8Vrg39HeiMah3LLntjQgASb8gvzK51RWYd6oDzlPv6d1iJJgFnY1mukSoZew==
+webusb@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/webusb/-/webusb-2.1.0.tgz#4e61df17b20706b888f04ca23f962b04ada784ed"
+  integrity sha512-jcKDPBeAGeeTcZkG74cjTHeH/+hix/ImusjwVI+GmckWGWOXd6Sed6pTHQ/zms45RcgYUHxRNKnCi5fg8oKy/A==
   dependencies:
     "@types/node" "^8.0.54"
     "@types/usb" "^1.5.1"
