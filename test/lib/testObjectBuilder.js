@@ -382,6 +382,32 @@ describe('objectBuilder.js', () => {
     });
   });
 
+  describe('makeReportedState', () => {
+
+    var defaults = {deviceId:'reportedState'};
+
+    beforeEach(() => {
+      bob = objectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    test('works', () => {
+      var state = bob.makeReportedState();
+
+      expect(state.deviceId).to.equal(defaults.deviceId);
+      expect(state.type).to.equal('reportedState');
+      expect(state.time).to.equal(REQUIRED);
+      expect(state.timezoneOffset).to.equal(REQUIRED);
+      expect(state.conversionOffset).to.equal(REQUIRED);
+      expect(state.deviceTime).to.equal(REQUIRED);
+      expect(state.states).to.deep.equal([]);
+
+      expect(state.clockDriftOffset).to.equal(OPTIONAL);
+      expect(state.payload).to.equal(OPTIONAL);
+    });
+  });
+
+
   describe('makeNormalBolus', () => {
 
     var defaults = {deviceId:'makeNormalBolus'};
