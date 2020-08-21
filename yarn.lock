@@ -6050,10 +6050,10 @@ electron-chromedriver@^8.0.0:
     electron-download "^4.1.1"
     extract-zip "^1.6.7"
 
-electron-debug@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-3.0.1.tgz#95b43b968ec7dbe96300034143e58b803a1e82dc"
-  integrity sha512-fo3mtDM4Bxxm3DW1I+XcJKfQlUlns4QGWyWGs8OrXK1bBZ2X9HeqYMntYBx78MYRcGY5S/ualuG4GhCnPlaZEA==
+electron-debug@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-3.1.0.tgz#0df17297487fa3c82344d810812853bf67f0bd69"
+  integrity sha512-SWEqLj4MgfV3tGuO5eBLQ5/Nr6M+KPxsnE0bUJZvQebGJus6RAcdmvd7L+l0Ji31h2mmrN23l2tHFtCa2FvurA==
   dependencies:
     electron-is-dev "^1.1.0"
     electron-localshortcut "^3.1.0"
@@ -7070,13 +7070,13 @@ file-entry-cache@^5.0.1:
   dependencies:
     flat-cache "^2.0.1"
 
-file-loader@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-4.2.0.tgz#5fb124d2369d7075d70a9a5abecd12e60a95215e"
-  integrity sha512-+xZnaK5R8kBJrHK0/6HRlrKNamvVS5rjyuju+rnyxRGuwUJwpAMsVzUl5dz6rK8brkzjV6JpcFNjp6NqV0g1OQ==
+file-loader@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-4.3.0.tgz#780f040f729b3d18019f20605f723e844b8a58af"
+  integrity sha512-aKrYPYjF1yG3oX0kWRrqrSMfgftm7oJW5M+m4owoldH5C51C0RkIwB++JbRvEW3IU6/ZG5n8UvEcdgwOt2UOWA==
   dependencies:
     loader-utils "^1.2.3"
-    schema-utils "^2.0.0"
+    schema-utils "^2.5.0"
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -10268,15 +10268,20 @@ lodash@4.17.15, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.1
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
-lodash@4.17.19, lodash@^4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 lodash@4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
+
+lodash@^4.17.19:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 log-symbols@^3.0.0:
   version "3.0.0"
@@ -11839,10 +11844,10 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-open@7.0.4:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/open/-/open-7.0.4.tgz#c28a9d315e5c98340bf979fdcb2e58664aa10d83"
-  integrity sha512-brSA+/yq+b08Hsr4c8fsEW2CRzk1BmfN3SAK/5VCHQ9bdoZJ4qa/+AfR0xHjlbbZUyPkUHs1b8x1RqdyZdkVqQ==
+open@7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/open/-/open-7.1.0.tgz#68865f7d3cb238520fa1225a63cf28bcf8368a1c"
+  integrity sha512-lLPI5KgOwEYCDKXf4np7y1PBEkj7HYIyP2DY8mVDRnx0VIIu6bNrRB0R66TuO7Mack6EnTNLm4uvcl1UoklTpA==
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
@@ -14253,14 +14258,6 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
-
-schema-utils@^2.0.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.5.0.tgz#8f254f618d402cc80257486213c8970edfd7c22f"
-  integrity sha512-32ISrwW2scPXHUSusP8qMg5dLUawKkyV+/qIEV9JdXKx+rsM6mi8vZY8khg2M69Qom16rtroWXD3Ybtiws38gQ==
-  dependencies:
-    ajv "^6.10.2"
-    ajv-keywords "^3.4.1"
 
 schema-utils@^2.5.0, schema-utils@^2.7.0:
   version "2.7.0"
