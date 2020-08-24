@@ -36,8 +36,7 @@ test_script:
   - yarn lint
   - yarn test
   # submit uploader release to antivirus vendors and also publish to S3 if tagged
-  # TODO: change yarn test-publish back to yarn package
-  - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built. ) ELSE ( yarn test-publish )
+  - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built. ) ELSE ( yarn package )
   - cmd: IF /I %APPVEYOR_REPO_TAG% == True ( yarn publish-s3 & yarn av-whitelist ) ELSE ( echo Not a tagged release. )
 
 notifications:
