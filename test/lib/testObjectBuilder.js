@@ -407,6 +407,43 @@ describe('objectBuilder.js', () => {
     });
   });
 
+  describe('makePhysicalActivity', () => {
+
+    var defaults = {deviceId:'physicalActivity'};
+
+    beforeEach(() => {
+      bob = objectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    test('works', () => {
+      var state = bob.makePhysicalActivity();
+
+      expect(state.deviceId).to.equal(defaults.deviceId);
+      expect(state.type).to.equal('physicalActivity');
+      expect(state.time).to.equal(REQUIRED);
+      expect(state.timezoneOffset).to.equal(REQUIRED);
+      expect(state.conversionOffset).to.equal(REQUIRED);
+      expect(state.deviceTime).to.equal(REQUIRED);
+
+      expect(state.activityType).to.equal(OPTIONAL);
+      expect(state.activityTypeOther).to.equal(OPTIONAL);
+      expect(state.aggregate).to.equal(OPTIONAL);
+      expect(state.distance).to.equal(OPTIONAL);
+      expect(state.duration).to.equal(OPTIONAL);
+      expect(state.elevationChange).to.equal(OPTIONAL);
+      expect(state.energy).to.equal(OPTIONAL);
+      expect(state.flight).to.equal(OPTIONAL);
+      expect(state.lap).to.equal(OPTIONAL);
+      expect(state.name).to.equal(OPTIONAL);
+      expect(state.reportedIntensity).to.equal(OPTIONAL);
+      expect(state.step).to.equal(OPTIONAL);
+
+      expect(state.clockDriftOffset).to.equal(OPTIONAL);
+      expect(state.payload).to.equal(OPTIONAL);
+    });
+  });
+
 
   describe('makeNormalBolus', () => {
 
