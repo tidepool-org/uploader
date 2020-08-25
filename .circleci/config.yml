@@ -42,7 +42,7 @@ jobs:
         if [ -z "$CIRCLE_PR_NUMBER" ]; then
           yarn package;
           if [[ $CIRCLE_TAG ]]; then
-            yarn publish-s3;
+            yarn publish;
           else echo "Not a tagged release."; fi
         else echo "Forked repo; no package built."; fi
 
