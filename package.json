@@ -178,7 +178,9 @@
       ]
     },
     "publish": [
-      "github"
+      {
+        "provider": "github"
+      }
     ]
   },
   "bin": {
