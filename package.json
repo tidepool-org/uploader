@@ -27,7 +27,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c.publish.path=draft",
+    "package": "npm run build-quiet && electron-builder -p always -c.publish.provider=github c.publish.bucket=null c.publish.provider=s3 c.publish.bucket=downloads.tidepool.org",
     "publish": "npm run build-quiet && electron-builder -p always",
     "package-win": "npm run build && electron-builder --win --x64",
     "package-mac": "npm run build && electron-builder --mac",
@@ -176,14 +176,7 @@
         },
         "dir"
       ]
-    },
-    "publish": [
-      "github",
-      {
-        "provider": "s3",
-        "bucket": "downloads.tidepool.org"
-      }
-    ]
+    }
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
