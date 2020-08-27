@@ -1,0 +1,9 @@
+{
+  "publish": [
+      "github",
+      {
+        "provider": "s3",
+        "bucket": "downloads.tidepool.org"
+      }
+  ]
+}
