@@ -32,7 +32,7 @@
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
     "package-all": "npm run build && electron-builder -mwl",
-    "publish": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.json"
+    "publish-s3": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.json"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.13.0",
