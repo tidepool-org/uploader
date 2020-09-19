@@ -69,7 +69,7 @@ export class Login extends Component {
       return null;
     }
 
-    return <span>{this.props.errorMessage}</span>;
+    return <span>{i18n.t(this.props.errorMessage)}</span>;
   }
 
   render() {

@@ -141,7 +141,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.createCustodialAccountErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissCreateCustodialAccountError}></i>
+          {i18n.t(this.props.createCustodialAccountErrorMessage)}<i className={styles.iconClose} onClick={this.props.dismissCreateCustodialAccountError}></i>
         </span>
       </div>
     );
@@ -154,7 +154,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.updateProfileErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
+          {i18n.t(this.props.updateProfileErrorMessage)}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
         </span>
       </div>
     );
