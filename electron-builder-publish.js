@@ -97,7 +97,7 @@ console.log('CIRCLE_TAG:', process.env.CIRCLE_TAG);
 console.log('APPVEYOR_REPO_TAG:', process.env.APPVEYOR_REPO_TAG);
 
 if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.length > 0) ||
-      process.env.APPVEYOR_REPO_TAG === true) {
+      process.env.APPVEYOR_REPO_TAG === 'true') {
   config.publish[1] = {
     provider: 's3',
     bucket: 'downloads.tidepool.org'
