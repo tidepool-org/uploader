@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.32.0-platform-client.1",
+  "version": "2.33.0",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
@@ -14,7 +14,7 @@
     "keytar": "5.6.0",
     "node-hid": "1.1.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "9.0.0",
+    "serialport": "9.0.1",
     "usb": "1.6.3",
     "lzo-decompress": "1.0.1"
   },
