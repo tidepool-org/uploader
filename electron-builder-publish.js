@@ -111,6 +111,7 @@ if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.length > 0) ||
   config.publish = [
     {
       provider: 'github',
+      owner: 'tidepool-org', // required to overwrite existing binaries
       releaseType: releaseType,
     },
     {
