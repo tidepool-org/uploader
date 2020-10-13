@@ -98,18 +98,26 @@ console.log('APPVEYOR_REPO_TAG:', process.env.APPVEYOR_REPO_TAG);
 
 if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.length > 0) ||
      (process.env.APPVEYOR_REPO_TAG_NAME && process.env.APPVEYOR_REPO_TAG_NAME.length > 0) ) {
-  config.publish[1] = {
-    provider: 's3',
-    bucket: 'downloads.tidepool.org'
-  };
+  let releaseType = null;
 
-  if ( (process.env.CIRCLE_TAG.indexOf('-') >= 0) ||
-       (process.env.APPVEYOR_REPO_TAG_NAME.indexOf('-') >= 0) ) {
+  if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.indexOf('-') !== -1) ||
+       (process.env.APPVEYOR_REPO_TAG_NAME && process.env.APPVEYOR_REPO_TAG_NAME.indexOf('-') !== -1) ) {
     // non-production releases have hyphens in their tags
-    config.publish[0].releaseType = 'pre-release';
+    releaseType = 'pre-release';
   } else {
-    config.publish[0].releaseType = 'release';
+    releaseType = 'release';
   }
+
+  config.publish = [
+    {
+      provider: 'github',
+      releaseType: releaseType,
+    },
+    {
+      provider: 's3',
+      bucket: 'downloads.tidepool.org',
+    },
+  ];
 }
 
 module.exports = config;
