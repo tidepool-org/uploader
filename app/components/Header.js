@@ -74,7 +74,7 @@ export class Header extends Component {
             <img className={styles.logo} src={logo} />
           </div>
           <div className={styles.heroText}>
-            Uploader
+            You should not be seeing this! {/* TODO: remove this! */}
           </div>
         </div>
       );
