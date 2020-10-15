@@ -10638,10 +10638,10 @@ mini-create-react-context@^0.4.0:
     "@babel/runtime" "^7.5.5"
     tiny-warning "^1.0.3"
 
-mini-css-extract-plugin@0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.11.0.tgz#3918953075109d4ca204bf1e8a393a78d3cc821f"
-  integrity sha512-dVWGuWJlQw2lZxsxBI3hOsoxg1k3DruLR0foHQLSkQMfk+qLJbv9dUk8fjmjWQKN9ef2n54ehA2FjClAsQhrWQ==
+mini-css-extract-plugin@0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.12.0.tgz#ddeb74fd6304ca9f99c1db74acc7d5b507705454"
+  integrity sha512-z6PQCe9rd1XUwZ8gMaEVwwRyZlrYy8Ba1gRjFP5HcV51HkXX+XlwZ+a1iAYTjSYwgNBXoNR7mhx79mDpOn5fdw==
   dependencies:
     loader-utils "^1.1.0"
     normalize-url "1.9.1"
@@ -14089,10 +14089,10 @@ roarr@^2.14.5:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollbar-sourcemap-webpack-plugin@2.11.4:
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.11.4.tgz#463f4e71aba6b15d8aa6699745039c6a6e0d245f"
-  integrity sha512-dHGfw7Ktur6HcMXLdhxR3GOT7KCCXOBEgI/egtgdSxPPUOEjLUgPM8m/FLyOmnWYjFSTmpzfGlOUdqhOkYzEdQ==
+rollbar-sourcemap-webpack-plugin@2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/rollbar-sourcemap-webpack-plugin/-/rollbar-sourcemap-webpack-plugin-2.12.0.tgz#b1b0216273473ced78cbd7a368a9e36d51803b08"
+  integrity sha512-ldot0QqGpRHJRekIrptBPh7ECKKNlAxLT6jJoAl8Jktg4RfQPzxoQLu4wl9HIMbDxwOjVzAKmSDg5mBAzSjEnQ==
   dependencies:
     async "^3.1.1"
     lodash.find "^4.3.0"
