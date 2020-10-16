@@ -126,7 +126,7 @@ const devices = {
   bayercontour: {
     instructions: 'Plug in meter with cable and make sure meter is switched on',
     key: 'bayercontour',
-    name: 'Ascensia (Bayer) Contour Next EZ, Contour or Contour Link',
+    name: 'Ascensia (Bayer) Contour Next EZ, Contour, Contour Link or Contour Plus',
     source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
