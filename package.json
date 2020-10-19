@@ -27,7 +27,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always",
+    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js",
     "package-win": "npm run build && electron-builder --win --x64",
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
@@ -75,115 +75,17 @@
     "redux-form": "8.3.6",
     "redux-thunk": "2.3.0",
     "rollbar": "2.19.3",
-    "rollbar-sourcemap-webpack-plugin": "2.11.4",
+    "rollbar-sourcemap-webpack-plugin": "2.12.0",
     "semver": "7.3.2",
     "source-map-support": "0.5.19",
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.42.0",
+    "tidepool-platform-client": "0.43.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3"
   },
   "browserslist": "last 2 electron major versions",
-  "build": {
-    "productName": "Tidepool Uploader",
-    "appId": "org.tidepool.TidepoolUploader",
-    "directories": {
-      "buildResources": "resources",
-      "output": "release"
-    },
-    "afterSign": "scripts/notarize.js",
-    "dmg": {
-      "contents": [
-        {
-          "x": 381,
-          "y": 190,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 159,
-          "y": 190,
-          "type": "file"
-        }
-      ],
-      "background": "resources/background.tiff"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowElevation": true
-    },
-    "files": [
-      "dist/",
-      "node_modules/",
-      "app.html",
-      "main.prod.js",
-      "main.prod.js.map",
-      "package.json"
-    ],
-    "extraResources": [
-      {
-        "from": "resources/${os}",
-        "to": "driver/",
-        "filter": [
-          "**/*",
-          "!*.md"
-        ]
-      },
-      "sounds/"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "ia32",
-            "x64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "ia32",
-            "x64"
-          ]
-        }
-      ],
-      "publisherName": [
-        "Tidepool Project"
-      ],
-      "rfc3161TimeStampServer": "http://timestamp.digicert.com"
-    },
-    "mac": {
-      "category": "public.app-category.tools",
-      "entitlements": "resources/mac/entitlements.mac.plist",
-      "entitlementsInherit": "resources/mac/entitlements.mac.plist",
-      "target": [
-        {
-          "target": "zip",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "dmg",
-          "arch": [
-            "x64"
-          ]
-        },
-        "dir"
-      ]
-    },
-    "publish": [
-      "github",
-      {
-        "provider": "s3",
-        "bucket": "downloads.tidepool.org"
-      }
-    ]
-  },
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
@@ -233,8 +135,8 @@
     "devtron": "1.4.0",
     "difflet": "1.0.1",
     "drivelist": "8.0.10",
-    "electron": "8.5.0",
-    "electron-builder": "22.8.0",
+    "electron": "8.5.2",
+    "electron-builder": "22.9.1",
     "electron-devtools-installer": "3.1.1",
     "electron-notarize": "0.3.0",
     "enzyme": "3.11.0",
@@ -259,7 +161,7 @@
     "jest": "24.9.0",
     "json-loader": "0.5.7",
     "less-loader": "6.2.0",
-    "mini-css-extract-plugin": "0.11.0",
+    "mini-css-extract-plugin": "0.12.0",
     "node-hid": "1.1.0",
     "object-invariant-test-helper": "0.1.1",
     "open": "7.2.1",
@@ -267,7 +169,7 @@
     "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
     "serialport": "9.0.1",
-    "sinon": "9.0.3",
+    "sinon": "9.2.0",
     "sinon-chai": "3.5.0",
     "spectron": "10.0.1",
     "style-loader": "1.2.1",
