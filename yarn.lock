@@ -13253,10 +13253,10 @@ react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
-react-hot-loader@4.12.21:
-  version "4.12.21"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.21.tgz#332e830801fb33024b5a147d6b13417f491eb975"
-  integrity sha512-Ynxa6ROfWUeKWsTHxsrL2KMzujxJVPjs385lmB2t5cHUxdoRPGind9F00tOkdc1l5WBleOF4XEAMILY1KPIIDA==
+react-hot-loader@4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.13.0.tgz#c27e9408581c2a678f5316e69c061b226dc6a202"
+  integrity sha512-JrLlvUPqh6wIkrK2hZDfOyq/Uh/WeVEr8nc7hkn2/3Ul0sx1Kr5y4kOGNacNRoj7RhwLNcQ3Udf1KJXrqc0ZtA==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"
@@ -14167,10 +14167,10 @@ rollbar-sourcemap-webpack-plugin@2.12.0:
     request "^2.88.0"
     verror "^1.6.1"
 
-rollbar@2.19.3:
-  version "2.19.3"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.19.3.tgz#9779c4567cb5e49bb18e9bb60b70810ba4aad755"
-  integrity sha512-SBGEN999+wAlE2Q25pfzqUCqNiplpRPbgv/oYn4eW3Kk4CJox/mMGaSB9BWidX2Vep5TGpxxuyWCHrqklS+s/w==
+rollbar@2.19.4:
+  version "2.19.4"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.19.4.tgz#eda4145cb459203bd3e9ccd885bfb5c5c3f6f2a2"
+  integrity sha512-8ErcMfJE2zkhgrFtpGRyejHBhyO0hU7dZ3EvG2ylNZ7qSu4yw5PZfhGx+Qyq3ksKshLFeQh9Y/Bh2S1TOPIhvw==
   dependencies:
     async "~1.2.1"
     console-polyfill "0.3.0"
