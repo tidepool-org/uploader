@@ -39,3 +39,13 @@ jobs:
     - run: greenkeeper-lockfile-upload
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+
+# runs build for all branches and all tags starting with v.
+workflows:
+  version: 2
+  build-release:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
