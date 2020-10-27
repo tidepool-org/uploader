@@ -15257,6 +15257,11 @@ sundial@1.6.0:
   dependencies:
     moment-timezone "0.4.1"
 
+superagent-node-http-timings@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/superagent-node-http-timings/-/superagent-node-http-timings-1.0.1.tgz#e529ac02773753279536aa718ea8060a0db05a5b"
+  integrity sha512-d+iwOeDGnKrcJ8U7YMF6lXYaKMB/grpDPVbsH9YPy6vZsH8+uRT9NjxpELrn6QlH9pPDgNANiw71PxUdwSBfrQ==
+
 superagent@5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-5.2.2.tgz#6ff726c5642795b2c27009e92687c8e69a6bb07d"
@@ -15583,14 +15588,14 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.3.tgz#f5df732453407b09191dae73e2a8cc73f381a826"
   integrity sha512-YwT8pjmNcAXBZqrubu22P4FYsh2D4dxRmnWBOL8Jk8bUcRUtc5326kx32tuTmFDAZtLOGEVNl8POAR8j896Iow==
 
-tidepool-platform-client@0.44.0:
+tidepool-platform-client@tidepool-org/platform-client#backend-test:
   version "0.44.0"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.44.0.tgz#9252d8975d14cde868431069c20cc27e8146518e"
-  integrity sha512-14SJml7m8lkK//tV579taKXhydUooZVxIMnPpHcGwZdEpDmeaq3WxqjPSV13ijtUwhP/dOE/3/oMjbOLu8Wg5A==
+  resolved "https://codeload.github.com/tidepool-org/platform-client/tar.gz/dd34162e9b50fe0756924c11210468b7c2a7436c"
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
     superagent "5.2.2"
+    superagent-node-http-timings "1.0.1"
     uuid "3.1.0"
 
 time-stamp@^1.0.0:
