@@ -276,6 +276,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           version: version
         };
 
+        if (targetDevice.powerOnlyWarning) {
+          displayErr = new Error(errorText.E_USB_CABLE);
+          disconnectedErrProps.code = 'E_USB_CABLE';
+        }
+
         if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
           displayErr = new Error(errorText.E_DEXCOM_CONNECTION);
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
