@@ -9,7 +9,6 @@
     "es6": true
   },
   "globals": {
-    "jest": true,
     "chai": false,
     "console": false,
     "define": false,
@@ -56,8 +55,7 @@
     "react",
     "promise",
     "import",
-    "lodash",
-    "jest"
+    "lodash"
   ],
   "settings": {
     "import/resolver": {
