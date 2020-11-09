@@ -1,5 +1,3 @@
-/* globals jest */
-
 const electron = jest.genMockFromModule('electron');
 
 function getGlobal(string) {
