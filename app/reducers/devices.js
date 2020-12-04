@@ -187,7 +187,7 @@ const devices = {
     key: 'weitai',
     selectName: 'Equil Insulin Patch Pump/Equil Insulin Micro Pump',
     source: {type: 'device', driverId: 'Weitai'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: false}
   },
 };
 
