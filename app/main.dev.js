@@ -32,7 +32,7 @@ crashReporter.start({
   uploadToServer: false
 });
 
-console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
+console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 let menu;
@@ -41,6 +41,7 @@ let mainWindow = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+app.allowRendererProcessReuse = false; // as of December 2020, node-usb is not yet context-aware
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -86,16 +87,21 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
-  const resizable = (process.env.NODE_ENV === 'development');
 
+  const resizable = (process.env.NODE_ENV === 'development');
   mainWindow = new BrowserWindow({
     show: false,
     width: 663,
     height: 769,
     resizable: resizable,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
+  });
+
+  mainWindow.webContents.on('render-process-gone', (e, details) => {
+    console.log('Render process gone:', details.reason);
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
