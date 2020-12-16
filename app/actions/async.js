@@ -300,10 +300,35 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
   };
 }
 
-export function doUpload(deviceKey, opts, utc) {
+export function doUpload (deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
+
+    if (deviceKey === 'tandem') {
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      // TODO: get PID/VID from lib/core/device.js
+      const filter = {
+        usbVendorId: 1155,
+        usbProductId: 22336
+      };
+
+      try {
+        opts.port = await navigator.serial.requestPort({ filters: [filter] });
+      } catch (err) {
+        console.log('Error:', err);
+
+        const error = new Error(errorText.E_SERIAL_CONNECTION);
+        const errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_SERIAL_CONNECTION',
+        };
+
+        return dispatch(syncActions.uploadFailure(error, errProps, devices[deviceKey]));
+      }
+    }
 
     if (opts && opts.ble) {
       // we need to to scan for Bluetooth devices before the version check,

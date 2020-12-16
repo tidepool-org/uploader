@@ -41,6 +41,7 @@ let mainWindow = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 app.allowRendererProcessReuse = false; // as of December 2020, node-usb is not yet context-aware
 
 if (process.env.NODE_ENV === 'production') {
@@ -96,7 +97,8 @@ app.on('ready', async () => {
     resizable: resizable,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      enableBlinkFeatures: 'Serial'
     }
   });
 
@@ -148,7 +150,7 @@ operating system, as soon as possible.`,
     mainWindow = null;
   });
 
-  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, webContents, callback) => {
     event.preventDefault();
     console.log('Device list:', deviceList);
     let [result] = deviceList;
@@ -157,6 +159,17 @@ operating system, as soon as possible.`,
       callback('');
     } else {
       callback(result.deviceId);
+    }
+  });
+
+  mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+    event.preventDefault();
+    console.log('Port list:', portList);
+    const [selectedPort] = portList;
+    if (!selectedPort) {
+      callback('');
+    } else {
+      callback(selectedPort.portId);
     }
   });
 
