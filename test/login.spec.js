@@ -16,7 +16,8 @@ describe('Sample Test', () => {
     app.client.getWindowCount()
       .should.eventually.equal(1);
   });
-
+/*currently hardcoded values just to make sure this is working ok, 
+its a garbage account so i don't care*/
   it('should login', async () => {
     const loginUsername = 'ginny@tidepool.org';
     const loginPassword = 'aryan2016';
