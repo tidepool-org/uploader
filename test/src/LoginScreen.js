@@ -1,4 +1,4 @@
-import Config from './../config/Config';
+import Config from './../specConfig/Config';
 
 class LoginScreen {
     setApp = function(app) {
