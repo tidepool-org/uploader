@@ -61,6 +61,8 @@ export function doAppInit(opts, servicesToInit) {
     dispatch(syncActions.initRequest());
     dispatch(syncActions.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
+    log(`System uptime is ${sundial.translateMask(sundial.formatDeviceTime(os.uptime() * 1000), 'YYYY-MM-DDTHH:mm:ss', 'H [hours,] m [minutes and] s [seconds]')}`);
+
     log('Initializing local store.');
     localStore.init(localStore.getInitialState(), function(localStoreResult){
       log('Initializing device');
