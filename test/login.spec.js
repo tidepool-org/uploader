@@ -1,35 +1,47 @@
+/* eslint-disable no-undef */
+import LoginScreen from './src/LoginScreen';
+import Base from './src/Base';
 import { startApp, stopApp } from './utilities';
 
-describe('Sample Test', () => {
+describe('Smoke Test', () => {
   let app;
-
-  beforeEach(async () => {
+  
+  before(async () => {
     app = await startApp();
   });
 
-  afterEach(async () => {
+
+  after(async () => {
     await stopApp(app);
   });
 
-  it('opens the app', async () => {
-    app.client.waitUntilWindowLoaded();
-    app.client.getWindowCount()
-      .should.eventually.equal(1);
+  it('should open', async () => {
+    Base.appIsOpen().should.eventually.equal(1);
   });
-/*currently hardcoded values just to make sure this is working ok, 
-its a garbage account so i don't care*/
+
+  it('should have all UI elements', async () => {
+    await LoginScreen.signUpLink.should.eventually.exist;
+    await LoginScreen.tidepoolLogo.should.eventually.exist;
+    await LoginScreen.uploaderLogo.getText()
+      .should.eventually.equal('Uploader');
+    await LoginScreen.forgotPasswordLink.should.eventually.exist;
+    await LoginScreen.supportLink.getText()
+      .should.eventually.equal('Get Support');
+    await LoginScreen.privacyLink.getText()
+      .should.eventually.equal('Privacy and Terms of Use');
+    await LoginScreen.jdrfText.should.eventually.exist;
+    await LoginScreen.jdrfLogo.should.eventually.exist;
+    await LoginScreen.version.should.eventually.exist;
+    
+  });
+
   it('should login', async () => {
-    const loginUsername = 'ginny@tidepool.org';
-    const loginPassword = 'aryan2016';
-    app.client.waitUntilWindowLoaded();
-    app.client.getWindowCount()
-      .should.eventually.equal(1);
-    await (app.client.$('[placeholder="Email"]')).setValue(loginUsername);
-    await (app.client.$('[placeholder="Email"]')).getValue()
-      .should.eventually.equal(loginUsername);
-    await (app.client.$('[placeholder="Password"]')).setValue(loginPassword);
-    await (app.client.$('[placeholder="Password"]')).getValue()
-      .should.eventually.equal(loginPassword);
-    await (app.client.$('[type="Submit"]')).click();
+    await LoginScreen.usernameInput.setValue(LoginScreen.loginUsername);
+    await LoginScreen.usernameInput.getValue()
+      .should.eventually.equal(LoginScreen.loginUsername);
+    await LoginScreen.passwordInput.setValue(LoginScreen.loginPassword);
+    await LoginScreen.passwordInput.getValue()
+      .should.eventually.equal(LoginScreen.loginPassword);
+    await LoginScreen.loginButton.click();
   });
 });
