@@ -3,6 +3,8 @@ import { should, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import electron from 'electron';
 import path from 'path';
+import LoginScreen from './src/LoginScreen';
+import Base from './src/Base';
 
 global.before(() => {
   should();
@@ -15,6 +17,8 @@ export async function startApp() {
     args: [path.join(__dirname, '../app')],
   });
   chaiAsPromised.transferPromiseness = app.transferPromiseness;
+  LoginScreen.setApp(app);
+  Base.setApp(app);
   return app.start();
 }
 
