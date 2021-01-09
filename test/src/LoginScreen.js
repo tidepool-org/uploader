@@ -46,6 +46,9 @@ class LoginScreen {
     get version() {
         return this.app.client.$('div[class*="version"]');
     };
+    get driverDismiss() {
+        return this.app.client.$('div[class*="btnSecondary"]');
+    }
 };
 
 export default new LoginScreen();

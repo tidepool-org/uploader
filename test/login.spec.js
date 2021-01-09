@@ -35,6 +35,13 @@ describe('Smoke Test', () => {
     
   });
 
+  it('should see if driver modal exists', async () => {
+    let check = app.client.$('div[class*="btnSecondary"]').value;
+    if (check){
+      await app.client.$('div[class*="btnSecondary"]').click();
+    }
+  });
+
   it('should login', async () => {
     await LoginScreen.usernameInput.setValue(LoginScreen.loginUsername);
     await LoginScreen.usernameInput.getValue()
