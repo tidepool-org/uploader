@@ -5,7 +5,6 @@ import { startApp, stopApp } from './utilities';
 
 describe('Smoke Test', () => {
   let app;
-  
   before(async () => {
     app = await startApp();
   });
@@ -18,6 +17,13 @@ describe('Smoke Test', () => {
   it('should open', async () => {
     Base.appIsOpen().should.eventually.equal(1);
   });
+
+  it('should see if driver modal exists', async () => {
+   let check = await app.client.isExisting(LoginScreen.driverDismiss);  
+    if (check){
+        await app.client.click(LoginScreen.driverDismiss);
+    };
+});
 
   it('should have all UI elements', async () => {
     await LoginScreen.signUpLink.should.eventually.exist;
@@ -33,13 +39,6 @@ describe('Smoke Test', () => {
     await LoginScreen.jdrfLogo.should.eventually.exist;
     await LoginScreen.version.should.eventually.exist;
     
-  });
-
-  it('should see if driver modal exists', async () => {
-    let check = app.client.$('button[class*="btnSecondary"]').value;
-    if (check){
-      await app.client.$('button[class*="btnSecondary"]').click();
-    }
   });
 
   it('should login', async () => {
