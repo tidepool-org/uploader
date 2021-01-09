@@ -36,9 +36,9 @@ describe('Smoke Test', () => {
   });
 
   it('should see if driver modal exists', async () => {
-    let check = app.client.$('div[class*="btnSecondary"]').value;
+    let check = app.client.$('button[class*="btnSecondary"]').value;
     if (check){
-      await app.client.$('div[class*="btnSecondary"]').click();
+      await app.client.$('button[class*="btnSecondary"]').click();
     }
   });
 
