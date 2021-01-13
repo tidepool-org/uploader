@@ -1,8 +1,10 @@
-let path = (process.env.NODE_ENV === 'production') ? './Resources': '.';
+var path = require('path');
+
+let dirPath = (process.env.NODE_ENV === 'production') ? path.join(__dirname, '../Resources') : '.';
 let i18nextOptions = module.exports = {
   backend: {
-    loadPath: path + '/locales/{{lng}}/{{ns}}.json',
-    addPath: path + '/locales/{{lng}}/{{ns}}.missing.json'
+    loadPath: dirPath + '/locales/{{lng}}/{{ns}}.json',
+    addPath: dirPath + '/locales/{{lng}}/{{ns}}.missing.json'
   },
   interpolation: {
     escapeValue: false
