@@ -1,4 +1,4 @@
-let path = (process.env.NODE_ENV === 'production') ? 'Resources': '.';
+let path = (process.env.NODE_ENV === 'production') ? './Resources': '.';
 let i18nextOptions = module.exports = {
   backend: {
     loadPath: path + '/locales/{{lng}}/{{ns}}.json',
