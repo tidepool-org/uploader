@@ -35,8 +35,6 @@ test_script:
   - node --version
   - yarn lint
   - yarn test
-  - set SPECTRON_USER_EMAIL="$env:SPECTRON_USER_EMAIL"
-  - set SPECTRON_USER_PASSWORD="$env:SPECTRON_USER_PASSWORD"
   - yarn run spectron-test
   - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built. ) ELSE ( yarn package )
   # submit uploader release to antivirus vendors if tagged
