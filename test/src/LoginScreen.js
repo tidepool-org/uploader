@@ -1,14 +1,14 @@
-import Config from './../specConfig/Config';
+import {spectronUserEmail, spectronUserPassword} from './../specConfig/Config';
 
 class LoginScreen {
     setApp = function(app) {
         this.app = app;
     };
     get loginUsername() { 
-        return Config.spectronUserEmail; 
+        return spectronUserEmail; 
     };
     get loginPassword() { 
-        return Config.spectronUserPassword; 
+        return spectronUserPassword; 
     };
     get usernameInput() {
         return this.app.client.$('[placeholder="Email"]');
