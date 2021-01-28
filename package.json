@@ -11,7 +11,6 @@
     "av-whitelist": "node ./scripts/whitelisting/av-submit.js",
     "build-docs": "./scripts/update-gh-pages.sh",
     "serve-docs": "./node_modules/.bin/gitbook serve",
-    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
     "test-all": "npm run lint && npm run test && npm run build",
     "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
     "lint-fix": "npm run lint -- --fix",
@@ -32,7 +31,6 @@
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
     "package-all": "npm run build && electron-builder -mwl",
-    "spectron-test": "yarn build && mocha -r esm"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.14.0",
@@ -164,7 +162,6 @@
     "json-loader": "0.5.7",
     "less-loader": "6.2.0",
     "mini-css-extract-plugin": "0.12.0",
-    "mocha": "8.2.1",
     "node-hid": "1.1.0",
     "object-invariant-test-helper": "0.1.1",
     "open": "7.3.0",
@@ -209,7 +206,6 @@
     },
     "verbose": true,
     "testMatch": [
-      "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/"
