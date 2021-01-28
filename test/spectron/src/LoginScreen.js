@@ -37,8 +37,16 @@ class LoginScreen {
       return this.app.client.$('div[class*="heroText"]');
     }
 
+    get forgotPasswordLink() {
+      return this.app.client.$('a[href="https://app.tidepool.org/request-password-from-uploader"]');
+    }
 
+    get supportLink() {
+      return this.app.client.$('a[href="http://support.tidepool.org/"]');
+    }
 
+    get privacyLink() {
+      return this.app.client.$('a[href="http://tidepool.org/legal/"]');
     }
 
     get jdrfText() {
