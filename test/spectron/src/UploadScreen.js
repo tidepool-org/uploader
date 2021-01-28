@@ -3,6 +3,38 @@ class UploadScreen {
     this.app = app;
   };
 
+  get loginName() {
+    return this.app.client.$('[class*="LoggedInAs"]');
+  }
+
+  get deviceSelectionContainer() {
+    return this.app.client.$('[class*="DeviceSelection-module"]');
+  }
+
+  get accuCheckUsbCheckbox() {
+    return this.app.client.$('input[value="accuchekusb"]');
+  }
+
+  get accuCheckUsbLabel() {
+    return this.app.client.$('label[for="accuchekusb"]');
+  }
+
+  get doneButton() {
+    return this.app.client.$('button[type="submit"]');
+  }
+
+  get timezoneModule() {
+    return this.app.client.$('[class*="TimezoneDropdown-module"]');
+  }
+
+  get timeZoneDropdown() {
+    return this.app.client.$('[class*="Select-input"]');
+  }
+
+  get timeZoneMessage() {
+    return this.app.client.$('[class*="TimezoneDropdown-module_timeDetail]');
+  }
+
   get uploadDeviceList() {
     return this.app.client.$('div[class*="UploadList-module"]');
   }
