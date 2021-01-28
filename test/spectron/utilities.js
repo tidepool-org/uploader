@@ -12,7 +12,7 @@ global.beforeAll(() => {
 });
 
 export async function startApp() {
-  const electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
+  const electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
   const app = new Application({
     path: electronPath,
     args: [path.join(__dirname, '../../app')],
