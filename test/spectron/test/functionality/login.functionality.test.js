@@ -1,5 +1,6 @@
 import LoginScreen from '../../src/LoginScreen';
 import Base from '../../src/Base';
+import UploadScreen from '../../src/UploadScreen';
 import { startApp, stopApp } from '../../utilities';
 
 jest.setTimeout(20000);
@@ -31,5 +32,8 @@ describe('Login', () => {
     await LoginScreen.passwordInput.getValue()
       .should.eventually.equal(LoginScreen.loginPassword);
     await LoginScreen.loginButton.click();
+    await UploadScreen.waitUntilDeviceScreenLoaded();
+    await UploadScreen.uploadDeviceList.isVisible()
+      .should.eventually.be.true;
   });
 });
