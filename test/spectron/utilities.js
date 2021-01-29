@@ -11,21 +11,10 @@ global.beforeAll(() => {
   use(chaiAsPromised);
 });
 
-function getElectronPath() {
-  let electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
-    if (process.platform ==='win32') electronPath += '.cmd';
-    return electronPath; 
-}
-
-function getTestPath() {
-  let testPath = path.join(__dirname, '../../app');
-  if (process.platform ==='win32') testPath += '.cmd';
-    return testPath;
-}
 export async function startApp() {
   const app = new Application({
-    path: getElectronPath(),
-    args: [getTestPath()],
+    path: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
+    args: [path.join(__dirname, '..', '..', 'app')],
   });
   // chaiAsPromised allows us to make assertions directly on promises
   chaiAsPromised.transferPromiseness = app.transferPromiseness;
