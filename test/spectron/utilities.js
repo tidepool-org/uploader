@@ -11,10 +11,15 @@ global.beforeAll(() => {
   use(chaiAsPromised);
 });
 
+function getElectronPath() {
+  let electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
+    if (process.platform ==='win32') electronPath += '.cmd';
+    return electronPath; 
+}
+
 export async function startApp() {
-  const electronPath = path.join(__dirname, '../../node_modules/.bin/electron');
   const app = new Application({
-    path: electronPath,
+    path: getElectronPath(),
     args: [path.join(__dirname, '../../app')],
   });
   // chaiAsPromised allows us to make assertions directly on promises
