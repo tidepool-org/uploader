@@ -32,7 +32,7 @@
     "package-mac": "npm run build && electron-builder --mac",
     "package-linux": "npm run build && electron-builder --linux",
     "package-all": "npm run build && electron-builder -mwl",
-    "spectron-test": "yarn run build && jest ./test/spectron/test"
+    "spectron-test": "yarn run build && jest test/spectron/test"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.14.0",

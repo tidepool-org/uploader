@@ -17,10 +17,15 @@ function getElectronPath() {
     return electronPath; 
 }
 
+function getTestPath() {
+  let testPath = path.join(__dirname, '../../app');
+  if (process.platform ==='win32') testPath += '.cmd';
+    return testPath;
+}
 export async function startApp() {
   const app = new Application({
     path: getElectronPath(),
-    args: [path.join(__dirname, '../../app')],
+    args: [getTestPath()],
   });
   // chaiAsPromised allows us to make assertions directly on promises
   chaiAsPromised.transferPromiseness = app.transferPromiseness;
