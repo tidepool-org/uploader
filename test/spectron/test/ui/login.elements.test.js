@@ -2,8 +2,6 @@ import LoginScreen from '../../src/LoginScreen';
 import Base from '../../src/Base';
 import { startApp, stopApp } from '../../utilities';
 
-jest.setTimeout(100000);
-
 describe('UI Test', () => {
   let app;
   beforeAll(async () => {

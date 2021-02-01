@@ -3,8 +3,6 @@ import Base from '../../src/Base';
 import UploadScreen from '../../src/UploadScreen';
 import { startApp, stopApp } from '../../utilities';
 
-jest.setTimeout(20000);
-
 describe('Login', () => {
   let app;
   beforeAll(async () => {

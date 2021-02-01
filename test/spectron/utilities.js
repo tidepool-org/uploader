@@ -9,11 +9,18 @@ import UploadScreen from './src/UploadScreen';
 global.beforeAll(() => {
   should();
   use(chaiAsPromised);
+  jest.setTimeout(25000);
 });
+
+function getElectronPath() {
+  let electronPath = path.join(__dirname, '..','..','node_modules','.bin', 'electron');
+    if (process.platform ==='win32') electronPath += '.cmd';
+    return electronPath; 
+}
 
 export async function startApp() {
   const app = new Application({
-    path: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
+    path: getElectronPath(),
     args: [path.join(__dirname, '..', '..', 'app')],
   });
   // chaiAsPromised allows us to make assertions directly on promises
