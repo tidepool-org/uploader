@@ -16,9 +16,8 @@ describe('Login', () => {
   test('app should open and dismiss modals', async () => {
     await Base.windowCount()
       .should.eventually.have.at.least(1);
-    let check = await app.client.isExisting(LoginScreen.driverDismiss);
-    if (check) {
-      await app.client.click(LoginScreen.driverDismiss);
+    if(process.env.CI_ENV === 'true'){
+      return LoginScreen.driverDismiss.click();
     }
   });
 

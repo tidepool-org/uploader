@@ -15,10 +15,9 @@ describe('UI Test', () => {
   test('app should open', async () => {
     await Base.windowCount()
       .should.eventually.have.at.least(1);
-    let check = await app.client.isExisting(LoginScreen.driverDismiss);  
-    if (check){
-        await app.client.click(LoginScreen.driverDismiss);
-    };
+    if(process.env.CI_ENV === 'true'){
+      return LoginScreen.driverDismiss.click();
+    }
   });
 
   test('should have all UI elements', async () => {

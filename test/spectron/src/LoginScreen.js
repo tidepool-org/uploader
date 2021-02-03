@@ -3,14 +3,6 @@ class LoginScreen {
       this.app = app;
     };
 
-    get loginUsername() {
-      return spectronUserEmail;
-    }
-
-    get loginPassword() {
-      return spectronUserPassword;
-    }
-
     get usernameInput() {
       return this.app.client.$('[placeholder="Email"]');
     }
@@ -60,7 +52,7 @@ class LoginScreen {
     }
 
     get driverDismiss() {
-      return 'button[class*="btnSecondary"]';
+      return this.app.client.$('button[class*="btnSecondary"]');
     }
 }
 
