@@ -23,7 +23,10 @@ export async function startApp() {
   UploadScreen.setApp(app);
   LoginScreen.setApp(app);
   Base.setApp(app);
-  return app.start();
+  return app.start().then(() => {
+    app.browserWindow.focus();
+    app.browserWindow.setAlwaysOnTop(true);
+  });
 }
 
 export async function stopApp(app) {
