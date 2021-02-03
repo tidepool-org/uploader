@@ -28,6 +28,7 @@ describe('Login', () => {
     await LoginScreen.passwordInput.setValue(process.env.SPECTRON_USER_PASSWORD);
     await LoginScreen.passwordInput.getValue()
       .should.eventually.equal(process.env.SPECTRON_USER_PASSWORD);
+    await LoginScreen.waitUntilLoginButtonLoaded();
     await LoginScreen.loginButton.click();
     await UploadScreen.waitUntilDeviceScreenLoaded();
     await UploadScreen.uploadDeviceList.isVisible()

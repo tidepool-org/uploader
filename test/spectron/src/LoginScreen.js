@@ -54,6 +54,10 @@ class LoginScreen {
     get driverDismiss() {
       return this.app.client.$('button[class*="btnSecondary"]');
     }
+
+    waitUntilLoginButtonLoaded() {
+      return this.app.client.waitUntilTextExists('button[type="submit"]', 'Log in', 10000);
+    }
 }
 
 export default new LoginScreen();
