@@ -21,7 +21,8 @@ describe('UI Test', () => {
   });
 
   test('should have all UI elements', async () => {
-    LoginScreen.signUpLink.isVisible()
+    await Base.focusUploader();
+    await LoginScreen.signUpLink.isVisible()
       .should.eventually.be.true;
     await LoginScreen.tidepoolLogo.isVisible()
       .should.eventually.be.true;

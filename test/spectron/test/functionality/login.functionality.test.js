@@ -22,6 +22,7 @@ describe('Login', () => {
   });
 
   test('should login', async () => {
+    await Base.focusUploader();
     await LoginScreen.usernameInput.setValue(process.env.SPECTRON_USER_EMAIL);
     await LoginScreen.usernameInput.getValue()
       .should.eventually.equal(process.env.SPECTRON_USER_EMAIL);

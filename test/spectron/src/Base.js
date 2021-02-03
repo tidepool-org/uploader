@@ -6,6 +6,10 @@ class Base {
   windowCount() {
     return this.app.client.waitUntilWindowLoaded().getWindowCount();
   }
+
+  focusUploader() {
+    return this.app.browserWindow.focus();
+  }
 }
 
 export default new Base();
