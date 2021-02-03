@@ -23,12 +23,12 @@ describe('Login', () => {
   });
 
   test('should login', async () => {
-    await LoginScreen.usernameInput.setValue(LoginScreen.loginUsername);
+    await LoginScreen.usernameInput.setValue(process.env.SPECTRON_USER_EMAIL);
     await LoginScreen.usernameInput.getValue()
-      .should.eventually.equal(LoginScreen.loginUsername);
-    await LoginScreen.passwordInput.setValue(LoginScreen.loginPassword);
+      .should.eventually.equal(process.env.SPECTRON_USER_EMAIL);
+    await LoginScreen.passwordInput.setValue(process.env.SPECTRON_USER_PASSWORD);
     await LoginScreen.passwordInput.getValue()
-      .should.eventually.equal(LoginScreen.loginPassword);
+      .should.eventually.equal(process.env.SPECTRON_USER_PASSWORD);
     await LoginScreen.loginButton.click();
     await UploadScreen.waitUntilDeviceScreenLoaded();
     await UploadScreen.uploadDeviceList.isVisible()

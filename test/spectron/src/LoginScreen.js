@@ -1,5 +1,3 @@
-import { spectronUserEmail, spectronUserPassword } from '../config';
-
 class LoginScreen {
     setApp = function (app) {
       this.app = app;
