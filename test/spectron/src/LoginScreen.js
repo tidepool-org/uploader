@@ -56,7 +56,7 @@ class LoginScreen {
     }
 
     waitUntilLoginButtonLoaded() {
-      return this.app.client.waitUntilTextExists('button[type="submit"]', 'Log in', 10000);
+      return this.app.client.waitForVisible('button[type="submit"]', 5000);
     }
 }
 
