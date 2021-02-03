@@ -1,4 +1,5 @@
 import { Application } from 'spectron';
+import Electron from 'electron';
 import path from 'path';
 import chaiAsPromised from 'chai-as-promised';
 import { should, use } from 'chai';
@@ -12,15 +13,9 @@ global.beforeAll(() => {
   jest.setTimeout(25000);
 });
 
-function getElectronPath() {
-  let electronPath = path.join(__dirname, '..','..','node_modules','.bin', 'electron');
-    if (process.platform ==='win32') electronPath += '.cmd';
-    return electronPath; 
-}
-
 export async function startApp() {
   const app = new Application({
-    path: getElectronPath(),
+    path: Electron,
     args: [path.join(__dirname, '..', '..', 'app')],
   });
   // chaiAsPromised allows us to make assertions directly on promises
