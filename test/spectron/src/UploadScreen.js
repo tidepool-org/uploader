@@ -60,7 +60,7 @@ class UploadScreen {
   }
 
   waitUntilDeviceScreenLoaded() {
-    return this.app.client.waitUntilTextExists('[class*="UploadList-module__headline"]', 'Upload Devices', 5000);
+    return this.app.client.waitUntilTextExists('[class*="UploadList-module__headline"]', 'Upload Devices', 10000);
   }
 }
 
