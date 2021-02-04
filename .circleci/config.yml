@@ -36,7 +36,7 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
-    - run: yarn run spectron-test
+    - run: yarn spectron-test
     - run: greenkeeper-lockfile-upload
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
