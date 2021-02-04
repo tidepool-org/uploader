@@ -163,7 +163,7 @@ We use the following environment variables on the CI servers:
 | ROLLBAR_POST_TOKEN       | Both     | Rollbar logging |
 | FTP_AV_PASSWORD_TIDEPOOL | Appveyor | AV submission |
 | SPECTRON_USER_EMAIL      | Both     | Valid Tidepool username for Spectron tests |
-| SPECTRON_USER_PASSWORD   | Both     | Valid Tidepool password for SPectron tests |
+| SPECTRON_USER_PASSWORD   | Both     | Valid Tidepool password for Spectron tests |
 
 ## Editor Configuration
 **Atom**
