@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.34.0-integrate-spectron.2",
+  "version": "2.34.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
