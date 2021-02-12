@@ -31,6 +31,7 @@ import * as metrics from '../constants/metrics';
 import * as syncActions from './sync';
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
+import driverManifests from '../../lib/core/driverManifests';
 
 let services = {};
 let versionInfo = {};
@@ -305,17 +306,19 @@ export function doUpload (deviceKey, opts, utc) {
 
     const { devices, uploadTargetUser, working } = getState();
 
-    if (deviceKey === 'tandem') {
+    const { driverId } = devices[deviceKey].source;
+    const driverManifest = _.get(driverManifests, driverId);
+
+    if (driverManifest && driverManifest.mode === 'serial') {
       dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
-      // TODO: get PID/VID from lib/core/device.js
-      const filter = {
-        usbVendorId: 1155,
-        usbProductId: 22336
-      };
+      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+        usbVendorId: vendorId,
+        usbProductId: productId
+      }));
 
       try {
-        opts.port = await navigator.serial.requestPort({ filters: [filter] });
+        opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
         console.log('Error:', err);
 
