@@ -64,6 +64,21 @@ If you are running Linux you probably need to be using an Ubuntu distribution or
 
     Start the Dev GUI: `docker exec -it uploader bash -c "yarn dev"`
 
+### Using `docker-compose.override.yaml`
+
+To run application using Docker Compose and just one command:
+
+1. Create file `docker-compose.override.yaml` and define chosen command. E.g. for `yarn start`:
+
+```yaml
+version: "3.4"
+services:
+  uploader:
+    command: yarn start
+```
+
+2. Run it with `docker-compose up`
+
 ## Config
 
 Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the `.config.js` file. If you need to read a config value inside the app, use `var config = require('./lib/config')`. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when [running the whole Tidepool platform locally using runservers](http://developer.tidepool.org/starting-up-services/)), for example:

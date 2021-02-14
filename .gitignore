@@ -40,6 +40,7 @@ node_modules
 app/node_modules
 bower_components
 coverage
+docker-compose.override.yaml
 
 .DS_Store
 .idea
