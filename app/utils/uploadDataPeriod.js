@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 const isElectron = require('is-electron');
-const { ipcRenderer, ipcMain, remote } = require('electron');
+const { ipcRenderer, ipcMain } = require('electron');
 let isRenderer = (process && process.type === 'renderer');
 
 const PERIODS = {
@@ -24,7 +24,8 @@ const PERIODS = {
   FOUR_WEEKS: 3,
 };
 
-if (isRenderer) {
+if (isRenderer && isElectron()) {
+  const remote = require('@electron/remote');
   const uploadDataPeriod = module.exports = {
     get periodGlobal() {
       return remote.getGlobal('period');

@@ -12,6 +12,7 @@ import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
+require('@electron/remote/main').initialize();
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
