@@ -24,7 +24,7 @@ const PERIODS = {
   FOUR_WEEKS: 3,
 };
 
-if (isRenderer && isElectron()) {
+if (isRenderer) {
   const remote = require('@electron/remote');
   const uploadDataPeriod = module.exports = {
     get periodGlobal() {

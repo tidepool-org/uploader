@@ -306,7 +306,8 @@ export function doUpload (deviceKey, opts, utc) {
 
     const { devices, uploadTargetUser, working } = getState();
 
-    const { driverId } = devices[deviceKey].source;
+    const targetDevice = _.get(devices, deviceKey);
+    const driverId = _.get(targetDevice, 'source.driverId');
     const driverManifest = _.get(driverManifests, driverId);
 
     if (driverManifest && driverManifest.mode === 'serial') {

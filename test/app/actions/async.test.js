@@ -39,6 +39,11 @@ let nonpwd = require('../../lib/fixtures/nonpwd.json');
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
+// we have to mock @electron/remote as it only gets initialized in main.dev.js (main process)
+jest.mock('@electron/remote', () => ({
+  getGlobal: () => true
+}));
+
 describe('Asynchronous Actions', () => {
   afterEach(() => {
     // very important to do this in an afterEach than in each test when __Rewire__ is used
