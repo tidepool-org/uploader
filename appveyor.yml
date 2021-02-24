@@ -4,6 +4,8 @@ environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z
   matrix:
     - nodejs_version: 12.13.0
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"
@@ -35,6 +37,7 @@ test_script:
   - node --version
   - yarn lint
   - yarn test
+  - yarn spectron-test
   - cmd: IF /I "%ROLLBAR_POST_TOKEN%"=="" ( ECHO Missing Rollbar POST token; no package built. ) ELSE ( yarn package )
   # submit uploader release to antivirus vendors if tagged
   - cmd: IF /I %APPVEYOR_REPO_TAG% == True ( yarn av-whitelist ) ELSE ( echo Not a tagged release. )

@@ -99,6 +99,15 @@ or
 ```bash
 $ yarn test
 ```
+To run the spectron UI tests in this repository use:
+
+```bash
+$ yarn run spectron-test
+```
+you will need to have these environment variables set to run the tests:
+
+`SPECTRON_USER_EMAIL: <valid username for Tidepool>`<br>
+`SPECTRON_USER_PASSWORD: <valid password for Tidepool>`
 
 ## Linting & Code Style
 
@@ -154,6 +163,8 @@ We use the following environment variables on the CI servers:
 | PUBLISH_FOR_PULL_REQUEST | Both     | `true`, build artefact for PR |
 | ROLLBAR_POST_TOKEN       | Both     | Rollbar logging |
 | FTP_AV_PASSWORD_TIDEPOOL | Appveyor | AV submission |
+| SPECTRON_USER_EMAIL      | Both     | Valid Tidepool username for Spectron tests |
+| SPECTRON_USER_PASSWORD   | Both     | Valid Tidepool password for Spectron tests |
 
 ## Editor Configuration
 **Atom**
