@@ -13,6 +13,16 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
+  accucheksmartpix: {
+    instructions: [
+      i18n.t('Ensure the Smart Pix is mounted before starting.'),
+      i18n.t('Click send and then start the transfer from your device.'),
+    ],
+    name: 'Roche Accu-Chek Smart Pix',
+    key: 'accucheksmartpix',
+    source: {type: 'device', driverId: 'AccuChekSmartPix'},
+    enabled: {mac: true, win: true, linux: true},
+  },
   carelink: {
     instructions: [i18n.t('Import from CareLink'), i18n.t('(We will not store your credentials)')],
     isFetching: false,
