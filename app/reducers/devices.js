@@ -7,7 +7,8 @@ const devices = {
     name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
   carelink: {
     instructions: ['Import from CareLink', '(We will not store your credentials)'],
@@ -81,7 +82,8 @@ const devices = {
     key: 'omnipod',
     name: 'Insulet OmniPod',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   dexcom: {
     instructions: 'Plug in receiver with micro-USB',
@@ -102,7 +104,8 @@ const devices = {
     key: 'tandem',
     name: 'Tandem',
     source: {type: 'device', driverId: 'Tandem'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   abbottfreestylelite: {
     instructions: 'Plug in meter with cable',
@@ -116,14 +119,16 @@ const devices = {
     key: 'abbottfreestylelibre',
     name: 'Abbott FreeStyle Libre',
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
-    enabled: {linux: true, mac: true, win: true}
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
   },
   abbottfreestyleneo: {
     instructions: 'Plug in meter with micro-USB cable',
     key: 'abbottfreestyleneo',
     name: 'Abbott FreeStyle Precision/Optium Neo',
     source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
-    enabled: {linux: true, mac: true, win: true}
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
   },
   bayercontournext: {
     instructions: 'Plug meter into USB port',
@@ -135,7 +140,7 @@ const devices = {
   bayercontour: {
     instructions: 'Plug in meter with cable and make sure meter is switched on',
     key: 'bayercontour',
-    name: 'Ascensia (Bayer) Contour Next EZ, Contour or Contour Link',
+    name: 'Ascensia (Bayer) Contour Next EZ, Contour, Contour Link or Contour Plus',
     source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -151,14 +156,16 @@ const devices = {
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: true, mac: true, win: true}
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
   },
   onetouchverioiq: {
     instructions: 'Plug in meter with mini-USB',
     name: 'OneTouch VerioIQ',
     key: 'onetouchverioiq',
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   onetouchultramini: {
     instructions: 'Plug in meter with cable and make sure the meter is switched off',

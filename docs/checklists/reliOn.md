@@ -1,4 +1,4 @@
-## Checklist for Blood Glucose Meter Implementation
+## ReliOn Premier (BLU, Voice and Classic)
 
 (Key:
 
@@ -10,9 +10,9 @@
 
 ### Required if Present
 
-- `[ ]` smbg values
+- `[x]` smbg values
 - `[ ]` units of smbg values (read from device, not hard-coded)
-- `[ ]` out-of-range values (LO or HI)
+- `[x]` out-of-range values (LO or HI)
 - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
 - `[ ]` blood ketone values
@@ -23,7 +23,7 @@
 
 ### No Tidepool Data Model Yet
 
-- `[ ]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
+- `[x]` control (solution) tests (whether marked in UI or auto-detected) - until we have a data model, these should be discarded
 - `[ ]` device settings, other than date & time (e.g., target blood glucose range)
 - `[ ]` tag/note (e.g., pre- vs. post-meal)
 
@@ -32,7 +32,7 @@
 Choose one of the following:
 
   - `[ ]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+  - `[x]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
