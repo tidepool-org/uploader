@@ -38,7 +38,7 @@ const devices = {
     instructions: 'Plug in meter with cable and make sure the meter is switched on',
     name: 'ReliOn Prime',
     key: 'relionprime',
-    source: {type: 'device', driverId: 'CareSens'},
+    source: {type: 'device', driverId: 'ReliOnPrime'},
     enabled: {mac: true, win: true, linux: true}
   },
   relion: {
