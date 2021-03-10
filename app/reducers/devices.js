@@ -34,18 +34,11 @@ const devices = {
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
   },
-  relionprime: {
-    instructions: 'Plug in meter with cable and make sure the meter is switched on',
-    name: 'ReliOn Prime',
-    key: 'relionprime',
-    source: {type: 'device', driverId: 'CareSens'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  relion: {
+  relionpremier: {
     instructions: 'Plug in meter with cable and make sure the meter is switched on',
     name: 'ReliOn Premier (BLU, Voice & Classic)',
-    key: 'relion',
-    source: {type: 'device', driverId: 'ReliOn'},
+    key: 'relionpremier',
+    source: {type: 'device', driverId: 'ReliOnPremier'},
     enabled: {mac: true, win: true, linux: true}
   },
   medtronic: {
