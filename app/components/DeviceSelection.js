@@ -20,6 +20,8 @@ var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
 
 import { urls } from '../constants/otherConstants';
 
@@ -110,7 +112,7 @@ class DeviceSelection extends React.Component {
     return (
       <div>
         <div className={styles.main}>
-          <h3 className={styles.headline}>Choose devices</h3>
+          <h3 className={styles.headline}>{i18n.t('Choose devices')}</h3>
           <form className={formClasses}>{items}</form>
         </div>
         <div className={styles.buttonWrap}>
@@ -118,7 +120,7 @@ class DeviceSelection extends React.Component {
             className={styles.button}
             onClick={this.handleSubmit}
             disabled={disabled}>
-            Done
+            {i18n.t('Done')}
           </button>
         </div>
       </div>
