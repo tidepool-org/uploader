@@ -22,6 +22,9 @@ import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/NoUploadTargets.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export default class NoUploadTargets extends Component {
   static propTypes = {
     newPatientLink: PropTypes.string.isRequired,
@@ -37,10 +40,10 @@ export default class NoUploadTargets extends Component {
             href={newPatientLink}
             target="_blank">
             <div className={styles.buttonCta}>
-              Set up data storage
+              {i18n.t('Set up data storage')}
             </div>
           </a>
-          <p className={styles.paragraph}>Or, ask the person you are uploading for to grant you access to upload.<br/> <a className={styles.link} href={urls.HOW_TO_SHARE_DATA_KB_ARTICLE} target="_blank">How?</a></p>
+          <p className={styles.paragraph}>{i18n.t('Or, ask the person you are uploading for to grant you access to upload.')}<br/> <a className={styles.link} href={urls.HOW_TO_SHARE_DATA_KB_ARTICLE} target="_blank">{i18n.t('How?')}</a></p>
         </div>
       </div>
     );

@@ -18,6 +18,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
@@ -86,9 +88,9 @@ export default class LoggedInAs extends Component {
 
 
     if (uploadInProgress) {
-      title = 'Upload in progress!\nPlease wait to change device selection.';
+      title = i18n.t('Upload in progress!\nPlease wait to change device selection.');
     } else if (isDisabled) {
-      title = 'Set up data storage to upload devices.';
+      title = i18n.t('Set up data storage to upload devices.');
     }
 
     return (
@@ -99,7 +101,7 @@ export default class LoggedInAs extends Component {
           onClick={isDisabled ? this.noopHandler : this.handleChooseDevices}
           title={title}>
           <i className={styles.editIcon}></i>
-          Choose Devices
+          {i18n.t('Choose Devices')}
         </a>
       </li>
     );
@@ -113,7 +115,7 @@ export default class LoggedInAs extends Component {
           href=""
           title="Check for Updates">
           <i className={styles.updateIcon}></i>
-          Check for Updates
+          {i18n.t('Check for Updates')}
         </a>
       </li>
     );
@@ -131,9 +133,9 @@ export default class LoggedInAs extends Component {
         disabled={uploadInProgress}
         href=""
         onClick={uploadInProgress ? this.noopHandler : this.handleLogout}
-        title={uploadInProgress ? 'Upload in progress!\nPlease wait to log out.' : ''}>
+        title={uploadInProgress ? i18n.t('Upload in progress!\nPlease wait to log out.') : ''}>
         <i className={styles.logoutIcon}></i>
-        Logout
+        {i18n.t('Logout')}
       </a>
     );
   }
