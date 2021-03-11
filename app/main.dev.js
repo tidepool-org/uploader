@@ -49,7 +49,10 @@ let mainWindow = null;
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
-app.allowRendererProcessReuse = false; // as of December 2020, node-usb is not yet context-aware
+
+// as of March 2021, node-usb is not yet context-aware, see
+// https://github.com/tessel/node-usb/issues/380 for details
+app.allowRendererProcessReuse = false;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -108,7 +111,6 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      enableBlinkFeatures: 'Serial'
     }
   });
 
