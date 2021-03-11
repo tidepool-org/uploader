@@ -110,6 +110,7 @@ function createWindow() {
     resizable: resizable,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false, // so that we can access process from app.html
       enableRemoteModule: true,
     }
   });
