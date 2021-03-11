@@ -27,8 +27,12 @@ import * as metrics from '../constants/metrics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/';
+import { remote } from 'electron';
+
 const asyncActions = actions.async;
 const syncActions = actions.sync;
+
+const i18n = remote.getGlobal('i18n');
 
 export class SettingsPage extends Component {
   handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {
@@ -52,7 +56,7 @@ export class SettingsPage extends Component {
       <div className={classes}
         onClick={this.props.uploadIsInProgress ?
           this.noopHandler :
-          _.partial(this.handleClickChangePerson, {metric: {eventName: metrics.CLINIC_CHANGE_PERSON}})}>Change Person</div>
+          _.partial(this.handleClickChangePerson, {metric: {eventName: metrics.CLINIC_CHANGE_PERSON}})}>{i18n.t('Change Person')}</div>
     );
   }
 

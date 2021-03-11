@@ -88,6 +88,13 @@ We are including the following in the payload for Dexcom settings:
   - alarm profile name (e.g., "Attentive," "Hypo Repeat," etc.)
   - internal timestamp
 
+
+#### User Events
+
+    - `[x]` activity/exercise
+    - `[x]` food (e.g., Dexcom allows logging carb events)
+    - `[x]` notes/other events
+
 #### "Bootstrapping" to UTC
 
   - `[x]` index
@@ -98,14 +105,6 @@ We are including the following in the payload for Dexcom settings:
   - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 Device-specific? (Add any device-specific notes/additions here.)
-
-### No Tidepool Data Model Yet
-
-> **NB:** You can and should add to this section if there are other data types documented in the device's data protocol specification but not part of Tidepool's data model (yet).
-
-  - `[-]` activity/exercise
-  - `[-]` food (e.g., Dexcom allows logging carb events)
-  - `[-]` notes/other events
 
 ### Tidepool ingestion API
 
