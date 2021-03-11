@@ -25,6 +25,9 @@ import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export default class Footer extends Component {
   static propTypes = {
     version: PropTypes.string.isRequired,
@@ -44,13 +47,13 @@ export default class Footer extends Component {
       <div className={styles.footer}>
         <div className={styles.footerRow}>
           <div>
-            <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">Get Support</a>
+            <a className={styles.footerLink} href="http://support.tidepool.org/" target="_blank">{i18n.t('Get Support')}</a>
           </div>
           <div>
-            <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">Privacy and Terms of Use</a>
+            <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">{i18n.t('Privacy and Terms of Use')}</a>
           </div>
           <div className={styles.jdrfContainer}>
-            <span className={styles.jdrfText}>Made possible by</span><img className={styles.jdrfImage} src={logo}/>
+            <span className={styles.jdrfText}>{i18n.t('Made possible by')}</span><img className={styles.jdrfImage} src={logo}/>
           </div>
         </div>
         <div className={styles.footerRow}>

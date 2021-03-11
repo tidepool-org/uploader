@@ -25,6 +25,9 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/UpdateDriverModal.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export class UpdateDriverModal extends Component {
   handleInstall = () => {
     const { sync, driverUpdateShellOpts } = this.props;
@@ -56,17 +59,17 @@ export class UpdateDriverModal extends Component {
     }
 
     if (checkingDriverUpdate){
-      title = 'Checking for driver update...';
+      title = i18n.t('Checking for driver update...');
     } else {
       if (driverUpdateAvailable) {
-        title = 'Driver Update Available!';
-        text = 'After clicking Install, the uploader will ask for your password to complete the installation. This window will close when completed.';
+        title = i18n.t('Driver Update Available!');
+        text = i18n.t('After clicking Install, the uploader will ask for your password to complete the installation. This window will close when completed.');
         actions = [
           <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissDriverUpdateAvailable}>
-            Dismiss
+            {i18n.t('Dismiss')}
           </button>,
           <button key='install' className={styles.button} onClick={this.handleInstall}>
-            Install
+            {i18n.t('Install')}
           </button>
         ];
       }

@@ -22,6 +22,9 @@ var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
 var cx = require('classnames');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 var styles = require('../../styles/components/ClinicUserBlock.module.less');
 
 class ClinicUserBlock extends React.Component {
@@ -61,7 +64,7 @@ class ClinicUserBlock extends React.Component {
           </div>
           {isCustodialAccount &&
             <div className={editClasses} onClick={isUploadInProgress ? this.noopHandler : this.props.onEditUser}>
-              Edit Info
+              {i18n.t('Edit Info')}
             </div>
           }
         </div>
