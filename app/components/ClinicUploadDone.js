@@ -21,6 +21,9 @@ var PropTypes = require('prop-types');
 
 var styles = require('../../styles/components/ClinicUploadDone.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 class ClinicUploadDone extends React.Component {
   static propTypes = {
     onClicked: PropTypes.func.isRequired,
@@ -42,7 +45,7 @@ class ClinicUploadDone extends React.Component {
         <a className={styles.button}
           onClick={this.handleClick}
           disabled={!this.hasCompletedUpload()} >
-          Done
+          {i18n.t('Done')}
         </a>
       </div>
     );

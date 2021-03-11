@@ -26,6 +26,9 @@ var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 class ClinicUserSelect extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
@@ -99,7 +102,7 @@ class ClinicUserSelect extends React.Component {
     return (
       <Select
         name={'uploadTargetSelect'}
-        placeholder={'Search'}
+        placeholder={i18n.t('Search')}
         className={styles.Select}
         clearable={false}
         simpleValue={true}
@@ -120,7 +123,7 @@ class ClinicUserSelect extends React.Component {
     });
     return (
       <div className={classes} disabled={!this.props.targetId} onClick={this.handleClickNext}>
-        Next
+        {i18n.t('Next')}
       </div>
     );
   };
@@ -132,7 +135,7 @@ class ClinicUserSelect extends React.Component {
     return (
       <div className={classes} onClick={this.props.onAddUserClick}>
         <i className={styles.addIcon}></i>
-        Add new
+        {i18n.t('Add new')}
       </div>
     );
   };
@@ -143,7 +146,7 @@ class ClinicUserSelect extends React.Component {
         <div className={styles.wrapInner}>
           <div className={styles.headerWrap}>
             <div className={styles.header}>
-              Who are you uploading for?
+              {i18n.t('Who are you uploading for?')}
             </div>
             {this.renderAddNew()}
           </div>
