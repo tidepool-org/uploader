@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.35.1-checksum-bug.1",
+  "version": "2.35.1-checksum-bug.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
