@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-const remote = require('@electron/remote');
+import remote from '@electron/remote';
 import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
