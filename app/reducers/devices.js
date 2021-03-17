@@ -1,5 +1,7 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
+import weitaipump from '../../images/weitaipump.png';
+
 
 const devices = {
   accuchekusb: {
@@ -177,6 +179,12 @@ const devices = {
   weitai: {
     instructions: 'Plug in PDA with micro-USB',
     name: 'Equil Insulin Patch/Micro Pump',
+    image: {
+      src: weitaipump,
+      height: 200,
+      width: 200,
+      alt: 'Weitai link',
+    },
     key: 'weitai',
     source: {type: 'device', driverId: 'Weitai'},
     enabled: {mac: true, win: true, linux: true}
