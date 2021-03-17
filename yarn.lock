@@ -2033,10 +2033,10 @@
     jest-message-util "^24.0.0"
     node-ipc "^9.1.1"
 
-"@jest-runner/electron@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@jest-runner/electron/-/electron-3.0.0.tgz#38ea23719cf32f08ce090cec486b6951fb2f45f6"
-  integrity sha512-aYZQFt360UCnqTuACdxbs1hUm71D27zzcGHuN0m5souk6YHf9VT33rch5Y33r4UTfbJsS1lx07Y+HaJTol9R5w==
+"@jest-runner/electron@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@jest-runner/electron/-/electron-3.0.1.tgz#e7648919efd4644cc5aa8441d81fa36c689a9087"
+  integrity sha512-5OFLQXPQ5OzojGgsBdHnTRnLyCoRapyjFWo1N6pqbTOwANVlKeha0VCc6JNrJyckz5WRZ4rVRZZ9Z7p6VfhhsA==
   dependencies:
     "@jest-runner/core" "^3.0.0"
     "@jest-runner/rpc" "^3.0.0"

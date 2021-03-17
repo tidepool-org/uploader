@@ -28,7 +28,7 @@ import devices from '../../../app/reducers/devices';
 
 import { UnsupportedError } from '../../../app/utils/errors';
 
-jest.mock('electron');
+jest.mock('@electron/remote');
 
 describe('misc reducers', () => {
   describe('devices', () => {

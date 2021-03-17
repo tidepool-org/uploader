@@ -39,10 +39,7 @@ let nonpwd = require('../../lib/fixtures/nonpwd.json');
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
-// we have to mock @electron/remote as it only gets initialized in main.dev.js (main process)
-jest.mock('@electron/remote', () => ({
-  getGlobal: () => true
-}));
+jest.mock('@electron/remote');
 
 describe('Asynchronous Actions', () => {
   afterEach(() => {
