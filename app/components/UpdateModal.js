@@ -26,6 +26,9 @@ import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export class UpdateModal extends Component {
   handleInstall = () => {
     const { sync } = this.props;
@@ -51,29 +54,29 @@ export class UpdateModal extends Component {
 
     if (electronUpdateManualChecked) {
       if (checkingElectronUpdate){
-        title = 'Checking for update...';
+        title = i18n.t('Checking for update...');
       } else {
         if (electronUpdateAvailable) {
-          title = 'Update Available!';
+          title = i18n.t('Update Available!');
           if (!electronUpdateDownloaded) {
-            text = 'Downloading update';
+            text = i18n.t('Downloading update');
           } else { // available and downloaded
-            text = 'After clicking Install, the uploader will restart to complete the installation.';
+            text = i18n.t('After clicking Install, the uploader will restart to complete the installation.');
             actions = [
               <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
-                Dismiss
+                {i18n.t('Dismiss')}
               </button>,
               <button key='install' className={styles.button} onClick={this.handleInstall}>
-                Install
+                {i18n.t('Install')}
               </button>
             ];
           }
         } else { // no update available
-          title = 'Uploader is up-to-date!';
-          text = `You are running version ${config.version}, the most recent one.`;
+          title = i18n.t('Uploader is up-to-date!');
+          text = i18n.t('You are running version {{text}}, the most recent one.', { text: config.version });
           actions = (
             <button className={styles.button} onClick={sync.dismissUpdateNotAvailable}>
-              Okay!
+              {i18n.t('Okay!')}
             </button>
           );
         }
@@ -81,14 +84,14 @@ export class UpdateModal extends Component {
     }
     else { // automatic background check
       if(electronUpdateAvailable && electronUpdateDownloaded){
-        title = 'Update Available!';
-        text = 'After clicking Install, the uploader will restart to complete the installation.';
+        title = i18n.t('Update Available!');
+        text = i18n.t('After clicking Install, the uploader will restart to complete the installation.');
         actions = [
           <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
-            Dismiss
+            {i18n.t('Dismiss')}
           </button>,
           <button key='install' className={styles.button} onClick={this.handleInstall}>
-            Install
+            {i18n.t('Install')}
           </button>
         ];
       } else {
