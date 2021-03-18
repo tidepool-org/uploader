@@ -1,6 +1,6 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session } from 'electron';
 import os from 'os';
 import osName from 'os-name';
 import open from 'open';
@@ -13,6 +13,7 @@ import uploadDataPeriod from './utils/uploadDataPeriod';
 import i18n from 'i18next';
 import i18nextBackend from 'i18next-fs-backend';
 import i18nextOptions from './utils/config.i18next';
+import path from 'path';
 
 global.i18n = i18n;
 
@@ -72,6 +73,7 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
+    /*
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
     try {
@@ -79,7 +81,12 @@ const installExtensions = async () => {
       console.log(`Added Extension:  ${name}`);
     } catch (err) {
       console.log('An error occurred: ', err);
-    }
+    }*/
+    await session.defaultSession.loadExtension(
+    path.join(__dirname, '..', 'extensions', 'react-devtools'),
+    // allowFileAccess is required to load the devtools extension on file:// URLs.
+    { allowFileAccess: true }
+  )
   }
 };
 
