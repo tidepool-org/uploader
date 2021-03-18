@@ -62,7 +62,6 @@ if (process.env.NODE_ENV === 'production') {
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
-  const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
 }
@@ -73,20 +72,23 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    /*
-    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
     try {
-      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      const name = await installExtension([REDUX_DEVTOOLS]);
       console.log(`Added Extension:  ${name}`);
+
+      // electron-devtools-installer fails to install React Developer Tools on Electron v12,
+      // so for now we install it manually
+      await session.defaultSession.loadExtension(
+        path.join(__dirname, '..', 'extensions', 'react-devtools'),
+        // allowFileAccess is required to load the devtools extension on file:// URLs.
+        { allowFileAccess: true }
+      );
+      console.log('Added Extension: React Developer Tools');
     } catch (err) {
       console.log('An error occurred: ', err);
-    }*/
-    await session.defaultSession.loadExtension(
-    path.join(__dirname, '..', 'extensions', 'react-devtools'),
-    // allowFileAccess is required to load the devtools extension on file:// URLs.
-    { allowFileAccess: true }
-  )
+    }
   }
 };
 
