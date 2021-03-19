@@ -19,21 +19,22 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from 'electron';
 
 import { sync as syncActions } from '../actions/';
 import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export class UpdateModal extends Component {
   handleInstall = () => {
     const { sync } = this.props;
     sync.quitAndInstall();
-    ipcRenderer.send('autoUpdater', 'quitAndInstall');
+    // ipcRenderer.send('autoUpdater', 'quitAndInstall');
   };
 
   render() {

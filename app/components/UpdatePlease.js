@@ -20,8 +20,9 @@ import PropTypes from 'prop-types';
 
 import styles from '../../styles/components/VersionCheck.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export default class UpdatePlease extends Component {
   static propTypes = {

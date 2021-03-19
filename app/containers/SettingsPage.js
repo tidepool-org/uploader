@@ -27,12 +27,13 @@ import * as metrics from '../constants/metrics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/';
-const remote = require('@electron/remote');
+//const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-const i18n = remote.getGlobal('i18n');
+// const i18n = remote.getGlobal('i18n');
+let i18n = {t:string => string};
 
 export class SettingsPage extends Component {
   handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {

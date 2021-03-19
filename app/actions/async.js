@@ -450,6 +450,7 @@ export function doVersionCheck() {
     dispatch(syncActions.versionCheckRequest());
     const { api } = services;
     const version = versionInfo.semver;
+    return dispatch(syncActions.versionCheckSuccess());
     api.upload.getVersions((err, versions) => {
       if (err) {
         return dispatch(syncActions.versionCheckFailure(err));

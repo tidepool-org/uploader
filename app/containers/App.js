@@ -20,17 +20,21 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import remote from '@electron/remote';
+// import remote from '@electron/remote';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
-import dns from 'dns';
+// import dns from 'dns';
+import isElectron from 'is-electron';
+import { hot } from 'react-hot-loader';
 
 import bows from 'bows';
 
 import config from '../../lib/config.js';
 
-import carelink from '../../lib/core/carelink.js';
-import device from '../../lib/core/device.js';
+//import carelink from '../../lib/core/carelink.js';
+let carelink = {init: (a,b)=>b(null)};
+//import device from '../../lib/core/device.js';
+let device = {init: (a,b)=>b(null)};
 import localStore from '../../lib/core/localStore.js';
 
 import actions from '../actions/';
@@ -39,8 +43,8 @@ const syncActions = actions.sync;
 
 import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
-import { checkVersion } from '../utils/drivers';
-import debugMode from '../utils/debugMode';
+// import { checkVersion } from '../utils/drivers';
+// import debugMode from '../utils/debugMode';
 
 import MainPage from './MainPage';
 import Login from '../components/Login';
@@ -90,6 +94,12 @@ const serverdata = {
     UPLOAD_URL: 'https://uploads.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
     BLIP_URL: 'https://app.tidepool.org'
+  },
+  QA2: {
+    API_URL: 'https://qa2.development.tidepool.org',
+    UPLOAD_URL: 'https://int-uploads.tidepool.org',
+    DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://app-qa2.development.tidepool.org'
   }
 };
 
@@ -103,15 +113,17 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
+    // const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
+    const initial_server = 'QA2';
     this.state = {
       server: initial_server
     };
+
   }
 
   UNSAFE_componentWillMount(){
-    checkVersion(this.props.dispatch);
-    let api = this.props.api;
+    // checkVersion(this.props.dispatch);
+    let {api} = this.props;
     this.props.async.doAppInit(
       _.assign({ environment: this.state.server }, config), {
       api: api,
@@ -138,20 +150,48 @@ export class App extends Component {
       }
     };
 
-    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      if (err) {
-        this.log(`DNS resolver error: ${err}. Retrying...`);
-        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
-          if (!err2) {
-           addServers(servers2);
-          }
-        });
-      } else {
-        addServers(servers);
-      }
-    });
+  var servers = [
+    { name: 'localhost', port: 3000, priority: 5, weight: 10 },
+    { name: 'dev1.dev.tidepool.org', port: 443, priority: 5, weight: 10 },
+    {
+      name: 'external.integration.tidepool.org',
+      port: 443,
+      priority: 5,
+      weight: 10,
+    },
+    {
+      name: 'qa1.development.tidepool.org',
+      port: 443,
+      priority: 5,
+      weight: 10,
+    },
+    {
+      name: 'qa2.development.tidepool.org',
+      port: 443,
+      priority: 5,
+      weight: 10,
+    },
+  ];
+  addServers(servers);
+  this.setServer({label:'qa2.development.tidepool.org'});
 
-    window.addEventListener('contextmenu', this.handleContextMenu, false);
+    // dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+    //   if (err) {
+    //     this.log(`DNS resolver error: ${err}. Retrying...`);
+    //     dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+    //       if (!err2) {
+    //        addServers(servers2);
+    //       }
+    //     });
+    //   } else {
+    //     addServers(servers);
+    //   }
+    // });
+
+    if(isElectron()){
+      window.addEventListener('contextmenu', this.handleContextMenu, false);
+    }
+
   }
 
   setServer = info => {
@@ -194,7 +234,7 @@ export class App extends Component {
       template.push({
         label: 'Inspect element',
         click() {
-          remote.getCurrentWindow().inspectElement(clientX, clientY);
+          // remote.getCurrentWindow().inspectElement(clientX, clientY);
         }
       });
       template.push({
@@ -215,17 +255,17 @@ export class App extends Component {
         label: 'Change server',
         submenu: submenus,
       });
-      template.push({
-        label: 'Toggle Debug Mode',
-        type: 'checkbox',
-        checked: debugMode.isDebug,
-        click() {
-          debugMode.setDebug(!debugMode.isDebug);
-        }
-      });
+      // template.push({
+      //   label: 'Toggle Debug Mode',
+      //   type: 'checkbox',dq
+      //   checked: debugMode.isDebug,
+      //   click() {
+      //     debugMode.setDebug(!debugMode.isDebug);
+      //   }
+      // });
     }
-    const menu = remote.Menu.buildFromTemplate(template);
-    menu.popup(remote.getCurrentWindow());
+    // const menu = remote.Menu.buildFromTemplate(template);
+    // menu.popup(remote.getCurrentWindow());
   };
 
   handleDismissDropdown = () => {
@@ -256,7 +296,7 @@ export class App extends Component {
 
 App.propTypes = {};
 
-export default connect(
+export default hot(module)(connect(
   (state, ownProps) => {
     return {
       // plain state
@@ -275,4 +315,4 @@ export default connect(
       dispatch: dispatch
     };
   }
-)(App);
+)(App));

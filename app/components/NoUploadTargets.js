@@ -22,8 +22,9 @@ import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/NoUploadTargets.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export default class NoUploadTargets extends Component {
   static propTypes = {

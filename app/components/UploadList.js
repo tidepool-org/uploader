@@ -24,8 +24,9 @@ import Upload from './Upload';
 
 import styles from '../../styles/components/UploadList.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export default class UploadList extends Component {
   static propTypes = {

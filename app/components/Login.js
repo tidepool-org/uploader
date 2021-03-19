@@ -23,8 +23,9 @@ import { bindActionCreators } from 'redux';
 import actions from '../actions/';
 const asyncActions = actions.async;
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export class Login extends Component {
   renderForgotPasswordLink() {

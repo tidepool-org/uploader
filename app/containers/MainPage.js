@@ -31,12 +31,13 @@ import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
-const remote = require('@electron/remote');
+//const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-const i18n = remote.getGlobal('i18n');
+// const i18n = remote.getGlobal('i18n');
+let i18n = {t:string => string};
 
 export class MainPage extends Component {
   handleClickEditUser = () => {

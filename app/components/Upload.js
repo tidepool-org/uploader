@@ -27,13 +27,14 @@ import BLE from 'ble-glucose';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
-import debugMode from '../utils/debugMode';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
+// import debugMode from '../utils/debugMode';
+// import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
@@ -86,7 +87,7 @@ export default class Upload extends Component {
     medtronic600SerialNumberValue: '',
     medtronic600SerialNumberValid: true,
     medtronic600Linked: true,
-    medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
+    // medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
   };
 
   constructor(props) {
@@ -341,7 +342,7 @@ export default class Upload extends Component {
 
   onMedtronic600UploadPeriodChange = period => {
     this.setState({
-      medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
+      // medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
     });
   };
 
@@ -603,9 +604,9 @@ export default class Upload extends Component {
       return null;
     }
     const opts = [
-      { label: i18n.t('since last upload'), value: uploadDataPeriod.PERIODS.DELTA },
-      { label: i18n.t('last 4 weeks'), value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
-      { label: i18n.t('all data on pump'), value: uploadDataPeriod.PERIODS.ALL }
+      // { label: i18n.t('since last upload'), value: uploadDataPeriod.PERIODS.DELTA },
+      // { label: i18n.t('last 4 weeks'), value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
+      // { label: i18n.t('all data on pump'), value: uploadDataPeriod.PERIODS.ALL }
     ];
     return (
       <div className={styles.uploadPeriodRow}>
@@ -744,17 +745,17 @@ export default class Upload extends Component {
 
     if (upload.successful) {
       let dataDownloadLink = null;
-      if (debugMode.isDebug && !_.isEmpty(this.props.upload.data)) {
-        dataDownloadLink = this.getDebugLinks(this.props.upload.data);
-      }
+      // if (debugMode.isDebug && !_.isEmpty(this.props.upload.data)) {
+      //   dataDownloadLink = this.getDebugLinks(this.props.upload.data);
+      // }
       return <div className={styles.status}>{this.props.text.UPLOAD_COMPLETE}&nbsp;{dataDownloadLink}</div>;
     }
 
     if(upload.failed) {
       let dataDownloadLink = null;
-      if (debugMode.isDebug && this.props.upload.error.data) {
-        dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
-      }
+      // if (debugMode.isDebug && this.props.upload.error.data) {
+      //   dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
+      // }
       return <div className={styles.status}>{dataDownloadLink}</div>;
     }
 

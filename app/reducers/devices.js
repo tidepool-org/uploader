@@ -1,9 +1,9 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-const remote = require('@electron/remote');
+//const remote = require('@electron/remote');
 
-const i18n = remote.getGlobal( 'i18n' );
-
+// // const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 const devices = {
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),

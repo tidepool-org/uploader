@@ -25,7 +25,7 @@ const PERIODS = {
 };
 
 if (isRenderer) {
-  const remote = require('@electron/remote');
+  //const remote = require('@electron/remote');
   const uploadDataPeriod = module.exports = {
     get periodGlobal() {
       return remote.getGlobal('period');

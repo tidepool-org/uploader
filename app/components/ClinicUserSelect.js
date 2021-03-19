@@ -26,8 +26,9 @@ var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 class ClinicUserSelect extends React.Component {
   static propTypes = {
@@ -79,7 +80,7 @@ class ClinicUserSelect extends React.Component {
   };
 
   renderSelector = () => {
-    var allUsers = this.props.allUsers;
+    var {allUsers} = this.props;
     var targets = this.props.targetUsersForUpload;
     var sorted = _.sortBy(targets, function(targetId) {
       return personUtils.patientFullName(allUsers[targetId]);

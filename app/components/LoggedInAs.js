@@ -17,9 +17,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ipcRenderer } from 'electron';
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+// import { ipcRenderer } from 'electron';
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
@@ -55,7 +56,7 @@ export default class LoggedInAs extends Component {
   handleCheckForUpdates = e => {
     e.preventDefault();
     this.props.onCheckForUpdates();
-    ipcRenderer.send('autoUpdater','checkForUpdates');
+    // ipcRenderer.send('autoUpdater','checkForUpdates');
   };
 
   handleLogout = e => {

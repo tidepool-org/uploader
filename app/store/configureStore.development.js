@@ -45,11 +45,11 @@ export default function configureStore(initialState, history) {
 
   const store = createStore(rootReducer(history), initialState, enhancer);
 
-  if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers')(history)).default // eslint-disable-line global-require
-    );
-  }
+  // if (module.hot) {
+  //   module.hot.accept('../reducers', () =>
+  //     store.replaceReducer(require('../reducers')(history)).default // eslint-disable-line global-require
+  //   );
+  // }
 
   return store;
 }

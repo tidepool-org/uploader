@@ -26,8 +26,9 @@ import styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 export class AdHocModal extends Component {
   handleContinue = () => {

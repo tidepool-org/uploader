@@ -20,8 +20,9 @@ var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 import { urls } from '../constants/otherConstants';
 
