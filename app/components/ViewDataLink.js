@@ -21,6 +21,9 @@ var React = require('react');
 
 var styles = require('../../styles/components/ViewDataLink.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 class ViewDataLink extends React.Component {
   static propTypes = {
     href: PropTypes.string.isRequired,
@@ -35,7 +38,7 @@ class ViewDataLink extends React.Component {
           href={this.props.href}
           onClick={this.props.onViewClicked}
           target="_blank" >
-          See data
+          {i18n.t('See data')}
         </a>
       </div>
     );
