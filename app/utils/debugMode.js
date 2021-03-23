@@ -14,38 +14,42 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-import isElectron from 'is-electron';
-import { ipcRenderer, ipcMain } from 'electron';
-let isRenderer = (process && process.type === 'renderer');
+// import isElectron from 'is-electron';
+// import { ipcRenderer, ipcMain } from 'electron';
+// let isRenderer = (process && process.type === 'renderer');
+//
+// if (isRenderer) {
+//   let isDebug = process.env.DEBUG_ERROR ||
+//     JSON.parse(localStorage.getItem('isDebug')) ||
+//     false;
+//
+//   const debugMode = module.exports = {
+//     isDebug,
+//     setDebug: function(isDebug) {
+//       ipcRenderer.send('setDebug', isDebug);
+//       localStorage.setItem('isDebug', JSON.stringify(isDebug));
+//       debugMode.isDebug = isDebug;
+//       return debugMode.isDebug;
+//     }
+//   };
+// } else {
+//   let isDebug = process.env.DEBUG_ERROR || false;
+//
+//   if (isElectron()) {
+//     ipcMain.on('setDebug', (event, arg) => {
+//       debugMode.isDebug = arg;
+//     });
+//   }
+//
+//   const debugMode = module.exports = {
+//     isDebug,
+//     setDebug: function(isDebug) {
+//       debugMode.isDebug = isDebug;
+//       return debugMode.isDebug;
+//     }
+//   };
+// }
 
-if (isRenderer) {
-  let isDebug = process.env.DEBUG_ERROR ||
-    JSON.parse(localStorage.getItem('isDebug')) ||
-    false;
-
-  const debugMode = module.exports = {
-    isDebug,
-    setDebug: function(isDebug) {
-      ipcRenderer.send('setDebug', isDebug);
-      localStorage.setItem('isDebug', JSON.stringify(isDebug));
-      debugMode.isDebug = isDebug;
-      return debugMode.isDebug;
-    }
-  };
-} else {
-  let isDebug = process.env.DEBUG_ERROR || false;
-
-  if (isElectron()) {
-    ipcMain.on('setDebug', (event, arg) => {
-      debugMode.isDebug = arg;
-    });
-  }
-
-  const debugMode = module.exports = {
-    isDebug,
-    setDebug: function(isDebug) {
-      debugMode.isDebug = isDebug;
-      return debugMode.isDebug;
-    }
-  };
+const debugMode = module.exports = {
+  isDebug: true,
 }

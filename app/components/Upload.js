@@ -94,7 +94,7 @@ export default class Upload extends Component {
     super(props);
     this.ble = ble;
 
-    this.populateRememberedSerialNumber();
+    // this.populateRememberedSerialNumber();
   }
 
   UNSAFE_componentWillMount() {
@@ -179,7 +179,7 @@ export default class Upload extends Component {
       medtronic600Linked: true
     });
     this.props.onReset();
-    this.populateRememberedSerialNumber();
+    // this.populateRememberedSerialNumber();
   };
 
   handleUpload = e => {

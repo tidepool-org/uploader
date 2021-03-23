@@ -33,8 +33,7 @@ import config from '../../lib/config.js';
 
 //import carelink from '../../lib/core/carelink.js';
 let carelink = {init: (a,b)=>b(null)};
-//import device from '../../lib/core/device.js';
-let device = {init: (a,b)=>b(null)};
+import device from '../../lib/core/device.js';
 import localStore from '../../lib/core/localStore.js';
 
 import actions from '../actions/';
