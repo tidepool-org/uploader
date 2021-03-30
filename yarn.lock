@@ -11696,10 +11696,22 @@ moment-timezone@0.4.1:
   dependencies:
     moment ">= 2.6.0"
 
+moment-timezone@0.5.33:
+  version "0.5.33"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.33.tgz#b252fd6bb57f341c9b59a5ab61a8e51a73bbd22c"
+  integrity sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==
+  dependencies:
+    moment ">= 2.9.0"
+
 "moment@>= 2.6.0":
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.28.0.tgz#cdfe73ce01327cee6537b0fafac2e0f21a237d75"
   integrity sha512-Z5KOjYmnHyd/ukynmFd/WwyXHd7L4J9vTI/nn5Ap9AVUgaAE15VvQ9MOGmJJygEUklupqIrFnor/tjTwRU+tQw==
+
+"moment@>= 2.9.0":
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 moo@^0.5.0:
   version "0.5.1"
@@ -15966,6 +15978,13 @@ sundial@1.6.0:
   integrity sha1-s70/YfPu141Ccj4eWGcFLUj70ag=
   dependencies:
     moment-timezone "0.4.1"
+
+sundial@1.7.0-update-deps.1:
+  version "1.7.0-update-deps.1"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0-update-deps.1.tgz#d9bbac556ff089a9e7fcea6f2a34ec9d2c2e46e3"
+  integrity sha512-oLv0SsRpqa7uZnowqKWl/TV7tmIMzCjjRW10no2iAhnm9j/f7CzHP1vBPo4jRcQwfc9MSPL7u1lanKOgoyWcrg==
+  dependencies:
+    moment-timezone "0.5.33"
 
 superagent@5.2.2:
   version "5.2.2"
