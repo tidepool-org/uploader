@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.35.0-electron-v12-and-web-serial.5",
+  "version": "2.35.0-electron-v12-and-web-serial.7",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -83,7 +83,7 @@
     "source-map-support": "0.5.19",
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
-    "sundial": "1.6.0",
+    "sundial": "1.7.0-update-deps.1",
     "tidepool-platform-client": "0.45.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3"

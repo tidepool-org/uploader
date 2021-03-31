@@ -321,16 +321,8 @@ export function doUpload (deviceKey, opts, utc) {
       try {
         opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
+        // not returning error, as we'll attempt user-space driver instead
         console.log('Error:', err);
-
-        const error = new Error(errorText.E_SERIAL_CONNECTION);
-        const errProps = {
-          details: err.message,
-          utc: actionUtils.getUtc(utc),
-          code: 'E_SERIAL_CONNECTION',
-        };
-
-        return dispatch(syncActions.uploadFailure(error, errProps, devices[deviceKey]));
       }
     }
 
