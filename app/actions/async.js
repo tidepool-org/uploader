@@ -32,6 +32,7 @@ import * as syncActions from './sync';
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
 import driverManifests from '../../lib/core/driverManifests';
+import env from '../utils/env';
 
 let services = {};
 let versionInfo = {};
@@ -442,7 +443,9 @@ export function doVersionCheck() {
     dispatch(syncActions.versionCheckRequest());
     const { api } = services;
     const version = versionInfo.semver;
-    return dispatch(syncActions.versionCheckSuccess());
+    if(env.browser){
+      return dispatch(syncActions.versionCheckSuccess());
+    }
     api.upload.getVersions((err, versions) => {
       if (err) {
         return dispatch(syncActions.versionCheckFailure(err));

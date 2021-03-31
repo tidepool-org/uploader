@@ -19,11 +19,16 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//import sudo from 'sudo-prompt';
 
 import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/UpdateDriverModal.module.less';
+import env from '../utils/env';
+
+let sudo;
+if(env.electron_renderer){
+  sudo = require('sudo-prompt');
+}
 
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
@@ -33,15 +38,17 @@ export class UpdateDriverModal extends Component {
   handleInstall = () => {
     const { sync, driverUpdateShellOpts } = this.props;
     const { execString, options } = driverUpdateShellOpts.opts;
-    // sudo.exec(execString, options,
-    //   (error, stdout, stderr) => {
-    //     console.log('sudo result: ' + stdout);
-    //     if (error) {
-    //       console.log(error);
-    //     }
-    //     sync.driverInstall();
-    //   }
-    // );
+    if(env.electron_renderer){
+      sudo.exec(execString, options,
+        (error, stdout, stderr) => {
+          console.log('sudo result: ' + stdout);
+          if (error) {
+            console.log(error);
+          }
+          sync.driverInstall();
+        }
+      );
+    }
   };
 
   render() {

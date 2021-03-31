@@ -18,12 +18,17 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
-// import os from 'os';
-// import osName from 'os-name';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
-// import debugMode from '../utils/debugMode';
+import debugMode from '../utils/debugMode';
+import env from '../utils/env';
+
+let os, osName;
+if(env.electron){
+  os = require('os');
+  osName = require('os-name');
+}
 
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
@@ -35,14 +40,14 @@ export default class Footer extends Component {
   };
 
   render() {
-    const version = this.props.version;
+    const {version} = this.props;
     let osArch = '';
     let environment = '';
 
-    // if (debugMode.isDebug) {
-    //   osArch = `  (${osName()} - ${os.arch()})`;
-    //   environment = `  - ${this.props.environment}`;
-    // }
+    if (debugMode.isDebug) {
+      env.electron ? osArch = `  (${osName()} - ${os.arch()})`:'';
+      environment = `  - ${this.props.environment}`;
+    }
 
     return (
       <div className={styles.footer}>
@@ -58,7 +63,7 @@ export default class Footer extends Component {
           </div>
         </div>
         <div className={styles.footerRow}>
-          {/* <div className={styles.version}>{`v${version}${osArch}${environment}`}</div> */}
+          <div className={styles.version}>{`v${version}${osArch}${environment}`}</div>
         </div>
       </div>
     );

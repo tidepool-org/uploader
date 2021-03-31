@@ -17,7 +17,12 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import { ipcRenderer } from 'electron';
+import env from '../utils/env';
+
+let ipcRenderer;
+if(env.electron_renderer){
+  ({ipcRenderer} = require('electron'));
+}
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
 let i18n = {t:string => string};
@@ -56,7 +61,9 @@ export default class LoggedInAs extends Component {
   handleCheckForUpdates = e => {
     e.preventDefault();
     this.props.onCheckForUpdates();
-    // ipcRenderer.send('autoUpdater','checkForUpdates');
+    if(env.electron_renderer){
+      ipcRenderer.send('autoUpdater','checkForUpdates');
+    }
   };
 
   handleLogout = e => {
@@ -158,7 +165,7 @@ export default class LoggedInAs extends Component {
 
   render() {
     var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
-    var user = this.props.user;
+    var {user} = this.props;
 
     return (
       <div className={styles.wrapper}>

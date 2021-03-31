@@ -20,16 +20,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import remote from '@electron/remote';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
-// import dns from 'dns';
-import isElectron from 'is-electron';
 import { hot } from 'react-hot-loader';
 
 import bows from 'bows';
 
 import config from '../../lib/config.js';
+import env from '../utils/env';
 
 //import carelink from '../../lib/core/carelink.js';
 let carelink = {init: (a,b)=>b(null)};
@@ -42,8 +40,7 @@ const syncActions = actions.sync;
 
 import * as actionSources from '../constants/actionSources';
 import { pages, urls, pagesMap } from '../constants/otherConstants';
-// import { checkVersion } from '../utils/drivers';
-// import debugMode from '../utils/debugMode';
+import debugMode from '../utils/debugMode';
 
 import MainPage from './MainPage';
 import Login from '../components/Login';
@@ -62,6 +59,13 @@ import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 
 import styles from '../../styles/components/App.module.less';
+
+let remote, dns, checkVersion;
+if(env.electron_renderer){
+  remote = require('@electron/remote');
+  dns = require('dns');
+  ({checkVersion} = require('../utils/drivers'));
+}
 
 const serverdata = {
   Local: {
@@ -112,8 +116,7 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    // const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
-    const initial_server = 'QA2';
+    const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
     this.state = {
       server: initial_server
     };
@@ -121,7 +124,9 @@ export class App extends Component {
   }
 
   UNSAFE_componentWillMount(){
-    // checkVersion(this.props.dispatch);
+    if(env.electron){
+      checkVersion(this.props.dispatch);
+    }
     let {api} = this.props;
     this.props.async.doAppInit(
       _.assign({ environment: this.state.server }, config), {
@@ -149,48 +154,52 @@ export class App extends Component {
       }
     };
 
-  var servers = [
-    { name: 'localhost', port: 3000, priority: 5, weight: 10 },
-    { name: 'dev1.dev.tidepool.org', port: 443, priority: 5, weight: 10 },
-    {
-      name: 'external.integration.tidepool.org',
-      port: 443,
-      priority: 5,
-      weight: 10,
-    },
-    {
-      name: 'qa1.development.tidepool.org',
-      port: 443,
-      priority: 5,
-      weight: 10,
-    },
-    {
-      name: 'qa2.development.tidepool.org',
-      port: 443,
-      priority: 5,
-      weight: 10,
-    },
-  ];
-  addServers(servers);
-  this.setServer({label:'qa2.development.tidepool.org'});
 
-    // dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-    //   if (err) {
-    //     this.log(`DNS resolver error: ${err}. Retrying...`);
-    //     dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
-    //       if (!err2) {
-    //        addServers(servers2);
-    //       }
-    //     });
-    //   } else {
-    //     addServers(servers);
-    //   }
-    // });
 
-    if(isElectron()){
+  if(env.electron_renderer){
+    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+      if (err) {
+        this.log(`DNS resolver error: ${err}. Retrying...`);
+        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+          if (!err2) {
+           addServers(servers2);
+          }
+        });
+      } else {
+        addServers(servers);
+      }
+    });
+  } else {
+    var servers = [
+      { name: 'localhost', port: 3000, priority: 5, weight: 10 },
+      { name: 'dev1.dev.tidepool.org', port: 443, priority: 5, weight: 10 },
+      {
+        name: 'external.integration.tidepool.org',
+        port: 443,
+        priority: 5,
+        weight: 10,
+      },
+      {
+        name: 'qa1.development.tidepool.org',
+        port: 443,
+        priority: 5,
+        weight: 10,
+      },
+      {
+        name: 'qa2.development.tidepool.org',
+        port: 443,
+        priority: 5,
+        weight: 10,
+      },
+    ];
+    addServers(servers);
+    this.setServer({label:'qa2.development.tidepool.org'});
+  }
+
+
+    if(env.electron){
       window.addEventListener('contextmenu', this.handleContextMenu, false);
     }
-
   }
 
   setServer = info => {
@@ -233,7 +242,7 @@ export class App extends Component {
       template.push({
         label: 'Inspect element',
         click() {
-          // remote.getCurrentWindow().inspectElement(clientX, clientY);
+          remote.getCurrentWindow().inspectElement(clientX, clientY);
         }
       });
       template.push({
@@ -254,17 +263,17 @@ export class App extends Component {
         label: 'Change server',
         submenu: submenus,
       });
-      // template.push({
-      //   label: 'Toggle Debug Mode',
-      //   type: 'checkbox',dq
-      //   checked: debugMode.isDebug,
-      //   click() {
-      //     debugMode.setDebug(!debugMode.isDebug);
-      //   }
-      // });
+      template.push({
+        label: 'Toggle Debug Mode',
+        type: 'checkbox',
+        checked: debugMode.isDebug,
+        click() {
+          debugMode.setDebug(!debugMode.isDebug);
+        }
+      });
     }
-    // const menu = remote.Menu.buildFromTemplate(template);
-    // menu.popup(remote.getCurrentWindow());
+    const menu = remote.Menu.buildFromTemplate(template);
+    menu.popup(remote.getCurrentWindow());
   };
 
   handleDismissDropdown = () => {

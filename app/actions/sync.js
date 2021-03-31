@@ -34,13 +34,13 @@ import errorText from '../constants/errors';
 
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
-// import uploadDataPeriod from '../utils/uploadDataPeriod';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
-// const uploadDataPeriodLabels = {
-//   [uploadDataPeriod.PERIODS.ALL]: 'all data',
-//   [uploadDataPeriod.PERIODS.DELTA]: 'new data',
-//   [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
-// };
+const uploadDataPeriodLabels = {
+  [uploadDataPeriod.PERIODS.ALL]: 'all data',
+  [uploadDataPeriod.PERIODS.DELTA]: 'new data',
+  [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
+};
 
 export function addTargetDevice(userId, deviceKey) {
   return {
@@ -296,7 +296,7 @@ export function loginSuccess(results) {
   const { user, profile, memberships } = results;
   const isClinicAccount = personUtils.userHasRole(user, 'clinic');
   if (isClinicAccount) {
-    // uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
+    uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: actionTypes.LOGIN_SUCCESS,
@@ -401,9 +401,9 @@ export function uploadRequest(userId, device, utc) {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`
   };
-  // if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-  //   _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
-  // }
+  if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
+  }
   return {
     type: actionTypes.UPLOAD_REQUEST,
     payload: { userId, deviceKey: device.key, utc },
@@ -436,9 +436,9 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     finished: utc || '',
     processed: numRecs || 0
   };
-  // if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-  //   _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
-  // }
+  if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
+  }
   return {
     type: actionTypes.UPLOAD_SUCCESS,
     payload: { userId, deviceKey: device.key, data, utc },
@@ -459,9 +459,9 @@ export function uploadFailure(err, errProps, device) {
     source: `${actionUtils.getUploadTrackingId(device)}`,
     error: err
   };
-  // if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
-  //   _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
-  // }
+  if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
+    _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
+  }
   return {
     type: actionTypes.UPLOAD_FAILURE,
     error: true,

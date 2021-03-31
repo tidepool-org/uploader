@@ -15,7 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-import remote from '@electron/remote';
+import { app } from '@electron/remote';
 import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
@@ -70,7 +70,7 @@ export function checkVersion(dispatch) {
     return false;
   }
 
-  const appFolder = path.dirname(remote.app.getAppPath());
+  const appFolder = path.dirname(app.getAppPath());
   let helperPath = path.join(appFolder, 'driver/helpers/');
   let driverPath = path.join(appFolder, 'driver/');
   let iconsPath = path.join(appFolder, '/Tidepool Uploader.icns');

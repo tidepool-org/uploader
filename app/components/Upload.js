@@ -22,15 +22,19 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 
 import sundial from 'sundial';
-import keytar from 'keytar';
 import BLE from 'ble-glucose';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
-// import debugMode from '../utils/debugMode';
-// import uploadDataPeriod from '../utils/uploadDataPeriod';
+import debugMode from '../utils/debugMode';
+import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
+import env from '../utils/env';
+let keytar;
+if(env.electron_renderer){
+  keytar = require('keytar');
+}
 
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
@@ -87,14 +91,14 @@ export default class Upload extends Component {
     medtronic600SerialNumberValue: '',
     medtronic600SerialNumberValid: true,
     medtronic600Linked: true,
-    // medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
+    medtronic600UploadPeriod: uploadDataPeriod.periodMedtronic600,
   };
 
   constructor(props) {
     super(props);
     this.ble = ble;
 
-    // this.populateRememberedSerialNumber();
+    this.populateRememberedSerialNumber();
   }
 
   UNSAFE_componentWillMount() {
@@ -103,17 +107,19 @@ export default class Upload extends Component {
    }
 
   populateRememberedSerialNumber() {
-    keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
-      .then((serialNumber) => {
-        if(serialNumber) {
-          this.setState({
-            medtronicSerialNumberValue: serialNumber,
-            medtronicSerialNumberRemember: true,
-            medtronicFormIncomplete: false,
-          });
-          this.onCareLinkInputChange();
-        }
-    });
+    if(env.electron_renderer){
+      keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
+        .then((serialNumber) => {
+          if(serialNumber) {
+            this.setState({
+              medtronicSerialNumberValue: serialNumber,
+              medtronicSerialNumberRemember: true,
+              medtronicFormIncomplete: false,
+            });
+            this.onCareLinkInputChange();
+          }
+        });
+    }
   }
 
   handleCareLinkUpload = () => {
@@ -179,7 +185,7 @@ export default class Upload extends Component {
       medtronic600Linked: true
     });
     this.props.onReset();
-    // this.populateRememberedSerialNumber();
+    this.populateRememberedSerialNumber();
   };
 
   handleUpload = e => {
@@ -229,7 +235,7 @@ export default class Upload extends Component {
 
   onMedtronicSerialNumberRememberChange = e => {
     const checkbox = e.target;
-    const checked = checkbox.checked;
+    const {checked} = checkbox;
 
     this.setState({
       medtronicSerialNumberRemember: checked
@@ -243,7 +249,7 @@ export default class Upload extends Component {
 
   onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
-    const value = field.value;
+    const {value} = field;
     const chars = _.split(value, '');
 
     // Check if input is purely numbers.
@@ -342,7 +348,7 @@ export default class Upload extends Component {
 
   onMedtronic600UploadPeriodChange = period => {
     this.setState({
-      // medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
+      medtronic600UploadPeriod: uploadDataPeriod.setPeriodMedtronic600(period)
     });
   };
 
@@ -604,9 +610,9 @@ export default class Upload extends Component {
       return null;
     }
     const opts = [
-      // { label: i18n.t('since last upload'), value: uploadDataPeriod.PERIODS.DELTA },
-      // { label: i18n.t('last 4 weeks'), value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
-      // { label: i18n.t('all data on pump'), value: uploadDataPeriod.PERIODS.ALL }
+      { label: i18n.t('since last upload'), value: uploadDataPeriod.PERIODS.DELTA },
+      { label: i18n.t('last 4 weeks'), value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
+      { label: i18n.t('all data on pump'), value: uploadDataPeriod.PERIODS.ALL }
     ];
     return (
       <div className={styles.uploadPeriodRow}>
@@ -654,7 +660,7 @@ export default class Upload extends Component {
 
   renderLastUpload() {
     const { upload } = this.props;
-    let history = upload.history;
+    let {history} = upload;
 
     if (!(history && history.length)) {
       return null;
@@ -745,17 +751,17 @@ export default class Upload extends Component {
 
     if (upload.successful) {
       let dataDownloadLink = null;
-      // if (debugMode.isDebug && !_.isEmpty(this.props.upload.data)) {
-      //   dataDownloadLink = this.getDebugLinks(this.props.upload.data);
-      // }
+      if (debugMode.isDebug && !_.isEmpty(this.props.upload.data)) {
+        dataDownloadLink = this.getDebugLinks(this.props.upload.data);
+      }
       return <div className={styles.status}>{this.props.text.UPLOAD_COMPLETE}&nbsp;{dataDownloadLink}</div>;
     }
 
     if(upload.failed) {
       let dataDownloadLink = null;
-      // if (debugMode.isDebug && this.props.upload.error.data) {
-      //   dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
-      // }
+      if (debugMode.isDebug && this.props.upload.error.data) {
+        dataDownloadLink = this.getDebugLinks(this.props.upload.error.data);
+      }
       return <div className={styles.status}>{dataDownloadLink}</div>;
     }
 

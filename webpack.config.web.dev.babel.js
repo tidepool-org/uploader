@@ -5,6 +5,7 @@
  */
 
 import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
@@ -16,7 +17,7 @@ const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
-const publicPath = `http://localhost:${port}/dist`;
+const publicPath = `http://localhost:${port}`;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -41,18 +42,19 @@ export default merge.smart(baseConfig, {
 
   mode: 'development',
 
-  target: 'electron-renderer',
+  target: 'web',
 
   entry: [
-    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
+    //...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
     require.resolve('./app/index')
   ],
 
   output: {
-    publicPath: `http://localhost:${port}/dist/`,
-    filename: 'renderer.dev.js'
+    publicPath: `http://localhost:${port}/`,
+    filename: 'renderer.dev.js',
+    libraryTarget: 'umd'
   },
 
   module: {
@@ -196,9 +198,9 @@ export default merge.smart(baseConfig, {
     }
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin({
-      multiStep: true
-    }),
+    // new webpack.HotModuleReplacementPlugin({
+    //   multiStep: true
+    // }),
 
     new webpack.NoEmitOnErrorsPlugin(),
 
@@ -221,12 +223,21 @@ export default merge.smart(baseConfig, {
 
     new webpack.LoaderOptionsPlugin({
       debug: true
-    })
+    }),
+
+    new HtmlWebpackPlugin({
+      template: 'app/web.html',
+      inject: false
+    }),
+    new webpack.NamedModulesPlugin(),
   ],
 
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
-    __filename: false
+    __filename: false,
+    fs: 'empty',
+    dns: 'empty',
+    child_process: 'empty'
   },
 
   devServer: {
@@ -240,7 +251,7 @@ export default merge.smart(baseConfig, {
     lazy: false,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname),
     watchOptions: {
       aggregateTimeout: 300,
       ignored: /node_modules/,
