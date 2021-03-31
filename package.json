@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.35.0-electron-v12-and-web-serial.6",
+  "version": "2.35.0-electron-v12-and-web-serial.7",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
