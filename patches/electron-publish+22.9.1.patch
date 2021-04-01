@@ -1,0 +1,17 @@
+diff --git a/node_modules/electron-publish/out/gitHubPublisher.js b/node_modules/electron-publish/out/gitHubPublisher.js
+index 75e5ca2..20b26e4 100644
+--- a/node_modules/electron-publish/out/gitHubPublisher.js
++++ b/node_modules/electron-publish/out/gitHubPublisher.js
+@@ -250,8 +250,10 @@ class GitHubPublisher extends _publisher().HttpPublisher {
+       headers: {
+         accept: "application/vnd.github.v3+json",
+         "Content-Type": _mime().default.getType(fileName) || "application/octet-stream",
+-        "Content-Length": dataLength
+-      }
++        "Content-Length": dataLength,
++        "Connection": "keep-alive",
++      },
++      forever: true,
+     }, this.token), this.context.cancellationToken, requestProcessor).catch(e => {
+       if (e.statusCode === 422 && e.description != null && e.description.errors != null && e.description.errors[0].code === "already_exists") {
+         return this.overwriteArtifact(fileName, release).then(() => this.doUploadFile(attemptNumber, parsedUrl, fileName, dataLength, requestProcessor, release));
