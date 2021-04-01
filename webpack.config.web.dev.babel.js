@@ -17,7 +17,7 @@ const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
-const publicPath = `http://localhost:${port}`;
+const publicPath = `https://192.168.0.16:${port}`;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -46,13 +46,13 @@ export default merge.smart(baseConfig, {
 
   entry: [
     //...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    `webpack-dev-server/client?http://localhost:${port}/`,
+    `webpack-dev-server/client?https://192.168.0.16:${port}/`,
     'webpack/hot/only-dev-server',
     require.resolve('./app/index')
   ],
 
   output: {
-    publicPath: `http://localhost:${port}/`,
+    publicPath: `https://192.168.0.16:${port}/`,
     filename: 'renderer.dev.js',
     libraryTarget: 'umd'
   },
