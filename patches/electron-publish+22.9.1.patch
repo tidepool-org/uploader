@@ -1,5 +1,5 @@
 diff --git a/node_modules/electron-publish/out/gitHubPublisher.js b/node_modules/electron-publish/out/gitHubPublisher.js
-index 75e5ca2..ef6c300 100644
+index 75e5ca2..32b4198 100644
 --- a/node_modules/electron-publish/out/gitHubPublisher.js
 +++ b/node_modules/electron-publish/out/gitHubPublisher.js
 @@ -215,8 +215,15 @@ class GitHubPublisher extends _publisher().HttpPublisher {
@@ -20,13 +20,7 @@ index 75e5ca2..ef6c300 100644
        }
      }
  
-@@ -242,19 +249,20 @@ class GitHubPublisher extends _publisher().HttpPublisher {
-     return await this.doUploadFile(0, parsedUrl, fileName, dataLength, requestProcessor, release);
-   }
- 
--  doUploadFile(attemptNumber, parsedUrl, fileName, dataLength, requestProcessor, release) {
-+  async doUploadFile(attemptNumber, parsedUrl, fileName, dataLength, requestProcessor, release) {
-     return _nodeHttpExecutor().httpExecutor.doApiRequest((0, _builderUtilRuntime().configureRequestOptions)({
+@@ -247,14 +254,15 @@ class GitHubPublisher extends _publisher().HttpPublisher {
        hostname: parsedUrl.hostname,
        path: parsedUrl.path,
        method: "POST",
@@ -36,9 +30,10 @@ index 75e5ca2..ef6c300 100644
          "Content-Type": _mime().default.getType(fileName) || "application/octet-stream",
 -        "Content-Length": dataLength
 -      }
+-    }, this.token), this.context.cancellationToken, requestProcessor).catch(e => {
 +        "Content-Length": dataLength,
 +      },
-     }, this.token), this.context.cancellationToken, requestProcessor).catch(e => {
++    }, this.token), this.context.cancellationToken, requestProcessor).catch(async e => {
        if (e.statusCode === 422 && e.description != null && e.description.errors != null && e.description.errors[0].code === "already_exists") {
 -        return this.overwriteArtifact(fileName, release).then(() => this.doUploadFile(attemptNumber, parsedUrl, fileName, dataLength, requestProcessor, release));
 +        await this.overwriteArtifact(fileName, release);
