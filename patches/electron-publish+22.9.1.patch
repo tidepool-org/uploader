@@ -1,5 +1,5 @@
 diff --git a/node_modules/electron-publish/out/gitHubPublisher.js b/node_modules/electron-publish/out/gitHubPublisher.js
-index 75e5ca2..fd5008b 100644
+index 75e5ca2..049b643 100644
 --- a/node_modules/electron-publish/out/gitHubPublisher.js
 +++ b/node_modules/electron-publish/out/gitHubPublisher.js
 @@ -215,8 +215,15 @@ class GitHubPublisher extends _publisher().HttpPublisher {
@@ -11,39 +11,37 @@ index 75e5ca2..fd5008b 100644
 +      	try {
 +        	await this.githubRequest(`/repos/${this.info.owner}/${this.info.repo}/releases/assets/${asset.id}`, this.token, null, "DELETE");
 +	  	} catch (e) {
-+	  		log.warn({error: e}, 'got error');
++	  		_builderUtil().log.warn({error: e}, 'got error');
 +	  		if (e.statusCode === 204) {
-+	  			log.warn({releaseId: release.id}, 'file successfully deleted');
++	  			_builderUtil().log.warn({releaseId: release.id}, 'file successfully deleted');
 +	  			return;
 +	  		}
 +	  	}
        }
      }
  
-@@ -247,11 +254,14 @@ class GitHubPublisher extends _publisher().HttpPublisher {
+@@ -247,11 +254,12 @@ class GitHubPublisher extends _publisher().HttpPublisher {
        hostname: parsedUrl.hostname,
        path: parsedUrl.path,
        method: "POST",
-+      timeout: 240 * 1000,
++      timeout: 60 * 1000,
        headers: {
          accept: "application/vnd.github.v3+json",
          "Content-Type": _mime().default.getType(fileName) || "application/octet-stream",
 -        "Content-Length": dataLength
 -      }
 +        "Content-Length": dataLength,
-+        "Connection": "keep-alive",
 +      },
-+      forever: true,
      }, this.token), this.context.cancellationToken, requestProcessor).catch(e => {
        if (e.statusCode === 422 && e.description != null && e.description.errors != null && e.description.errors[0].code === "already_exists") {
          return this.overwriteArtifact(fileName, release).then(() => this.doUploadFile(attemptNumber, parsedUrl, fileName, dataLength, requestProcessor, release));
-@@ -327,7 +337,8 @@ class GitHubPublisher extends _publisher().HttpPublisher {
-       port: baseUrl.port,
+@@ -328,7 +336,8 @@ class GitHubPublisher extends _publisher().HttpPublisher {
        path: this.info.host != null && this.info.host !== "github.com" ? `/api/v3${path.startsWith("/") ? path : `/${path}`}` : path,
        headers: {
--        accept: "application/vnd.github.v3+json"
-+        accept: "application/vnd.github.v3+json",
-+        connection: "keep-alive"
-       }
+         accept: "application/vnd.github.v3+json"
+-      }
++      },
++      timeout: 60 * 1000
      }, token, method), this.context.cancellationToken, data));
    }
+ 
