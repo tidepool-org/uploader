@@ -82,7 +82,7 @@ export function doAppInit(opts, servicesToInit) {
             if (apiError) {
               return dispatch(syncActions.initFailure(apiError));
             }
-            log('Setting all api hosts');
+            log('Setting all api hosts', opts.environment);
             api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
@@ -328,6 +328,30 @@ export function doUpload (deviceKey, opts, utc) {
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
         console.log('Error:', err);
+      }
+    }
+
+    if (env.browser && driverManifest && driverManifest.mode === 'HID') {
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+        usbVendorId: vendorId,
+        usbProductId: productId
+      }));
+
+      try {
+        [opts.hidDevice] = await navigator.hid.requestDevice({ filters: filters });
+      } catch (err) {
+        console.log('Error:', err);
+
+        let hidErr = new Error(errorText.E_HID_CONNECTION);
+        let errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_HID_CONNECTION',
+        };
+
+        return dispatch(syncActions.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
 
