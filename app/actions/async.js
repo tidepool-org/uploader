@@ -320,7 +320,23 @@ export function doUpload (deviceKey, opts, utc) {
       }));
 
       try {
-        opts.port = await navigator.serial.requestPort({ filters: filters });
+        const existingPermissions = await navigator.serial.getPorts();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          const { usbProductId, usbVendorId } = existingPermissions[i].getInfo();
+
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === usbVendorId
+              && driverManifest.usb[j].productId === usbProductId) {
+                console.log('Device has already been granted permission');
+                opts.port = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.port == null) {
+          opts.port = await navigator.serial.requestPort({ filters: filters });
+        }
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
         console.log('Error:', err);
