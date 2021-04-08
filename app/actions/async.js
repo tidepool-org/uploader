@@ -335,12 +335,30 @@ export function doUpload (deviceKey, opts, utc) {
       dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const filters = driverManifest.usb.map(({vendorId, productId}) => ({
-        usbVendorId: vendorId,
-        usbProductId: productId
+        vendorId,
+        productId
       }));
 
       try {
-        [opts.hidDevice] = await navigator.hid.requestDevice({ filters: filters });
+        const existingPermissions = await navigator.hid.getDevices();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
+              && driverManifest.usb[j].productId === existingPermissions[i].productId) {
+                console.log('Device has already been granted permission');
+                opts.hidDevice = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.hidDevice == null) {
+          [opts.hidDevice] = await navigator.hid.requestDevice({ filters: filters });
+        }
+
+        if (opts.hidDevice == null) {
+          throw new Error('No device was selected.');
+        }
       } catch (err) {
         console.log('Error:', err);
 
