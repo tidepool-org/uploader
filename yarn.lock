@@ -16419,10 +16419,10 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webmtp@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.0.8.tgz#078ea806db0c8464926c9f6ae1a1ab062aad4e7c"
-  integrity sha512-43HX3KEy5xtbTXgUyGVZhJop4K6g7HJKEvCOU7Dh+Rmo19qQxGyRm/Wu7/hoFP7vnUmP+CPS+gmz6zt9HFRVvA==
+webmtp@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.1.0.tgz#a3048c59977b0adee999f2689f780283655be85e"
+  integrity sha512-0JIYaljlBcOqU7+XlG1gXDrsEiSLEbyot6nKTE9rJpHgq4kWENGi1S4UNLZ+tP4qWgOkJVgBwbX0KpWQyT1M/A==
   dependencies:
     webusb "2.1.0"
 
