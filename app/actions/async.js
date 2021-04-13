@@ -83,7 +83,7 @@ export function doAppInit(opts, servicesToInit) {
             if (apiError) {
               return dispatch(syncActions.initFailure(apiError));
             }
-            log('Setting all api hosts');
+            log('Setting all api hosts', opts.environment);
             api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
             dispatch(syncActions.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(syncActions.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
@@ -320,10 +320,68 @@ export function doUpload (deviceKey, opts, utc) {
       }));
 
       try {
-        opts.port = await navigator.serial.requestPort({ filters: filters });
+        const existingPermissions = await navigator.serial.getPorts();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          const { usbProductId, usbVendorId } = existingPermissions[i].getInfo();
+
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === usbVendorId
+              && driverManifest.usb[j].productId === usbProductId) {
+                console.log('Device has already been granted permission');
+                opts.port = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.port == null) {
+          opts.port = await navigator.serial.requestPort({ filters: filters });
+        }
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
         console.log('Error:', err);
+      }
+    }
+
+    if (env.browser && driverManifest && driverManifest.mode === 'HID') {
+      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+        vendorId,
+        productId
+      }));
+
+      try {
+        const existingPermissions = await navigator.hid.getDevices();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
+              && driverManifest.usb[j].productId === existingPermissions[i].productId) {
+                console.log('Device has already been granted permission');
+                opts.hidDevice = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.hidDevice == null) {
+          [opts.hidDevice] = await navigator.hid.requestDevice({ filters: filters });
+        }
+
+        if (opts.hidDevice == null) {
+          throw new Error('No device was selected.');
+        }
+      } catch (err) {
+        console.log('Error:', err);
+
+        let hidErr = new Error(errorText.E_HID_CONNECTION);
+        let errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_HID_CONNECTION',
+        };
+
+        return dispatch(syncActions.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
 
