@@ -6,7 +6,7 @@
 
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
 import { spawn } from 'child_process';
@@ -37,7 +37,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool: 'inline-source-map',//'#cheap-module-source-map',
 
   mode: 'development',
@@ -188,6 +188,17 @@ export default merge.smart(baseConfig, {
             limit: 10000,
           }
         }]
+      },
+
+      {
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          mimetype: 'application/wasm',
+          publicPath: 'dist/'
+        }
       }
 
     ]
@@ -195,6 +206,19 @@ export default merge.smart(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom'
+    },
+    fallback: {
+      fs: false,
+      dns: false,
+      child_process: false,
+      os: require.resolve('os-browserify/browser'), // false,
+      path: false,
+      crypto: require.resolve('crypto-browserify'),
+      stream: false, // stream: require.resolve('stream-browserify')
+      perf_hooks: false,
+      buffer: require.resolve('buffer/'),
+      process: require.resolve('process/browser'),
+      worker_threads: false
     }
   },
   plugins: [
@@ -229,15 +253,27 @@ export default merge.smart(baseConfig, {
       template: 'app/web.html',
       inject: false
     }),
-    new webpack.NamedModulesPlugin(),
+
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+
+    // new webpack.ProvidePlugin({
+    //   process: 'process/browser',
+    // })
   ],
+
+  optimization: {
+    moduleIds: 'named'
+  },
+
+  experiments: {
+    asyncWebAssembly: true
+  },
 
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
-    __filename: false,
-    fs: 'empty',
-    dns: 'empty',
-    child_process: 'empty'
+    __filename: false
   },
 
   devServer: {

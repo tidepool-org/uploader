@@ -39,7 +39,7 @@ export default {
    * Determine the array of extensions that should be used to resolve modules.
    */
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx', '.json', '.wasm'],
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
     alias: {
       superagent: 'superagent/lib/client.js',
@@ -49,12 +49,14 @@ export default {
   },
   resolveLoader: { },
 
+  optimization: {
+    moduleIds: 'named'
+  },
+
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production'
     }),
-
-    new webpack.NamedModulesPlugin()
   ],
 
   externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
