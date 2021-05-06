@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.35.0-control-iq.7",
+  "version": "2.35.0-control-iq.8",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
