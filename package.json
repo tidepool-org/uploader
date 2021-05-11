@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.34.0-relion.3",
+  "version": "2.35.0-glucocard-shine.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
