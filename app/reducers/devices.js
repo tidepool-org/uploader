@@ -44,6 +44,20 @@ const devices = {
     source: {type: 'device', driverId: 'ReliOnPremier'},
     enabled: {mac: true, win: true, linux: true}
   },
+  glucocardshine: {
+    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    name: 'GLUCOCARD Shine & Shine XL',
+    key: 'glucocardshine',
+    source: {type: 'device', driverId: 'GlucocardShine'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  glucocardshinehid: {
+    instructions: 'Make sure the meter is switched off and plug in with micro-USB cable',
+    name: 'GLUCOCARD Shine Connex & Shine Express',
+    key: 'glucocardshinehid',
+    source: {type: 'device', driverId: 'GlucocardShineHID'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
     image: {
