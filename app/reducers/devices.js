@@ -44,6 +44,13 @@ const devices = {
     source: {type: 'device', driverId: 'ReliOnPremier'},
     enabled: {mac: true, win: true, linux: true}
   },
+  glucocardexpression: {
+    instructions: 'Plug in meter with cable and set meter to PC Link Mode',
+    name: 'GLUCOCARD Expression',
+    key: 'glucocardexpression',
+    source: {type: 'device', driverId: 'GlucocardExpression'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   glucocardshine: {
     instructions: 'Plug in meter with cable and make sure the meter is switched on',
     name: 'GLUCOCARD Shine & Shine XL',
