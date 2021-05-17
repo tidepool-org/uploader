@@ -31,35 +31,39 @@ const devices = {
     enabled: {mac: true, win: false, linux: true}
   },
   caresens: {
-    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'CareSens N Premier & Dual',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
   },
   relionpremier: {
-    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'ReliOn Premier (BLU, Voice & Classic)',
     key: 'relionpremier',
     source: {type: 'device', driverId: 'ReliOnPremier'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardexpression: {
-    instructions: 'Plug in meter with cable and set meter to PC Link Mode',
+    instructions: {
+                    text: i18n.t('Plug in meter with cable and set meter to'),
+                    linkText: i18n.t('PC Link Mode'),
+                    link: 'https://support.tidepool.org', // TODO: replace with support article
+                  },
     name: 'GLUCOCARD Expression',
     key: 'glucocardexpression',
     source: {type: 'device', driverId: 'GlucocardExpression'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardshine: {
-    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'GLUCOCARD Shine & Shine XL',
     key: 'glucocardshine',
     source: {type: 'device', driverId: 'GlucocardShine'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardshinehid: {
-    instructions: 'Make sure the meter is switched off and plug in with micro-USB cable',
+    instructions: i18n.t('Make sure the meter is switched off and plug in with micro-USB cable'),
     name: 'GLUCOCARD Shine Connex & Shine Express',
     key: 'glucocardshinehid',
     source: {type: 'device', driverId: 'GlucocardShineHID'},
