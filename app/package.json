@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.35.0-glucocard-shine.1",
+  "version": "2.35.0-glucocard.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
