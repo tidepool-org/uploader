@@ -189,16 +189,15 @@ export default merge(baseConfig, {
           }
         }]
       },
-
       {
         test: /\.wasm$/,
         type: 'javascript/auto',
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          mimetype: 'application/wasm',
-          publicPath: 'dist/'
-        }
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        }]
       }
 
     ]
