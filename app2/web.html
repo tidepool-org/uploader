@@ -17,7 +17,20 @@
     </script>
   </head>
   <body>
-    <div id="app">
+    <form id="login">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+      </div>
+
+      <div>
+          <label for="pass">Password:</label>
+          <input type="password" id="pass" name="password">
+      </div>
+
+      <input type="submit" value="Sign in">
+    </form>
+    <div id="app" hidden>
       <button id="connect">Connect</button>
     </div>
     <script>
