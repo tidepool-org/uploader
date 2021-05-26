@@ -58,4 +58,7 @@ export default {
   ],
 
   // externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
+  externals: {
+    usb: 'usb'
+  }
 };
