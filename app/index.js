@@ -7,8 +7,9 @@ import builder from '../lib/objectBuilder';
 const button = document.getElementById('connect');
 const login = document.getElementById('login');
 const app = document.getElementById('app');
+const progressBar = document.getElementById('progressBar');
 
-const driverId = 'Tandem';
+const driverId = 'BayerContourNext';
 const driverManifest = _.get(driverManifests, driverId);
 
 const filters = driverManifest.usb.map(({vendorId, productId}) => ({
@@ -21,6 +22,7 @@ const options = {
   timezone: 'Europe/London',
   version: 'uploader web2',
   builder: builder(),
+  progress: makeProgress(),
 };
 
 const config = {
@@ -60,6 +62,12 @@ login.addEventListener('submit', (event) => {
 
   event.preventDefault();
 });
+
+function makeProgress() {
+  return (step, percentage, isFirstUpload) => {
+    progressBar.value = percentage;
+  };
+}
 
 function initUpload() {
   device.init(options, () => {
