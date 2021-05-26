@@ -88,7 +88,16 @@
     "sundial": "1.7.0-update-deps.1",
     "tidepool-platform-client": "0.45.0",
     "usb-cdc-acm": "0.1.1",
-    "uuid": "7.0.3"
+    "uuid": "7.0.3",
+    "drivelist": "9.2.4",
+    "keytar": "5.6.0",
+    "node-hid": "2.1.1",
+    "@ronomon/direct-io": "3.0.1",
+    "usb": "1.7.1",
+    "node-abi": "2.28.0"
+  },
+  "resolutions": {
+    "node-abi": "2.28.0"
   },
   "browserslist": "last 2 electron major versions",
   "bin": {
@@ -188,6 +197,10 @@
     "webpack-hot-middleware": "2.25.0",
     "webpack-merge": "4.2.2",
     "xmlbuilder": "15.1.1"
+  },
+  "optionalDependencies": {
+    "node-mtp": "0.3.15",
+    "winreg": "1.2.4"
   },
   "devEngines": {
     "node": ">=7.9.x",
