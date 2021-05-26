@@ -8,14 +8,9 @@ const button = document.getElementById('connect');
 const login = document.getElementById('login');
 const app = document.getElementById('app');
 const progressBar = document.getElementById('progressBar');
+const select = document.getElementById('devices');
 
-const driverId = 'BayerContourNext';
-const driverManifest = _.get(driverManifests, driverId);
-
-const filters = driverManifest.usb.map(({vendorId, productId}) => ({
-  usbVendorId: vendorId,
-  usbProductId: productId
-}));
+let driverId = 'BayerContourNext';
 
 const options = {
   api,
@@ -54,6 +49,8 @@ login.addEventListener('submit', (event) => {
         options.targetId = loginData.userid;
         options.groupId = loginData.userid;
 
+        populateDevices();
+
         login.setAttribute('hidden', '');
         app.removeAttribute('hidden');
       }
@@ -69,7 +66,7 @@ function makeProgress() {
   };
 }
 
-function initUpload() {
+function initUpload(driverId) {
   device.init(options, () => {
     device.detect(driverId, options, (error, deviceInfo) => {
       if (deviceInfo !== undefined) {
@@ -87,8 +84,31 @@ function initUpload() {
   });
 }
 
+function populateDevices() {
+  for (const driver of Object.keys(driverManifests)) {
+    const opt = document.createElement('option');
+    opt.value = driver;
+    opt.text = driver;
+
+    if (driver === driverId) {
+      opt.setAttribute('selected', '');
+    }
+    select.add(opt, null);
+  }
+}
+
+select.addEventListener('change', () => {
+  driverId = select.options[select.selectedIndex].value;
+});
+
 button.addEventListener('click', async() => {
 
+  const driverManifest = _.get(driverManifests, driverId);
+
+  const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+    usbVendorId: vendorId,
+    usbProductId: productId
+  }));
 
   if (driverManifest && driverManifest.mode === 'serial') {
     try {
@@ -102,15 +122,13 @@ button.addEventListener('click', async() => {
             && driverManifest.usb[j].productId === usbProductId) {
               console.log('Device has already been granted permission');
               options.port = existingPermissions[i];
+              options.vendorId = driverManifest.usb[j].vendorId;
+              options.productId = driverManifest.usb[j].productId;
           }
         }
       }
 
-      if (options.port == null) {
-        options.port = await navigator.serial.requestPort({ filters: filters });
-      }
-
-      initUpload();
+      initUpload(driverId);
     } catch (err) {
       console.log('Error:', err);
     }
@@ -136,7 +154,7 @@ button.addEventListener('click', async() => {
         throw new Error('No device was selected.');
       }
 
-      initUpload();
+      initUpload(driverId);
     } catch (err) {
       console.log('Error:', err);
     }

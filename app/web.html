@@ -6,15 +6,9 @@
     <script>
       (function() {
         process = { env: { HOT: true } };
-        if (!process.env.HOT) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = './dist/style.css';
-          // HACK: Writing the script path should be done with webpack
-          document.getElementsByTagName('head')[0].appendChild(link);
-        }
       }());
     </script>
+    <link rel="shortcut icon" href="icon.ico">
   </head>
   <body>
     <form id="login">
@@ -31,6 +25,7 @@
       <input type="submit" value="Sign in">
     </form>
     <div id="app" hidden>
+      <select id="devices"></select>
       <progress id="progressBar" value="0" max="100"></progress>
       <button id="connect">Upload</button>
     </div>
