@@ -122,8 +122,6 @@ button.addEventListener('click', async() => {
             && driverManifest.usb[j].productId === usbProductId) {
               console.log('Device has already been granted permission');
               options.port = existingPermissions[i];
-              options.vendorId = driverManifest.usb[j].vendorId;
-              options.productId = driverManifest.usb[j].productId;
           }
         }
       }
