@@ -14,7 +14,7 @@
 
   - `[x]` scheduled basal
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
-    - `[x]` name of basal schedule on each scheduled basal rate interval
+    - `[ ]` name of basal schedule on each scheduled basal rate interval
     - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[ ]` manual temp basal
     - `[ ]` basal rate intervals with a start time, duration, and rate delivered
@@ -32,6 +32,8 @@
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+- Temp basals cannot be distinguished from scheduled basals, so are recorded as scheduled basals.
 
 #### Boluses
 
@@ -64,9 +66,6 @@ No Tidepool data model yet:
 
 Device-specific? (Add any device-specific notes/additions here.)
 
-#### CBG
-
-(See [the CGM checklist](CGMChecklist.md) instead.)
 
 #### Device Events
 
@@ -213,10 +212,12 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
     - `[x]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
     - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
-  - `[x]` date & time settings changes
+  - `[ ]` date & time settings changes
   - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+The device does not store time changes, so UTC bootstrapping is not possible.
 
 ### No Tidepool Data Model Yet
 
