@@ -17,6 +17,7 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [OneTouch UltraMini (BGM)](oneTouchUltraMini.md)
    * [OneTouch Verio, Verio Flex and Verio Reflect (BGM))](oneTouchVerio.md)
    * [OneTouch VerioIQ (BGM)](oneTouchVerioIQ.md)
+   * [ReliOn Premier (BGM)](reliOnPremier.md)
    * [Tandem Insulin Pumps](tandem.md)
    * [Tandem (CGM data)](tandemCGM.md)
    * [Trividia TRUE METRIX (BGM)](trividiaTrueMetrix.md)
