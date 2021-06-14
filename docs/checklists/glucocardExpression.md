@@ -35,5 +35,3 @@ Choose one of the following:
   - `[x]` platform ingestion API
 
 ### Known implementation issues/TODOs
-
-- There's a mismatch between the spec and the meter in terms of updating the device time, so until we get an updated spec we can't update the meter time.

@@ -73,8 +73,7 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
          !this.isDevice('Tandem') &&
-         !this.isDevice('TrueMetrix') &&
-         !this.isDevice('GlucocardExpression')
+         !this.isDevice('TrueMetrix')
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
