@@ -1,12 +1,14 @@
 diff --git a/node_modules/builder-util-runtime/out/httpExecutor.js b/node_modules/builder-util-runtime/out/httpExecutor.js
-index 476421c..884d66e 100644
+index 476421c..00a8a19 100644
 --- a/node_modules/builder-util-runtime/out/httpExecutor.js
 +++ b/node_modules/builder-util-runtime/out/httpExecutor.js
-@@ -316,6 +316,7 @@ Please double check that your authentication token is correct. Due to security r
+@@ -316,7 +316,8 @@ Please double check that your authentication token is correct. Due to security r
  
    addTimeOutHandler(request, callback) {
      request.on("socket", socket => {
+-      socket.setTimeout(60 * 1000, () => {
 +      socket.setKeepAlive(true);
-       socket.setTimeout(60 * 1000, () => {
++      socket.setTimeout(3 * 60 * 1000, () => {
          request.abort();
          callback(new Error("Request timed out"));
+       });
