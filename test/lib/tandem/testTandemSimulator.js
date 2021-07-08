@@ -379,7 +379,7 @@ describe('tandemSimulator.js', () => {
       simulator.basal(basal1);
       simulator.basal(basal2);
       simulator.basal(basal3);
-      simulator.finalBasal();
+      simulator.finalize();
       expect(simulator.getEvents()).deep.equals([
         expectedFirstBasal,
         expectedSecondBasal,
@@ -614,7 +614,7 @@ describe('tandemSimulator.js', () => {
 
       simulator.basal(currBasal);
       simulator.newDay(newDay);
-      simulator.finalBasal();
+      simulator.finalize();
 
       var events = simulator.getEvents();
       var lastEvent = events[events.length - 1];
@@ -722,7 +722,7 @@ describe('tandemSimulator.js', () => {
       var expectedBasal = _.cloneDeep(temp);
       expectedBasal = expectedBasal.done();
       simulator.basal(temp);
-      simulator.finalBasal();
+      simulator.finalize();
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
 
@@ -752,7 +752,7 @@ describe('tandemSimulator.js', () => {
       simulator.tempBasal(tempBasalStart);
       simulator.basal(temp);
       simulator.tempBasal(tempBasalStop);
-      simulator.finalBasal();
+      simulator.finalize();
 
       expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
     });
@@ -777,7 +777,7 @@ describe('tandemSimulator.js', () => {
 
       simulator.tempBasal(tempBasalStart);
       simulator.basal(temp);
-      simulator.finalBasal();
+      simulator.finalize();
 
       expect(simulator.getEvents()).deep.equals([expectedTempBasal]);
     });
@@ -792,7 +792,7 @@ describe('tandemSimulator.js', () => {
       expectedBasal = expectedBasal.set('duration', 0).done();
       expectedBasal.annotations = [{code: 'basal/unknown-duration'}];
       simulator.basal(suspend);
-      simulator.finalBasal();
+      simulator.finalize();
       expect(simulator.getEvents()).deep.equals([expectedBasal]);
     });
   });
