@@ -271,7 +271,7 @@ These libraries are used in the following Node.js modules created by Tidepool an
 
 The LGPL is intended to allow use of libraries in applications that don’t necessarily distribute the source of the application. The LGPL has two requirements:
 
-- users must have access to the source code of the library 
+- users must have access to the source code of the library
 - users can make use of modified versions of the library
 
 To satisfy (1) we provide links to the relevant code repositories. To satisfy (2) we dynamically link to the library, so that it’s possible to swap it out for another version of the library.
@@ -292,4 +292,3 @@ If your EULA claims ownership over the code, you have to explicitly mention that
 
 - [LGPL v3 License Text](https://www.gnu.org/licenses/lgpl.html) (on gnu.org)
 - [LGPL on Wikipedia](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License)
-
