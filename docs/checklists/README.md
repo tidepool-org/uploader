@@ -9,6 +9,8 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [Ascensia/Bayer Contour Next (BGM)](bayerContourNext.md)
    * [Dexcom CGM](dexcom.md)
    * [Insulet OmniPod Insulin Delivery System](insuletOmniPod.md)
+   * [GLUCOCARD Shine, Shine XL, Shine Connex & Shine Express (GBM)](glucocardShine.md)
+   * [GLUCOCARD Expression (BGM)](glucocardExpression.md)
    * [Medtronic 5/7-series (pump data)](medtronic.md)
    * [Medtronic 5/7-series (CGM data)](medtronicCGM.md)
    * [Medtronic 6-series (pump data)](medtronic600.md)
