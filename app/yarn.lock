@@ -411,11 +411,6 @@ node-gyp-build@4.2.0:
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.0.tgz#2c2b05f461f4178641a6ce2d7159f04094e9376d"
   integrity sha512-4oiumOLhCDU9Rronz8PZ5S4IvT39H5+JEv/hps9V8s7RSLhsac0TCP78ulnHXOo8X1wdpPiTayGlM1jr4IbnaQ==
 
-node-gyp-build@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.1.tgz#f28f0d3d3ab268d48ab76c6f446f19bc3d0db9dc"
-  integrity sha512-XyCKXsqZfLqHep1hhsMncoXuUNt/cXCjg1+8CLbu69V1TKuPiOeSGbL9n+k/ByKH8UT0p4rdIX8XkTRZV0i7Sw==
-
 node-hid@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.1.0.tgz#944adb5a4be8eb21f8b5d2e39583120186a4425b"
@@ -424,14 +419,6 @@ node-hid@1.1.0:
     bindings "^1.5.0"
     nan "^2.14.0"
     prebuild-install "^5.3.3"
-
-node-mtp@0.3.15:
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/node-mtp/-/node-mtp-0.3.15.tgz#1fac8ab796ee920e4670d89f33801d57c7ce454e"
-  integrity sha512-puHG2uzzPT164wNl0xgs/8fuOeYGHnVtWjXA0fGdkUpi8diEdPFR7dUcGue4VDxbCiSCtvvYkxFu61HpT2GeXw==
-  dependencies:
-    napi-macros "2.0.0"
-    node-gyp-build "4.2.1"
 
 noop-logger@^0.1.1:
   version "0.1.1"

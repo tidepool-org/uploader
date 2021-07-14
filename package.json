@@ -62,7 +62,6 @@
     "is-electron": "2.2.0",
     "lodash": "4.17.21",
     "lzo-decompress": "1.0.1",
-    "node-powershell": "4.0.0",
     "os-name": "3.1.0",
     "pl2303": "0.0.5",
     "plist": "3.0.1",

@@ -19,7 +19,6 @@
     "lzo-decompress": "1.0.1"
   },
   "optionalDependencies": {
-    "node-mtp": "0.3.15",
     "winreg": "1.2.4"
   }
 }
