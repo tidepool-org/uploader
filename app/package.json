@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.37.1-dash-mtp-fixes.5",
+  "version": "2.37.1-dash-mtp-fixes.6",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
