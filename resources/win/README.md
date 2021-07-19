@@ -47,7 +47,6 @@ Download the signed drivers from the hardware portal and update the `resources/w
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\ser2pl64.sys
 	signtool verify /kp /v /c tidepoolvcp.cat i386\ser2pl.sys
 	signtool verify /kp /v /c tidepoolusb.cat amd64\wdfcoinstaller01009.dll
-	signtool verify /kp /v /c winusbinstallation.cat x64\wdfcoinstaller01011.dll
 
 ## Notes
 
