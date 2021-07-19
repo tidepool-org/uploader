@@ -178,6 +178,17 @@ export default merge.smart(baseConfig, {
         use: [{
           loader: 'url-loader'
         }]
+      },
+
+      {
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        }]
       }
     ]
   },
