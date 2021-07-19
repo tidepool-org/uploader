@@ -1,10 +1,10 @@
 [Version]
 Signature   = "$Windows NT$"
-Class       = USBDevice
+Class       = USBDevices
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %ManufacturerName%
 CatalogFile = WinUSBInstallation.cat
-DriverVer   = 09/04/2012,13.54.20.543
+DriverVer   = 07/19/2021,1.0.0.0
 
 ; ========== Manufacturer/Models sections ===========
 
@@ -27,9 +27,8 @@ AddReg = ClassInstall_AddReg
 
 [ClassInstall_AddReg]
 HKR,,,,%ClassName%
-HKR,,NoInstallClass,,1
-HKR,,IconPath,%REG_MULTI_SZ%,"%systemroot%\system32\setupapi.dll,-20"
-HKR,,LowerLogoVersion,,5.2
+HKR,,Icon,,"-20"
+
 
 ; =================== Installation ===================
 
@@ -39,18 +38,54 @@ Needs   = WINUSB.NT
 
 [USB_Install.Services]
 Include = winusb.inf
-Needs   = WINUSB.NT.Services
+AddService = WinUSB,0x00000002,WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName     = %WinUSB_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+[USB_Install.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+
+[WinUSB_Install]
+KmdfLibraryVersion=1.11
 
 [USB_Install.HW]
-AddReg = Dev_AddReg
+AddReg=Dev_AddReg
 
 [Dev_AddReg]
 HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
+
+[USB_Install.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01011.dll,WdfCoInstaller",
+
+[CoInstallers_CopyFiles]
+WdfCoInstaller01011.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles=11
+
+; ================= Source Media Section =====================
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+WdfCoInstaller01011.dll=1
 
 ; =================== Strings ===================
 
 [Strings]
 ManufacturerName              = "Tidepool"
 ClassName                     = "WinUSB devices"
+WinUSB_SvcDesc                = "WinUSB Device"
+DiskName                      = "Tidepool USB Driver Installation Disk"
 USB\MyCustomDevice.DeviceDesc = "Tidepool USB driver (WinUSB)"
 REG_MULTI_SZ = 0x00010000
