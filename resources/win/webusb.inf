@@ -20,6 +20,17 @@ DriverVer   = 09/04/2012,13.54.20.543
 [Standard.NTamd64]
 %USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
 
+; ========== Class definition (for Windows 8 and earlier versions)===========
+
+[ClassInstall32]
+AddReg = ClassInstall_AddReg
+
+[ClassInstall_AddReg]
+HKR,,,,%ClassName%
+HKR,,NoInstallClass,,1
+HKR,,IconPath,%REG_MULTI_SZ%,"%systemroot%\system32\setupapi.dll,-20"
+HKR,,LowerLogoVersion,,5.2
+
 ; =================== Installation ===================
 
 [USB_Install]
