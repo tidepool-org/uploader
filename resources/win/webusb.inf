@@ -9,12 +9,9 @@ DriverVer   = 07/19/2021,1.0.0.0
 ; ========== Manufacturer/Models sections ===========
 
 [Manufacturer]
-%ManufacturerName% = Standard,NTx86,NTia64,NTamd64
+%ManufacturerName% = Standard,NTx86,NTamd64
 
 [Standard.NTx86]
-%USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
-
-[Standard.NTia64]
 %USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
 
 [Standard.NTamd64]
@@ -75,10 +72,14 @@ CoInstallers_CopyFiles=11
 ; ================= Source Media Section =====================
 
 [SourceDisksNames]
-1 = %DiskName%
+1 = %DiskName%,,,\x86
+2 = %DiskName%,,,\x64
 
-[SourceDisksFiles]
+[SourceDisksFiles.x86]
 WdfCoInstaller01011.dll=1
+
+[SourceDisksFiles.amd64]
+WdfCoInstaller01011.dll=2
 
 ; =================== Strings ===================
 
