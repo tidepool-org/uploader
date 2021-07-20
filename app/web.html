@@ -25,7 +25,7 @@
         const script = document.createElement('script');
         const port = process.env.PORT || 3005;
         script.src = (process.env.HOT)
-          ? 'https://192.168.0.16:' + port + '/renderer.dev.js'
+          ? 'https://192.168.1.139:' + port + '/renderer.dev.js'
           : './dist/renderer.prod.js';
         document.body.appendChild(script);
       }
