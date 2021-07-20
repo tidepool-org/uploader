@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.35.0-electron-v12-and-web-serial.7",
+  "version": "2.36.1-lzo-wasm.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -63,7 +63,7 @@
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.0",
     "lodash": "4.17.21",
-    "lzo-decompress": "1.0.1",
+    "lzo-wasm": "0.0.4",
     "node-powershell": "4.0.0",
     "os-name": "4.0.0",
     "pl2303": "0.0.7",

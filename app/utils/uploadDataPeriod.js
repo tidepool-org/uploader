@@ -115,10 +115,12 @@ if (env.browser) {
     },
     PERIODS,
     setPeriodMedtronic600: function(toPeriod) {
+      periodMedtronic600 = toPeriod;
       localStorage.setItem('uploadDataPeriodMedtronic600', toPeriod);
       return periodMedtronic600;
     },
     setPeriodGlobal: function(toPeriod) {
+      period = toPeriod;
       localStorage.setItem('uploadDataPeriodGlobal', toPeriod);
       return period;
     }
