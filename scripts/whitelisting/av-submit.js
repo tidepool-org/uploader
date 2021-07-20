@@ -98,7 +98,7 @@ function sendToKaspersky(downloadURL) {
       });
 
       c.connect({
-        host : 'whitelist1.kaspersky-labs.com',
+        host : 'allowlist.kaspersky-labs.com',
         user : 'wl-Tidepool',
         password: process.env.FTP_AV_PASSWORD_TIDEPOOL
       });
