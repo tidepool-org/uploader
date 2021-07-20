@@ -73,7 +73,7 @@ export default class Upload extends Component {
       LABEL_IMPORT: i18n.t('Import'),
       LABEL_OK: i18n.t('OK'),
       LABEL_FAILED: i18n.t('Try again'),
-      LAST_UPLOAD: i18n.t('Last upload: '),
+      LAST_UPLOAD: i18n.t('Last upload'),
       DEVICE_UNKNOWN: i18n.t('Unknown device'),
       UPLOAD_COMPLETE: i18n.t('Done!'),
       UPLOAD_PROGRESS: i18n.t('Uploading... '),
@@ -640,6 +640,11 @@ export default class Upload extends Component {
         </div>
       );
     }
+    if (_.isObject(details)) {
+      return (
+        <div className={styles.detail}>{details.text} <a href={details.link} target="_blank">{i18n.t(details.linkText)}</a></div>
+      );
+    }
     return (
       <div className={styles.detail}>{i18n.t(details)}</div>
     );
@@ -676,7 +681,7 @@ export default class Upload extends Component {
 
     let time = sundial.formatCalendarTime(lastUpload.finish);
     return (
-      <div className={styles.detail}>{this.props.text.LAST_UPLOAD + time}</div>
+      <div className={styles.detail}>{this.props.text.LAST_UPLOAD + ': ' + time}</div>
     );
   }
 
