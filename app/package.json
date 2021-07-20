@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.34.0",
+  "version": "2.37.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
@@ -18,6 +18,7 @@
     "lzo-decompress": "1.0.1"
   },
   "optionalDependencies": {
+    "node-mtp": "0.3.15",
     "winreg": "1.2.4"
   }
 }
