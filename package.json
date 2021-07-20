@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.36.1-lzo-wasm.1",
+  "version": "2.37.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -122,7 +122,6 @@
     "@babel/register": "7.13.8",
     "@babel/runtime-corejs2": "7.13.10",
     "@jest-runner/electron": "3.0.1",
-    "@ronomon/direct-io": "3.0.1",
     "aws-sdk": "2.863.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "26.6.3",
