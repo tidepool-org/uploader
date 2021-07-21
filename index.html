@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="docs/StartHere.html" />
+    <link rel="next" href="docs/" />
     
     
 
@@ -100,9 +100,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="docs/StartHere.html">
+        <li class="chapter " data-level="1.2" data-path="docs/">
             
-                <a href="docs/StartHere.html">
+                <a href="docs/">
             
                     
                     Tidepool uploader developer guide
@@ -508,7 +508,7 @@
                 <a href="docs/checklists/oneTouchVerio.html">
             
                     
-                    OneTouch Verio & Verio Flex meters
+                    OneTouch Verio, Verio Flex and Verio Reflect meters
             
                 </a>
             
@@ -761,11 +761,10 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="tidepool-uploader">Tidepool Uploader</h1>
-<p><a href="https://greenkeeper.io/" target="_blank"><img src="https://badges.greenkeeper.io/tidepool-org/chrome-uploader.svg" alt="Greenkeeper badge"></a></p>
-<p><a href="https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master" target="_blank"><img src="https://circleci.com/gh/tidepool-org/chrome-uploader/tree/master.svg?style=shield" alt="CircleCI"></a>
-<a href="https://ci.appveyor.com/project/krystophv/chrome-uploader/branch/master" target="_blank"><img src="https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true" alt="Build status"></a></p>
+<p><a href="https://circleci.com/gh/tidepool-org/uploader/tree/master" target="_blank"><img src="https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield" alt="CircleCI"></a>
+<a href="https://ci.appveyor.com/project/krystophv/uploader/branch/master" target="_blank"><img src="https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true" alt="Build status"></a></p>
 <p>This is an <a href="https://electron.atom.io/" target="_blank">Electron App</a> that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer&apos;s USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.</p>
-<p>This README is focused on just the details of getting the uploader running locally. For more detailed information aimed at those working on the development of the uploader, please see the <a href="docs/StartHere.html">developer guide</a>.</p>
+<p>This README is focused on just the details of getting the uploader running locally. For more detailed information aimed at those working on the development of the uploader, please see the <a href="docs/StartHere.md">developer guide</a>.</p>
 <h4 id="table-of-contents">Table of contents</h4>
 <ul>
 <li><a href="#how-to-set-it-up">Set Up</a></li>
@@ -773,13 +772,14 @@
 <li><a href="#tests">Tests</a></li>
 <li><a href="#linting--code-style">Linting &amp; Code Style</a></li>
 <li><a href="#docs">Docs</a></li>
-<li><a href="#publishing-to-the-develstaging-testing--development-chrome-store-account-or-production">Publishing</a></li>
+<li><a href="#publishing">Publishing</a></li>
+<li><a href="#use-of-lgpl-libraries">Use of LGPL libraries</a></li>
 </ul>
 <hr>
 <h2 id="how-to-set-it-up">How to set it up</h2>
 <ol>
 <li>Clone this repository.</li>
-<li>Make sure you have node v8.x installed. If you are managing node installations with <a href="https://github.com/creationix/nvm" title="GitHub: nvm" target="_blank"><code>nvm</code></a>, which we <strong>highly recommend</strong>, you can just do <code>nvm use</code> when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the <code>.nvmrc</code> file.)</li>
+<li>Make sure you have node v12.x installed. If you are managing node installations with <a href="https://github.com/creationix/nvm" title="GitHub: nvm" target="_blank"><code>nvm</code></a>, which we <strong>highly recommend</strong>, you can just do <code>nvm use</code> when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the <code>.nvmrc</code> file.)</li>
 <li>Run <code>npm install</code> or, preferably, <code>yarn</code></li>
 <li>Set the config for the environment you want to target (see <a href="#config">Config</a> below)</li>
 <li>Run the following command:<pre><code class="lang-bash">$ npm run dev
@@ -789,6 +789,24 @@ or<pre><code class="lang-bash">$ yarn dev
 (This will bundle the application with webpack and watch for changes. When it stops printing output you can continue to the next step.)</li>
 </ol>
 <p><strong>NB:</strong> React components and CSS will hot load after changes (this can be confirmed by watching the JavaScript console), but changes to device drivers and other code outside of the React components will not - use &apos;Reload&apos; to reload after such changes. If the compilation/hot reload of a component fails for any reason (e.g. from a syntax error) you may need to reinitialize the hot loader by reloading the application.</p>
+<h3 id="docker-for-linux">Docker for Linux</h3>
+<p>If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distrubutions you can try to build a local docker image which is based on Ubuntu 18.04 and use the yarn/npm commands interactively.</p>
+<p><strong>NOTE:</strong> You need to add udev rules to your host for uploads to actually work. You can find the udev rules <a href="resources/linux/51-tidepool-uploader.rules">here</a>. The file should be placed in <code>/etc/udev/rules.d/</code> and the host should be rebooted.</p>
+<ol>
+<li><p>Build the image
+ <code>docker-compose build</code></p>
+</li>
+<li><p>Run it
+ <code>docker-compose up -d</code></p>
+</li>
+<li><p>Work with it interactively.</p>
+<p> Even if you kill the Tidepool Uploader GUI the container will continue to run. You can work with the yarn commands like you would locally by using docker exec.</p>
+<p> <strong>Examples</strong></p>
+<p> Interactively select the yarn target: <code>docker exec -it uploader bash -c &quot;yarn run&quot;</code></p>
+<p> Rebuild: <code>docker exec -it uploader bash -c &quot;yarn build&quot;</code></p>
+<p> Start the Dev GUI: <code>docker exec -it uploader bash -c &quot;yarn dev&quot;</code></p>
+</li>
+</ol>
 <h2 id="config">Config</h2>
 <p>Configuration values (for example the URL of the Tidepool Platform) are set via environment variables. If you need to add a config value, modify the <code>.config.js</code> file. If you need to read a config value inside the app, use <code>var config = require(&apos;./lib/config&apos;)</code>. To set config values (do this before building the app), you can use Shell scripts that export environment variables (see config/local.sh for an example that exports the appropriate variables when <a href="http://developer.tidepool.org/starting-up-services/" target="_blank">running the whole Tidepool platform locally using runservers</a>), for example:</p>
 <pre><code class="lang-bash">$ <span class="hljs-built_in">source</span> config/local.sh
@@ -818,12 +836,11 @@ $ yarn start
 <p>Docs reside in several places in this repository, such as <code>docs/</code> and <code>lib/drivers/docs</code>. They are built as a static site with <a href="https://www.gitbook.com/" title="GitBook" target="_blank">GitBook</a> and served at <a href="http://developer.tidepool.org/" target="_blank">developer.tidepool.org</a> via <a href="https://pages.github.com/" title="GitHub Pages" target="_blank">GitHub Pages</a>.</p>
 <p>See <a href="http://developer.tidepool.org/docs/" target="_blank">this guidance on our use of GitBook at Tidepool</a>.</p>
 <h2 id="publishing">Publishing</h2>
-<p>Release management and application updates are handled via the Github provider in the <code>electron-builder</code> project. The recommended workflow for a new production release is as follows:</p>
+<p>This section is Tidepool-specific. Release management and application updates are handled via the Github provider in the <code>electron-builder</code> project. The recommended workflow for a new production release is as follows:</p>
 <ol>
 <li>When you&apos;re working on what might become a new release, increment the version number in <code>package.json</code> and <code>app/package.json</code> and commit/push (on the branch)</li>
 <li>The CI server(s) will create a draft release in Github with the title of the version from the <code>package.json</code> file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)</li>
 <li>When your pull request is approved and merged to <code>master</code>, go to the draft release and type in the version for the tag name, ensure that you&apos;re targeting the <code>master</code> branch, fill out the release notes and publish the release. This will create the tag for you.</li>
-<li>After you&apos;ve smoke tested the release, run <code>yarn av-whitelist</code> to submit the release to Kaspersky Labs for whitelisting.  The script generates an XML file and uploads it to their FTP. It requires a password that can be set using the <code>FTP_AV_PASSWORD_TIDEPOOL</code> environment variable and is stored in 1Password. </li>
 </ol>
 <p>For a non-production release (alpha, dev, etc.)</p>
 <ol>
@@ -832,6 +849,79 @@ $ yarn start
 <li>When you want to publish your non-production release, go to your draft and type in the version for the tag name, ensure that you&apos;re targeting the branch that you&apos;re currently releasing from, mark the release as a <code>pre-release</code>, fill out the release notes and publish the release. This will create the tag for you on the branch that you want.</li>
 </ol>
 <p>The Uploader has a self-update mechanism that will look at the latest release and compare versions, downloading and prompting the user to update if a newer version is available. For production releases, only official releases will be considered. For non-production releases (<code>-alpha</code>, <code>-beta.2</code>, etc.) releases marked as <code>pre-release</code> will also be checked, matching against the string portion of the post-hyphen version segment. For more detail about this behavior see <a href="https://github.com/electron-userland/electron-builder/wiki/Auto-Update#appupdater--internaleventemitter" target="_blank">the electron-builder docs concerning auto-update options</a></p>
+<h3 id="ci-server-environment-variables">CI server environment variables</h3>
+<p>We use the following environment variables on the CI servers:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>CI Server</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APPLEID</td>
+<td>CircleCI</td>
+<td>Notarization</td>
+</tr>
+<tr>
+<td>APPLEIDPASS</td>
+<td>CircleCI</td>
+<td>Notarization</td>
+</tr>
+<tr>
+<td>AWS_ACCESS_KEY_ID</td>
+<td>Both</td>
+<td>S3 builds and AV e-mails</td>
+</tr>
+<tr>
+<td>AWS_SECRET_ACESS_KEY</td>
+<td>Both</td>
+<td>S3 builds and AV e-mails</td>
+</tr>
+<tr>
+<td>CSC_FOR_PULL_REQUEST</td>
+<td>Both</td>
+<td><code>true</code>, code signing for PR</td>
+</tr>
+<tr>
+<td>CSC_KEY_PASSWORD</td>
+<td>Both</td>
+<td>Certificate password</td>
+</tr>
+<tr>
+<td>CSC_LINK</td>
+<td>Both</td>
+<td>Code signing certificate</td>
+</tr>
+<tr>
+<td>DEBUG</td>
+<td>CircleCI</td>
+<td>Set to <code>electron-builder</code></td>
+</tr>
+<tr>
+<td>GH_TOKEN</td>
+<td>Both</td>
+<td>For GitHub builds</td>
+</tr>
+<tr>
+<td>PUBLISH_FOR_PULL_REQUEST</td>
+<td>Both</td>
+<td><code>true</code>, build artefact for PR</td>
+</tr>
+<tr>
+<td>ROLLBAR_POST_TOKEN</td>
+<td>Both</td>
+<td>Rollbar logging</td>
+</tr>
+<tr>
+<td>FTP_AV_PASSWORD_TIDEPOOL</td>
+<td>Appveyor</td>
+<td>AV submission</td>
+</tr>
+</tbody>
+</table>
 <h2 id="editor-configuration">Editor Configuration</h2>
 <p><strong>Atom</strong></p>
 <pre><code class="lang-bash">apm install editorconfig es6-javascript javascript-snippets linter linter-eslint language-babel autocomplete-modules file-icons
@@ -885,6 +975,8 @@ $ <span class="hljs-built_in">set</span> UPGRADE_EXTENSIONS=1 &amp;&amp; npm run
 <p>To package apps with options:</p>
 <pre><code class="lang-bash">$ npm run package -- --[option]
 </code></pre>
+<p>To package the app on your local machine, you need to set the <code>ROLLBAR_POST_TOKEN</code> environment variable to send telemetry data to Rollbar. You can get one for free from <a href="https://rollbar.com" target="_blank">https://rollbar.com</a></p>
+<p>macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables <code>APPLEID</code> and <code>APPLEIDPASS</code>. Note that you need to set an app-specific password in <a href="https://appleid.apple.com" target="_blank">https://appleid.apple.com</a> for this to work.</p>
 <h2 id="further-commands">Further commands</h2>
 <p>To run the application without packaging run</p>
 <pre><code class="lang-bash">$ npm run build
@@ -903,6 +995,34 @@ $ npm run <span class="hljs-built_in">test</span><span class="hljs-_">-e</span>2
 <li>If a module is <code>import</code>ed by another module, include it in <code>dependencies</code> in <code>./package.json</code>.   See <a href="https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md" target="_blank">this ESLint rule</a>.</li>
 <li>Otherwise, modules used for building, testing and debugging should be included in <code>devDependencies</code> in <code>./package.json</code>.</li>
 </ol>
+<h2 id="use-of-lgpl-libraries">Use of LGPL libraries</h2>
+<p>Tidepool Uploader makes use of the following LGPL-licensed libraries:</p>
+<ul>
+<li>libmtp (<a href="http://libmtp.sourceforge.net/" target="_blank">http://libmtp.sourceforge.net/</a>)</li>
+<li>LZO implementation in libavutil, which is part of FFmpeg (<a href="https://github.com/FFmpeg/FFmpeg/tree/master/libavutil" target="_blank">https://github.com/FFmpeg/FFmpeg/tree/master/libavutil</a>)</li>
+</ul>
+<p>These libraries are used in the following Node.js modules created by Tidepool and are dependencies of the Tidepool Uploader:</p>
+<ul>
+<li><a href="https://github.com/tidepool-org/node-mtp" target="_blank">https://github.com/tidepool-org/node-mtp</a> (libmtp)</li>
+<li><a href="https://github.com/tidepool-org/lzo-decompress" target="_blank">https://github.com/tidepool-org/lzo-decompress</a> (libavutil)</li>
+</ul>
+<p>The LGPL is intended to allow use of libraries in applications that don&#x2019;t necessarily distribute the source of the application. The LGPL has two requirements:</p>
+<ul>
+<li>users must have access to the source code of the library </li>
+<li>users can make use of modified versions of the library</li>
+</ul>
+<p>To satisfy (1) we provide links to the relevant code repositories. To satisfy (2) we dynamically link to the library, so that it&#x2019;s possible to swap it out for another version of the library.</p>
+<h3 id="impact-on-tidepool">Impact on Tidepool</h3>
+<p>Compile FFmpeg ourselves to ensure that we&#x2019;re using the LGPL version and only include the minimal set of libraries
+Use dynamic linking (e.g. on Windows this means using a .dll, and on MacOS a .dylib) when linking to these libraries
+Mention that the software uses libraries from the FFmpeg project and libmtp under the LGPLv3, e.g. <code>This software uses code of &lt;a href=http://ffmpeg.org&gt;FFmpeg&lt;/a&gt; and &lt;a href=&#x201D;http://libmtp.sourceforge.net/&#x201D;&gt;libmtp&lt;/a&gt; licensed under the &lt;a href=a href=https://www.gnu.org/licenses/lgpl.html&gt;LGPLv3&lt;/a&gt; and its source can be downloaded &lt;a href=&#x201D;https://github.com/FFmpeg/FFmpeg/tree/master/libavutil&#x201D;&gt;here&lt;/a&gt; and &lt;a href=&#x201D;https://sourceforge.net/projects/libmtp/&#x201D;&gt;here&lt;/a&gt;</code></p>
+<h3 id="impact-on-3rd-parties">Impact on 3rd parties</h3>
+<p>If your EULA claims ownership over the code, you have to explicitly mention that you do not own FFmpeg or libmtp, and where the relevant owners can be found.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL v3 License Text</a> (on gnu.org)</li>
+<li><a href="https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License" target="_blank">LGPL on Wikipedia</a></li>
+</ul>
 
                                 
                                 </section>
@@ -931,7 +1051,7 @@ $ npm run <span class="hljs-built_in">test</span><span class="hljs-_">-e</span>2
             
                 
                 
-                <a href="docs/StartHere.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Tidepool uploader developer guide">
+                <a href="docs/" class="navigation navigation-next navigation-unique" aria-label="Next page: Tidepool uploader developer guide">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -942,7 +1062,7 @@ $ npm run <span class="hljs-built_in">test</span><span class="hljs-_">-e</span>2
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Tidepool uploader developer guide","level":"1.2","depth":1,"path":"docs/StartHere.md","ref":"docs/StartHere.md","articles":[{"title":"Overview of features","level":"1.2.1","depth":2,"path":"docs/guide/FeatureOverview.md","ref":"docs/guide/FeatureOverview.md","articles":[]},{"title":"App & directory structure","level":"1.2.2","depth":2,"path":"docs/guide/DirectoryStructure.md","ref":"docs/guide/DirectoryStructure.md","articles":[]},{"title":"Architecture","level":"1.2.3","depth":2,"path":"docs/guide/Architecture.md","ref":"docs/guide/Architecture.md","articles":[]},{"title":"Code style","level":"1.2.4","depth":2,"path":"docs/guide/CodeStyle.md","ref":"docs/guide/CodeStyle.md","articles":[]},{"title":"Application state via Redux","level":"1.2.5","depth":2,"path":"docs/state/README.md","ref":"docs/state/README.md","articles":[{"title":"Example state tree","level":"1.2.5.1","depth":3,"path":"docs/state/ExampleStateTree.md","ref":"docs/state/ExampleStateTree.md","articles":[]},{"title":"Glossary of state tree terms","level":"1.2.5.2","depth":3,"path":"docs/state/StateTreeGlossary.md","ref":"docs/state/StateTreeGlossary.md","articles":[]},{"title":"Custom middleware","level":"1.2.5.3","depth":3,"path":"docs/state/CustomMiddleware.md","ref":"docs/state/CustomMiddleware.md","articles":[]}]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-02-04T15:53:56.539Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T16:27:14.743Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Tidepool uploader developer guide","level":"1.2","depth":1,"path":"docs/README.md","ref":"docs/README.md","articles":[{"title":"Overview of features","level":"1.2.1","depth":2,"path":"docs/guide/FeatureOverview.md","ref":"docs/guide/FeatureOverview.md","articles":[]},{"title":"App & directory structure","level":"1.2.2","depth":2,"path":"docs/guide/DirectoryStructure.md","ref":"docs/guide/DirectoryStructure.md","articles":[]},{"title":"Architecture","level":"1.2.3","depth":2,"path":"docs/guide/Architecture.md","ref":"docs/guide/Architecture.md","articles":[]},{"title":"Code style","level":"1.2.4","depth":2,"path":"docs/guide/CodeStyle.md","ref":"docs/guide/CodeStyle.md","articles":[]},{"title":"Application state via Redux","level":"1.2.5","depth":2,"path":"docs/state/README.md","ref":"docs/state/README.md","articles":[{"title":"Example state tree","level":"1.2.5.1","depth":3,"path":"docs/state/ExampleStateTree.md","ref":"docs/state/ExampleStateTree.md","articles":[]},{"title":"Glossary of state tree terms","level":"1.2.5.2","depth":3,"path":"docs/state/StateTreeGlossary.md","ref":"docs/state/StateTreeGlossary.md","articles":[]},{"title":"Custom middleware","level":"1.2.5.3","depth":3,"path":"docs/state/CustomMiddleware.md","ref":"docs/state/CustomMiddleware.md","articles":[]}]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2021-07-20T09:14:41.822Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-07-21T15:09:50.108Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

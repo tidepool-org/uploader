@@ -102,9 +102,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../StartHere.html">
+        <li class="chapter " data-level="1.2" data-path="../">
             
-                <a href="../StartHere.html">
+                <a href="../">
             
                     
                     Tidepool uploader developer guide
@@ -510,7 +510,7 @@
                 <a href="../checklists/oneTouchVerio.html">
             
                     
-                    OneTouch Verio & Verio Flex meters
+                    OneTouch Verio, Verio Flex and Verio Reflect meters
             
                 </a>
             
@@ -773,6 +773,8 @@
 <p><em>The <code>allUsers</code> property is an object keyed by the user IDs of the logged-in user as well as all the PWDs the logged-in user has permissions to upload for. The information stored under each <code>userID</code> is all the account and profile information accessible to the logged-in user for that user.</em></p>
 <p>In essence, the <code>allUsers</code> object is where all user information accessible to the logged-in user is stored. Keeping all this information in one place keyed by <code>userId</code> allows us to only reference users by <code>userId</code> elsewhere in the state tree, thus maintaining a &quot;normalized&quot; state tree with a single source of truth for user-related information. (Cf. Dan Abramov&apos;s presentation of the &quot;normalization&quot; problem in the README for his <a href="https://github.com/gaearon/normalizr#the-problem" target="_blank">normalizr library</a>.) Whenever a component needs additional information (that is, beyond <code>userId</code>) about a user, that information can be retrieved via lookup under the <code>userId</code>.</p>
 <p>Examples of properties that may be encoded in <code>allUsers</code> for a particular user include <code>fullName</code>, <code>emails</code>, a <code>patient</code> object that itself includes the PWD&apos;s <code>birthday</code> and <code>diagnosisData</code>. Also see the <a href="ExampleStateTree.html">example state tree</a> for full examples.</p>
+<h3 id="memberships"><code>memberships</code></h3>
+<p>*The <code>memberships</code> property is an object keyed by the user IDs of the logged-in user as well as all the PWDs the logged-in user has some permissions on. Each entry contains a <code>permissions</code> object which in turn has keys representing various permissions, each of which will have an empty object and the existence of the key indicates the presence of that permission. Some permissions include <code>custodian</code>, <code>view</code> and <code>upload</code>.</p>
 <h4 id="loggedinuser"><code>loggedInUser</code></h4>
 <p><em>The property <code>loggedInUser</code> encodes the <code>userID</code> of the currently logged-in user.</em></p>
 <p>If no user is (yet) logged in, the value of <code>loggedInUser</code> is <code>null</code>.</p>
@@ -821,7 +823,7 @@
 <p><em>The property <code>blipUrls</code> is an object with three properties: <code>forgotPassword</code>, <code>signUp</code>, and <code>viewDataLink</code>, all URLs for Tidepool&apos;s webapp blip.</em></p>
 <p>The <code>forgotPassword</code> and <code>signUp</code> links are built as part of the app initialization step for the configured or chosen server environment (the default is production).</p>
 <p>The <code>viewDataLink</code> is built every time the <code>uploadTargetUser</code> is chosen or changed.</p>
-<p><strong>NB:</strong> Storing these URLs as state is not ideal. Both the forgot password and sign-up URLs are essentially <em>derived</em> state - derived from a combination of route paths (e.g., <code>/signup</code>), which are constants, and a single piece of state - the server environment. The <code>viewDataLink</code> is also derived state from a combination of route paths, the server environment, and the <code>uploadTargetUser</code>. For now, we are keeping these URLs in the state tree because we do <em>not</em> represent the server environment in the state tree. We don&apos;t represent the server environment in the state tree because we have code running separately from the main application (in the Chrome App&apos;s &quot;background page&quot;) that provides a hidden interface (for internal Tidepool use) for changing the server environment.</p>
+<p><strong>NB:</strong> Storing these URLs as state is not ideal. Both the forgot password and sign-up URLs are essentially <em>derived</em> state - derived from a combination of route paths (e.g., <code>/signup</code>), which are constants, and a single piece of state - the server environment. The <code>viewDataLink</code> is also derived state from a combination of route paths, the server environment, and the <code>uploadTargetUser</code>. For now, we are keeping these URLs in the state tree because we do <em>not</em> represent the server environment in the state tree.</p>
 <h4 id="devices"><code>devices</code></h4>
 <p><em>The <code>devices</code> property on the state tree is an object keyed by the <code>id</code> of each device (or data source) supported by the Tidepool Uploader.</em></p>
 <p> <code>devices</code> <em>almost</em> does not belong in the state tree at all, because it is <em>almost</em> a constant. However, it is subject to filtering based on operating system; this filtering happens as part of the app initialization step when a user launches the Tidepool Uploader. The property <code>enabled</code> - itself an object with <code>mac</code> and <code>win</code> as its keys - encodes the devices Tidepool currently support on each platform.</p>
@@ -894,7 +896,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Glossary of state tree terms","level":"1.2.5.2","depth":3,"next":{"title":"Custom middleware","level":"1.2.5.3","depth":3,"path":"docs/state/CustomMiddleware.md","ref":"docs/state/CustomMiddleware.md","articles":[]},"previous":{"title":"Example state tree","level":"1.2.5.1","depth":3,"path":"docs/state/ExampleStateTree.md","ref":"docs/state/ExampleStateTree.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/state/StateTreeGlossary.md","mtime":"2019-02-04T15:53:56.551Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T16:27:14.743Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Glossary of state tree terms","level":"1.2.5.2","depth":3,"next":{"title":"Custom middleware","level":"1.2.5.3","depth":3,"path":"docs/state/CustomMiddleware.md","ref":"docs/state/CustomMiddleware.md","articles":[]},"previous":{"title":"Example state tree","level":"1.2.5.1","depth":3,"path":"docs/state/ExampleStateTree.md","ref":"docs/state/ExampleStateTree.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/state/StateTreeGlossary.md","mtime":"2020-04-27T09:08:09.426Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-07-21T15:09:50.108Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

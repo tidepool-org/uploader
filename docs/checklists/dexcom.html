@@ -102,9 +102,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../StartHere.html">
+        <li class="chapter " data-level="1.2" data-path="../">
             
-                <a href="../StartHere.html">
+                <a href="../">
             
                     
                     Tidepool uploader developer guide
@@ -510,7 +510,7 @@
                 <a href="oneTouchVerio.html">
             
                     
-                    OneTouch Verio & Verio Flex meters
+                    OneTouch Verio, Verio Flex and Verio Reflect meters
             
                 </a>
             
@@ -870,7 +870,11 @@
 <li>alarm profile name (e.g., &quot;Attentive,&quot; &quot;Hypo Repeat,&quot; etc.)</li>
 <li>internal timestamp</li>
 </ul>
-<h4 id="bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
+<h4 id="user-events">User Events</h4>
+<pre><code>- `[x]` activity/exercise
+- `[x]` food (e.g., Dexcom allows logging carb events)
+- `[x]` notes/other events
+</code></pre><h4 id="bootstrapping-to-utc">&quot;Bootstrapping&quot; to UTC</h4>
 <ul>
 <li><code>[x]</code> index<ul>
 <li><code>[ ]</code> UTC timestamp (<em>Hey, one can dream!</em>) OR</li>
@@ -882,15 +886,6 @@
 <li><code>[x]</code> use <code>common.checkDeviceTime(currentDeviceTime, timezone, cb)</code> to check against server time</li>
 </ul>
 <p>Device-specific? (Add any device-specific notes/additions here.)</p>
-<h3 id="no-tidepool-data-model-yet">No Tidepool Data Model Yet</h3>
-<blockquote>
-<p><strong>NB:</strong> You can and should add to this section if there are other data types documented in the device&apos;s data protocol specification but not part of Tidepool&apos;s data model (yet).</p>
-</blockquote>
-<ul>
-<li><code>[-]</code> activity/exercise</li>
-<li><code>[-]</code> food (e.g., Dexcom allows logging carb events)</li>
-<li><code>[-]</code> notes/other events</li>
-</ul>
 <h3 id="tidepool-ingestion-api">Tidepool ingestion API</h3>
 <p>Choose one of the following:</p>
 <ul>
@@ -942,7 +937,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Dexcom CGM","level":"2.2.8","depth":2,"next":{"title":"Insulet OmniPod","level":"2.2.9","depth":2,"path":"docs/checklists/insuletOmniPod.md","ref":"docs/checklists/insuletOmniPod.md","articles":[]},"previous":{"title":"Ascensia/Bayer Contour Next meters","level":"2.2.7","depth":2,"path":"docs/checklists/bayerContourNext.md","ref":"docs/checklists/bayerContourNext.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/checklists/dexcom.md","mtime":"2018-11-20T11:01:19.807Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T16:27:14.743Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Dexcom CGM","level":"2.2.8","depth":2,"next":{"title":"Insulet OmniPod","level":"2.2.9","depth":2,"path":"docs/checklists/insuletOmniPod.md","ref":"docs/checklists/insuletOmniPod.md","articles":[]},"previous":{"title":"Ascensia/Bayer Contour Next meters","level":"2.2.7","depth":2,"path":"docs/checklists/bayerContourNext.md","ref":"docs/checklists/bayerContourNext.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/checklists/dexcom.md","mtime":"2021-07-20T09:14:41.830Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-07-21T15:09:50.108Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
