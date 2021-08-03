@@ -32,6 +32,10 @@
   - `[x]` final (most recent) basal
     - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
+  - `[x]` automated basal
+    - `[x]` basal rate intervals with a start time, duration, and rate delivered
+    - `[x]` if closed loop mode changes during basal, two separate basal entries are created
+    - `[x]` if basal rate is a single (flat) rate all day, pump records a new basal rate interval every midnight
 
 ##### Device-specific? (Add any device-specific notes/additions here.)
 
@@ -42,6 +46,9 @@
 #### Boluses
 
   - `[x]` normal bolus
+    - `[x]` amount of insulin delivered
+    - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
+  - `[x]` automated bolus
     - `[x]` amount of insulin delivered
     - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
   - `[x]` extended bolus
@@ -109,6 +116,10 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
+  - `[x]` pump settings override
+    - `[x]` override type
+    - `[ ]` method = manual/automatic
+    - `[x]` duration of override
 
 ##### Device-specific? (Add any device-specific notes/additions here.)
 
@@ -167,6 +178,8 @@ No Tidepool data model yet:
     - `[x]` max bolus
   - `[x]` insulin action time
   - `[ ]` display BG units
+  - `[x]` automated delivery
+  - `[x]` firmware version
 
 Settings history:
 
