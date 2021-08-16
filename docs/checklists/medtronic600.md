@@ -32,14 +32,22 @@
   - `[x]` final (most recent) basal
     - `[x]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
+  - `[x]` automated basal
+    - `[x]` basal rate intervals with a start time, duration, and rate delivered
+    - `[ ]` if closed loop mode changes during basal, two separate basal entries are created
+    - `[ ]` if basal rate is a single (flat) rate all day, pump records a new basal rate interval every midnight
 
 Device-specific? (Add any device-specific notes/additions here.)
+Medtronic 600-series pumps use Auto-basal microboluses, so no flat rate or changes during basal.
 
 #### Boluses
 
   - `[x]` normal bolus
     - `[x]` amount of insulin delivered
     - `[x]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
+  - `[ ]` automated bolus
+    - `[ ]` amount of insulin delivered
+    - `[ ]` amount of insulin delivery programmed (if differs from actual delivery, in case of bolus interruption, cancellation, etc.)
   - `[x]` extended bolus
     - `[x]` amount of insulin delivered
     - `[x]` duration of insulin delivery
@@ -102,6 +110,10 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[ ]` agent of change (`automatic` or `manual`)
     - `[ ]` timezone
     - `[ ]` reason for change (read from device)
+  - `[ ]` pump settings override
+    - `[ ]` override type
+    - `[ ]` method = manual/automatic
+    - `[ ]` duration of override
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -158,6 +170,8 @@ Device-specific? (Add any device-specific notes/additions here.)
     - `[x]` max bolus
   - `[x]` insulin action time
   - `[x]` display BG units
+  - `[?]` automated delivery
+  - `[?]` firmware version
 
 Settings history:
 
