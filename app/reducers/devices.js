@@ -165,6 +165,13 @@ const devices = {
     source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
+  contourplusone: {
+    instructions: i18n.t('Plug meter into USB port'),
+    key: 'contourplusone',
+    name: 'Ascensia Contour Plus One',
+    source: {type: 'device', driverId: 'ContourPlusOne'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   animas: {
     instructions: i18n.t('Suspend and align back of pump with IR dongle front'),
     key: 'animas',
