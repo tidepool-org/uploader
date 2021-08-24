@@ -39,4 +39,10 @@ module.exports = {
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
+  ERR_FETCHING_CLINICS_FOR_CLINICIAN: 'Something went wrong while getting clinics for clinician.',
+  ERR_FETCHING_ASSOCIATED_ACCOUNTS: 'Something went wrong while fetching associated accounts.',
+  ERR_CREATING_CUSTODIAL_ACCOUNT: 'Something went wrong while creating patient account.',
+  ERR_FETCHING_PATIENT: 'Something went wrong while fetching patient.',
+  ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
+  ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
 };

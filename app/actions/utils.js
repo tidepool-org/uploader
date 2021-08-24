@@ -20,7 +20,7 @@ import stacktrace from 'stack-trace';
 
 import sundial from 'sundial';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 import * as syncActions from './sync';
 
 const isBrowser = typeof window !== 'undefined';
@@ -34,7 +34,7 @@ export function getDeviceTargetsByUser(targetsByUser) {
 }
 
 export function getUploadTrackingId(device) {
-  const source = device.source;
+  const {source} = device;
   if (source.type === 'device' || source.type === 'block') {
     return source.driverId;
   }
@@ -81,7 +81,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       }
       const serverErr = 'Origin is not allowed by Access-Control-Allow-Origin';
       let displayErr = new Error(err.message === serverErr ?
-        errorText.E_SERVER_ERR : errorText[err.code || errCode]);
+        ErrorMessages.E_SERVER_ERR : ErrorMessages[err.code || errCode]);
       let uploadErrProps = {
         details: err.message,
         utc: getUtc(utc),

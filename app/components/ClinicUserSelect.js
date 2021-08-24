@@ -36,7 +36,9 @@ class ClinicUserSelect extends React.Component {
     targetId: PropTypes.string,
     targetUsersForUpload: PropTypes.array.isRequired,
     onAddUserClick: PropTypes.func.isRequired,
-    setTargetUser: PropTypes.func.isRequired
+    setTargetUser: PropTypes.func.isRequired,
+    clinics: PropTypes.object.isRequired,
+    selectedClinicId: PropTypes.string,
   };
 
   handleClickNext = (e) => {
@@ -51,17 +53,23 @@ class ClinicUserSelect extends React.Component {
   };
 
   valueRenderer = (option) => {
-    var user = _.get(this.props.allUsers, option.value);
-    var name = personUtils.patientFullName(user);
-    var bday = _.get(user, ['patient', 'birthday'], '');
-    var mrn = _.get(user, ['patient', 'mrn'], '');
+    var user, name, bday, mrn, formattedBday, formattedMrn, patient;
+    if(this.props.selectedClinicId){
+      patient = _.get(this.props.clinics, [this.props.selectedClinicId, 'patients', option.value]);
+      name = patient.fullName;
+      bday = patient.birthDate;
+      mrn = _.get(patient,'mrn','');
+    } else {
+      user = _.get(this.props.allUsers, option.value);
+      name = personUtils.patientFullName(user);
+      bday = _.get(user, ['patient', 'birthday'], '');
+      mrn = _.get(user, ['patient', 'mrn'], '');
+    }
 
-    var formattedBday;
     if (bday) {
       formattedBday = sundial.translateMask(bday, 'YYYY-MM-DD', 'M/D/YYYY');
     }
 
-    var formattedMrn;
     if (mrn) {
       formattedMrn = 'MRN:'+mrn;
     }
@@ -79,25 +87,48 @@ class ClinicUserSelect extends React.Component {
   };
 
   renderSelector = () => {
-    var allUsers = this.props.allUsers;
-    var targets = this.props.targetUsersForUpload;
-    var sorted = _.sortBy(targets, function(targetId) {
-      return personUtils.patientFullName(allUsers[targetId]);
-    });
+    const { selectedClinicId, clinics } = this.props;
 
-    var selectorOpts = _.map(sorted, function(targetId) {
-      var targetInfo = allUsers[targetId];
-      var mrn = _.get(targetInfo, ['patient', 'mrn'], '');
-      var bday = _.get(targetInfo, ['patient', 'birthday'], '');
-      if(bday){
-        bday = ' ' + sundial.translateMask(bday, 'YYYY-MM-DD', 'M/D/YYYY');
+    if (selectedClinicId) {
+      var patients = _.filter(
+        _.get(clinics, [selectedClinicId, 'patients'], []),
+        { permissions: { upload: {} } }
+      );
+      if (!_.isEmpty(patients)) {
+        var sortedPatients = _.sortBy(patients, 'fullName');
+        var selectorOpts = _.map(sortedPatients, (patient) => {
+          var mrn = _.get(patient, 'mrn', '');
+          var bday = _.get(patient, 'birthDate', '');
+          var fullName = _.get(patient, 'fullName');
+          if (bday) {
+            bday = ' ' + sundial.translateMask(bday, 'YYYY-MM-DD', 'M/D/YYYY');
+          }
+          if (mrn) {
+            mrn = ' ' + mrn;
+          }
+          return { value: patient.id, label: fullName + mrn + bday };
+        });
       }
-      if (mrn) {
-        mrn = ' ' + mrn;
-      }
-      var fullName = personUtils.patientFullName(targetInfo);
-      return {value: targetId, label: fullName + mrn + bday};
-    });
+    } else {
+      var { allUsers, targetUsersForUpload: targets } = this.props;
+      var sorted = _.sortBy(targets, function(targetId) {
+        return personUtils.patientFullName(allUsers[targetId]);
+      });
+
+      var selectorOpts = _.map(sorted, function(targetId) {
+        var targetInfo = allUsers[targetId];
+        var mrn = _.get(targetInfo, ['patient', 'mrn'], '');
+        var bday = _.get(targetInfo, ['patient', 'birthday'], '');
+        if(bday){
+          bday = ' ' + sundial.translateMask(bday, 'YYYY-MM-DD', 'M/D/YYYY');
+        }
+        if (mrn) {
+          mrn = ' ' + mrn;
+        }
+        var fullName = personUtils.patientFullName(targetInfo);
+        return {value: targetId, label: fullName + mrn + bday};
+      });
+    }
 
     return (
       <Select

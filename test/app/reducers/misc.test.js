@@ -20,9 +20,11 @@ import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
+import actions from '../../../app/actions/index';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import { pages } from '../../../app/constants/otherConstants';
 import * as misc from '../../../app/reducers/misc';
+import initialState from '../../../app/reducers/initialState';
 
 import devices from '../../../app/reducers/devices';
 
@@ -752,6 +754,245 @@ describe('misc reducers', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {
         type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
+    });
+  });
+
+  describe('notification', () => {
+    const ERR = new Error('This is an error :(');
+    let initialStateForTest = initialState.notification;
+
+    describe('loginFailure', () => {
+      test('should build a notification', () => {
+        let action = actions.sync.loginFailure(ERR);
+
+        let state = misc.notification(initialStateForTest, action);
+
+        expect(state).to.deep.equal({
+          key: 'loggingIn',
+          isDismissible: true,
+          link: null,
+          status: null
+        });
+      });
+    });
+
+    describe('fetchPatientFailure', () => {
+      test('should build a notification', () => {
+        let action = actions.sync.fetchPatientFailure(ERR);
+
+        let state = misc.notification(initialStateForTest, action);
+
+        expect(state).to.deep.equal({
+          key: 'fetchingPatient',
+          isDismissible: true,
+          link: null,
+          status: null
+        });
+      });
+    });
+
+    describe('fetchAssociatedAccountsFailure', () => {
+      test('should build a notification', () => {
+        let action = actions.sync.fetchAssociatedAccountsFailure(ERR);
+
+        let state = misc.notification(initialStateForTest, action);
+
+        expect(state).to.deep.equal({
+          key: 'fetchingAssociatedAccounts',
+          isDismissible: true,
+          link: null,
+          status: null
+        });
+      });
+    });
+
+    describe('createCustodialAccountFailure', () => {
+      test('should build a notification', () => {
+        let action = actions.sync.createCustodialAccountFailure(ERR);
+
+        let state = misc.notification(initialStateForTest, action);
+
+        expect(state).to.deep.equal({
+          key: 'creatingCustodialAccount',
+          isDismissible: true,
+          link: null,
+          status: null
+        });
+      });
+    });
+
+    describe('createClinicCustodialAccountFailure', () => {
+      test('should build a notification', () => {
+        let action = actions.sync.createClinicCustodialAccountFailure(ERR);
+
+        let state = misc.notification(initialStateForTest, action);
+
+        expect(state).to.deep.equal({
+          key: 'creatingClinicCustodialAccount',
+          isDismissible: true,
+          link: null,
+          status: null
+        });
+      });
+    });
+
+  });
+
+  describe('clinics', () => {
+    describe('fetchPatientsForClinicSuccess', () => {
+      test('should add patients to a clinic', () => {
+        let initialStateForTest = {};
+        let clinicId = 'clinicId123';
+        let clinic = { id: clinicId };
+        let patients = [{ id: 'patientId123' }];
+        let action = actions.sync.fetchPatientsForClinicSuccess(clinicId, patients);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinic.id].patients.patientId123).to.eql({ id: 'patientId123' });
+      });
+    });
+
+    describe('createClinicCustodialAccountSuccess', () => {
+      test('should add patient to clinic', () => {
+        let initialStateForTest = {
+          clinicID123: {
+            patients:{}
+          }
+        };
+        let clinicId = 'clinicID123';
+        let patient = { id: 'patientId456' };
+        let action = actions.sync.createClinicCustodialAccountSuccess(clinicId, patient, patient.id);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patients[patient.id]).to.eql(patient);
+      });
+    });
+
+    describe('updateClinicPatientSuccess', () => {
+      test('should update patient in clinic', () => {
+        let initialStateForTest = {
+          clinicID123: {
+            patients: {
+              patientId456: {
+                fullName: 'Joe'
+              }
+            }
+          }
+        };
+        let clinicId = 'clinicID123';
+        let patient = { id: 'patientId456', fullName: 'John' };
+        let action = actions.sync.updateClinicPatientSuccess(clinicId, patient.id, patient);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patients[patient.id]).to.eql(patient);
+      });
+    });
+
+    describe('getClinicsForClinicianSuccess', () => {
+      test('should add clinics with clinician attached to state', () => {
+        let initialStateForTest = {};
+        let clinics = [
+          {
+            clinic: {
+              id: 'clinicId123',
+            },
+            clinician: {
+              id: 'clinicianId1234',
+            },
+          },
+          {
+            clinic: {
+              id: 'clinicId456',
+            },
+            clinician: {
+              id: 'clinicianId4567',
+            },
+          },
+        ];
+        let action = actions.sync.getClinicsForClinicianSuccess(clinics);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state.clinicId123.clinicians.clinicianId1234).to.eql(clinics[0].clinician);
+        expect(state.clinicId456.clinicians.clinicianId4567).to.eql(clinics[1].clinician);
+      });
+    });
+
+    describe('addTargetDevice', () => {
+      test('should add device to patient', () => {
+        let initialStateForTest = {
+          clinicID123: {
+            patients: {
+              patientId456: {
+                fullName: 'John',
+                targetDevices: []
+              }
+            }
+          }
+        };
+        let clinicId = 'clinicID123';
+        let patient = { id: 'patientId456' };
+        let action = actions.sync.addTargetDevice(patient.id, 'a_pump', clinicId);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patients[patient.id].targetDevices[0]).to.eql('a_pump');
+      });
+    });
+
+    describe('removeTargetDevice', () => {
+      test('should remove device from patient', () => {
+        let initialStateForTest = {
+          clinicID123: {
+            patients: {
+              patientId456: {
+                targetDevices: ['a_pump','a_bg_meter']
+              }
+            }
+          }
+        };
+        let clinicId = 'clinicID123';
+        let patient = { id: 'patientId456' };
+        let action = actions.sync.removeTargetDevice(patient.id, 'a_bg_meter', clinicId);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patients[patient.id].targetDevices).to.eql(['a_pump']);
+      });
+    });
+
+    describe('logoutRequest', () => {
+      test('should set clinics to initial state', () => {
+        let initialStateForTest = {
+          clinicId: {
+            id: 'clinicId',
+            clinicians: {},
+            patients: {
+              patientId: {},
+            },
+          },
+        };
+        let action = actions.sync.logoutRequest();
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state).to.eql({});
+      });
+    });
+  });
+
+  describe('selectedClinicId', () => {
+    describe('selectClinic', () => {
+      test('should set state to userid', () => {
+        let initialStateForTest = null;
+
+        let action = actions.sync.selectClinic('clinicId123');
+
+        let state = misc.selectedClinicId(initialStateForTest, action);
+
+        expect(state).to.equal('clinicId123');
+      });
+    });
+
+    describe('logoutRequest', () => {
+      test('should set state to null', () => {
+        let initialStateForTest = 'clinicId123';
+
+        let action = actions.sync.logoutRequest();
+
+        let state = misc.selectedClinicId(initialStateForTest, action);
+
+        expect(state).to.be.null;
+      });
     });
   });
 });

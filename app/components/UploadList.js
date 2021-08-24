@@ -47,7 +47,8 @@ export default class UploadList extends Component {
     isClinicAccount: PropTypes.bool.isRequired,
     onChooseDevices: PropTypes.func.isRequired,
     timezoneIsSelected: PropTypes.bool.isRequired,
-    isUploadInProgress: PropTypes.bool.isRequired
+    isUploadInProgress: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -97,7 +98,8 @@ export default class UploadList extends Component {
               onDone={this.props.onDone}
               onReset={onReset.bind(null, targetId, upload.key)}
               onUpload={onUpload.bind(null, upload.key)}
-              readFile={this.props.readFile.bind(null, targetId, upload.key)} />
+              readFile={this.props.readFile.bind(null, targetId, upload.key)}
+              selectedClinicId={this.props.selectedClinicId} />
             {this.renderErrorForUpload(upload)}
           </div>
         );

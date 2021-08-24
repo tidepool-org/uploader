@@ -19,6 +19,7 @@
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
+import actions from '../../../app/actions/index';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as users from '../../../app/reducers/users';
 
@@ -75,6 +76,43 @@ describe('users', () => {
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
       expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    test('should handle FETCH_ASSOCIATED_ACCOUNTS_SUCCESS', () => {
+      let initialStateForTest = {
+        d4e5f6: {userid: 'd4e5f6', settings: {foo: 'bar'}},
+      };
+      let tracked = mutationTracker.trackObj(initialStateForTest);
+
+      let patients = [
+        {userid: 'a1b2c3'},
+        {userid: 'd4e5f6'},
+      ];
+
+      let careTeam = [
+        {userid: '12345'},
+        {userid: '678910'},
+      ];
+
+      let accounts = {
+        patients,
+        careTeam,
+      };
+
+      let action = actions.sync.fetchAssociatedAccountsSuccess(accounts);
+      let state = users.allUsers(initialStateForTest, action);
+
+      expect(Object.keys(state).length).to.equal(8);
+      expect(state[patients[0].userid]).to.exist;
+      expect(state[`${patients[0].userid}_cacheUntil`]).to.be.a('number');
+      expect(state[patients[1].userid]).to.exist;
+      expect(state[patients[1].userid].settings).to.eql({foo: 'bar'}); // should persist existing settings
+      expect(state[`${patients[1].userid}_cacheUntil`]).to.be.a('number');
+      expect(state[careTeam[0].userid]).to.exist;
+      expect(state[`${careTeam[0].userid}_cacheUntil`]).to.be.a('number');
+      expect(state[careTeam[1].userid]).to.exist;
+      expect(state[`${careTeam[1].userid}_cacheUntil`]).to.be.a('number');
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     test('should handle CREATE_CUSTODIAL_ACCOUNT_SUCCESS', () => {
@@ -526,6 +564,22 @@ describe('users', () => {
       });
       // tests to be sure not *mutating* state object but rather returning new!
       expect(initialState === result).to.be.false;
+    });
+
+    test('should handle FETCH_PATIENTS_FOR_CLINIC_SUCCESS', () => {
+      let initialState = {};
+      let patients = [
+        {id: 'patientId123'},
+        {id: 'patientId456'}
+      ];
+      let result = users.targetDevices(initialState, {
+        type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
+        payload: { patients }
+      });
+      expect(result).to.deep.equal({
+        patientId123: [],
+        patientId456: []
+      });
     });
   });
 

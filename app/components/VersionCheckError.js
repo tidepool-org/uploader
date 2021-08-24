@@ -19,7 +19,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 
 import styles from '../../styles/components/VersionCheck.module.less';
 import CloudOff from '@material-ui/icons/CloudOff';
@@ -48,9 +48,9 @@ export default class VersionCheckError extends Component {
   }
 
   render() {
-    const { errorMessage } = this.props; 
+    const { errorMessage } = this.props;
     const userErrorText = this.props.errorText;
-    const offline = errorMessage === errorText.E_OFFLINE;
+    const offline = errorMessage === ErrorMessages.E_OFFLINE;
     const errorDetails = offline ? null : (
       <div className={styles.error}>
         <p className={styles.errorText}>{userErrorText.ERROR_DETAILS}</p>

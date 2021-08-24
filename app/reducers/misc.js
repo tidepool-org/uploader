@@ -16,16 +16,45 @@
  */
 
 import _ from 'lodash';
+import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 
-import * as actionTypes from '../constants/actionTypes';
+import initialState from './initialState';
+import * as types from '../constants/actionTypes';
 import { UnsupportedError } from '../utils/errors';
+import actionWorkingMap from '../constants/actionWorkingMap';
 
 import initialDevices from './devices';
 
+export const notification = (state = initialState.notification, action) => {
+  switch (action.type) {
+    case types.FETCH_ASSOCIATED_ACCOUNTS_FAILURE:
+    case types.FETCH_PATIENT_FAILURE:
+    case types.LOGIN_FAILURE:
+    case types.CREATE_CUSTODIAL_ACCOUNT_FAILURE:
+    case types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE:
+      const err = _.get(action, 'error', null);
+      if (err) {
+        return {
+          key: actionWorkingMap(action.type),
+          isDismissible: true,
+          link: _.get(action, ['payload', 'link'], null),
+          status: _.get(err, 'status', null)
+        };
+      }
+      else {
+        return null;
+      }
+    case types.ACKNOWLEDGE_NOTIFICATION:
+      return null;
+    default:
+      return state;
+  }
+};
+
 export function devices(state = initialDevices, action) {
   switch (action.type) {
-    case actionTypes.HIDE_UNAVAILABLE_DEVICES:
+    case types.HIDE_UNAVAILABLE_DEVICES:
       function filterOutUnavailable(os) {
         let filteredDevices = {};
         _.each(state, (device) => {
@@ -41,30 +70,30 @@ export function devices(state = initialDevices, action) {
   }
 }
 
-export function dropdown(state = false, action) {
+export function dropdown(state = initialState.dropdown, action) {
   switch (action.type) {
-    case actionTypes.TOGGLE_DROPDOWN:
+    case types.TOGGLE_DROPDOWN:
       return action.payload.isVisible;
-    case actionTypes.LOGOUT_REQUEST:
-      return false;
+    case types.LOGOUT_REQUEST:
+      return initialState.dropdown;
     default:
       return state;
   }
 }
 
-export function os(state = null, action) {
+export function os(state = initialState.os, action) {
   switch (action.type) {
-    case actionTypes.SET_OS:
+    case types.SET_OS:
       return action.payload.os;
     default:
       return state;
   }
 }
 
-export function unsupported(state = true, action) {
+export function unsupported(state = initialState.unsupported, action) {
   switch (action.type) {
-    case actionTypes.INIT_APP_FAILURE:
-    case actionTypes.VERSION_CHECK_FAILURE:
+    case types.INIT_APP_FAILURE:
+    case types.VERSION_CHECK_FAILURE:
       const err = action.payload;
       if (err instanceof UnsupportedError) {
         return true;
@@ -72,28 +101,28 @@ export function unsupported(state = true, action) {
       else {
         return err;
       }
-    case actionTypes.VERSION_CHECK_SUCCESS:
+    case types.VERSION_CHECK_SUCCESS:
       return false;
     default:
       return state;
   }
 }
 
-export function blipUrls(state = {}, action) {
+export function blipUrls(state = initialState.blipUrls, action) {
   switch (action.type) {
-    case actionTypes. SET_BLIP_VIEW_DATA_URL:
+    case types. SET_BLIP_VIEW_DATA_URL:
       return _.assign({}, state, {
         viewDataLink: action.payload.url
       });
-    case actionTypes.SET_FORGOT_PASSWORD_URL:
+    case types.SET_FORGOT_PASSWORD_URL:
       return _.assign({}, state, {
         forgotPassword: action.payload.url
       });
-    case actionTypes.SET_SIGNUP_URL:
+    case types.SET_SIGNUP_URL:
       return _.assign({}, state, {
         signUp: action.payload.url
       });
-    case actionTypes.SET_NEW_PATIENT_URL:
+    case types.SET_NEW_PATIENT_URL:
       return _.assign({}, state, {
         newPatient: action.payload.url
       });
@@ -102,208 +131,302 @@ export function blipUrls(state = {}, action) {
   }
 }
 
-function checkingVersion(state = false, action) {
+function checkingVersion(state = initialState.checkingVersion, action) {
   switch (action.type) {
-    case actionTypes.VERSION_CHECK_FAILURE:
-    case actionTypes.VERSION_CHECK_SUCCESS:
+    case types.VERSION_CHECK_FAILURE:
+    case types.VERSION_CHECK_SUCCESS:
       return false;
-    case actionTypes.VERSION_CHECK_REQUEST:
+    case types.VERSION_CHECK_REQUEST:
       return true;
     default:
       return state;
   }
 }
 
-function fetchingUserInfo(state = false, action) {
+function fetchingUserInfo(state = initialState.fetchingUserInfo, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_FAILURE:
-    case actionTypes.LOGIN_SUCCESS:
+    case types.LOGIN_FAILURE:
+    case types.LOGIN_SUCCESS:
       return false;
-    case actionTypes.LOGIN_REQUEST:
+    case types.LOGIN_REQUEST:
       return true;
     default:
       return state;
   }
 }
 
-function initializingApp(state = true, action) {
+function initializingApp(state = initialState.initializingApp, action) {
   switch (action.type) {
-    case actionTypes.INIT_APP_FAILURE:
-    case actionTypes.INIT_APP_SUCCESS:
+    case types.INIT_APP_FAILURE:
+    case types.INIT_APP_SUCCESS:
       return false;
-    case actionTypes.INIT_APP_REQUEST:
+    case types.INIT_APP_REQUEST:
       return true;
     default:
       return state;
   }
 }
 
-function uploading(state = false, action) {
+function uploading(state = initialState.uploading, action) {
   switch (action.type) {
-    case actionTypes.UPLOAD_REQUEST:
+    case types.UPLOAD_REQUEST:
       return true;
-    case actionTypes.READ_FILE_ABORTED:
-    case actionTypes.READ_FILE_FAILURE:
-    case actionTypes.UPLOAD_FAILURE:
-    case actionTypes.UPLOAD_SUCCESS:
-    case actionTypes.UPLOAD_CANCELLED:
-      return false;
+    case types.READ_FILE_ABORTED:
+    case types.READ_FILE_FAILURE:
+    case types.UPLOAD_FAILURE:
+    case types.UPLOAD_SUCCESS:
+    case types.UPLOAD_CANCELLED:
+      return initialState.uploading;
     default:
       return state;
   }
 }
 
-function checkingElectronUpdate(state = false, action) {
+function checkingElectronUpdate(state = initialState.checkingElectronUpdate, action) {
   switch (action.type) {
-    case actionTypes.CHECKING_FOR_UPDATES:
-    case actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES:
-    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+    case types.CHECKING_FOR_UPDATES:
+    case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
+    case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
       return true;
-    case actionTypes.UPDATE_AVAILABLE:
-    case actionTypes.UPDATE_NOT_AVAILABLE:
-    case actionTypes.AUTOUPDATE_ERROR:
-      return false;
+    case types.UPDATE_AVAILABLE:
+    case types.UPDATE_NOT_AVAILABLE:
+    case types.AUTOUPDATE_ERROR:
+      return initialState.checkingElectronUpdate;
     default:
       return state;
   }
 }
 
-function checkingDriverUpdate(state = false, action) {
+function checkingDriverUpdate(state = initialState.checkingDriverUpdate, action) {
   switch (action.type) {
-    case actionTypes.CHECKING_FOR_DRIVER_UPDATE:
+    case types.CHECKING_FOR_DRIVER_UPDATE:
       return true;
-    case actionTypes.DRIVER_UPDATE_AVAILABLE:
-    case actionTypes.DRIVER_UPDATE_NOT_AVAILABLE:
-      return false;
+    case types.DRIVER_UPDATE_AVAILABLE:
+    case types.DRIVER_UPDATE_NOT_AVAILABLE:
+      return initialState.checkingDriverUpdate;
     default:
       return state;
   }
 }
 
+//TODO: these should be updated to blip's `working` format for consistency
 export const working = combineReducers({
-  checkingVersion, fetchingUserInfo, initializingApp, uploading, checkingElectronUpdate, checkingDriverUpdate
+  checkingVersion,
+  fetchingUserInfo,
+  initializingApp,
+  uploading,
+  checkingElectronUpdate,
+  checkingDriverUpdate
 });
 
-export function electronUpdateManualChecked(state = null, action) {
+export function electronUpdateManualChecked(state = initialState.electronUpdateManualChecked, action) {
   switch (action.type) {
-    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+    case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
       return true;
-    case actionTypes.DISMISS_UPDATE_NOT_AVAILABLE:
-      return null;
+    case types.DISMISS_UPDATE_NOT_AVAILABLE:
+      return initialState.electronUpdateManualChecked;
     default:
       return state;
   }
 }
 
-export function electronUpdateAvailableDismissed(state = null, action) {
+export function electronUpdateAvailableDismissed(state = initialState.electronUpdateAvailableDismissed, action) {
   switch (action.type) {
-    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
-      return null;
-    case actionTypes.DISMISS_UPDATE_AVAILABLE:
+    case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+      return initialState.electronUpdateAvailableDismissed;
+    case types.DISMISS_UPDATE_AVAILABLE:
       return true;
     default:
       return state;
   }
 }
 
-export function electronUpdateAvailable(state = null, action) {
+export function electronUpdateAvailable(state = initialState.electronUpdateAvailable, action) {
   switch (action.type) {
-    case actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES:
-    case actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
-      return null;
-    case actionTypes.UPDATE_AVAILABLE:
+    case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
+    case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
+      return initialState.electronUpdateAvailable;
+    case types.UPDATE_AVAILABLE:
       return true;
-    case actionTypes.UPDATE_NOT_AVAILABLE:
+    case types.UPDATE_NOT_AVAILABLE:
       return false;
     default:
       return state;
   }
 }
 
-export function electronUpdateDownloaded(state = null, action) {
+export function electronUpdateDownloaded(state = initialState.electronUpdateDownloaded, action) {
   switch (action.type) {
-    case actionTypes.UPDATE_AVAILABLE:
-      return null;
-    case actionTypes.UPDATE_DOWNLOADED:
+    case types.UPDATE_AVAILABLE:
+      return initialState.electronUpdateDownloaded;
+    case types.UPDATE_DOWNLOADED:
       return true;
-    case actionTypes.AUTOUPDATE_ERROR:
+    case types.AUTOUPDATE_ERROR:
       return false;
     default:
       return state;
   }
 }
 
-export function driverUpdateAvailable(state = null, action) {
+export function driverUpdateAvailable(state = initialState.driverUpdateAvailable, action) {
   switch (action.type) {
-    case actionTypes.DRIVER_UPDATE_AVAILABLE:
+    case types.DRIVER_UPDATE_AVAILABLE:
       return action.payload;
-    case actionTypes.DRIVER_UPDATE_NOT_AVAILABLE:
-    case actionTypes.DRIVER_INSTALL:
+    case types.DRIVER_UPDATE_NOT_AVAILABLE:
+    case types.DRIVER_INSTALL:
       return false;
     default:
       return state;
   }
 }
 
-export function driverUpdateAvailableDismissed(state = null, action) {
+export function driverUpdateAvailableDismissed(state = initialState.driverUpdateAvailableDismissed, action) {
   switch (action.type) {
-    case actionTypes.CHECKING_FOR_DRIVER_UPDATE:
+    case types.CHECKING_FOR_DRIVER_UPDATE:
       return false;
-    case actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE:
+    case types.DISMISS_DRIVER_UPDATE_AVAILABLE:
       return true;
     default:
       return state;
   }
 }
 
-export function driverUpdateShellOpts(state = null, action) {
+export function driverUpdateShellOpts(state = initialState.driverUpdateShellOpts, action) {
   switch (action.type) {
-    case actionTypes.DRIVER_INSTALL_SHELL_OPTS:
+    case types.DRIVER_INSTALL_SHELL_OPTS:
       return action.payload;
     default:
       return state;
   }
 }
 
-export function driverUpdateComplete(state = null, action) {
+export function driverUpdateComplete(state = initialState.driverUpdateComplete, action) {
   switch (action.type) {
-    case actionTypes.DRIVER_INSTALL:
+    case types.DRIVER_INSTALL:
       return true;
     default:
       return state;
   }
 }
 
-export function showingDeviceTimePrompt(state = null, action) {
+export function showingDeviceTimePrompt(state = initialState.showingDeviceTimePrompt, action) {
   switch (action.type) {
-    case actionTypes.DEVICE_TIME_INCORRECT:
+    case types.DEVICE_TIME_INCORRECT:
       return { callback: action.payload.callback, cfg: action.payload.cfg, times: action.payload.times };
-    case actionTypes.DISMISS_DEVICE_TIME_PROMPT:
+    case types.DISMISS_DEVICE_TIME_PROMPT:
       return false;
     default:
       return state;
   }
 }
 
-export function isTimezoneFocused(state = false, action) {
+export function isTimezoneFocused(state = initialState.isTimezoneFocused, action) {
   switch (action.type) {
-    case actionTypes.UPLOAD_CANCELLED:
+    case types.UPLOAD_CANCELLED:
       return true;
-    case actionTypes.TIMEZONE_BLUR:
-    case actionTypes.UPLOAD_REQUEST:
-      return false;
+    case types.TIMEZONE_BLUR:
+    case types.UPLOAD_REQUEST:
+      return initialState.isTimezoneFocused;
     default:
       return state;
   }
 }
 
-export function showingAdHocPairingDialog(state = false, action) {
+export function showingAdHocPairingDialog(state = initialState.showingAdHocPairingDialog, action) {
   switch (action.type) {
-    case actionTypes.AD_HOC_PAIRING_REQUEST:
+    case types.AD_HOC_PAIRING_REQUEST:
       return { callback: action.payload.callback, cfg: action.payload.cfg };
-    case actionTypes.AD_HOC_PAIRING_DISMISSED:
-      return false;
+    case types.AD_HOC_PAIRING_DISMISSED:
+      return initialState.showingAdHocPairingDialog;
     default:
       return state;
   }
 }
+
+export const clinics = (state = initialState.clinics, action) => {
+  switch (action.type) {
+    case types.FETCH_PATIENTS_FOR_CLINIC_SUCCESS: {
+      const patients = _.get(action.payload, 'patients', []);
+      const clinicId = _.get(action.payload, 'clinicId', '');
+      const newClinics = _.cloneDeep(state);
+      _.forEach(patients, (patient) => {
+        _.set(
+          newClinics,
+          [clinicId, 'patients', patient.id],
+          patient
+        );
+      });
+      return newClinics;
+    }
+    case types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS:
+    case types.UPDATE_CLINIC_PATIENT_SUCCESS: {
+      const patient = _.get(action.payload, 'patient', '');
+      const clinicId = _.get(action.payload, 'clinicId', '');
+      return update(state, {
+        [clinicId]: { patients: { [patient.id]: { $set: patient }}}
+      });
+    }
+    case types.GET_CLINICS_FOR_CLINICIAN_SUCCESS: {
+      const clinics = _.get(action.payload, 'clinics');
+      const newClinics = _.reduce(
+        clinics,
+        (newSet, clinic) => {
+          newSet[clinic.clinic.id] = {
+            ...clinic.clinic,
+            clinicians: { [clinic.clinician.id]: clinic.clinician },
+          };
+          return newSet;
+        },
+        {}
+      );
+      return _.merge({}, state, newClinics);
+    }
+    case types.ADD_TARGET_DEVICE: {
+      const userId = _.get(action.payload, 'userId');
+      const deviceKey = _.get(action.payload, 'deviceKey');
+      const selectedClinicId = _.get(action.payload, 'selectedClinicId');
+      if (!selectedClinicId) return state;
+      return update(state, {
+        [selectedClinicId]: {
+          patients: { [userId]: { targetDevices: {$push: [deviceKey]} } }
+        }
+      });
+    }
+    case types.REMOVE_TARGET_DEVICE: {
+      const userId = _.get(action.payload, 'userId');
+      const deviceKey = _.get(action.payload, 'deviceKey');
+      const selectedClinicId = _.get(action.payload, 'selectedClinicId');
+      if (!selectedClinicId) return state;
+      return update(state, {
+        [selectedClinicId]: {
+          patients: {
+            [userId]: {
+              targetDevices: {
+                $apply: (devices) => {
+                  return _.filter(devices, (device) => {
+                    return device !== deviceKey;
+                  });
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+    case types.LOGOUT_REQUEST:
+      return initialState.clinics;
+    default:
+      return state;
+  }
+};
+
+export const selectedClinicId = (state = initialState.selectedClinicId, action) => {
+  switch(action.type) {
+    case types.SELECT_CLINIC:
+      return _.get(action.payload, 'clinicId', null);
+    case types.LOGOUT_REQUEST:
+      return null;
+    default:
+      return state;
+  }
+};

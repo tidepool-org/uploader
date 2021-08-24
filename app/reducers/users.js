@@ -18,14 +18,15 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
 import personUtils from '../../lib/core/personUtils';
+import { generateCacheTTL } from 'redux-cache';
 
-import * as actionTypes from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 
 export function allUsers(state = {}, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
-    case actionTypes.SET_ALL_USERS: {
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
+    case types.SET_ALL_USERS: {
       const { user, profile, memberships } = action.payload;
       let newState = {};
       _.each(memberships, (membership) => {
@@ -35,13 +36,25 @@ export function allUsers(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
+    case types.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS:
+      const { patients = [], careTeam = [] } = action.payload;
+      let patientsMap = {};
+
+      [...patients, ...careTeam].forEach((patient) => {
+        patientsMap[patient.userid] = {
+          ..._.omit(patient, ['permissions']),
+          settings: patient.settings || _.get(state, [patient.userid, 'settings']),
+        };
+        patientsMap[`${patient.userid}_cacheUntil`] = generateCacheTTL(36e5); // Cache for 60 mins
+      });
+      return update(state, { $merge: patientsMap });
+    case types.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
       const { account } = action.payload;
       return update(state, {$merge: {[account.userid]: account.profile}});
-    case actionTypes.UPDATE_PROFILE_SUCCESS:
+    case types.UPDATE_PROFILE_SUCCESS:
       const { userId, profile } = action.payload;
       return update(state, {$merge: {[userId]: profile}});
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return {};
     default:
       return state;
@@ -50,9 +63,9 @@ export function allUsers(state = {}, action) {
 
 export function memberships(state = {}, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
-    case actionTypes.SET_ALL_USERS: {
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
+    case types.SET_ALL_USERS: {
       const { memberships } = action.payload;
       let newState = {};
       _.each(memberships, (membership) => {
@@ -60,10 +73,16 @@ export function memberships(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
+    case types.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
       const { account } = action.payload;
-      return update(state, { $merge: { [account.userid]: { permissions: { custodian: {}, upload: {}, view: {} } } } });
-    case actionTypes.LOGOUT_REQUEST:
+      return update(state, {
+        $merge: {
+          [account.userid]: {
+            permissions: { custodian: {}, upload: {}, view: {} },
+          },
+        },
+      });
+    case types.LOGOUT_REQUEST:
       return {};
     default:
       return state;
@@ -72,11 +91,11 @@ export function memberships(state = {}, action) {
 
 export function loggedInUser(state = null, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
       const { user } = action.payload;
       return user.userid;
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return null;
     default:
       return state;
@@ -85,10 +104,10 @@ export function loggedInUser(state = null, action) {
 
 export function loginErrorMessage(state = null, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_FAILURE:
+    case types.LOGIN_FAILURE:
       const err = action.payload;
       return err.message;
-    case actionTypes.LOGIN_REQUEST:
+    case types.LOGIN_REQUEST:
       return null;
     default:
       return state;
@@ -97,11 +116,11 @@ export function loginErrorMessage(state = null, action) {
 
 export function updateProfileErrorMessage(state = null, action) {
   switch (action.type) {
-    case actionTypes.UPDATE_PROFILE_FAILURE:
+    case types.UPDATE_PROFILE_FAILURE:
       const err = action.payload;
       return err.message;
-    case actionTypes.UPDATE_PROFILE_REQUEST:
-    case actionTypes.SET_UPLOAD_TARGET_USER:
+    case types.UPDATE_PROFILE_REQUEST:
+    case types.SET_UPLOAD_TARGET_USER:
       return null;
     default:
       return state;
@@ -110,10 +129,10 @@ export function updateProfileErrorMessage(state = null, action) {
 
 export function updateProfileErrorDismissed(state = null, action) {
   switch (action.type) {
-    case actionTypes.UPDATE_PROFILE_REQUEST:
-    case actionTypes.SET_UPLOAD_TARGET_USER:
+    case types.UPDATE_PROFILE_REQUEST:
+    case types.SET_UPLOAD_TARGET_USER:
       return null;
-    case actionTypes.DISMISS_UPDATE_PROFILE_ERROR:
+    case types.DISMISS_UPDATE_PROFILE_ERROR:
       return true;
     default:
       return state;
@@ -122,10 +141,10 @@ export function updateProfileErrorDismissed(state = null, action) {
 
 export function createCustodialAccountErrorMessage(state = null, action) {
   switch (action.type) {
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE:
+    case types.CREATE_CUSTODIAL_ACCOUNT_FAILURE:
       const err = action.payload;
       return err.message;
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
+    case types.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
       return null;
     default:
       return state;
@@ -134,9 +153,9 @@ export function createCustodialAccountErrorMessage(state = null, action) {
 
 export function createCustodialAccountErrorDismissed(state = false, action) {
   switch (action.type) {
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
+    case types.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
       return false;
-    case actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR:
+    case types.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR:
       return true;
     default:
       return state;
@@ -153,7 +172,7 @@ function isVCA(membership) {
 
 export function targetDevices(state = {}, action) {
   switch (action.type) {
-    case actionTypes.ADD_TARGET_DEVICE: {
+    case types.ADD_TARGET_DEVICE: {
       const { userId, deviceKey } = action.payload;
       return update(
         state,
@@ -174,8 +193,8 @@ export function targetDevices(state = {}, action) {
     }
     // create some scaffolding based on the users the loggedInUser
     // currently has upload access to
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN: {
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN: {
       const { memberships } = action.payload;
       let newState = {};
       _.each(memberships, (membership) => {
@@ -196,9 +215,9 @@ export function targetDevices(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return {};
-    case actionTypes.REMOVE_TARGET_DEVICE: {
+    case types.REMOVE_TARGET_DEVICE: {
       const { userId, deviceKey } = action.payload;
       return update(
         state,
@@ -209,7 +228,7 @@ export function targetDevices(state = {}, action) {
         }}}
       );
     }
-    case actionTypes.SET_USERS_TARGETS: {
+    case types.SET_USERS_TARGETS: {
       const { targets } = action.payload;
       let newState = state;
       _.forOwn(targets, (targetsArray, userId) => {
@@ -233,10 +252,16 @@ export function targetDevices(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.STORING_USERS_TARGETS:
+    case types.STORING_USERS_TARGETS:
       // _.omit returns a new object, doesn't mutate
       return _.omit(state, 'noUserSelected');
-
+    case types.FETCH_PATIENTS_FOR_CLINIC_SUCCESS:
+      const { patients } = action.payload;
+      let newState = _.cloneDeep(state);
+      _.each(patients, (patient) => {
+        newState[patient.id] = _.get(patient,'targetDevices',[]);
+      });
+      return newState;
     default:
       return state;
   }
@@ -244,8 +269,8 @@ export function targetDevices(state = {}, action) {
 
 export function targetTimezones(state = {}, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
       const { memberships } = action.payload;
       let newState = {};
       _.each(memberships, (membership) => {
@@ -254,16 +279,16 @@ export function targetTimezones(state = {}, action) {
         }
       });
       return newState;
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return {};
-    case actionTypes.SET_TARGET_TIMEZONE: {
+    case types.SET_TARGET_TIMEZONE: {
       const { userId, timezoneName } = action.payload;
       return update(
         state,
         {[userId]: {$set: timezoneName}}
       );
     }
-    case actionTypes.SET_USERS_TARGETS: {
+    case types.SET_USERS_TARGETS: {
       const { targets } = action.payload;
       let newState = state;
       _.forOwn(targets, (targetsArray, userId) => {
@@ -289,9 +314,20 @@ export function targetTimezones(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.STORING_USERS_TARGETS:
+    case types.STORING_USERS_TARGETS:
       // _.omit returns a new object, doesn't mutate
       return _.omit(state, 'noUserSelected');
+    case types.FETCH_PATIENT_SUCCESS:
+      const {
+        userid,
+        profile: {
+          patient: { targetTimezone: timezoneName },
+        },
+      } = action.payload.patient;
+      return update(
+        state,
+        {[userid]: {$set: timezoneName}}
+      );
     default:
       return state;
   }
@@ -299,9 +335,9 @@ export function targetTimezones(state = {}, action) {
 
 export function targetUsersForUpload(state = [], action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
-    case actionTypes.SET_ALL_USERS:
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
+    case types.SET_ALL_USERS:
       const { user, profile, memberships } = action.payload;
       let newState = [];
       _.each(memberships, (membership) => {
@@ -314,10 +350,10 @@ export function targetUsersForUpload(state = [], action) {
         }
       });
       return newState;
-    case actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
+    case types.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
       const { account } = action.payload;
       return update(state, {$push: [account.userid]});
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return [];
     default:
       return state;
@@ -326,8 +362,8 @@ export function targetUsersForUpload(state = [], action) {
 
 export function uploadTargetUser(state = null, action) {
   switch (action.type) {
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN:
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN:
       const { user, profile, memberships } = action.payload;
       const uploadMemberships = _.filter(memberships, (mship) => {
         return !_.isEmpty(_.get(mship, ['profile', 'patient']));
@@ -341,10 +377,10 @@ export function uploadTargetUser(state = null, action) {
       else {
         return null;
       }
-    case actionTypes.SET_UPLOAD_TARGET_USER:
+    case types.SET_UPLOAD_TARGET_USER:
       const { userId } = action.payload;
       return userId;
-    case actionTypes.LOGOUT_REQUEST:
+    case types.LOGOUT_REQUEST:
       return null;
     default:
       return state;

@@ -125,7 +125,7 @@ export class MainPage extends Component {
 
   renderClinicUserBlock() {
     const { isClinicAccount } = this.props;
-    if (!isClinicAccount) return null;
+    if (!isClinicAccount && !this.props.selectedClinicId) return null;
     let timezoneDropdown = this.renderTimezoneDropdown();
     return (
       <ClinicUserBlock
@@ -134,7 +134,9 @@ export class MainPage extends Component {
         memberships={this.props.memberships}
         onEditUser={this.handleClickEditUser}
         targetId={this.props.uploadTargetUser}
-        timezoneDropdown={timezoneDropdown} />
+        timezoneDropdown={timezoneDropdown}
+        selectedClinicId={this.props.selectedClinicId}
+        clinics={this.props.clinics} />
     );
   }
 
@@ -142,7 +144,7 @@ export class MainPage extends Component {
     let changePersonLink = null;
     let clinicUserBlock = null;
 
-    if(this.props.isClinicAccount){
+    if(this.props.isClinicAccount || this.props.selectedClinicId){
       changePersonLink = this.renderChangePersonLink();
       clinicUserBlock = this.renderClinicUserBlock();
     }
@@ -178,7 +180,8 @@ export class MainPage extends Component {
           toggleErrorDetails={this.props.sync.toggleErrorDetails}
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}
           uploads={this.props.activeUploads}
-          userDropdownShowing={this.props.showingUserSelectionDropdown} />
+          userDropdownShowing={this.props.showingUserSelectionDropdown}
+          selectedClinicId={this.props.selectedClinicId} />
         {viewDataLinkButton}
       </div>
     );
@@ -230,7 +233,12 @@ export default connect(
       return false;
     }
     function isClinicAccount(state) {
-      return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
+      return (
+        _.indexOf(
+          _.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []),
+          'clinic'
+        ) !== -1
+      );
     }
     return {
       activeUploads: getActiveUploads(state),
@@ -248,6 +256,8 @@ export default connect(
       uploadIsInProgress: state.working.uploading,
       uploadTargetUser: state.uploadTargetUser,
       uploadsByUser: state.uploadsByUser,
+      selectedClinicId: state.selectedClinicId,
+      clinics: state.clinics,
     };
   },
   (dispatch) => {

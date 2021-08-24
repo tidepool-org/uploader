@@ -27,7 +27,13 @@ const syncActions = actions.sync;
 export class ClinicUserSelectPage extends Component {
 
   render() {
-    const { allUsers, targetUsersForUpload, uploadTargetUser } = this.props;
+    const {
+      allUsers,
+      targetUsersForUpload,
+      uploadTargetUser,
+      clinics,
+      selectedClinicId,
+    } = this.props;
     return (
       <div>
         <ClinicUserSelect
@@ -36,7 +42,9 @@ export class ClinicUserSelectPage extends Component {
           targetId={uploadTargetUser}
           targetUsersForUpload={targetUsersForUpload}
           onAddUserClick={this.props.async.clickAddNewUser}
-          setTargetUser={this.props.sync.setUploadTargetUser} />
+          setTargetUser={this.props.sync.setUploadTargetUser}
+          clinics={clinics}
+          selectedClinicId={selectedClinicId} />
       </div>
     );
   }
@@ -48,6 +56,8 @@ export default connect(
       allUsers: state.allUsers,
       targetUsersForUpload: state.targetUsersForUpload,
       uploadTargetUser: state.uploadTargetUser,
+      clinics: state.clinics,
+      selectedClinicId: state.selectedClinicId,
     };
   },
   (dispatch) => {
