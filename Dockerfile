@@ -5,7 +5,7 @@ ENV NODE_VERSION "v12.13.0"
 
 # Lots of packages. Some dependencies and stuff for GUI.
 RUN apt-get -qq -y update && \
-    apt-get -qq -y install build-essential git curl libusb-1.0 libavutil-dev \
+    apt-get -qq -y install build-essential git curl libusb-1.0 libavutil-dev libxss1 \
     libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module \
     chromium-browser
 

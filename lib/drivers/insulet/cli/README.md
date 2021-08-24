@@ -12,8 +12,10 @@ $ source config/local.sh
 
 ### Usage
 
+From the base uploader directory:
+
 ```
-node ibf_loader.js -r babel-register -f /path/to/Insulet-file.ibf -u <your_username> -p <your_pw>
+node -r @babel/register lib/drivers/insulet/cli/ibf_loader.js -f </path/to/Insulet-file.ibf> -u <username> -p <password>
 
 ```
 

@@ -32,6 +32,9 @@ import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import styles from '../../styles/components/Upload.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
 
@@ -55,24 +58,22 @@ export default class Upload extends Component {
 
   static defaultProps = {
     text: {
-      CARELINK_USERNAME: 'CareLink username',
-      CARELINK_PASSWORD: 'CareLink password',
-      CARELINK_DOWNLOADING: 'Downloading CareLink export...',
-      MEDTRONIC_SERIAL_NUMBER: 'Pump Serial number',
-      REMEMBER_SERIAL_NUMBER: 'Remember serial number',
-      MEDTRONIC_600_IS_LINKED: 'Meter and pump are linked',
-      LABEL_UPLOAD: 'Upload',
-      LABEL_IMPORT: 'Import',
-      LABEL_OK: 'OK',
-      LABEL_FAILED: 'Try again',
-      LAST_UPLOAD: 'Last upload: ',
-      DEVICE_UNKNOWN: 'Unknown device',
-      UPLOAD_COMPLETE: 'Done!',
-      UPLOAD_PROGRESS: 'Uploading... ',
-      NOTE: 'Note:',
-      FIRST_UPLOAD: 'We\'ve improved how devices upload. This upload will take \
-                     longer than usual, but your future uploads will be much, \
-                     much faster.'
+      CARELINK_USERNAME: i18n.t('CareLink username'),
+      CARELINK_PASSWORD: i18n.t('CareLink password'),
+      CARELINK_DOWNLOADING: i18n.t('Downloading CareLink export...'),
+      MEDTRONIC_SERIAL_NUMBER: i18n.t('Pump Serial number'),
+      REMEMBER_SERIAL_NUMBER: i18n.t('Remember serial number'),
+      MEDTRONIC_600_IS_LINKED: i18n.t('Meter and pump are linked'),
+      LABEL_UPLOAD: i18n.t('Upload'),
+      LABEL_IMPORT: i18n.t('Import'),
+      LABEL_OK: i18n.t('OK'),
+      LABEL_FAILED: i18n.t('Try again'),
+      LAST_UPLOAD: i18n.t('Last upload'),
+      DEVICE_UNKNOWN: i18n.t('Unknown device'),
+      UPLOAD_COMPLETE: i18n.t('Done!'),
+      UPLOAD_PROGRESS: i18n.t('Uploading... '),
+      NOTE: i18n.t('Note:'),
+      FIRST_UPLOAD: i18n.t('We\'ve improved how devices upload. This upload will take longer than usual, but your future uploads will be much, much faster.')
     }
   };
 
@@ -500,7 +501,7 @@ export default class Upload extends Component {
           className={styles.button}
           disabled={disabled}
           onClick={disabled ? _.noop : this.handleUpload}
-          title={disabled ? 'Upload in progress! Please wait.' : ''}>
+          title={disabled ? i18n.t('Upload in progress! Please wait.') : ''}>
           {labelText}
         </button>
       </div>
@@ -516,8 +517,8 @@ export default class Upload extends Component {
     return (
       <div>
         <div className={styles.textInputWrapper}>
-          Medtronic has removed the CareLink export feature.
-          Click below to enable direct upload to Tidepool using a Contour Next Link.
+          {i18n.t('Medtronic has removed the CareLink export feature.')}
+          {i18n.t('Click below to enable direct upload to Tidepool using a Contour Next Link.')}
         </div>
       </div>
     );
@@ -532,7 +533,7 @@ export default class Upload extends Component {
     return (
       <div>
         <div className={styles.textInputWrapper}>
-          <p>Enter your 6 digit serial number found on the back of your pump.</p>
+          <p>{i18n.t('Enter your 6 digit serial number found on the back of your pump.')}</p>
           <input
             type="text"
             value={this.state.medtronicSerialNumberValue}
@@ -583,7 +584,7 @@ export default class Upload extends Component {
             </label>
           </div>
           <div className={divHidden}>
-            <p>Enter 10 character serial number.</p>
+            <p>{i18n.t('Enter 10 character serial number.')}</p>
             <input
               type="text"
               value={this.state.medtronic600SerialNumberValue}
@@ -602,9 +603,9 @@ export default class Upload extends Component {
       return null;
     }
     const opts = [
-      { label: 'since last upload', value: uploadDataPeriod.PERIODS.DELTA },
-      { label: 'last 4 weeks', value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
-      { label: 'all data on pump', value: uploadDataPeriod.PERIODS.ALL }
+      { label: i18n.t('since last upload'), value: uploadDataPeriod.PERIODS.DELTA },
+      { label: i18n.t('last 4 weeks'), value: uploadDataPeriod.PERIODS.FOUR_WEEKS },
+      { label: i18n.t('all data on pump'), value: uploadDataPeriod.PERIODS.ALL }
     ];
     return (
       <div className={styles.uploadPeriodRow}>
@@ -627,13 +628,18 @@ export default class Upload extends Component {
     if (_.isArray(details)) {
       return (
         <div className={styles.detail}>
-          {_.get(details, 0, '')}<br/>
-          {_.get(details, 1, '')}
+          {i18n.t(_.get(details, 0, ''))}<br/>
+          {i18n.t(_.get(details, 1, ''))}
         </div>
       );
     }
+    if (_.isObject(details)) {
+      return (
+        <div className={styles.detail}>{details.text} <a href={details.link} target="_blank">{i18n.t(details.linkText)}</a></div>
+      );
+    }
     return (
-      <div className={styles.detail}>{details}</div>
+      <div className={styles.detail}>{i18n.t(details)}</div>
     );
   }
 
@@ -668,7 +674,7 @@ export default class Upload extends Component {
 
     let time = sundial.formatCalendarTime(lastUpload.finish);
     return (
-      <div className={styles.detail}>{this.props.text.LAST_UPLOAD + time}</div>
+      <div className={styles.detail}>{this.props.text.LAST_UPLOAD + ': ' + time}</div>
     );
   }
 
@@ -760,7 +766,7 @@ export default class Upload extends Component {
     if (this.isBlockModeFileChosen()) {
       return (
           <div className={styles.blockMode}>
-            <div className={styles.preparing}>Preparing file &hellip;</div>
+            <div className={styles.preparing}>{i18n.t('Preparing file')} &hellip;</div>
             <div className={styles.blockMode}>{this.props.upload.file.name}</div>
           </div>
       );

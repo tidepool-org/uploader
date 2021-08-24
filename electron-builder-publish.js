@@ -47,7 +47,8 @@ const config = {
         '!*.md'
       ]
     },
-    'sounds/'
+    'sounds/',
+    'locales/'
   ],
   win: {
     target: [

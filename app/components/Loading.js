@@ -17,12 +17,14 @@
 
 var React = require('react');
 var styles = require('../../styles/components/App.module.less');
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
 
 class Loading extends React.Component {
   render() {
     return <div className={styles.mainWrap}>
       <div className={styles.loading}>
-        Loading...
+        {i18n.t('Loading...')}
       </div>
     </div>;
   }

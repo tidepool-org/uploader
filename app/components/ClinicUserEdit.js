@@ -25,6 +25,9 @@ var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 function zeroPad(value){
   return _.padStart(value, 2, '0');
 }
@@ -32,14 +35,14 @@ function zeroPad(value){
 function validateForm(values){
   var errors = {};
   if(!values.fullName){
-    errors.fullName = 'Your patient\'s full name is needed';
+    errors.fullName = i18n.t('Your patient\'s full name is needed');
   }
   if(values.year && values.month && values.day){
     if(!isValidDate(values.year + '-' + values.month + '-' + zeroPad(values.day))){
-      errors.year = 'Hmm, this date doesn’t look right';
+      errors.year = i18n.t('Hmm, this date doesn’t look right');
     }
   } else {
-    errors.year = 'Hmm, this date doesn’t look right';
+    errors.year = i18n.t('Hmm, this date doesn’t look right');
   }
   return errors;
 }
@@ -51,19 +54,19 @@ function isValidDate(dateString){
 }
 
 var MONTHS = [
-  {value: '', label: 'Month'},
-  {value: '01', label: 'January'},
-  {value: '02', label: 'February'},
-  {value: '03', label: 'March'},
-  {value: '04', label: 'April'},
-  {value: '05', label: 'May'},
-  {value: '06', label: 'June'},
-  {value: '07', label: 'July'},
-  {value: '08', label: 'August'},
-  {value: '09', label: 'September'},
-  {value: '10', label: 'October'},
-  {value: '11', label: 'November'},
-  {value: '12', label: 'December'}
+  {value: '', label: i18n.t('Month')},
+  {value: '01', label: i18n.t('January')},
+  {value: '02', label: i18n.t('February')},
+  {value: '03', label: i18n.t('March')},
+  {value: '04', label: i18n.t('April')},
+  {value: '05', label: i18n.t('May')},
+  {value: '06', label: i18n.t('June')},
+  {value: '07', label: i18n.t('July')},
+  {value: '08', label: i18n.t('August')},
+  {value: '09', label: i18n.t('September')},
+  {value: '10', label: i18n.t('October')},
+  {value: '11', label: i18n.t('November')},
+  {value: '12', label: i18n.t('December')}
 ];
 
 var options = _.map(MONTHS, function(item) {
@@ -138,7 +141,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.createCustodialAccountErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissCreateCustodialAccountError}></i>
+          {i18n.t(this.props.createCustodialAccountErrorMessage)}<i className={styles.iconClose} onClick={this.props.dismissCreateCustodialAccountError}></i>
         </span>
       </div>
     );
@@ -151,7 +154,7 @@ class ClinicUserEdit extends React.Component {
     return (
       <div className={styles.error}>
         <span>
-          {this.props.updateProfileErrorMessage}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
+          {i18n.t(this.props.updateProfileErrorMessage)}<i className={styles.iconClose} onClick={this.props.dismissUpdateProfileError}></i>
         </span>
       </div>
     );
@@ -163,8 +166,8 @@ class ClinicUserEdit extends React.Component {
         <select className={styles.monthInput} {...fields.month.input} disabled={fields.disabled}>
           {options}
         </select>
-        <input className={styles.dateInput} placeholder="Day" {...fields.day.input} type="text" disabled={fields.disabled}/>
-        <input className={styles.dateInput} placeholder="Year" {...fields.year.input} type="text" disabled={fields.disabled}/>
+        <input className={styles.dateInput} placeholder={i18n.t('Day')} {...fields.day.input} type="text" disabled={fields.disabled}/>
+        <input className={styles.dateInput} placeholder={i18n.t('Year')} {...fields.year.input} type="text" disabled={fields.disabled}/>
       </div>
       {this.renderDateError(fields)}
     </div>
@@ -185,7 +188,7 @@ class ClinicUserEdit extends React.Component {
   render() {
     const { handleSubmit, targetId, memberships } = this.props;
     const isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
-    const titleText = targetId ? 'Edit patient account' : 'Create a new patient account';
+    const titleText = targetId ? i18n.t('Edit patient account') : i18n.t('Create a new patient account');
     const editable = targetId ? isCustodialAccount : true;
 
     return (
@@ -201,37 +204,37 @@ class ClinicUserEdit extends React.Component {
         <form className={styles.form} onSubmit={handleSubmit(this.handleNext)}>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="name">
-              Patient Full Name
+              {i18n.t('Patient Full Name')}
             </label>
             <Field name="fullName" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="birthday">
-              Patient Birthdate
+              {i18n.t('Patient Birthdate')}
             </label>
             <Fields names={['month', 'day', 'year']} component={this.renderDateInputs} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="mrn">
-              MRN (optional)
+              {i18n.t('MRN (optional)')}
             </label>
             <Field name="mrn" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="email">
-              Patient Email (optional)
+              {i18n.t('Patient Email (optional)')}
             </label>
             <Field name="email" component={renderInput} props={{ disabled: !editable }} />
           </div>
           <div className={styles.actions}>
             <div>
               <button type="submit" className={styles.button} disabled={!editable}>
-                Save
+                {i18n.t('Save')}
               </button>
             </div>
             <div>
               <div className={styles.cancel} onClick={this.handleCancel}>
-                Cancel
+                {i18n.t('Cancel')}
               </div>
             </div>
             {this.renderCreateError()}

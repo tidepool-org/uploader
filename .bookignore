@@ -29,3 +29,9 @@ manifest.json
 package.json
 update-gh-pages.sh
 yarn.lock
+.dockerignore
+.env
+Dockerfile
+docker-compose.yaml
+entrypoint.sh
+locales/
