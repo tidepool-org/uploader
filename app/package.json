@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.37.1",
+  "version": "2.38.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
@@ -13,11 +13,10 @@
     "drivelist": "9.2.4",
     "keytar": "5.6.0",
     "node-hid": "2.1.1",
-    "usb": "1.6.5",
-    "lzo-decompress": "1.0.1"
+    "@ronomon/direct-io": "3.0.1",
+    "usb": "1.6.5"
   },
   "optionalDependencies": {
-    "node-mtp": "0.3.15",
     "winreg": "1.2.4"
   }
 }
