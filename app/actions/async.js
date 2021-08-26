@@ -391,48 +391,6 @@ export function doUpload (deviceKey, opts, utc) {
       }
     }
 
-    if (env.browser && driverManifest && driverManifest.mode === 'usb') {
-      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
-
-      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
-        vendorId,
-        productId
-      }));
-
-      try {
-        const existingPermissions = await navigator.usb.getDevices();
-
-        for (let i = 0; i < existingPermissions.length; i++) {
-          for (let j = 0; j < driverManifest.usb.length; j++) {
-            if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
-              && driverManifest.usb[j].productId === existingPermissions[i].productId) {
-                console.log('Device has already been granted permission');
-                opts.usbDevice = existingPermissions[i];
-            }
-          }
-        }
-
-        if (opts.usbDevice == null) {
-          opts.usbDevice = await navigator.usb.requestDevice({ filters: filters });
-        }
-
-        if (opts.usbDevice == null) {
-          throw new Error('No device was selected.');
-        }
-      } catch (err) {
-        console.log('Error:', err);
-
-        let usbErr = new Error(errorText.E_USB_CABLE);
-        let errProps = {
-          details: err.message,
-          utc: actionUtils.getUtc(utc),
-          code: 'E_USB_CABLE',
-        };
-
-        return dispatch(syncActions.uploadFailure(usbErr, errProps, devices[deviceKey]));
-      }
-    }
-
     if (opts && opts.ble) {
       // we need to to scan for Bluetooth devices before the version check,
       // otherwise it doesn't count as a response to a user request anymore
