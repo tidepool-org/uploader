@@ -4440,7 +4440,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('fetchAssociatedAccounts', () => {
-    test('should trigger FETCH_ASSOCIATED_ACCOUNTS_SUCCESS and it should call error once for a successful request', () => {
+    test('should trigger FETCH_ASSOCIATED_ACCOUNTS_SUCCESS for a successful request', () => {
       let patients = [
         { id: 58686, name: 'Buddy Holly', age: 65 }
       ];
