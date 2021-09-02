@@ -972,7 +972,7 @@ describe('misc reducers', () => {
 
   describe('selectedClinicId', () => {
     describe('selectClinic', () => {
-      test('should set state to userid', () => {
+      test('should set state to clinicId', () => {
         let initialStateForTest = null;
 
         let action = actions.sync.selectClinic('clinicId123');
