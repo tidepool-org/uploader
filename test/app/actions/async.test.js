@@ -4296,7 +4296,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('fetchPatient', () => {
-    test('should trigger FETCH_PATIENT_SUCCESS and it should call error once for a successful request', () => {
+    test('should trigger FETCH_PATIENT_SUCCESS for a successful request', () => {
       let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
 
       let api = {
