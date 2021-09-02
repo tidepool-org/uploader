@@ -550,7 +550,7 @@ export function clickDeviceSelectionDone() {
     const isClinicAccount = personUtils.userHasRole(allUsers[loggedInUser], 'clinic');
     const { api } = services;
     const userTargetDevices = targetDevices[uploadTargetUser];
-    if(selectedClinicId){
+    if (selectedClinicId) {
       dispatch(sync.updateClinicPatientRequest());
       const patient = _.get(clinics,[selectedClinicId,'patients',uploadTargetUser]);
       if (!_.isEmpty(userTargetDevices)) {
