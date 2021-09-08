@@ -24,6 +24,9 @@ var pagesMap = require('../constants/otherConstants').pagesMap;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 class UserDropdown extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
@@ -75,7 +78,7 @@ class UserDropdown extends React.Component {
     }
 
     var text = this.props.locationPath === pagesMap.MAIN ?
-      'Upload data for' : 'Choose devices for';
+      i18n.t('Upload data for') : i18n.t('Choose devices for');
     var styleClass = this.props.locationPath.substring(1);
 
     return (
