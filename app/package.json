@@ -14,7 +14,7 @@
     "keytar": "5.6.0",
     "node-hid": "1.1.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "9.0.2",
+    "serialport": "9.2.1",
     "usb": "1.6.3"
   },
   "optionalDependencies": {
