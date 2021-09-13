@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.38.0-verio-ble.3",
+  "version": "2.38.1-verio-ble.4",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
