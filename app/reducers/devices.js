@@ -5,14 +5,6 @@ import { remote } from 'electron';
 const i18n = remote.getGlobal( 'i18n' );
 
 const devices = {
-  accuchekusb: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
-    key: 'accuchekusb',
-    source: {type: 'device', driverId: 'AccuChekUSB'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,  // shows warning for power-only USB cables
-  },
   carelink: {
     instructions: [i18n.t('Import from CareLink'), i18n.t('(We will not store your credentials)')],
     isFetching: false,
@@ -23,12 +15,63 @@ const devices = {
     source: {type: 'carelink'},
     enabled: {mac: true, win: true, linux: true}
   },
-  caresensble: {
-    instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
-    name: 'CareSens N Premier & Dual (using Bluetooth)',
-    key: 'caresensble',
-    source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: false, linux: true}
+  abbottfreestylelibre: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    key: 'abbottfreestylelibre',
+    name: 'Abbott FreeStyle Libre',
+    source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
+  abbottfreestylelite: {
+    instructions: i18n.t('Plug in meter with cable'),
+    key: 'abbottfreestylelite',
+    name: 'Abbott FreeStyle Lite & Freedom Lite',
+    source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
+    enabled: {mac: false, win: true, linux: true}
+  },
+  abbottfreestyleneo: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    key: 'abbottfreestyleneo',
+    name: 'Abbott FreeStyle Precision/Optium Neo',
+    source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
+  precisionxtra: {
+    instructions: i18n.t('Plug in meter with cable'),
+    key: 'precisionxtra',
+    name: 'Abbott Precision Xtra',
+    source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
+    enabled: {mac: false, win: true, linux: true}
+  },
+  animas: {
+    instructions: i18n.t('Suspend and align back of pump with IR dongle front'),
+    key: 'animas',
+    name: 'Animas',
+    source: {type: 'device', driverId: 'Animas'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  bayercontournext: {
+    instructions: i18n.t('Plug meter into USB port'),
+    key: 'bayercontournext',
+    name: 'Ascensia (Bayer) Contour Next',
+    source: {type: 'device', driverId: 'BayerContourNext'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  bayercontour: {
+    instructions: i18n.t('Plug in meter with cable and make sure meter is switched on'),
+    key: 'bayercontour',
+    name: 'Ascensia (Bayer) Contour Next EZ, Contour, Contour Link or Contour Plus',
+    source: {type: 'device', driverId: 'BayerContour'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  contourplusone: {
+    instructions: i18n.t('Plug meter into USB port'),
+    key: 'contourplusone',
+    name: 'Ascensia Contour Plus One',
+    source: {type: 'device', driverId: 'ContourPlusOne'},
+    enabled: {mac: true, win: true, linux: true}
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
@@ -37,11 +80,18 @@ const devices = {
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
   },
-  relionpremier: {
-    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'ReliOn Premier (BLU, Voice & Classic)',
-    key: 'relionpremier',
-    source: {type: 'device', driverId: 'ReliOnPremier'},
+  caresensble: {
+    instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
+    name: 'CareSens N Premier & Dual (using Bluetooth)',
+    key: 'caresensble',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: false, linux: true}
+  },
+  dexcom: {
+    instructions: i18n.t('Plug in receiver with micro-USB'),
+    key: 'dexcom',
+    name: 'Dexcom',
+    source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardexpression: {
@@ -68,6 +118,14 @@ const devices = {
     key: 'glucocardshinehid',
     source: {type: 'device', driverId: 'GlucocardShineHID'},
     enabled: {mac: true, win: true, linux: true}
+  },
+  omnipod: {
+    instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
+    key: 'omnipod',
+    name: 'Insulet Omnipod',
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
@@ -96,87 +154,6 @@ const devices = {
     selectName: 'Medtronic 630G, 640G, 670G (using Contour Next Link 2.4)',
     showDriverLink: {mac: false, win: false},
     source: {type: 'device', driverId: 'Medtronic600'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  omnipod: {
-    instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
-    key: 'omnipod',
-    name: 'Insulet OmniPod',
-    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,
-  },
-  dexcom: {
-    instructions: i18n.t('Plug in receiver with micro-USB'),
-    key: 'dexcom',
-    name: 'Dexcom',
-    source: {type: 'device', driverId: 'Dexcom'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  precisionxtra: {
-    instructions: i18n.t('Plug in meter with cable'),
-    key: 'precisionxtra',
-    name: 'Abbott Precision Xtra',
-    source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
-    enabled: {mac: false, win: true, linux: true}
-  },
-  tandem: {
-    instructions: i18n.t('Plug in pump with micro-USB'),
-    key: 'tandem',
-    name: 'Tandem',
-    source: {type: 'device', driverId: 'Tandem'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,
-  },
-  abbottfreestylelite: {
-    instructions: i18n.t('Plug in meter with cable'),
-    key: 'abbottfreestylelite',
-    name: 'Abbott FreeStyle Lite & Freedom Lite',
-    source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
-    enabled: {mac: false, win: true, linux: true}
-  },
-  abbottfreestylelibre: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
-    source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
-    enabled: {linux: true, mac: true, win: true},
-    powerOnlyWarning: true,
-  },
-  abbottfreestyleneo: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    key: 'abbottfreestyleneo',
-    name: 'Abbott FreeStyle Precision/Optium Neo',
-    source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
-    enabled: {linux: true, mac: true, win: true},
-    powerOnlyWarning: true,
-  },
-  bayercontournext: {
-    instructions: i18n.t('Plug meter into USB port'),
-    key: 'bayercontournext',
-    name: 'Ascensia (Bayer) Contour Next',
-    source: {type: 'device', driverId: 'BayerContourNext'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  bayercontour: {
-    instructions: i18n.t('Plug in meter with cable and make sure meter is switched on'),
-    key: 'bayercontour',
-    name: 'Ascensia (Bayer) Contour Next EZ, Contour, Contour Link or Contour Plus',
-    source: {type: 'device', driverId: 'BayerContour'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  contourplusone: {
-    instructions: i18n.t('Plug meter into USB port'),
-    key: 'contourplusone',
-    name: 'Ascensia Contour Plus One',
-    source: {type: 'device', driverId: 'ContourPlusOne'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  animas: {
-    instructions: i18n.t('Suspend and align back of pump with IR dongle front'),
-    key: 'animas',
-    name: 'Animas',
-    source: {type: 'device', driverId: 'Animas'},
     enabled: {mac: true, win: true, linux: true}
   },
   onetouchverio: {
@@ -208,6 +185,29 @@ const devices = {
     key: 'onetouchultra2',
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
+  },
+  relionpremier: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'ReliOn Premier (BLU, Voice & Classic)',
+    key: 'relionpremier',
+    source: {type: 'device', driverId: 'ReliOnPremier'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  accuchekusb: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
+  tandem: {
+    instructions: i18n.t('Plug in pump with micro-USB'),
+    key: 'tandem',
+    name: 'Tandem',
+    source: {type: 'device', driverId: 'Tandem'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   truemetrix: {
     instructions: i18n.t('True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
