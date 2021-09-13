@@ -22,16 +22,18 @@ import personUtils from '../../../lib/core/personUtils';
 describe('personUtils', () => {
   describe('patientFullName', () => {
     test('(normal account) should return the fullName for the person', () => {
-      const person = { fullName: 'Joe Smith' };
+      const person = { profile: {fullName: 'Joe Smith' } };
       expect(personUtils.patientFullName(person)).to.equal('Joe Smith');
     });
 
     test('(fake child account) should return the patient profile fullName', () => {
       const person = {
-        fullName: 'Jane Smith',
-        patient: {
-          isOtherPerson: true,
-          fullName: 'Child Smith'
+        profile: {
+          fullName: 'Jane Smith',
+          patient: {
+            isOtherPerson: true,
+            fullName: 'Child Smith'
+          }
         }
       };
       expect(personUtils.patientFullName(person)).to.equal('Child Smith');

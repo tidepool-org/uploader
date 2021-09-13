@@ -20,6 +20,12 @@ import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
 import { remote } from 'electron';
 const i18n = remote.getGlobal( 'i18n' );
+import personUtils from '../../lib/core/personUtils';
+
+import ListIcon from '@material-ui/icons/List';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import BusinessIcon from '@material-ui/icons/Business';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
@@ -33,7 +39,12 @@ export default class LoggedInAs extends Component {
     onLogout: PropTypes.func.isRequired,
     user: PropTypes.object,
     isClinicAccount: PropTypes.bool,
-    targetUsersForUpload: PropTypes.array
+    targetUsersForUpload: PropTypes.array,
+    clinics: PropTypes.object,
+    hasPersonalWorkspace: PropTypes.bool,
+    onWorkspaceSwitch: PropTypes.func.isRequired,
+    goToPersonalWorkspace: PropTypes.func.isRequired,
+    switchToClinic: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -73,17 +84,28 @@ export default class LoggedInAs extends Component {
     });
   };
 
+  handleWorkspaces = e => {
+    e.preventDefault();
+    this.props.onWorkspaceSwitch();
+  };
+
+  handleSwitchToPersonal = e => {
+    e.preventDefault();
+    this.props.goToPersonalWorkspace();
+  }
+
+  handleSwitchToClinic = clinic => {
+    this.props.switchToClinic(clinic);
+  }
+
   renderChooseDevices() {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
     var isDisabled = uploadInProgress;
 
-    if (this.props.isClinicAccount) {
-      return null;
-    }
 
-    if (_.isEmpty(this.props.targetUsersForUpload)) {
-      isDisabled = true;
+    if (_.isEmpty(this.props.targetUsersForUpload) && !this.props.hasPersonalWorkspace) {
+     isDisabled = true;
     }
 
 
@@ -113,12 +135,63 @@ export default class LoggedInAs extends Component {
         <a className={styles.link}
           onClick={this.handleCheckForUpdates}
           href=""
-          title="Check for Updates">
+          title={i18n.t('Check for Updates')}>
           <i className={styles.updateIcon}></i>
           {i18n.t('Check for Updates')}
         </a>
       </li>
     );
+  }
+
+  renderWorkspaces() {
+    var {clinics, hasPersonalWorkspace} = this.props;
+    var clinicIds = _.keys(clinics);
+    if(clinicIds.length > 1){
+      return (
+        <li>
+          <a className={styles.muiLink}
+          onClick={this.handleWorkspaces}
+          href=""
+          title={i18n.t('Change Workspace')}>
+            <ListIcon classes={{root:styles.workspaceSwitchIcon}} fontSize='inherit'/>
+            {i18n.t('Change Workspace')}
+          </a>
+        </li>
+      );
+    }
+    if(clinicIds.length == 1 && hasPersonalWorkspace){
+      return (
+        <li>
+          <a className={styles.muiLink}
+          onClick={(e) => {
+            e.preventDefault();
+            this.handleSwitchToClinic(clinics[clinicIds[0]]);
+          }}
+          href=""
+          title={clinics[clinicIds[0]].name}>
+            <BusinessIcon classes={{root:styles.workspaceSwitchIcon}} fontSize='inherit'/>
+            {clinics[clinicIds[0]].name}
+          </a>
+        </li>
+      );
+    }
+  }
+
+  renderPersonalWorkspace() {
+    var {hasPersonalWorkspace} = this.props;
+    if(hasPersonalWorkspace) {
+      return (
+        <li>
+          <a className={styles.muiLink}
+            onClick={this.handleSwitchToPersonal}
+            href=""
+            title={i18n.t('Personal Workspace')}>
+              <SupervisedUserCircleIcon classes={{root:styles.personalWorkspaceIcon}} fontSize='inherit' />
+              {i18n.t('Personal Workspace')}
+            </a>
+        </li>
+      );
+    }
   }
 
   renderLogout() {
@@ -149,6 +222,8 @@ export default class LoggedInAs extends Component {
         <ul>
           {this.renderChooseDevices()}
           {this.renderCheckForUpdates()}
+          {this.renderWorkspaces()}
+          {this.renderPersonalWorkspace()}
           <li>{this.renderLogout()}</li>
         </ul>
       </div>
@@ -157,13 +232,13 @@ export default class LoggedInAs extends Component {
 
   render() {
     var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
-    var user = this.props.user;
+    var {user} = this.props;
 
     return (
       <div className={styles.wrapper}>
         <div className={styles.main} onClick={this.props.onClicked}>
-          <span className={styles.name}>{_.get(user, 'fullName', '')}</span>
-          <i className={styles.downArrow}></i>
+          <span className={styles.name}>{personUtils.patientFullName(user)}</span>
+          <ArrowDropDownIcon />
         </div>
         {dropMenu}
       </div>

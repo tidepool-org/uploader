@@ -103,7 +103,7 @@ export class SettingsPage extends Component {
     let changePersonLink = null;
     let clinicUserBlock = null;
 
-    if(this.props.isClinicAccount){
+    if((this.props.isClinicAccount && !this.props.isNewClinician) || (this.props.isNewClinician && this.props.selectedClinicId)){
       changePersonLink = this.renderChangePersonLink();
       clinicUserBlock = this.renderClinicUserBlock();
     }
@@ -184,6 +184,11 @@ export default connect(
       }
       return false;
     }
+    function isNewClinician(state) {
+      return (
+        _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false)
+      );
+    }
     return {
       allUsers: state.allUsers,
       devices: state.devices,
@@ -201,6 +206,7 @@ export default connect(
       uploadTargetUser: state.uploadTargetUser,
       selectedClinicId: state.selectedClinicId,
       clinics: state.clinics,
+      isNewClinician: isNewClinician(state),
     };
   },
   (dispatch) => {

@@ -120,6 +120,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
@@ -212,6 +217,11 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.SET_NEW_PATIENT_URL,
           payload: {url: 'http://www.acme.com/patients/new'},
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+        },
+        {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
         },
         {
           type: actionTypes.INIT_APP_SUCCESS,
@@ -359,6 +369,9 @@ describe('Asynchronous Actions', () => {
           },
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.SET_BLIP_VIEW_DATA_URL,
           payload: {
             url: `http://www.acme.com/patients/${userObj.user.userid}/data`,
@@ -383,6 +396,13 @@ describe('Asynchronous Actions', () => {
             method: 'push',
           },
         },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -396,6 +416,9 @@ describe('Asynchronous Actions', () => {
           },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
+          },
+          clinics: {
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
           }
         },
         log: _.noop,
@@ -490,6 +513,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
@@ -500,7 +526,14 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -514,6 +547,9 @@ describe('Asynchronous Actions', () => {
           },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
+          },
+          clinics: {
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
           }
         },
         log: _.noop,
@@ -574,12 +610,6 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinics: []
-          }
-        },
-        {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
@@ -593,7 +623,14 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: []
+          }
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -675,16 +712,6 @@ describe('Asynchronous Actions', () => {
           payload: {clinicId:'clinicId'}
         },
         {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinics: [{
-              clinic: {
-                id: 'clinicId'
-              }
-            }],
-          },
-        },
-        {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
@@ -698,7 +725,18 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
+          },
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -729,6 +767,108 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('doLogin [new clinic account] multiple clinics', () => {
+    test('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS and SET_PAGE (WORKSPACE_SWITCH) actions', () => {
+      // NB: this is not what these objects actually look like
+      // actual shape is irrelevant to testing action creators
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const expectedActions = [
+        {
+          type: actionTypes.LOGIN_REQUEST,
+          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships
+          }
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile, memberships
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/workspace_switch',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.WORKSPACE_SWITCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+                clinic: {
+                  id: 'clinicId'
+                }
+              },
+              {
+                clinic: {
+                  id: 'clinicId2'
+                }
+              }
+            ],
+          },
+        },
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, [{ clinic: { id: 'clinicId' } }, { clinic: { id: 'clinicId2' } }]),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, [{ patient: 'patient1' }]),
+          },
+        },
+        log: _.noop,
+      });
+      const store = mockStore({
+        targetUsersForUpload: ['def456', 'ghi789'],
+      });
+      store.dispatch(async.doLogin(
+        {username: 'jane.doe@me.com', password: 'password'},
+        {remember: false}
+      ));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
 
   describe('doLogout [no error]', () => {
     test('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', () => {
@@ -3722,6 +3862,249 @@ describe('Asynchronous Actions', () => {
     });
   });
 
+  describe('goToPersonalWorkspace', () => {
+    const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
+    const profile = {
+      fullName: 'John',
+      patient: {
+      birthday: '1990-08-08'
+      }
+    };
+    describe('user is missing timezone', () => {
+      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to main page for timezone selection)', () => {
+        const targets = {
+          abc123: [{key: 'carelink'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.SELECT_CLINIC,
+            payload: { clinicId: null }
+          },
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId: 'ghi789' },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: {
+              devicesByUser: {
+                abc123: [ 'carelink' ]
+              },
+            },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]},
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, profile);
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: profile,
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink']
+          },
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        });
+        store.dispatch(async.goToPersonalWorkspace());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('user has no supported devices', () => {
+      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to settings page for device selection)', () => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.SELECT_CLINIC,
+            payload: { clinicId: null }
+          },
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId: 'ghi789' },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123'
+        });
+        store.dispatch(async.goToPersonalWorkspace());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('user is all set to upload', () => {
+      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to main page)', () => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.SELECT_CLINIC,
+            payload: { clinicId: null }
+          },
+          {
+            type: actionTypes.SET_UPLOAD_TARGET_USER,
+            payload: { userId: 'ghi789' },
+            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
+          },
+          {
+            type: actionTypes.SET_UPLOADS,
+            payload: { devicesByUser },
+            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, profile);
+              }
+            },
+            makeBlipUrl: blipUrlMaker
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: profile,
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          uploadTargetUser: 'abc123',
+          targetDevices: devicesByUser,
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        });
+        store.dispatch(async.goToPersonalWorkspace());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+  });
+
   describe('createCustodialAccount', () => {
     describe('create account success', () => {
       test('should dispatch CREATE_CUSTODIAL_ACCOUNT_REQUEST, CREATE_CUSTODIAL_ACCOUNT_SUCCESS, SET_UPLOAD_TARGET_USER, SET_PAGE (settings)', () => {
@@ -4506,11 +4889,13 @@ describe('Asynchronous Actions', () => {
         id: 'relationship_id',
       }];
 
-      let api = {
-        clinics: {
-          getPatientsForClinic: sinon.stub().callsArgWith(2, null, patients ),
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            getPatientsForClinic: sinon.stub().callsArgWith(2, null, patients ),
+          },
         },
-      };
+      });
 
       let expectedActions = [
         { type: 'FETCH_PATIENTS_FOR_CLINIC_REQUEST' },
@@ -4521,19 +4906,20 @@ describe('Asynchronous Actions', () => {
       });
 
       let store = mockStore(initialState);
-      store.dispatch(async.fetchPatientsForClinic(api, '5f85fbe6686e6bb9170ab5d0'));
+      store.dispatch(async.fetchPatientsForClinic('5f85fbe6686e6bb9170ab5d0'));
 
       const actions = store.getActions();
       expect(actions).to.eql(expectedActions);
-      expect(api.clinics.getPatientsForClinic.callCount).to.equal(1);
     });
 
     test('should trigger FETCH_PATIENTS_FOR_CLINIC_FAILURE and it should call error once for a failed request', () => {
-      let api = {
-        clinics: {
-          getPatientsForClinic: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            getPatientsForClinic: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
+          },
         },
-      };
+      });
 
       let err = new Error(ErrorMessages.ERR_FETCHING_PATIENTS_FOR_CLINIC);
       err.status = 500;
@@ -4546,13 +4932,12 @@ describe('Asynchronous Actions', () => {
         expect(isFSA(action)).to.be.true;
       });
       let store = mockStore(initialState);
-      store.dispatch(async.fetchPatientsForClinic(api, '5f85fbe6686e6bb9170ab5d0'));
+      store.dispatch(async.fetchPatientsForClinic('5f85fbe6686e6bb9170ab5d0'));
 
       const actions = store.getActions();
       expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_FETCHING_PATIENTS_FOR_CLINIC });
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
-      expect(api.clinics.getPatientsForClinic.callCount).to.equal(1);
     });
   });
 
@@ -4648,7 +5033,13 @@ describe('Asynchronous Actions', () => {
 
       let expectedActions = [
         { type: 'GET_CLINICS_FOR_CLINICIAN_REQUEST' },
-        { type: 'GET_CLINICS_FOR_CLINICIAN_SUCCESS', payload: { clinics : clinics } }
+        {
+          type: 'GET_CLINICS_FOR_CLINICIAN_SUCCESS',
+          payload: {
+            clinicianId: clinicianId,
+            clinics: clinics
+          },
+        },
       ];
       _.each(expectedActions, (action) => {
         expect(isFSA(action)).to.be.true;
@@ -4662,7 +5053,7 @@ describe('Asynchronous Actions', () => {
       expect(api.clinics.getClinicsForClinician.callCount).to.equal(1);
     });
 
-    test('should trigger GET_CLINICSFOR_CLINICIAN_FAILURE and it should call error once for a failed request', () => {
+    test('should trigger GET_CLINICS_FOR_CLINICIAN_FAILURE and it should call error once for a failed request', () => {
       let clinicianId = 'clinicianId1';
       let api = {
         clinics: {

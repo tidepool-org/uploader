@@ -1791,15 +1791,17 @@ describe('Synchronous Actions', () => {
       {id: 'clinicId', name: 'Clinic Name'},
       {id: 'clinicId2', name: 'Clinic Name'},
     ];
+    let clinicianId = 'clinician345';
     test('should be an FSA', () => {
-      let action = sync.getClinicsForClinicianSuccess(clinics);
+      let action = sync.getClinicsForClinicianSuccess(clinics, clinicianId);
       expect(isFSA(action)).to.be.true;
     });
 
     test('type should equal GET_CLINICS_FOR_CLINICIAN_SUCCESS', () => {
-      let action = sync.getClinicsForClinicianSuccess(clinics);
+      let action = sync.getClinicsForClinicianSuccess(clinics, clinicianId);
       expect(action.type).to.equal('GET_CLINICS_FOR_CLINICIAN_SUCCESS');
       expect(action.payload.clinics).to.equal(clinics);
+      expect(action.payload.clinicianId).to.equal(clinicianId);
     });
   });
 
@@ -1815,6 +1817,20 @@ describe('Synchronous Actions', () => {
       let action = sync.getClinicsForClinicianFailure(error);
       expect(action.type).to.equal('GET_CLINICS_FOR_CLINICIAN_FAILURE');
       expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('selectClinic', () => {
+    let clinicId = 'clinic123';
+    test('should be an FSA', () => {
+      let action = sync.selectClinic(clinicId);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal SELECT_CLINIC', () => {
+      let action = sync.selectClinic(clinicId);
+      expect(action.type).to.equal('SELECT_CLINIC');
+      expect(action.payload.clinicId).to.equal(clinicId);
     });
   });
 

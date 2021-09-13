@@ -34,6 +34,7 @@ import styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
 import { remote } from 'electron';
+import {selectClinic} from '../actions/sync';
 const i18n = remote.getGlobal( 'i18n' );
 
 export class Header extends Component {
@@ -44,7 +45,8 @@ export class Header extends Component {
     uploadIsInProgress: PropTypes.bool.isRequired,
     user: PropTypes.object,
     isClinicAccount: PropTypes.bool,
-    targetUsersForUpload: PropTypes.array
+    targetUsersForUpload: PropTypes.array,
+    clinics: PropTypes.object,
   };
 
   handleClickChooseDevices = metric => {
@@ -59,6 +61,28 @@ export class Header extends Component {
     const { toggleDropdown } = this.props.sync;
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   };
+
+  handleWorkspaceSwitch = () => {
+    const {toggleDropdown} = this.props.sync;
+    const {setPage} = this.props.async;
+    setPage(pages.WORKSPACE_SWITCH, true);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  };
+
+  handleSwitchToClinic = (clinic) => {
+    const {toggleDropdown, selectClinic} = this.props.sync;
+    const {setPage} = this.props.async;
+    selectClinic(clinic.id);
+    setPage(pages.CLINIC_USER_SELECT, true);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  }
+
+  handlePersonalWorkspaceSwitch = () => {
+    const {toggleDropdown} = this.props.sync;
+    const {goToPersonalWorkspace} = this.props.async;
+    goToPersonalWorkspace();
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  }
 
   render() {
     const { allUsers, dropdown, location } = this.props;
@@ -98,7 +122,12 @@ export class Header extends Component {
             onLogout={this.props.async.doLogout}
             user={allUsers[this.props.loggedInUser]}
             isClinicAccount={this.props.isClinicAccount}
-            targetUsersForUpload={this.props.targetUsersForUpload} />
+            targetUsersForUpload={this.props.targetUsersForUpload}
+            clinics={this.props.clinics}
+            hasPersonalWorkspace={this.props.hasPersonalWorkspace}
+            onWorkspaceSwitch={this.handleWorkspaceSwitch}
+            goToPersonalWorkspace={this.handlePersonalWorkspaceSwitch}
+            switchToClinic={this.handleSwitchToClinic} />
         </div>
       </div>
     );
@@ -110,6 +139,9 @@ export default connect(
     function isClinicAccount(state) {
       return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
     }
+    function hasPersonalWorkspace(state){
+      return !!_.get(_.get(state.allUsers, state.loggedInUser, {}), ['profile', 'patient'], false);
+    }
     return {
       // plain state
       allUsers: state.allUsers,
@@ -118,8 +150,10 @@ export default connect(
       loggedInUser: state.loggedInUser,
       targetUsersForUpload: state.targetUsersForUpload,
       uploadIsInProgress: state.working.uploading,
+      clinics: state.clinics,
       // derived state
-      isClinicAccount: isClinicAccount(state)
+      isClinicAccount: isClinicAccount(state),
+      hasPersonalWorkspace: hasPersonalWorkspace(state)
     };
   },
   (dispatch) => {

@@ -115,6 +115,7 @@ export function doAppInit(opts, servicesToInit) {
             dispatch(sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
             dispatch(sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
             dispatch(sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
+            dispatch(sync.setBlipUrl(api.makeBlipUrl('/')));
             let session = apiResult;
             if (session === undefined) {
               dispatch(setPage(pages.LOGIN));
@@ -165,35 +166,54 @@ export function doLogin(creds, opts) {
         memberships
       }));
 
+      const isClinic = personUtils.isClinic(user);
+
       // detect if a VCA here and redirect to clinic user select screen
-      if(personUtils.isClinicianAccount(user)){
-        dispatch(getClinicsForClinician(api, user.userid, {}, (err, clinics) => {
-          if(!_.isEmpty(clinics)){
+      dispatch(getClinicsForClinician(api, user.userid, {}, (err, clinics) => {
+        if(err) {
+          return dispatch(sync.loginFailure(err));
+        }
+        if(!_.isEmpty(clinics)){
+          if (clinics.length == 1) { // select clinic and go to clinic user select page
             let clinicId = _.get(clinics,'0.clinic.id',null);
-            dispatch(fetchPatientsForClinic(api, clinicId));
+            dispatch(fetchPatientsForClinic(clinicId));
             dispatch(sync.selectClinic(clinicId));
+            return dispatch(
+              setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
+                metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
+              })
+            );
           }
-        }));
-        return dispatch(
-          setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
-            metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
-          })
-        );
-      }
+          if (clinics.length > 1) { // more than one clinic - go to workspace switch
+            return dispatch(
+              setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
+                metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
+              })
+            );
+          }
+        }
+        if(isClinic){ // "old" style clinic account without new clinic
+          return dispatch(
+            setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
+              metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
+            })
+          );
+        }
+        // detect if a DSA here and redirect to data storage screen
+        const { targetUsersForUpload } = getState();
+        if (_.isEmpty(targetUsersForUpload)) {
+          return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
+        }
 
-      // detect if a DSA here and redirect to data storage screen
-      const { targetUsersForUpload } = getState();
-      if (_.isEmpty(targetUsersForUpload)) {
-        return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
-      }
+        const { uploadTargetUser } = getState();
+        if (uploadTargetUser !== null) {
+          dispatch(sync.setBlipViewDataUrl(
+            api.makeBlipUrl(actionUtils.viewDataPathForUser(uploadTargetUser))
+          ));
+        }
+        dispatch(retrieveTargetsFromStorage());
 
-      const { uploadTargetUser } = getState();
-      if (uploadTargetUser !== null) {
-        dispatch(sync.setBlipViewDataUrl(
-          api.makeBlipUrl(actionUtils.viewDataPathForUser(uploadTargetUser))
-        ));
-      }
-      dispatch(retrieveTargetsFromStorage());
+      }));
     });
   };
 }
@@ -789,6 +809,46 @@ export function retrieveTargetsFromStorage() {
   };
 }
 
+export function goToPersonalWorkspace() {
+  return (dispatch, getState) => {
+    const { loggedInUser, uploadTargetUser, devices, targetDevices, targetTimezones} = getState();
+
+    dispatch(sync.selectClinic(null));
+    dispatch(sync.setUploadTargetUser(loggedInUser));
+
+    if (!_.isEmpty(_.get(targetDevices, uploadTargetUser))) {
+      let usersWithTargets = {};
+      _.forOwn(targetDevices, (devicesArray, userId) => {
+        usersWithTargets[userId] = _.map(devicesArray, (deviceKey) => {
+          return {key: deviceKey};
+        });
+      });
+      _.forOwn(targetTimezones, (timezoneName, userId) => {
+        usersWithTargets[userId] = _.map(usersWithTargets[userId], (target) => {
+          if (timezoneName != null) {
+            target.timezone = timezoneName;
+          }
+          return target;
+        });
+      });
+      const targetDeviceKeys = targetDevices[uploadTargetUser];
+      const supportedDeviceKeys = _.keys(devices);
+      const atLeastOneDeviceSupportedOnSystem = _.some(targetDeviceKeys, (key) => {
+        return _.includes(supportedDeviceKeys, key);
+      });
+      const uploadsByUser = actionUtils.getDeviceTargetsByUser(usersWithTargets);
+      dispatch(sync.setUploads(uploadsByUser));
+      if (atLeastOneDeviceSupportedOnSystem) {
+        return dispatch(setPage(pages.MAIN));
+      } else {
+        return dispatch(setPage(pages.SETTINGS));
+      }
+    } else {
+      return dispatch(setPage(pages.SETTINGS));
+    }
+  };
+}
+
 export function createCustodialAccount(profile) {
   return (dispatch, getState) => {
     const { api } = services;
@@ -954,14 +1014,14 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
 /**
  * Fetch Patients for Clinic Action Creator
  *
- * @param {Object} api - an instance of the API wrapper
  * @param {String} clinicId - Id of the clinic
  * @param {Object} [options] - search options
  * @param {String} [options.search] - search query string
  * @param {Number} [options.offset] - search page offset
  * @param {Number} [options.limit] - results per page
  */
- export function fetchPatientsForClinic(api, clinicId, options = {}) {
+ export function fetchPatientsForClinic(clinicId, options = {}) {
+  const { api } = services;
   return (dispatch) => {
     dispatch(sync.fetchPatientsForClinicRequest());
 
@@ -1027,7 +1087,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
           createActionError(ErrorMessages.ERR_FETCHING_CLINICS_FOR_CLINICIAN, err), err
         ));
       } else {
-        dispatch(sync.getClinicsForClinicianSuccess(clinics, options));
+        dispatch(sync.getClinicsForClinicianSuccess(clinics, clinicianId, options));
       }
     });
   };

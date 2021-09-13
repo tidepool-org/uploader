@@ -110,7 +110,11 @@ export function unsupported(state = initialState.unsupported, action) {
 
 export function blipUrls(state = initialState.blipUrls, action) {
   switch (action.type) {
-    case types. SET_BLIP_VIEW_DATA_URL:
+    case types.SET_BLIP_URL:
+      return _.assign({}, state, {
+        blipUrl: action.payload.url
+      });
+    case types.SET_BLIP_VIEW_DATA_URL:
       return _.assign({}, state, {
         viewDataLink: action.payload.url
       });
@@ -362,9 +366,9 @@ export const clinics = (state = initialState.clinics, action) => {
     case types.UPDATE_CLINIC_PATIENT_SUCCESS: {
       const patient = _.get(action.payload, 'patient', '');
       const clinicId = _.get(action.payload, 'clinicId', '');
-      return update(state, {
-        [clinicId]: { patients: { [patient.id]: { $set: patient }}}
-      });
+      const newClinics = _.cloneDeep(state);
+      _.set(newClinics, [clinicId, 'patients', patient.id], patient);
+      return newClinics;
     }
     case types.GET_CLINICS_FOR_CLINICIAN_SUCCESS: {
       const clinics = _.get(action.payload, 'clinics');
@@ -388,7 +392,11 @@ export const clinics = (state = initialState.clinics, action) => {
       if (!selectedClinicId) return state;
       return update(state, {
         [selectedClinicId]: {
-          patients: { [userId]: { targetDevices: {$push: [deviceKey]} } }
+          patients: {
+            [userId]: {
+              targetDevices: targetDevices => update(targetDevices || [], {$push: [deviceKey]} )
+            }
+          }
         }
       });
     }

@@ -31,8 +31,8 @@ export function allUsers(state = {}, action) {
       let newState = {};
       _.each(memberships, (membership) => {
         newState[membership.userid] = (membership.userid === user.userid) ?
-          _.assign({}, _.omit(user, 'userid'), profile) :
-          _.assign({}, membership.profile);
+          _.assign({}, _.omit(user, 'userid'), {profile}) :
+          _.assign({}, {profile: membership.profile});
       });
       return newState;
     }
@@ -50,10 +50,18 @@ export function allUsers(state = {}, action) {
       return update(state, { $merge: patientsMap });
     case types.CREATE_CUSTODIAL_ACCOUNT_SUCCESS:
       const { account } = action.payload;
-      return update(state, {$merge: {[account.userid]: account.profile}});
+      return update(state, {$merge: {[account.userid]: {profile: account.profile}}});
+    case types.GET_CLINICS_FOR_CLINICIAN_SUCCESS:
+      let { clinicianId, clinics } = action.payload;
+      return update(state, { $merge: {
+        [clinicianId]: {
+          ...state[clinicianId],
+          isClinicMember: clinics.length > 0,
+        }
+      } });
     case types.UPDATE_PROFILE_SUCCESS:
       const { userId, profile } = action.payload;
-      return update(state, {$merge: {[userId]: profile}});
+      return update(state, {[userId]: userId => update(userId || {}, {$merge: {profile}}) });
     case types.LOGOUT_REQUEST:
       return {};
     default:

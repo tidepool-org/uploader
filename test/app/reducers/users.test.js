@@ -42,8 +42,8 @@ describe('users', () => {
         payload: { user, profile, memberships }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, fullName: profile.fullName},
-        d4e5f6: {b: 2}
+        a1b2c3: {email: user.email, profile},
+        d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
@@ -56,8 +56,8 @@ describe('users', () => {
         payload: { user, profile, memberships }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, fullName: profile.fullName},
-        d4e5f6: {b: 2}
+        a1b2c3: {email: user.email, profile},
+        d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
@@ -70,8 +70,8 @@ describe('users', () => {
         payload: { user, profile, memberships }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, fullName: profile.fullName},
-        d4e5f6: {b: 2}
+        a1b2c3: {email: user.email, profile},
+        d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
@@ -121,11 +121,26 @@ describe('users', () => {
         payload: { account }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        jkl012: account.profile
+        jkl012: {profile:account.profile}
       });
       let initialState = {};
       // test to be sure not *mutating* state object but rather returning new!
       expect(initialState === users.allUsers(initialState, action)).to.be.false;
+    });
+
+    test('should handle GET_CLINICS_FOR_CLINICIAN_SUCCESS', () => {
+      const action = {
+        type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+        payload: { clinics: [{id: 'clinicId'}], clinicianId: 'clinician123' }
+      };
+      let initialState = {
+        clinician123: {}
+      };
+      const tracked = mutationTracker.trackObj(initialState);
+      expect(users.allUsers(initialState, action)).to.deep.equal({
+        clinician123: { isClinicMember:true }
+      });
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });
 
     test('should handle UPDATE_PROFILE_SUCCESS', () => {
@@ -136,7 +151,7 @@ describe('users', () => {
       let initialState = {};
       const tracked = mutationTracker.trackObj(initialState);
       expect(users.allUsers(initialState, action)).to.deep.equal({
-        a1b2c3: profile
+        a1b2c3: {profile}
       });
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
     });

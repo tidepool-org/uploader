@@ -170,6 +170,14 @@ export function setSignUpUrl(url) {
   };
 }
 
+export function setBlipUrl(url) {
+  return {
+    type: ActionTypes.SET_BLIP_URL,
+    payload: { url },
+    meta: {source: actionSources[ActionTypes.SET_BLIP_URL]}
+  };
+}
+
 export function setTargetTimezone(userId, timezoneName, metric) {
   let meta = {source: actionSources[ActionTypes.SET_TARGET_TIMEZONE]};
   if (metric) {
@@ -979,11 +987,12 @@ export function getClinicsForClinicianRequest() {
   };
 }
 
-export function getClinicsForClinicianSuccess(clinics) {
+export function getClinicsForClinicianSuccess(clinics, clinicianId) {
   return {
     type: ActionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
     payload: {
       clinics: clinics,
+      clinicianId
     },
   };
 }

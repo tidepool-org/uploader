@@ -30,7 +30,7 @@ var styles = require('../../styles/components/ClinicUserBlock.module.less');
 class ClinicUserBlock extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
-    memberships: PropTypes.object.isRequired,
+    memberships: PropTypes.object,
     targetId: PropTypes.string,
     timezoneDropdown: PropTypes.element,
     onEditUser: PropTypes.func.isRequired,
@@ -74,7 +74,7 @@ class ClinicUserBlock extends React.Component {
     } else {
       user = _.get(allUsers, [targetId]);
       isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
-      birthday = this.formatBirthday(_.get(user, ['patient','birthday']));
+      birthday = this.formatBirthday(_.get(user, ['profile','patient','birthday']));
       fullName = personUtils.patientFullName(user);
     }
 

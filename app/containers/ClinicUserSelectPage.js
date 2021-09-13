@@ -20,11 +20,25 @@ import { connect } from 'react-redux';
 import actions from '../actions/';
 import React, { Component } from 'react';
 import ClinicUserSelect from '../components/ClinicUserSelect';
+import {pages} from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources';
+import * as metrics from '../constants/metrics';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class ClinicUserSelectPage extends Component {
+
+  onSetSelectedClinicId = (clinicId) => {
+    this.props.async.fetchPatientsForClinic(clinicId);
+    this.props.sync.selectClinic(clinicId);
+  };
+
+  onGoToWorkspaceSwitch = () => {
+    this.props.async.setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
+      metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
+    });
+  }
 
   render() {
     const {
@@ -33,6 +47,8 @@ export class ClinicUserSelectPage extends Component {
       uploadTargetUser,
       clinics,
       selectedClinicId,
+      blipUrls,
+      loggedInUser,
     } = this.props;
     return (
       <div>
@@ -44,7 +60,12 @@ export class ClinicUserSelectPage extends Component {
           onAddUserClick={this.props.async.clickAddNewUser}
           setTargetUser={this.props.sync.setUploadTargetUser}
           clinics={clinics}
-          selectedClinicId={selectedClinicId} />
+          selectedClinicId={selectedClinicId}
+          onSetSelectedClinicId={this.onSetSelectedClinicId}
+          blipUrls={blipUrls}
+          loggedInUser={loggedInUser}
+          onGoToWorkspaceSwitch={this.onGoToWorkspaceSwitch}
+          goToPersonalWorkspace={this.props.async.goToPersonalWorkspace} />
       </div>
     );
   }
@@ -58,6 +79,8 @@ export default connect(
       uploadTargetUser: state.uploadTargetUser,
       clinics: state.clinics,
       selectedClinicId: state.selectedClinicId,
+      blipUrls: state.blipUrls,
+      loggedInUser: state.loggedInUser,
     };
   },
   (dispatch) => {

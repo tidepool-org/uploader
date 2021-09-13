@@ -36,6 +36,7 @@ export const CLINIC_DEVICE_STORED = 'VCA Device Stored';
 export const CLINIC_DEVICES_DONE = 'VCA Devices Done';
 export const CLINIC_TIMEZONE_SELECT = 'VCA Timezone Selected';
 export const CLINIC_CHANGE_DEVICES = 'VCA Change Devices';
+export const WORKSPACE_SWITCH_DISPLAYED = 'VCA Workspace Switch Displayed';
 
 export const CHOOSE_DEVICES = 'Choose Devices';
 export const CHOOSE_DEVICES_DONE = 'Choose Devices Done';
@@ -55,4 +56,4 @@ export const UNSUPPORTED_SCREEN_DISPLAYED = 'Electron Uploader - Unsupported scr
 export const QUIT_AND_INSTALL = 'Electron Uploader - Auto-update occurred';
 
 export const DEVICE_TIME_INCORRECT = 'Device time incorrect';
- 
+

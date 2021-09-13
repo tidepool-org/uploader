@@ -64,7 +64,7 @@ export class MainPage extends Component {
     return (
       <TimezoneDropdown
         dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
-        isClinicAccount={this.props.isClinicAccount}
+        isClinicAccount={this.props.renderClinicUi}
         isUploadInProgress={this.props.uploadIsInProgress}
         onTimezoneChange={this.props.async.setTargetTimezone}
         selectorLabel={i18n.t('Time zone')}
@@ -79,8 +79,8 @@ export class MainPage extends Component {
   }
 
   renderUploadListDoneButton() {
-    const { isClinicAccount } = this.props;
-    if (isClinicAccount && this.props.uploadTargetUser) {
+    const { renderClinicUi } = this.props;
+    if (renderClinicUi && this.props.uploadTargetUser) {
       return <ClinicUploadDone
         onClicked= {this.handleClickChangePerson}
         uploadTargetUser={this.props.uploadTargetUser}
@@ -124,8 +124,8 @@ export class MainPage extends Component {
   }
 
   renderClinicUserBlock() {
-    const { isClinicAccount } = this.props;
-    if (!isClinicAccount && !this.props.selectedClinicId) return null;
+    const { renderClinicUi } = this.props;
+    if (!renderClinicUi) return null;
     let timezoneDropdown = this.renderTimezoneDropdown();
     return (
       <ClinicUserBlock
@@ -143,8 +143,9 @@ export class MainPage extends Component {
   render() {
     let changePersonLink = null;
     let clinicUserBlock = null;
+    let {renderClinicUi} = this.props;
 
-    if(this.props.isClinicAccount || this.props.selectedClinicId){
+    if(renderClinicUi){
       changePersonLink = this.renderChangePersonLink();
       clinicUserBlock = this.renderClinicUserBlock();
     }
@@ -154,7 +155,7 @@ export class MainPage extends Component {
 
     let timezoneDropdown = null;
     let viewDataLinkButton = this.renderUploadListDoneButton();
-    if(!this.props.isClinicAccount){
+    if(!renderClinicUi){
       timezoneDropdown = this.renderTimezoneDropdown();
     }
     return (
@@ -181,7 +182,8 @@ export class MainPage extends Component {
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}
           uploads={this.props.activeUploads}
           userDropdownShowing={this.props.showingUserSelectionDropdown}
-          selectedClinicId={this.props.selectedClinicId} />
+          selectedClinicId={this.props.selectedClinicId}
+          renderClinicUi={renderClinicUi} />
         {viewDataLinkButton}
       </div>
     );
@@ -240,6 +242,11 @@ export default connect(
         ) !== -1
       );
     }
+    function renderClinicUi(state) {
+      const isNewClinician = _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
+      const {selectedClinicId} = state;
+      return !!((isClinicAccount(state) && !isNewClinician) || (isNewClinician && selectedClinicId));
+    }
     return {
       activeUploads: getActiveUploads(state),
       allUsers: state.allUsers,
@@ -258,6 +265,7 @@ export default connect(
       uploadsByUser: state.uploadsByUser,
       selectedClinicId: state.selectedClinicId,
       clinics: state.clinics,
+      renderClinicUi: renderClinicUi(state),
     };
   },
   (dispatch) => {
