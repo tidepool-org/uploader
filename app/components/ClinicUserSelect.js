@@ -227,7 +227,7 @@ class ClinicUserSelect extends React.Component {
                           className={styles.clinicItem}
                           onClick={()=>this.handleSwitchClinic(clinic)}>
                             {clinic.name}
-                            {clinic.id == selectedClinicId && <CheckRoundedIcon />}
+                            {clinic.id === selectedClinicId && <CheckRoundedIcon />}
                         </div>
                       </li>
                     )}
