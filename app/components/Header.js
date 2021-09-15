@@ -34,7 +34,6 @@ import styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
 import { remote } from 'electron';
-import {selectClinic} from '../actions/sync';
 const i18n = remote.getGlobal( 'i18n' );
 
 export class Header extends Component {
