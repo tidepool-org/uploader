@@ -3959,7 +3959,7 @@ describe('Asynchronous Actions', () => {
       });
     });
     describe('user has no supported devices', () => {
-      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to settings page for device selection)', () => {
+      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, then SET_PAGE (redirect to settings page for device selection)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
