@@ -38,13 +38,15 @@ export default class LoggedInAs extends Component {
     onClicked: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired,
     user: PropTypes.object,
-    isClinicAccount: PropTypes.bool,
     targetUsersForUpload: PropTypes.array,
     clinics: PropTypes.object,
     hasPersonalWorkspace: PropTypes.bool,
     onWorkspaceSwitch: PropTypes.func.isRequired,
     goToPersonalWorkspace: PropTypes.func.isRequired,
     switchToClinic: PropTypes.func.isRequired,
+    isClinicMember: PropTypes.bool.isRequired,
+    uploadTargetUser: PropTypes.string,
+    loggedInUser: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -102,12 +104,15 @@ export default class LoggedInAs extends Component {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
     var isDisabled = uploadInProgress;
+    var {hasPersonalWorkspace, loggedInUser, uploadTargetUser} = this.props;
 
-
-    if (_.isEmpty(this.props.targetUsersForUpload) && !this.props.hasPersonalWorkspace) {
-     isDisabled = true;
+    if(uploadTargetUser !== loggedInUser) {
+      return null;
     }
 
+    if (_.isEmpty(this.props.targetUsersForUpload) && !hasPersonalWorkspace) {
+     isDisabled = true;
+    }
 
     if (uploadInProgress) {
       title = i18n.t('Upload in progress!\nPlease wait to change device selection.');
@@ -178,8 +183,8 @@ export default class LoggedInAs extends Component {
   }
 
   renderPersonalWorkspace() {
-    var {hasPersonalWorkspace} = this.props;
-    if(hasPersonalWorkspace) {
+    var {hasPersonalWorkspace, isClinicMember} = this.props;
+    if(hasPersonalWorkspace && isClinicMember) {
       return (
         <li>
           <a className={styles.muiLink}

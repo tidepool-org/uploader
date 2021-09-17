@@ -20,6 +20,7 @@ export const WorkspacePage = (props) => {
   const blipUrls = useSelector((state)=>state.blipUrls);
 
   const handleSwitchWorkspace = (clinic) => {
+    dispatch(sync.setUploadTargetUser(null));
     dispatch(sync.selectClinic(clinic.id));
     dispatch(async.fetchPatientsForClinic(clinic.id));
     dispatch(
