@@ -47,5 +47,5 @@ HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
 [Strings]
 ManufacturerName              = "Tidepool"
 ClassName                     = "WinUSB devices"
-USB\MyCustomDevice.DeviceDesc = "Tidepool USB driver (WinUSB)"
+DeviceDesc = "Tidepool USB driver (WinUSB)"
 REG_MULTI_SZ = 0x00010000
