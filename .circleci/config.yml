@@ -8,7 +8,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '10.1.0'
+      xcode: '12.5.1'
     steps:
     - checkout
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
