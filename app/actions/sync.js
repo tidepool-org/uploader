@@ -302,7 +302,7 @@ export function loginRequest() {
 
 export function loginSuccess(results) {
   const { user, profile, memberships } = results;
-  const isClinicAccount = personUtils.userHasRole(user, 'clinic');
+  const isClinicAccount = personUtils.isClinicianAccount(user);
   if (isClinicAccount) {
     uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }

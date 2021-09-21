@@ -44,7 +44,6 @@ export default class UploadList extends Component {
     readFile: PropTypes.func.isRequired,
     toggleErrorDetails: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
-    isClinicAccount: PropTypes.bool.isRequired,
     onChooseDevices: PropTypes.func.isRequired,
     timezoneIsSelected: PropTypes.bool.isRequired,
     isUploadInProgress: PropTypes.bool.isRequired,

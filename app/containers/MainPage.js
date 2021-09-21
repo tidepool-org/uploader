@@ -64,7 +64,7 @@ export class MainPage extends Component {
     return (
       <TimezoneDropdown
         dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
-        isClinicAccount={this.props.renderClinicUi}
+        renderClinicUi={this.props.renderClinicUi}
         isUploadInProgress={this.props.uploadIsInProgress}
         onTimezoneChange={this.props.async.setTargetTimezone}
         selectorLabel={i18n.t('Time zone')}
@@ -167,7 +167,6 @@ export class MainPage extends Component {
         <UploadList
           rememberMedtronicSerialNumber={this.props.sync.rememberMedtronicSerialNumber}
           disabled={Boolean(this.props.unsupported) || !Boolean(this.props.selectedTimezone)}
-          isClinicAccount={this.props.isClinicAccount}
           isUploadInProgress={this.props.uploadIsInProgress}
           onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CLINIC_CHANGE_DEVICES}})}
           onReset={this.props.sync.resetUpload}
@@ -252,7 +251,6 @@ export default connect(
       allUsers: state.allUsers,
       memberships: state.memberships,
       blipUrls: state.blipUrls,
-      isClinicAccount: isClinicAccount(state),
       isTimezoneFocused: state.isTimezoneFocused,
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),

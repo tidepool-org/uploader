@@ -69,8 +69,8 @@ export class SettingsPage extends Component {
   }
 
   renderClinicUserBlock() {
-    const { isClinicAccount } = this.props;
-    if (!isClinicAccount) return null;
+    const { renderClinicUi } = this.props;
+    if (!renderClinicUi) return null;
     return (
       <ClinicUserBlock
         allUsers={this.props.allUsers}
@@ -103,7 +103,7 @@ export class SettingsPage extends Component {
     let changePersonLink = null;
     let clinicUserBlock = null;
 
-    if((this.props.isClinicAccount && !this.props.isNewClinician) || (this.props.isNewClinician && this.props.selectedClinicId)){
+    if(this.props.renderClinicUi){
       changePersonLink = this.renderChangePersonLink();
       clinicUserBlock = this.renderClinicUserBlock();
     }
@@ -117,7 +117,7 @@ export class SettingsPage extends Component {
           addDevice={this.props.sync.addTargetDevice}
           devices={this.props.devices}
           disabled={this.props.disabled}
-          isClinicAccount={this.props.isClinicAccount}
+          renderClinicUi={this.props.renderClinicUi}
           onDone={this.props.async.clickDeviceSelectionDone}
           removeDevice={this.props.sync.removeTargetDevice}
           targetDevices={this.props.targetDevices}
@@ -184,10 +184,10 @@ export default connect(
       }
       return false;
     }
-    function isNewClinician(state) {
-      return (
-        _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false)
-      );
+    function renderClinicUi(state) {
+      const isNewClinician = _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
+      const {selectedClinicId} = state;
+      return !!((isClinicAccount(state) && !isNewClinician) || (isNewClinician && selectedClinicId));
     }
     return {
       allUsers: state.allUsers,
@@ -195,7 +195,6 @@ export default connect(
       disabled: Boolean(state.unsupported),
       errorMessage: state.loginErrorMessage,
       forgotPasswordUrl: state.blipUrls.forgotPassword,
-      isClinicAccount: isClinicAccount(state),
       isFetching: state.working.fetchingUserInfo,
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),
@@ -206,7 +205,7 @@ export default connect(
       uploadTargetUser: state.uploadTargetUser,
       selectedClinicId: state.selectedClinicId,
       clinics: state.clinics,
-      isNewClinician: isNewClinician(state),
+      renderClinicUi: renderClinicUi(state),
     };
   },
   (dispatch) => {

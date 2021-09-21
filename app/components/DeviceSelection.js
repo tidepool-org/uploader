@@ -47,7 +47,7 @@ class DeviceSelection extends React.Component {
     addDevice: PropTypes.func.isRequired,
     removeDevice: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
-    isClinicAccount: PropTypes.bool.isRequired,
+    renderClinicUi: PropTypes.bool.isRequired,
     selectedClinicId: PropTypes.string,
   };
 
@@ -103,7 +103,7 @@ class DeviceSelection extends React.Component {
     formClassesObject[styles.form] = true;
     formClassesObject[styles.onlyme] = !this.props.userDropdownShowing;
     formClassesObject[styles.groups] = this.props.userDropdownShowing;
-    formClassesObject[styles.clinic] = this.props.isClinicAccount;
+    formClassesObject[styles.clinic] = this.props.renderClinicUi;
     var formClasses = cx(formClassesObject);
 
     var disabled = (this.props.targetDevices.length > 0 &&

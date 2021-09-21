@@ -524,7 +524,7 @@ export function doVersionCheck() {
 export function setTargetTimezone(userId, timezoneName) {
   return (dispatch, getState) => {
     const { allUsers, loggedInUser } = getState();
-    const isClinicAccount = personUtils.userHasRole(allUsers[loggedInUser], 'clinic');
+    const isClinicAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
     const { api } = services;
     dispatch(sync.updateProfileRequest());
     let updates = {
@@ -567,7 +567,7 @@ export function clickDeviceSelectionDone() {
       selectedClinicId,
       clinics,
     } = getState();
-    const isClinicAccount = personUtils.userHasRole(allUsers[loggedInUser], 'clinic');
+    const isClinicAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
     const { api } = services;
     const userTargetDevices = targetDevices[uploadTargetUser];
     if (selectedClinicId) {
@@ -729,7 +729,7 @@ export function retrieveTargetsFromStorage() {
     }
 
     const { targetDevices, targetTimezones, allUsers, loggedInUser } = getState();
-    const isClinicAccount = personUtils.userHasRole(allUsers[loggedInUser], 'clinic');
+    const isClinicAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
 
     if (isClinicAccount) {
       return dispatch(
