@@ -9,7 +9,7 @@ Class = PHDC
 ClassGUID = {182A3B42-D570-4066-8D13-C72202B40D78}
 Provider = %Manufacturer%
 DriverVer = 11/11/2015, 1.0.0.0
-CatalogFile = AC_Guide_phdc_driver.cat
+CatalogFile = phdc_driver.cat
 
 ; ================== Class section ==================
 
@@ -91,8 +91,8 @@ CoInstallers_CopyFiles=11
 ;[7]
 
 [SourceDisksNames]
-1 = %DISK_NAME%,,,.
-2 = %DISK_NAME%,,,.
+1 = %DISK_NAME%,,,\x86
+2 = %DISK_NAME%,,,\x64
 
 [SourceDisksFiles.x86]
 WinUSBCoInstaller2.dll=1
