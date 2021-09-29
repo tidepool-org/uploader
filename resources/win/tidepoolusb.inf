@@ -42,15 +42,9 @@ HKR,,Icon,,-20
 
 ; For XP and later
 [LUsbK_DeviceGroup.NTX86]
-%DeviceName%=LUsbK_Device, USB\%AvivaDeviceID%
-%DeviceName%=LUsbK_Device, USB\%GuideDeviceID%
-%DeviceName%=LUsbK_Device, USB\%GuideMeDeviceID%
 %DeviceName%=LUsbK_Device, USB\%DASHDeviceID%
 
 [LUsbK_DeviceGroup.NTAMD64]
-%DeviceName%=LUsbK_Device, USB\%AvivaDeviceID%
-%DeviceName%=LUsbK_Device, USB\%GuideDeviceID%
-%DeviceName%=LUsbK_Device, USB\%GuideMeDeviceID%
 %DeviceName%=LUsbK_Device, USB\%DASHDeviceID%
 
 [LUsbK_Device.NT.HW]
