@@ -13,9 +13,6 @@
 DeviceName = "Tidepool USB Driver (libusbK)"
 VendorName = "Tidepool"
 SourceName = "Tidepool USB Driver (libusbK) Install Disk"
-AvivaDeviceID = "VID_173A&PID_21CF"
-GuideDeviceID = "VID_173A&PID_21D5"
-GuideMeDeviceID = "VID_173A&PID_21D6"
 DASHDeviceID = "VID_0E8D&PID_201D"
 DeviceGUID = "{353519C3-882E-4218-277C-E22BCDA55839}"
 
