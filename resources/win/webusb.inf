@@ -20,6 +20,17 @@ DriverVer   = 09/04/2012,13.54.20.543
 [Standard.NTamd64]
 %USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
 
+; ================== Class section ==================
+
+[ClassInstall32]
+AddReg=Class_Install_Add_Reg
+
+[Class_Install_Add_Reg]
+HKR,,,0,%ClassName%
+HKR,,NoInstallClass,,1
+HKR,,Icon,,"-20"
+HKR,,LowerLogoVersion,,5.2
+
 ; =================== Installation ===================
 
 [USB_Install]
@@ -33,6 +44,12 @@ Needs   = WINUSB.NT.Services
 [USB_Install.HW]
 AddReg = Dev_AddReg
 
+[USB_Install.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+
+[WinUsb_Install]
+KmdfLibraryVersion=1.11
+
 [Dev_AddReg]
 HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
 
@@ -42,4 +59,3 @@ HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
 ManufacturerName              = "Tidepool"
 ClassName                     = "WinUSB devices"
 USB\MyCustomDevice.DeviceDesc = "Tidepool USB driver (WinUSB)"
-REG_MULTI_SZ = 0x00010000
