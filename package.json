@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.38.1-libre-2-error.1",
+  "version": "2.38.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
