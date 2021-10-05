@@ -27,11 +27,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js",
-    "package-win": "npm run build && electron-builder --win --x64",
-    "package-mac": "npm run build && electron-builder --mac",
-    "package-linux": "npm run build && electron-builder --linux",
-    "package-all": "npm run build && electron-builder -mwl"
+    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.14.0",
