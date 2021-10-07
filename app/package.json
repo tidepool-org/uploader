@@ -14,8 +14,11 @@
     "keytar": "5.6.0",
     "node-hid": "1.1.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "9.2.1",
+    "serialport": "9.0.7",
     "usb": "1.6.3"
+  },
+  "resolutions": {
+    "@serialport/bindings": "9.0.7"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"
