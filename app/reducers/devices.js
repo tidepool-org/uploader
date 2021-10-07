@@ -101,7 +101,15 @@ const devices = {
   omnipod: {
     instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
     key: 'omnipod',
-    name: 'Insulet OmniPod',
+    name: 'Insulet Omnipod DASH',
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
+  },
+  omnipoderos: {
+    instructions: i18n.t('Plug into USB. Wait for Export to complete. Click Upload.'),
+    key: 'omnipoderos',
+    name: 'Insulet Omnipod Classic',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,

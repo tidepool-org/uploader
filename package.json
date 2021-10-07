@@ -59,6 +59,7 @@
     "i18next": "19.9.2",
     "i18next-fs-backend": "1.1.0",
     "iconv-lite": "0.6.2",
+    "idb-keyval": "6.0.2",
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.0",

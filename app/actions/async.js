@@ -19,6 +19,7 @@ import _ from 'lodash';
 import semver from 'semver';
 import os from 'os';
 import { push } from 'connected-react-router';
+import { get, set } from 'idb-keyval';
 
 import sundial from 'sundial';
 
@@ -460,12 +461,83 @@ export function doUpload (deviceKey, opts, utc) {
 }
 
 export function readFile(userId, deviceKey, file, extension) {
-  return (dispatch, getState) => {
-    if (!file) {
-      return;
-    }
+  const version = versionInfo.semver;
+
+  return async (dispatch, getState) => {
     dispatch(syncActions.choosingFile(userId, deviceKey));
-    const version = versionInfo.semver;
+
+    if (!file) {
+      const getFile = async () => {
+        const regex = new RegExp('.+\.ibf', 'g');
+
+        for await (const entry of dirHandle.values()) {
+          console.log(entry);
+          // On Eros PDM there should only be one .ibf file
+          if (regex.test(entry.name)) {
+            file = {
+              handle: await entry.getFile(),
+              name: entry.name,
+            };
+          }
+        }
+      };
+
+      let dirHandle = await get('directory');
+
+      if (dirHandle) {
+        console.log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
+        if ((await dirHandle.queryPermission()) === 'granted') {
+          console.log('Permission already granted.');
+          try {
+            await getFile();
+          } catch (error) {
+            console.log('Device not ready yet or not plugged in.', error);
+            let err = new Error(errorText.E_NOT_YET_READY);
+            let errProps = {
+              code: 'E_NOT_YET_READY',
+              version: version
+            };
+            return dispatch(syncActions.readFileAborted(err, errProps));
+          }
+        } else {
+          console.log('Requesting permission..');
+          if ((await dirHandle.requestPermission()) === 'granted') {
+            try {
+              await getFile();
+            } catch (err) {
+              // device mounted on a different drive number/letter, so we'll have to
+              // show directory picker again
+              console.log(err.name, err.message);
+              try {
+                dirHandle = await window.showDirectoryPicker();
+                await set('directory', dirHandle);
+                await getFile();
+              } catch (error) {
+                let err = new Error(`${errorText.E_READ_FILE}: ${error.message}`);
+                let errProps = {
+                  code: 'E_READ_FILE',
+                  version: version
+                };
+                return dispatch(syncActions.readFileAborted(err, errProps));
+              }
+            }
+          }
+        }
+      } else {
+        try {
+          dirHandle = await window.showDirectoryPicker();
+          await set('directory', dirHandle);
+          await getFile();
+        } catch (error) {
+          let err = new Error(`${errorText.E_READ_FILE}: ${error.message}`);
+          let errProps = {
+            code: 'E_READ_FILE',
+            version: version
+          };
+          return dispatch(syncActions.readFileAborted(err, errProps));
+        }
+      }
+    }
 
     if (file.name.slice(-extension.length) !== extension) {
       let err = new Error(errorText.E_FILE_EXT + extension);
@@ -476,12 +548,8 @@ export function readFile(userId, deviceKey, file, extension) {
       return dispatch(syncActions.readFileAborted(err, errProps));
     }
     else {
-      let reader = new FileReader();
-      reader.onloadstart = () => {
-        dispatch(syncActions.readFileRequest(userId, deviceKey, file.name));
-      };
 
-      reader.onerror = () => {
+      const onError = () => {
         let err = new Error(errorText.E_READ_FILE + file.name);
         let errProps = {
           code: 'E_READ_FILE',
@@ -490,14 +558,39 @@ export function readFile(userId, deviceKey, file, extension) {
         return dispatch(syncActions.readFileFailure(err, errProps));
       };
 
-      reader.onloadend = ((theFile) => {
-        return (e) => {
-          dispatch(syncActions.readFileSuccess(userId, deviceKey, e.srcElement.result));
-          dispatch(doUpload(deviceKey));
-        };
-      })(file);
+      if (file.handle) {
+        // we're using File System Access API
+        dispatch(syncActions.readFileRequest(userId, deviceKey, file.name));
+        try {
+          const filedata = await file.handle.arrayBuffer();
 
-      reader.readAsArrayBuffer(file);
+          dispatch(syncActions.readFileSuccess(userId, deviceKey, filedata));
+          const opts = {
+            filename : file.name,
+            filedata : filedata,
+          };
+          return dispatch(doUpload(deviceKey, opts));
+        } catch (err) {
+          console.log('Error', err);
+          return onError();
+        }
+      } else {
+        let reader = new FileReader();
+        reader.onloadstart = () => {
+          dispatch(syncActions.readFileRequest(userId, deviceKey, file.name));
+        };
+
+        reader.onerror = onError();
+
+        reader.onloadend = ((theFile) => {
+          return (e) => {
+            dispatch(syncActions.readFileSuccess(userId, deviceKey, e.srcElement.result));
+            dispatch(doUpload(deviceKey));
+          };
+        })(file);
+
+        reader.readAsArrayBuffer(file);
+      }
     }
   };
 }

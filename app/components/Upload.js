@@ -171,6 +171,11 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  handleOmnipodErosUpload() {
+    const { upload } = this.props;
+    this.props.readFile(null, upload.source.extension);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -208,6 +213,10 @@ export default class Upload extends Component {
 
     if (_.get(upload, 'key', null) === 'caresensble') {
       return this.handleBluetoothUpload();
+    }
+
+    if (_.get(upload, 'key', null) === 'omnipoderos') {
+      return this.handleOmnipodErosUpload();
     }
 
     var options = {};
@@ -498,7 +507,7 @@ export default class Upload extends Component {
       disabled = disabled || this.state.medtronic600FormIncomplete;
     }
 
-    if (_.get(upload, 'source.type', null) === 'block') {
+    if (this.isBlockModeFileChosen()) {
       return null;
     }
 
@@ -783,7 +792,8 @@ export default class Upload extends Component {
 
   isBlockModeFileChosen() {
     const { upload } = this.props;
-    if (_.get(upload, 'source.type', null) !== 'block') {
+    if (_.get(upload, 'source.type', null) !== 'block' &&
+        _.get(upload, 'key', null) !== 'omnipoderos' ) {
       return false;
     }
     else {
