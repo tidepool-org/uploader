@@ -8,7 +8,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '10.1.0'
+      xcode: '12.5.1'
     steps:
     - checkout
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
@@ -25,8 +25,6 @@ jobs:
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
-    - run: yarn global add greenkeeper-lockfile@1
-    - run: greenkeeper-lockfile-update
     - run: yarn --frozen-lockfile
     - save_cache:
         key: dependency-cache-{{ checksum "package.json" }}
@@ -36,7 +34,6 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
-    - run: greenkeeper-lockfile-upload
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
 
