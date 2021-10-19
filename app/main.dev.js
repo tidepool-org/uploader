@@ -19,7 +19,8 @@ global.i18n = i18n;
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
-require('@electron/remote/main').initialize();
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -51,9 +52,10 @@ let mainWindow = null;
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 
-// as of March 2021, node-usb is not yet context-aware, see
-// https://github.com/tessel/node-usb/issues/380 for details
-app.allowRendererProcessReuse = false;
+// SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
+// in Chrome 92+, but we can't do this for our Electron setup,
+// so we have to enable it manually
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -72,20 +74,15 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const options = {
+      loadExtensionOptions: { allowFileAccess: true },
+      // forceDownload: false,
+    };
 
     try {
-      const name = await installExtension([REDUX_DEVTOOLS]);
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options);
       console.log(`Added Extension:  ${name}`);
-
-      // electron-devtools-installer fails to install React Developer Tools on Electron v12,
-      // so for now we install it manually
-      await session.defaultSession.loadExtension(
-        path.join(__dirname, '..', 'extensions', 'react-devtools'),
-        // allowFileAccess is required to load the devtools extension on file:// URLs.
-        { allowFileAccess: true }
-      );
-      console.log('Added Extension: React Developer Tools');
     } catch (err) {
       console.log('An error occurred: ', err);
     }
@@ -107,6 +104,18 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
+  //
+  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+  //   callback({
+  //     responseHeaders: {
+  //       ...details.responseHeaders,
+  //       // 'Access-Control-Allow-Origin': ['*'],
+  //       'Cross-Origin-Embedder-Policy': ['require-corp'],
+  //       'Cross-Origin-Opener-Policy': ['same-origin']
+  //     }
+  //   });
+  // });
+
   setLanguage();
 });
 
@@ -120,10 +129,10 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false, // so that we can access process from app.html
-      enableRemoteModule: true,
     }
   });
 
+  remoteMain.enable(mainWindow.webContents);
   mainWindow.webContents.on('render-process-gone', (e, details) => {
     console.log('Render process gone:', details.reason);
   });
@@ -152,21 +161,22 @@ operating system, as soon as possible.`,
     checkUpdates();
   });
 
-  mainWindow.webContents.on('new-window', function(event, url){
+  mainWindow.setWindowOpenHandler((details) => {
     event.preventDefault();
     let platform = os.platform();
     let chromeInstalls = chromeFinder[platform]();
     if(chromeInstalls.length === 0){
       // no chrome installs found, open user's default browser
-      open(url);
+      open(details.url);
     } else {
-      open(url, {app: chromeInstalls[0]}, function(error){
+      open(details.url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
-          open(url);
+          open(details.url);
         }
       });
     }
+    return { action: 'deny' };
   });
   mainWindow.on('closed', () => {
     mainWindow = null;

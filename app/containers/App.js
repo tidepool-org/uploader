@@ -20,7 +20,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import remote from '@electron/remote';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
 import dns from 'dns';
@@ -59,6 +58,8 @@ import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 
 import styles from '../../styles/components/App.module.less';
+
+const remote = require('@electron/remote');
 
 const serverdata = {
   Local: {

@@ -10,11 +10,11 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "9.2.4",
+    "drivelist": "4.0.0",
     "keytar": "5.6.0",
     "node-hid": "2.1.1",
     "@ronomon/direct-io": "3.0.1",
-    "usb": "1.6.5"
+    "usb": "1.8.0"
   },
   "optionalDependencies": {
     "winreg": "1.2.4"

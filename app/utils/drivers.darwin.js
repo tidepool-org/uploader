@@ -15,12 +15,12 @@
  * == BSD2 LICENSE ==
  */
 
-import remote from '@electron/remote';
 import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
-import isDev from 'electron-is-dev';
 import * as sync from '../actions/sync';
+
+const remote = require('@electron/remote');
 
 export function checkVersion(dispatch) {
 
@@ -76,7 +76,7 @@ export function checkVersion(dispatch) {
   let iconsPath = path.join(appFolder, '/Tidepool Uploader.icns');
   let scriptPath = path.join(appFolder, 'driver/updateDrivers.sh');
 
-  if (isDev) {
+  if (!remote.app.isPackaged) {
     driverPath = path.resolve(appFolder, 'build/driver/');
     helperPath = path.join(appFolder, 'resources/mac/helpers/');
     iconsPath = path.join(appFolder, 'resources/icon.icns');
