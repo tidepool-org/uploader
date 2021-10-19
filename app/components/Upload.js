@@ -620,7 +620,7 @@ export default class Upload extends Component {
     ];
     return (
       <div className={styles.uploadPeriodRow}>
-        <div>Upload:</div>
+        <div>{i18n.t('Upload:')}</div>
         <div className={styles.dropdown}>
           <Select clearable={false}
             name={'uploadDataPeriodSelect'}
