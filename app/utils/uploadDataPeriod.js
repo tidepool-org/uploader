@@ -105,6 +105,7 @@ if (isRenderer) {
     const uploadDataPeriod = module.exports = {
       periodMedtronic600: PERIODS.DELTA,
       periodGlobal: PERIODS.DELTA,
+      PERIODS,
     };
   }
 }

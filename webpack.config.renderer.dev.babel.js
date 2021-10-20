@@ -186,6 +186,16 @@ export default merge.smart(baseConfig, {
             limit: 10000,
           }
         }]
+      },
+      {
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        }]
       }
 
     ]

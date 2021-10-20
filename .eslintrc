@@ -1,6 +1,6 @@
 {
   // I want to use babel-eslint for parsing!
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "env": {
     // I write for browser
     "browser": true,
@@ -9,6 +9,7 @@
     "es6": true
   },
   "globals": {
+    "jest": true,
     "chai": false,
     "console": false,
     "define": false,
@@ -52,10 +53,12 @@
     "no-buffer-constructor": "warn"
   },
   "plugins": [
+    "@babel",
     "react",
     "promise",
     "import",
-    "lodash"
+    "lodash",
+    "jest"
   ],
   "settings": {
     "import/resolver": {

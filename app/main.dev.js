@@ -1,7 +1,8 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog } from 'electron';
 import os from 'os';
+import osName from 'os-name';
 import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
@@ -9,6 +10,14 @@ import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
+import i18n from 'i18next';
+import i18nextBackend from 'i18next-fs-backend';
+import i18nextOptions from './utils/config.i18next';
+
+global.i18n = i18n;
+
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -57,21 +66,14 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-
-    // TODO: Use async interation statement.
-    //       Waiting on https://github.com/tc39/proposal-async-iteration
-    //       Promises will fail silently, which isn't what we want in development
-    return Promise
-      .all(_.map(extensions, (name) => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+    try {
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      console.log(`Added Extension:  ${name}`);
+    } catch (err) {
+      console.log('An error occurred: ', err);
+    }
   }
 };
 
@@ -90,18 +92,40 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
-  const resizable = (process.env.NODE_ENV === 'development');
+  setLanguage();
+});
 
+function createWindow() {
+  const resizable = (process.env.NODE_ENV === 'development');
   mainWindow = new BrowserWindow({
     show: false,
     width: 663,
     height: 769,
-    resizable: resizable
+    resizable: resizable,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.webContents.on('did-finish-load', async () => {
+    if (osName() === 'Windows 7') {
+      const options = {
+        type: 'info',
+        title: 'Please update to a modern operating system',
+        message:
+          `Windows 7 won't be patched for any new viruses or security problems
+going forward.
+
+While Windows 7 will continue to work, Microsoft recommends you
+start planning to upgrade to Windows 10, or an alternative
+operating system, as soon as possible.`,
+        buttons: ['Continue']
+      };
+      await dialog.showMessageBox(options);
+    }
+
     mainWindow.show();
     mainWindow.focus();
     checkUpdates();
@@ -115,13 +139,7 @@ app.on('ready', async () => {
       // no chrome installs found, open user's default browser
       open(url);
     } else {
-      let app;
-      if(platform === 'win32'){
-        app = `"${chromeInstalls[0]}"`; 
-      } else {
-        app = chromeInstalls[0];
-      }
-      open(url, {app}, function(error){
+      open(url, {app: chromeInstalls[0]}, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(url);
@@ -161,12 +179,12 @@ app.on('ready', async () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Tidepool Uploader',
+      label: i18n.t('Tidepool Uploader'),
       submenu: [{
-        label: 'About Tidepool Uploader',
+        label: i18n.t('About Tidepool Uploader'),
         selector: 'orderFrontStandardAboutPanel:'
       }, {
-        label: 'Check for Updates',
+        label: i18n.t('Check for Updates'),
         click() {
           manualCheck = true;
           autoUpdater.checkForUpdates();
@@ -174,72 +192,72 @@ app.on('ready', async () => {
       }, {
         type: 'separator'
       }, {
-        label: 'Hide Tidepool Uploader',
+        label: i18n.t('Hide Tidepool Uploader'),
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {
-        label: 'Hide Others',
+        label: i18n.t('Hide Others'),
         accelerator: 'Command+Shift+H',
         selector: 'hideOtherApplications:'
       }, {
-        label: 'Show All',
+        label: i18n.t('Show All'),
         selector: 'unhideAllApplications:'
       }, {
         type: 'separator'
       }, {
-        label: 'Quit',
+        label: i18n.t('Quit'),
         accelerator: 'Command+Q',
         click() {
           app.quit();
         }
       }]
     }, {
-      label: 'Edit',
+      label: i18n.t('Edit'),
       submenu: [{
-        label: 'Undo',
+        label: i18n.t('Undo'),
         accelerator: 'Command+Z',
         selector: 'undo:'
       }, {
-        label: 'Redo',
+        label: i18n.t('Redo'),
         accelerator: 'Shift+Command+Z',
         selector: 'redo:'
       }, {
         type: 'separator'
       }, {
-        label: 'Cut',
+        label: i18n.t('Cut'),
         accelerator: 'Command+X',
         selector: 'cut:'
       }, {
-        label: 'Copy',
+        label: i18n.t('Copy'),
         accelerator: 'Command+C',
         selector: 'copy:'
       }, {
-        label: 'Paste',
+        label: i18n.t('Paste'),
         accelerator: 'Command+V',
         selector: 'paste:'
       }, {
-        label: 'Select All',
+        label: i18n.t('Select All'),
         accelerator: 'Command+A',
         selector: 'selectAll:'
       }]
     }, {
-      label: 'View',
+      label: i18n.t('View'),
       submenu: (process.env.NODE_ENV === 'development') ?
       [
         {
-          label: 'Reload',
+          label: i18n.t('Reload'),
           accelerator: 'Command+R',
           click() {
             mainWindow.webContents.reload();
           }
         }, {
-          label: 'Toggle Full Screen',
+          label: i18n.t('Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click() {
             mainWindow.setFullScreen(!mainWindow.isFullScreen());
           }
         }, {
-          label: 'Toggle Developer Tools',
+          label: i18n.t('Toggle Developer Tools'),
           accelerator: 'Alt+Command+I',
           click() {
             mainWindow.toggleDevTools();
@@ -247,13 +265,13 @@ app.on('ready', async () => {
         }
       ] : [
         {
-          label: 'Toggle Full Screen',
+          label: i18n.t('Toggle Full Screen'),
           accelerator: 'Ctrl+Command+F',
           click() {
             mainWindow.setFullScreen(!mainWindow.isFullScreen());
           }
         }, {
-          label: 'Toggle Developer Tools',
+          label: i18n.t('Toggle Developer Tools'),
           accelerator: 'Alt+Command+I',
           click() {
             mainWindow.toggleDevTools();
@@ -261,10 +279,10 @@ app.on('ready', async () => {
         }
       ]
     }, {
-      label: '&Upload',
+      label: i18n.t('&Upload'),
       id: 'upload',
       submenu: [{
-        label: 'All data',
+        label: i18n.t('All data'),
         type: 'radio',
         click() {
           console.log('Uploading all data');
@@ -272,7 +290,7 @@ app.on('ready', async () => {
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
       }, {
-        label: 'Data since last upload',
+        label: i18n.t('Data since last upload'),
         type: 'radio',
         click() {
           console.log('Uploading only new records');
@@ -281,30 +299,30 @@ app.on('ready', async () => {
         }
       }]
     }, {
-      label: 'Window',
+      label: i18n.t('Window'),
       submenu: [{
-        label: 'Minimize',
+        label: i18n.t('Minimize'),
         accelerator: 'Command+M',
         selector: 'performMiniaturize:'
       }, {
-        label: 'Close',
+        label: i18n.t('Close'),
         accelerator: 'Command+W',
         selector: 'performClose:'
       }, {
         type: 'separator'
       }, {
-        label: 'Bring All to Front',
+        label: i18n.t('Bring All to Front'),
         selector: 'arrangeInFront:'
       }]
     }, {
-      label: 'Help',
+      label: i18n.t('Help'),
       submenu: [{
-        label: 'Get Support',
+        label: i18n.t('Get Support'),
         click() {
           shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Privacy Policy',
+        label: i18n.t('Privacy Policy'),
         click() {
           shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
@@ -316,55 +334,55 @@ app.on('ready', async () => {
     Menu.setApplicationMenu(menu);
   } else {
     template = [{
-      label: '&File',
+      label: i18n.t('&File'),
       submenu: [{
-        label: '&Open',
+        label: i18n.t('&Open'),
         accelerator: 'Ctrl+O'
       }, {
-        label: '&Close',
+        label:  i18n.t('&Close'),
         accelerator: 'Ctrl+W',
         click() {
           mainWindow.close();
         }
       }]
     }, {
-      label: '&View',
+      label: i18n.t('&View'),
       submenu: (process.env.NODE_ENV === 'development') ? [{
-        label: '&Reload',
+        label: i18n.t('&Reload'),
         accelerator: 'Ctrl+R',
         click() {
           mainWindow.webContents.reload();
         }
       }, {
-        label: 'Toggle &Full Screen',
+        label: i18n.t('Toggle &Full Screen'),
         accelerator: 'F11',
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
-        label: 'Toggle &Developer Tools',
+        label: i18n.t('Toggle &Developer Tools'),
         accelerator: 'Alt+Ctrl+I',
         click() {
           mainWindow.toggleDevTools();
         }
       }] : [{
-        label: 'Toggle &Full Screen',
+        label: i18n.t('Toggle &Full Screen'),
         accelerator: 'F11',
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
-        label: 'Toggle &Developer Tools',
+        label: i18n.t('Toggle &Developer Tools'),
         accelerator: 'Alt+Ctrl+I',
         click() {
           mainWindow.toggleDevTools();
         }
       }]
     }, {
-      label: '&Upload',
+      label: i18n.t('&Upload'),
       id: 'upload',
       submenu: [{
-        label: 'All data',
+        label: i18n.t('All data'),
         type: 'radio',
         click() {
           console.log('Uploading all data');
@@ -372,7 +390,7 @@ app.on('ready', async () => {
             uploadDataPeriod.PERIODS.ALL, mainWindow);
         }
       }, {
-        label: 'Data since last upload',
+        label: i18n.t('Data since last upload'),
         type: 'radio',
         click() {
           console.log('Uploading only new records');
@@ -381,20 +399,20 @@ app.on('ready', async () => {
         }
       }]
     }, {
-      label: 'Help',
+      label: i18n.t('Help'),
       submenu: [{
-        label: 'Get Support',
+        label: i18n.t('Get Support'),
         click() {
           shell.openExternal('http://support.tidepool.org/');
         }
       }, {
-        label: 'Check for Updates',
+        label: i18n.t('Check for Updates'),
         click() {
           manualCheck = true;
           autoUpdater.checkForUpdates();
         }
       }, {
-        label: 'Privacy Policy',
+        label: i18n.t('Privacy Policy'),
         click() {
           shell.openExternal('https://developer.tidepool.org/privacy-policy/');
         }
@@ -404,7 +422,7 @@ app.on('ready', async () => {
     addDataPeriodGlobalListener(menu);
     mainWindow.setMenu(menu);
   }
-});
+}
 
 function checkUpdates(){
   // in production NODE_ENV we check for updates, but not if NODE_ENV is 'development'
@@ -470,3 +488,32 @@ if(!app.isDefaultProtocolClient('tidepoolupload')){
 app.on('window-all-closed', () => {
   app.quit();
 });
+
+app.on('activate', () => {
+  // for mac because, normally it's not common to recreate a window in the app
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
+
+function setLanguage() {
+  if (process.env.I18N_ENABLED === 'true') {
+    let lng = app.getLocale();
+    // remove country in language locale
+    if (_.includes(lng,'-'))
+      lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
+
+    i18nextOptions['lng'] = lng;
+  }
+
+  if (!i18n.Initialize) {
+    i18n.use(i18nextBackend).init(i18nextOptions, function(err, t) {
+      if (err) {
+        console.log('An error occurred in i18next:', err);
+      }
+
+      global.i18n = i18n;
+      createWindow();
+    });
+  }
+}

@@ -105,13 +105,13 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.log = bows('App');
-    const initial_server = _.findKey(serverdata, (key) => key.API_URL === config.API_URL);
+    const initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
     this.state = {
       server: initial_server
     };
   }
 
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     checkVersion(this.props.dispatch);
     let api = this.props.api;
     this.props.async.doAppInit(
@@ -123,16 +123,33 @@ export class App extends Component {
       log: this.log
     });
 
+    const addServers = (servers) => {
+      if (servers && servers.length && servers.length > 0) {
+        for (let server of servers) {
+          const protocol = server.name === 'localhost' ? 'http://' : 'https://';
+          const url = protocol + server.name + ':' + server.port;
+          serverdata[server.name] = {
+            API_URL: url,
+            UPLOAD_URL: url,
+            DATA_URL: url + '/dataservices',
+            BLIP_URL: url,
+          };
+        }
+      } else {
+        this.log('No servers found');
+      }
+    };
+
     dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      for (let server of servers) {
-        const protocol = server.name === 'localhost' ? 'http://' : 'https://';
-        const url = protocol + server.name + ':' + server.port;
-        serverdata[server.name] = {
-          API_URL: url,
-          UPLOAD_URL: url,
-          DATA_URL: url + '/dataservices',
-          BLIP_URL: url,
-        };
+      if (err) {
+        this.log(`DNS resolver error: ${err}. Retrying...`);
+        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+          if (!err2) {
+           addServers(servers2);
+          }
+        });
+      } else {
+        addServers(servers);
       }
     });
 
@@ -160,7 +177,7 @@ export class App extends Component {
           <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
           <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
         </Switch>
-        <Footer version={config.version} />
+        <Footer version={config.version} environment={this.state.server} />
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />

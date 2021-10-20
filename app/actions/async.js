@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import semver from 'semver';
 import os from 'os';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import sundial from 'sundial';
 
@@ -258,6 +258,17 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_SERIAL_CONNECTION',
           version: version
         };
+
+        if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
+          displayErr = new Error(errorText.E_DEXCOM_CONNECTION);
+          deviceDetectErrProps.code = 'E_DEXCOM_CONNECTION';
+        }
+
+        if (err === 'E_LIBRE2_UNSUPPORTED') {
+          displayErr = new Error(errorText.E_LIBRE2_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
+        }
+
         displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
@@ -269,6 +280,17 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           code: 'E_HID_CONNECTION',
           version: version
         };
+
+        if (targetDevice.powerOnlyWarning) {
+          displayErr = new Error(errorText.E_USB_CABLE);
+          disconnectedErrProps.code = 'E_USB_CABLE';
+        }
+
+        if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
+          displayErr = new Error(errorText.E_DEXCOM_CONNECTION);
+          disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
+        }
+
         return dispatch(syncActions.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 

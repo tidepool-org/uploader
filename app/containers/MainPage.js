@@ -31,9 +31,12 @@ import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
+import { remote } from 'electron';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
+
+const i18n = remote.getGlobal('i18n');
 
 export class MainPage extends Component {
   handleClickEditUser = () => {
@@ -64,7 +67,7 @@ export class MainPage extends Component {
         isClinicAccount={this.props.isClinicAccount}
         isUploadInProgress={this.props.uploadIsInProgress}
         onTimezoneChange={this.props.async.setTargetTimezone}
-        selectorLabel={'Time zone'}
+        selectorLabel={i18n.t('Time zone')}
         targetId={uploadTargetUser || null}
         targetTimezone={this.props.selectedTimezone}
         updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
@@ -116,7 +119,7 @@ export class MainPage extends Component {
             metric: {
               eventName: metrics.CLINIC_CHANGE_PERSON
             }
-          })}>Change Person</div>
+          })}>{i18n.t('Change Person')}</div>
     );
   }
 

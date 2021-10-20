@@ -1,6 +1,5 @@
 {
   "extends": "airbnb",
-  "parser": "babel-eslint",
   "plugins": ["lodash"],
   "parserOptions": {
     "ecmaVersion": 6
@@ -11,10 +10,6 @@
       {
         "allowForLoopAfterthoughts": true
       }
-    ],
-    "import/extensions": [
-      "error",
-      "ignorePackages"
     ],
     "import/order": "warn",
     "max-len": "warn",

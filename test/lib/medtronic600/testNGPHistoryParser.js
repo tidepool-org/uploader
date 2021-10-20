@@ -61,6 +61,7 @@ describe('NGPHistoryParser.js', () => {
           type: 'bolus',
         },
         carbInput: 60,
+        carbUnits: 'grams',
         clockDriftOffset: 0,
         conversionOffset: 0,
         deviceTime: '2017-02-10T15:48:52',

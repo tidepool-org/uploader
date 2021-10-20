@@ -37,3 +37,5 @@ Choose one of the following:
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+
+It is not possible to distinguish between CareSens models when uploading via Bluetooth, as the Bluetooth advertising name for Premier and Dual meters uses the same format ("CareSens + 4 digits")

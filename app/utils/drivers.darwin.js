@@ -20,7 +20,6 @@ import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
 import isDev from 'electron-is-dev';
-import decompress from 'decompress';
 import * as sync from '../actions/sync';
 
 export function checkVersion(dispatch) {
@@ -78,11 +77,10 @@ export function checkVersion(dispatch) {
   let scriptPath = path.join(appFolder, 'driver/updateDrivers.sh');
 
   if (isDev) {
-    const rootDir = path.resolve(appFolder, '../../../../../../');
-    driverPath = path.resolve(rootDir, 'build/driver/');
-    helperPath = path.join(rootDir, 'resources/mac/helpers/');
-    iconsPath = path.join(rootDir, 'resources/icon.icns');
-    scriptPath = path.resolve(rootDir, 'resources/mac/updateDrivers.sh');
+    driverPath = path.resolve(appFolder, 'build/driver/');
+    helperPath = path.join(appFolder, 'resources/mac/helpers/');
+    iconsPath = path.join(appFolder, 'resources/icon.icns');
+    scriptPath = path.resolve(appFolder, 'resources/mac/updateDrivers.sh');
   }
 
   const helperList = fs.readdirSync(helperPath).filter(e => e[0] !== '.');

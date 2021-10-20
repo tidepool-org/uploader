@@ -25,18 +25,21 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/DeviceTimeModal.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
     const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
     if(_.indexOf(tags, 'insulin-pump') !== -1){
-      return { value: 'insulin-pump', text: 'pump' };
+      return { value: 'insulin-pump', text: i18n.t('pump') };
     }
     if(_.indexOf(tags, 'cgm') !== -1){
-      return { value: 'cgm', text: 'CGM' };
+      return { value: 'cgm', text: i18n.t('CGM') };
     }
     if(_.indexOf(tags, 'bgm') !== -1){
-      return { value: 'bgm', text: 'meter' };
+      return { value: 'bgm', text: i18n.t('meter') };
     }
     return 'unknown';
   }
@@ -62,6 +65,7 @@ export class DeviceTimeModal extends Component {
   getActions = () => {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
+    const reminder = this.getReminder();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
     if ( !this.isDevice('Animas') &&
@@ -69,24 +73,26 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
          !this.isDevice('Tandem') &&
-         !this.isDevice('TrueMetrix')
+         !this.isDevice('TrueMetrix') &&
+         !this.isDevice('OneTouchVerioBLE')
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
-        Is the time on your {type.text} incorrect?<br/>&nbsp;
+        {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
         <button className={styles.button} onClick={this.handleContinue}>
-          Automatically update time to<br/>
-          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, and upload
+          {i18n.t('Automatically update time to')}<br/>
+          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
         </button>
         </div>
       );
     }
     buttons.push(
       <div className={styles.buttonGroup} key='cancel'>
-      Are you in {timezone}? Double-check<br/>
-      selected time zone and current device time.
+      {i18n.t('Are you in {{timezone}}? Double-check',{ timezone: timezone })}<br/>
+      {i18n.t('selected time zone and current device time.')}
+      {reminder}
       <button className={styles.button} onClick={this.handleCancel}>
-        Cancel this upload
+        {i18n.t('Cancel this upload')}
       </button>
       </div>
     );
@@ -98,23 +104,34 @@ export class DeviceTimeModal extends Component {
     const type = this.determineDeviceType();
     const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
-    switch (type.value) {
-      case 'bgm':
+    if (type.value === 'bgm') {
         message = (
           <div className={styles.text}>
             <div className={styles.body}>
-            * Changing your device time will not change any previous records.<br/>
-            All future readings will be in {timezone}.
-            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>Click to learn more about meters and device time.</a>
+            {i18n.t('* Changing your device time will not change any previous records.')}<br/>
+            {i18n.t('All future readings will be in {{timezone}}.', { timezone: timezone })}
+            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Click to learn more about meters and device time.')}</a>
             </div>
           </div>
         );
-        break;
-      default:
-        break;
     }
     return message;
   }
+
+  getReminder = () => {
+    const { showingDeviceTimePrompt: { cfg: { deviceInfo } } } = this.props;
+    let reminder;
+    if (deviceInfo.model === 'Dash') {
+      reminder = (
+        <div className={styles.text}>
+          <div className={styles.body}>
+          {i18n.t('Remember to tap "Export" on the PDM before clicking "Upload".')}
+          </div>
+        </div>
+      );
+    }
+    return reminder;
+  };
 
   render() {
     const { showingDeviceTimePrompt } = this.props;
@@ -126,14 +143,14 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
 
     const type = this.determineDeviceType();
-    const message = this.getMessage();
     const actions = this.getActions();
+    const message = this.getMessage();
 
     return (
       <div className={styles.modalWrap}>
         <div className={styles.modal}>
           <div className={styles.title}>
-            <div>Your {type.text} doesn't appear to be in</div>
+            <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
             <div className={styles.highlight}>{`${timezone}:`}</div>
           </div>
           <hr className={styles.hr} />
@@ -143,7 +160,7 @@ export class DeviceTimeModal extends Component {
               <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
             </div>
             <div className={styles.timeCompare}>
-              <div>Device time:</div>
+              <div>{i18n.t('Device time:')}</div>
               <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
             </div>
           </div>

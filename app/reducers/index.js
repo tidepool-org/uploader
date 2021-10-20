@@ -17,20 +17,22 @@
 
 import _ from 'lodash';
 import { combineReducers } from 'redux';
-import { routerReducer as router } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import { reducer as formReducer } from 'redux-form';
 import * as misc from './misc';
 import * as uploads from './uploads';
 import * as users from './users';
 
-const rootReducer = combineReducers(
-  _.assign(
-    misc,
-    uploads,
-    users,
-    { form: formReducer },
-    { router }
-  )
-);
+const rootReducer = function(history) {
+  return combineReducers(
+    _.assign(
+      misc,
+      uploads,
+      users,
+      { form: formReducer },
+      { router: connectRouter(history) },
+    )
+  );
+};
 
 export default rootReducer;

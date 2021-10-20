@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { routerMiddleware, push } from 'react-router-redux';
+import { routerMiddleware, push } from 'connected-react-router';
 import rootReducer from '../reducers';
 import { async, sync } from '../actions';
 import api from '../../lib/core/api';
@@ -43,11 +43,11 @@ export default function configureStore(initialState, history) {
     )
   );
 
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(rootReducer(history), initialState, enhancer);
 
   if (module.hot) {
     module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers')).default // eslint-disable-line global-require
+      store.replaceReducer(require('../reducers')(history)).default // eslint-disable-line global-require
     );
   }
 

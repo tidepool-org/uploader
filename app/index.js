@@ -5,9 +5,9 @@ import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { ipcRenderer } from 'electron';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import { createHashHistory } from 'history';
 
 import config from '../lib/config';
