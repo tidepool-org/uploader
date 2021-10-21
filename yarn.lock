@@ -9256,7 +9256,7 @@ lru-cache@~4.0.1:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
 
-lzo-decompress@^1.0.1:
+lzo-decompress@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/lzo-decompress/-/lzo-decompress-1.0.1.tgz#fe8649ba73fe20a4ebafd2f119ad7c1db57949dd"
   integrity sha512-C9GZmL2MwkxIFw6EuwvA82WUTxWwMN/yPToMKOpqmg72Yq9+V2qQFwukaacvXyd5ICv5i1EiVfYvHmx6ObfNeA==
