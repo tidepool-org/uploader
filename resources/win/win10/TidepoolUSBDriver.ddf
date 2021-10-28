@@ -18,6 +18,7 @@ tidepoolvcp.inf
 tidepoolhid.inf
 ftdibus.inf
 webusb.inf
+phdc.inf
 .Set DestinationDir=win10\amd64
 amd64\ftbusui.dll
 amd64\ftcserco.dll
@@ -35,6 +36,7 @@ amd64\WdfCoInstaller01009.dll
 .Set DestinationDir=win10\x64
 x64\WdfCoInstaller01009.dll
 x64\WdfCoInstaller01011.dll
+x64\winusbcoinstaller2.dll
 .Set DestinationDir=win10\i386
 i386\ftbusui.dll
 i386\ftcserco.dll
@@ -51,3 +53,4 @@ i386\tiusb.sys
 .Set DestinationDir=win10\x86
 x86\WdfCoInstaller01009.dll
 x86\WdfCoInstaller01011.dll
+x86\winusbcoinstaller2.dll
