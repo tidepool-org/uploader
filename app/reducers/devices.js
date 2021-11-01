@@ -28,6 +28,14 @@ const devices = {
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
+  abbottlibreview: {
+    instructions: i18n.t('Select CSV file downloaded from LibreView'),
+    key: 'abbottlibreview',
+    name: 'Abbott LibreView',
+    source: {type: 'block', driverId: 'AbbottLibreView', extension: '.csv'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
   precisionxtra: {
     instructions: i18n.t('Plug in meter with cable'),
     key: 'precisionxtra',
