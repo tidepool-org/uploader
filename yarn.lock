@@ -14089,10 +14089,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tidepool-platform-client@0.46.0-clinics.1:
-  version "0.46.0-clinics.1"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.46.0-clinics.1.tgz#b31b18c55142bc7dd8895a9351ab9b0b3f245c51"
-  integrity sha512-jOjZcRKqxJfFUDAYfDUskFC+0oq4nNzDCbeFhWljkAzsENEr3S4BmPGTAjeBOs5IVM+DPOobH4PBeQGI1h1Ypw==
+tidepool-platform-client@0.47.0-upload-428-clinic-rename.1:
+  version "0.47.0-upload-428-clinic-rename.1"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.47.0-upload-428-clinic-rename.1.tgz#5aefe4a7b1dd336064b1b4aa9356adb560c4e2c5"
+  integrity sha512-e0i4/4gHFRRISwlZEr5E8UJEtXAz3tsknUJMvNx1eRzqiPRZbp+OzDnH44Zcisk/KvHAtgr20gY/mPJXPoucFQ==
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
