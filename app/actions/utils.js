@@ -103,6 +103,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'Is it paired?';
       }
 
+      if (err.code === 'E_VERIO_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/'; // TODO: add article link
+        displayErr.linkText = 'controlled folder access.';
+      }
+
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(
           _.filter(
