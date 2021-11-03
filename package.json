@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.39.0-eperm-write-error.3",
+  "version": "2.39.0-eperm-write-error.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
