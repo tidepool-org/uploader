@@ -45,7 +45,7 @@ class ClinicUserSelect extends React.Component {
     blipUrls: PropTypes.object.isRequired,
     loggedInUser: PropTypes.string.isRequired,
     onGoToWorkspaceSwitch: PropTypes.func.isRequired,
-    goToPersonalWorkspace: PropTypes.func.isRequired,
+    goToPrivateWorkspace: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -78,9 +78,9 @@ class ClinicUserSelect extends React.Component {
     this.props.onSetSelectedClinicId(clinic.id);
   }
 
-  handleSwitchToPersonal = (e) => {
+  handleSwitchToPrivate = (e) => {
     e.preventDefault();
-    this.props.goToPersonalWorkspace();
+    this.props.goToPrivateWorkspace();
   }
 
   handleWorkspaceSwitch = (e) => {
@@ -269,14 +269,14 @@ class ClinicUserSelect extends React.Component {
     }
   }
 
-  renderPersonalWorkspaceLink = () => {
+  renderPrivateWorkspaceLink = () => {
     const {loggedInUser, allUsers} = this.props;
     const user = allUsers[loggedInUser];
-    const hasPersonalWorkspace = _.get(user, ['profile', 'patient'], false);
-    if(hasPersonalWorkspace) {
+    const hasPrivateWorkspace = _.get(user, ['profile', 'patient'], false);
+    if(hasPrivateWorkspace) {
       return (
         <div className={styles.postScript}>
-          {i18n.t('Want to use Tidepool for your personal data?')}  <a href="" onClick={this.handleSwitchToPersonal}>{i18n.t('Go to Personal Workspace')}</a>
+          {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={this.handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>
         </div>
       );
     }
@@ -303,7 +303,7 @@ class ClinicUserSelect extends React.Component {
         </div>
       </div>
       {this.renderWebOrSwitchLink()}
-      {this.renderPersonalWorkspaceLink()}
+      {this.renderPrivateWorkspaceLink()}
       </>
     );
   }

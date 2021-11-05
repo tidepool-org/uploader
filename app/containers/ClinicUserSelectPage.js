@@ -65,7 +65,7 @@ export class ClinicUserSelectPage extends Component {
           blipUrls={blipUrls}
           loggedInUser={loggedInUser}
           onGoToWorkspaceSwitch={this.onGoToWorkspaceSwitch}
-          goToPersonalWorkspace={this.props.async.goToPersonalWorkspace} />
+          goToPrivateWorkspace={this.props.async.goToPrivateWorkspace} />
       </div>
     );
   }

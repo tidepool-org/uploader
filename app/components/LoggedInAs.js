@@ -40,9 +40,9 @@ export default class LoggedInAs extends Component {
     user: PropTypes.object,
     targetUsersForUpload: PropTypes.array,
     clinics: PropTypes.object,
-    hasPersonalWorkspace: PropTypes.bool,
+    hasPrivateWorkspace: PropTypes.bool,
     onWorkspaceSwitch: PropTypes.func.isRequired,
-    goToPersonalWorkspace: PropTypes.func.isRequired,
+    goToPrivateWorkspace: PropTypes.func.isRequired,
     switchToClinic: PropTypes.func.isRequired,
     isClinicMember: PropTypes.bool.isRequired,
     uploadTargetUser: PropTypes.string,
@@ -91,9 +91,9 @@ export default class LoggedInAs extends Component {
     this.props.onWorkspaceSwitch();
   };
 
-  handleSwitchToPersonal = e => {
+  handleSwitchToPrivate = e => {
     e.preventDefault();
-    this.props.goToPersonalWorkspace();
+    this.props.goToPrivateWorkspace();
   }
 
   handleSwitchToClinic = clinic => {
@@ -104,13 +104,13 @@ export default class LoggedInAs extends Component {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
     var isDisabled = uploadInProgress;
-    var {hasPersonalWorkspace, loggedInUser, uploadTargetUser} = this.props;
+    var {hasPrivateWorkspace, loggedInUser, uploadTargetUser} = this.props;
 
     if(uploadTargetUser !== loggedInUser) {
       return null;
     }
 
-    if (_.isEmpty(this.props.targetUsersForUpload) && !hasPersonalWorkspace) {
+    if (_.isEmpty(this.props.targetUsersForUpload) && !hasPrivateWorkspace) {
      isDisabled = true;
     }
 
@@ -149,7 +149,7 @@ export default class LoggedInAs extends Component {
   }
 
   renderWorkspaces() {
-    var {clinics, hasPersonalWorkspace} = this.props;
+    var {clinics, hasPrivateWorkspace} = this.props;
     var clinicIds = _.keys(clinics);
     if(clinicIds.length > 1){
       return (
@@ -164,7 +164,7 @@ export default class LoggedInAs extends Component {
         </li>
       );
     }
-    if(clinicIds.length == 1 && hasPersonalWorkspace){
+    if(clinicIds.length == 1 && hasPrivateWorkspace){
       return (
         <li>
           <a className={styles.muiLink}
@@ -182,17 +182,17 @@ export default class LoggedInAs extends Component {
     }
   }
 
-  renderPersonalWorkspace() {
-    var {hasPersonalWorkspace, isClinicMember} = this.props;
-    if(hasPersonalWorkspace && isClinicMember) {
+  renderPrivateWorkspace() {
+    var {hasPrivateWorkspace, isClinicMember} = this.props;
+    if(hasPrivateWorkspace && isClinicMember) {
       return (
         <li>
           <a className={styles.muiLink}
-            onClick={this.handleSwitchToPersonal}
+            onClick={this.handleSwitchToPrivate}
             href=""
-            title={i18n.t('Personal Workspace')}>
-              <SupervisedUserCircleIcon classes={{root:styles.personalWorkspaceIcon}} fontSize='inherit' />
-              {i18n.t('Personal Workspace')}
+            title={i18n.t('Private Workspace')}>
+              <SupervisedUserCircleIcon classes={{root:styles.privateWorkspaceIcon}} fontSize='inherit' />
+              {i18n.t('Private Workspace')}
             </a>
         </li>
       );
@@ -228,7 +228,7 @@ export default class LoggedInAs extends Component {
           {this.renderChooseDevices()}
           {this.renderCheckForUpdates()}
           {this.renderWorkspaces()}
-          {this.renderPersonalWorkspace()}
+          {this.renderPrivateWorkspace()}
           <li>{this.renderLogout()}</li>
         </ul>
       </div>

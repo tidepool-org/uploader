@@ -79,10 +79,10 @@ export class Header extends Component {
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   }
 
-  handlePersonalWorkspaceSwitch = () => {
+  handlePrivateWorkspaceSwitch = () => {
     const { toggleDropdown } = this.props.sync;
-    const { goToPersonalWorkspace } = this.props.async;
-    goToPersonalWorkspace();
+    const { goToPrivateWorkspace } = this.props.async;
+    goToPrivateWorkspace();
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   }
 
@@ -125,9 +125,9 @@ export class Header extends Component {
             user={allUsers[this.props.loggedInUser]}
             targetUsersForUpload={this.props.targetUsersForUpload}
             clinics={this.props.clinics}
-            hasPersonalWorkspace={this.props.hasPersonalWorkspace}
+            hasPrivateWorkspace={this.props.hasPrivateWorkspace}
             onWorkspaceSwitch={this.handleWorkspaceSwitch}
-            goToPersonalWorkspace={this.handlePersonalWorkspaceSwitch}
+            goToPrivateWorkspace={this.handlePrivateWorkspaceSwitch}
             switchToClinic={this.handleSwitchToClinic}
             isClinicMember={this.props.isClinicMember}
             uploadTargetUser={this.props.uploadTargetUser}
@@ -140,7 +140,7 @@ export class Header extends Component {
 
 export default connect(
   (state, ownProps) => {
-    function hasPersonalWorkspace(state){
+    function hasPrivateWorkspace(state){
       return !!_.get(_.get(state.allUsers, state.loggedInUser, {}), ['profile', 'patient'], false);
     }
     function isClinicMember(state) {
@@ -158,7 +158,7 @@ export default connect(
       uploadTargetUser: state.uploadTargetUser,
       loggedInUser: state.loggedInUser,
       // derived state
-      hasPersonalWorkspace: hasPersonalWorkspace(state),
+      hasPrivateWorkspace: hasPrivateWorkspace(state),
       isClinicMember: isClinicMember(state),
     };
   },

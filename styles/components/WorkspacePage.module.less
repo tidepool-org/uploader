@@ -97,3 +97,20 @@
   margin-bottom: 20px;
   color: red;
 }
+
+.postScript {
+  composes: gray from '../core/typography.module.less';
+  width: 570px;
+  margin: 32px auto;
+
+  a {
+    color: @link-color;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      text-decoration: underline;
+    }
+  }
+}

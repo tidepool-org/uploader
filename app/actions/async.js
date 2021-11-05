@@ -809,7 +809,7 @@ export function retrieveTargetsFromStorage() {
   };
 }
 
-export function goToPersonalWorkspace() {
+export function goToPrivateWorkspace() {
   return (dispatch, getState) => {
     const { loggedInUser, uploadTargetUser, devices, targetDevices, targetTimezones} = getState();
 
