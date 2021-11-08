@@ -2458,7 +2458,7 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123',
           allUsers: {
-            abc123: profile
+            abc123: {profile}
           }
         };
         const store = mockStore(state);
@@ -3141,7 +3141,7 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123',
           allUsers: {
-            abc123: profile
+            abc123: {profile}
           }
         };
         const store = mockStore(state);
@@ -3585,7 +3585,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: profile,
+            abc123: {profile},
             def456: {},
           },
           devices: {
@@ -3840,7 +3840,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: profile,
+            abc123: {profile},
             def456: {},
           },
           devices: {
@@ -3870,8 +3870,8 @@ describe('Asynchronous Actions', () => {
       birthday: '1990-08-08'
       }
     };
-    describe('user is missing timezone', () => {
-      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to main page for timezone selection)', () => {
+    describe('user is clinician account', () => {
+      test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to clinic user select page)', () => {
         const targets = {
           abc123: [{key: 'carelink'}],
           def456: [
@@ -3889,24 +3889,10 @@ describe('Asynchronous Actions', () => {
             payload: { clinicId: null }
           },
           {
-            type: actionTypes.SET_UPLOAD_TARGET_USER,
-            payload: { userId: 'ghi789' },
-            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
-          },
-          {
-            type: actionTypes.SET_UPLOADS,
-            payload: {
-              devicesByUser: {
-                abc123: [ 'carelink' ]
-              },
-            },
-            meta: {source: actionSources[actionTypes.SET_UPLOADS]},
-          },
-          {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-                pathname: '/main',
+                pathname: '/clinic_user_select',
                 state: {
                   meta: {source: actionSources[actionTypes.SET_PAGE]}
                 }
@@ -3934,7 +3920,7 @@ describe('Asynchronous Actions', () => {
         });
         const store = mockStore({
           allUsers: {
-            ghi789: {},
+            ghi789: {isClinicMember: true},
             abc123: profile,
             def456: {},
           },
@@ -3958,8 +3944,8 @@ describe('Asynchronous Actions', () => {
         expect(actions).to.deep.equal(expectedActions);
       });
     });
-    describe('user has no supported devices', () => {
-      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, then SET_PAGE (redirect to settings page for device selection)', () => {
+    describe('user is not clinician account', () => {
+      test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to main page)', () => {
         const targets = {
           abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
           def456: [
@@ -3977,15 +3963,10 @@ describe('Asynchronous Actions', () => {
             payload: { clinicId: null }
           },
           {
-            type: actionTypes.SET_UPLOAD_TARGET_USER,
-            payload: { userId: 'ghi789' },
-            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
-          },
-          {
             type: '@@router/CALL_HISTORY_METHOD',
             payload: {
               args: [ {
-                pathname: '/settings',
+                pathname: '/main',
                 state: {
                   meta: {source: actionSources[actionTypes.SET_PAGE]}
                 }
@@ -4016,87 +3997,6 @@ describe('Asynchronous Actions', () => {
           loggedInUser: 'ghi789',
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123'
-        });
-        store.dispatch(async.goToPrivateWorkspace());
-        const actions = store.getActions();
-        expect(actions).to.deep.equal(expectedActions);
-      });
-    });
-    describe('user is all set to upload', () => {
-      test('should dispatch SELECT_CLINIC, SET_UPLOAD_TARGET_USER, SET_UPLOADS, then SET_PAGE (redirect to main page)', () => {
-        const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
-          def456: [
-            {key: 'dexcom', timezone: 'US/Mountain'},
-            {key: 'omnipod', timezone: 'US/Mountain'}
-          ]
-        };
-        const devicesByUser = {
-          abc123: ['carelink'],
-          def456: ['dexcom', 'omnipod']
-        };
-        const expectedActions = [
-          {
-            type: actionTypes.SELECT_CLINIC,
-            payload: { clinicId: null }
-          },
-          {
-            type: actionTypes.SET_UPLOAD_TARGET_USER,
-            payload: { userId: 'ghi789' },
-            meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
-          },
-          {
-            type: actionTypes.SET_UPLOADS,
-            payload: { devicesByUser },
-            meta: {source: actionSources[actionTypes.SET_UPLOADS]}
-          },
-          {
-            type: '@@router/CALL_HISTORY_METHOD',
-            payload: {
-              args: [ {
-                pathname: '/main',
-                state: {
-                  meta: {source: actionSources[actionTypes.SET_PAGE]}
-                }
-              } ],
-              method: 'push'
-            }
-          }
-        ];
-        __Rewire__('services', {
-          api: {
-            user: {
-              profile: (cb) => {
-                cb(null);
-              },
-              updateProfile: (user, update, cb) => {
-                cb(null, profile);
-              }
-            },
-            makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
-          }
-        });
-        const store = mockStore({
-          allUsers: {
-            ghi789: {},
-            abc123: profile,
-            def456: {},
-          },
-          devices: {
-            carelink: {},
-            dexcom: {},
-            omnipod: {}
-          },
-          loggedInUser: 'ghi789',
-          uploadTargetUser: 'abc123',
-          targetDevices: devicesByUser,
-          targetTimezones: {
-            abc123: 'US/Mountain'
-          }
         });
         store.dispatch(async.goToPrivateWorkspace());
         const actions = store.getActions();

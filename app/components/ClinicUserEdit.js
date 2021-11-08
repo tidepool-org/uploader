@@ -369,11 +369,11 @@ function mapStateToProps(state){
         initialValues = {
           initialValues: {
             fullName: personUtils.patientFullName(user),
-            year: _.get(user, ['patient', 'birthday'], '').substr(0,4),
-            month: _.get(user, ['patient', 'birthday'], '').substr(5,2),
-            day: _.get(user, ['patient', 'birthday'], '').substr(8,2),
-            email: _.get(user, ['patient', 'email'], ''),
-            mrn: _.get(user, ['patient', 'mrn'], '')
+            year: _.get(user, ['profile', 'patient', 'birthday'], '').substr(0,4),
+            month: _.get(user, ['profile', 'patient', 'birthday'], '').substr(5,2),
+            day: _.get(user, ['profile', 'patient', 'birthday'], '').substr(8,2),
+            email: _.get(user, ['profile', 'patient', 'email'], ''),
+            mrn: _.get(user, ['profile', 'patient', 'mrn'], '')
           }
         };
       }
