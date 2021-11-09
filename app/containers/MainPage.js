@@ -221,7 +221,7 @@ export default connect(
       return activeUploads;
     }
     function shouldShowUserSelectionDropdown(state) {
-      if (!_.isEmpty(state.targetUsersForUpload) && !isClinicAccount(state)) {
+      if (!_.isEmpty(state.targetUsersForUpload) && !hasClinicRole(state)) {
         // if there's only one potential target for upload but it's *not* the loggedInUser
         if (state.targetUsersForUpload.length === 1 &&
           !_.includes(state.targetUsersForUpload, state.loggedInUser)) {
@@ -233,7 +233,7 @@ export default connect(
       }
       return false;
     }
-    function isClinicAccount(state) {
+    function hasClinicRole(state) {
       return (
         _.indexOf(
           _.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []),
@@ -241,10 +241,25 @@ export default connect(
         ) !== -1
       );
     }
+    function hasPatientProfile(state) {
+      return _.has(state.allUsers, [state.loggedInUser, 'profile', 'patient']);
+    }
     function renderClinicUi(state) {
-      const isNewClinician = _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
-      const {selectedClinicId} = state;
-      return !!((isClinicAccount(state) && !isNewClinician) || (isNewClinician && selectedClinicId));
+      const isClinicMember = _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
+      const {selectedClinicId, targetUsersForUpload} = state;
+      return !!(
+        (hasClinicRole(state) && !isClinicMember) ||
+        (isClinicMember &&
+          (selectedClinicId || hasPatientProfile(state) || !_.isEmpty(targetUsersForUpload))
+        )
+      );
+    }
+    function targetUsersForUpload(state) {
+      const {targetUsersForUpload, loggedInUser} = state;
+      if (hasPatientProfile(state) && !_.includes(targetUsersForUpload, loggedInUser)){
+        targetUsersForUpload.push(loggedInUser);
+      }
+      return targetUsersForUpload;
     }
     return {
       activeUploads: getActiveUploads(state),
@@ -255,7 +270,7 @@ export default connect(
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),
       showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),
-      targetUsersForUpload: state.targetUsersForUpload,
+      targetUsersForUpload: targetUsersForUpload(state),
       unsupported: state.unsupported,
       updateProfileErrorMessage: state.updateProfileErrorMessage,
       uploadIsInProgress: state.working.uploading,

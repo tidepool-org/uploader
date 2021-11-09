@@ -539,7 +539,7 @@ export function setTargetTimezone(userId, timezoneName) {
         if (_.get(err,'status') !== 401) {
           dispatch(sync.updateProfileFailure(err));
         } else {
-          let newProfile = actionUtils.mergeProfileUpdates(allUsers[userId], updates);
+          let newProfile = actionUtils.mergeProfileUpdates(_.get(allUsers[userId], 'profile', {}), updates);
           dispatch(sync.updateProfileSuccess(newProfile, userId));
         }
       } else {
@@ -617,7 +617,7 @@ export function clickDeviceSelectionDone() {
             if (_.get(err,'status') !== 401) {
               dispatch(sync.updateProfileFailure(err));
             } else {
-              let newProfile = actionUtils.mergeProfileUpdates(allUsers[uploadTargetUser], updates);
+              let newProfile = actionUtils.mergeProfileUpdates(_.get(allUsers[uploadTargetUser], 'profile', {}), updates);
               dispatch(sync.updateProfileSuccess(newProfile, uploadTargetUser));
               if (isClinicAccount) {
                 _.forEach(userTargetDevices, function(device){
@@ -662,7 +662,7 @@ export function clickEditUserNext(profile) {
             return dispatch(sync.updateProfileFailure(err));
           } else {
             const { allUsers } = getState();
-            let newProfile = actionUtils.mergeProfileUpdates(allUsers[uploadTargetUser], updates);
+            let newProfile = actionUtils.mergeProfileUpdates(_.get(allUsers[uploadTargetUser], 'profile', {}), updates);
             dispatch(sync.updateProfileSuccess(newProfile, uploadTargetUser));
           }
         } else {
@@ -784,7 +784,7 @@ export function retrieveTargetsFromStorage() {
                 dispatch(sync.updateProfileFailure(err));
               } else {
                 let newProfile = actionUtils.mergeProfileUpdates(
-                  allUsers[uploadTargetUser],
+                  _.get(allUsers[uploadTargetUser], 'profile', {}),
                   updates
                 );
                 dispatch(
@@ -811,40 +811,21 @@ export function retrieveTargetsFromStorage() {
 
 export function goToPrivateWorkspace() {
   return (dispatch, getState) => {
-    const { loggedInUser, uploadTargetUser, devices, targetDevices, targetTimezones} = getState();
+    const { loggedInUser, allUsers} = getState();
+    const isClinicianAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
 
     dispatch(sync.selectClinic(null));
-    dispatch(sync.setUploadTargetUser(loggedInUser));
-
-    if (!_.isEmpty(_.get(targetDevices, uploadTargetUser))) {
-      let usersWithTargets = {};
-      _.forOwn(targetDevices, (devicesArray, userId) => {
-        usersWithTargets[userId] = _.map(devicesArray, (deviceKey) => {
-          return {key: deviceKey};
-        });
-      });
-      _.forOwn(targetTimezones, (timezoneName, userId) => {
-        usersWithTargets[userId] = _.map(usersWithTargets[userId], (target) => {
-          if (timezoneName != null) {
-            target.timezone = timezoneName;
-          }
-          return target;
-        });
-      });
-      const targetDeviceKeys = targetDevices[uploadTargetUser];
-      const supportedDeviceKeys = _.keys(devices);
-      const atLeastOneDeviceSupportedOnSystem = _.some(targetDeviceKeys, (key) => {
-        return _.includes(supportedDeviceKeys, key);
-      });
-      const uploadsByUser = actionUtils.getDeviceTargetsByUser(usersWithTargets);
-      dispatch(sync.setUploads(uploadsByUser));
-      if (atLeastOneDeviceSupportedOnSystem) {
-        return dispatch(setPage(pages.MAIN));
-      } else {
-        return dispatch(setPage(pages.SETTINGS));
-      }
+    if (isClinicianAccount) {
+      return dispatch(
+        setPage(
+          pages.CLINIC_USER_SELECT,
+          actionSources[actionTypes.SET_PAGE]
+        )
+      );
     } else {
-      return dispatch(setPage(pages.SETTINGS));
+      return dispatch(
+        setPage(pages.MAIN, actionSources[actionTypes.SET_PAGE])
+      );
     }
   };
 }

@@ -146,7 +146,12 @@ class ClinicUserSelect extends React.Component {
         });
       }
     } else {
-      var { allUsers, targetUsersForUpload: targets } = this.props;
+      var { allUsers, targetUsersForUpload: targets, loggedInUser } = this.props;
+      var user = allUsers[loggedInUser];
+      var hasPatientProfile = _.get(user, ['profile', 'patient'], false);
+      if(hasPatientProfile && !_.includes(targets, loggedInUser)) {
+        targets.push(loggedInUser);
+      }
       var sorted = _.sortBy(targets, function(targetId) {
         return personUtils.patientFullName(allUsers[targetId]);
       });
@@ -196,53 +201,68 @@ class ClinicUserSelect extends React.Component {
   };
 
   renderAddNew = () => {
+    const {loggedInUser, allUsers, selectedClinicId} = this.props;
+    const user = allUsers[loggedInUser];
+
     var classes = cx({
       [styles.addLink]: true
     });
-    return (
-      <div className={classes} onClick={this.props.onAddUserClick}>
-        <i className={styles.addIcon}></i>
-        {i18n.t('Add new')}
-      </div>
-    );
+    if((user?.isClinicMember && !!selectedClinicId) || personUtils.isClinic(user)){
+      return (
+        <div className={classes} onClick={this.props.onAddUserClick}>
+          <i className={styles.addIcon}></i>
+          {i18n.t('Add new')}
+        </div>
+      );
+    }
   };
 
   renderClinicIndicator = () => {
     var {clinics, selectedClinicId} = this.props;
-    if(!_.isEmpty(clinics) && selectedClinicId){
-      var keys = _.keys(clinics);
-      if(keys.length > 1){
-        return (
-          <div className={styles.clinicWrapper}>
-            <div className={styles.clinicHeader} onClick={this.handleDropdownToggle}>
-              {clinics[selectedClinicId].name}
-              <div className={styles.dropdownWrap}>
-                <ArrowDropDownIcon fontSize='inherit' />
-                {this.state.clinicDropdownOpen &&
-                <div className={styles.dropdown} onClick={(e)=>e.stopPropagation()}>
-                  <ul>
-                    {_.map(clinics,(clinic) =>
-                      <li>
-                        <div
-                          className={styles.clinicItem}
-                          onClick={()=>this.handleSwitchClinic(clinic)}>
-                            {clinic.name}
-                            {clinic.id === selectedClinicId && <CheckRoundedIcon />}
-                        </div>
-                      </li>
-                    )}
-                  </ul>
+    if(!_.isEmpty(clinics)){
+      if(selectedClinicId) {
+        var keys = _.keys(clinics);
+        if(keys.length > 1){
+          return (
+            <div className={styles.clinicWrapper}>
+              <div className={styles.clinicHeader} onClick={this.handleDropdownToggle}>
+                {clinics[selectedClinicId].name}
+                <div className={styles.dropdownWrap}>
+                  <ArrowDropDownIcon fontSize='inherit' />
+                  {this.state.clinicDropdownOpen &&
+                  <div className={styles.dropdown} onClick={(e)=>e.stopPropagation()}>
+                    <ul>
+                      {_.map(clinics,(clinic) =>
+                        <li>
+                          <div
+                            className={styles.clinicItem}
+                            onClick={()=>this.handleSwitchClinic(clinic)}>
+                              {clinic.name}
+                              {clinic.id === selectedClinicId && <CheckRoundedIcon />}
+                          </div>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                  }
                 </div>
-                }
               </div>
             </div>
-          </div>
-        );
+          );
+        } else {
+          return (
+            <div className={styles.clinicWrapper}>
+              <div className={styles.header}>
+                {clinics[selectedClinicId].name}
+              </div>
+            </div>
+          );
+        }
       } else {
         return (
           <div className={styles.clinicWrapper}>
             <div className={styles.header}>
-              {clinics[selectedClinicId].name}
+              {i18n.t('Private Workspace')}
             </div>
           </div>
         );
@@ -270,10 +290,10 @@ class ClinicUserSelect extends React.Component {
   }
 
   renderPrivateWorkspaceLink = () => {
-    const {loggedInUser, allUsers} = this.props;
+    const {loggedInUser, allUsers, selectedClinicId, targetUsersForUpload} = this.props;
     const user = allUsers[loggedInUser];
-    const hasPrivateWorkspace = _.get(user, ['profile', 'patient'], false);
-    if(hasPrivateWorkspace) {
+    const hasPatientProfile = _.get(user, ['profile', 'patient'], false);
+    if(!!selectedClinicId && !personUtils.isClinic(user) && (hasPatientProfile || !_.isEmpty(targetUsersForUpload))) {
       return (
         <div className={styles.postScript}>
           {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={this.handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>

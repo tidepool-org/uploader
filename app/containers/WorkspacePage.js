@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import map from 'lodash/map';
+import isEmpty from 'lodash/isEmpty';
 
 import * as metrics from '../constants/metrics';
 import { pages } from '../constants/otherConstants';
@@ -20,6 +21,7 @@ export const WorkspacePage = (props) => {
   const blipUrls = useSelector((state)=>state.blipUrls);
   const loggedInUser = useSelector((state)=>state.loggedInUser);
   const allUsers = useSelector((state)=>state.allUsers);
+  const targetUsersForUpload = useSelector((state)=>state.targetUsersForUpload);
 
   const handleSwitchWorkspace = (clinic) => {
     dispatch(sync.setUploadTargetUser(null));
@@ -39,8 +41,9 @@ export const WorkspacePage = (props) => {
 
   const renderPrivateWorkspaceLink = () => {
     const user = allUsers[loggedInUser];
-    const hasPrivateWorkspace = !!user?.profile?.patient;
-    if(hasPrivateWorkspace) {
+    const hasPatientProfile = !!user?.profile?.patient;
+    const hasTargetUsersForUpload = !isEmpty(targetUsersForUpload);
+    if(hasPatientProfile || hasTargetUsersForUpload) {
       return (
         <div className={styles.postScript}>
           {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>

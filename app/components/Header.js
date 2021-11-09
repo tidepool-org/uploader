@@ -141,7 +141,9 @@ export class Header extends Component {
 export default connect(
   (state, ownProps) => {
     function hasPrivateWorkspace(state){
-      return !!_.get(_.get(state.allUsers, state.loggedInUser, {}), ['profile', 'patient'], false);
+      const hasPatientProfile = !!_.get(_.get(state.allUsers, state.loggedInUser, {}), ['profile', 'patient'], false);
+      const hasTargetUsersForUpload = !_.isEmpty(state.targetUsersForUpload);
+      return hasPatientProfile || hasTargetUsersForUpload;
     }
     function isClinicMember(state) {
       return !!_.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
