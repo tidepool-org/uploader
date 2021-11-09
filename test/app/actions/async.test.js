@@ -3862,7 +3862,7 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('goToPersonalWorkspace', () => {
+  describe('goToPrivateWorkspace', () => {
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
     const profile = {
       fullName: 'John',
@@ -3953,7 +3953,7 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(async.goToPersonalWorkspace());
+        store.dispatch(async.goToPrivateWorkspace());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -4017,7 +4017,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123'
         });
-        store.dispatch(async.goToPersonalWorkspace());
+        store.dispatch(async.goToPrivateWorkspace());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -4098,7 +4098,7 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(async.goToPersonalWorkspace());
+        store.dispatch(async.goToPrivateWorkspace());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });

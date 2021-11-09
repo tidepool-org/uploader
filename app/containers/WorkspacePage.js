@@ -18,6 +18,8 @@ export const WorkspacePage = (props) => {
   const dispatch = useDispatch();
   const clinics = useSelector((state)=>state.clinics);
   const blipUrls = useSelector((state)=>state.blipUrls);
+  const loggedInUser = useSelector((state)=>state.loggedInUser);
+  const allUsers = useSelector((state)=>state.allUsers);
 
   const handleSwitchWorkspace = (clinic) => {
     dispatch(sync.setUploadTargetUser(null));
@@ -28,6 +30,23 @@ export const WorkspacePage = (props) => {
         metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
       })
     );
+  };
+
+  const handleSwitchToPrivate = (e) => {
+    e.preventDefault();
+    dispatch(async.goToPrivateWorkspace());
+  };
+
+  const renderPrivateWorkspaceLink = () => {
+    const user = allUsers[loggedInUser];
+    const hasPrivateWorkspace = !!user?.profile?.patient;
+    if(hasPrivateWorkspace) {
+      return (
+        <div className={styles.postScript}>
+          {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>
+        </div>
+      );
+    }
   };
 
   return (
@@ -49,6 +68,7 @@ export const WorkspacePage = (props) => {
             </div>
           )}
         </div>
+        {renderPrivateWorkspaceLink()}
       </div>
     </div>
   );
