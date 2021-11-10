@@ -46,5 +46,6 @@
    * ["bootstrapping" to UTC (BtUTC)](docs/BootstrappingToUTC.md)
    * [use of CSS modules](docs/misc/CSSModules.md)
    * [PWD "simulators"](docs/misc/PWDSimulators.md)
+   * [challenges of flat basal profiles](docs/misc/FlatRateBasals.md)
    * [Medtronic 5/7-series packet diagrams](lib/medtronic/docs/packetStructure.md)
    * [Medtronic 6-series packet diagrams](lib/medtronic600/docs/packetStructure.md)

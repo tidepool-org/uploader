@@ -34,7 +34,6 @@ const devices = {
     name: 'Abbott LibreView',
     source: {type: 'block', driverId: 'AbbottLibreView', extension: '.csv'},
     enabled: {linux: true, mac: true, win: true},
-    powerOnlyWarning: true,
   },
   precisionxtra: {
     instructions: i18n.t('Plug in meter with cable'),
