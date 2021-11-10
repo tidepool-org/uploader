@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.39.0-verio-ble-fix.1",
+  "version": "2.40.0-verio-ble-fix.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
