@@ -121,7 +121,7 @@ export default connect(
   (state, ownProps) => {
     return {
       // plain state
-      checkingElectronUpdate: state.working.checkingElectronUpdate,
+      checkingElectronUpdate: state.working.checkingElectronUpdate.inProgress,
       electronUpdateAvailableDismissed: state.electronUpdateAvailableDismissed,
       electronUpdateAvailable: state.electronUpdateAvailable,
       electronUpdateDownloaded: state.electronUpdateDownloaded,

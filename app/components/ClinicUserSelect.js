@@ -46,12 +46,28 @@ class ClinicUserSelect extends React.Component {
     loggedInUser: PropTypes.string.isRequired,
     onGoToWorkspaceSwitch: PropTypes.func.isRequired,
     goToPrivateWorkspace: PropTypes.func.isRequired,
+    fetchingPatientsForClinic: PropTypes.object.isRequired,
+    fetchPatientsForClinic: PropTypes.func.isRequired,
+    searchDebounceMs: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    searchDebounceMs: 1000,
   };
 
   constructor(props) {
     super(props);
     this.state = { clinicDropdownOpen: false };
-  }
+  };
+
+  handleSearchChange = _.debounce((searchText) => {
+    const {fetchPatientsForClinic, selectedClinicId} = this.props;
+    if(_.isEmpty(searchText)){
+      fetchPatientsForClinic(selectedClinicId);
+    } else {
+      fetchPatientsForClinic(selectedClinicId, {search: searchText});
+    }
+  }, this.props.searchDebounceMs);
 
   handleClickNext = (e) => {
     e.preventDefault();
@@ -124,6 +140,7 @@ class ClinicUserSelect extends React.Component {
 
   renderSelector = () => {
     const { selectedClinicId, clinics } = this.props;
+    const clinicSearchProps = {};
 
     if (selectedClinicId) {
       var patients = _.filter(
@@ -145,6 +162,8 @@ class ClinicUserSelect extends React.Component {
           return { value: patient.id, label: fullName + mrn + bday };
         });
       }
+      clinicSearchProps.onInputChange = this.handleSearchChange;
+      clinicSearchProps.filterOptions = (opts)=>opts;
     } else {
       var { allUsers, targetUsersForUpload: targets, loggedInUser } = this.props;
       var user = allUsers[loggedInUser];
@@ -184,6 +203,8 @@ class ClinicUserSelect extends React.Component {
         optionRenderer={this.valueRenderer}
         valueRenderer={this.valueRenderer}
         onChange={this.handleOnChange}
+        isLoading={this.props.fetchingPatientsForClinic.inProgress}
+        {...clinicSearchProps}
       />
     );
   };

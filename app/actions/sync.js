@@ -255,21 +255,21 @@ export function setAllUsers(user, profile, memberships){
  * relating to async action creator doAppInit
  */
 
-export function initRequest() {
+export function initializeAppRequest() {
   return {
     type: ActionTypes.INIT_APP_REQUEST,
     meta: {source: actionSources[ActionTypes.INIT_APP_REQUEST]}
   };
 }
 
-export function initSuccess() {
+export function initializeAppSuccess() {
   return {
     type: ActionTypes.INIT_APP_SUCCESS,
     meta: {source: actionSources[ActionTypes.INIT_APP_SUCCESS]}
   };
 }
 
-export function initFailure(err) {
+export function initializeAppFailure(err) {
   const error = new Error(getAppInitErrorMessage(err.status || null));
   error.originalError = err;
   return {
@@ -855,12 +855,13 @@ export function fetchPatientsForClinicRequest() {
   };
 }
 
-export function fetchPatientsForClinicSuccess(clinicId, patients) {
+export function fetchPatientsForClinicSuccess(clinicId, patients, count) {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
     payload: {
       clinicId,
       patients,
+      count,
     },
   };
 }

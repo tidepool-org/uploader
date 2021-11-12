@@ -65,7 +65,9 @@ export class ClinicUserSelectPage extends Component {
           blipUrls={blipUrls}
           loggedInUser={loggedInUser}
           onGoToWorkspaceSwitch={this.onGoToWorkspaceSwitch}
-          goToPrivateWorkspace={this.props.async.goToPrivateWorkspace} />
+          goToPrivateWorkspace={this.props.async.goToPrivateWorkspace}
+          fetchingPatientsForClinic={this.props.fetchingPatientsForClinic}
+          fetchPatientsForClinic={this.props.async.fetchPatientsForClinic} />
       </div>
     );
   }
@@ -81,6 +83,7 @@ export default connect(
       selectedClinicId: state.selectedClinicId,
       blipUrls: state.blipUrls,
       loggedInUser: state.loggedInUser,
+      fetchingPatientsForClinic: state.working.fetchingPatientsForClinic,
     };
   },
   (dispatch) => {

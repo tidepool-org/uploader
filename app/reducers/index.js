@@ -22,6 +22,7 @@ import { reducer as formReducer } from 'redux-form';
 import * as misc from './misc';
 import * as uploads from './uploads';
 import * as users from './users';
+import working from './working';
 
 const rootReducer = function(history) {
   return combineReducers(
@@ -31,6 +32,7 @@ const rootReducer = function(history) {
       users,
       { form: formReducer },
       { router: connectRouter(history) },
+      { working },
     )
   );
 };

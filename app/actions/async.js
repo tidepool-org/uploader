@@ -77,7 +77,7 @@ export function doAppInit(opts, servicesToInit) {
   return (dispatch, getState) => {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
-    if (getState().working.initializingApp === false) {
+    if (getState().working.initializingApp.inProgress === false) {
       console.log('App already initialized! Skipping initialization.');
       return;
     }
@@ -87,7 +87,7 @@ export function doAppInit(opts, servicesToInit) {
     daysForCareLink = opts.DEFAULT_CARELINK_DAYS;
     const { api, carelink, device, localStore, log } = services;
 
-    dispatch(sync.initRequest());
+    dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
     log('Initializing local store.');
@@ -98,17 +98,17 @@ export function doAppInit(opts, servicesToInit) {
         version: opts.namedVersion
       }, function(deviceError, deviceResult){
         if (deviceError) {
-          return dispatch(sync.initFailure(deviceError));
+          return dispatch(sync.initializeAppFailure(deviceError));
         }
         log('Initializing CareLink');
         carelink.init({ api }, function(carelinkError, carelinkResult){
           if (carelinkError) {
-            return dispatch(sync.initFailure(carelinkError));
+            return dispatch(sync.initializeAppFailure(carelinkError));
           }
           log('Initializing api');
           api.init(function(apiError, apiResult){
             if (apiError) {
-              return dispatch(sync.initFailure(apiError));
+              return dispatch(sync.initializeAppFailure(apiError));
             }
             log('Setting all api hosts');
             api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
@@ -119,15 +119,15 @@ export function doAppInit(opts, servicesToInit) {
             let session = apiResult;
             if (session === undefined) {
               dispatch(setPage(pages.LOGIN));
-              dispatch(sync.initSuccess());
+              dispatch(sync.initializeAppSuccess());
               return dispatch(doVersionCheck());
             }
 
             api.user.initializationInfo((err, results) => {
               if (err) {
-                return dispatch(sync.initFailure(err));
+                return dispatch(sync.initializeAppFailure(err));
               }
-              dispatch(sync.initSuccess());
+              dispatch(sync.initializeAppSuccess());
               dispatch(doVersionCheck());
               dispatch(sync.setUserInfoFromToken({
                 user: results[0],
@@ -430,7 +430,7 @@ export function doUpload(deviceKey, opts, utc) {
         return dispatch(sync.uploadAborted());
       }
 
-      if (working.uploading === true) {
+      if (working.uploading.inProgress === true) {
         return dispatch(sync.uploadAborted());
       }
 
@@ -668,7 +668,7 @@ export function clickEditUserNext(profile) {
         } else {
           dispatch(sync.updateProfileSuccess(profile, uploadTargetUser));
         }
-        const { targetDevices, devices, allUsers, loggedInUser } = getState();
+        const { targetDevices, devices} = getState();
         const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
         const supportedDeviceKeys = _.keys(devices);
         const atLeastOneDeviceSupportedOnSystem = _.some(targetedDevices, (key) => {
@@ -1000,19 +1000,21 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
  * @param {String} [options.search] - search query string
  * @param {Number} [options.offset] - search page offset
  * @param {Number} [options.limit] - results per page
+ * @param {Number} [options.sort] - directionally prefixed field to sort by (e.g. +name or -name)
  */
  export function fetchPatientsForClinic(clinicId, options = {}) {
   const { api } = services;
   return (dispatch) => {
     dispatch(sync.fetchPatientsForClinicRequest());
 
-    api.clinics.getPatientsForClinic(clinicId, options, (err, patients) => {
+    api.clinics.getPatientsForClinic(clinicId, options, (err, results) => {
       if (err) {
         dispatch(sync.fetchPatientsForClinicFailure(
           createActionError(ErrorMessages.ERR_FETCHING_PATIENTS_FOR_CLINIC, err), err
         ));
       } else {
-        dispatch(sync.fetchPatientsForClinicSuccess(clinicId, patients));
+        const { data, meta } = results;
+        dispatch(sync.fetchPatientsForClinicSuccess(clinicId, data, meta.count));
       }
     });
   };

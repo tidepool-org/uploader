@@ -17,7 +17,6 @@
 
 import _ from 'lodash';
 import update from 'immutability-helper';
-import { combineReducers } from 'redux';
 
 import initialState from './initialState';
 import * as types from '../constants/actionTypes';
@@ -134,94 +133,6 @@ export function blipUrls(state = initialState.blipUrls, action) {
       return state;
   }
 }
-
-function checkingVersion(state = initialState.checkingVersion, action) {
-  switch (action.type) {
-    case types.VERSION_CHECK_FAILURE:
-    case types.VERSION_CHECK_SUCCESS:
-      return false;
-    case types.VERSION_CHECK_REQUEST:
-      return true;
-    default:
-      return state;
-  }
-}
-
-function fetchingUserInfo(state = initialState.fetchingUserInfo, action) {
-  switch (action.type) {
-    case types.LOGIN_FAILURE:
-    case types.LOGIN_SUCCESS:
-      return false;
-    case types.LOGIN_REQUEST:
-      return true;
-    default:
-      return state;
-  }
-}
-
-function initializingApp(state = initialState.initializingApp, action) {
-  switch (action.type) {
-    case types.INIT_APP_FAILURE:
-    case types.INIT_APP_SUCCESS:
-      return false;
-    case types.INIT_APP_REQUEST:
-      return true;
-    default:
-      return state;
-  }
-}
-
-function uploading(state = initialState.uploading, action) {
-  switch (action.type) {
-    case types.UPLOAD_REQUEST:
-      return true;
-    case types.READ_FILE_ABORTED:
-    case types.READ_FILE_FAILURE:
-    case types.UPLOAD_FAILURE:
-    case types.UPLOAD_SUCCESS:
-    case types.UPLOAD_CANCELLED:
-      return initialState.uploading;
-    default:
-      return state;
-  }
-}
-
-function checkingElectronUpdate(state = initialState.checkingElectronUpdate, action) {
-  switch (action.type) {
-    case types.CHECKING_FOR_UPDATES:
-    case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
-    case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
-      return true;
-    case types.UPDATE_AVAILABLE:
-    case types.UPDATE_NOT_AVAILABLE:
-    case types.AUTOUPDATE_ERROR:
-      return initialState.checkingElectronUpdate;
-    default:
-      return state;
-  }
-}
-
-function checkingDriverUpdate(state = initialState.checkingDriverUpdate, action) {
-  switch (action.type) {
-    case types.CHECKING_FOR_DRIVER_UPDATE:
-      return true;
-    case types.DRIVER_UPDATE_AVAILABLE:
-    case types.DRIVER_UPDATE_NOT_AVAILABLE:
-      return initialState.checkingDriverUpdate;
-    default:
-      return state;
-  }
-}
-
-//TODO: these should be updated to blip's `working` format for consistency
-export const working = combineReducers({
-  checkingVersion,
-  fetchingUserInfo,
-  initializingApp,
-  uploading,
-  checkingElectronUpdate,
-  checkingDriverUpdate
-});
 
 export function electronUpdateManualChecked(state = initialState.electronUpdateManualChecked, action) {
   switch (action.type) {
@@ -352,15 +263,14 @@ export const clinics = (state = initialState.clinics, action) => {
     case types.FETCH_PATIENTS_FOR_CLINIC_SUCCESS: {
       const patients = _.get(action.payload, 'patients', []);
       const clinicId = _.get(action.payload, 'clinicId', '');
-      const newClinics = _.cloneDeep(state);
-      _.forEach(patients, (patient) => {
-        _.set(
-          newClinics,
-          [clinicId, 'patients', patient.id],
-          patient
-        );
+      const count = _.get(action.payload, 'count', null);
+      const newPatientSet = _.reduce(patients, (newSet, patient) => {
+        newSet[patient.id] = patient;
+        return newSet;
+      }, {});
+      return update(state, {
+        [clinicId]: { $set: { ...state[clinicId], patients: newPatientSet, patientCount: count } },
       });
-      return newClinics;
     }
     case types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS:
     case types.UPDATE_CLINIC_PATIENT_SUCCESS: {
