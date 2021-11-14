@@ -55,7 +55,6 @@ export default (state = initialWorkingState, action) => {
                 inProgress: true,
                 notification: null,
                 completed: null, // For these types we don't persist the completed state
-                prescriptionId: _.get(action, ['payload', 'prescription', 'id']),
               }
             }
           });

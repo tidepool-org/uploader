@@ -48,7 +48,7 @@ describe('working', () => {
         expect(mutationTracker.hasMutated(tracked)).to.be.false;
       });
 
-      it('should set loggingOut.completed.inProgress to be true', () => {
+      it('should set loggingOut.completed to be true', () => {
         let user = 'user';
 
         let requestAction = actions.sync.logoutRequest();
