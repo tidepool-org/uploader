@@ -57,7 +57,9 @@ describe('Asynchronous Actions', () => {
   describe('doAppInit [hot reload, app already initialized]', () => {
     test('should dispatch no actions!', () => {
       const expectedActions = [];
-      const store = mockStore({working: {initializingApp: false}});
+      const store = mockStore({
+        working: { initializingApp: { inProgress: false } },
+      });
       store.dispatch(async.doAppInit({}, {}));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
@@ -152,7 +154,9 @@ describe('Asynchronous Actions', () => {
       __Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({working: {initializingApp: true}});
+      const store = mockStore({
+        working: { initializingApp: { inProgress: true } },
+      });
       store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
@@ -266,9 +270,9 @@ describe('Asynchronous Actions', () => {
         semver: config.version
       });
       const state = {
-        allUsers: {[pwd.user.userid]: pwd.user},
+        allUsers: { [pwd.user.userid]: pwd.user },
         uploadTargetUser: pwd.user.userid,
-        working: {initializingApp: true}
+        working: { initializingApp: { inProgress: true } },
       };
       const store = mockStore(state);
       store.dispatch(async.doAppInit(config, servicesToInit));
@@ -324,7 +328,9 @@ describe('Asynchronous Actions', () => {
       __Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({working: {initializingApp: true}});
+      const store = mockStore({
+        working: { initializingApp: { inProgress: true } },
+      });
       store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
       expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
@@ -704,7 +710,8 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
           payload: {
             clinicId: 'clinicId',
-            patients: [{patient:'patient1'}]
+            patients: [{ patient: 'patient1' }],
+            count: 1,
           }
         },
         {
@@ -741,19 +748,23 @@ describe('Asynchronous Actions', () => {
       __Rewire__('services', {
         api: {
           user: {
-            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
-            getAssociatedAccounts: (cb) => cb(null, {
-              patients: memberships,
-              dataDonationAccounts: [],
-              careTeam: [],
-            })
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
           },
           clinics: {
-            getClinicsForClinician: (clinician, options, cb) => cb(null, [{clinic:{id:'clinicId'}}]),
-            getPatientsForClinic: (clinicId, options, cb) => cb(null, [{patient:'patient1'}])
-          }
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, [{ clinic: { id: 'clinicId' } }]),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+          },
         },
-        log: _.noop
+        log: _.noop,
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
@@ -851,9 +862,12 @@ describe('Asynchronous Actions', () => {
           },
           clinics: {
             getClinicsForClinician: (clinician, options, cb) =>
-              cb(null, [{ clinic: { id: 'clinicId' } }, { clinic: { id: 'clinicId2' } }]),
+              cb(null, [
+                { clinic: { id: 'clinicId' } },
+                { clinic: { id: 'clinicId2' } },
+              ]),
             getPatientsForClinic: (clinicId, options, cb) =>
-              cb(null, [{ patient: 'patient1' }]),
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
           },
         },
         log: _.noop,
@@ -925,7 +939,7 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.LOGOUT_FAILURE,
           error: true,
           payload: new Error(getLogoutErrorMessage()),
-          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+          meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -1010,7 +1024,7 @@ describe('Asynchronous Actions', () => {
   describe('doUpload [upload aborted b/c another upload already in progress]', () => {
     test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_ABORTED', () => {
       const initialState = {
-        working: {uploading: true}
+        working: { uploading: { inProgress: true } },
       };
       const deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
@@ -1060,25 +1074,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1168,25 +1182,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1276,25 +1290,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1390,25 +1404,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       let err = 'deviceTimePromptClose';
       __Rewire__('services', {
@@ -1472,25 +1486,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       __Rewire__('services', {
         api: {
@@ -1564,25 +1578,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          carelink: targetDevice
+          carelink: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            carelink: {history: [{start: time}]}
-          }
+            carelink: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'carelink']
+          [userId]: ['a_cgm', 'carelink'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1682,25 +1696,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          carelink: targetDevice
+          carelink: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            carelink: {history: [{start: time}]}
-          }
+            carelink: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'carelink']
+          [userId]: ['a_cgm', 'carelink'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1800,25 +1814,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          carelink: targetDevice
+          carelink: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            carelink: {history: [{start: time}]}
-          }
+            carelink: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'carelink']
+          [userId]: ['a_cgm', 'carelink'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -1922,25 +1936,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          carelink: targetDevice
+          carelink: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            carelink: {history: [{start: time}]}
-          }
+            carelink: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'carelink']
+          [userId]: ['a_cgm', 'carelink'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       __Rewire__('services', {
         api: {
@@ -4792,14 +4806,21 @@ describe('Asynchronous Actions', () => {
       __Rewire__('services', {
         api: {
           clinics: {
-            getPatientsForClinic: sinon.stub().callsArgWith(2, null, patients ),
+            getPatientsForClinic: sinon.stub().callsArgWith(2, null, {data:[{patient:'patient1'}],meta:{count:1}}  ),
           },
         },
       });
 
       let expectedActions = [
         { type: 'FETCH_PATIENTS_FOR_CLINIC_REQUEST' },
-        { type: 'FETCH_PATIENTS_FOR_CLINIC_SUCCESS', payload: { clinicId: '5f85fbe6686e6bb9170ab5d0', patients } }
+        {
+          type: 'FETCH_PATIENTS_FOR_CLINIC_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            patients: [{ patient: 'patient1' }],
+            count: 1,
+          },
+        },
       ];
       _.each(expectedActions, (action) => {
         expect(isFSA(action)).to.be.true;

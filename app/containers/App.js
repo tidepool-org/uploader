@@ -21,7 +21,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { remote } from 'electron';
-import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
 import dns from 'dns';
 
@@ -39,8 +38,7 @@ import actions from '../actions/';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import * as actionSources from '../constants/actionSources';
-import { pages, urls, pagesMap } from '../constants/otherConstants';
+import { urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
 
@@ -268,7 +266,7 @@ export default connect(
       unsupported: state.unsupported,
       // derived state
       readyToRenderVersionCheckOverlay: (
-        !state.working.initializingApp && !state.working.checkingVersion
+        !state.working.initializingApp.inProgress && !state.working.checkingVersion.inProgress
       )
     };
   },

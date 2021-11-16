@@ -273,7 +273,7 @@ export default connect(
       targetUsersForUpload: targetUsersForUpload(state),
       unsupported: state.unsupported,
       updateProfileErrorMessage: state.updateProfileErrorMessage,
-      uploadIsInProgress: state.working.uploading,
+      uploadIsInProgress: state.working.uploading.inProgress,
       uploadTargetUser: state.uploadTargetUser,
       uploadsByUser: state.uploadsByUser,
       selectedClinicId: state.selectedClinicId,

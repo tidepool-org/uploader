@@ -25,7 +25,7 @@ import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
-import { UnsupportedError } from '../../../app/utils/errors';
+import { getUpdateProfileErrorMessage, UnsupportedError } from '../../../app/utils/errors';
 import ErrorMessages from '../../../app/constants/errorMessages';
 
 describe('Synchronous Actions', () => {
@@ -409,9 +409,9 @@ describe('Synchronous Actions', () => {
   });
 
   describe('for doAppInit', () => {
-    describe('initRequest', () => {
+    describe('initializeAppRequest', () => {
       test('should be an FSA', () => {
-        let action = sync.initRequest();
+        let action = sync.initializeAppRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -421,13 +421,13 @@ describe('Synchronous Actions', () => {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
         };
-        expect(sync.initRequest()).to.deep.equal(expectedAction);
+        expect(sync.initializeAppRequest()).to.deep.equal(expectedAction);
       });
     });
 
-    describe('initSuccess', () => {
+    describe('initializeAppSuccess', () => {
       test('should be an FSA', () => {
-        let action = sync.initSuccess();
+        let action = sync.initializeAppSuccess();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -437,14 +437,14 @@ describe('Synchronous Actions', () => {
           type: actionTypes.INIT_APP_SUCCESS,
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
         };
-        expect(sync.initSuccess()).to.deep.equal(expectedAction);
+        expect(sync.initializeAppSuccess()).to.deep.equal(expectedAction);
       });
     });
 
-    describe('initFailure', () => {
+    describe('initializeAppFailure', () => {
       const err = new Error();
       test('should be an FSA', () => {
-        let action = sync.initFailure(err);
+        let action = sync.initializeAppFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -456,7 +456,7 @@ describe('Synchronous Actions', () => {
           payload: new Error(ErrorMessages.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-        const action = sync.initFailure(err);
+        const action = sync.initializeAppFailure(err);
         expect(action.payload).to.deep.include({message:ErrorMessages.E_INIT});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -1655,6 +1655,61 @@ describe('Synchronous Actions', () => {
       let action = sync.updateClinicPatientFailure(error);
       expect(action.type).to.equal('UPDATE_CLINIC_PATIENT_FAILURE');
       expect(action.error).to.equal(true);
+    });
+  });
+
+  describe('updateProfileRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.updateProfileRequest();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_REQUEST', () => {
+      let action = sync.updateProfileRequest();
+      expect(action.type).to.equal('UPDATE_PROFILE_REQUEST');
+    });
+  });
+
+  describe('updateProfileSuccess', () => {
+    test('should be an FSA', () => {
+      let patient = {
+        name: 'Bruce Lee',
+        age: 24
+      };
+      let action = sync.updateProfileSuccess(patient, 'user123');
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_SUCCESS', () => {
+      let patient = {
+        name: 'Jackie Chan',
+        age: 24
+      };
+      let action = sync.updateProfileSuccess(patient, 'user123');
+
+      expect(action.type).to.equal('UPDATE_PROFILE_SUCCESS');
+      expect(action.payload.profile).to.equal(patient);
+      expect(action.payload.userId).to.equal('user123');
+    });
+  });
+
+  describe('updateProfileFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error(':(');
+      let action = sync.updateProfileFailure(error);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_FAILURE and error should equal passed error', () => {
+      let error = new Error(getUpdateProfileErrorMessage());
+      let action = sync.updateProfileFailure(error);
+
+      expect(action.type).to.equal('UPDATE_PROFILE_FAILURE');
+      expect(action.error).to.equal(true);
+      expect(action.payload.message).to.equal(error.message);
     });
   });
 

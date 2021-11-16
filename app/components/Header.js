@@ -155,7 +155,7 @@ export default connect(
       dropdown: state.dropdown,
       loggedInUser: state.loggedInUser,
       targetUsersForUpload: state.targetUsersForUpload,
-      uploadIsInProgress: state.working.uploading,
+      uploadIsInProgress: state.working.uploading.inProgress,
       clinics: state.clinics,
       uploadTargetUser: state.uploadTargetUser,
       loggedInUser: state.loggedInUser,

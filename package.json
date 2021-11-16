@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.38.1-classic-clinic.1",
+  "version": "2.38.1-patient-search.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
