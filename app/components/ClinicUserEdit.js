@@ -121,10 +121,10 @@ class ClinicUserEdit extends React.Component {
       if (selectedClinicId) {
         var { targetId, clinics } = this.props;
         var patient = {
-          email,
           fullName,
           birthDate: dateString,
         };
+        if(email) patient.email = email;
         if (mrn) patient.mrn = mrn;
         if (targetId) {
           var originalPatient = _.get(clinics, [selectedClinicId, 'patients', targetId]);
