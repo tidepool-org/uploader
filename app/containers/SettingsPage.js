@@ -172,7 +172,7 @@ export default connect(
       );
     }
     function shouldShowUserSelectionDropdown(state) {
-      if (!_.isEmpty(state.targetUsersForUpload) && !isClinicAccount(state)) {
+      if (!_.isEmpty(state.targetUsersForUpload) && !renderClinicUi(state)) {
         // if there's only one potential target for upload but it's *not* the loggedInUser
         if (state.targetUsersForUpload.length === 1 &&
           !_.includes(state.targetUsersForUpload, state.loggedInUser)) {

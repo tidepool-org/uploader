@@ -57,15 +57,21 @@ class ClinicUserSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { clinicDropdownOpen: false };
+    this.state = { clinicDropdownOpen: false, searchText: '' };
   };
 
-  handleSearchChange = _.debounce((searchText) => {
-    const {fetchPatientsForClinic, selectedClinicId} = this.props;
-    if(_.isEmpty(searchText)){
-      fetchPatientsForClinic(selectedClinicId);
-    } else {
-      fetchPatientsForClinic(selectedClinicId, {search: searchText});
+  handleSearchChange = () => _.debounce((searchText) => {
+    const {fetchPatientsForClinic, selectedClinicId, targetId} = this.props;
+    if(searchText !== this.state.searchText){
+      if(_.isEmpty(searchText)){
+        if(!targetId){
+          this.setState({searchText});
+          fetchPatientsForClinic(selectedClinicId);
+        }
+      } else {
+        this.setState({searchText});
+        fetchPatientsForClinic(selectedClinicId, {search: searchText});
+      }
     }
   }, this.props.searchDebounceMs);
 
@@ -162,7 +168,7 @@ class ClinicUserSelect extends React.Component {
           return { value: patient.id, label: fullName + mrn + bday };
         });
       }
-      clinicSearchProps.onInputChange = this.handleSearchChange;
+      clinicSearchProps.onInputChange = this.handleSearchChange();
       clinicSearchProps.filterOptions = (opts)=>opts;
     } else {
       var { allUsers, targetUsersForUpload: targets, loggedInUser } = this.props;
@@ -204,6 +210,7 @@ class ClinicUserSelect extends React.Component {
         valueRenderer={this.valueRenderer}
         onChange={this.handleOnChange}
         isLoading={this.props.fetchingPatientsForClinic.inProgress}
+        onSelectResetsInput={false}
         {...clinicSearchProps}
       />
     );
@@ -297,7 +304,7 @@ class ClinicUserSelect extends React.Component {
     if(keys.length == 1){
       return (
         <div className={styles.postScript}>
-          {i18n.t('To manage clinic workspace and view patient invites, go to')} <a href={this.props.blipUrls.blipUrl} target="_blank">{i18n.t('Tidepool web')}</a>
+          {i18n.t('To manage clinic workspace and view patient invites, go to')} <a href={this.props.blipUrls.blipUrl} target="_blank">{i18n.t('Tidepool Web')}</a>
         </div>
       );
     }
