@@ -299,12 +299,13 @@ class ClinicUserSelect extends React.Component {
   }
 
   renderWebOrSwitchLink = () => {
-    const {clinics} = this.props;
+    const {clinics, selectedClinicId} = this.props;
     const keys = _.keys(clinics);
+    const workspaceText = selectedClinicId ? i18n.t('clinic') : i18n.t('your personal');
     if(keys.length == 1){
       return (
         <div className={styles.postScript}>
-          {i18n.t('To manage clinic workspace and view patient invites, go to')} <a href={this.props.blipUrls.blipUrl} target="_blank">{i18n.t('Tidepool Web')}</a>
+          {i18n.t('To manage {{workspace}} workspace and view patient invites, go to', {workspace: workspaceText})} <a href={this.props.blipUrls.blipUrl} target="_blank">{i18n.t('Tidepool Web')}</a>
         </div>
       );
     }
