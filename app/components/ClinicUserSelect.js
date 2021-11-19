@@ -301,7 +301,7 @@ class ClinicUserSelect extends React.Component {
   renderWebOrSwitchLink = () => {
     const {clinics, selectedClinicId} = this.props;
     const keys = _.keys(clinics);
-    const workspaceText = selectedClinicId ? i18n.t('clinic') : i18n.t('your personal');
+    const workspaceText = selectedClinicId ? i18n.t('clinic') : i18n.t('your private');
     if(keys.length == 1){
       return (
         <div className={styles.postScript}>
