@@ -161,7 +161,7 @@ operating system, as soon as possible.`,
     checkUpdates();
   });
 
-  mainWindow.setWindowOpenHandler((details) => {
+  mainWindow.webContents.setWindowOpenHandler((details) => {
     event.preventDefault();
     let platform = os.platform();
     let chromeInstalls = chromeFinder[platform]();
@@ -202,18 +202,6 @@ operating system, as soon as possible.`,
       callback('');
     } else {
       callback(selectedPort.portId);
-    }
-  });
-
-  mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-    if (permission === 'serial' && details.securityOrigin === 'file:///') {
-      return true;
-    }
-  });
-
-  mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-    if (details.deviceType === 'serial' && details.origin === 'file://') {
-      return true;
     }
   });
 
