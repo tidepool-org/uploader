@@ -331,7 +331,7 @@ export function doUpload (deviceKey, opts, utc) {
       }
     }
 
-    if (env.browser && driverManifest && driverManifest.mode === 'HID') {
+    if (driverManifest && driverManifest.mode === 'HID') {
       dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const filters = driverManifest.usb.map(({vendorId, productId}) => ({
