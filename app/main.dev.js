@@ -50,7 +50,6 @@ let mainWindow = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
-app.commandLine.appendSwitch('bluetooth-bond-on-demand', true); // enables PIN pairing on Windows
 app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
@@ -183,7 +182,7 @@ operating system, as soon as possible.`,
     mainWindow = null;
   });
 
-  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, webContents, callback) => {
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
     event.preventDefault();
     console.log('Device list:', deviceList);
     let [result] = deviceList;
