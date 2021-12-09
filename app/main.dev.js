@@ -207,6 +207,7 @@ operating system, as soon as possible.`,
 
   mainWindow.webContents.session.on('select-hid-device', (event, details, callback) => {
     event.preventDefault();
+    console.log('Device list:', details.deviceList);
     if (details.deviceList && details.deviceList.length > 0) {
       callback(details.deviceList[0].deviceId);
     } else {
