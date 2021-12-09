@@ -34,7 +34,7 @@ export class AdHocModal extends Component {
     const { showingAdHocPairingDialog, sync } = this.props;
     showingAdHocPairingDialog.callback('adHocModalClose');
     sync.dismissedAdHocPairingDialog();
-  }
+  };
 
   render() {
     const { showingAdHocPairingDialog } = this.props;

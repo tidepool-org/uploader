@@ -34,7 +34,7 @@ export default class LoggedInAs extends Component {
     user: PropTypes.object,
     isClinicAccount: PropTypes.bool,
     targetUsersForUpload: PropTypes.array
-  }
+  };
 
   constructor(props) {
     super(props);
