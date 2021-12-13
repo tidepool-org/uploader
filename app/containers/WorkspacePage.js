@@ -8,6 +8,7 @@ import { pages } from '../constants/otherConstants';
 import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
 import { remote } from 'electron';
+import api from '../../lib/core/api';
 
 const i18n = remote.getGlobal('i18n');
 
@@ -32,11 +33,18 @@ export const WorkspacePage = (props) => {
         metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
       })
     );
+    api.metrics.track(metrics.WORKSPACE_GO_TO_WORKSPACE, {
+      clinicId: clinic.id,
+    });
   };
 
   const handleSwitchToPrivate = (e) => {
     e.preventDefault();
     dispatch(async.goToPrivateWorkspace());
+  };
+
+  const handleTidepoolLogin = (e) => {
+    api.metrics.track(metrics.WORKSPACE_TIDEPOOL_LOGIN);
   };
 
   const renderPrivateWorkspaceLink = () => {
@@ -46,7 +54,10 @@ export const WorkspacePage = (props) => {
     if(hasPatientProfile || hasTargetUsersForUpload) {
       return (
         <div className={styles.postScript}>
-          {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>
+          {i18n.t('Want to use Tidepool for your private data?')}{' '}
+          <a href="" onClick={handleSwitchToPrivate}>
+            {i18n.t('Go to Private Workspace')}
+          </a>
         </div>
       );
     }
@@ -56,20 +67,30 @@ export const WorkspacePage = (props) => {
     <div className={styles.wrap}>
       <div className={styles.wrapInner}>
         <div className={styles.headerWrap}>
-          <div className={styles.header}>
-            {i18n.t('Clinic Workspace')}
-          </div>
+          <div className={styles.header}>{i18n.t('Clinic Workspace')}</div>
         </div>
         <div className={styles.headerDetail}>
-          {i18n.t('To manage your clinic workspaces and view patient invites')}, <a href={blipUrls.blipUrl} target="_blank">{i18n.t('login to your account in Tidepool Web')}</a>
+          {i18n.t('To manage your clinic workspaces and view patient invites')},{' '}
+          <a
+            href={blipUrls.blipUrl}
+            onClick={handleTidepoolLogin}
+            target="_blank"
+          >
+            {i18n.t('login to your account in Tidepool Web')}
+          </a>
         </div>
         <div className={styles.workspaceList}>
-          {map(clinics,(clinic,i)=>
+          {map(clinics, (clinic, i) => (
             <div className={styles.workspaceItem} key={clinic.id}>
               <div className={styles.clinicName}>{clinic.name}</div>
-              <div className={styles.clinicSwitchButton} onClick={()=>handleSwitchWorkspace(clinic)}>{i18n.t('Go to Workspace')}</div>
+              <div
+                className={styles.clinicSwitchButton}
+                onClick={() => handleSwitchWorkspace(clinic)}
+              >
+                {i18n.t('Go to Workspace')}
+              </div>
             </div>
-          )}
+          ))}
         </div>
         {renderPrivateWorkspaceLink()}
       </div>

@@ -31,6 +31,8 @@ import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import { remote } from 'electron';
 const i18n = remote.getGlobal( 'i18n' );
 
+import api from '../../lib/core/api';
+
 class ClinicUserSelect extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
@@ -98,6 +100,9 @@ class ClinicUserSelect extends React.Component {
       clinicDropdownOpen: false
     });
     this.props.onSetSelectedClinicId(clinic.id);
+    api.metrics.track(metrics.WORKSPACE_GO_TO_SWITCHER, {
+      clinicId: clinic.id,
+    });
   }
 
   handleSwitchToPrivate = (e) => {
@@ -107,7 +112,18 @@ class ClinicUserSelect extends React.Component {
 
   handleWorkspaceSwitch = (e) => {
     e.preventDefault();
+    const metricProps = this.props.selectedClinicId
+      ? { clinicId: this.props.selectedClinicId }
+      : {};
+    api.metrics.track(metrics.WORKSPACE_TEXT_CHANGE, metricProps);
     this.props.onGoToWorkspaceSwitch();
+  }
+
+  handleTidepoolWebLink = (e) => {
+    const metricProps = this.props.selectedClinicId
+      ? { clinicId: this.props.selectedClinicId }
+      : {};
+    api.metrics.track(metrics.WORKSPACE_GO_TO_TIDEPOOL_WEB, metricProps);
   }
 
   valueRenderer = (option) => {
@@ -305,14 +321,27 @@ class ClinicUserSelect extends React.Component {
     if(keys.length == 1){
       return (
         <div className={styles.postScript}>
-          {i18n.t('To manage {{workspace}} workspace and view patient invites, go to', {workspace: workspaceText})} <a href={this.props.blipUrls.blipUrl} target="_blank">{i18n.t('Tidepool Web')}</a>
+          {i18n.t(
+            'To manage {{workspace}} workspace and view patient invites, go to',
+            { workspace: workspaceText }
+          )}{' '}
+          <a
+            href={this.props.blipUrls.blipUrl}
+            onClick={this.handleTidepoolWebLink}
+            target="_blank"
+          >
+            {i18n.t('Tidepool Web')}
+          </a>
         </div>
       );
     }
     if(keys.length > 1){
       return (
         <div className={styles.postScript}>
-          {i18n.t('Can’t find a patient you are looking for?')} <a href="" onClick={this.handleWorkspaceSwitch}>{i18n.t('Change Workspace')}</a>
+          {i18n.t('Can’t find a patient you are looking for?')}{' '}
+          <a href="" onClick={this.handleWorkspaceSwitch}>
+            {i18n.t('Change Workspace')}
+          </a>
         </div>
       );
     }

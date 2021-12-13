@@ -131,7 +131,8 @@ export class Header extends Component {
             switchToClinic={this.handleSwitchToClinic}
             isClinicMember={this.props.isClinicMember}
             uploadTargetUser={this.props.uploadTargetUser}
-            loggedInUser={this.props.loggedInUser} />
+            loggedInUser={this.props.loggedInUser}
+            selectedClinicId={this.props.selectedClinicId}/>
         </div>
       </div>
     );
@@ -159,6 +160,7 @@ export default connect(
       clinics: state.clinics,
       uploadTargetUser: state.uploadTargetUser,
       loggedInUser: state.loggedInUser,
+      selectedClinicId: state.selectedClinicId,
       // derived state
       hasPrivateWorkspace: hasPrivateWorkspace(state),
       isClinicMember: isClinicMember(state),

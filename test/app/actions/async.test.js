@@ -3925,7 +3925,10 @@ describe('Asynchronous Actions', () => {
                 cb(null, profile);
               }
             },
-            makeBlipUrl: blipUrlMaker
+            makeBlipUrl: blipUrlMaker,
+            metrics: {
+              track: sinon.stub()
+            },
           },
           localStore: {
             getItem: () => targets,
@@ -3991,7 +3994,10 @@ describe('Asynchronous Actions', () => {
         ];
         __Rewire__('services', {
           api: {
-            makeBlipUrl: blipUrlMaker
+            makeBlipUrl: blipUrlMaker,
+            metrics: {
+              track: sinon.stub()
+            },
           },
           localStore: {
             getItem: () => targets,
