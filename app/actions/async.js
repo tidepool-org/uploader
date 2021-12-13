@@ -810,9 +810,11 @@ export function retrieveTargetsFromStorage() {
 
 export function goToPrivateWorkspace() {
   return (dispatch, getState) => {
-    const { loggedInUser, allUsers} = getState();
+    const { api } = services;
+    const { loggedInUser, allUsers, selectedClinicId } = getState();
     const isClinicianAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
-
+    const metricProps = selectedClinicId ? { clinicId: selectedClinicId } : {};
+    api.metrics.track(metrics.WORKSPACE_SWITCH_PRIVATE, metricProps);
     dispatch(sync.selectClinic(null));
     if (isClinicianAccount) {
       return dispatch(

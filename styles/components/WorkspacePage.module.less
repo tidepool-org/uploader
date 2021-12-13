@@ -48,10 +48,11 @@
 
 .workspaceList {
   composes: main;
-  max-height: @usable-page-height - @btn-height;
+  max-height: @usable-page-height - 3 * @btn-height;
   background-color: white;
   border: 1px solid #C7C7CC;
   border-radius: 2px;
+  overflow-y: scroll;
 }
 
 .workspaceItem {

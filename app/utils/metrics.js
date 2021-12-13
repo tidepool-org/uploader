@@ -20,17 +20,19 @@ import _ from 'lodash';
 const NONE_PROVIDED = 'No Event Name Provided';
 
 export function createMetricsTracker(api) {
-  return () => (next) => (action) => {
+  return (store) => (next) => (action) => {
+    let { selectedClinicId } = store.getState();
+    let defaultProperties = selectedClinicId ? { clinicId: selectedClinicId } : {};
     if (_.get(action, 'meta.metric', null) !== null) {
       api.metrics.track(
         _.get(action, 'meta.metric.eventName', NONE_PROVIDED),
-        _.get(action, 'meta.metric.properties', {})
+        _.defaults(_.get(action, 'meta.metric.properties', {}), defaultProperties)
       );
     }
 		if (_.get(action, 'payload.state.meta.metric', null) !== null) {
 			api.metrics.track(
         _.get(action, 'payload.state.meta.metric.eventName', NONE_PROVIDED),
-        _.get(action, 'payload.state.meta.metric.properties', {})
+        _.defaults(_.get(action, 'payload.state.meta.metric.properties', {}), defaultProperties)
       );
 		}
     return next(action);

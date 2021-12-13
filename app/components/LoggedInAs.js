@@ -21,6 +21,8 @@ import { ipcRenderer } from 'electron';
 import { remote } from 'electron';
 const i18n = remote.getGlobal( 'i18n' );
 import personUtils from '../../lib/core/personUtils';
+import api from '../../lib/core/api';
+import * as metrics from '../constants/metrics';
 
 import ListIcon from '@material-ui/icons/List';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
@@ -47,6 +49,7 @@ export default class LoggedInAs extends Component {
     isClinicMember: PropTypes.bool.isRequired,
     uploadTargetUser: PropTypes.string,
     loggedInUser: PropTypes.string.isRequired,
+    selectedClinicId: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -88,6 +91,8 @@ export default class LoggedInAs extends Component {
 
   handleWorkspaces = e => {
     e.preventDefault();
+    let metricProps = this.props.selectedClinicId ? { clinicId: this.props.selectedClinicId } : {};
+    api.metrics.track(metrics.WORKSPACE_MENU_CHANGE, metricProps);
     this.props.onWorkspaceSwitch();
   };
 
@@ -97,6 +102,7 @@ export default class LoggedInAs extends Component {
   }
 
   handleSwitchToClinic = clinic => {
+    api.metrics.track(metrics.WORKSPACE_MENU_SWITCH, { clinicId: clinic.id});
     this.props.switchToClinic(clinic);
   }
 
