@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.40.1-new-clinics.12",
+  "version": "2.40.1-new-clinics.13",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
