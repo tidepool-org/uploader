@@ -84,8 +84,7 @@
     "tidepool-platform-client": "0.45.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3",
-    "webmtp": "0.1.0",
-    "yarn": "^1.22.17"
+    "webmtp": "0.1.0"
   },
   "browserslist": "last 2 electron major versions",
   "bin": {
