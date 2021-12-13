@@ -686,6 +686,8 @@ export function clickEditUserNext(profile) {
 export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
   return (dispatch, getState) => {
     const { api } = services;
+    const { clinics } = getState();
+    const previousPatient = _.get(clinics, [selectedClinicId, 'patients', patientId]);
     if (!_.isEmpty(patient)){
       dispatch(sync.updateClinicPatientRequest());
       api.clinics.updateClinicPatient(selectedClinicId, patientId, patient, (err, patient) => {
@@ -693,6 +695,13 @@ export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
           return dispatch(sync.updateClinicPatientFailure(err));
         } else {
           dispatch(sync.updateClinicPatientSuccess(selectedClinicId, patientId, patient));
+          console.log(patient, previousPatient);
+          if (_.get(patient, 'mrn', false) && !_.get(previousPatient, 'mrn', false)) {
+            dispatch(sync.clinicAddMrn());
+          }
+          if (_.get(patient, 'email', false) && !_.get(previousPatient, 'email', false)) {
+            dispatch(sync.clinicAddEmail());
+          }
         }
         const { targetDevices, devices } = getState();
         const targetedDevices = _.get(targetDevices, patientId, []);
