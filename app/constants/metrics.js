@@ -45,7 +45,7 @@ export const WORKSPACE_GO_TO_SWITCHER = 'Clinic - Switcher - Go to clinic worksp
 export const WORKSPACE_MENU_CHANGE = 'Clinic - Change workspace menu';
 export const WORKSPACE_TEXT_CHANGE = 'Clinic - Change workspace text';
 export const WORKSPACE_MENU_SWITCH = 'Clinic - Menu - Go to clinic workspace';
-export const WORKSPACE_SWITCH_PRIVATE = 'Clinic - switch to private workspace';
+export const WORKSPACE_SWITCH_PRIVATE = 'Clinic - Switch to private workspace';
 
 export const CHOOSE_DEVICES = 'Choose Devices';
 export const CHOOSE_DEVICES_DONE = 'Choose Devices Done';
