@@ -4886,11 +4886,17 @@ describe('Asynchronous Actions', () => {
 
       let expectedActions = [
         { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST' },
-        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS', payload: {
-          clinicId,
-          patientId: patientUserId,
-          patient: { id: patientUserId }
-        } },
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS',
+          payload: {
+            clinicId,
+            patientId: patientUserId,
+            patient: { id: patientUserId }
+          },
+          meta: {
+            metric: { eventName: 'VCA Add New Patient Saved' },
+            source: 'UNDER_THE_HOOD',
+          }
+        },
         { type: 'SET_UPLOAD_TARGET_USER', payload: {
           userId: patientUserId
         }, meta: {source: 'USER'}},

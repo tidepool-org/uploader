@@ -1043,6 +1043,12 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
         ));
       } else {
         dispatch(sync.createClinicCustodialAccountSuccess(clinicId, result, result.id));
+        if (_.get(patient, 'mrn', false)) {
+          dispatch(sync.clinicAddMrn());
+        }
+        if (_.get(patient, 'email', false)) {
+          dispatch(sync.clinicAddEmail());
+        }
         dispatch(sync.setUploadTargetUser(result.id));
         dispatch(setPage(pages.SETTINGS));
       }

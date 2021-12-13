@@ -890,6 +890,10 @@ export function createClinicCustodialAccountSuccess(clinicId, patient, patientId
       patient,
       patientId,
     },
+    meta: {
+      source: actionSources[ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS],
+      metric: {eventName: metrics.CLINIC_ADD_NEW_PATIENT}
+    }
   };
 }
 
