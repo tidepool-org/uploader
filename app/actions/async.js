@@ -650,6 +650,7 @@ export function clickEditUserNext(profile) {
   return (dispatch, getState) => {
     const { uploadTargetUser, allUsers } = getState();
     const { api } = services;
+    const previousProfile = _.get(allUsers[uploadTargetUser], 'profile', {});
     const updates = profile;
     if (!_.isEmpty(profile)){
       dispatch(sync.updateProfileRequest());
@@ -663,9 +664,21 @@ export function clickEditUserNext(profile) {
             const { allUsers } = getState();
             let newProfile = actionUtils.mergeProfileUpdates(_.get(allUsers[uploadTargetUser], 'profile', {}), updates);
             dispatch(sync.updateProfileSuccess(newProfile, uploadTargetUser));
+            if (_.get(newProfile, 'patient.mrn', false) && !_.get(previousProfile, 'patient.mrn', false)) {
+              dispatch(sync.clinicAddMrn());
+            }
+            if (_.get(newProfile, 'patient.email', false) && !_.get(previousProfile, 'patient.email', false)) {
+              dispatch(sync.clinicAddEmail());
+            }
           }
         } else {
           dispatch(sync.updateProfileSuccess(profile, uploadTargetUser));
+          if (_.get(profile, 'patient.mrn', false) && !_.get(previousProfile, 'patient.mrn', false)) {
+            dispatch(sync.clinicAddMrn());
+          }
+          if (_.get(profile, 'patient.email', false) && !_.get(previousProfile, 'patient.email', false)) {
+            dispatch(sync.clinicAddEmail());
+          }
         }
         const { targetDevices, devices} = getState();
         const targetedDevices = _.get(targetDevices, uploadTargetUser, []);
@@ -695,7 +708,6 @@ export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
           return dispatch(sync.updateClinicPatientFailure(err));
         } else {
           dispatch(sync.updateClinicPatientSuccess(selectedClinicId, patientId, patient));
-          console.log(patient, previousPatient);
           if (_.get(patient, 'mrn', false) && !_.get(previousPatient, 'mrn', false)) {
             dispatch(sync.clinicAddMrn());
           }
