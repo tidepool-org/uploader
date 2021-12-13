@@ -2748,7 +2748,31 @@ describe('Asynchronous Actions', () => {
           },
           log: _.noop
         });
-        const store = mockStore({});
+
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'def456'
+        };
+        const store = mockStore(state);
         store.dispatch(async.clickEditUserNext(profile));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
