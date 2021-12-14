@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.39.0-electron-v16.1",
+  "version": "2.40.0-electron-v16.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -62,7 +62,7 @@
     "is-electron": "2.2.0",
     "lodash": "4.17.21",
     "lzo-wasm": "0.0.4",
-    "os-name": "4.0.0",
+    "os-name": "4.0.1",
     "pl2303": "0.0.7",
     "plist": "3.0.1",
     "prop-types": "15.7.2",
