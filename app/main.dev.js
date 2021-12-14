@@ -162,14 +162,17 @@ operating system, as soon as possible.`,
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    event.preventDefault();
     let platform = os.platform();
     let chromeInstalls = chromeFinder[platform]();
     if(chromeInstalls.length === 0){
       // no chrome installs found, open user's default browser
       open(details.url);
     } else {
-      open(details.url, {app: chromeInstalls[0]}, function(error){
+      open(details.url, {
+        app: {
+          name: chromeInstalls[0],
+        },
+      }, function(error){
         if(error){
           // couldn't open chrome, try OS default
           open(details.url);
