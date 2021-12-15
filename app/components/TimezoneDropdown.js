@@ -120,7 +120,7 @@ class TimezoneDropdown extends React.Component {
       let timez = this.props.targetTimezone;
       return (
         <div className={styles.timeDetail}>
-          {text} {sundial.formatInTimezone(new Date(), timez, 'h:mm a')}
+          {text} {sundial.formatInTimezone(new Date(), timez, 'LT')}
         </div>
       );
     } else {

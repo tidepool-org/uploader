@@ -269,6 +269,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
         }
 
+        if (err.message === 'E_MULTIPLE_DEVICES') {
+          displayErr = new Error(errorText.E_MULTIPLE_DEVICES);
+          deviceDetectErrProps.code = 'E_MULTIPLE_DEVICES';
+        }
+
         displayErr.originalError = err;
         return dispatch(syncActions.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
