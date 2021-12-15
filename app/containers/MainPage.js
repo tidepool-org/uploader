@@ -182,7 +182,8 @@ export class MainPage extends Component {
           uploads={this.props.activeUploads}
           userDropdownShowing={this.props.showingUserSelectionDropdown}
           selectedClinicId={this.props.selectedClinicId}
-          renderClinicUi={renderClinicUi} />
+          renderClinicUi={renderClinicUi}
+          showingUserSelectionDropdown={this.props.showingUserSelectionDropdown}/>
         {viewDataLinkButton}
       </div>
     );

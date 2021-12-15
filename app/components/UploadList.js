@@ -49,6 +49,7 @@ export default class UploadList extends Component {
     isUploadInProgress: PropTypes.bool.isRequired,
     selectedClinicId: PropTypes.string,
     renderClinicUi: PropTypes.bool.isRequired,
+    showingUserSelectionDropdown: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -159,7 +160,7 @@ export default class UploadList extends Component {
   }
 
   renderChooseDeviceLink(){
-    if(this.props.renderClinicUi){
+    if(this.props.renderClinicUi || this.props.showingUserSelectionDropdown){
       var classes = cx({
         [styles.chooseDeviceLink]: true,
         [styles.linkDisabled]: this.props.isUploadInProgress
