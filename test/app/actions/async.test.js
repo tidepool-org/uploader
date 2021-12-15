@@ -84,9 +84,6 @@ describe('Asynchronous Actions', () => {
             getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
           }
         },
-        carelink: {
-          init: (opts, cb) => { cb(); }
-        },
         device: {
           init: (opts, cb) => { cb(); }
         },
@@ -183,9 +180,6 @@ describe('Asynchronous Actions', () => {
           user: {
             initializationInfo: (cb) => { cb(null, [pwd.user, pwd.profile, pwd.memberships] ); }
           }
-        },
-        carelink: {
-          init: (opts, cb) => { cb(); }
         },
         device: {
           init: (opts, cb) => { cb(); }
@@ -295,9 +289,6 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com/' + path;
           },
           setHosts: _.noop
-        },
-        carelink: {
-          init: (opts, cb) => { cb(); }
         },
         device: {
           init: (opts, cb) => { cb(); }
@@ -1567,465 +1558,6 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('doUpload [CareLink fetch error]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      const time = '2016-01-01T12:05:00.123Z';
-      const targetDevice = {
-        key: deviceKey,
-        name: 'CareLink',
-        source: {type: 'carelink'}
-      };
-      const initialState = {
-        devices: {
-          carelink: targetDevice,
-        },
-        os: 'mac',
-        uploadsByUser: {
-          [userId]: {
-            a_cgm: {},
-            carelink: { history: [{ start: time }] },
-          },
-        },
-        targetDevices: {
-          [userId]: ['a_cgm', 'carelink'],
-        },
-        targetTimezones: {
-          [userId]: 'US/Mountain',
-        },
-        uploadTargetDevice: deviceKey,
-        uploadTargetUser: userId,
-        version: '0.100.0',
-        working: { uploading: { inProgress: false } },
-      };
-      const errProps = {
-        utc: time,
-        version: initialState.version,
-        code: 'E_FETCH_CARELINK'
-      };
-      let err = new Error(ErrorMessages.E_FETCH_CARELINK);
-      err.details = 'Error!';
-      err.utc = errProps.utc;
-      err.code = errProps.code;
-      err.version = errProps.version;
-      err.debug = `Details: Error! | UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
-        api: {
-          upload: {
-            fetchCarelinkData: (foo, cb) => cb(new Error('Error!')),
-            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
-          }
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.VERSION_CHECK_REQUEST,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
-        },
-        {
-          type: actionTypes.VERSION_CHECK_SUCCESS,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
-        },
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { userId, deviceKey, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: 'CareLink'}
-            }
-          }
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_REQUEST,
-          payload: { userId, deviceKey },
-          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_FAILURE,
-          error: true,
-          payload: new Error(ErrorMessages.E_FETCH_CARELINK),
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
-            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
-          }
-        },
-        {
-          type: actionTypes.UPLOAD_FAILURE,
-          error: true,
-          payload: err,
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_FAILURE],
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: targetDevice.source.type,
-                source: 'CareLink',
-                error: err
-              }
-            }
-          }
-        }
-      ];
-      const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
-      const actions = store.getActions();
-      expect(actions[4].payload).to.deep.include({message: ErrorMessages.E_FETCH_CARELINK});
-      expectedActions[4].payload = actions[4].payload;
-      expect(actions[5].payload).to.deep.include({
-        message: ErrorMessages.E_FETCH_CARELINK,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
-      });
-      expectedActions[5].payload = actions[5].payload;
-      expectedActions[5].meta.metric.properties.error = actions[5].payload;
-      expect(actions).to.deep.equal(expectedActions);
-    });
-  });
-
-  describe('doUpload [CareLink fetch, incorrect creds]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_FAILURE, UPLOAD_FAILURE actions', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      const time = '2016-01-01T12:05:00.123Z';
-      const targetDevice = {
-        key: deviceKey,
-        name: 'CareLink',
-        source: {type: 'carelink'}
-      };
-      const initialState = {
-        devices: {
-          carelink: targetDevice,
-        },
-        os: 'mac',
-        uploadsByUser: {
-          [userId]: {
-            a_cgm: {},
-            carelink: { history: [{ start: time }] },
-          },
-        },
-        targetDevices: {
-          [userId]: ['a_cgm', 'carelink'],
-        },
-        targetTimezones: {
-          [userId]: 'US/Mountain',
-        },
-        uploadTargetDevice: deviceKey,
-        uploadTargetUser: userId,
-        version: '0.100.0',
-        working: { uploading: { inProgress: false } },
-      };
-      const errProps = {
-        utc: time,
-        version: initialState.version,
-        code: 'E_CARELINK_CREDS'
-      };
-      let err = new Error(ErrorMessages.E_CARELINK_CREDS);
-      err.utc = errProps.utc;
-      err.code = errProps.code;
-      err.version = errProps.version;
-      err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
-        api: {
-          upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '302 Moved Temporarily'),
-            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
-          }
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.VERSION_CHECK_REQUEST,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
-        },
-        {
-          type: actionTypes.VERSION_CHECK_SUCCESS,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
-        },
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { userId, deviceKey, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: 'CareLink'}
-            }
-          }
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_REQUEST,
-          payload: { userId, deviceKey },
-          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_FAILURE,
-          error: true,
-          payload: new Error(ErrorMessages.E_CARELINK_CREDS),
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
-            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
-          }
-        },
-        {
-          type: actionTypes.UPLOAD_FAILURE,
-          error: true,
-          payload: err,
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_FAILURE],
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: targetDevice.source.type,
-                source: 'CareLink',
-                error: err
-              }
-            }
-          }
-        }
-      ];
-      const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
-      const actions = store.getActions();
-      expect(actions[4].payload).to.deep.include({message:ErrorMessages.E_CARELINK_CREDS});
-      expectedActions[4].payload = actions[4].payload;
-      expect(actions[5].payload).to.deep.include({
-        message: ErrorMessages.E_CARELINK_CREDS,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
-      });
-      expectedActions[5].payload = actions[5].payload;
-      expectedActions[5].meta.metric.properties.error = actions[5].payload;
-      expect(actions).to.deep.equals(expectedActions);
-    });
-  });
-
-  describe('doUpload [CareLink, error in processing & uploading]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_FAILURE actions', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      const time = '2016-01-01T12:05:00.123Z';
-      const targetDevice = {
-        key: deviceKey,
-        name: 'Acme Insulin Pump',
-        source: {type: 'carelink'}
-      };
-      const initialState = {
-        devices: {
-          carelink: targetDevice,
-        },
-        os: 'mac',
-        uploadsByUser: {
-          [userId]: {
-            a_cgm: {},
-            carelink: { history: [{ start: time }] },
-          },
-        },
-        targetDevices: {
-          [userId]: ['a_cgm', 'carelink'],
-        },
-        targetTimezones: {
-          [userId]: 'US/Mountain',
-        },
-        uploadTargetDevice: deviceKey,
-        uploadTargetUser: userId,
-        version: '0.100.0',
-        working: { uploading: { inProgress: false } },
-      };
-      const errProps = {
-        utc: time,
-        version: initialState.version,
-        code: 'E_CARELINK_UPLOAD'
-      };
-      const basalErr = 'Problem processing basal!';
-      let err = new Error(ErrorMessages.E_CARELINK_UPLOAD);
-      err.details = basalErr;
-      err.utc = errProps.utc;
-      err.name = 'Error';
-      err.code = errProps.code;
-      err.version = errProps.version;
-      err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
-        api: {
-          upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
-            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
-          }
-        },
-        carelink: {
-          upload: (foo, bar, cb) => cb(new Error(basalErr))
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.VERSION_CHECK_REQUEST,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
-        },
-        {
-          type: actionTypes.VERSION_CHECK_SUCCESS,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
-        },
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { userId, deviceKey, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: 'CareLink'}
-            }
-          }
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_REQUEST,
-          payload: { userId, deviceKey },
-          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_SUCCESS,
-          payload: { userId, deviceKey },
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
-            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
-          }
-        },
-        {
-          type: actionTypes.UPLOAD_FAILURE,
-          error: true,
-          payload: err,
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_FAILURE],
-            metric: {
-              eventName: 'Upload Failed',
-              properties: {
-                type: targetDevice.source.type,
-                source: 'CareLink',
-                error: err
-              }
-            }
-          }
-        }
-      ];
-      const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
-      const actions = store.getActions();
-      expect(actions[5].payload).to.deep.include({
-        message: ErrorMessages.E_CARELINK_UPLOAD,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug,
-        name: err.name
-      });
-      expectedActions[5].payload = actions[5].payload;
-      expectedActions[5].meta.metric.properties.error = actions[5].payload;
-      expect(actions).to.deep.equal(expectedActions);
-    });
-  });
-
-  describe('doUpload [CareLink, no error]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, CARELINK_FETCH_REQUEST, CARELINK_FETCH_SUCCESS, UPLOAD_SUCCESS actions', () => {
-      const userId = 'a1b2c3', deviceKey = 'carelink';
-      const time = '2016-01-01T12:05:00.123Z';
-      const targetDevice = {
-        key: deviceKey,
-        name: 'Acme Insulin Pump',
-        source: {type: 'carelink'}
-      };
-      const initialState = {
-        devices: {
-          carelink: targetDevice,
-        },
-        os: 'mac',
-        uploadsByUser: {
-          [userId]: {
-            a_cgm: {},
-            carelink: { history: [{ start: time }] },
-          },
-        },
-        targetDevices: {
-          [userId]: ['a_cgm', 'carelink'],
-        },
-        targetTimezones: {
-          [userId]: 'US/Mountain',
-        },
-        uploadTargetDevice: deviceKey,
-        uploadTargetUser: userId,
-        version: '0.100.0',
-        working: { uploading: { inProgress: false } },
-      };
-      __Rewire__('services', {
-        api: {
-          upload: {
-            fetchCarelinkData: (foo, cb) => cb(null, '1,2,3,4,5'),
-            getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
-          }
-        },
-        carelink: {
-          upload: (foo, bar, cb) => cb(null, { post_records: [1,2,3,4] })
-        }
-      });
-      const expectedActions = [
-        {
-          type: actionTypes.VERSION_CHECK_REQUEST,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
-        },
-        {
-          type: actionTypes.VERSION_CHECK_SUCCESS,
-          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
-        },
-        {
-          type: actionTypes.UPLOAD_REQUEST,
-          payload: { userId, deviceKey, utc: time },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_REQUEST],
-            metric: {
-              eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: 'CareLink'}
-            }
-          }
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_REQUEST,
-          payload: { userId, deviceKey },
-          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-        },
-        {
-          type: actionTypes.CARELINK_FETCH_SUCCESS,
-          payload: { userId, deviceKey },
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
-            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
-          }
-        },
-        {
-          type: actionTypes.UPLOAD_SUCCESS,
-          payload: { userId, deviceKey, utc: time, data: { post_records: [1,2,3,4] } },
-          meta: {
-            source: actionSources[actionTypes.UPLOAD_SUCCESS],
-            metric: {
-              eventName: 'Upload Successful',
-              properties: {
-                type: targetDevice.source.type,
-                deviceModel: undefined,
-                source: 'CareLink',
-                started: time,
-                finished: time,
-                processed: 4
-              }
-            }
-          }
-        }
-      ];
-      const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
-    });
-  });
-
   describe('readFile', () => {
     describe('wrong file extension chosen', () => {
       test('should dispatch CHOOSING_FILE, READ_FILE_ABORTED actions', () => {
@@ -2630,7 +2162,6 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
             dexcom: {},
             omnipod: {}
           },
@@ -2703,7 +2234,6 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
             dexcom: {},
             omnipod: {}
           },
@@ -2819,7 +2349,6 @@ describe('Asynchronous Actions', () => {
             def456: {}
           },
           devices: {
-            carelink: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3268,7 +2797,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: null,
           targetDevices: {
-            abc123: ['carelink']
+            abc123: ['medtronic']
           }
         };
         const store = mockStore(state);
@@ -3281,7 +2810,7 @@ describe('Asynchronous Actions', () => {
     describe('no targets retrieved from local storage, targets exist in state but user targeted has no supported devices', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_PAGE (redirect to settings page for device selection)', () => {
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3340,7 +2869,7 @@ describe('Asynchronous Actions', () => {
     describe('no targets retrieved from local storage, targets exist in state and user targeted for upload is all set to upload', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to main page)', () => {
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3382,7 +2911,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3399,14 +2928,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, but no user targeted for upload by default', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_USERS_TARGETS, SET_UPLOADS, then SET_PAGE (redirect to settings page for user selection)', () => {
         const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          abc123: [{key: 'medtronic', timezone: 'US/Eastern'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3462,14 +2991,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, user targeted for upload is missing timezone', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
         const targets = {
-          abc123: [{key: 'carelink'}],
+          abc123: [{key: 'medtronic'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3533,7 +3062,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3541,7 +3070,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123',
           targetDevices: {
-            abc123: ['carelink']
+            abc123: ['medtronic']
           },
           targetTimezones: {
             abc123: 'US/Mountain'
@@ -3556,14 +3085,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, user targeted for upload is missing timezone, update profile unauthorized error', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page for timezone selection)', () => {
         const targets = {
-          abc123: [{key: 'carelink'}],
+          abc123: [{key: 'medtronic'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3627,7 +3156,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3635,7 +3164,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123',
           targetDevices: {
-            abc123: ['carelink']
+            abc123: ['medtronic']
           },
           targetTimezones: {
             abc123: 'US/Mountain'
@@ -3650,14 +3179,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, user targeted for upload has no supported devices', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, then SET_PAGE (redirect to settings page for device selection)', () => {
         const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          abc123: [{key: 'medtronic', timezone: 'US/Eastern'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3720,14 +3249,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, user targeted for upload is all set to upload', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
         const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          abc123: [{key: 'medtronic', timezone: 'US/Eastern'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3791,7 +3320,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3811,14 +3340,14 @@ describe('Asynchronous Actions', () => {
     describe('targets retrieved, user targeted for upload is all set to upload, update profile unauthorized error', () => {
       test('should dispatch RETRIEVING_USERS_TARGETS, SET_UPLOADS, SET_USERS_TARGETS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, then SET_PAGE (redirect to main page)', () => {
         const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          abc123: [{key: 'medtronic', timezone: 'US/Eastern'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -3882,7 +3411,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -4211,7 +3740,7 @@ describe('Asynchronous Actions', () => {
         __Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -4246,17 +3775,17 @@ describe('Asynchronous Actions', () => {
         __Rewire__('services', apiRewire);
         const store = mockStore({
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
           targetDevices: {
-            abc123: ['carelink']
+            abc123: ['medtronic']
           },
           users: {
             abc123: {
               targets: {
-                devices: ['carelink']
+                devices: ['medtronic']
               }
             }
           }

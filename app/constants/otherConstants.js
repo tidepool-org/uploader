@@ -45,7 +45,6 @@ export const paths = {
 
 export const steps = {
   start: 'START',
-  carelinkFetch: 'CARELINK_FETCH',
   choosingFile: 'CHOOSING_FILE',
   detect: 'DETECT',
   setup: 'SETUP',

@@ -27,11 +27,6 @@ function isPwd(membership) {
 
 export function uploadProgress(state = null, action) {
   switch (action.type) {
-    case types.CARELINK_FETCH_REQUEST:
-      return {
-        percentage: 0,
-        step: steps.carelinkFetch
-      };
     case types.DEVICE_DETECT_REQUEST:
       return {
         percentage: 0,
@@ -55,38 +50,6 @@ export function uploadProgress(state = null, action) {
 
 export function uploadsByUser(state = {}, action) {
   switch (action.type) {
-    case types.CARELINK_FETCH_FAILURE:
-      let uploadTargetUser;
-      const uploadTargetDevice = 'carelink';
-      _.forOwn(state, (uploads, userId) => {
-        _.forOwn(uploads, (upload, deviceKey) => {
-          if (deviceKey === 'carelink' && upload.isFetching === true) {
-            uploadTargetUser = userId;
-          }
-        });
-      });
-      if (uploadTargetUser) {
-        return update(
-          state,
-          {[uploadTargetUser]: {[uploadTargetDevice]: {
-            isFetching: {$set: false}
-          }}}
-        );
-      }
-    case types.CARELINK_FETCH_REQUEST: {
-      const { userId, deviceKey } = action.payload;
-      return update(
-        state,
-        {[userId]: {[deviceKey]: {isFetching: {$set: true}}}}
-      );
-    }
-    case types.CARELINK_FETCH_SUCCESS: {
-      const { userId, deviceKey } = action.payload;
-      return update(
-        state,
-        {[userId]: {[deviceKey]: {isFetching: {$set: false}}}}
-      );
-    }
     case types.CHOOSING_FILE: {
       const { userId, deviceKey } = action.payload;
       let newState = state;
