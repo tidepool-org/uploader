@@ -620,7 +620,7 @@ export default class Upload extends Component {
     ];
     return (
       <div className={styles.uploadPeriodRow}>
-        <div>Upload:</div>
+        <div>{i18n.t('Upload:')}</div>
         <div className={styles.dropdown}>
           <Select clearable={false}
             name={'uploadDataPeriodSelect'}
@@ -776,10 +776,10 @@ export default class Upload extends Component {
 
     if (this.isBlockModeFileChosen()) {
       return (
-          <div className={styles.blockMode}>
-            <div className={styles.preparing}>{i18n.t('Preparing file')} &hellip;</div>
-            <div className={styles.blockMode}>{this.props.upload.file.name}</div>
-          </div>
+        <div className={styles.blockMode}>
+          <div className={styles.preparing}>{i18n.t('Preparing file')}</div>
+          <div className={styles.blockMode}>&apos;{this.props.upload.file.name}&apos;&hellip;</div>
+        </div>
       );
     }
     return null;
