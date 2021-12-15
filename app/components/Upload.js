@@ -30,6 +30,8 @@ import ProgressBar from './ProgressBar';
 import debugMode from '../utils/debugMode';
 import uploadDataPeriod from '../utils/uploadDataPeriod';
 
+import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
+
 import styles from '../../styles/components/Upload.module.less';
 
 import { remote } from 'electron';
@@ -37,6 +39,7 @@ const i18n = remote.getGlobal( 'i18n' );
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
+const verioBLE = new VerioBLE();
 
 export default class Upload extends Component {
   static propTypes = {
@@ -92,6 +95,7 @@ export default class Upload extends Component {
   constructor(props) {
     super(props);
     this.ble = ble;
+    this.verioBLE = verioBLE;
 
     this.populateRememberedSerialNumber();
   }
@@ -157,10 +161,15 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
-  async handleBluetoothUpload() {
-    let options = {
-      ble : this.ble,
-    };
+  async handleBluetoothUpload(device) {
+    let options = { };
+
+    if (device === 'onetouchverioble') {
+      options.ble = this.verioBLE;
+    } else {
+      options.ble = this.ble;
+    }
+
     this.props.onUpload(options);
   }
 
@@ -191,16 +200,18 @@ export default class Upload extends Component {
       return this.handleCareLinkUpload();
     }
 
-    if (_.get(upload, 'key', null) === 'medtronic') {
+    const device = _.get(upload, 'key', null);
+
+    if (device === 'medtronic') {
       return this.handleMedtronicUpload();
     }
 
-    if (_.get(upload, 'key', null) === 'medtronic600') {
+    if (device === 'medtronic600') {
       return this.handleMedtronic600Upload();
     }
 
-    if (_.get(upload, 'key', null) === 'caresensble') {
-      return this.handleBluetoothUpload();
+    if (device === 'caresensble' || device === 'onetouchverioble') {
+      return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 
     var options = {};

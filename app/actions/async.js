@@ -264,10 +264,14 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
-        if (_.get(targetDevice, 'source.driverId', null) === 'AbbottFreeStyleLibre' && err === 'E_UNSUPPORTED') {
-          displayErr = new Error(errorText.E_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_HID_CONNECTION';
-          deviceDetectErrProps.details = 'Libre 2 not yet supported.';
+        if (err === 'E_LIBRE2_UNSUPPORTED') {
+          displayErr = new Error(errorText.E_LIBRE2_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
+        }
+
+        if (err.message === 'E_MULTIPLE_DEVICES') {
+          displayErr = new Error(errorText.E_MULTIPLE_DEVICES);
+          deviceDetectErrProps.code = 'E_MULTIPLE_DEVICES';
         }
 
         displayErr.originalError = err;
