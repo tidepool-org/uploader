@@ -209,11 +209,6 @@ export default connect(
           (upload.successful ? {progress: {percentage: 100}} : {});
         activeUploads.push(_.assign({}, device, upload, progress));
       });
-      // ensure that carelink is last
-      const carelink = _.remove(activeUploads, {'key': 'carelink'});
-      if(!_.isEmpty(carelink)){
-        activeUploads = activeUploads.concat(carelink);
-      }
       return activeUploads;
     }
     function shouldShowUserSelectionDropdown(state) {

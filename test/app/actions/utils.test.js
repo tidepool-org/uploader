@@ -101,7 +101,7 @@ describe('utils', () => {
 
     test('the returned function should use the argument error\'s code when present', () => {
       const err = new Error('Uh oh...');
-      const specificErrCode = 'E_CARELINK_UNSUPPORTED';
+      const specificErrCode = 'E_MEDTRONIC_UPLOAD';
       err.code = specificErrCode;
       const displayErr = new Error(errorText[specificErrCode]);
 
@@ -156,7 +156,7 @@ describe('utils', () => {
       patient: {
         birthday: '1980-02-05',
         diagnosisDate: '1990-02-06',
-        targetDevices: ['carelink', 'omnipod'],
+        targetDevices: ['medtronic', 'omnipod'],
         targetTimezone: 'US/Central'
       },
       termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -172,7 +172,7 @@ describe('utils', () => {
         patient: {
           birthday: '1980-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -189,7 +189,7 @@ describe('utils', () => {
         patient: {
           birthday: '1981-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -206,7 +206,7 @@ describe('utils', () => {
         patient: {
           birthday: '1980-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
