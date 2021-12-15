@@ -37,4 +37,5 @@ module.exports = {
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
   E_DATETIME_SET_BY_PUMP: 'Please correct the date/time on the linked pump.',
+  E_MULTIPLE_DEVICES: 'We found more than one device plugged in. Only plug in the device you intend to upload.',
 };
