@@ -109,6 +109,11 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'controlled folder access.';
       }
 
+      if (err.message === 'E_DATETIME_SET_BY_PUMP') {
+        displayErr.message = errorText.E_DATETIME_SET_BY_PUMP;
+        uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
+      }
+
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(
           _.filter(
