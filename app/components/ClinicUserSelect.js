@@ -348,13 +348,15 @@ class ClinicUserSelect extends React.Component {
   }
 
   renderPrivateWorkspaceLink = () => {
-    const {loggedInUser, allUsers, selectedClinicId, targetUsersForUpload} = this.props;
+    const {loggedInUser, allUsers, selectedClinicId} = this.props;
     const user = allUsers[loggedInUser];
-    const hasPatientProfile = _.get(user, ['profile', 'patient'], false);
-    if(!!selectedClinicId && !personUtils.isClinic(user) && (hasPatientProfile || !_.isEmpty(targetUsersForUpload))) {
+    if(!!selectedClinicId && !personUtils.isClinic(user)) {
       return (
         <div className={styles.postScript}>
-          {i18n.t('Want to use Tidepool for your private data?')}  <a href="" onClick={this.handleSwitchToPrivate}>{i18n.t('Go to Private Workspace')}</a>
+          {i18n.t('Want to use Tidepool for your private data?')}{' '}
+          <a href="" onClick={this.handleSwitchToPrivate}>
+            {i18n.t('Go to Private Workspace')}
+          </a>
         </div>
       );
     }
