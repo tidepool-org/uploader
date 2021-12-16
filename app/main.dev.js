@@ -50,7 +50,6 @@ let mainWindow = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
-app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
 // in Chrome 92+, but we can't do this for our Electron setup,
@@ -77,7 +76,6 @@ const installExtensions = async () => {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
     const options = {
       loadExtensionOptions: { allowFileAccess: true },
-      // forceDownload: false,
     };
 
     try {
@@ -104,18 +102,6 @@ function addDataPeriodGlobalListener(menu) {
 
 app.on('ready', async () => {
   await installExtensions();
-  //
-  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-  //   callback({
-  //     responseHeaders: {
-  //       ...details.responseHeaders,
-  //       // 'Access-Control-Allow-Origin': ['*'],
-  //       'Cross-Origin-Embedder-Policy': ['require-corp'],
-  //       'Cross-Origin-Opener-Policy': ['same-origin']
-  //     }
-  //   });
-  // });
-
   setLanguage();
 });
 

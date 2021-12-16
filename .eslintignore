@@ -3,4 +3,3 @@ app/main.prod.js
 node_modules/
 dist/
 web/
-extensions/
