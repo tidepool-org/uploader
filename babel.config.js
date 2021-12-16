@@ -79,11 +79,7 @@ module.exports = api => {
           [
             require('babel-plugin-module-resolver'),
             {
-              'root': ['./app/node_modules'],
-              'alias': {
-                'node-hid': './app/node_modules/node-hid',
-                'serialport': './app/node_modules/serialport'
-              }
+              'root': ['./app/node_modules']
             }
           ],
           require('babel-plugin-rewire'),

@@ -207,11 +207,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
-        if (err === 'E_LIBRE2_UNSUPPORTED') {
-          displayErr = new Error(errorText.E_LIBRE2_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
-        }
-
         if (err.message === 'E_MULTIPLE_DEVICES') {
           displayErr = new Error(errorText.E_MULTIPLE_DEVICES);
           deviceDetectErrProps.code = 'E_MULTIPLE_DEVICES';
@@ -305,6 +300,19 @@ export function doUpload (deviceKey, opts, utc) {
 
         if (opts.hidDevice == null) {
           throw new Error('No device was selected.');
+        }
+
+        if (opts.hidDevice.vendorId === 6753 && opts.hidDevice.productId === 14672) {
+          // This is an attempt to upload a Libre 2, which is not yet supported
+
+          let hidErr = new Error(errorText.E_LIBRE2_UNSUPPORTED);
+          let errProps = {
+            details: hidErr.message,
+            utc: actionUtils.getUtc(utc),
+            code: 'E_LIBRE2_UNSUPPORTED',
+          };
+
+          return dispatch(syncActions.uploadFailure(hidErr, errProps, devices[deviceKey]));
         }
       } catch (err) {
         console.log('Error:', err);
