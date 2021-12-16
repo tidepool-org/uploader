@@ -28,7 +28,6 @@ import bows from 'bows';
 
 import config from '../../lib/config.js';
 
-import carelink from '../../lib/core/carelink.js';
 import device from '../../lib/core/device.js';
 import localStore from '../../lib/core/localStore.js';
 
@@ -116,7 +115,6 @@ export class App extends Component {
     this.props.async.doAppInit(
       _.assign({ environment: this.state.server }, config), {
       api: api,
-      carelink,
       device,
       localStore,
       log: this.log

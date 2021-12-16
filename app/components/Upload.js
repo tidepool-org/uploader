@@ -61,9 +61,6 @@ export default class Upload extends Component {
 
   static defaultProps = {
     text: {
-      CARELINK_USERNAME: i18n.t('CareLink username'),
-      CARELINK_PASSWORD: i18n.t('CareLink password'),
-      CARELINK_DOWNLOADING: i18n.t('Downloading CareLink export...'),
       MEDTRONIC_SERIAL_NUMBER: i18n.t('Pump Serial number'),
       REMEMBER_SERIAL_NUMBER: i18n.t('Remember serial number'),
       MEDTRONIC_600_IS_LINKED: i18n.t('Meter and pump are linked'),
@@ -81,7 +78,6 @@ export default class Upload extends Component {
   };
 
   state = {
-    carelinkFormIncomplete: true,
     medtronicFormIncomplete: true,
     medtronicSerialNumberValue: '',
     medtronicSerialNumberRemember: false,
@@ -114,24 +110,9 @@ export default class Upload extends Component {
             medtronicSerialNumberRemember: true,
             medtronicFormIncomplete: false,
           });
-          this.onCareLinkInputChange();
         }
     });
   }
-
-  handleCareLinkUpload = () => {
-    /*
-    Once everyone has switched away from the CareLink option, this function, as
-    well as the props addDevice, removeDevice and onDone can be removed from
-    Upload, UploadList and MainPage components. See following PR for details:
-    https://github.com/tidepool-org/chrome-uploader/pull/602
-    */
-    var addDevice = this.props.addDevice.bind(null, this.props.targetId);
-    var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
-    addDevice('medtronic');
-    removeDevice('carelink');
-    this.props.onDone();
-  };
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
@@ -178,7 +159,6 @@ export default class Upload extends Component {
       e.preventDefault();
     }
     this.setState({
-      carelinkFormIncomplete: true,
       medtronicFormIncomplete: true,
       medtronicSerialNumberValue: '',
       medtronic600FormIncomplete: false,
@@ -194,10 +174,6 @@ export default class Upload extends Component {
     const { upload } = this.props;
     if (e) {
       e.preventDefault();
-    }
-
-    if (_.get(upload, 'source.type', null) === 'carelink') {
-      return this.handleCareLinkUpload();
     }
 
     const device = _.get(upload, 'key', null);
@@ -222,19 +198,6 @@ export default class Upload extends Component {
     const { upload } = this.props;
     let file = e.target.files[0];
     this.props.readFile(file, upload.source.extension);
-  };
-
-  onCareLinkInputChange = () => {
-    const { refs } = this;
-    let username = refs.username && refs.username.value;
-    let password = refs.password && refs.password.value;
-
-    if (!username || !password) {
-      this.setState({carelinkFormIncomplete: true});
-    }
-    else {
-      this.setState({carelinkFormIncomplete: false});
-    }
   };
 
   onMedtronicSerialNumberRememberChange = e => {
@@ -448,7 +411,6 @@ export default class Upload extends Component {
 
     return (
       <form className={styles.form}>
-        {this.renderCareLinkInputs()}
         {this.renderMedtronicSerialNumberInput()}
         {this.renderMedtronic600SerialNumberInput()}
         {this.renderMedtronicUploadRangeSelect()}
@@ -489,11 +451,6 @@ export default class Upload extends Component {
     let labelText = text.LABEL_UPLOAD;
     let disabled = upload.disabled || this.props.disabled;
 
-    if (_.get(upload, 'source.type', null) === 'carelink') {
-      labelText = 'Enable';
-      disabled = false;
-    }
-
     if (_.get(upload, 'key', null) === 'medtronic') {
       disabled = disabled || this.state.medtronicFormIncomplete;
     }
@@ -515,22 +472,6 @@ export default class Upload extends Component {
           title={disabled ? i18n.t('Upload in progress! Please wait.') : ''}>
           {labelText}
         </button>
-      </div>
-    );
-  }
-
-  renderCareLinkInputs() {
-    const { upload } = this.props;
-    if (_.get(upload, 'source.type', null) !== 'carelink') {
-      return null;
-    }
-
-    return (
-      <div>
-        <div className={styles.textInputWrapper}>
-          {i18n.t('Medtronic has removed the CareLink export feature.')}
-          {i18n.t('Click below to enable direct upload to Tidepool using a Contour Next Link.')}
-        </div>
       </div>
     );
   }
@@ -620,7 +561,7 @@ export default class Upload extends Component {
     ];
     return (
       <div className={styles.uploadPeriodRow}>
-        <div>Upload:</div>
+        <div>{i18n.t('Upload:')}</div>
         <div className={styles.dropdown}>
           <Select clearable={false}
             name={'uploadDataPeriodSelect'}
@@ -702,10 +643,6 @@ export default class Upload extends Component {
       return <div className={styles.progress}></div>;
     }
 
-    if (this.isFetchingCareLinkData()) {
-      return <div className={styles.progress}><LoadingBar/></div>;
-    }
-
     let percentage = upload.progress && upload.progress.percentage;
 
     // can be equal to 0, so check for null or undefined
@@ -750,9 +687,6 @@ export default class Upload extends Component {
 
   renderStatus() {
     const { upload } = this.props;
-    if (this.isFetchingCareLinkData()) {
-      return <div className={styles.status}>{this.props.text.CARELINK_DOWNLOADING}</div>;
-    }
 
     if (upload.uploading) {
       return <div className={styles.status}>{this.props.text.UPLOAD_PROGRESS + this.props.upload.progress.percentage + '%'}</div>;
@@ -776,10 +710,10 @@ export default class Upload extends Component {
 
     if (this.isBlockModeFileChosen()) {
       return (
-          <div className={styles.blockMode}>
-            <div className={styles.preparing}>{i18n.t('Preparing file')} &hellip;</div>
-            <div className={styles.blockMode}>{this.props.upload.file.name}</div>
-          </div>
+        <div className={styles.blockMode}>
+          <div className={styles.preparing}>{i18n.t('Preparing file')}</div>
+          <div className={styles.blockMode}>&apos;{this.props.upload.file.name}&apos;&hellip;</div>
+        </div>
       );
     }
     return null;
@@ -796,11 +730,5 @@ export default class Upload extends Component {
       }
       return false;
     }
-  }
-
-  isFetchingCareLinkData() {
-    const { upload } = this.props;
-    return (_.get(upload, 'source.type', null) === 'carelink') &&
-      (upload.isFetching);
   }
 }

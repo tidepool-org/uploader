@@ -95,8 +95,6 @@ class DeviceSelection extends React.Component {
       );
     });
 
-    var carelink = _.remove(items, {'key': 'carelink'});
-
     // TODO: when this gets the ES6 treatment, use computed property syntax
     var formClassesObject = {};
     formClassesObject[styles.form] = true;

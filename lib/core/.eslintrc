@@ -20,52 +20,6 @@
     "object-curly-newline": "warn",
     "implicit-arrow-linebreak": "warn"
   },
-  "overrides": [
-    {
-      "files": [
-        "carelink.js",
-      ],
-      "rules": {
-        "func-names": "warn",
-        "no-var": "warn",
-        "vars-on-top": "warn",
-        "no-unused-vars": "warn",
-        "object-shorthand": "warn",
-        "comma-dangle": "warn",
-        "space-before-function-paren": "warn",
-        "no-param-reassign": "warn",
-        "prefer-template": "warn",
-        "no-useless-escape": "warn",
-        "keyword-spacing": "warn",
-        "indent": "warn",
-        "spaced-comment": "warn",
-        "eqeqeq": "warn",
-        "space-infix-ops": "warn",
-        "prefer-arrow-callback": "warn",
-        "no-shadow": "warn",
-        "array-bracket-spacing": "warn",
-        "no-use-before-define": "warn",
-        "no-else-return": "warn",
-        "no-bitwise": "warn",
-        "consistent-return": "warn",
-        "no-plusplus": "warn",
-        "no-continue": "warn",
-        "no-loop-func": "warn",
-        "object-curly-spacing": "warn",
-        "key-spacing": "warn",
-        "padded-blocks": "warn",
-        "no-console": "warn",
-        "no-multi-spaces": "warn",
-        "no-mixed-operators": "warn",
-        "max-len": "warn",
-        "prefer-destructuring": "warn",
-        "no-buffer-constructor": "warn",
-        "no-restricted-syntax": "warn",
-        "camelcase": "warn",
-        "no-underscore-dangle": "warn"
-      }
-    }
-  ],
   "settings": {
     "lodash": 3,
     "import/resolver": node
