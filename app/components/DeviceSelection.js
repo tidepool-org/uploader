@@ -47,7 +47,8 @@ class DeviceSelection extends React.Component {
     addDevice: PropTypes.func.isRequired,
     removeDevice: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
-    isClinicAccount: PropTypes.bool.isRequired
+    renderClinicUi: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -55,27 +56,27 @@ class DeviceSelection extends React.Component {
 
     if (!this.props.userIsSelected && nextProps.userIsSelected) {
       _.each(self.props.targetDevices, function(device) {
-        self.props.addDevice(nextProps.targetId, device);
+        self.props.addDevice(nextProps.targetId, device, self.props.selectedClinicId);
       });
     }
   }
 
   render() {
+    var {selectedClinicId} = this.props;
     var targetUser = this.props.targetId || 'noUserSelected';
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
-    var devices = this.props.devices;
+    var {devices} = this.props;
 
     var onCheckedChange = function(e) {
       if (e.target.checked) {
-        addDevice(e.target.value);
+        addDevice(e.target.value, selectedClinicId);
       }
       else {
-        removeDevice(e.target.value);
+        removeDevice(e.target.value, selectedClinicId);
       }
     };
-    var os =  hostMap[node_os.platform()];
-    var targetDevices = this.props.targetDevices;
+    var {targetDevices} = this.props;
 
     var items = _.map(devices, function(device) {
       var isChecked = _.includes(targetDevices, device.key);
@@ -100,7 +101,7 @@ class DeviceSelection extends React.Component {
     formClassesObject[styles.form] = true;
     formClassesObject[styles.onlyme] = !this.props.userDropdownShowing;
     formClassesObject[styles.groups] = this.props.userDropdownShowing;
-    formClassesObject[styles.clinic] = this.props.isClinicAccount;
+    formClassesObject[styles.clinic] = this.props.renderClinicUi;
     var formClasses = cx(formClassesObject);
 
     var disabled = (this.props.targetDevices.length > 0 &&

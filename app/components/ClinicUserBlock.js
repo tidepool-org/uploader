@@ -30,11 +30,13 @@ var styles = require('../../styles/components/ClinicUserBlock.module.less');
 class ClinicUserBlock extends React.Component {
   static propTypes = {
     allUsers: PropTypes.object.isRequired,
-    memberships: PropTypes.object.isRequired,
+    memberships: PropTypes.object,
     targetId: PropTypes.string,
     timezoneDropdown: PropTypes.element,
     onEditUser: PropTypes.func.isRequired,
-    isUploadInProgress: PropTypes.bool.isRequired
+    isUploadInProgress: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
+    clinics: PropTypes.object.isRequired
   };
 
   formatBirthday = (birthday) => {
@@ -46,27 +48,55 @@ class ClinicUserBlock extends React.Component {
   };
 
   render() {
-    var { allUsers, isUploadInProgress, memberships, targetId } = this.props;
-    var isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
+    var {
+      allUsers,
+      isUploadInProgress,
+      memberships,
+      targetId,
+      selectedClinicId,
+      clinics,
+    } = this.props;
+    var user;
+    var birthday = '';
+    var isCustodialAccount;
+    var fullName;
+
     var editClasses = cx({
       [styles.edit]: true,
       [styles.disabled]: isUploadInProgress
     });
-    
+
+    if(selectedClinicId){
+      user = _.get(clinics, [selectedClinicId, 'patients', targetId]);
+      isCustodialAccount = _.has(_.get(user, ['permissions']), 'custodian');
+      birthday = this.formatBirthday(_.get(user,'birthDate'));
+      fullName = _.get(user,'fullName');
+    } else {
+      user = _.get(allUsers, [targetId]);
+      isCustodialAccount = _.has(_.get(memberships, [targetId, 'permissions']), 'custodian');
+      birthday = this.formatBirthday(_.get(user, ['profile','patient','birthday']));
+      fullName = personUtils.patientFullName(user);
+    }
+
     return (
       <div className={styles.main}>
         <div className={styles.nameWrap}>
           <div className={styles.name}>
-            {personUtils.patientFullName(_.get(allUsers, targetId))}
+            {fullName}
           </div>
           <div className={styles.birthday}>
-            {this.formatBirthday(_.get(allUsers, [targetId, 'patient', 'birthday']))}
+            {birthday}
           </div>
-          {isCustodialAccount &&
-            <div className={editClasses} onClick={isUploadInProgress ? this.noopHandler : this.props.onEditUser}>
+          {isCustodialAccount && (
+            <div
+              className={editClasses}
+              onClick={
+                isUploadInProgress ? this.noopHandler : this.props.onEditUser
+              }
+            >
               {i18n.t('Edit Info')}
             </div>
-          }
+          )}
         </div>
         {this.props.timezoneDropdown}
       </div>

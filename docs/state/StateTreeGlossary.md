@@ -140,13 +140,11 @@ To ensure the highest possible standards of data quality, it is very important f
 
 *The `working` property is an object with a small handful of keys that record the app's current state with respect to certain asynchronous actions.*
 
-The properties `initializingApp` (which defaults to `true`) and `checkingVersion` serve to prevent rendering the warning message about the Tidepool Uploader being unsupported before the application has finished checking against the Tidepool data ingestion API to determine whether it is outdated and unsupported. (See [unsupported](#-unsupported) above, taking care to note that `unsupported` defaults to `true`, so without some other indicator(s) of the app's state with respect to validation of the current version against the Tidepool data ingestion API, the "uploader unsupported" warning message would render immediately.)
+The properties `initializingApp.inProgress` (which defaults to `true`) and `checkingVersion.inProgress` serve to prevent rendering the warning message about the Tidepool Uploader being unsupported before the application has finished checking against the Tidepool data ingestion API to determine whether it is outdated and unsupported. (See [unsupported](#-unsupported) above, taking care to note that `unsupported` defaults to `true`, so without some other indicator(s) of the app's state with respect to validation of the current version against the Tidepool data ingestion API, the "uploader unsupported" warning message would render immediately.)
 
-The property `fetchingUserInfo` is used to render a "Logging in..." message after a user's credentials have been submitted but the uploader is still waiting for a (complete) response from the Tidepool platform with the logged-in user's information.
+The property `checkingElectronUpdate.inProgress` is used to indicate whether or not the Electron auto-update system is currently awating the message from the `main` Electron process indicating whether or not an update is currently available.
 
-The property `checkingElectronUpdate` is used to indicate whether or not the Electron auto-update system is currently awating the message from the `main` Electron process indicating whether or not an update is currently available.
-
-Finally, the property `uploading` is used to disable certain UI features while an upload is in progress. When `uploading` is true, the dropdown menu for selecting the `uploadTargetUser` as well as the link to "Choose devices" in the dropdown menu are disabled until the current upload is completed, as changing the target user for upload and/or the devices chosen for upload while an upload is in progress for a particular user and device is not supported behavior.
+Finally, the property `uploading.inProgress` is used to disable certain UI features while an upload is in progress. When `uploading.inProgress` is true, the dropdown menu for selecting the `uploadTargetUser` as well as the link to "Choose devices" in the dropdown menu are disabled until the current upload is completed, as changing the target user for upload and/or the devices chosen for upload while an upload is in progress for a particular user and device is not supported behavior.
 
 * * *
 

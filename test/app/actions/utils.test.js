@@ -22,7 +22,7 @@ import { expect } from 'chai';
 
 import configureStore from 'redux-mock-store';
 
-import errorText from '../../../app/constants/errors';
+import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
 
@@ -55,7 +55,7 @@ describe('utils', () => {
 
     test('the returned function should use the configured errCode on error if error does not have a code', () => {
       const err = new Error('Uh oh...');
-      const displayErr = new Error(errorText[errCode]);
+      const displayErr = new Error(ErrorMessages[errCode]);
 
       expect(dispatch.callCount).to.equal(0);
       fn(err);
@@ -87,7 +87,7 @@ describe('utils', () => {
       };
       const result = dispatch.firstCall.args[0];
       expect(result.payload).to.deep.include({
-        message: errorText[errCode],
+        message: ErrorMessages[errCode],
         details: err.message,
         utc: utc,
         name: err.name,
@@ -103,7 +103,7 @@ describe('utils', () => {
       const err = new Error('Uh oh...');
       const specificErrCode = 'E_MEDTRONIC_UPLOAD';
       err.code = specificErrCode;
-      const displayErr = new Error(errorText[specificErrCode]);
+      const displayErr = new Error(ErrorMessages[specificErrCode]);
 
       expect(dispatch.callCount).to.equal(0);
       fn(err);
@@ -135,7 +135,7 @@ describe('utils', () => {
       };
       const result = dispatch.firstCall.args[0];
       expect(result.payload).to.deep.include({
-        message: errorText[specificErrCode],
+        message: ErrorMessages[specificErrCode],
         details: err.message,
         utc: utc,
         name: err.name,

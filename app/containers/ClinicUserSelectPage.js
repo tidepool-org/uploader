@@ -20,14 +20,36 @@ import { connect } from 'react-redux';
 import actions from '../actions/';
 import React, { Component } from 'react';
 import ClinicUserSelect from '../components/ClinicUserSelect';
+import {pages} from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources';
+import * as metrics from '../constants/metrics';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 export class ClinicUserSelectPage extends Component {
 
+  onSetSelectedClinicId = (clinicId) => {
+    this.props.async.fetchPatientsForClinic(clinicId);
+    this.props.sync.selectClinic(clinicId);
+  };
+
+  onGoToWorkspaceSwitch = () => {
+    this.props.async.setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
+      metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
+    });
+  }
+
   render() {
-    const { allUsers, targetUsersForUpload, uploadTargetUser } = this.props;
+    const {
+      allUsers,
+      targetUsersForUpload,
+      uploadTargetUser,
+      clinics,
+      selectedClinicId,
+      blipUrls,
+      loggedInUser,
+    } = this.props;
     return (
       <div>
         <ClinicUserSelect
@@ -36,7 +58,16 @@ export class ClinicUserSelectPage extends Component {
           targetId={uploadTargetUser}
           targetUsersForUpload={targetUsersForUpload}
           onAddUserClick={this.props.async.clickAddNewUser}
-          setTargetUser={this.props.sync.setUploadTargetUser} />
+          setTargetUser={this.props.sync.setUploadTargetUser}
+          clinics={clinics}
+          selectedClinicId={selectedClinicId}
+          onSetSelectedClinicId={this.onSetSelectedClinicId}
+          blipUrls={blipUrls}
+          loggedInUser={loggedInUser}
+          onGoToWorkspaceSwitch={this.onGoToWorkspaceSwitch}
+          goToPrivateWorkspace={this.props.async.goToPrivateWorkspace}
+          fetchingPatientsForClinic={this.props.fetchingPatientsForClinic}
+          fetchPatientsForClinic={this.props.async.fetchPatientsForClinic} />
       </div>
     );
   }
@@ -48,6 +79,11 @@ export default connect(
       allUsers: state.allUsers,
       targetUsersForUpload: state.targetUsersForUpload,
       uploadTargetUser: state.uploadTargetUser,
+      clinics: state.clinics,
+      selectedClinicId: state.selectedClinicId,
+      blipUrls: state.blipUrls,
+      loggedInUser: state.loggedInUser,
+      fetchingPatientsForClinic: state.working.fetchingPatientsForClinic,
     };
   },
   (dispatch) => {

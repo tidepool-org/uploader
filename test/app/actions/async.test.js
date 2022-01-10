@@ -21,17 +21,25 @@ import { isFSA } from 'flux-standard-action';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
+import initialState from '../../../app/reducers/initialState';
 import * as actionSources from '../../../app/constants/actionSources';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as metrics from '../../../app/constants/metrics';
 import { pages, steps, urls } from '../../../app/constants/otherConstants';
 import { UnsupportedError } from '../../../app/utils/errors';
-import errorText from '../../../app/constants/errors';
+import ErrorMessages from '../../../app/constants/errorMessages';
+import UserMessages from '../../../app/constants/usrMessages';
 
-import * as asyncActions from '../../../app/actions/async';
+import * as async from '../../../app/actions/async';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
-import { getLoginErrorMessage, getLogoutErrorMessage, getUpdateProfileErrorMessage, getCreateCustodialAccountErrorMessage } from '../../../app/utils/errors';
+import {
+  getLoginErrorMessage,
+  getLogoutErrorMessage,
+  getUpdateProfileErrorMessage,
+  getCreateCustodialAccountErrorMessage,
+} from '../../../app/utils/errors';
 
 let pwd = require('../../lib/fixtures/pwd.json');
 let nonpwd = require('../../lib/fixtures/nonpwd.json');
@@ -49,8 +57,10 @@ describe('Asynchronous Actions', () => {
   describe('doAppInit [hot reload, app already initialized]', () => {
     test('should dispatch no actions!', () => {
       const expectedActions = [];
-      const store = mockStore({working: {initializingApp: false}});
-      store.dispatch(asyncActions.doAppInit({}, {}));
+      const store = mockStore({
+        working: { initializingApp: { inProgress: false } },
+      });
+      store.dispatch(async.doAppInit({}, {}));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -109,6 +119,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
             args: [ {
@@ -136,8 +151,10 @@ describe('Asynchronous Actions', () => {
       __Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({working: {initializingApp: true}});
-      store.dispatch(asyncActions.doAppInit(config, servicesToInit));
+      const store = mockStore({
+        working: { initializingApp: { inProgress: true } },
+      });
+      store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -200,6 +217,11 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
         },
         {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
           type: actionTypes.INIT_APP_SUCCESS,
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
         },
@@ -242,12 +264,12 @@ describe('Asynchronous Actions', () => {
         semver: config.version
       });
       const state = {
-        allUsers: {[pwd.user.userid]: pwd.user},
+        allUsers: { [pwd.user.userid]: pwd.user },
         uploadTargetUser: pwd.user.userid,
-        working: {initializingApp: true}
+        working: { initializingApp: { inProgress: true } },
       };
       const store = mockStore(state);
-      store.dispatch(asyncActions.doAppInit(config, servicesToInit));
+      store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -290,17 +312,19 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.INIT_APP_FAILURE,
           error: true,
-          payload: new Error(errorText.E_INIT),
+          payload: new Error(ErrorMessages.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         }
       ];
       __Rewire__('versionInfo', {
         semver: config.version
       });
-      const store = mockStore({working: {initializingApp: true}});
-      store.dispatch(asyncActions.doAppInit(config, servicesToInit));
+      const store = mockStore({
+        working: { initializingApp: { inProgress: true } },
+      });
+      store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
-      expect(actions[2].payload).to.deep.include({message:errorText.E_INIT});
+      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
       expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -316,48 +340,82 @@ describe('Asynchronous Actions', () => {
       const expectedActions = [
         {
           type: actionTypes.LOGIN_REQUEST,
-          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+          meta: { source: actionSources[actionTypes.LOGIN_REQUEST] },
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships,
+          },
         },
         {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile,
+            memberships,
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: {eventName: metrics.LOGIN_SUCCESS}
-          }
+            metric: { eventName: metrics.LOGIN_SUCCESS },
+          },
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: actionTypes.SET_BLIP_VIEW_DATA_URL,
-          payload: {url: `http://www.acme.com/patients/${userObj.user.userid}/data`},
-          meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+          payload: {
+            url: `http://www.acme.com/patients/${userObj.user.userid}/data`,
+          },
+          meta: { source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL] },
         },
         {
           type: actionTypes.RETRIEVING_USERS_TARGETS,
-          meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+          meta: { source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS] },
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
           payload: {
-            args: [ {
-              pathname: '/settings',
-              state: {
-                meta: {source: actionSources[actionTypes.SET_PAGE]}
-              }
-            } ],
-            method: 'push'
+            args: [
+              {
+                pathname: '/settings',
+                state: {
+                  meta: { source: actionSources[actionTypes.SET_PAGE] },
+                },
+              },
+            ],
+            method: 'push',
+          },
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
           }
-        }
+        },
       ];
       __Rewire__('services', {
         api: {
           user: {
-            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) => cb(null, {
+              patients: memberships,
+              dataDonationAccounts: [],
+              careTeam: [],
+            })
           },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
+          },
+          clinics: {
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
           }
         },
         log: _.noop,
@@ -371,7 +429,7 @@ describe('Asynchronous Actions', () => {
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: ['def456', 'ghi789'],
       });
-      store.dispatch(asyncActions.doLogin(
+      store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
@@ -406,7 +464,7 @@ describe('Asynchronous Actions', () => {
         }
       });
       const store = mockStore({});
-      store.dispatch(asyncActions.doLogin(
+      store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
@@ -430,6 +488,17 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
         },
         {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships,
+          },
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -439,6 +508,9 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -451,15 +523,30 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
       ];
       __Rewire__('services', {
         api: {
           user: {
-            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) => cb(null, {
+              patients: memberships,
+              dataDonationAccounts: [],
+              careTeam: [],
+            })
           },
           makeBlipUrl: (path) => {
             return 'http://www.acme.com' + path;
+          },
+          clinics: {
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
           }
         },
         log: _.noop,
@@ -473,7 +560,7 @@ describe('Asynchronous Actions', () => {
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: [],
       });
-      store.dispatch(asyncActions.doLogin(
+      store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
@@ -495,6 +582,17 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
         },
         {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -504,6 +602,9 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -519,12 +620,27 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: []
+          }
+        },
       ];
       __Rewire__('services', {
         api: {
           user: {
-            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships])
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) => cb(null, {
+              patients: memberships,
+              dataDonationAccounts: [],
+              careTeam: [],
+            })
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) => cb(null, []),
           }
         },
         log: _.noop
@@ -532,7 +648,225 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
       });
-      store.dispatch(asyncActions.doLogin(
+      store.dispatch(async.doLogin(
+        {username: 'jane.doe@me.com', password: 'password'},
+        {remember: false}
+      ));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doLogin [new clinic account]', () => {
+    test('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS and SET_PAGE (CLINIC_USER_SELECT) actions', () => {
+      // NB: this is not what these objects actually look like
+      // actual shape is irrelevant to testing action creators
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const expectedActions = [
+        {
+          type: actionTypes.LOGIN_REQUEST,
+          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships
+          }
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile, memberships
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            patients: [{ patient: 'patient1' }],
+            count: 1,
+          }
+        },
+        {
+          type: actionTypes.SELECT_CLINIC,
+          payload: {clinicId:'clinicId'}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/clinic_user_select',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
+          },
+        },
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, [{ clinic: { id: 'clinicId' } }]),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+          },
+        },
+        log: _.noop,
+      });
+      const store = mockStore({
+        targetUsersForUpload: ['def456', 'ghi789'],
+      });
+      store.dispatch(async.doLogin(
+        {username: 'jane.doe@me.com', password: 'password'},
+        {remember: false}
+      ));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doLogin [new clinic account] multiple clinics', () => {
+    test('should dispatch LOGIN_REQUEST, LOGIN_SUCCESS and SET_PAGE (WORKSPACE_SWITCH) actions', () => {
+      // NB: this is not what these objects actually look like
+      // actual shape is irrelevant to testing action creators
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const expectedActions = [
+        {
+          type: actionTypes.LOGIN_REQUEST,
+          meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+          payload: {
+            careTeam: [],
+            dataDonationAccounts: [],
+            patients: memberships
+          }
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile, memberships
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/workspace_switch',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.WORKSPACE_SWITCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+                clinic: {
+                  id: 'clinicId'
+                }
+              },
+              {
+                clinic: {
+                  id: 'clinicId2'
+                }
+              }
+            ],
+          },
+        },
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, [
+                { clinic: { id: 'clinicId' } },
+                { clinic: { id: 'clinicId2' } },
+              ]),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+          },
+        },
+        log: _.noop,
+      });
+      const store = mockStore({
+        targetUsersForUpload: ['def456', 'ghi789'],
+      });
+      store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
       ));
@@ -576,7 +910,7 @@ describe('Asynchronous Actions', () => {
         }
       });
       const store = mockStore({});
-      store.dispatch(asyncActions.doLogout());
+      store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -596,7 +930,7 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.LOGOUT_FAILURE,
           error: true,
           payload: new Error(getLogoutErrorMessage()),
-          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+          meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -619,7 +953,7 @@ describe('Asynchronous Actions', () => {
         }
       });
       const store = mockStore({});
-      store.dispatch(asyncActions.doLogout());
+      store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:getLogoutErrorMessage()});
       expectedActions[1].payload = actions[1].payload;
@@ -660,7 +994,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.UPLOAD_ABORTED,
           error: true,
-          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          payload: new Error(ErrorMessages.E_UPLOAD_IN_PROGRESS),
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
@@ -668,11 +1002,11 @@ describe('Asynchronous Actions', () => {
         semver: currentVersion
       });
       const store = mockStore({});
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:(new UnsupportedError(currentVersion, requiredVersion)).message});
       expectedActions[1].payload = actions[1].payload;
-      expect(actions[2].payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_UPLOAD_IN_PROGRESS});
       expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -681,7 +1015,7 @@ describe('Asynchronous Actions', () => {
   describe('doUpload [upload aborted b/c another upload already in progress]', () => {
     test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_ABORTED', () => {
       const initialState = {
-        working: {uploading: true}
+        working: { uploading: { inProgress: true } },
       };
       const deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
@@ -704,7 +1038,7 @@ describe('Asynchronous Actions', () => {
         {
           type: actionTypes.UPLOAD_ABORTED,
           error: true,
-          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          payload: new Error(ErrorMessages.E_UPLOAD_IN_PROGRESS),
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
@@ -712,9 +1046,9 @@ describe('Asynchronous Actions', () => {
         semver: '0.100.0'
       });
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey,{}, time));
+      store.dispatch(async.doUpload(deviceKey,{}, time));
       const actions = store.getActions();
-      expect(actions[2].payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_UPLOAD_IN_PROGRESS});
       expectedActions[2].payload = actions[2].payload;
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -731,32 +1065,32 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
         version: initialState.version,
         code: 'E_SERIAL_CONNECTION'
       };
-      let err = new Error(errorText.E_SERIAL_CONNECTION);
+      let err = new Error(ErrorMessages.E_SERIAL_CONNECTION);
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
@@ -813,10 +1147,10 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: errorText.E_SERIAL_CONNECTION,
+        message: ErrorMessages.E_SERIAL_CONNECTION,
         code: err.code,
         utc: err.utc,
         version: err.version,
@@ -839,32 +1173,32 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
         version: initialState.version,
         code: 'E_HID_CONNECTION'
       };
-      let err = new Error(errorText.E_HID_CONNECTION);
+      let err = new Error(ErrorMessages.E_HID_CONNECTION);
       err.code = errProps.code;
       err.utc = errProps.utc;
       err.version = errProps.version;
@@ -921,10 +1255,10 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: errorText.E_HID_CONNECTION,
+        message: ErrorMessages.E_HID_CONNECTION,
         code: err.code,
         utc: err.utc,
         version: err.version,
@@ -947,25 +1281,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       const errProps = {
         utc: time,
@@ -973,7 +1307,7 @@ describe('Asynchronous Actions', () => {
         code: 'E_DEVICE_UPLOAD'
       };
       const basalErr = 'Problem processing basal!';
-      let err = new Error(errorText.E_DEVICE_UPLOAD);
+      let err = new Error(ErrorMessages.E_DEVICE_UPLOAD);
       err.details = basalErr;
       err.utc = errProps.utc;
       err.name = 'Error';
@@ -1033,10 +1367,10 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: errorText.E_DEVICE_UPLOAD,
+        message: ErrorMessages.E_DEVICE_UPLOAD,
         code: err.code,
         details: err.details,
         name: err.name,
@@ -1061,25 +1395,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       let err = 'deviceTimePromptClose';
       __Rewire__('services', {
@@ -1126,7 +1460,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -1143,25 +1477,25 @@ describe('Asynchronous Actions', () => {
       };
       const initialState = {
         devices: {
-          a_pump: targetDevice
+          a_pump: targetDevice,
         },
         os: 'mac',
         uploadsByUser: {
           [userId]: {
             a_cgm: {},
-            a_pump: {history: [{start: time}]}
-          }
+            a_pump: { history: [{ start: time }] },
+          },
         },
         targetDevices: {
-          [userId]: ['a_cgm', 'a_pump']
+          [userId]: ['a_cgm', 'a_pump'],
         },
         targetTimezones: {
-          [userId]: 'US/Mountain'
+          [userId]: 'US/Mountain',
         },
         uploadTargetDevice: deviceKey,
         uploadTargetUser: userId,
         version: '0.100.0',
-        working: {uploading: false}
+        working: { uploading: { inProgress: false } },
       };
       __Rewire__('services', {
         api: {
@@ -1218,7 +1552,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(asyncActions.doUpload(deviceKey, {}, time));
+      store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -1228,7 +1562,7 @@ describe('Asynchronous Actions', () => {
     describe('wrong file extension chosen', () => {
       test('should dispatch CHOOSING_FILE, READ_FILE_ABORTED actions', () => {
         const userId = 'abc123', deviceKey = 'a_pump', ext = '.abc', version = '0.100.0';
-        let err = new Error(errorText.E_FILE_EXT + ext);
+        let err = new Error(ErrorMessages.E_FILE_EXT + ext);
         err.code = 'E_FILE_EXT';
         err.version = version;
         err.debug = `Code: ${err.code} | Version: ${version}`;
@@ -1249,10 +1583,10 @@ describe('Asynchronous Actions', () => {
           version: version
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
+        store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: errorText.E_FILE_EXT + ext,
+          message: ErrorMessages.E_FILE_EXT + ext,
           code: err.code,
           version: err.version,
           debug: err.debug
@@ -1292,7 +1626,7 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.doVersionCheck());
+        store.dispatch(async.doVersionCheck());
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:'API error!'});
         expectedActions[1].payload = actions[1].payload;
@@ -1328,7 +1662,7 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.doVersionCheck());
+        store.dispatch(async.doVersionCheck());
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:'Invalid semver [foo.bar]'});
         expectedActions[1].payload = actions[1].payload;
@@ -1369,7 +1703,7 @@ describe('Asynchronous Actions', () => {
           semver: currentVersion
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.doVersionCheck());
+        store.dispatch(async.doVersionCheck());
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:err.message});
         expectedActions[1].payload = actions[1].payload;
@@ -1401,7 +1735,7 @@ describe('Asynchronous Actions', () => {
           semver: currentVersion
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.doVersionCheck());
+        store.dispatch(async.doVersionCheck());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1469,7 +1803,7 @@ describe('Asynchronous Actions', () => {
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickDeviceSelectionDone());
+        store.dispatch(async.clickDeviceSelectionDone());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1544,7 +1878,7 @@ describe('Asynchronous Actions', () => {
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickDeviceSelectionDone());
+        store.dispatch(async.clickDeviceSelectionDone());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1606,7 +1940,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickDeviceSelectionDone());
+        store.dispatch(async.clickDeviceSelectionDone());
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
         expectedActions[1].payload = actions[1].payload;
@@ -1670,11 +2004,112 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123',
           allUsers: {
-            abc123: profile
+            abc123: {profile}
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickDeviceSelectionDone());
+        store.dispatch(async.clickDeviceSelectionDone());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+
+    describe('as new clinician account', () => {
+      test('should dispatch UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, SET_PAGE (redirect to main page)', () => {
+        const profile = {
+          fullName: 'John',
+          patient: {
+            birthday: '1990-08-08'
+          }
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST,
+          },
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_SUCCESS,
+            payload: {
+              clinicId: 'clinic1234',
+              patient:{
+                targetDevices: [
+                  'a_pump', 'a_bg_meter'
+                ],
+              },
+              patientId: 'abc123'
+            },
+          },
+          {
+            type: actionTypes.CLINIC_DEVICE_STORED,
+            meta: {
+              metric: {
+                eventName: 'VCA Device Stored - a_pump'
+              },
+              source: actionSources[actionTypes.CLINIC_DEVICE_STORED]
+            }
+          },
+          {
+            type: actionTypes.CLINIC_DEVICE_STORED,
+            meta: {
+              metric: {
+                eventName: 'VCA Device Stored - a_bg_meter'
+              },
+              source: actionSources[actionTypes.CLINIC_DEVICE_STORED]
+            }
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {
+                      eventName: 'VCA Devices Done'
+                    }
+                  }
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, profile);
+              }
+            },
+            clinics: {
+              updateClinicPatient: (clinicId, patientId, patient, cb) => {
+                cb(null, patient);
+              }
+            },
+          },
+          localStore: {
+            getItem: () => null,
+            setItem: () => null
+          }
+        });
+        const state = {
+          targetDevices: {
+            abc123: ['a_pump', 'a_bg_meter']
+          },
+          targetTimezones: {
+            abc123: 'Europe/Budapest'
+          },
+          uploadTargetUser: 'abc123',
+          allUsers: {
+            abc123: profile
+          },
+          selectedClinicId: 'clinic1234'
+        };
+        const store = mockStore(state);
+        store.dispatch(async.clickDeviceSelectionDone());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1748,7 +2183,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'def456'
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickEditUserNext(profile));
+        store.dispatch(async.clickEditUserNext(profile));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1815,7 +2250,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'def456'
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.clickEditUserNext(profile));
+        store.dispatch(async.clickEditUserNext(profile));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -1843,8 +2278,32 @@ describe('Asynchronous Actions', () => {
           },
           log: _.noop
         });
-        const store = mockStore({});
-        store.dispatch(asyncActions.clickEditUserNext(profile));
+
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'def456'
+        };
+        const store = mockStore(state);
+        store.dispatch(async.clickEditUserNext(profile));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
         expectedActions[1].payload = actions[1].payload;
@@ -1895,8 +2354,202 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser:'def456'
         });
-        store.dispatch(asyncActions.clickEditUserNext(profile));
+        store.dispatch(async.clickEditUserNext(profile));
         const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+  });
+
+  describe('clickClinicEditUserNext', () => {
+    describe('update profile success, user has devices selected', () => {
+      test('should dispatch UPDATE_CLINIC_PATIENT_REQUEST, UPDATE_CLINIC_PATIENT_SUCCESS, SET_PAGE (main)', () => {
+        const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+        const profile = {fullName: 'Jane Doe'};
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+        const selectedClinicId = 'clinicId789';
+        const patientId = 'def456';
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST,
+          },
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_SUCCESS,
+            payload: {
+              clinicId: selectedClinicId,
+              patient: profile,
+              patientId
+            },
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              account: (cb) => cb(null, userObj.user),
+              loggedInProfile: (cb) => cb(null, profile),
+              getUploadGroups: (cb) => cb(null, memberships),
+              updateProfile: (user, update, cb) => cb(null, {})
+            },
+            clinics: {
+              updateClinicPatient: (clinicId, patientId, patient, cb) => cb(null, patient)
+            }
+          }
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {roles: ['clinic']},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          targetDevices: {
+            def456: ['dexcom']
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                devices: ['dexcom'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          loggedInUser: 'abc123',
+          uploadTargetUser: 'def456',
+          selectedClinicId: 'clinicId789',
+        };
+        const store = mockStore(state);
+        store.dispatch(async.clickClinicEditUserNext(selectedClinicId, patientId, profile));
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('update profile success, user doesn\'t have devices selected', () => {
+      test('should dispatch UPDATE_CLINIC_PATIENT_REQUEST, UPDATE_CLINIC_PATIENT_SUCCESS, SET_PAGE (settings)', () => {
+        const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+        const profile = {fullName: 'Jane Doe'};
+        const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+        const selectedClinicId = 'clinicId789';
+        const patientId = 'def456';
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST,
+          },
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_SUCCESS,
+            payload: {
+              clinicId: selectedClinicId,
+              patient: profile,
+              patientId
+            },
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              account: (cb) => cb(null, userObj.user),
+              loggedInProfile: (cb) => cb(null, profile),
+              getUploadGroups: (cb) => cb(null, memberships),
+              updateProfile: (user, update, cb) => cb(null, {})
+            },
+            clinics: {
+              updateClinicPatient: (clinicId, patientId, patient, cb) => cb(null, patient)
+            }
+          },
+          log: _.noop
+        });
+        const state = {
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          users: {
+            abc123: {
+              targets: {}
+            },
+            def456: {
+              targets: {
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'def456',
+          selectedClinicId: 'clinicId789',
+        };
+        const store = mockStore(state);
+        store.dispatch(async.clickClinicEditUserNext(selectedClinicId, patientId, profile));
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('update profile failure', () => {
+      test('should dispatch UPDATE_CLINIC_PATIENT_REQUEST, UPDATE_CLINIC_PATIENT_FAILURE ', () => {
+        const profile = {fullName: 'Jane Doe'};
+        const selectedClinicId = 'clinicId789';
+        const patientId = 'def456';
+        const expectedActions = [
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST,
+          },
+          {
+            type: actionTypes.UPDATE_CLINIC_PATIENT_FAILURE,
+            payload: new Error(getUpdateProfileErrorMessage()),
+            error: true,
+            meta: {apiError:null}
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              updateProfile: (user, update, cb) => cb('error')
+            },
+            clinics: {
+              updateClinicPatient: (clinicId, patientId, patient, cb) => cb('error')
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({});
+        store.dispatch(async.clickClinicEditUserNext(selectedClinicId, patientId, profile));
+        const actions = store.getActions();
+        expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
+        expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -1952,7 +2605,7 @@ describe('Asynchronous Actions', () => {
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+        store.dispatch(async.setTargetTimezone('abc123', 'US/Central'));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2002,7 +2655,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123'
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+        store.dispatch(async.setTargetTimezone('abc123', 'US/Central'));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:getUpdateProfileErrorMessage()});
         expectedActions[1].payload = actions[1].payload;
@@ -2055,11 +2708,11 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123',
           allUsers: {
-            abc123: profile
+            abc123: {profile}
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.setTargetTimezone('abc123', 'US/Central'));
+        store.dispatch(async.setTargetTimezone('abc123', 'US/Central'));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2102,7 +2755,7 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({allUsers: {'abc123':{}}});
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2148,7 +2801,7 @@ describe('Asynchronous Actions', () => {
           }
         };
         const store = mockStore(state);
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2207,7 +2860,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123',
           targetDevices: devicesByUser
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2266,7 +2919,7 @@ describe('Asynchronous Actions', () => {
           uploadTargetUser: 'abc123',
           targetDevices: devicesByUser
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2329,7 +2982,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: null
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2423,7 +3076,7 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2499,7 +3152,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: profile,
+            abc123: {profile},
             def456: {},
           },
           devices: {
@@ -2517,7 +3170,7 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2587,7 +3240,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123'
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2678,7 +3331,7 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2754,7 +3407,7 @@ describe('Asynchronous Actions', () => {
         const store = mockStore({
           allUsers: {
             ghi789: {},
-            abc123: profile,
+            abc123: {profile},
             def456: {},
           },
           devices: {
@@ -2769,7 +3422,156 @@ describe('Asynchronous Actions', () => {
             abc123: 'US/Mountain'
           }
         });
-        store.dispatch(asyncActions.retrieveTargetsFromStorage());
+        store.dispatch(async.retrieveTargetsFromStorage());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+  });
+
+  describe('goToPrivateWorkspace', () => {
+    const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
+    const profile = {
+      fullName: 'John',
+      patient: {
+      birthday: '1990-08-08'
+      }
+    };
+    describe('user is clinician account', () => {
+      test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to clinic user select page)', () => {
+        const targets = {
+          abc123: [{key: 'carelink'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.SELECT_CLINIC,
+            payload: { clinicId: null }
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/clinic_user_select',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            user: {
+              profile: (cb) => {
+                cb(null);
+              },
+              updateProfile: (user, update, cb) => {
+                cb(null, profile);
+              }
+            },
+            makeBlipUrl: blipUrlMaker,
+            metrics: {
+              track: sinon.stub()
+            },
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {isClinicMember: true},
+            abc123: profile,
+            def456: {},
+          },
+          devices: {
+            carelink: {},
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123',
+          targetDevices: {
+            abc123: ['carelink']
+          },
+          targetTimezones: {
+            abc123: 'US/Mountain'
+          }
+        });
+        store.dispatch(async.goToPrivateWorkspace());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('user is not clinician account', () => {
+      test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to main page)', () => {
+        const targets = {
+          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          def456: [
+            {key: 'dexcom', timezone: 'US/Mountain'},
+            {key: 'omnipod', timezone: 'US/Mountain'}
+          ]
+        };
+        const devicesByUser = {
+          abc123: ['carelink'],
+          def456: ['dexcom', 'omnipod']
+        };
+        const expectedActions = [
+          {
+            type: actionTypes.SELECT_CLINIC,
+            payload: { clinicId: null }
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {source: actionSources[actionTypes.SET_PAGE]}
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            makeBlipUrl: blipUrlMaker,
+            metrics: {
+              track: sinon.stub()
+            },
+          },
+          localStore: {
+            getItem: () => targets,
+            removeItem: (item) => null
+          }
+        });
+        const store = mockStore({
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {},
+          },
+          devices: {
+            dexcom: {},
+            omnipod: {}
+          },
+          loggedInUser: 'ghi789',
+          targetsForUpload: ['abc123', 'def456'],
+          uploadTargetUser: 'abc123'
+        });
+        store.dispatch(async.goToPrivateWorkspace());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2827,7 +3629,7 @@ describe('Asynchronous Actions', () => {
           }
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.createCustodialAccount(profile));
+        store.dispatch(async.createCustodialAccount(profile));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2856,7 +3658,7 @@ describe('Asynchronous Actions', () => {
           log: _.noop
         });
         const store = mockStore({});
-        store.dispatch(asyncActions.createCustodialAccount(profile));
+        store.dispatch(async.createCustodialAccount(profile));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({message:getCreateCustodialAccountErrorMessage()});
         expectedActions[1].payload = actions[1].payload;
@@ -2903,7 +3705,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+        store.dispatch(async.setUploadTargetUserAndMaybeRedirect(userId));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2950,7 +3752,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+        store.dispatch(async.setUploadTargetUserAndMaybeRedirect(userId));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -2988,7 +3790,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        store.dispatch(asyncActions.setUploadTargetUserAndMaybeRedirect(userId));
+        store.dispatch(async.setUploadTargetUserAndMaybeRedirect(userId));
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -3040,7 +3842,7 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123'
         });
-        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+        store.dispatch(async.checkUploadTargetUserAndMaybeRedirect());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -3088,7 +3890,7 @@ describe('Asynchronous Actions', () => {
           },
           uploadTargetUser: 'abc123'
         });
-        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+        store.dispatch(async.checkUploadTargetUserAndMaybeRedirect());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -3119,11 +3921,157 @@ describe('Asynchronous Actions', () => {
             }
           }
         });
-        store.dispatch(asyncActions.checkUploadTargetUserAndMaybeRedirect());
+        store.dispatch(async.checkUploadTargetUserAndMaybeRedirect());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
     });
+    describe('new clinic target user has selected devices', () => {
+      test('should dispatch SET_PAGE (main)', () => {
+        const expectedActions = [
+          {
+            type: actionTypes.FETCH_PATIENT_REQUEST
+          },
+          {
+            type: actionTypes.FETCH_PATIENT_SUCCESS,
+            payload: {
+              patient: {
+                id: 'abc123'
+              }
+            }
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/main',
+                state: {
+                  meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CLINIC_NEXT}
+                  }
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            patient: {
+              get: (id, cb) => cb(null, {id: 'abc123'})
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: ['a_pump']
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          clinics:{
+            clinic123: {
+              patients: {
+                abc123: {
+                  targetDevices: ['a_pump']
+                }
+              }
+            }
+          },
+          uploadTargetUser: 'abc123',
+          selectedClinicId: 'clinic123',
+        });
+        store.dispatch(async.checkUploadTargetUserAndMaybeRedirect());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+    describe('new clinic target user has not selected devices', () => {
+      test('should dispatch SET_PAGE (settings)', () => {
+        const expectedActions = [
+          {
+            type: actionTypes.FETCH_PATIENT_REQUEST
+          },
+          {
+            type: actionTypes.FETCH_PATIENT_SUCCESS,
+            payload: {
+              patient: {
+                id: 'abc123'
+              }
+            }
+          },
+          {
+            type: '@@router/CALL_HISTORY_METHOD',
+            payload: {
+              args: [ {
+                pathname: '/settings',
+                state: {
+                  meta: {
+                    source: actionSources[actionTypes.SET_PAGE],
+                    metric: {eventName: metrics.CLINIC_NEXT}
+                  }
+                }
+              } ],
+              method: 'push'
+            }
+          }
+        ];
+        __Rewire__('services', {
+          api: {
+            patient: {
+              get: (id, cb) => cb(null, {id: 'abc123'})
+            }
+          },
+          log: _.noop
+        });
+        const store = mockStore({
+          loggedInUser: 'def456',
+          allUsers: {
+            ghi789: {},
+            abc123: {},
+            def456: {roles: ['clinic']},
+          },
+          targetDevices: {
+            abc123: []
+          },
+          devices: {
+            a_pump: true
+          },
+          users: {
+            def456: {},
+            abc123: {
+              targets: {
+                devices: ['a_pump'],
+                timezone: 'Europe/London'
+              }
+            }
+          },
+          uploadTargetUser: 'abc123',
+          selectedClinicId: 'clinic123'
+        });
+        store.dispatch(async.checkUploadTargetUserAndMaybeRedirect());
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
+    });
+
   });
 
   describe('clickAddNewUser', () => {
@@ -3154,7 +4102,7 @@ describe('Asynchronous Actions', () => {
           }
         ];
         const store = mockStore({});
-        store.dispatch(asyncActions.clickAddNewUser());
+        store.dispatch(async.clickAddNewUser());
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -3178,7 +4126,7 @@ describe('Asynchronous Actions', () => {
         }
       }];
       const store = mockStore({});
-      store.dispatch(asyncActions.setPage(PAGE));
+      store.dispatch(async.setPage(PAGE));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
@@ -3197,9 +4145,427 @@ describe('Asynchronous Actions', () => {
         }
       }];
       const store = mockStore({});
-      store.dispatch(asyncActions.setPage(PAGE, actionSources.USER));
+      store.dispatch(async.setPage(PAGE, actionSources.USER));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
   });
+
+  describe('fetchPatient', () => {
+    test('should trigger FETCH_PATIENT_SUCCESS for a successful request', () => {
+      let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
+
+      let api = {
+        patient: {
+          get: sinon.stub().callsArgWith(1, null, patient)
+        }
+      };
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENT_REQUEST' },
+        { type: 'FETCH_PATIENT_SUCCESS', payload: { patient : patient } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchPatient(api, 58686));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.patient.get.withArgs(58686).callCount).to.equal(1);
+    });
+
+    test('should trigger FETCH_PATIENT_SUCCESS without fetching patient if complete patient record is in cache', () => {
+      let patient = { id: 58686, name: 'Buddy Holly', age: 65, settings: {} };
+
+      let api = {
+        patient: {
+          get: sinon.stub().callsArgWith(1, null, patient)
+        }
+      };
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENT_SUCCESS', payload: { patient : patient } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore({
+        ...initialState,
+        allUsers: {
+          58686: patient,
+          '58686_cacheUntil': 9999999999999,
+        }
+      });
+      store.dispatch(async.fetchPatient(api, 58686));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.patient.get.callCount).to.equal(0);
+    });
+
+    test('should skip the cache and fetch patient if settings are missing in cached patient record', () => {
+      let patient = { id: 58686, name: 'Buddy Holly', age: 65, settings: undefined };
+
+      let api = {
+        patient: {
+          get: sinon.stub().callsArgWith(1, null, patient)
+        }
+      };
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENT_REQUEST' },
+        { type: 'FETCH_PATIENT_SUCCESS', payload: { patient : patient } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore({
+        ...initialState,
+        allUsers: {
+          58686: patient,
+          '58686_cacheUntil': 9999999999999,
+        }
+      });
+      store.dispatch(async.fetchPatient(api, 58686));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.patient.get.withArgs(58686).callCount).to.equal(1);
+    });
+
+    test('[500] should trigger FETCH_PATIENT_FAILURE and it should call error once for a failed request', () => {
+      let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
+
+      let api = {
+        patient: {
+          get: sinon.stub().callsArgWith(1, {status: 500, body: 'Error!'}, null)
+        }
+      };
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_PATIENT);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENT_REQUEST' },
+        { type: 'FETCH_PATIENT_FAILURE', error: err, payload: {link: null}, meta: { apiError: {status: 500, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchPatient(api, 58686));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_FETCHING_PATIENT });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+      expect(api.patient.get.withArgs(58686).callCount).to.equal(1);
+    });
+
+    test('[404] should trigger FETCH_PATIENT_FAILURE and it should call error once for a failed request', () => {
+      let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
+      let thisInitialState = Object.assign(initialState, {loggedInUserId: 58686});
+
+      let api = {
+        patient: {
+          get: sinon.stub().callsArgWith(1, {status: 404, body: 'Error!'}, null)
+        }
+      };
+
+      let err = new Error(ErrorMessages.ERR_YOUR_ACCOUNT_NOT_CONFIGURED);
+      err.status = 404;
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENT_REQUEST' },
+        { type: 'FETCH_PATIENT_FAILURE', error: err, payload: {link: null}, meta: { apiError: {status: 404, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(thisInitialState);
+      store.dispatch(async.fetchPatient(api, 58686));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_YOUR_ACCOUNT_NOT_CONFIGURED });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+      expect(api.patient.get.withArgs(58686).callCount).to.equal(1);
+    });
+  });
+
+  describe('fetchAssociatedAccounts', () => {
+    test('should trigger FETCH_ASSOCIATED_ACCOUNTS_SUCCESS for a successful request', () => {
+      let patients = [
+        { id: 58686, name: 'Buddy Holly', age: 65 }
+      ];
+
+      let api = {
+        user: {
+          getAssociatedAccounts: sinon.stub().callsArgWith(0, null, { patients })
+        }
+      };
+
+      let expectedActions = [
+        { type: 'FETCH_ASSOCIATED_ACCOUNTS_REQUEST' },
+        { type: 'FETCH_ASSOCIATED_ACCOUNTS_SUCCESS', payload: { patients : patients } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchAssociatedAccounts(api));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.user.getAssociatedAccounts.callCount).to.equal(1);
+    });
+
+    test('should trigger FETCH_ASSOCIATED_ACCOUNTS_FAILURE and it should call error once for a failed request', () => {
+      let patients = [
+        { id: 58686, name: 'Buddy Holly', age: 65 }
+      ];
+
+      let api = {
+        user: {
+          getAssociatedAccounts: sinon.stub().callsArgWith(0, {status: 500, body: {status: 500, body: 'Error!'}}, null)
+        }
+      };
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_ASSOCIATED_ACCOUNTS);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'FETCH_ASSOCIATED_ACCOUNTS_REQUEST' },
+        { type: 'FETCH_ASSOCIATED_ACCOUNTS_FAILURE', error: err, meta: { apiError: {status: 500, body: {status: 500, body: 'Error!'}} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchAssociatedAccounts(api));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_FETCHING_ASSOCIATED_ACCOUNTS });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+      expect(api.user.getAssociatedAccounts.callCount).to.equal(1);
+    });
+  });
+
+  describe('fetchPatientsForClinic', () => {
+    test('should trigger FETCH_PATIENTS_FOR_CLINIC_SUCCESS and it should call clinics.getPatientsForClinic once for a successful request', () => {
+      let patients = [{
+        clinicId: '5f85fbe6686e6bb9170ab5d0',
+        patientId: 'patient_id',
+        id: 'relationship_id',
+      }];
+
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            getPatientsForClinic: sinon.stub().callsArgWith(2, null, {data:[{patient:'patient1'}],meta:{count:1}}  ),
+          },
+        },
+      });
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENTS_FOR_CLINIC_REQUEST' },
+        {
+          type: 'FETCH_PATIENTS_FOR_CLINIC_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            patients: [{ patient: 'patient1' }],
+            count: 1,
+          },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchPatientsForClinic('5f85fbe6686e6bb9170ab5d0'));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+    });
+
+    test('should trigger FETCH_PATIENTS_FOR_CLINIC_FAILURE and it should call error once for a failed request', () => {
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            getPatientsForClinic: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
+          },
+        },
+      });
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_PATIENTS_FOR_CLINIC);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'FETCH_PATIENTS_FOR_CLINIC_REQUEST' },
+        { type: 'FETCH_PATIENTS_FOR_CLINIC_FAILURE', error: err, meta: { apiError: {status: 500, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.fetchPatientsForClinic('5f85fbe6686e6bb9170ab5d0'));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_FETCHING_PATIENTS_FOR_CLINIC });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+    });
+  });
+
+  describe('createClinicCustodialAccount', () => {
+    test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS and it should call clinics.createCustodialAccount once for a successful request', () => {
+      let patientUserId = 'patient_userId';
+      let clinicId = '5f85fbe6686e6bb9170ab5d0';
+
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            createClinicCustodialAccount: sinon.stub().callsArgWith(2, null, {
+              id: patientUserId,
+            } ),
+          },
+        },
+        log: _.noop
+      });
+
+      let expectedActions = [
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST' },
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS',
+          payload: {
+            clinicId,
+            patientId: patientUserId,
+            patient: { id: patientUserId }
+          },
+          meta: {
+            metric: { eventName: 'VCA Add New Patient Saved' },
+            source: 'UNDER_THE_HOOD',
+          }
+        },
+        { type: 'SET_UPLOAD_TARGET_USER', payload: {
+          userId: patientUserId
+        }, meta: {source: 'USER'}},
+        { type: '@@router/CALL_HISTORY_METHOD', payload: {
+          args: [{pathname: '/settings', state: { meta: { source: 'USER_VISIBLE'}}}],
+          method: 'push'
+        }}
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore(initialState);
+      store.dispatch(async.createClinicCustodialAccount(clinicId, { id: patientUserId }));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+    });
+
+    test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and it should call error once for a failed request', () => {
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            createClinicCustodialAccount: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
+          },
+        },
+        log: _.noop
+      });
+
+      let err = new Error(ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST' },
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE', error: err, meta: { apiError: {status: 500, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+    });
+  });
+
+  describe('getClinicsForClinician', () => {
+    test('should trigger GET_CLINICS_FOR_CLINICIAN_SUCCESS and it should call clinics.getClinicsForClinician once for a successful request', () => {
+      let clinicianId = 'clinicianId1';
+      let clinics = [
+        {
+          id: '5f85fbe6686e6bb9170ab5d0',
+          address: '1 Address Ln, City Zip',
+          name: 'Clinic1',
+          phoneNumbers: [{ number: '(888) 555-5555', type: 'Office' }],
+        },
+      ];
+
+      let api = {
+        clinics: {
+          getClinicsForClinician: sinon.stub().callsArgWith(2, null, clinics),
+        },
+      };
+
+      let expectedActions = [
+        { type: 'GET_CLINICS_FOR_CLINICIAN_REQUEST' },
+        {
+          type: 'GET_CLINICS_FOR_CLINICIAN_SUCCESS',
+          payload: {
+            clinicianId: clinicianId,
+            clinics: clinics
+          },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore(initialState);
+      store.dispatch(async.getClinicsForClinician(api, clinicianId));
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.clinics.getClinicsForClinician.callCount).to.equal(1);
+    });
+
+    test('should trigger GET_CLINICS_FOR_CLINICIAN_FAILURE and it should call error once for a failed request', () => {
+      let clinicianId = 'clinicianId1';
+      let api = {
+        clinics: {
+          getClinicsForClinician: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
+        },
+      };
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_CLINICS_FOR_CLINICIAN);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'GET_CLINICS_FOR_CLINICIAN_REQUEST' },
+        { type: 'GET_CLINICS_FOR_CLINICIAN_FAILURE', error: err, meta: { apiError: {status: 500, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.getClinicsForClinician(api, clinicianId));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_FETCHING_CLINICS_FOR_CLINICIAN });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+      expect(api.clinics.getClinicsForClinician.callCount).to.equal(1);
+    });
+  });
+
 });
