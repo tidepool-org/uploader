@@ -20,7 +20,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
 import dns from 'dns';
 
@@ -35,8 +34,7 @@ import actions from '../actions/';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import * as actionSources from '../constants/actionSources';
-import { pages, urls, pagesMap } from '../constants/otherConstants';
+import { urls, pagesMap } from '../constants/otherConstants';
 import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
 
@@ -47,6 +45,7 @@ import SettingsPage from './SettingsPage';
 import ClinicUserSelectPage from './ClinicUserSelectPage';
 import ClinicUserEditPage from './ClinicUserEditPage';
 import NoUploadTargetsPage from './NoUploadTargetsPage';
+import WorkspacePage from './WorkspacePage';
 import UpdatePlease from '../components/UpdatePlease';
 import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
@@ -111,7 +110,7 @@ export class App extends Component {
 
   UNSAFE_componentWillMount(){
     checkVersion(this.props.dispatch);
-    let api = this.props.api;
+    let { api } = this.props;
     this.props.async.doAppInit(
       _.assign({ environment: this.state.server }, config), {
       api: api,
@@ -173,6 +172,7 @@ export class App extends Component {
           <Route path="/clinic_user_select" component={ClinicUserSelectPage}/>
           <Route path="/clinic_user_edit" component={ClinicUserEditPage}/>
           <Route path="/no_upload_targets" component={NoUploadTargetsPage}/>
+          <Route path="/workspace_switch" component={WorkspacePage} />
         </Switch>
         <Footer version={config.version} environment={this.state.server} />
         {/* VersionCheck as overlay */}
@@ -263,7 +263,7 @@ export default connect(
       unsupported: state.unsupported,
       // derived state
       readyToRenderVersionCheckOverlay: (
-        !state.working.initializingApp && !state.working.checkingVersion
+        !state.working.initializingApp.inProgress && !state.working.checkingVersion.inProgress
       )
     };
   },

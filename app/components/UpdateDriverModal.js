@@ -97,7 +97,7 @@ export default connect(
   (state, ownProps) => {
     return {
       // plain state
-      checkingDriverUpdate: state.working.checkingDriverUpdate,
+      checkingDriverUpdate: state.working.checkingDriverUpdate.inProgress,
       driverUpdateAvailableDismissed: state.driverUpdateAvailableDismissed,
       driverUpdateAvailable: state.driverUpdateAvailable,
       driverUpdateShellOpts: state.driverUpdateShellOpts,

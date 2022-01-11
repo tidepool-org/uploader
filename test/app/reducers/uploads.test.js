@@ -722,6 +722,23 @@ describe('uploads', () => {
       expect(initialState === result).to.be.false;
     });
 
+    test('should handle FETCH_PATIENTS_FOR_CLINIC_SUCCESS', () => {
+      let initialState = {};
+      const actionPayload = {
+        patients: [
+          {id: 'patient1', targetDevices: ['a_meter']},
+          {id: 'patient2', targetDevices: ['a_cgm']}
+        ]
+      };
+      let result = uploads.uploadsByUser(initialState, {
+        type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
+        payload: actionPayload
+      });
+      expect(result).to.deep.equal({
+        patient1: { a_meter: {history:[]}},
+        patient2: { a_cgm: {history:[]}}
+      });
+    });
 
   });
 

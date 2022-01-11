@@ -36,6 +36,16 @@ export const CLINIC_DEVICE_STORED = 'VCA Device Stored';
 export const CLINIC_DEVICES_DONE = 'VCA Devices Done';
 export const CLINIC_TIMEZONE_SELECT = 'VCA Timezone Selected';
 export const CLINIC_CHANGE_DEVICES = 'VCA Change Devices';
+export const WORKSPACE_SWITCH_DISPLAYED = 'VCA Workspace Switch Displayed';
+
+export const WORKSPACE_TIDEPOOL_LOGIN = 'Clinic - Login to Tidepool Web';
+export const WORKSPACE_GO_TO_TIDEPOOL_WEB = 'Clinic - Go to Tidepool Web';
+export const WORKSPACE_GO_TO_WORKSPACE = 'Clinic - Workspaces - Go to clinic workspace';
+export const WORKSPACE_GO_TO_SWITCHER = 'Clinic - Switcher - Go to clinic workspace';
+export const WORKSPACE_MENU_CHANGE = 'Clinic - Change workspace menu';
+export const WORKSPACE_TEXT_CHANGE = 'Clinic - Change workspace text';
+export const WORKSPACE_MENU_SWITCH = 'Clinic - Menu - Go to clinic workspace';
+export const WORKSPACE_SWITCH_PRIVATE = 'Clinic - Switch to private workspace';
 
 export const CHOOSE_DEVICES = 'Choose Devices';
 export const CHOOSE_DEVICES_DONE = 'Choose Devices Done';

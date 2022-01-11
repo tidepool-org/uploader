@@ -71,11 +71,28 @@ The JSON that follows on this page represents a snapshot of the Tidepool Uploade
     "viewDataLink": "http://localhost:3000/patients/4a86ec44ff/data"
   },
   "working": {
-    "checkingElectronUpdate": false,
-    "checkingVersion": false,
-    "fetchingUserInfo": false,
-    "initializingApp": false,
-    "uploading": false
+    "checkingElectronUpdate": {
+      "inProgress": true || false,
+      "notification": null || {
+        "type": "error",
+        "message": "Error message"
+      },
+      "completed": null || true,
+    },
+    "checkingVersion": ...,
+    "initializingApp": ...,
+    "uploading": ...,
+    "fetchingPatient": ...,
+    "fetchingAssociatedAccounts": ...,
+    "loggingIn": ...,
+    "loggingOut": ...,
+    "creatingCustodialAccount": ...,
+    "creatingClinicCustodialAccount": ...,
+    "checkingDriverUpdate": ...,
+    "fetchingClinicsForClinician": ...,
+    "updatingClinicPatient": ...,
+    "fetchingPatientsForClinic": ...,
+    "updatingProfile": ...,
   },
   "uploadProgress": null,
   "uploadsByUser": {

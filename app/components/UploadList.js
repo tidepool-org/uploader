@@ -44,10 +44,12 @@ export default class UploadList extends Component {
     readFile: PropTypes.func.isRequired,
     toggleErrorDetails: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
-    isClinicAccount: PropTypes.bool.isRequired,
     onChooseDevices: PropTypes.func.isRequired,
     timezoneIsSelected: PropTypes.bool.isRequired,
-    isUploadInProgress: PropTypes.bool.isRequired
+    isUploadInProgress: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
+    renderClinicUi: PropTypes.bool.isRequired,
+    showingUserSelectionDropdown: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -67,7 +69,7 @@ export default class UploadList extends Component {
       [styles.onlyme]: !this.props.userDropdownShowing,
       [styles.selectuser]: this.props.userDropdownShowing,
       [styles.profileError]: this.props.updateProfileErrorMessage,
-      [styles.clinic]: this.props.isClinicAccount
+      [styles.clinic]: this.props.renderClinicUi
     });
 
     const wrapClasses = cx({
@@ -77,7 +79,7 @@ export default class UploadList extends Component {
 
     const { disabled, onReset, onUpload, targetId } = this.props;
 
-    const headlineText = this.props.isClinicAccount ? i18n.t('Devices') : i18n.t('Upload Devices');
+    const headlineText = this.props.renderClinicUi ? i18n.t('Devices') : i18n.t('Upload Devices');
     const medtronicEnabled = _.findIndex(this.props.uploads, {key:'medtronic'}) === -1 ? false : true;
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
@@ -96,7 +98,8 @@ export default class UploadList extends Component {
               onDone={this.props.onDone}
               onReset={onReset.bind(null, targetId, upload.key)}
               onUpload={onUpload.bind(null, upload.key)}
-              readFile={this.props.readFile.bind(null, targetId, upload.key)} />
+              readFile={this.props.readFile.bind(null, targetId, upload.key)}
+              selectedClinicId={this.props.selectedClinicId} />
             {this.renderErrorForUpload(upload)}
           </div>
         );
@@ -156,7 +159,7 @@ export default class UploadList extends Component {
   }
 
   renderChooseDeviceLink(){
-    if(this.props.isClinicAccount){
+    if(this.props.renderClinicUi || this.props.showingUserSelectionDropdown){
       var classes = cx({
         [styles.chooseDeviceLink]: true,
         [styles.linkDisabled]: this.props.isUploadInProgress

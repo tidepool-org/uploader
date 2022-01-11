@@ -19,7 +19,11 @@
 // and these error constants are a dependency through lib/core/api.js
 
 module.exports = {
+  E_CARELINK_CREDS: 'Check your CareLink username and password',
+  E_CARELINK_UNSUPPORTED: 'Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry... If you are no longer using an unsupported pump and still get this message, create a new CareLink account and try uploading again.',
+  E_CARELINK_UPLOAD: 'Error processing & uploading CareLink data',
   E_DEVICE_UPLOAD: 'Something went wrong during device upload',
+  E_FETCH_CARELINK: 'Something went wrong trying to fetch CareLink data',
   E_FILE_EXT: 'Please choose a file ending in ',
   E_HID_CONNECTION: 'Hmm, your device doesn\'t appear to be connected',
   E_INIT: 'Error during app initialization',
@@ -37,5 +41,11 @@ module.exports = {
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
   E_DATETIME_SET_BY_PUMP: 'Please correct the date/time on the linked pump.',
+  ERR_FETCHING_CLINICS_FOR_CLINICIAN: 'Something went wrong while getting clinics for clinician.',
+  ERR_FETCHING_ASSOCIATED_ACCOUNTS: 'Something went wrong while fetching associated accounts.',
+  ERR_CREATING_CUSTODIAL_ACCOUNT: 'Something went wrong while creating patient account.',
+  ERR_FETCHING_PATIENT: 'Something went wrong while fetching patient.',
+  ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
+  ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
   E_MULTIPLE_DEVICES: 'We found more than one device plugged in. Only plug in the device you intend to upload.',
 };

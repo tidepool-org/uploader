@@ -56,7 +56,8 @@ export default class Upload extends Component {
     onUpload: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
-    text: PropTypes.object.isRequired
+    text: PropTypes.object.isRequired,
+    selectedClinicId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -202,7 +203,7 @@ export default class Upload extends Component {
 
   onMedtronicSerialNumberRememberChange = e => {
     const checkbox = e.target;
-    const checked = checkbox.checked;
+    const {checked} = checkbox;
 
     this.setState({
       medtronicSerialNumberRemember: checked
@@ -216,7 +217,7 @@ export default class Upload extends Component {
 
   onMedtronicSerialNumberInputChange = e => {
     const field = e.target;
-    const value = field.value;
+    const {value} = field;
     const chars = _.split(value, '');
 
     // Check if input is purely numbers.
@@ -610,7 +611,7 @@ export default class Upload extends Component {
 
   renderLastUpload() {
     const { upload } = this.props;
-    let history = upload.history;
+    let {history} = upload;
 
     if (!(history && history.length)) {
       return null;

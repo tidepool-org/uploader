@@ -38,7 +38,7 @@ export class Login extends Component {
   renderButton() {
     var text = i18n.t('Log in');
 
-    if (this.props.isFetching) {
+    if (this.props.isLoggingIn) {
       text = i18n.t('Logging in...');
     }
 
@@ -46,7 +46,7 @@ export class Login extends Component {
       <button type="submit"
         className={styles.button}
         onClick={this.handleLogin.bind(this)}
-        disabled={this.props.isFetching || this.props.disabled}>
+        disabled={this.props.isLoggingIn || this.props.disabled}>
         {text}
       </button>
     );
@@ -105,7 +105,7 @@ Login.propTypes = {
   disabled: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string,
   forgotPasswordUrl: PropTypes.string.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isLoggingIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired
 };
 
@@ -115,7 +115,7 @@ export default connect(
       disabled: Boolean(state.unsupported),
       errorMessage: state.loginErrorMessage,
       forgotPasswordUrl: state.blipUrls.forgotPassword,
-      isFetching: state.working.fetchingUserInfo,
+      isLoggingIn: state.working.loggingIn.inProgress,
     };
   },
   (dispatch) => {

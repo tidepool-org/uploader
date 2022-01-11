@@ -16,21 +16,36 @@
  */
 
 import _ from 'lodash';
+import * as actionTypes from '../constants/actionTypes';
+
+const ADD_PATIENT_EVENTS = [
+  actionTypes.UPLOAD_REQUEST,
+  actionTypes.UPLOAD_FAILURE,
+  actionTypes.UPLOAD_SUCCESS,
+];
 
 const NONE_PROVIDED = 'No Event Name Provided';
 
 export function createMetricsTracker(api) {
-  return () => (next) => (action) => {
+  return (store) => (next) => (action) => {
+    const { selectedClinicId, uploadTargetUser } = store.getState();
+    const defaultProperties = {};
+    if (selectedClinicId) {
+      _.extend(defaultProperties, { clinicId: selectedClinicId });
+      if (_.includes(ADD_PATIENT_EVENTS, action.type)) {
+        _.extend(defaultProperties, { patientID: uploadTargetUser });
+      }
+    }
     if (_.get(action, 'meta.metric', null) !== null) {
       api.metrics.track(
         _.get(action, 'meta.metric.eventName', NONE_PROVIDED),
-        _.get(action, 'meta.metric.properties', {})
+        _.defaults(_.get(action, 'meta.metric.properties', {}), defaultProperties)
       );
     }
 		if (_.get(action, 'payload.state.meta.metric', null) !== null) {
 			api.metrics.track(
         _.get(action, 'payload.state.meta.metric.eventName', NONE_PROVIDED),
-        _.get(action, 'payload.state.meta.metric.properties', {})
+        _.defaults(_.get(action, 'payload.state.meta.metric.properties', {}), defaultProperties)
       );
 		}
     return next(action);

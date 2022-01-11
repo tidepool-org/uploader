@@ -17,7 +17,7 @@
 
 import _ from 'lodash';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 
 const errorProps = {
   code: 'Code',
@@ -50,9 +50,9 @@ export function addInfoToError(err, props) {
 export function getAppInitErrorMessage(status) {
   switch(status) {
     case 503:
-      return errorText.E_OFFLINE;
+      return ErrorMessages.E_OFFLINE;
     default:
-      return errorText.E_INIT;
+      return ErrorMessages.E_INIT;
   }
 }
 
@@ -76,7 +76,7 @@ export function getUpdateProfileErrorMessage(status) {
     case 409:
       return 'This email is already associated with a Tidepool account.';
     case 503:
-      return errorText.E_OFFLINE;
+      return ErrorMessages.E_OFFLINE;
     default:
       return 'We can\'t save your device and timezone selection right now.';
   }
