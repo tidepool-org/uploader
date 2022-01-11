@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.41.0",
+  "version": "2.42.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -79,7 +79,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.47.0-upload-428-clinic-rename.1",
+    "tidepool-platform-client": "0.48.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3",
     "webmtp": "0.1.0"
