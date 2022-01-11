@@ -25,8 +25,8 @@ var personUtils = require('../../lib/core/personUtils');
 var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );

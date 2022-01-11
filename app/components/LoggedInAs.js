@@ -24,10 +24,10 @@ import personUtils from '../../lib/core/personUtils';
 import api from '../../lib/core/api';
 import * as metrics from '../constants/metrics';
 
-import ListIcon from '@material-ui/icons/List';
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
-import BusinessIcon from '@material-ui/icons/Business';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ListIcon from '@mui/icons-material/List';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import BusinessIcon from '@mui/icons-material/Business';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
