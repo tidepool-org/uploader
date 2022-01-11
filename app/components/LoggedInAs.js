@@ -50,7 +50,7 @@ export default class LoggedInAs extends Component {
     uploadTargetUser: PropTypes.string,
     loggedInUser: PropTypes.string.isRequired,
     selectedClinicId: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -99,12 +99,12 @@ export default class LoggedInAs extends Component {
   handleSwitchToPrivate = e => {
     e.preventDefault();
     this.props.goToPrivateWorkspace();
-  }
+  };
 
   handleSwitchToClinic = clinic => {
     api.metrics.track(metrics.WORKSPACE_MENU_SWITCH, { clinicId: clinic.id});
     this.props.switchToClinic(clinic);
-  }
+  };
 
   renderChooseDevices() {
     var title = '';

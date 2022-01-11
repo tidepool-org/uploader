@@ -16,7 +16,13 @@ import {getLoginErrorMessage, getCreateCustodialAccountErrorMessage, getUpdatePr
 const { working: initialState } = initialAll;
 let tracked = mutationTracker.trackObj(initialState);
 
-jest.mock('electron');
+jest.mock('@electron/remote', () => ({
+  getGlobal: (string) => {
+    if (string === 'i18n') {
+        return { t: (string) => string };
+    }
+  }
+}));
 
 describe('working', () => {
 

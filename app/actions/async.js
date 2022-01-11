@@ -67,7 +67,7 @@ function createActionError(usrErrMessage, apiError) {
     },
     cacheKey: `${id}_cacheUntil`,
   };
-}
+};
 
 /*
  * ASYNCHRONOUS ACTION CREATORS
@@ -314,7 +314,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
   };
 }
 
-export function doUpload (deviceKey, opts, utc) {
+export function doUpload(deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
@@ -324,7 +324,7 @@ export function doUpload (deviceKey, opts, utc) {
     const driverManifest = _.get(driverManifests, driverId);
 
     if (driverManifest && driverManifest.mode === 'serial') {
-      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+      dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const filters = driverManifest.usb.map(({vendorId, productId}) => ({
         usbVendorId: vendorId,
@@ -340,7 +340,7 @@ export function doUpload (deviceKey, opts, utc) {
     }
 
     if (driverManifest && driverManifest.mode === 'HID') {
-      dispatch(syncActions.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+      dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const filters = driverManifest.usb.map(({vendorId, productId}) => ({
         vendorId,
@@ -371,26 +371,26 @@ export function doUpload (deviceKey, opts, utc) {
         if (opts.hidDevice.vendorId === 6753 && opts.hidDevice.productId === 14672) {
           // This is an attempt to upload a Libre 2, which is not yet supported
 
-          let hidErr = new Error(errorText.E_LIBRE2_UNSUPPORTED);
+          let hidErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED);
           let errProps = {
             details: hidErr.message,
             utc: actionUtils.getUtc(utc),
             code: 'E_LIBRE2_UNSUPPORTED',
           };
 
-          return dispatch(syncActions.uploadFailure(hidErr, errProps, devices[deviceKey]));
+          return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
         }
       } catch (err) {
         console.log('Error:', err);
 
-        let hidErr = new Error(errorText.E_HID_CONNECTION);
+        let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
         let errProps = {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_HID_CONNECTION',
         };
 
-        return dispatch(syncActions.uploadFailure(hidErr, errProps, devices[deviceKey]));
+        return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
 
