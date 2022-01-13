@@ -207,7 +207,7 @@
       "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
-      "../node_modules/",
+      "../node_modules/(?!(webmtp)/)",
       "platform-client"
     ],
     "modulePathIgnorePatterns": [
