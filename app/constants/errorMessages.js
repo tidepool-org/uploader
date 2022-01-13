@@ -48,4 +48,5 @@ module.exports = {
   ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
   ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
   E_MULTIPLE_DEVICES: 'We found more than one device plugged in. Only plug in the device you intend to upload.',
+  ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS: 'Email address is already associated with another account.',
 };

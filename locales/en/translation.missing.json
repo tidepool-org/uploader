@@ -7,5 +7,19 @@
   "Preparing file": "Preparing file",
   "Sorry, we don't support the Libre 2 yet": "Sorry, we don't support the Libre 2 yet",
   "We couldn't communicate with the meter. You may need to give Uploader": "We couldn't communicate with the meter. You may need to give Uploader",
-  "We found more than one device plugged in. Only plug in the device you intend to upload.": "We found more than one device plugged in. Only plug in the device you intend to upload."
+  "We found more than one device plugged in. Only plug in the device you intend to upload.": "We found more than one device plugged in. Only plug in the device you intend to upload.",
+  "Clinic Workspace": "Clinic Workspace",
+  "To manage your clinic workspaces and view patient invites": "To manage your clinic workspaces and view patient invites",
+  "login to your account in Tidepool Web": "login to your account in Tidepool Web",
+  "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
+  "Go to Private Workspace": "Go to Private Workspace",
+  "Go to Workspace": "Go to Workspace",
+  "clinic": "clinic",
+  "Can’t find a patient you are looking for?": "Can’t find a patient you are looking for?",
+  "Change Workspace": "Change Workspace",
+  "To manage {{workspace}} workspace and view patient invites, go to": "To manage {{workspace}} workspace and view patient invites, go to",
+  "Tidepool Web": "Tidepool Web",
+  "Something went wrong while creating patient account.": "Something went wrong while creating patient account.",
+  "Email address is already associated with another account.": "Email address is already associated with another account.",
+  "Private Workspace": "Private Workspace"
 }

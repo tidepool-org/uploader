@@ -1821,4 +1821,19 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('acknowledgeNotification', () => {
+    it('should be an FSA', () => {
+      let action = sync.acknowledgeNotification();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal ACKNOWLEDGE_NOTIFICATION', () => {
+      let note = 'foo';
+      let action = sync.acknowledgeNotification(note);
+
+      expect(action.payload.acknowledgedNotification).to.equal(note);
+      expect(action.type).to.equal('ACKNOWLEDGE_NOTIFICATION');
+    });
+  });
+
 });

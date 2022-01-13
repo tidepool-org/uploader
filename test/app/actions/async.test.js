@@ -4497,6 +4497,35 @@ describe('Asynchronous Actions', () => {
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
     });
+
+    test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and it should call error once for a duplicate email address', () => {
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            createClinicCustodialAccount: sinon.stub().callsArgWith(2, {status: 409, body: 'Error!'}, null),
+          },
+        },
+        log: _.noop
+      });
+
+      let err = new Error(ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS);
+      err.status = 409;
+
+      let expectedActions = [
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST' },
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE', error: err, meta: { apiError: {status: 409, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+    });
   });
 
   describe('getClinicsForClinician', () => {

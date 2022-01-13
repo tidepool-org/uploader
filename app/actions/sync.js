@@ -251,6 +251,15 @@ export function setAllUsers(user, profile, memberships){
   };
 }
 
+export function acknowledgeNotification(acknowledgedNotification) {
+  return {
+    type: ActionTypes.ACKNOWLEDGE_NOTIFICATION,
+    payload: {
+      acknowledgedNotification: acknowledgedNotification,
+    },
+  };
+}
+
 /*
  * relating to async action creator doAppInit
  */
