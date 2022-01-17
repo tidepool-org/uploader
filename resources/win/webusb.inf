@@ -17,12 +17,12 @@ DriverVer   = 10/04/2021,1.0.0.0
 %DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01 ; Equil in accessory mode
 
 [Standard.NTia64]
-%USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
+%DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
 %DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120 ; Equil
 %DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01 ; Equil in accessory mode
 
 [Standard.NTamd64]
-%USB\MyCustomDevice.DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
+%DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
 %DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120 ; Equil
 %DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01 ; Equil in accessory mode
 
