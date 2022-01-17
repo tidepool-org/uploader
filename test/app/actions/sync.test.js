@@ -23,16 +23,16 @@ import * as actionSources from '../../../app/constants/actionSources';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as metrics from '../../../app/constants/metrics';
 
-import * as syncActions from '../../../app/actions/sync';
+import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
-import { UnsupportedError } from '../../../app/utils/errors';
-import errorText from '../../../app/constants/errors';
+import { getUpdateProfileErrorMessage, UnsupportedError } from '../../../app/utils/errors';
+import ErrorMessages from '../../../app/constants/errorMessages';
 
 describe('Synchronous Actions', () => {
   describe('addTargetDevice', () => {
-    const DEVICE = 'a_pump', ID = 'a1b2c3';
+    const DEVICE = 'a_pump', ID = 'a1b2c3', CLINICID='clinic123';
     test('should be an FSA', () => {
-      let action = syncActions.addTargetDevice(ID, DEVICE);
+      let action = sync.addTargetDevice(ID, DEVICE);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -40,16 +40,25 @@ describe('Synchronous Actions', () => {
     test('should create an action to add a device to a user\'s target devices', () => {
       const expectedAction = {
         type: actionTypes.ADD_TARGET_DEVICE,
-        payload: {userId: ID, deviceKey: DEVICE},
+        payload: {userId: ID, deviceKey: DEVICE, selectedClinicId: undefined},
         meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
       };
-      expect(syncActions.addTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+      expect(sync.addTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+    });
+
+    test('should create an action to add a device to a user\'s target devices with clinicId', () => {
+      const expectedAction = {
+        type: actionTypes.ADD_TARGET_DEVICE,
+        payload: {userId: ID, deviceKey: DEVICE, selectedClinicId: CLINICID},
+        meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
+      };
+      expect(sync.addTargetDevice(ID, DEVICE, CLINICID)).to.deep.equal(expectedAction);
     });
   });
 
   describe('clickGoToBlip', () => {
     test('should be an FSA', () => {
-      let action = syncActions.clickGoToBlip();
+      let action = sync.clickGoToBlip();
 
       expect(isFSA(action)).to.be.true;
     });
@@ -63,13 +72,13 @@ describe('Synchronous Actions', () => {
         }
       };
 
-      expect(syncActions.clickGoToBlip()).to.deep.equal(expectedAction);
+      expect(sync.clickGoToBlip()).to.deep.equal(expectedAction);
     });
   });
 
   describe('clinicAddMrn', () => {
     test('should be an FSA', () => {
-      let action = syncActions.clinicAddMrn();
+      let action = sync.clinicAddMrn();
 
       expect(isFSA(action)).to.be.true;
     });
@@ -83,13 +92,13 @@ describe('Synchronous Actions', () => {
         }
       };
 
-      expect(syncActions.clinicAddMrn()).to.deep.equal(expectedAction);
+      expect(sync.clinicAddMrn()).to.deep.equal(expectedAction);
     });
   });
 
   describe('clinicAddEmail', () => {
     test('should be an FSA', () => {
-      let action = syncActions.clinicAddEmail();
+      let action = sync.clinicAddEmail();
 
       expect(isFSA(action)).to.be.true;
     });
@@ -103,13 +112,13 @@ describe('Synchronous Actions', () => {
         }
       };
 
-      expect(syncActions.clinicAddEmail()).to.deep.equal(expectedAction);
+      expect(sync.clinicAddEmail()).to.deep.equal(expectedAction);
     });
   });
 
   describe('clinicAddDevice', () => {
     test('should be an FSA', () => {
-      let action = syncActions.clinicAddDevice();
+      let action = sync.clinicAddDevice();
 
       expect(isFSA(action)).to.be.true;
     });
@@ -123,13 +132,13 @@ describe('Synchronous Actions', () => {
         }
       };
 
-      expect(syncActions.clinicAddDevice('device')).to.deep.equal(expectedAction);
+      expect(sync.clinicAddDevice('device')).to.deep.equal(expectedAction);
     });
   });
 
   describe('clinicInvalidDate', () => {
     test('should be an FSA', () => {
-      let action = syncActions.clinicInvalidDate({year:'error'});
+      let action = sync.clinicInvalidDate({year:'error'});
 
       expect(isFSA(action)).to.be.true;
     });
@@ -143,18 +152,18 @@ describe('Synchronous Actions', () => {
         }
       };
 
-      expect(syncActions.clinicInvalidDate({year:'error'})).to.deep.equal(expectedAction);
+      expect(sync.clinicInvalidDate({year:'error'})).to.deep.equal(expectedAction);
     });
 
     test('should not creat an action to report no error', () => {
-      expect(syncActions.clinicInvalidDate()).to.be.undefined;
+      expect(sync.clinicInvalidDate()).to.be.undefined;
     });
   });
 
   describe('hideUnavailableDevices', () => {
     const OS = 'test';
     test('should be an FSA', () => {
-      let action = syncActions.hideUnavailableDevices(OS);
+      let action = sync.hideUnavailableDevices(OS);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -165,14 +174,14 @@ describe('Synchronous Actions', () => {
         payload: {os: OS},
         meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
       };
-      expect(syncActions.hideUnavailableDevices(OS)).to.deep.equal(expectedAction);
+      expect(sync.hideUnavailableDevices(OS)).to.deep.equal(expectedAction);
     });
   });
 
   describe('removeTargetDevice', () => {
-    const DEVICE = 'a_pump', ID = 'a1b2c3';
+    const DEVICE = 'a_pump', ID = 'a1b2c3', CLINICID='clinic123';
     test('should be an FSA', () => {
-      let action = syncActions.removeTargetDevice(ID, DEVICE);
+      let action = sync.removeTargetDevice(ID, DEVICE);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -180,17 +189,26 @@ describe('Synchronous Actions', () => {
     test('should create an action to remove a device from a user\'s target devices', () => {
       const expectedAction = {
         type: actionTypes.REMOVE_TARGET_DEVICE,
-        payload: {userId: ID, deviceKey: DEVICE},
+        payload: {userId: ID, deviceKey: DEVICE, selectedClinicId: undefined},
         meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
       };
-      expect(syncActions.removeTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+      expect(sync.removeTargetDevice(ID, DEVICE)).to.deep.equal(expectedAction);
+    });
+
+    test('should create an action to remove a device from a user\'s target devices with clinicId', () => {
+      const expectedAction = {
+        type: actionTypes.REMOVE_TARGET_DEVICE,
+        payload: {userId: ID, deviceKey: DEVICE, selectedClinicId: CLINICID},
+        meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
+      };
+      expect(sync.removeTargetDevice(ID, DEVICE, CLINICID)).to.deep.equal(expectedAction);
     });
   });
 
   describe('resetUpload', () => {
     const userId = 'a1b2c3', deviceKey = 'a_pump';
     test('should be an FSA', () => {
-      let action = syncActions.resetUpload(userId, deviceKey);
+      let action = sync.resetUpload(userId, deviceKey);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -201,14 +219,14 @@ describe('Synchronous Actions', () => {
         payload: { userId, deviceKey },
         meta: {source: actionSources[actionTypes.RESET_UPLOAD]}
       };
-      expect(syncActions.resetUpload(userId, deviceKey)).to.deep.equal(expectedAction);
+      expect(sync.resetUpload(userId, deviceKey)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setBlipViewDataUrl', () => {
     const url = 'http://acme-blip.com/patients/a1b2c3/data';
     test('should be an FSA', () => {
-      let action = syncActions.setBlipViewDataUrl(url);
+      let action = sync.setBlipViewDataUrl(url);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -220,14 +238,14 @@ describe('Synchronous Actions', () => {
         meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
       };
 
-      expect(syncActions.setBlipViewDataUrl(url)).to.deep.equal(expectedAction);
+      expect(sync.setBlipViewDataUrl(url)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setForgotPasswordUrl', () => {
     const URL = 'http://www.acme.com/forgot-password';
     test('should be an FSA', () => {
-      let action = syncActions.setForgotPasswordUrl(URL);
+      let action = sync.setForgotPasswordUrl(URL);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -238,14 +256,14 @@ describe('Synchronous Actions', () => {
         payload: {url: URL},
         meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
       };
-      expect(syncActions.setForgotPasswordUrl(URL)).to.deep.equal(expectedAction);
+      expect(sync.setForgotPasswordUrl(URL)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setSignUpUrl', () => {
     const URL = 'http://www.acme.com/sign-up';
     test('should be an FSA', () => {
-      let action = syncActions.setSignUpUrl(URL);
+      let action = sync.setSignUpUrl(URL);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -256,14 +274,14 @@ describe('Synchronous Actions', () => {
         payload: {url: URL},
         meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
       };
-      expect(syncActions.setSignUpUrl(URL)).to.deep.equal(expectedAction);
+      expect(sync.setSignUpUrl(URL)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setNewPatientUrl', () => {
     const URL = 'http://www.acme.com/patients/new';
     test('should be an FSA', () => {
-      let action = syncActions.setNewPatientUrl(URL);
+      let action = sync.setNewPatientUrl(URL);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -274,14 +292,14 @@ describe('Synchronous Actions', () => {
         payload: {url: URL},
         meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
       };
-      expect(syncActions.setNewPatientUrl(URL)).to.deep.equal(expectedAction);
+      expect(sync.setNewPatientUrl(URL)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setTargetTimezone', () => {
     const TIMEZONE = 'Europe/Budapest', ID = 'a1b2c3';
     test('should be an FSA', () => {
-      let action = syncActions.setTargetTimezone(ID, TIMEZONE);
+      let action = sync.setTargetTimezone(ID, TIMEZONE);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -292,7 +310,7 @@ describe('Synchronous Actions', () => {
         payload: {userId: ID, timezoneName: TIMEZONE},
         meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
       };
-      expect(syncActions.setTargetTimezone(ID, TIMEZONE)).to.deep.equal(expectedAction);
+      expect(sync.setTargetTimezone(ID, TIMEZONE)).to.deep.equal(expectedAction);
     });
   });
 
@@ -302,7 +320,7 @@ describe('Synchronous Actions', () => {
       d4e5f6: {another_pump: {}}
     };
     test('should be an FSA', () => {
-      let action = syncActions.setUploads(devicesByUser);
+      let action = sync.setUploads(devicesByUser);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -313,14 +331,14 @@ describe('Synchronous Actions', () => {
         payload: { devicesByUser },
         meta: {source: actionSources[actionTypes.SET_UPLOADS]}
       };
-      expect(syncActions.setUploads(devicesByUser)).to.deep.equal(expectedAction);
+      expect(sync.setUploads(devicesByUser)).to.deep.equal(expectedAction);
     });
   });
 
   describe('setUploadTargetUser', () => {
     const ID = 'a1b2c3';
     test('should be an FSA', () => {
-      let action = syncActions.setUploadTargetUser(ID);
+      let action = sync.setUploadTargetUser(ID);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -331,14 +349,14 @@ describe('Synchronous Actions', () => {
         payload: {userId: ID},
         meta: {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]}
       };
-      expect(syncActions.setUploadTargetUser(ID)).to.deep.equal(expectedAction);
+      expect(sync.setUploadTargetUser(ID)).to.deep.equal(expectedAction);
     });
   });
 
   describe('toggleDropdown', () => {
     const DROPDOWN_PREVIOUS_STATE = true;
     test('should be an FSA', () => {
-      let action = syncActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE);
+      let action = sync.toggleDropdown(DROPDOWN_PREVIOUS_STATE);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -349,7 +367,7 @@ describe('Synchronous Actions', () => {
         payload: {isVisible: false},
         meta: {source: actionSources[actionTypes.TOGGLE_DROPDOWN]}
       };
-      expect(syncActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE)).to.deep.equal(expectedAction);
+      expect(sync.toggleDropdown(DROPDOWN_PREVIOUS_STATE)).to.deep.equal(expectedAction);
     });
 
     test('should accept a second parameter to override the default action source', () => {
@@ -358,7 +376,7 @@ describe('Synchronous Actions', () => {
         payload: {isVisible: false},
         meta: {source: actionSources.UNDER_THE_HOOD}
       };
-      expect(syncActions.toggleDropdown(DROPDOWN_PREVIOUS_STATE, actionSources.UNDER_THE_HOOD)).to.deep.equal(expectedAction);
+      expect(sync.toggleDropdown(DROPDOWN_PREVIOUS_STATE, actionSources.UNDER_THE_HOOD)).to.deep.equal(expectedAction);
     });
   });
 
@@ -366,7 +384,7 @@ describe('Synchronous Actions', () => {
     const DETAILS_PREVIOUS_STATE = true;
     const userId = 'a1b2c3', deviceKey = 'a_cgm';
     test('should be an FSA', () => {
-      let action = syncActions.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE);
+      let action = sync.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE);
 
       expect(isFSA(action)).to.be.true;
     });
@@ -377,7 +395,7 @@ describe('Synchronous Actions', () => {
         payload: {isVisible: false, userId, deviceKey },
         meta: {source: actionSources[actionTypes.TOGGLE_ERROR_DETAILS]}
       };
-      expect(syncActions.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE)).to.deep.equal(expectedAction);
+      expect(sync.toggleErrorDetails(userId, deviceKey, DETAILS_PREVIOUS_STATE)).to.deep.equal(expectedAction);
     });
 
     test('should toggle on error details if previous state is undefined', () => {
@@ -386,14 +404,14 @@ describe('Synchronous Actions', () => {
         payload: {isVisible: true, userId, deviceKey },
         meta: {source: actionSources[actionTypes.TOGGLE_ERROR_DETAILS]}
       };
-      expect(syncActions.toggleErrorDetails(userId, deviceKey, undefined)).to.deep.equal(expectedAction);
+      expect(sync.toggleErrorDetails(userId, deviceKey, undefined)).to.deep.equal(expectedAction);
     });
   });
 
   describe('for doAppInit', () => {
-    describe('initRequest', () => {
+    describe('initializeAppRequest', () => {
       test('should be an FSA', () => {
-        let action = syncActions.initRequest();
+        let action = sync.initializeAppRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -403,13 +421,13 @@ describe('Synchronous Actions', () => {
           type: actionTypes.INIT_APP_REQUEST,
           meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
         };
-        expect(syncActions.initRequest()).to.deep.equal(expectedAction);
+        expect(sync.initializeAppRequest()).to.deep.equal(expectedAction);
       });
     });
 
-    describe('initSuccess', () => {
+    describe('initializeAppSuccess', () => {
       test('should be an FSA', () => {
-        let action = syncActions.initSuccess();
+        let action = sync.initializeAppSuccess();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -419,14 +437,14 @@ describe('Synchronous Actions', () => {
           type: actionTypes.INIT_APP_SUCCESS,
           meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
         };
-        expect(syncActions.initSuccess()).to.deep.equal(expectedAction);
+        expect(sync.initializeAppSuccess()).to.deep.equal(expectedAction);
       });
     });
 
-    describe('initFailure', () => {
+    describe('initializeAppFailure', () => {
       const err = new Error();
       test('should be an FSA', () => {
-        let action = syncActions.initFailure(err);
+        let action = sync.initializeAppFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -435,11 +453,11 @@ describe('Synchronous Actions', () => {
         const expectedAction = {
           type: actionTypes.INIT_APP_FAILURE,
           error: true,
-          payload: new Error(errorText.E_INIT),
+          payload: new Error(ErrorMessages.E_INIT),
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         };
-        const action = syncActions.initFailure(err);
-        expect(action.payload).to.deep.include({message:errorText.E_INIT});
+        const action = sync.initializeAppFailure(err);
+        expect(action.payload).to.deep.include({message:ErrorMessages.E_INIT});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
       });
@@ -452,7 +470,7 @@ describe('Synchronous Actions', () => {
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
       test('should be an FSA', () => {
-        let action = syncActions.setUserInfoFromToken({ user, profile, memberships });
+        let action = sync.setUserInfoFromToken({ user, profile, memberships });
         expect(isFSA(action)).to.be.true;
       });
 
@@ -462,7 +480,7 @@ describe('Synchronous Actions', () => {
           payload: { user, profile, memberships },
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         };
-        expect(syncActions.setUserInfoFromToken({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.setUserInfoFromToken({ user, profile, memberships })).to.deep.equal(expectedAction);
       });
     });
   });
@@ -470,7 +488,7 @@ describe('Synchronous Actions', () => {
   describe('for doLogin', () => {
     describe('loginRequest', () => {
       test('should be an FSA', () => {
-        let action = syncActions.loginRequest();
+        let action = sync.loginRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -480,7 +498,7 @@ describe('Synchronous Actions', () => {
           type: actionTypes.LOGIN_REQUEST,
           meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
         };
-        expect(syncActions.loginRequest()).to.deep.equal(expectedAction);
+        expect(sync.loginRequest()).to.deep.equal(expectedAction);
       });
     });
 
@@ -491,7 +509,7 @@ describe('Synchronous Actions', () => {
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
       test('should be an FSA', () => {
-        expect(isFSA(syncActions.loginSuccess({ user, profile, memberships }))).to.be.true;
+        expect(isFSA(sync.loginSuccess({ user, profile, memberships }))).to.be.true;
       });
 
       test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
@@ -503,14 +521,14 @@ describe('Synchronous Actions', () => {
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
         };
-        expect(syncActions.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
       });
     });
 
     describe('loginFailure', () => {
       const err = 'Login error!';
       test('should be an FSA', () => {
-        let action = syncActions.loginFailure(err);
+        let action = sync.loginFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -523,7 +541,7 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         };
-        const action = syncActions.loginFailure(err);
+        const action = sync.loginFailure(err);
         expect(action.payload).to.deep.include({message:err});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -535,7 +553,7 @@ describe('Synchronous Actions', () => {
   describe('for doLogout', () => {
     describe('logoutRequest', () => {
       test('should be an FSA', () => {
-        let action = syncActions.logoutRequest();
+        let action = sync.logoutRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -548,13 +566,13 @@ describe('Synchronous Actions', () => {
             metric: {eventName: metrics.LOGOUT_REQUEST}
           }
         };
-        expect(syncActions.logoutRequest()).to.deep.equal(expectedAction);
+        expect(sync.logoutRequest()).to.deep.equal(expectedAction);
       });
     });
 
     describe('logoutSuccess', () => {
       test('should be an FSA', () => {
-        let action = syncActions.logoutSuccess();
+        let action = sync.logoutSuccess();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -564,14 +582,14 @@ describe('Synchronous Actions', () => {
           type: actionTypes.LOGOUT_SUCCESS,
           meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
         };
-        expect(syncActions.logoutSuccess()).to.deep.equal(expectedAction);
+        expect(sync.logoutSuccess()).to.deep.equal(expectedAction);
       });
     });
 
     describe('logoutFailure', () => {
       const err = 'Logout error!';
       test('should be an FSA', () => {
-        let action = syncActions.logoutFailure(err);
+        let action = sync.logoutFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -584,7 +602,7 @@ describe('Synchronous Actions', () => {
           payload: new Error(err),
           meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
         };
-        const action = syncActions.logoutFailure(err);
+        const action = sync.logoutFailure(err);
         expect(action.payload).to.deep.include({message:err});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -593,78 +611,10 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('for doCareLinkUpload', () => {
-    const userId = 'a1b2c3', deviceKey = 'carelink';
-    describe('fetchCareLinkRequest', () => {
-      test('should be an FSA', () => {
-        let action = syncActions.fetchCareLinkRequest(userId, deviceKey);
-
-        expect(isFSA(action)).to.be.true;
-      });
-
-      test('should create an action to record an attempt to fetch data from CareLink',  () => {
-        const expectedAction = {
-          type: actionTypes.CARELINK_FETCH_REQUEST,
-          payload: { userId, deviceKey },
-          meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-        };
-
-        expect(syncActions.fetchCareLinkRequest(userId, deviceKey)).to.deep.equal(expectedAction);
-      });
-    });
-
-    describe('fetchCareLinkSuccess', () => {
-      test('should be an FSA', () => {
-        let action = syncActions.fetchCareLinkSuccess(userId, deviceKey);
-
-        expect(isFSA(action)).to.be.true;
-      });
-
-      test('should create an action to record a successful fetch from CareLink',  () => {
-        const expectedAction = {
-          type: actionTypes.CARELINK_FETCH_SUCCESS,
-          payload: { userId, deviceKey },
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
-            metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
-          }
-        };
-
-        expect(syncActions.fetchCareLinkSuccess(userId, deviceKey)).to.deep.equal(expectedAction);
-      });
-    });
-
-    describe('fetchCareLinkFailure', () => {
-      const err = new Error('Error :(');
-      test('should be an FSA', () => {
-        let action = syncActions.fetchCareLinkFailure('Error :(');
-
-        expect(isFSA(action)).to.be.true;
-      });
-
-      test('should create an action to record the failure of an attempt to fetch data from CareLink',  () => {
-        const expectedAction = {
-          type: actionTypes.CARELINK_FETCH_FAILURE,
-          error: true,
-          payload: err,
-          meta: {
-            source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
-            metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
-          }
-        };
-        const action = syncActions.fetchCareLinkFailure('Error :(');
-        expect(action.payload).to.deep.include({message:err.message});
-        expectedAction.payload = action.payload;
-        expect(action).to.deep.equal(expectedAction);
-      });
-
-    });
-  });
-
   describe('for doUpload', () => {
     describe('uploadAborted', () => {
       test('should be an FSA', () => {
-        let action = syncActions.uploadAborted();
+        let action = sync.uploadAborted();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -673,11 +623,11 @@ describe('Synchronous Actions', () => {
         const expectedAction = {
           type: actionTypes.UPLOAD_ABORTED,
           error: true,
-          payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
+          payload: new Error(ErrorMessages.E_UPLOAD_IN_PROGRESS),
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         };
-        const action = syncActions.uploadAborted();
-        expect(action.payload).to.deep.include({message:errorText.E_UPLOAD_IN_PROGRESS});
+        const action = sync.uploadAborted();
+        expect(action.payload).to.deep.include({message:ErrorMessages.E_UPLOAD_IN_PROGRESS});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
       });
@@ -692,7 +642,7 @@ describe('Synchronous Actions', () => {
         enabled: {mac: true, win: true}
       };
       test('should be an FSA', () => {
-        let action = syncActions.uploadRequest(userId, device);
+        let action = sync.uploadRequest(userId, device);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -711,7 +661,7 @@ describe('Synchronous Actions', () => {
           }
         };
 
-        expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
+        expect(sync.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
       });
 
       test('should create appropriate metric properties for 600 series upload limits',  () => {
@@ -734,7 +684,7 @@ describe('Synchronous Actions', () => {
           }
         };
 
-        expect(syncActions.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
+        expect(sync.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
         __ResetDependency__('uploadDataPeriod');
       });
     });
@@ -742,7 +692,7 @@ describe('Synchronous Actions', () => {
     describe('uploadProgress', () => {
       const step = 'READ', percentage = 50, isFirstUpload = true;
       test('should be an FSA', () => {
-        let action = syncActions.uploadProgress(step, percentage);
+        let action = sync.uploadProgress(step, percentage);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -754,7 +704,7 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
         };
 
-        expect(syncActions.uploadProgress(step, percentage, isFirstUpload)).to.deep.equal(expectedAction);
+        expect(sync.uploadProgress(step, percentage, isFirstUpload)).to.deep.equal(expectedAction);
       });
     });
 
@@ -773,7 +723,7 @@ describe('Synchronous Actions', () => {
         deviceModel: 'acme'
       };
       test('should be an FSA', () => {
-        let action = syncActions.uploadSuccess(userId, device, upload, data);
+        let action = sync.uploadSuccess(userId, device, upload, data);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -797,7 +747,7 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-        expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
+        expect(sync.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
       });
 
       test('should create an action to record a successful 600 series upload w/ limit',  () => {
@@ -824,7 +774,7 @@ describe('Synchronous Actions', () => {
           }
         };
 
-        expect(syncActions.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
+        expect(sync.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
         __ResetDependency__('uploadDataPeriod');
       });
     });
@@ -843,7 +793,7 @@ describe('Synchronous Actions', () => {
         source: {type: 'device', driverId: 'AcmePump'}
       };
       test('should be an FSA', () => {
-        let action = syncActions.uploadFailure(origError, errProps, device);
+        let action = sync.uploadFailure(origError, errProps, device);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -865,7 +815,7 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-        const action = syncActions.uploadFailure(origError, errProps, device);
+        const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
           message: resError.message,
           code: resError.code,
@@ -875,7 +825,7 @@ describe('Synchronous Actions', () => {
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
         expect(action).to.deep.equal(expectedAction);
-        expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+        expect(sync.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
       });
 
       test('should create an action to report an upload failure with limit for 600 series',  () => {
@@ -898,7 +848,7 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-        const action = syncActions.uploadFailure(origError, errProps, device);
+        const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
           message: resError.message,
           code: resError.code,
@@ -908,7 +858,7 @@ describe('Synchronous Actions', () => {
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
         expect(action).to.deep.equal(expectedAction);
-        expect(syncActions.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
+        expect(sync.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
         __ResetDependency__('uploadDataPeriod');
       });
     });
@@ -921,7 +871,7 @@ describe('Synchronous Actions', () => {
         source: {type: 'device', driverId: 'AcmePump'}
       };
       test('should be an FSA', () => {
-        let action = syncActions.uploadCancelled();
+        let action = sync.uploadCancelled();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -934,14 +884,14 @@ describe('Synchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_CANCELLED]
           }
         };
-        const action = syncActions.uploadCancelled(errProps.utc);
+        const action = sync.uploadCancelled(errProps.utc);
         expect(action).to.deep.equal(expectedAction);
       });
     });
 
     describe('deviceDetectRequest', () => {
       test('should be an FSA', () => {
-        let action = syncActions.deviceDetectRequest();
+        let action = sync.deviceDetectRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -952,7 +902,7 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
         };
 
-        expect(syncActions.deviceDetectRequest()).to.deep.equal(expectedAction);
+        expect(sync.deviceDetectRequest()).to.deep.equal(expectedAction);
       });
     });
   });
@@ -961,7 +911,7 @@ describe('Synchronous Actions', () => {
     describe('choosingFile', () => {
       const userId = 'abc123', deviceKey = 'a_pump';
       test('should be an FSA', () => {
-        let action = syncActions.choosingFile(userId, deviceKey);
+        let action = sync.choosingFile(userId, deviceKey);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -973,14 +923,14 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
         };
 
-        expect(syncActions.choosingFile(userId, deviceKey)).to.deep.equal(expectedAction);
+        expect(sync.choosingFile(userId, deviceKey)).to.deep.equal(expectedAction);
       });
     });
 
     describe('readFileAborted', () => {
       let err = new Error('Wrong file extension!');
       test('should be an FSA', () => {
-        let action = syncActions.readFileAborted(err);
+        let action = sync.readFileAborted(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -992,7 +942,7 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
         };
-        const action = syncActions.readFileAborted(err);
+        const action = sync.readFileAborted(err);
         expect(action.payload).to.deep.include({message:err.message});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -1003,7 +953,7 @@ describe('Synchronous Actions', () => {
       const userId = 'abc123', deviceKey = 'a_pump';
       const filename = 'my-data.ext';
       test('should be an FSA', () => {
-        let action = syncActions.readFileRequest(userId, deviceKey, filename);
+        let action = sync.readFileRequest(userId, deviceKey, filename);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1015,7 +965,7 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.READ_FILE_REQUEST]}
         };
 
-        expect(syncActions.readFileRequest(userId, deviceKey, filename)).to.deep.equal(expectedAction);
+        expect(sync.readFileRequest(userId, deviceKey, filename)).to.deep.equal(expectedAction);
       });
     });
 
@@ -1023,7 +973,7 @@ describe('Synchronous Actions', () => {
       const userId = 'abc123', deviceKey = 'a_pump';
       const filedata = [1,2,3,4,5];
       test('should be an FSA', () => {
-        let action = syncActions.readFileSuccess(userId, deviceKey, filedata);
+        let action = sync.readFileSuccess(userId, deviceKey, filedata);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1035,14 +985,14 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.READ_FILE_SUCCESS]}
         };
 
-        expect(syncActions.readFileSuccess(userId, deviceKey, filedata)).to.deep.equal(expectedAction);
+        expect(sync.readFileSuccess(userId, deviceKey, filedata)).to.deep.equal(expectedAction);
       });
     });
 
     describe('readFileFailure', () => {
       let err = new Error('Error reading file!');
       test('should be an FSA', () => {
-        let action = syncActions.readFileFailure(err);
+        let action = sync.readFileFailure(err);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1054,7 +1004,7 @@ describe('Synchronous Actions', () => {
           payload: err,
           meta: {source: actionSources[actionTypes.READ_FILE_FAILURE]}
         };
-        const action = syncActions.readFileFailure(err);
+        const action = sync.readFileFailure(err);
         expect(action.payload).to.deep.include({message:err.message});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -1065,7 +1015,7 @@ describe('Synchronous Actions', () => {
   describe('for doVersionCheck', () => {
     describe('versionCheckRequest', () => {
       test('should be an FSA', () => {
-        let action = syncActions.versionCheckRequest();
+        let action = sync.versionCheckRequest();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1076,13 +1026,13 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
         };
 
-        expect(syncActions.versionCheckRequest()).to.deep.equal(expectedAction);
+        expect(sync.versionCheckRequest()).to.deep.equal(expectedAction);
       });
     });
 
     describe('versionCheckSuccess', () => {
       test('should be an FSA', () => {
-        let action = syncActions.versionCheckSuccess();
+        let action = sync.versionCheckSuccess();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1093,20 +1043,20 @@ describe('Synchronous Actions', () => {
           meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
         };
 
-        expect(syncActions.versionCheckSuccess()).to.deep.equal(expectedAction);
+        expect(sync.versionCheckSuccess()).to.deep.equal(expectedAction);
       });
     });
 
     describe('versionCheckFailure', () => {
       const currentVersion = '0.99.0', requiredVersion = '0.100.0';
       test('should be an FSA [API response err]', () => {
-        let action = syncActions.versionCheckFailure(new Error('API error!'));
+        let action = sync.versionCheckFailure(new Error('API error!'));
 
         expect(isFSA(action)).to.be.true;
       });
 
       test('should be an FSA [out-of-date version]', () => {
-        let action = syncActions.versionCheckFailure(null, currentVersion, requiredVersion);
+        let action = sync.versionCheckFailure(null, currentVersion, requiredVersion);
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1124,7 +1074,7 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-        const action = syncActions.versionCheckFailure(err);
+        const action = sync.versionCheckFailure(err);
         expect(action.payload).to.deep.include({message:err.message});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -1144,7 +1094,7 @@ describe('Synchronous Actions', () => {
             }
           }
         };
-        const action = syncActions.versionCheckFailure(null, currentVersion, requiredVersion);
+        const action = sync.versionCheckFailure(null, currentVersion, requiredVersion);
         expect(action.payload).to.deep.include({message:err.message});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
@@ -1156,7 +1106,7 @@ describe('Synchronous Actions', () => {
 
     describe('retrieveUsersTargetsFromStorage', () => {
       test('should be an FSA', () => {
-        let action = syncActions.retrieveUsersTargetsFromStorage();
+        let action = sync.retrieveUsersTargetsFromStorage();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1166,7 +1116,7 @@ describe('Synchronous Actions', () => {
           type: actionTypes.RETRIEVING_USERS_TARGETS,
           meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
         };
-        expect(syncActions.retrieveUsersTargetsFromStorage()).to.deep.equal(expectedAction);
+        expect(sync.retrieveUsersTargetsFromStorage()).to.deep.equal(expectedAction);
       });
     });
 
@@ -1178,7 +1128,7 @@ describe('Synchronous Actions', () => {
         d4e5f6: ['baz']
       };
       test('should be an FSA', () => {
-        let action = syncActions.setUsersTargets();
+        let action = sync.setUsersTargets();
 
         expect(isFSA(action)).to.be.true;
       });
@@ -1189,14 +1139,14 @@ describe('Synchronous Actions', () => {
           payload: { targets },
           meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
         };
-        expect(syncActions.setUsersTargets(targets)).to.deep.equal(expectedAction);
+        expect(sync.setUsersTargets(targets)).to.deep.equal(expectedAction);
       });
     });
   });
 
   describe('autoCheckingForUpdates', () => {
     test('should be an FSA', () => {
-      let action = syncActions.autoCheckingForUpdates();
+      let action = sync.autoCheckingForUpdates();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1205,13 +1155,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES,
         meta: {source: actionSources[actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES]}
       };
-      expect(syncActions.autoCheckingForUpdates()).to.deep.equal(expectedAction);
+      expect(sync.autoCheckingForUpdates()).to.deep.equal(expectedAction);
     });
   });
 
   describe('manualCheckingForUpdates', () => {
     test('should be an FSA', () => {
-      let action = syncActions.manualCheckingForUpdates();
+      let action = sync.manualCheckingForUpdates();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1220,14 +1170,14 @@ describe('Synchronous Actions', () => {
         type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES,
         meta: {source: actionSources[actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES]}
       };
-      expect(syncActions.manualCheckingForUpdates()).to.deep.equal(expectedAction);
+      expect(sync.manualCheckingForUpdates()).to.deep.equal(expectedAction);
     });
   });
 
   describe('updateAvailable', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.updateAvailable(updateInfo);
+      let action = sync.updateAvailable(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1237,14 +1187,14 @@ describe('Synchronous Actions', () => {
         payload: { info: updateInfo },
         meta: {source: actionSources[actionTypes.UPDATE_AVAILABLE]}
       };
-      expect(syncActions.updateAvailable(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.updateAvailable(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('updateNotAvailable', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.updateNotAvailable(updateInfo);
+      let action = sync.updateNotAvailable(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1254,14 +1204,14 @@ describe('Synchronous Actions', () => {
         payload: { info: updateInfo },
         meta: {source: actionSources[actionTypes.UPDATE_NOT_AVAILABLE]}
       };
-      expect(syncActions.updateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.updateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('autoUpdateError', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.autoUpdateError(updateInfo);
+      let action = sync.autoUpdateError(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1271,14 +1221,14 @@ describe('Synchronous Actions', () => {
         payload: { error: updateInfo },
         meta: {source: actionSources[actionTypes.AUTOUPDATE_ERROR]}
       };
-      expect(syncActions.autoUpdateError(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.autoUpdateError(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('updateDownloaded', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.updateDownloaded(updateInfo);
+      let action = sync.updateDownloaded(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1288,13 +1238,13 @@ describe('Synchronous Actions', () => {
         payload: { info: updateInfo },
         meta: {source: actionSources[actionTypes.UPDATE_DOWNLOADED]}
       };
-      expect(syncActions.updateDownloaded(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.updateDownloaded(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('dismissUpdateAvailable', () => {
     test('should be an FSA', () => {
-      let action = syncActions.dismissUpdateAvailable();
+      let action = sync.dismissUpdateAvailable();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1303,13 +1253,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_UPDATE_AVAILABLE,
         meta: {source: actionSources[actionTypes.DISMISS_UPDATE_AVAILABLE]}
       };
-      expect(syncActions.dismissUpdateAvailable()).to.deep.equal(expectedAction);
+      expect(sync.dismissUpdateAvailable()).to.deep.equal(expectedAction);
     });
   });
 
   describe('dismissUpdateNotAvailable', () => {
     test('should be an FSA', () => {
-      let action = syncActions.dismissUpdateNotAvailable();
+      let action = sync.dismissUpdateNotAvailable();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1318,13 +1268,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
         meta: {source: actionSources[actionTypes.DISMISS_UPDATE_NOT_AVAILABLE]}
       };
-      expect(syncActions.dismissUpdateNotAvailable()).to.deep.equal(expectedAction);
+      expect(sync.dismissUpdateNotAvailable()).to.deep.equal(expectedAction);
     });
   });
 
   describe('checkingForDriverUpdate', () => {
     test('should be an FSA', () => {
-      let action = syncActions.checkingForDriverUpdate();
+      let action = sync.checkingForDriverUpdate();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1333,7 +1283,7 @@ describe('Synchronous Actions', () => {
         type: actionTypes.CHECKING_FOR_DRIVER_UPDATE,
         meta: {source: actionSources[actionTypes.CHECKING_FOR_DRIVER_UPDATE]}
       };
-      expect(syncActions.checkingForDriverUpdate()).to.deep.equal(expectedAction);
+      expect(sync.checkingForDriverUpdate()).to.deep.equal(expectedAction);
     });
   });
 
@@ -1341,7 +1291,7 @@ describe('Synchronous Actions', () => {
     const current = '1';
     const available = '2';
     test('should be an FSA', () => {
-      let action = syncActions.driverUpdateAvailable(current, available);
+      let action = sync.driverUpdateAvailable(current, available);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1351,14 +1301,14 @@ describe('Synchronous Actions', () => {
         payload: { current, available },
         meta: {source: actionSources[actionTypes.DRIVER_UPDATE_AVAILABLE]}
       };
-      expect(syncActions.driverUpdateAvailable(current, available)).to.deep.equal(expectedAction);
+      expect(sync.driverUpdateAvailable(current, available)).to.deep.equal(expectedAction);
     });
   });
 
   describe('driverUpdateNotAvailable', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.driverUpdateNotAvailable(updateInfo);
+      let action = sync.driverUpdateNotAvailable(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1367,13 +1317,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
         meta: {source: actionSources[actionTypes.DRIVER_UPDATE_NOT_AVAILABLE]}
       };
-      expect(syncActions.driverUpdateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.driverUpdateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('dismissDriverUpdateAvailable', () => {
     test('should be an FSA', () => {
-      let action = syncActions.dismissDriverUpdateAvailable();
+      let action = sync.dismissDriverUpdateAvailable();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1382,14 +1332,14 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
         meta: {source: actionSources[actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE]}
       };
-      expect(syncActions.dismissDriverUpdateAvailable()).to.deep.equal(expectedAction);
+      expect(sync.dismissDriverUpdateAvailable()).to.deep.equal(expectedAction);
     });
   });
 
   describe('driverInstall', () => {
     const updateInfo = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.driverInstall(updateInfo);
+      let action = sync.driverInstall(updateInfo);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1398,14 +1348,14 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DRIVER_INSTALL,
         meta: {source: actionSources[actionTypes.DRIVER_INSTALL]}
       };
-      expect(syncActions.driverInstall(updateInfo)).to.deep.equal(expectedAction);
+      expect(sync.driverInstall(updateInfo)).to.deep.equal(expectedAction);
     });
   });
 
   describe('driverUpdateShellOpts', () => {
     const opts = {'url':'http://example.com'};
     test('should be an FSA', () => {
-      let action = syncActions.driverUpdateShellOpts(opts);
+      let action = sync.driverUpdateShellOpts(opts);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1415,7 +1365,7 @@ describe('Synchronous Actions', () => {
         payload: { opts },
         meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS]}
       };
-      expect(syncActions.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
+      expect(sync.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
     });
   });
 
@@ -1424,7 +1374,7 @@ describe('Synchronous Actions', () => {
       cfg = { config: 'value'},
       times = { time1: 'time' };
     test('should be an FSA', () => {
-      let action = syncActions.deviceTimeIncorrect(callback, cfg, times);
+      let action = sync.deviceTimeIncorrect(callback, cfg, times);
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1440,13 +1390,13 @@ describe('Synchronous Actions', () => {
           },
         },
       };
-      expect(syncActions.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
+      expect(sync.deviceTimeIncorrect(callback, cfg, times)).to.deep.equal(expectedAction);
     });
   });
 
   describe('dismissedDeviceTimePrompt', () => {
     test('should be an FSA', () => {
-      let action = syncActions.dismissedDeviceTimePrompt();
+      let action = sync.dismissedDeviceTimePrompt();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1455,13 +1405,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
         meta: {source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT]}
       };
-      expect(syncActions.dismissedDeviceTimePrompt()).to.deep.equal(expectedAction);
+      expect(sync.dismissedDeviceTimePrompt()).to.deep.equal(expectedAction);
     });
   });
 
   describe('timezoneBlur', () => {
     test('should be an FSA', () => {
-      let action = syncActions.timezoneBlur();
+      let action = sync.timezoneBlur();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1470,13 +1420,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.TIMEZONE_BLUR,
         meta: {source: actionSources[actionTypes.TIMEZONE_BLUR]}
       };
-      expect(syncActions.timezoneBlur()).to.deep.equal(expectedAction);
+      expect(sync.timezoneBlur()).to.deep.equal(expectedAction);
     });
   });
 
   describe('adHocPairingRequest', () => {
     test('should be an FSA', () => {
-      let action = syncActions.adHocPairingRequest();
+      let action = sync.adHocPairingRequest();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1488,13 +1438,13 @@ describe('Synchronous Actions', () => {
         type: actionTypes.AD_HOC_PAIRING_REQUEST,
         meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST]}
       };
-      expect(syncActions.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+      expect(sync.adHocPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
     });
   });
 
   describe('adHocPairingDismissed', () => {
     test('should be an FSA', () => {
-      let action = syncActions.dismissedAdHocPairingDialog();
+      let action = sync.dismissedAdHocPairingDialog();
       expect(isFSA(action)).to.be.true;
     });
 
@@ -1503,7 +1453,371 @@ describe('Synchronous Actions', () => {
         type: actionTypes.AD_HOC_PAIRING_DISMISSED,
         meta: {source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED]}
       };
-      expect(syncActions.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
+      expect(sync.dismissedAdHocPairingDialog()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('fetchPatientsForClinicRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.fetchPatientsForClinicRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENTS_FOR_CLINIC_REQUEST', () => {
+      let action = sync.fetchPatientsForClinicRequest();
+      expect(action.type).to.equal('FETCH_PATIENTS_FOR_CLINIC_REQUEST');
+    });
+  });
+
+  describe('fetchPatientsForClinicSuccess', () => {
+    let clinicId = 'clinicId';
+    let patients = [{clinicId: 'clinicId', patientId: 'patientId'}];
+    test('should be an FSA', () => {
+      let action = sync.fetchPatientsForClinicSuccess(patients);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENTS_FOR_CLINIC_SUCCESS', () => {
+      let action = sync.fetchPatientsForClinicSuccess(clinicId, patients);
+      expect(action.type).to.equal('FETCH_PATIENTS_FOR_CLINIC_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.patients).to.equal(patients);
+    });
+  });
+
+  describe('fetchPatientsForClinicFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error('fetching patients for clinic failed :(');
+      let action = sync.fetchPatientsForClinicFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENTS_FOR_CLINIC_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchPatientsForClinicFailure(error);
+      expect(action.type).to.equal('FETCH_PATIENTS_FOR_CLINIC_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('createClinicCustodialAccountRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.createClinicCustodialAccountRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST', () => {
+      let action = sync.createClinicCustodialAccountRequest();
+      expect(action.type).to.equal('CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST');
+    });
+  });
+
+  describe('createClinicCustodialAccountSuccess', () => {
+    let patient = {clinicId: 'clinicId', patientId: 'patientId', id: 'patientUserId'};
+    let clinicId = 'clinicId';
+    let patientId = 'patientId';
+    test('should be an FSA', () => {
+      let action = sync.createClinicCustodialAccountSuccess(clinicId, patient, patientId);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS', () => {
+      let action = sync.createClinicCustodialAccountSuccess(clinicId, patient, patientId);
+      expect(action.type).to.equal('CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS');
+      expect(action.payload.patient).to.equal(patient);
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.patientId).to.equal(patientId);
+    });
+  });
+
+  describe('createClinicCustodialAccountFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error('fetching patients for clinic failed :(');
+      let action = sync.createClinicCustodialAccountFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.createClinicCustodialAccountFailure(error);
+      expect(action.type).to.equal('CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('updateClinicPatientRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.updateClinicPatientRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_CLINIC_PATIENT_REQUEST', () => {
+      let action = sync.updateClinicPatientRequest();
+      expect(action.type).to.equal('UPDATE_CLINIC_PATIENT_REQUEST');
+    });
+  });
+
+  describe('updateClinicPatientSuccess', () => {
+    let clinicId = 'clinicId';
+    let patientId = 'patientId';
+    let patient = { permissions: ['VIEW'] };
+    test('should be an FSA', () => {
+      let action = sync.updateClinicPatientSuccess(clinicId, patientId, patient);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_CLINIC_PATIENT_SUCCESS', () => {
+      let action = sync.updateClinicPatientSuccess(clinicId, patientId, patient);
+      expect(action.type).to.equal('UPDATE_CLINIC_PATIENT_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.patientId).to.equal(patientId);
+      expect(action.payload.patient).to.equal(patient);
+    });
+  });
+
+  describe('updateClinicPatientFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error('updating clinic patient failed :(');
+      let action = sync.updateClinicPatientFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_CLINIC_PATIENT_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.updateClinicPatientFailure(error);
+      expect(action.type).to.equal('UPDATE_CLINIC_PATIENT_FAILURE');
+      expect(action.error).to.equal(true);
+    });
+  });
+
+  describe('updateProfileRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.updateProfileRequest();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_REQUEST', () => {
+      let action = sync.updateProfileRequest();
+      expect(action.type).to.equal('UPDATE_PROFILE_REQUEST');
+    });
+  });
+
+  describe('updateProfileSuccess', () => {
+    test('should be an FSA', () => {
+      let patient = {
+        name: 'Bruce Lee',
+        age: 24
+      };
+      let action = sync.updateProfileSuccess(patient, 'user123');
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_SUCCESS', () => {
+      let patient = {
+        name: 'Jackie Chan',
+        age: 24
+      };
+      let action = sync.updateProfileSuccess(patient, 'user123');
+
+      expect(action.type).to.equal('UPDATE_PROFILE_SUCCESS');
+      expect(action.payload.profile).to.equal(patient);
+      expect(action.payload.userId).to.equal('user123');
+    });
+  });
+
+  describe('updateProfileFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error(':(');
+      let action = sync.updateProfileFailure(error);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal UPDATE_PROFILE_FAILURE and error should equal passed error', () => {
+      let error = new Error(getUpdateProfileErrorMessage());
+      let action = sync.updateProfileFailure(error);
+
+      expect(action.type).to.equal('UPDATE_PROFILE_FAILURE');
+      expect(action.error).to.equal(true);
+      expect(action.payload.message).to.equal(error.message);
+    });
+  });
+
+  describe('fetchPatientRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.fetchPatientRequest();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENT_REQUEST', () => {
+      let action = sync.fetchPatientRequest();
+      expect(action.type).to.equal('FETCH_PATIENT_REQUEST');
+    });
+  });
+
+  describe('fetchPatientSuccess', () => {
+    test('should be an FSA', () => {
+      let patient = {
+        name: 'Bruce Lee',
+        age: 24
+      };
+      let action = sync.fetchPatientSuccess(patient);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENT_SUCCESS', () => {
+      let patient = {
+        name: 'Jackie Chan',
+        age: 24
+      };
+      let action = sync.fetchPatientSuccess(patient);
+
+      expect(action.type).to.equal('FETCH_PATIENT_SUCCESS');
+      expect(action.payload.patient).to.equal(patient);
+    });
+  });
+
+  describe('fetchPatientFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error(':(');
+      let action = sync.fetchPatientFailure(error);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_PATIENT_FAILURE and error should equal passed error', () => {
+      let error = new Error(':(');
+      let action = sync.fetchPatientFailure(error);
+
+      expect(action.type).to.equal('FETCH_PATIENT_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchAssociatedAccountsRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.fetchAssociatedAccountsRequest();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_ASSOCIATED_ACCOUNTS_REQUEST', () => {
+      let action = sync.fetchAssociatedAccountsRequest();
+      expect(action.type).to.equal('FETCH_ASSOCIATED_ACCOUNTS_REQUEST');
+    });
+  });
+
+  describe('fetchAssociatedAccountsSuccess', () => {
+    test('should be an FSA', () => {
+      let accounts = {
+        patients: [{
+          id: 20,
+          name: 'Bruce Lee',
+          age: 24
+        }],
+        dataDonationAccounts: [],
+        careTeam: [],
+      };
+      let action = sync.fetchAssociatedAccountsSuccess(accounts);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_ASSOCIATED_ACCOUNTS_SUCCESS', () => {
+      let accounts = {
+        patients: [{
+          id: 20,
+          name: 'Bruce Lee',
+          age: 24
+        }],
+        dataDonationAccounts: [],
+        careTeam: [],
+      };
+      let action = sync.fetchAssociatedAccountsSuccess(accounts);
+
+      expect(action.type).to.equal('FETCH_ASSOCIATED_ACCOUNTS_SUCCESS');
+      expect(action.payload.patients).to.equal(accounts.patients);
+    });
+  });
+
+  describe('fetchAssociatedAccountsFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error(':(');
+      let action = sync.fetchAssociatedAccountsFailure(error);
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal FETCH_ASSOCIATED_ACCOUNTS_FAILURE and error should equal passed error', () => {
+      let error = new Error(':(');
+      let action = sync.fetchAssociatedAccountsFailure(error);
+
+      expect(action.type).to.equal('FETCH_ASSOCIATED_ACCOUNTS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('getClinicsForClinicianRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.getClinicsForClinicianRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal GET_CLINICS_FOR_CLINICIAN_REQUEST', () => {
+      let action = sync.getClinicsForClinicianRequest();
+      expect(action.type).to.equal('GET_CLINICS_FOR_CLINICIAN_REQUEST');
+    });
+  });
+
+  describe('getClinicsForClinicianSuccess', () => {
+    let clinics = [
+      {id: 'clinicId', name: 'Clinic Name'},
+      {id: 'clinicId2', name: 'Clinic Name'},
+    ];
+    let clinicianId = 'clinician345';
+    test('should be an FSA', () => {
+      let action = sync.getClinicsForClinicianSuccess(clinics, clinicianId);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal GET_CLINICS_FOR_CLINICIAN_SUCCESS', () => {
+      let action = sync.getClinicsForClinicianSuccess(clinics, clinicianId);
+      expect(action.type).to.equal('GET_CLINICS_FOR_CLINICIAN_SUCCESS');
+      expect(action.payload.clinics).to.equal(clinics);
+      expect(action.payload.clinicianId).to.equal(clinicianId);
+    });
+  });
+
+  describe('getClinicsForClinicianFailure', () => {
+    test('should be an FSA', () => {
+      let error = new Error('deleting clinic clinician failed :(');
+      let action = sync.getClinicsForClinicianFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal GET_CLINICS_FOR_CLINICIAN_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.getClinicsForClinicianFailure(error);
+      expect(action.type).to.equal('GET_CLINICS_FOR_CLINICIAN_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('selectClinic', () => {
+    let clinicId = 'clinic123';
+    test('should be an FSA', () => {
+      let action = sync.selectClinic(clinicId);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('type should equal SELECT_CLINIC', () => {
+      let action = sync.selectClinic(clinicId);
+      expect(action.type).to.equal('SELECT_CLINIC');
+      expect(action.payload.clinicId).to.equal(clinicId);
     });
   });
 

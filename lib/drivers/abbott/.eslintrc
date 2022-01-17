@@ -18,7 +18,9 @@
     "operator-linebreak": "warn",
     "no-else-return": "warn",
     "object-curly-newline": "warn",
-    "implicit-arrow-linebreak": "warn"
+    "implicit-arrow-linebreak": "warn",
+    "no-param-reassign": "warn",
+    "no-restricted-syntax": "warn"
   },
   "overrides": [
     {

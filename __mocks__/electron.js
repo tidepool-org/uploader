@@ -7,5 +7,6 @@ function getGlobal(string) {
 }
 
 electron.remote = { getGlobal };
+electron.ipcRenderer = {send: () => null, on: () => null};
 
 module.exports = electron;

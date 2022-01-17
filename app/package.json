@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.38.1-equil.3",
+  "version": "2.42.0",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
@@ -19,8 +19,5 @@
   },
   "resolutions": {
     "@serialport/bindings": "9.0.7"
-  },
-  "optionalDependencies": {
-    "winreg": "1.2.4"
   }
 }

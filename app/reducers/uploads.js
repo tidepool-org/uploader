@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
 
-import * as actionTypes from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 import { steps } from '../constants/otherConstants';
 
 function isPwd(membership) {
@@ -27,23 +27,18 @@ function isPwd(membership) {
 
 export function uploadProgress(state = null, action) {
   switch (action.type) {
-    case actionTypes.CARELINK_FETCH_REQUEST:
-      return {
-        percentage: 0,
-        step: steps.carelinkFetch
-      };
-    case actionTypes.DEVICE_DETECT_REQUEST:
+    case types.DEVICE_DETECT_REQUEST:
       return {
         percentage: 0,
         step: steps.detect
       };
-    case actionTypes.UPLOAD_FAILURE:
-    case actionTypes.UPLOAD_SUCCESS:
-    case actionTypes.UPLOAD_CANCELLED:
+    case types.UPLOAD_FAILURE:
+    case types.UPLOAD_SUCCESS:
+    case types.UPLOAD_CANCELLED:
       return null;
-    case actionTypes.UPLOAD_PROGRESS:
+    case types.UPLOAD_PROGRESS:
       return Object.assign({}, state, action.payload);
-    case actionTypes.UPLOAD_REQUEST:
+    case types.UPLOAD_REQUEST:
       return {
         percentage: 0,
         step: steps.start
@@ -55,39 +50,7 @@ export function uploadProgress(state = null, action) {
 
 export function uploadsByUser(state = {}, action) {
   switch (action.type) {
-    case actionTypes.CARELINK_FETCH_FAILURE:
-      let uploadTargetUser;
-      const uploadTargetDevice = 'carelink';
-      _.forOwn(state, (uploads, userId) => {
-        _.forOwn(uploads, (upload, deviceKey) => {
-          if (deviceKey === 'carelink' && upload.isFetching === true) {
-            uploadTargetUser = userId;
-          }
-        });
-      });
-      if (uploadTargetUser) {
-        return update(
-          state,
-          {[uploadTargetUser]: {[uploadTargetDevice]: {
-            isFetching: {$set: false}
-          }}}
-        );
-      }
-    case actionTypes.CARELINK_FETCH_REQUEST: {
-      const { userId, deviceKey } = action.payload;
-      return update(
-        state,
-        {[userId]: {[deviceKey]: {isFetching: {$set: true}}}}
-      );
-    }
-    case actionTypes.CARELINK_FETCH_SUCCESS: {
-      const { userId, deviceKey } = action.payload;
-      return update(
-        state,
-        {[userId]: {[deviceKey]: {isFetching: {$set: false}}}}
-      );
-    }
-    case actionTypes.CHOOSING_FILE: {
+    case types.CHOOSING_FILE: {
       const { userId, deviceKey } = action.payload;
       let newState = state;
       let devicesForCurrentUser = _.get(state, [userId], {});
@@ -114,7 +77,7 @@ export function uploadsByUser(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.READ_FILE_ABORTED: {
+    case types.READ_FILE_ABORTED: {
       const err = action.payload;
       let uploadTargetUser, uploadTargetDevice;
       let newState = state;
@@ -155,7 +118,7 @@ export function uploadsByUser(state = {}, action) {
       }
       return newState;
     }
-    case actionTypes.READ_FILE_FAILURE: {
+    case types.READ_FILE_FAILURE: {
       const err = action.payload;
       let uploadTargetUser, uploadTargetDevice;
       _.forOwn(state, (uploads, userId) => {
@@ -178,7 +141,7 @@ export function uploadsByUser(state = {}, action) {
         );
       }
     }
-    case actionTypes.READ_FILE_REQUEST: {
+    case types.READ_FILE_REQUEST: {
       const { userId, deviceKey, filename } = action.payload;
       return update(
         state,
@@ -189,7 +152,7 @@ export function uploadsByUser(state = {}, action) {
         }}}
       );
     }
-    case actionTypes.READ_FILE_SUCCESS: {
+    case types.READ_FILE_SUCCESS: {
       const { userId, deviceKey, filedata } = action.payload;
       return update(
         state,
@@ -199,7 +162,7 @@ export function uploadsByUser(state = {}, action) {
         }}}
       );
     }
-    case actionTypes.RESET_UPLOAD: {
+    case types.RESET_UPLOAD: {
       const { userId, deviceKey } = action.payload;
       const uploadInProgress = _.some(
         _.get(state, [userId], {}),
@@ -238,7 +201,7 @@ export function uploadsByUser(state = {}, action) {
         );
       }
     }
-    case actionTypes.SET_UPLOADS:
+    case types.SET_UPLOADS:
       const { devicesByUser } = action.payload;
       let newState = state;
       _.forOwn(devicesByUser, (deviceKeys, userId) => {
@@ -279,14 +242,14 @@ export function uploadsByUser(state = {}, action) {
         }
       });
       return newState;
-    case actionTypes.TOGGLE_ERROR_DETAILS: {
+    case types.TOGGLE_ERROR_DETAILS: {
       const { userId, deviceKey, isVisible } = action.payload;
       return update(
         state,
         {[userId]: {[deviceKey]: {showErrorDetails: {$set: isVisible}}}}
       );
     }
-    case actionTypes.UPLOAD_CANCELLED: {
+    case types.UPLOAD_CANCELLED: {
       const { utc } = action.payload;
       let uploadTargetUser, uploadTargetDevice;
       _.forOwn(state, (uploads, userId) => {
@@ -326,7 +289,7 @@ export function uploadsByUser(state = {}, action) {
         return newState;
       }
     }
-    case actionTypes.UPLOAD_FAILURE: {
+    case types.UPLOAD_FAILURE: {
       const err = action.payload;
       let uploadTargetUser, uploadTargetDevice;
       _.forOwn(state, (uploads, userId) => {
@@ -368,7 +331,7 @@ export function uploadsByUser(state = {}, action) {
         return newState;
       }
     }
-    case actionTypes.UPLOAD_REQUEST: {
+    case types.UPLOAD_REQUEST: {
       const { userId, deviceKey, utc } = action.payload;
       let newState = state;
       let devicesForCurrentUser = _.get(state, [userId], {});
@@ -396,7 +359,7 @@ export function uploadsByUser(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.UPLOAD_SUCCESS: {
+    case types.UPLOAD_SUCCESS: {
       const { userId, deviceKey, data, utc } = action.payload;
       let newState = state;
       let devicesForCurrentUser = _.get(state, [userId], {});
@@ -426,7 +389,7 @@ export function uploadsByUser(state = {}, action) {
       });
       return newState;
     }
-    case actionTypes.ADD_TARGET_DEVICE: {
+    case types.ADD_TARGET_DEVICE: {
       const { userId, deviceKey } = action.payload;
       let newState = state;
       if (_.get(newState, userId, null) === null) {
@@ -447,7 +410,7 @@ export function uploadsByUser(state = {}, action) {
       }
       return newState;
     }
-    case actionTypes.REMOVE_TARGET_DEVICE: {
+    case types.REMOVE_TARGET_DEVICE: {
       const { userId, deviceKey } = action.payload;
       let newState = state;
       if (_.get(newState, [userId, deviceKey], null) !== null) {
@@ -461,8 +424,8 @@ export function uploadsByUser(state = {}, action) {
       }
       return newState;
     }
-    case actionTypes.LOGIN_SUCCESS:
-    case actionTypes.SET_USER_INFO_FROM_TOKEN: {
+    case types.LOGIN_SUCCESS:
+    case types.SET_USER_INFO_FROM_TOKEN: {
       const { memberships } = action.payload;
       let newState = state;
       _.each(memberships, (membership) => {
@@ -510,6 +473,16 @@ export function uploadsByUser(state = {}, action) {
       });
       return newState;
     }
+    case types.FETCH_PATIENTS_FOR_CLINIC_SUCCESS: {
+      const { patients } = action.payload;
+      let newState = _.cloneDeep(state);
+      _.each(patients, (patient) => {
+        _.each(_.get(patient, 'targetDevices', []), (targetDevice) => {
+          _.set(newState, [patient.id, targetDevice], { history: [] });
+        });
+      });
+      return newState;
+    }
     default:
       return state;
   }
@@ -517,15 +490,15 @@ export function uploadsByUser(state = {}, action) {
 
 export function uploadTargetDevice(state = null, action) {
   switch (action.type) {
-    case actionTypes.CHOOSING_FILE:
-    case actionTypes.UPLOAD_REQUEST: {
+    case types.CHOOSING_FILE:
+    case types.UPLOAD_REQUEST: {
       const { deviceKey } = action.payload;
       return deviceKey;
     }
-    case actionTypes.READ_FILE_ABORTED:
-    case actionTypes.READ_FILE_FAILURE:
-    case actionTypes.UPLOAD_FAILURE:
-    case actionTypes.UPLOAD_SUCCESS:
+    case types.READ_FILE_ABORTED:
+    case types.READ_FILE_FAILURE:
+    case types.UPLOAD_FAILURE:
+    case types.UPLOAD_SUCCESS:
       return null;
     default:
       return state;
