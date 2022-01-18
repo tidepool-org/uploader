@@ -93,6 +93,13 @@ const devices = {
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
+  weitai: {
+    instructions: 'Plug in PDA with micro-USB',
+    name: 'Equil Insulin Patch/Micro Pump',
+    key: 'weitai',
+    source: {type: 'device', driverId: 'Weitai'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   glucocardexpression: {
     instructions: {
                     text: i18n.t('Plug in meter with cable and set meter to'),
