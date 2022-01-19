@@ -997,12 +997,8 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
     dispatch(sync.createClinicCustodialAccountRequest());
     api.clinics.createClinicCustodialAccount(clinicId, patient, (err, result) => {
       if (err) {
-        let message = ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT;
-        if(err.status === 409){
-          message = ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS;
-        }
         dispatch(sync.createClinicCustodialAccountFailure(
-          createActionError(message, err), err
+          createActionError(ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT, err), err
         ));
       } else {
         dispatch(sync.createClinicCustodialAccountSuccess(clinicId, result, result.id));

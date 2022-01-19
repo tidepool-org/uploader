@@ -25,7 +25,11 @@ import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
-import { getUpdateProfileErrorMessage, UnsupportedError } from '../../../app/utils/errors';
+import {
+  getCreateCustodialAccountErrorMessage,
+  getUpdateProfileErrorMessage,
+  UnsupportedError,
+} from '../../../app/utils/errors';
 import ErrorMessages from '../../../app/constants/errorMessages';
 
 describe('Synchronous Actions', () => {
@@ -1541,7 +1545,7 @@ describe('Synchronous Actions', () => {
       let error = new Error('stink :(');
       let action = sync.createClinicCustodialAccountFailure(error);
       expect(action.type).to.equal('CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE');
-      expect(action.error).to.equal(error);
+      expect(action.error).to.deep.include({message:getCreateCustodialAccountErrorMessage()});
     });
   });
 

@@ -4493,7 +4493,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
 
       const actions = store.getActions();
-      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT });
+      expect(actions[1].error).to.deep.include({ message: getCreateCustodialAccountErrorMessage(500) });
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
     });
@@ -4508,7 +4508,7 @@ describe('Asynchronous Actions', () => {
         log: _.noop
       });
 
-      let err = new Error(ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS);
+      let err = new Error(getCreateCustodialAccountErrorMessage(409));
       err.status = 409;
 
       let expectedActions = [
@@ -4522,7 +4522,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
 
       const actions = store.getActions();
-      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT_EMAIL_EXISTS });
+      expect(actions[1].error).to.deep.include({ message:  getCreateCustodialAccountErrorMessage(409)});
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
     });
