@@ -11,6 +11,7 @@
     "prefer-template": "warn",
     "no-param-reassign": "warn",
     "no-restricted-syntax": "warn",
+    "import/no-extraneous-dependencies": "warn",
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
