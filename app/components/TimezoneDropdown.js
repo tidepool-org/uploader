@@ -24,6 +24,9 @@ var cx = require('classnames');
 
 var styles = require('../../styles/components/TimezoneDropdown.module.less');
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 class TimezoneDropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +48,7 @@ class TimezoneDropdown extends React.Component {
     updateProfileErrorMessage: PropTypes.string,
     updateProfileErrorDismissed: PropTypes.bool,
     dismissUpdateProfileError: PropTypes.func.isRequired,
-    isClinicAccount: PropTypes.bool,
+    renderClinicUi: PropTypes.bool,
     userDropdownShowing: PropTypes.bool,
     isUploadInProgress: PropTypes.bool.isRequired,
     onBlur: PropTypes.func.isRequired,
@@ -102,7 +105,7 @@ class TimezoneDropdown extends React.Component {
         onChange={this.props.onTimezoneChange.bind(null, targetUser)}
         options={opts}
         simpleValue={true}
-        placeholder={'Type to search...'}
+        placeholder={i18n.t('Type to search...')}
         value={this.props.targetTimezone}
         disabled={this.props.isUploadInProgress}
         ref={this.setTimezoneSelect} />
@@ -111,15 +114,19 @@ class TimezoneDropdown extends React.Component {
 
   renderSuggestedTime = () => {
     if(this.props.targetTimezone){
+      let textClinic = i18n.t('The device times should be approximately');
+      let textPatient = i18n.t('Your device times should be approximately');
+      let text = this.props.renderClinicUi ? textClinic : textPatient;
+      let timez = this.props.targetTimezone;
       return (
         <div className={styles.timeDetail}>
-          {this.props.isClinicAccount ? 'The ' : 'Your '} device times should be approximately {sundial.formatInTimezone(new Date(), this.props.targetTimezone, 'h:mm a')}
+          {text} {sundial.formatInTimezone(new Date(), timez, 'LT')}
         </div>
       );
     } else {
       return (
         <div className={styles.timeDetail}>
-          Please select a time zone.
+          {i18n.t('Please select a time zone.')}
         </div>
       );
     }
@@ -138,7 +145,7 @@ class TimezoneDropdown extends React.Component {
 
   render() {
     var timezoneClasses = cx({
-      [styles.clinic]: this.props.isClinicAccount,
+      [styles.clinic]: this.props.renderClinicUi,
       [styles.userDropdownShowing]: this.props.userDropdownShowing,
       [styles.timezoneDropdown]: true
     });

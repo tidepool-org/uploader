@@ -1,7 +1,6 @@
 # Tidepool Uploader
 
 
-
 [![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
 [![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
@@ -18,6 +17,7 @@ This README is focused on just the details of getting the uploader running local
 - [Linting & Code Style](#linting--code-style)
 - [Docs](#docs)
 - [Publishing](#publishing)
+- [Use of LGPL libraries](#use-of-lgpl-libraries)
 
 * * * * *
 
@@ -228,6 +228,8 @@ To package the app on your local machine, you need to set the `ROLLBAR_POST_TOKE
 
 macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables `APPLEID` and `APPLEIDPASS`. Note that you need to set an app-specific password in https://appleid.apple.com for this to work.
 
+Note that you'll need to build Windows builds on a Windows machine, and MacOS builds on a Mac.
+
 ## Further commands
 
 To run the application without packaging run
@@ -255,3 +257,39 @@ This project uses a [two package.json structure](https://github.com/electron-use
 1. If the module is native to a platform or otherwise should be included with the published package (i.e. bcrypt, openbci), it should be listed under `dependencies` in `./app/package.json`.
 2. If a module is `import`ed by another module, include it in `dependencies` in `./package.json`.   See [this ESLint rule](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md).
 3. Otherwise, modules used for building, testing and debugging should be included in `devDependencies` in `./package.json`.
+
+## Use of LGPL libraries
+
+Tidepool Uploader makes use of the following LGPL-licensed libraries:
+
+- libmtp (http://libmtp.sourceforge.net/)
+- LZO implementation in libavutil, which is part of FFmpeg (https://github.com/FFmpeg/FFmpeg/tree/master/libavutil)
+
+These libraries are used in the following Node.js modules created by Tidepool and are dependencies of the Tidepool Uploader:
+
+- https://github.com/tidepool-org/node-mtp (libmtp)
+- https://github.com/tidepool-org/lzo-decompress (libavutil)
+
+The LGPL is intended to allow use of libraries in applications that don’t necessarily distribute the source of the application. The LGPL has two requirements:
+
+- users must have access to the source code of the library
+- users can make use of modified versions of the library
+
+To satisfy (1) we provide links to the relevant code repositories. To satisfy (2) we dynamically link to the library, so that it’s possible to swap it out for another version of the library.
+
+### Impact on Tidepool
+
+Compile FFmpeg ourselves to ensure that we’re using the LGPL version and only include the minimal set of libraries
+Use dynamic linking (e.g. on Windows this means using a .dll, and on MacOS a .dylib) when linking to these libraries
+Mention that the software uses libraries from the FFmpeg project and libmtp under the LGPLv3, e.g. `This software uses code of <a href=http://ffmpeg.org>FFmpeg</a> and <a href=”http://libmtp.sourceforge.net/”>libmtp</a> licensed under the <a href=a href=https://www.gnu.org/licenses/lgpl.html>LGPLv3</a> and its source can be downloaded <a href=”https://github.com/FFmpeg/FFmpeg/tree/master/libavutil”>here</a> and <a href=”https://sourceforge.net/projects/libmtp/”>here</a>`
+
+
+### Impact on 3rd parties
+
+If your EULA claims ownership over the code, you have to explicitly mention that you do not own FFmpeg or libmtp, and where the relevant owners can be found.
+
+
+### References
+
+- [LGPL v3 License Text](https://www.gnu.org/licenses/lgpl.html) (on gnu.org)
+- [LGPL on Wikipedia](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License)

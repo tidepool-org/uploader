@@ -24,6 +24,9 @@ import Upload from './Upload';
 
 import styles from '../../styles/components/UploadList.module.less';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export default class UploadList extends Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
@@ -41,17 +44,19 @@ export default class UploadList extends Component {
     readFile: PropTypes.func.isRequired,
     toggleErrorDetails: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
-    isClinicAccount: PropTypes.bool.isRequired,
     onChooseDevices: PropTypes.func.isRequired,
     timezoneIsSelected: PropTypes.bool.isRequired,
-    isUploadInProgress: PropTypes.bool.isRequired
+    isUploadInProgress: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
+    renderClinicUi: PropTypes.bool.isRequired,
+    showingUserSelectionDropdown: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
     text: {
-      SHOW_ERROR : 'Error details',
-      HIDE_ERROR : 'Hide details',
-      UPLOAD_FAILED : 'Upload Failed: '
+      SHOW_ERROR : i18n.t('Error details'),
+      HIDE_ERROR : i18n.t('Hide details'),
+      UPLOAD_FAILED : i18n.t('Upload Failed')
     }
   };
 
@@ -64,7 +69,7 @@ export default class UploadList extends Component {
       [styles.onlyme]: !this.props.userDropdownShowing,
       [styles.selectuser]: this.props.userDropdownShowing,
       [styles.profileError]: this.props.updateProfileErrorMessage,
-      [styles.clinic]: this.props.isClinicAccount
+      [styles.clinic]: this.props.renderClinicUi
     });
 
     const wrapClasses = cx({
@@ -74,12 +79,11 @@ export default class UploadList extends Component {
 
     const { disabled, onReset, onUpload, targetId } = this.props;
 
-    const headlineText = this.props.isClinicAccount ? 'Devices' : 'Upload Devices';
+    const headlineText = this.props.renderClinicUi ? i18n.t('Devices') : i18n.t('Upload Devices');
     const medtronicEnabled = _.findIndex(this.props.uploads, {key:'medtronic'}) === -1 ? false : true;
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
-        //only show carelink if medtronic direct is not enabled
-        if (upload.key === 'carelink' && medtronicEnabled) {
+        if (upload.key === 'carelink') {
           return;
         }
         return (
@@ -94,7 +98,8 @@ export default class UploadList extends Component {
               onDone={this.props.onDone}
               onReset={onReset.bind(null, targetId, upload.key)}
               onUpload={onUpload.bind(null, upload.key)}
-              readFile={this.props.readFile.bind(null, targetId, upload.key)} />
+              readFile={this.props.readFile.bind(null, targetId, upload.key)}
+              selectedClinicId={this.props.selectedClinicId} />
             {this.renderErrorForUpload(upload)}
           </div>
         );
@@ -125,8 +130,8 @@ export default class UploadList extends Component {
       (<div>{upload.error.debug}</div>) : null;
     const errorMessage = (
       <div className={styles.errorMessageWrapper}>
-        <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}</span>
-        <span className={styles.errorMessageFriendly}>{upload.error.message}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
+        <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}: </span>
+        <span className={styles.errorMessageFriendly}>{i18n.t(upload.error.message)}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
       </div>
     );
     const showErrorsText = upload.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
@@ -154,7 +159,7 @@ export default class UploadList extends Component {
   }
 
   renderChooseDeviceLink(){
-    if(this.props.isClinicAccount){
+    if(this.props.renderClinicUi || this.props.showingUserSelectionDropdown){
       var classes = cx({
         [styles.chooseDeviceLink]: true,
         [styles.linkDisabled]: this.props.isUploadInProgress
@@ -162,7 +167,7 @@ export default class UploadList extends Component {
       return (
         <div className={classes}
           onClick={this.props.isUploadInProgress ? this.noopHandler : this.props.onChooseDevices}>
-            Change Devices
+            {i18n.t('Change Devices')}
         </div>
       );
     } else {

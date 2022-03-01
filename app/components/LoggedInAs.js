@@ -18,6 +18,16 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+import personUtils from '../../lib/core/personUtils';
+import api from '../../lib/core/api';
+import * as metrics from '../constants/metrics';
+
+import ListIcon from '@material-ui/icons/List';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import BusinessIcon from '@material-ui/icons/Business';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
@@ -30,8 +40,16 @@ export default class LoggedInAs extends Component {
     onClicked: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired,
     user: PropTypes.object,
-    isClinicAccount: PropTypes.bool,
-    targetUsersForUpload: PropTypes.array
+    targetUsersForUpload: PropTypes.array,
+    clinics: PropTypes.object,
+    hasPrivateWorkspace: PropTypes.bool,
+    onWorkspaceSwitch: PropTypes.func.isRequired,
+    goToPrivateWorkspace: PropTypes.func.isRequired,
+    switchToClinic: PropTypes.func.isRequired,
+    isClinicMember: PropTypes.bool.isRequired,
+    uploadTargetUser: PropTypes.string,
+    loggedInUser: PropTypes.string.isRequired,
+    selectedClinicId: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -71,24 +89,41 @@ export default class LoggedInAs extends Component {
     });
   };
 
+  handleWorkspaces = e => {
+    e.preventDefault();
+    let metricProps = this.props.selectedClinicId ? { clinicId: this.props.selectedClinicId } : {};
+    api.metrics.track(metrics.WORKSPACE_MENU_CHANGE, metricProps);
+    this.props.onWorkspaceSwitch();
+  };
+
+  handleSwitchToPrivate = e => {
+    e.preventDefault();
+    this.props.goToPrivateWorkspace();
+  }
+
+  handleSwitchToClinic = clinic => {
+    api.metrics.track(metrics.WORKSPACE_MENU_SWITCH, { clinicId: clinic.id});
+    this.props.switchToClinic(clinic);
+  }
+
   renderChooseDevices() {
     var title = '';
     var uploadInProgress = this.props.isUploadInProgress;
     var isDisabled = uploadInProgress;
+    var {hasPrivateWorkspace, loggedInUser, uploadTargetUser} = this.props;
 
-    if (this.props.isClinicAccount) {
+    if(uploadTargetUser !== loggedInUser) {
       return null;
     }
 
-    if (_.isEmpty(this.props.targetUsersForUpload)) {
-      isDisabled = true;
+    if (_.isEmpty(this.props.targetUsersForUpload) && !hasPrivateWorkspace) {
+     isDisabled = true;
     }
 
-
     if (uploadInProgress) {
-      title = 'Upload in progress!\nPlease wait to change device selection.';
+      title = i18n.t('Upload in progress!\nPlease wait to change device selection.');
     } else if (isDisabled) {
-      title = 'Set up data storage to upload devices.';
+      title = i18n.t('Set up data storage to upload devices.');
     }
 
     return (
@@ -99,7 +134,7 @@ export default class LoggedInAs extends Component {
           onClick={isDisabled ? this.noopHandler : this.handleChooseDevices}
           title={title}>
           <i className={styles.editIcon}></i>
-          Choose Devices
+          {i18n.t('Choose Devices')}
         </a>
       </li>
     );
@@ -111,12 +146,63 @@ export default class LoggedInAs extends Component {
         <a className={styles.link}
           onClick={this.handleCheckForUpdates}
           href=""
-          title="Check for Updates">
+          title={i18n.t('Check for Updates')}>
           <i className={styles.updateIcon}></i>
-          Check for Updates
+          {i18n.t('Check for Updates')}
         </a>
       </li>
     );
+  }
+
+  renderWorkspaces() {
+    var {clinics, hasPrivateWorkspace} = this.props;
+    var clinicIds = _.keys(clinics);
+    if(clinicIds.length > 1){
+      return (
+        <li>
+          <a className={styles.muiLink}
+          onClick={this.handleWorkspaces}
+          href=""
+          title={i18n.t('Change Workspace')}>
+            <ListIcon classes={{root:styles.workspaceSwitchIcon}} fontSize='inherit'/>
+            {i18n.t('Change Workspace')}
+          </a>
+        </li>
+      );
+    }
+    if(clinicIds.length == 1 && hasPrivateWorkspace){
+      return (
+        <li>
+          <a className={styles.muiLink}
+          onClick={(e) => {
+            e.preventDefault();
+            this.handleSwitchToClinic(clinics[clinicIds[0]]);
+          }}
+          href=""
+          title={clinics[clinicIds[0]].name}>
+            <BusinessIcon classes={{root:styles.workspaceSwitchIcon}} fontSize='inherit'/>
+            {clinics[clinicIds[0]].name}
+          </a>
+        </li>
+      );
+    }
+  }
+
+  renderPrivateWorkspace() {
+    var {hasPrivateWorkspace, isClinicMember} = this.props;
+    if(hasPrivateWorkspace && isClinicMember) {
+      return (
+        <li>
+          <a className={styles.muiLink}
+            onClick={this.handleSwitchToPrivate}
+            href=""
+            title={i18n.t('Private Workspace')}>
+              <SupervisedUserCircleIcon classes={{root:styles.privateWorkspaceIcon}} fontSize='inherit' />
+              {i18n.t('Private Workspace')}
+            </a>
+        </li>
+      );
+    }
   }
 
   renderLogout() {
@@ -131,9 +217,9 @@ export default class LoggedInAs extends Component {
         disabled={uploadInProgress}
         href=""
         onClick={uploadInProgress ? this.noopHandler : this.handleLogout}
-        title={uploadInProgress ? 'Upload in progress!\nPlease wait to log out.' : ''}>
+        title={uploadInProgress ? i18n.t('Upload in progress!\nPlease wait to log out.') : ''}>
         <i className={styles.logoutIcon}></i>
-        Logout
+        {i18n.t('Logout')}
       </a>
     );
   }
@@ -147,6 +233,8 @@ export default class LoggedInAs extends Component {
         <ul>
           {this.renderChooseDevices()}
           {this.renderCheckForUpdates()}
+          {this.renderWorkspaces()}
+          {this.renderPrivateWorkspace()}
           <li>{this.renderLogout()}</li>
         </ul>
       </div>
@@ -155,13 +243,13 @@ export default class LoggedInAs extends Component {
 
   render() {
     var dropMenu = this.props.dropMenu ? this.renderDropMenu() : null;
-    var user = this.props.user;
+    var {user} = this.props;
 
     return (
       <div className={styles.wrapper}>
         <div className={styles.main} onClick={this.props.onClicked}>
-          <span className={styles.name}>{_.get(user, 'fullName', '')}</span>
-          <i className={styles.downArrow}></i>
+          <span className={styles.name}>{personUtils.patientFullName(user)}</span>
+          <ArrowDropDownIcon />
         </div>
         {dropMenu}
       </div>

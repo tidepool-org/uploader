@@ -26,6 +26,9 @@ import styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
 
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
+
 export class AdHocModal extends Component {
   handleContinue = () => {
     const { showingAdHocPairingDialog, sync } = this.props;
@@ -44,17 +47,17 @@ export class AdHocModal extends Component {
       <div className={styles.modalWrap}>
         <div className={styles.modal}>
           <div className={styles.title}>
-            <div>{'Allow the connection on the pump:'}</div>
+            <div>{i18n.t('Allow the connection on the pump:')}</div>
           </div>
           <hr className={styles.hr} />
           <div className={styles.text}>
             <div className={styles.body}>
               <div className={styles.step}>
-                <div><span className={styles.numeral}>1.</span> Scroll down</div>
+                <div><span className={styles.numeral}>1.</span> {i18n.t('Scroll down')}</div>
                 <div><img className={styles.image} src={step1_img} /></div>
               </div>
               <div className={styles.step}>
-                <div><span className={styles.numeral}>2.</span> Select "Yes"</div>
+                <div><span className={styles.numeral}>2.</span> {i18n.t('Select \"Yes\"')}</div>
                 <div><img className={styles.image} src={step2_img} /></div>
               </div>
             </div>
@@ -62,7 +65,7 @@ export class AdHocModal extends Component {
           <hr className={styles.hr} />
           <div className={styles.actions}>
             <button className={styles.buttonSecondary} onClick={this.handleContinue}>
-              Continue
+              {i18n.t('Continue')}
             </button>
           </div>
         </div>

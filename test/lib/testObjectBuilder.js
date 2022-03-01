@@ -233,7 +233,6 @@ describe('objectBuilder.js', () => {
       expect(resumeMeta.reason).to.equal(REQUIRED);
 
       expect(resumeMeta.clockDriftOffset).to.equal(OPTIONAL);
-      expect(resumeMeta.previous).to.equal(OPTIONAL);
       expect(resumeMeta.payload).to.equal(OPTIONAL);
     });
   });
@@ -261,7 +260,6 @@ describe('objectBuilder.js', () => {
       expect(suspendMeta.reason).to.equal(REQUIRED);
 
       expect(suspendMeta.clockDriftOffset).to.equal(OPTIONAL);
-      expect(suspendMeta.previous).to.equal(OPTIONAL);
       expect(suspendMeta.payload).to.equal(OPTIONAL);
     });
   });
@@ -341,12 +339,109 @@ describe('objectBuilder.js', () => {
       expect(food.timezoneOffset).to.equal(REQUIRED);
       expect(food.conversionOffset).to.equal(REQUIRED);
       expect(food.deviceTime).to.equal(REQUIRED);
-      expect(food.carbs).to.equal(REQUIRED);
+      expect(food.amount).to.equal(OPTIONAL);
+      expect(food.brand).to.equal(OPTIONAL);
+      expect(food.code).to.equal(OPTIONAL);
+      expect(food.ingredients).to.equal(OPTIONAL);
+      expect(food.meal).to.equal(OPTIONAL);
+      expect(food.mealOther).to.equal(OPTIONAL);
+      expect(food.name).to.equal(OPTIONAL);
+      expect(food.nutrition).to.equal(OPTIONAL);
 
       expect(food.clockDriftOffset).to.equal(OPTIONAL);
       expect(food.payload).to.equal(OPTIONAL);
     });
   });
+
+  describe('makeInsulin', () => {
+
+    var defaults = {deviceId:'makeInsulin'};
+
+    beforeEach(() => {
+      bob = objectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    test('works', () => {
+      var insulin = bob.makeInsulin();
+
+      expect(insulin.deviceId).to.equal(defaults.deviceId);
+      expect(insulin.type).to.equal('insulin');
+      expect(insulin.time).to.equal(REQUIRED);
+      expect(insulin.timezoneOffset).to.equal(REQUIRED);
+      expect(insulin.conversionOffset).to.equal(REQUIRED);
+      expect(insulin.deviceTime).to.equal(REQUIRED);
+      expect(insulin.dose).to.equal(OPTIONAL);
+      expect(insulin.formulation).to.equal(OPTIONAL);
+      expect(insulin.site).to.equal(OPTIONAL);
+
+      expect(insulin.clockDriftOffset).to.equal(OPTIONAL);
+      expect(insulin.payload).to.equal(OPTIONAL);
+    });
+  });
+
+  describe('makeReportedState', () => {
+
+    var defaults = {deviceId:'reportedState'};
+
+    beforeEach(() => {
+      bob = objectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    test('works', () => {
+      var state = bob.makeReportedState();
+
+      expect(state.deviceId).to.equal(defaults.deviceId);
+      expect(state.type).to.equal('reportedState');
+      expect(state.time).to.equal(REQUIRED);
+      expect(state.timezoneOffset).to.equal(REQUIRED);
+      expect(state.conversionOffset).to.equal(REQUIRED);
+      expect(state.deviceTime).to.equal(REQUIRED);
+      expect(state.states).to.deep.equal([]);
+
+      expect(state.clockDriftOffset).to.equal(OPTIONAL);
+      expect(state.payload).to.equal(OPTIONAL);
+    });
+  });
+
+  describe('makePhysicalActivity', () => {
+
+    var defaults = {deviceId:'physicalActivity'};
+
+    beforeEach(() => {
+      bob = objectBuilder();
+      bob.setDefaults(defaults);
+    });
+
+    test('works', () => {
+      var state = bob.makePhysicalActivity();
+
+      expect(state.deviceId).to.equal(defaults.deviceId);
+      expect(state.type).to.equal('physicalActivity');
+      expect(state.time).to.equal(REQUIRED);
+      expect(state.timezoneOffset).to.equal(REQUIRED);
+      expect(state.conversionOffset).to.equal(REQUIRED);
+      expect(state.deviceTime).to.equal(REQUIRED);
+
+      expect(state.activityType).to.equal(OPTIONAL);
+      expect(state.activityTypeOther).to.equal(OPTIONAL);
+      expect(state.aggregate).to.equal(OPTIONAL);
+      expect(state.distance).to.equal(OPTIONAL);
+      expect(state.duration).to.equal(OPTIONAL);
+      expect(state.elevationChange).to.equal(OPTIONAL);
+      expect(state.energy).to.equal(OPTIONAL);
+      expect(state.flight).to.equal(OPTIONAL);
+      expect(state.lap).to.equal(OPTIONAL);
+      expect(state.name).to.equal(OPTIONAL);
+      expect(state.reportedIntensity).to.equal(OPTIONAL);
+      expect(state.step).to.equal(OPTIONAL);
+
+      expect(state.clockDriftOffset).to.equal(OPTIONAL);
+      expect(state.payload).to.equal(OPTIONAL);
+    });
+  });
+
 
   describe('makeNormalBolus', () => {
 
@@ -453,7 +548,6 @@ describe('objectBuilder.js', () => {
 
       expect(schedBasal.scheduleName).to.equal(OPTIONAL);
       expect(schedBasal.clockDriftOffset).to.equal(OPTIONAL);
-      expect(schedBasal.previous).to.equal(OPTIONAL);
       expect(schedBasal.payload).to.equal(OPTIONAL);
       expect(schedBasal.expectedDuration).to.equal(OPTIONAL);
     });
@@ -539,7 +633,6 @@ describe('objectBuilder.js', () => {
       expect(suspendBasal.clockDriftOffset).to.equal(OPTIONAL);
       expect(suspendBasal.duration).to.equal(OPTIONAL);
       expect(suspendBasal.suppressed).to.equal(OPTIONAL);
-      expect(suspendBasal.previous).to.equal(OPTIONAL);
       expect(suspendBasal.payload).to.equal(OPTIONAL);
       expect(suspendBasal.expectedDuration).to.equal(OPTIONAL);
     });
@@ -569,7 +662,6 @@ describe('objectBuilder.js', () => {
       expect(temp.clockDriftOffset).to.equal(OPTIONAL);
       expect(temp.rate).to.equal(OPTIONAL);
       expect(temp.percent).to.equal(OPTIONAL);
-      expect(temp.previous).to.equal(OPTIONAL);
       expect(temp.suppressed).to.equal(OPTIONAL);
       expect(temp.payload).to.equal(OPTIONAL);
       expect(temp.expectedDuration).to.equal(OPTIONAL);
@@ -640,7 +732,6 @@ describe('objectBuilder.js', () => {
       expect(upload.deviceModel).to.equal(REQUIRED);
       expect(upload.deviceSerialNumber).to.equal(OPTIONAL);
 
-      expect(upload.source).to.equal(OPTIONAL);
       expect(upload.payload).to.equal(OPTIONAL);
     });
   });

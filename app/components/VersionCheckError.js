@@ -19,10 +19,13 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 
 import styles from '../../styles/components/VersionCheck.module.less';
 import CloudOff from '@material-ui/icons/CloudOff';
+
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
 
 export default class VersionCheckError extends Component {
   static propTypes = {
@@ -32,11 +35,11 @@ export default class VersionCheckError extends Component {
 
   static defaultProps = {
     errorText: {
-      CONNECT: 'Please check your connection, quit & relaunch to try again.',
-      ERROR_DETAILS: 'Details for Tidepool\'s developers:',
-      OFFLINE: 'You\'re not connected to the Internet.',
-      SERVERS_DOWN: 'We can\'t connect to Tidepool right now.',
-      TRY_AGAIN: 'Quit & relaunch the Uploader to try again.'
+      CONNECT: i18n.t('Please check your connection, quit & relaunch to try again.'),
+      ERROR_DETAILS: i18n.t('Details for Tidepool\'s developers:'),
+      OFFLINE: i18n.t('You\'re not connected to the Internet.'),
+      SERVERS_DOWN: i18n.t('We can\'t connect to Tidepool right now.'),
+      TRY_AGAIN: i18n.t('Quit & relaunch the Uploader to try again.')
     }
   };
 
@@ -45,9 +48,9 @@ export default class VersionCheckError extends Component {
   }
 
   render() {
-    const { errorMessage } = this.props; 
+    const { errorMessage } = this.props;
     const userErrorText = this.props.errorText;
-    const offline = errorMessage === errorText.E_OFFLINE;
+    const offline = errorMessage === ErrorMessages.E_OFFLINE;
     const errorDetails = offline ? null : (
       <div className={styles.error}>
         <p className={styles.errorText}>{userErrorText.ERROR_DETAILS}</p>

@@ -20,6 +20,8 @@ var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 var node_os = require('os');
+import { remote } from 'electron';
+const i18n = remote.getGlobal( 'i18n' );
 
 import { urls } from '../constants/otherConstants';
 
@@ -45,7 +47,8 @@ class DeviceSelection extends React.Component {
     addDevice: PropTypes.func.isRequired,
     removeDevice: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
-    isClinicAccount: PropTypes.bool.isRequired
+    renderClinicUi: PropTypes.bool.isRequired,
+    selectedClinicId: PropTypes.string,
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -53,27 +56,27 @@ class DeviceSelection extends React.Component {
 
     if (!this.props.userIsSelected && nextProps.userIsSelected) {
       _.each(self.props.targetDevices, function(device) {
-        self.props.addDevice(nextProps.targetId, device);
+        self.props.addDevice(nextProps.targetId, device, self.props.selectedClinicId);
       });
     }
   }
 
   render() {
+    var {selectedClinicId} = this.props;
     var targetUser = this.props.targetId || 'noUserSelected';
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
-    var devices = this.props.devices;
+    var {devices} = this.props;
 
     var onCheckedChange = function(e) {
       if (e.target.checked) {
-        addDevice(e.target.value);
+        addDevice(e.target.value, selectedClinicId);
       }
       else {
-        removeDevice(e.target.value);
+        removeDevice(e.target.value, selectedClinicId);
       }
     };
-    var os =  hostMap[node_os.platform()];
-    var targetDevices = this.props.targetDevices;
+    var {targetDevices} = this.props;
 
     var items = _.map(devices, function(device) {
       var isChecked = _.includes(targetDevices, device.key);
@@ -93,14 +96,12 @@ class DeviceSelection extends React.Component {
       );
     });
 
-    var carelink = _.remove(items, {'key': 'carelink'});
-
     // TODO: when this gets the ES6 treatment, use computed property syntax
     var formClassesObject = {};
     formClassesObject[styles.form] = true;
     formClassesObject[styles.onlyme] = !this.props.userDropdownShowing;
     formClassesObject[styles.groups] = this.props.userDropdownShowing;
-    formClassesObject[styles.clinic] = this.props.isClinicAccount;
+    formClassesObject[styles.clinic] = this.props.renderClinicUi;
     var formClasses = cx(formClassesObject);
 
     var disabled = (this.props.targetDevices.length > 0 &&
@@ -110,7 +111,7 @@ class DeviceSelection extends React.Component {
     return (
       <div>
         <div className={styles.main}>
-          <h3 className={styles.headline}>Choose devices</h3>
+          <h3 className={styles.headline}>{i18n.t('Choose devices')}</h3>
           <form className={formClasses}>{items}</form>
         </div>
         <div className={styles.buttonWrap}>
@@ -118,7 +119,7 @@ class DeviceSelection extends React.Component {
             className={styles.button}
             onClick={this.handleSubmit}
             disabled={disabled}>
-            Done
+            {i18n.t('Done')}
           </button>
         </div>
       </div>

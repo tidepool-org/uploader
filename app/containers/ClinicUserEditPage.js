@@ -45,7 +45,9 @@ export class ClinicUserEditPage extends Component {
           memberships={memberships}
           loggedInUser={this.props.loggedInUser}
           createUser={this.props.async.createCustodialAccount}
+          createClinicUser={this.props.async.createClinicCustodialAccount}
           updateUser={this.props.async.clickEditUserNext}
+          updateClinicPatient={this.props.async.clickClinicEditUserNext}
           cancelEdit={_.partial(this.handleClickChangePerson, {metric: {eventName: metrics.CLINIC_ADD_CANCEL}})}
           createCustodialAccountErrorMessage={this.props.createCustodialAccountErrorMessage}
           createCustodialAccountErrorDismissed={this.props.createCustodialAccountErrorDismissed}
@@ -53,7 +55,9 @@ export class ClinicUserEditPage extends Component {
           updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
           dismissCreateCustodialAccountError={this.props.sync.dismissCreateCustodialAccountError}
           dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
-          onSubmitFail={this.props.sync.clinicInvalidDate} />
+          onSubmitFail={this.props.sync.clinicInvalidDate}
+          selectedClinicId={this.props.selectedClinicId}
+          clinics={this.props.clinics} />
       </div>
     );
   }
@@ -71,6 +75,8 @@ export default connect(
       createCustodialAccountErrorMessage: state.createCustodialAccountErrorMessage,
       createCustodialAccountErrorDismissed: state.createCustodialAccountErrorDismissed,
       memberships: state.memberships,
+      selectedClinicId: state.selectedClinicId,
+      clinics: state.clinics,
     };
   },
   (dispatch) => {
