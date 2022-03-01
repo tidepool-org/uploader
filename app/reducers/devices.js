@@ -73,14 +73,14 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier & Dual',
+    name: 'CareSens N Premier, Dual & N Plus BT',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
   },
   caresensble: {
     instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
-    name: 'CareSens N Premier & Dual (using Bluetooth)',
+    name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
