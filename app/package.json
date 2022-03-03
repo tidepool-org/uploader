@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.43.0-libreview-fixes.3",
+  "version": "2.43.0-libreview-fixes.4",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
