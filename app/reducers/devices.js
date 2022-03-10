@@ -119,6 +119,13 @@ const devices = {
     source: {type: 'device', driverId: 'GlucocardShineHID'},
     enabled: {mac: true, win: true, linux: true}
   },
+  glucocardvital: {
+    instructions: i18n.t('Make sure the meter is switched off and plug in with micro-USB cable'),
+    name: 'GLUCOCARD Vital',
+    key: 'glucocardvital',
+    source: {type: 'device', driverId: 'GlucocardVital'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   omnipod: {
     instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
     key: 'omnipod',
