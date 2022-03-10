@@ -120,7 +120,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardvital: {
-    instructions: i18n.t('Make sure the meter is switched off and plug in with micro-USB cable'),
+    instructions: i18n.t('Make sure the meter is switched off and plug in cable'),
     name: 'GLUCOCARD Vital',
     key: 'glucocardvital',
     source: {type: 'device', driverId: 'GlucocardVital'},
@@ -210,7 +210,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   relionprime: {
-    instructions: 'Plug in meter with cable and make sure the meter is switched on',
+    instructions: 'Make sure the meter is switched off and plug in with cable',
     name: 'ReliOn Prime',
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
