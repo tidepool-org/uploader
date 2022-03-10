@@ -27,7 +27,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
+    "package": "npm run build-quiet && electron-builder -p always"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.14.0",
@@ -85,6 +85,101 @@
     "webmtp": "0.1.0"
   },
   "browserslist": "last 2 electron major versions",
+  "build": {
+    "productName": "Tidepool Uploader",
+    "appId": "org.tidepool.TidepoolUploader",
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "afterSign": "scripts/notarize.js",
+    "dmg": {
+      "contents": [
+        {
+          "x": 381,
+          "y": 190,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 159,
+          "y": 190,
+          "type": "file"
+        }
+      ],
+      "background": "resources/background.tiff"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "app.html",
+      "main.prod.js",
+      "main.prod.js.map",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/${os}",
+        "to": "driver/",
+        "filter": [
+          "**/*",
+          "!*.md"
+        ]
+      },
+      "sounds/",
+      "locales/"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "ia32",
+            "x64"
+          ]
+        }
+      ],
+      "publisherName": [
+        "Tidepool Project"
+      ],
+      "rfc3161TimeStampServer": "http://timestamp.digicert.com"
+    },
+    "mac": {
+      "category": "public.app-category.tools",
+      "entitlements": "resources/mac/entitlements.mac.plist",
+      "entitlementsInherit": "resources/mac/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "dmg",
+          "arch": [
+            "x64"
+          ]
+        },
+        "dir"
+      ]
+    },
+    "publish": [
+      "github"
+    ]
+  },
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
