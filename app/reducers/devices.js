@@ -119,6 +119,13 @@ const devices = {
     source: {type: 'device', driverId: 'GlucocardShineHID'},
     enabled: {mac: true, win: true, linux: true}
   },
+  glucorx: {
+    instructions: i18n.t('Plug in meter with mini-USB'),
+    name: 'GlucoRx',
+    key: 'glucorx',
+    source: {type: 'device', driverId: 'GlucoRx'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   omnipod: {
     instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
     key: 'omnipod',
