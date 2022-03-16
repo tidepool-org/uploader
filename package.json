@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.43.0-caresens-n-plus-bt.1",
+  "version": "2.43.0-caresens-n-plus-bt.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
