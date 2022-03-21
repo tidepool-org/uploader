@@ -16,6 +16,8 @@
  */
 
 import _ from 'lodash';
+import os from 'os';
+import osName from 'os-name';
 
 import * as ActionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -372,7 +374,8 @@ export function uploadRequest(userId, device, utc) {
   utc = actionUtils.getUtc(utc);
   const properties = {
     type: _.get(device, 'source.type', undefined),
-    source: `${actionUtils.getUploadTrackingId(device)}`
+    source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${os.platform()}-${os.arch()}-${os.release()}`,
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
@@ -405,6 +408,7 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${os.platform()}-${os.arch()}-${os.release()}`,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
@@ -430,6 +434,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${os.platform()}-${os.arch()}-${os.release()}`,
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
