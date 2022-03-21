@@ -34,6 +34,7 @@ import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
+import { __Rewire__ as syncRewire } from '../../../app/actions/sync';
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -974,6 +975,11 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
+      syncRewire('os', {
+        platform: () => 'test',
+        arch: () => 'risc-v',
+        release: () => 'omicron',
+      });
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
@@ -1121,7 +1127,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         },
@@ -1140,6 +1150,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
                 error: err
               }
             }
@@ -1229,7 +1240,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         },
@@ -1248,6 +1263,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
                 error: err
               }
             }
@@ -1341,7 +1357,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         },
@@ -1360,6 +1380,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
                 error: err
               }
             }
@@ -1443,7 +1464,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         },
@@ -1524,7 +1549,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         },
@@ -1543,6 +1572,7 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 deviceModel: 'acme',
                 source: targetDevice.source.driverId,
+                os: 'test-risc-v-omicron',
                 started: time,
                 finished: time,
                 processed: 5

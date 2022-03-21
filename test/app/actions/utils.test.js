@@ -25,6 +25,7 @@ import configureStore from 'redux-mock-store';
 import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
+import { __Rewire__ } from '../../../app/actions/sync';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {
@@ -46,6 +47,11 @@ describe('utils', () => {
       },
       uploadTargetDevice: 'foo',
       version: '0.100.0'
+    });
+    __Rewire__('os', {
+      platform: () => 'test',
+      arch: () => 'risc-v',
+      release: () => 'omicron',
     });
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
@@ -80,6 +86,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'test-risc-v-omicron',
               error: displayErr,
             }
           }
@@ -128,6 +135,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'test-risc-v-omicron',
               error: displayErr,
             }
           }

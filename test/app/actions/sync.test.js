@@ -656,7 +656,11 @@ describe('Synchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: device.source.type, source: device.source.driverId}
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                os: 'test-risc-v-omicron',
+              }
             }
           }
         };
@@ -678,7 +682,8 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                limit: 'all data'
+                limit: 'all data',
+                os: 'test-risc-v-omicron',
               }
             }
           }
@@ -722,6 +727,13 @@ describe('Synchronous Actions', () => {
         post_records: [1,2,3,4,5],
         deviceModel: 'acme'
       };
+
+      __Rewire__('os', {
+        platform: () => 'test',
+        arch: () => 'risc-v',
+        release: () => 'omicron',
+      });
+
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);
 
@@ -740,6 +752,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'test-risc-v-omicron',
                 started: time,
                 finished: time,
                 processed: data.post_records.length
@@ -765,6 +778,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'test-risc-v-omicron',
                 started: time,
                 finished: time,
                 processed: data.post_records.length,
@@ -810,6 +824,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'test-risc-v-omicron',
                 error: resError
               }
             }
@@ -842,6 +857,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'test-risc-v-omicron',
                 error: resError,
                 limit: '4 weeks'
               }
