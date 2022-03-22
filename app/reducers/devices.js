@@ -204,7 +204,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
+    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
