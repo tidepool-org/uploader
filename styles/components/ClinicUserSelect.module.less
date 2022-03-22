@@ -17,10 +17,10 @@
 @import '../core/icons.module.less';
 
 .wrap {
-  composes: flexRow from '../core/layout.module.less';
-  width:100%;
-  height: @usable-page-height;
-  justify-content: center;
+  composes: flexColumn whiteBox from '../core/layout.module.less';
+  width:570px;
+  align-items: center;
+  padding: 0 0 42px 0;
 }
 
 .wrapInner {
@@ -31,7 +31,7 @@
 .headerWrap {
   composes: flexRow from '../core/layout.module.less';
   justify-content: space-between;
-  padding-bottom:20px;
+  padding-bottom:10px;
   padding-top:20px;
 }
 
@@ -54,8 +54,24 @@
   margin-right: 10px;
 }
 
+.clinicWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  width: 100%;
+  border-bottom: 1px solid #C7C7CC;
+  justify-content: center;
+  padding: 14px 0px;
+  position:relative;
+}
+
+.clinicHeader {
+  composes: header;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
 .clinicUserDropdown {
-  padding-bottom: 10px;
+  padding-bottom: 16px;
   width: 100%;
 }
 
@@ -138,5 +154,100 @@
     background-repeat: no-repeat;
     width: 28px;
     height: 28px;
+  }
+}
+
+.clinicItem {
+  composes: small from '../core/typography.module.less';
+  cursor: pointer;
+  &:hover {
+    color: @purple-medium;
+  }
+}
+
+.dropdownWrap {
+  position: relative;
+  display: flex;
+}
+
+.dropdown {
+  border: 1px solid @gray-light;
+  cursor: default;
+  position: absolute;
+  background: white;
+  top: 28px;
+  right: -9px;
+  z-index: 100;
+  width: 160px;
+
+  > ul {
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+
+    > li {
+      padding-top: 10px;
+    }
+
+    > li:last-child {
+      padding-bottom: 10px;
+    }
+  }
+
+  i {
+    float: left;
+    padding-right: 6px;
+  }
+
+  svg {
+    float: right;
+    padding-right: 6px;
+    font-size: 19px;
+    margin-bottom:-2px;
+  }
+
+  a {
+    margin-left: 0;
+  }
+}
+
+.dropdown:after,
+.dropdown:before {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  display: inline-block;
+  border: solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #eee;
+  border-left: 8px solid transparent;
+  border-bottom-color: white;
+  content: '';
+  height: 0;
+  width: 0;
+}
+
+.dropdown:before {
+  top: -16px;
+  border-color: rgba(230,230,229,0);
+  border-bottom-color: @gray-light;
+  border-width: 8px;
+  margin-left: -8px;
+}
+
+.postScript {
+  composes: gray from '../core/typography.module.less';
+  width: 570px;
+  margin: 0 auto;
+
+  a {
+    color: @link-color;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      text-decoration: underline;
+    }
   }
 }

@@ -22,7 +22,8 @@ export const pages = {
   NO_UPLOAD_TARGETS: 'NO_UPLOAD_TARGETS',
   SETTINGS: 'SETTINGS',
   CLINIC_USER_SELECT: 'CLINIC_USER_SELECT',
-  CLINIC_USER_EDIT: 'CLINIC_USER_EDIT'
+  CLINIC_USER_EDIT: 'CLINIC_USER_EDIT',
+  WORKSPACE_SWITCH: 'WORKSPACE_SWITCH',
 };
 
 export const pagesMap = {
@@ -32,7 +33,8 @@ export const pagesMap = {
   NO_UPLOAD_TARGETS: '/no_upload_targets',
   SETTINGS: '/settings',
   CLINIC_USER_SELECT: '/clinic_user_select',
-  CLINIC_USER_EDIT: '/clinic_user_edit'
+  CLINIC_USER_EDIT: '/clinic_user_edit',
+  WORKSPACE_SWITCH: '/workspace_switch',
 };
 
 export const paths = {
@@ -43,7 +45,6 @@ export const paths = {
 
 export const steps = {
   start: 'START',
-  carelinkFetch: 'CARELINK_FETCH',
   choosingFile: 'CHOOSING_FILE',
   detect: 'DETECT',
   setup: 'SETUP',

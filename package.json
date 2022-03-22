@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.40.0-onetouch-select-plus-flex.2",
+  "version": "2.44.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -63,6 +63,7 @@
     "plist": "3.0.1",
     "prop-types": "15.7.2",
     "react": "16.14.0",
+    "redux-cache": "0.3.0",
     "react-dom": "16.14.0",
     "react-hot-loader": "4.13.0",
     "react-redux": "7.2.2",
@@ -78,7 +79,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.44.0",
+    "tidepool-platform-client": "0.48.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3",
     "webmtp": "0.1.0"
@@ -208,7 +209,8 @@
       "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "platform-client"
     ],
     "moduleDirectories": [
       "node_modules",

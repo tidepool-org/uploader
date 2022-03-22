@@ -1,20 +1,11 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
+
 import { remote } from 'electron';
 
 const i18n = remote.getGlobal( 'i18n' );
 
 const devices = {
-  carelink: {
-    instructions: [i18n.t('Import from CareLink'), i18n.t('(We will not store your credentials)')],
-    isFetching: false,
-    key: 'carelink',
-    name: 'Medtronic',
-    // for the device selection list
-    selectName: 'Medtronic (CareLink import)',
-    source: {type: 'carelink'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',
@@ -37,6 +28,13 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
+  },
+  abbottlibreview: {
+    instructions: i18n.t('Select CSV file downloaded from LibreView'),
+    key: 'abbottlibreview',
+    name: 'Abbott LibreView',
+    source: {type: 'block', driverId: 'AbbottLibreView', extension: '.csv'},
+    enabled: {linux: true, mac: true, win: true},
   },
   precisionxtra: {
     instructions: i18n.t('Plug in meter with cable'),
@@ -214,7 +212,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
+    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
@@ -233,6 +231,13 @@ const devices = {
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  weitai: {
+    instructions: 'Plug in PDA with micro-USB',
+    name: 'Equil Insulin Patch/Micro Pump',
+    key: 'weitai',
+    source: {type: 'device', driverId: 'Weitai'},
     enabled: {mac: true, win: true, linux: true}
   },
 };
