@@ -233,7 +233,6 @@ describe('objectBuilder.js', () => {
       expect(resumeMeta.reason).to.equal(REQUIRED);
 
       expect(resumeMeta.clockDriftOffset).to.equal(OPTIONAL);
-      expect(resumeMeta.previous).to.equal(OPTIONAL);
       expect(resumeMeta.payload).to.equal(OPTIONAL);
     });
   });
@@ -261,7 +260,6 @@ describe('objectBuilder.js', () => {
       expect(suspendMeta.reason).to.equal(REQUIRED);
 
       expect(suspendMeta.clockDriftOffset).to.equal(OPTIONAL);
-      expect(suspendMeta.previous).to.equal(OPTIONAL);
       expect(suspendMeta.payload).to.equal(OPTIONAL);
     });
   });
@@ -550,7 +548,6 @@ describe('objectBuilder.js', () => {
 
       expect(schedBasal.scheduleName).to.equal(OPTIONAL);
       expect(schedBasal.clockDriftOffset).to.equal(OPTIONAL);
-      expect(schedBasal.previous).to.equal(OPTIONAL);
       expect(schedBasal.payload).to.equal(OPTIONAL);
       expect(schedBasal.expectedDuration).to.equal(OPTIONAL);
     });
@@ -636,7 +633,6 @@ describe('objectBuilder.js', () => {
       expect(suspendBasal.clockDriftOffset).to.equal(OPTIONAL);
       expect(suspendBasal.duration).to.equal(OPTIONAL);
       expect(suspendBasal.suppressed).to.equal(OPTIONAL);
-      expect(suspendBasal.previous).to.equal(OPTIONAL);
       expect(suspendBasal.payload).to.equal(OPTIONAL);
       expect(suspendBasal.expectedDuration).to.equal(OPTIONAL);
     });
@@ -666,7 +662,6 @@ describe('objectBuilder.js', () => {
       expect(temp.clockDriftOffset).to.equal(OPTIONAL);
       expect(temp.rate).to.equal(OPTIONAL);
       expect(temp.percent).to.equal(OPTIONAL);
-      expect(temp.previous).to.equal(OPTIONAL);
       expect(temp.suppressed).to.equal(OPTIONAL);
       expect(temp.payload).to.equal(OPTIONAL);
       expect(temp.expectedDuration).to.equal(OPTIONAL);
@@ -737,7 +732,6 @@ describe('objectBuilder.js', () => {
       expect(upload.deviceModel).to.equal(REQUIRED);
       expect(upload.deviceSerialNumber).to.equal(OPTIONAL);
 
-      expect(upload.source).to.equal(OPTIONAL);
       expect(upload.payload).to.equal(OPTIONAL);
     });
   });

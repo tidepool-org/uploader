@@ -17,7 +17,7 @@
 
 import _ from 'lodash';
 
-import * as actionTypes from '../constants/actionTypes';
+import * as ActionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
 
@@ -30,7 +30,7 @@ import {
   getCreateCustodialAccountErrorMessage,
   UnsupportedError
 } from '../utils/errors';
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
@@ -42,11 +42,11 @@ const uploadDataPeriodLabels = {
   [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
 };
 
-export function addTargetDevice(userId, deviceKey) {
+export function addTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
-    type: actionTypes.ADD_TARGET_DEVICE,
-    payload: { userId, deviceKey },
-    meta: {source: actionSources[actionTypes.ADD_TARGET_DEVICE]}
+    type: ActionTypes.ADD_TARGET_DEVICE,
+    payload: { userId, deviceKey, selectedClinicId },
+    meta: {source: actionSources[ActionTypes.ADD_TARGET_DEVICE]}
   };
 }
 
@@ -54,9 +54,9 @@ export function addTargetDevice(userId, deviceKey) {
 // no reducer responds to it to adjust any state!
 export function clickGoToBlip() {
   return {
-    type: actionTypes.CLICK_GO_TO_BLIP,
+    type: ActionTypes.CLICK_GO_TO_BLIP,
     meta: {
-      source: actionSources[actionTypes.CLICK_GO_TO_BLIP],
+      source: actionSources[ActionTypes.CLICK_GO_TO_BLIP],
       metric: {eventName: metrics.CLICK_GO_TO_BLIP}
     }
   };
@@ -64,9 +64,9 @@ export function clickGoToBlip() {
 
 export function rememberMedtronicSerialNumber(serialNumber) {
   return {
-    type: actionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER,
+    type: ActionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER,
     meta: {
-      source: actionSources[actionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER],
+      source: actionSources[ActionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER],
       metric: { eventName: metrics.MEDTRONIC_REMEMBER_SERIAL_NUMBER }
     }
   };
@@ -74,9 +74,9 @@ export function rememberMedtronicSerialNumber(serialNumber) {
 
 export function clinicAddMrn(){
   return {
-    type: actionTypes.CLINIC_ADD_MRN,
+    type: ActionTypes.CLINIC_ADD_MRN,
     meta: {
-      source: actionSources[actionTypes.CLINIC_ADD_MRN],
+      source: actionSources[ActionTypes.CLINIC_ADD_MRN],
       metric: {eventName: metrics.CLINIC_ADD_MRN}
     }
   };
@@ -84,9 +84,9 @@ export function clinicAddMrn(){
 
 export function clinicAddEmail(){
   return {
-    type: actionTypes.CLINIC_ADD_EMAIL,
+    type: ActionTypes.CLINIC_ADD_EMAIL,
     meta: {
-      source: actionSources[actionTypes.CLINIC_ADD_EMAIL],
+      source: actionSources[ActionTypes.CLINIC_ADD_EMAIL],
       metric: {eventName: metrics.CLINIC_ADD_EMAIL}
     }
   };
@@ -94,9 +94,9 @@ export function clinicAddEmail(){
 
 export function clinicAddDevice(deviceKey){
   return {
-    type: actionTypes.CLINIC_DEVICE_STORED,
+    type: ActionTypes.CLINIC_DEVICE_STORED,
     meta: {
-      source: actionSources[actionTypes.CLINIC_DEVICE_STORED],
+      source: actionSources[ActionTypes.CLINIC_DEVICE_STORED],
       metric: {eventName: metrics.CLINIC_DEVICE_STORED + ' - ' + deviceKey}
     }
   };
@@ -105,9 +105,9 @@ export function clinicAddDevice(deviceKey){
 export function clinicInvalidDate(errors){
   if (_.get(errors, 'year', false)) {
     return {
-      type: actionTypes.CLINIC_ADD_INVALID_DATE,
+      type: ActionTypes.CLINIC_ADD_INVALID_DATE,
       meta: {
-        source: actionSources[actionTypes.CLINIC_ADD_INVALID_DATE],
+        source: actionSources[ActionTypes.CLINIC_ADD_INVALID_DATE],
         metric: {eventName: metrics.CLINIC_ADD_INVALID_DATE}
       }
     };
@@ -116,67 +116,75 @@ export function clinicInvalidDate(errors){
 
 export function hideUnavailableDevices(os) {
   return {
-    type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
+    type: ActionTypes.HIDE_UNAVAILABLE_DEVICES,
     payload: { os },
-    meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
+    meta: {source: actionSources[ActionTypes.HIDE_UNAVAILABLE_DEVICES]}
   };
 }
 
-export function removeTargetDevice(userId, deviceKey) {
+export function removeTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
-    type: actionTypes.REMOVE_TARGET_DEVICE,
-    payload: { userId, deviceKey },
-    meta: {source: actionSources[actionTypes.REMOVE_TARGET_DEVICE]}
+    type: ActionTypes.REMOVE_TARGET_DEVICE,
+    payload: { userId, deviceKey, selectedClinicId },
+    meta: {source: actionSources[ActionTypes.REMOVE_TARGET_DEVICE]}
   };
 }
 
 export function resetUpload(userId, deviceKey) {
   return {
-    type: actionTypes.RESET_UPLOAD,
+    type: ActionTypes.RESET_UPLOAD,
     payload: { userId, deviceKey },
-    meta: {source: actionSources[actionTypes.RESET_UPLOAD]}
+    meta: {source: actionSources[ActionTypes.RESET_UPLOAD]}
   };
 }
 
 export function setBlipViewDataUrl(url) {
   return {
-    type: actionTypes.SET_BLIP_VIEW_DATA_URL,
+    type: ActionTypes.SET_BLIP_VIEW_DATA_URL,
     payload: { url },
-    meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
+    meta: {source: actionSources[ActionTypes.SET_BLIP_VIEW_DATA_URL]}
   };
 }
 
 export function setForgotPasswordUrl(url) {
   return {
-    type: actionTypes.SET_FORGOT_PASSWORD_URL,
+    type: ActionTypes.SET_FORGOT_PASSWORD_URL,
     payload: { url },
-    meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
+    meta: {source: actionSources[ActionTypes.SET_FORGOT_PASSWORD_URL]}
   };
 }
 
 export function setNewPatientUrl(url) {
   return {
-    type: actionTypes.SET_NEW_PATIENT_URL,
+    type: ActionTypes.SET_NEW_PATIENT_URL,
     payload: { url },
-    meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+    meta: {source: actionSources[ActionTypes.SET_NEW_PATIENT_URL]}
   };
 }
 
 export function setSignUpUrl(url) {
   return {
-    type: actionTypes.SET_SIGNUP_URL,
+    type: ActionTypes.SET_SIGNUP_URL,
     payload: { url },
-    meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+    meta: {source: actionSources[ActionTypes.SET_SIGNUP_URL]}
+  };
+}
+
+export function setBlipUrl(url) {
+  return {
+    type: ActionTypes.SET_BLIP_URL,
+    payload: { url },
+    meta: {source: actionSources[ActionTypes.SET_BLIP_URL]}
   };
 }
 
 export function setTargetTimezone(userId, timezoneName, metric) {
-  let meta = {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]};
+  let meta = {source: actionSources[ActionTypes.SET_TARGET_TIMEZONE]};
   if (metric) {
     _.assign(meta, metric);
   }
   return {
-    type: actionTypes.SET_TARGET_TIMEZONE,
+    type: ActionTypes.SET_TARGET_TIMEZONE,
     payload: { userId, timezoneName },
     meta: meta
   };
@@ -184,27 +192,27 @@ export function setTargetTimezone(userId, timezoneName, metric) {
 
 export function setUploads(devicesByUser) {
   return {
-    type: actionTypes.SET_UPLOADS,
+    type: ActionTypes.SET_UPLOADS,
     payload: { devicesByUser },
-    meta: {source: actionSources[actionTypes.SET_UPLOADS]}
+    meta: {source: actionSources[ActionTypes.SET_UPLOADS]}
   };
 }
 
 export function setUploadTargetUser(userId, metric) {
-  let meta = {source: actionSources[actionTypes.SET_UPLOAD_TARGET_USER]};
+  let meta = {source: actionSources[ActionTypes.SET_UPLOAD_TARGET_USER]};
   if (metric) {
     _.assign(meta, {metric});
   }
   return {
-    type: actionTypes.SET_UPLOAD_TARGET_USER,
+    type: ActionTypes.SET_UPLOAD_TARGET_USER,
     payload: { userId },
     meta
   };
 }
 
-export function toggleDropdown(previous, actionSource = actionSources[actionTypes.TOGGLE_DROPDOWN]) {
+export function toggleDropdown(previous, actionSource = actionSources[ActionTypes.TOGGLE_DROPDOWN]) {
   return {
-    type: actionTypes.TOGGLE_DROPDOWN,
+    type: ActionTypes.TOGGLE_DROPDOWN,
     payload: { isVisible: !previous },
     meta: {source: actionSource}
   };
@@ -215,31 +223,31 @@ export function toggleErrorDetails(userId, deviceKey, previous) {
     previous = false;
   }
   return {
-    type: actionTypes.TOGGLE_ERROR_DETAILS,
+    type: ActionTypes.TOGGLE_ERROR_DETAILS,
     payload: { isVisible: !previous, userId, deviceKey },
-    meta: {source: actionSources[actionTypes.TOGGLE_ERROR_DETAILS]}
+    meta: {source: actionSources[ActionTypes.TOGGLE_ERROR_DETAILS]}
   };
 }
 
 export function dismissUpdateProfileError(){
   return {
-    type: actionTypes.DISMISS_UPDATE_PROFILE_ERROR,
-    meta: {source: actionSources[actionTypes.DISMISS_UPDATE_PROFILE_ERROR]}
+    type: ActionTypes.DISMISS_UPDATE_PROFILE_ERROR,
+    meta: {source: actionSources[ActionTypes.DISMISS_UPDATE_PROFILE_ERROR]}
   };
 }
 
 export function dismissCreateCustodialAccountError(){
   return {
-    type: actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR,
-    meta: {source: actionSources[actionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR]}
+    type: ActionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR,
+    meta: {source: actionSources[ActionTypes.DISMISS_CREATE_CUSTODIAL_ACCOUNT_ERROR]}
   };
 }
 
 export function setAllUsers(user, profile, memberships){
   return {
-    type: actionTypes.SET_ALL_USERS,
+    type: ActionTypes.SET_ALL_USERS,
     payload: { memberships: memberships, user: user, profile: profile },
-    meta: {source: actionSources[actionTypes.SET_ALL_USERS]}
+    meta: {source: actionSources[ActionTypes.SET_ALL_USERS]}
   };
 }
 
@@ -247,37 +255,37 @@ export function setAllUsers(user, profile, memberships){
  * relating to async action creator doAppInit
  */
 
-export function initRequest() {
+export function initializeAppRequest() {
   return {
-    type: actionTypes.INIT_APP_REQUEST,
-    meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
+    type: ActionTypes.INIT_APP_REQUEST,
+    meta: {source: actionSources[ActionTypes.INIT_APP_REQUEST]}
   };
 }
 
-export function initSuccess() {
+export function initializeAppSuccess() {
   return {
-    type: actionTypes.INIT_APP_SUCCESS,
-    meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
+    type: ActionTypes.INIT_APP_SUCCESS,
+    meta: {source: actionSources[ActionTypes.INIT_APP_SUCCESS]}
   };
 }
 
-export function initFailure(err) {
+export function initializeAppFailure(err) {
   const error = new Error(getAppInitErrorMessage(err.status || null));
   error.originalError = err;
   return {
-    type: actionTypes.INIT_APP_FAILURE,
+    type: ActionTypes.INIT_APP_FAILURE,
     error: true,
     payload: error,
-    meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
+    meta: {source: actionSources[ActionTypes.INIT_APP_FAILURE]}
   };
 }
 
 export function setUserInfoFromToken(results) {
   const { user, profile, memberships } = results;
   return {
-    type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+    type: ActionTypes.SET_USER_INFO_FROM_TOKEN,
     payload: { user, profile, memberships },
-    meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
+    meta: {source: actionSources[ActionTypes.SET_USER_INFO_FROM_TOKEN]}
   };
 }
 
@@ -287,22 +295,22 @@ export function setUserInfoFromToken(results) {
 
 export function loginRequest() {
   return {
-    type: actionTypes.LOGIN_REQUEST,
-    meta: {source: actionSources[actionTypes.LOGIN_REQUEST]}
+    type: ActionTypes.LOGIN_REQUEST,
+    meta: {source: actionSources[ActionTypes.LOGIN_REQUEST]}
   };
 }
 
 export function loginSuccess(results) {
   const { user, profile, memberships } = results;
-  const isClinicAccount = personUtils.userHasRole(user, 'clinic');
+  const isClinicAccount = personUtils.isClinicianAccount(user);
   if (isClinicAccount) {
     uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
-    type: actionTypes.LOGIN_SUCCESS,
+    type: ActionTypes.LOGIN_SUCCESS,
     payload: { user, profile, memberships },
     meta: {
-      source: actionSources[actionTypes.LOGIN_SUCCESS],
+      source: actionSources[ActionTypes.LOGIN_SUCCESS],
       metric: {eventName: isClinicAccount ? metrics.CLINIC_LOGIN_SUCCESS : metrics.LOGIN_SUCCESS}
     }
   };
@@ -310,10 +318,10 @@ export function loginSuccess(results) {
 
 export function loginFailure(errorCode) {
   return {
-    type: actionTypes.LOGIN_FAILURE,
+    type: ActionTypes.LOGIN_FAILURE,
     error: true,
     payload: new Error(getLoginErrorMessage(errorCode)),
-    meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
+    meta: {source: actionSources[ActionTypes.LOGIN_FAILURE]}
   };
 }
 
@@ -323,9 +331,9 @@ export function loginFailure(errorCode) {
 
 export function logoutRequest() {
   return {
-    type: actionTypes.LOGOUT_REQUEST,
+    type: ActionTypes.LOGOUT_REQUEST,
     meta: {
-      source: actionSources[actionTypes.LOGOUT_REQUEST],
+      source: actionSources[ActionTypes.LOGOUT_REQUEST],
       metric: {eventName: metrics.LOGOUT_REQUEST}
     }
   };
@@ -333,52 +341,17 @@ export function logoutRequest() {
 
 export function logoutSuccess() {
   return {
-    type: actionTypes.LOGOUT_SUCCESS,
-    meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+    type: ActionTypes.LOGOUT_SUCCESS,
+    meta: {source: actionSources[ActionTypes.LOGOUT_SUCCESS]}
   };
 }
 
 export function logoutFailure() {
   return {
-    type: actionTypes.LOGOUT_FAILURE,
+    type: ActionTypes.LOGOUT_FAILURE,
     error: true,
     payload: new Error(getLogoutErrorMessage()),
-    meta: {source: actionSources[actionTypes.LOGOUT_FAILURE]}
-  };
-}
-
-/*
- * relating to async action creator doCareLinkUpload
- */
-
-export function fetchCareLinkRequest(userId, deviceKey) {
-  return {
-    type: actionTypes.CARELINK_FETCH_REQUEST,
-    payload: { userId, deviceKey },
-    meta: {source: actionSources[actionTypes.CARELINK_FETCH_REQUEST]}
-  };
-}
-
-export function fetchCareLinkSuccess(userId, deviceKey) {
-  return {
-    type: actionTypes.CARELINK_FETCH_SUCCESS,
-    payload: { userId, deviceKey },
-    meta: {
-      source: actionSources[actionTypes.CARELINK_FETCH_SUCCESS],
-      metric: {eventName: metrics.CARELINK_FETCH_SUCCESS}
-    }
-  };
-}
-
-export function fetchCareLinkFailure(message) {
-  return {
-    type: actionTypes.CARELINK_FETCH_FAILURE,
-    error: true,
-    payload: new Error(message),
-    meta: {
-      source: actionSources[actionTypes.CARELINK_FETCH_FAILURE],
-      metric: {eventName: metrics.CARELINK_FETCH_FAILURE}
-    }
+    meta: {source: actionSources[ActionTypes.LOGOUT_FAILURE]}
   };
 }
 
@@ -388,10 +361,10 @@ export function fetchCareLinkFailure(message) {
 
 export function uploadAborted() {
   return {
-    type: actionTypes.UPLOAD_ABORTED,
+    type: ActionTypes.UPLOAD_ABORTED,
     error: true,
-    payload: new Error(errorText.E_UPLOAD_IN_PROGRESS),
-    meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
+    payload: new Error(ErrorMessages.E_UPLOAD_IN_PROGRESS),
+    meta: {source: actionSources[ActionTypes.UPLOAD_ABORTED]}
   };
 }
 
@@ -405,10 +378,10 @@ export function uploadRequest(userId, device, utc) {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
-    type: actionTypes.UPLOAD_REQUEST,
+    type: ActionTypes.UPLOAD_REQUEST,
     payload: { userId, deviceKey: device.key, utc },
     meta: {
-      source: actionSources[actionTypes.UPLOAD_REQUEST],
+      source: actionSources[ActionTypes.UPLOAD_REQUEST],
       metric: {
         eventName: `${metrics.UPLOAD_REQUEST}`,
         properties
@@ -419,9 +392,9 @@ export function uploadRequest(userId, device, utc) {
 
 export function uploadProgress(step, percentage, isFirstUpload) {
   return {
-    type: actionTypes.UPLOAD_PROGRESS,
+    type: ActionTypes.UPLOAD_PROGRESS,
     payload: { step, percentage, isFirstUpload },
-    meta: {source: actionSources[actionTypes.UPLOAD_PROGRESS]}
+    meta: {source: actionSources[ActionTypes.UPLOAD_PROGRESS]}
   };
 }
 
@@ -440,10 +413,10 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
-    type: actionTypes.UPLOAD_SUCCESS,
+    type: ActionTypes.UPLOAD_SUCCESS,
     payload: { userId, deviceKey: device.key, data, utc },
     meta: {
-      source: actionSources[actionTypes.UPLOAD_SUCCESS],
+      source: actionSources[ActionTypes.UPLOAD_SUCCESS],
       metric: {
         eventName: `${metrics.UPLOAD_SUCCESS}`,
         properties
@@ -463,11 +436,11 @@ export function uploadFailure(err, errProps, device) {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
   }
   return {
-    type: actionTypes.UPLOAD_FAILURE,
+    type: ActionTypes.UPLOAD_FAILURE,
     error: true,
     payload: err,
     meta: {
-      source: actionSources[actionTypes.UPLOAD_FAILURE],
+      source: actionSources[ActionTypes.UPLOAD_FAILURE],
       metric: {
         eventName: `${metrics.UPLOAD_FAILURE}`,
         properties
@@ -478,18 +451,18 @@ export function uploadFailure(err, errProps, device) {
 
 export function uploadCancelled(utc) {
   return {
-    type: actionTypes.UPLOAD_CANCELLED,
+    type: ActionTypes.UPLOAD_CANCELLED,
     payload: { utc },
     meta: {
-      source: actionSources[actionTypes.UPLOAD_CANCELLED]
+      source: actionSources[ActionTypes.UPLOAD_CANCELLED]
     }
   };
 }
 
 export function deviceDetectRequest() {
   return {
-    type: actionTypes.DEVICE_DETECT_REQUEST,
-    meta: {source: actionSources[actionTypes.DEVICE_DETECT_REQUEST]}
+    type: ActionTypes.DEVICE_DETECT_REQUEST,
+    meta: {source: actionSources[ActionTypes.DEVICE_DETECT_REQUEST]}
   };
 }
 
@@ -499,43 +472,43 @@ export function deviceDetectRequest() {
 
 export function choosingFile(userId, deviceKey) {
   return {
-    type: actionTypes.CHOOSING_FILE,
+    type: ActionTypes.CHOOSING_FILE,
     payload: { userId, deviceKey },
-    meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
+    meta: {source: actionSources[ActionTypes.CHOOSING_FILE]}
   };
 }
 
 export function readFileAborted(err, errProps) {
   return {
-    type: actionTypes.READ_FILE_ABORTED,
+    type: ActionTypes.READ_FILE_ABORTED,
     error: true,
     payload: addInfoToError(err, errProps),
-    meta: {source: actionSources[actionTypes.READ_FILE_ABORTED]}
+    meta: {source: actionSources[ActionTypes.READ_FILE_ABORTED]}
   };
 }
 
 export function readFileRequest(userId, deviceKey, filename) {
   return {
-    type: actionTypes.READ_FILE_REQUEST,
+    type: ActionTypes.READ_FILE_REQUEST,
     payload: { userId, deviceKey, filename },
-    meta: {source: actionSources[actionTypes.READ_FILE_REQUEST]}
+    meta: {source: actionSources[ActionTypes.READ_FILE_REQUEST]}
   };
 }
 
 export function readFileSuccess(userId, deviceKey, filedata) {
   return {
-    type: actionTypes.READ_FILE_SUCCESS,
+    type: ActionTypes.READ_FILE_SUCCESS,
     payload: { userId, deviceKey, filedata },
-    meta: {source: actionSources[actionTypes.READ_FILE_SUCCESS]}
+    meta: {source: actionSources[ActionTypes.READ_FILE_SUCCESS]}
   };
 }
 
 export function readFileFailure(err, errProps) {
   return {
-    type: actionTypes.READ_FILE_FAILURE,
+    type: ActionTypes.READ_FILE_FAILURE,
     error: true,
     payload: addInfoToError(err, errProps),
-    meta: {source: actionSources[actionTypes.READ_FILE_FAILURE]}
+    meta: {source: actionSources[ActionTypes.READ_FILE_FAILURE]}
   };
 }
 
@@ -545,26 +518,26 @@ export function readFileFailure(err, errProps) {
 
 export function versionCheckRequest() {
   return {
-    type: actionTypes.VERSION_CHECK_REQUEST,
-    meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+    type: ActionTypes.VERSION_CHECK_REQUEST,
+    meta: {source: actionSources[ActionTypes.VERSION_CHECK_REQUEST]}
   };
 }
 
 export function versionCheckSuccess() {
   return {
-    type: actionTypes.VERSION_CHECK_SUCCESS,
-    meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+    type: ActionTypes.VERSION_CHECK_SUCCESS,
+    meta: {source: actionSources[ActionTypes.VERSION_CHECK_SUCCESS]}
   };
 }
 
 export function versionCheckFailure(err, currentVersion, requiredVersion) {
   if (err != null) {
     return {
-      type: actionTypes.VERSION_CHECK_FAILURE,
+      type: ActionTypes.VERSION_CHECK_FAILURE,
       error: true,
       payload: err,
       meta: {
-        source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+        source: actionSources[ActionTypes.VERSION_CHECK_FAILURE],
         metric: {
           eventName: metrics.UNSUPPORTED_SCREEN_DISPLAYED
         }
@@ -573,11 +546,11 @@ export function versionCheckFailure(err, currentVersion, requiredVersion) {
   }
   else {
     return {
-      type: actionTypes.VERSION_CHECK_FAILURE,
+      type: ActionTypes.VERSION_CHECK_FAILURE,
       error: true,
       payload: new UnsupportedError(currentVersion, requiredVersion),
       meta: {
-        source: actionSources[actionTypes.VERSION_CHECK_FAILURE],
+        source: actionSources[ActionTypes.VERSION_CHECK_FAILURE],
         metric: {
           eventName: metrics.VERSION_CHECK_FAILURE_OUTDATED,
           properties: { requiredVersion }
@@ -593,16 +566,16 @@ export function versionCheckFailure(err, currentVersion, requiredVersion) {
 
 export function updateProfileRequest() {
   return {
-    type: actionTypes.UPDATE_PROFILE_REQUEST,
-    meta: {source: actionSources[actionTypes.UPDATE_PROFILE_REQUEST]}
+    type: ActionTypes.UPDATE_PROFILE_REQUEST,
+    meta: {source: actionSources[ActionTypes.UPDATE_PROFILE_REQUEST]}
   };
 }
 
 export function updateProfileSuccess(profile, userId) {
   return {
-    type: actionTypes.UPDATE_PROFILE_SUCCESS,
+    type: ActionTypes.UPDATE_PROFILE_SUCCESS,
     payload: { profile, userId },
-    meta: {source: actionSources[actionTypes.UPDATE_PROFILE_SUCCESS]}
+    meta: {source: actionSources[ActionTypes.UPDATE_PROFILE_SUCCESS]}
   };
 }
 
@@ -610,10 +583,10 @@ export function updateProfileFailure(err) {
   const error = new Error(getUpdateProfileErrorMessage(err.status || null));
   error.originalError = err;
   return {
-    type: actionTypes.UPDATE_PROFILE_FAILURE,
+    type: ActionTypes.UPDATE_PROFILE_FAILURE,
     error: true,
     payload: error,
-    meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
+    meta: {source: actionSources[ActionTypes.UPDATE_PROFILE_FAILURE]}
   };
 }
 
@@ -623,17 +596,17 @@ export function updateProfileFailure(err) {
 
 export function createCustodialAccountRequest() {
   return {
-    type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
-    meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST]}
+    type: ActionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
+    meta: {source: actionSources[ActionTypes.CREATE_CUSTODIAL_ACCOUNT_REQUEST]}
   };
 }
 
 export function createCustodialAccountSuccess(account) {
   return {
-    type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
+    type: ActionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS,
     payload: { account },
     meta: {
-      source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS],
+      source: actionSources[ActionTypes.CREATE_CUSTODIAL_ACCOUNT_SUCCESS],
       metric: {eventName: metrics.CLINIC_ADD_NEW_PATIENT}
     }
   };
@@ -643,10 +616,10 @@ export function createCustodialAccountFailure(err) {
   const error = new Error(getCreateCustodialAccountErrorMessage(err.status || null));
   error.originalError = err;
   return {
-    type: actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
+    type: ActionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE,
     error: true,
     payload: error,
-    meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
+    meta: {source: actionSources[ActionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
   };
 }
 
@@ -657,16 +630,16 @@ export function createCustodialAccountFailure(err) {
 
 export function retrieveUsersTargetsFromStorage() {
   return {
-    type: actionTypes.RETRIEVING_USERS_TARGETS,
-    meta: {source: actionSources[actionTypes.RETRIEVING_USERS_TARGETS]}
+    type: ActionTypes.RETRIEVING_USERS_TARGETS,
+    meta: {source: actionSources[ActionTypes.RETRIEVING_USERS_TARGETS]}
   };
 }
 
 export function setUsersTargets(targets) {
   return {
-    type: actionTypes.SET_USERS_TARGETS,
+    type: ActionTypes.SET_USERS_TARGETS,
     payload: { targets },
-    meta: {source: actionSources[actionTypes.SET_USERS_TARGETS]}
+    meta: {source: actionSources[ActionTypes.SET_USERS_TARGETS]}
   };
 }
 
@@ -676,69 +649,69 @@ export function setUsersTargets(targets) {
 
 export function autoCheckingForUpdates() {
   return {
-    type: actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES,
-    meta: { source: actionSources[actionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES] }
+    type: ActionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES,
+    meta: { source: actionSources[ActionTypes.AUTO_UPDATE_CHECKING_FOR_UPDATES] }
   };
 }
 
 export function manualCheckingForUpdates() {
   return {
-    type: actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES,
-    meta: { source: actionSources[actionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES] }
+    type: ActionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES,
+    meta: { source: actionSources[ActionTypes.MANUAL_UPDATE_CHECKING_FOR_UPDATES] }
   };
 }
 
 export function updateAvailable(info) {
   return {
-    type: actionTypes.UPDATE_AVAILABLE,
+    type: ActionTypes.UPDATE_AVAILABLE,
     payload: { info },
-    meta: { source: actionSources[actionTypes.UPDATE_AVAILABLE] }
+    meta: { source: actionSources[ActionTypes.UPDATE_AVAILABLE] }
   };
 }
 
 export function updateNotAvailable(info) {
   return {
-    type: actionTypes.UPDATE_NOT_AVAILABLE,
+    type: ActionTypes.UPDATE_NOT_AVAILABLE,
     payload: { info },
-    meta: { source: actionSources[actionTypes.UPDATE_NOT_AVAILABLE] }
+    meta: { source: actionSources[ActionTypes.UPDATE_NOT_AVAILABLE] }
   };
 }
 
 export function autoUpdateError(error) {
   return {
-    type: actionTypes.AUTOUPDATE_ERROR,
+    type: ActionTypes.AUTOUPDATE_ERROR,
     payload: { error },
-    meta: { source: actionSources[actionTypes.AUTOUPDATE_ERROR] }
+    meta: { source: actionSources[ActionTypes.AUTOUPDATE_ERROR] }
   };
 }
 
 export function updateDownloaded(info) {
   return {
-    type: actionTypes.UPDATE_DOWNLOADED,
+    type: ActionTypes.UPDATE_DOWNLOADED,
     payload: { info },
-    meta: { source: actionSources[actionTypes.UPDATE_DOWNLOADED] }
+    meta: { source: actionSources[ActionTypes.UPDATE_DOWNLOADED] }
   };
 }
 
 export function dismissUpdateAvailable() {
   return {
-    type: actionTypes.DISMISS_UPDATE_AVAILABLE,
-    meta: { source: actionSources[actionTypes.DISMISS_UPDATE_AVAILABLE] }
+    type: ActionTypes.DISMISS_UPDATE_AVAILABLE,
+    meta: { source: actionSources[ActionTypes.DISMISS_UPDATE_AVAILABLE] }
   };
 }
 
 export function dismissUpdateNotAvailable() {
   return {
-    type: actionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
-    meta: { source: actionSources[actionTypes.DISMISS_UPDATE_NOT_AVAILABLE] }
+    type: ActionTypes.DISMISS_UPDATE_NOT_AVAILABLE,
+    meta: { source: actionSources[ActionTypes.DISMISS_UPDATE_NOT_AVAILABLE] }
   };
 }
 
 export function quitAndInstall() {
   return {
-    type: actionTypes.QUIT_AND_INSTALL,
+    type: ActionTypes.QUIT_AND_INSTALL,
     meta: {
-      source: actionSources[actionTypes.QUIT_AND_INSTALL],
+      source: actionSources[ActionTypes.QUIT_AND_INSTALL],
       metric: { eventName: metrics.QUIT_AND_INSTALL }
     }
   };
@@ -750,56 +723,56 @@ export function quitAndInstall() {
 
 export function checkingForDriverUpdate() {
   return {
-    type: actionTypes.CHECKING_FOR_DRIVER_UPDATE,
-    meta: { source: actionSources[actionTypes.CHECKING_FOR_DRIVER_UPDATE] }
+    type: ActionTypes.CHECKING_FOR_DRIVER_UPDATE,
+    meta: { source: actionSources[ActionTypes.CHECKING_FOR_DRIVER_UPDATE] }
   };
 }
 
 export function driverUpdateAvailable(current, available) {
   return {
-    type: actionTypes.DRIVER_UPDATE_AVAILABLE,
+    type: ActionTypes.DRIVER_UPDATE_AVAILABLE,
     payload: { current, available },
-    meta: { source: actionSources[actionTypes.DRIVER_UPDATE_AVAILABLE] }
+    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_AVAILABLE] }
   };
 }
 
 export function driverUpdateNotAvailable() {
   return {
-    type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
-    meta: { source: actionSources[actionTypes.DRIVER_UPDATE_NOT_AVAILABLE] }
+    type: ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
+    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE] }
   };
 }
 
 export function dismissDriverUpdateAvailable() {
   return {
-    type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
-    meta: { source: actionSources[actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE] }
+    type: ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
+    meta: { source: actionSources[ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE] }
   };
 }
 
 export function driverInstall() {
   return {
-    type: actionTypes.DRIVER_INSTALL,
+    type: ActionTypes.DRIVER_INSTALL,
     meta: {
-      source: actionSources[actionTypes.DRIVER_INSTALL]
+      source: actionSources[ActionTypes.DRIVER_INSTALL]
     }
   };
 }
 
 export function driverUpdateShellOpts(opts) {
   return {
-    type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
+    type: ActionTypes.DRIVER_INSTALL_SHELL_OPTS,
     payload: { opts },
-    meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS] }
+    meta: {source: actionSources[ActionTypes.DRIVER_INSTALL_SHELL_OPTS] }
   };
 }
 
 export function deviceTimeIncorrect(callback, cfg, times) {
   return {
-    type: actionTypes.DEVICE_TIME_INCORRECT,
+    type: ActionTypes.DEVICE_TIME_INCORRECT,
     payload: { callback, cfg, times },
     meta: {
-      source: actionSources[actionTypes.DEVICE_TIME_INCORRECT],
+      source: actionSources[ActionTypes.DEVICE_TIME_INCORRECT],
       metric: {
         eventName: metrics.DEVICE_TIME_INCORRECT,
         properties: { times },
@@ -810,15 +783,15 @@ export function deviceTimeIncorrect(callback, cfg, times) {
 
 export function dismissedDeviceTimePrompt() {
   return {
-    type: actionTypes.DISMISS_DEVICE_TIME_PROMPT,
-    meta: { source: actionSources[actionTypes.DISMISS_DEVICE_TIME_PROMPT] }
+    type: ActionTypes.DISMISS_DEVICE_TIME_PROMPT,
+    meta: { source: actionSources[ActionTypes.DISMISS_DEVICE_TIME_PROMPT] }
   };
 }
 
 export function timezoneBlur() {
   return {
-    type: actionTypes.TIMEZONE_BLUR,
-    meta: { source: actionSources[actionTypes.TIMEZONE_BLUR] }
+    type: ActionTypes.TIMEZONE_BLUR,
+    meta: { source: actionSources[ActionTypes.TIMEZONE_BLUR] }
   };
 }
 
@@ -828,15 +801,187 @@ export function timezoneBlur() {
 
 export function adHocPairingRequest(callback, cfg) {
   return {
-    type: actionTypes.AD_HOC_PAIRING_REQUEST,
+    type: ActionTypes.AD_HOC_PAIRING_REQUEST,
     payload: { callback, cfg },
-    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_REQUEST] }
+    meta: { source: actionSources[ActionTypes.AD_HOC_PAIRING_REQUEST] }
   };
 }
 
 export function dismissedAdHocPairingDialog() {
   return {
-    type: actionTypes.AD_HOC_PAIRING_DISMISSED,
-    meta: { source: actionSources[actionTypes.AD_HOC_PAIRING_DISMISSED] }
+    type: ActionTypes.AD_HOC_PAIRING_DISMISSED,
+    meta: { source: actionSources[ActionTypes.AD_HOC_PAIRING_DISMISSED] }
+  };
+}
+
+export function fetchPatientsForClinicRequest() {
+  return {
+    type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,
+  };
+}
+
+export function fetchPatientsForClinicSuccess(clinicId, patients, count) {
+  return {
+    type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
+    payload: {
+      clinicId,
+      patients,
+      count,
+    },
+  };
+}
+
+export function fetchPatientsForClinicFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function createClinicCustodialAccountRequest() {
+  return {
+    type: ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST,
+  };
+}
+
+export function createClinicCustodialAccountSuccess(clinicId, patient, patientId) {
+  return {
+    type: ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS,
+    payload: {
+      clinicId,
+      patient,
+      patientId,
+    },
+    meta: {
+      source: actionSources[ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_SUCCESS],
+      metric: {eventName: metrics.CLINIC_ADD_NEW_PATIENT}
+    }
+  };
+}
+
+export function createClinicCustodialAccountFailure(error, apiError) {
+  return {
+    type: ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function updateClinicPatientRequest() {
+  return {
+    type: ActionTypes.UPDATE_CLINIC_PATIENT_REQUEST,
+  };
+}
+
+export function updateClinicPatientSuccess(clinicId, patientId, patient) {
+  return {
+    type: ActionTypes.UPDATE_CLINIC_PATIENT_SUCCESS,
+    payload: {
+      patientId,
+      clinicId,
+      patient
+    },
+  };
+}
+
+export function updateClinicPatientFailure(error, apiError) {
+  const err = new Error(getUpdateProfileErrorMessage(error.status || null));
+  err.originalError = error;
+  return {
+    type: ActionTypes.UPDATE_CLINIC_PATIENT_FAILURE,
+    error: true,
+    payload: err,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function fetchPatientRequest() {
+  return {
+    type: ActionTypes.FETCH_PATIENT_REQUEST,
+  };
+}
+
+export function fetchPatientSuccess(patient) {
+  return {
+    type: ActionTypes.FETCH_PATIENT_SUCCESS,
+    payload: {
+      patient: patient,
+    },
+  };
+}
+
+export function fetchPatientFailure(error, apiError, link) {
+  return {
+    type: ActionTypes.FETCH_PATIENT_FAILURE,
+    error: error,
+    payload: { link },
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function fetchAssociatedAccountsRequest() {
+  return {
+    type: ActionTypes.FETCH_ASSOCIATED_ACCOUNTS_REQUEST,
+  };
+}
+
+export function fetchAssociatedAccountsSuccess(accounts) {
+  return {
+    type: ActionTypes.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS,
+    payload: accounts,
+  };
+}
+
+export function fetchAssociatedAccountsFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_ASSOCIATED_ACCOUNTS_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null
+    },
+  };
+}
+
+export function getClinicsForClinicianRequest() {
+  return {
+    type: ActionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST,
+  };
+}
+
+export function getClinicsForClinicianSuccess(clinics, clinicianId) {
+  return {
+    type: ActionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+    payload: {
+      clinics: clinics,
+      clinicianId
+    },
+  };
+}
+
+export function getClinicsForClinicianFailure(error, apiError) {
+  return {
+    type: ActionTypes.GET_CLINICS_FOR_CLINICIAN_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function selectClinic(clinicId) {
+  return {
+    type: ActionTypes.SELECT_CLINIC,
+    payload: {
+      clinicId
+    },
   };
 }
