@@ -156,6 +156,14 @@ const devices = {
     source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true, linux: true}
   },
+  onetouchselect: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    name: 'OneTouch Select Plus Flex',
+    key: 'onetouchselect',
+    source: {type: 'device', driverId: 'OneTouchSelect'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
   onetouchverio: {
     instructions: i18n.t('Plug in meter with micro-USB'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
@@ -164,6 +172,15 @@ const devices = {
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
+  onetouchverioble: {
+    instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
+    name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
+    key: 'onetouchverioble',
+    source: {type: 'device', driverId: 'OneTouchVerioBLE'},
+    enabled: {mac: true, win: false, linux: true}
+    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+  },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
     name: 'OneTouch VerioIQ',
@@ -171,15 +188,6 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
-  },
-  onetouchverioble: {
-    instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
-    name: 'OneTouch Verio Flex & Verio Reflect (with Bluetooth)',
-    key: 'onetouchverioble',
-    source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
   },
   onetouchultramini: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched off'),
@@ -204,7 +212,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
+    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
