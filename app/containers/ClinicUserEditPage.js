@@ -57,7 +57,9 @@ export class ClinicUserEditPage extends Component {
           dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
           onSubmitFail={this.props.sync.clinicInvalidDate}
           selectedClinicId={this.props.selectedClinicId}
-          clinics={this.props.clinics} />
+          clinics={this.props.clinics}
+          working={this.props.working}
+          acknowledgeNotification={this.props.sync.acknowledgeNotification} />
       </div>
     );
   }
@@ -77,6 +79,7 @@ export default connect(
       memberships: state.memberships,
       selectedClinicId: state.selectedClinicId,
       clinics: state.clinics,
+      working: state.working,
     };
   },
   (dispatch) => {
