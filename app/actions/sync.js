@@ -44,6 +44,8 @@ const uploadDataPeriodLabels = {
   [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
 };
 
+const osString = `${osName()} (${os.arch()})`;
+
 export function addTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
     type: ActionTypes.ADD_TARGET_DEVICE,
@@ -375,7 +377,7 @@ export function uploadRequest(userId, device, utc) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: `${os.platform()}-${os.arch()}-${os.release()}`,
+    os: osString,
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
@@ -408,7 +410,7 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: `${os.platform()}-${os.arch()}-${os.release()}`,
+    os: osString,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
@@ -434,7 +436,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: `${os.platform()}-${os.arch()}-${os.release()}`,
+    os: osString,
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {

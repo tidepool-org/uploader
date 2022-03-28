@@ -659,7 +659,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -683,7 +683,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 source: device.source.driverId,
                 limit: 'all data',
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -728,11 +728,7 @@ describe('Synchronous Actions', () => {
         deviceModel: 'acme'
       };
 
-      __Rewire__('os', {
-        platform: () => 'test',
-        arch: () => 'risc-v',
-        release: () => 'omicron',
-      });
+      __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
 
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);
@@ -752,7 +748,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length
@@ -778,7 +774,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length,
@@ -824,7 +820,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError
               }
             }
@@ -857,7 +853,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError,
                 limit: '4 weeks'
               }

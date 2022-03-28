@@ -48,11 +48,7 @@ describe('utils', () => {
       uploadTargetDevice: 'foo',
       version: '0.100.0'
     });
-    __Rewire__('os', {
-      platform: () => 'test',
-      arch: () => 'risc-v',
-      release: () => 'omicron',
-    });
+    __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
     test('should return a function', () => {
@@ -86,7 +82,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
-              os: 'test-risc-v-omicron',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }
@@ -135,7 +131,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
-              os: 'test-risc-v-omicron',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }

@@ -975,11 +975,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      syncRewire('os', {
-        platform: () => 'test',
-        arch: () => 'risc-v',
-        release: () => 'omicron',
-      });
+      syncRewire('osString', 'BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
@@ -1130,7 +1126,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -1150,7 +1146,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1243,7 +1239,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -1263,7 +1259,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1360,7 +1356,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -1380,7 +1376,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1467,7 +1463,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -1552,7 +1548,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -1572,7 +1568,7 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 deviceModel: 'acme',
                 source: targetDevice.source.driverId,
-                os: 'test-risc-v-omicron',
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: 5
