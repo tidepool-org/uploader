@@ -9,6 +9,7 @@
   "Preparing file": "Preparing file",
   "We couldn't communicate with the meter. You may need to give Uploader": "We couldn't communicate with the meter. You may need to give Uploader",
   "We found more than one device plugged in. Only plug in the device you intend to upload.": "We found more than one device plugged in. Only plug in the device you intend to upload.",
+  "Couldn't connect to device.": "Couldn't connect to device.",
   "Clinic Workspace": "Clinic Workspace",
   "To manage your clinic workspaces and view patient invites": "To manage your clinic workspaces and view patient invites",
   "login to your account in Tidepool Web": "login to your account in Tidepool Web",

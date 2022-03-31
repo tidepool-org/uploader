@@ -2859,13 +2859,15 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.2.6.tgz#22430fb47bcc91ca1a8b217427b14a26b785be4f"
-  integrity sha512-AuYuGxRjp9rj3O/MzlUamSh1H7FPTgJHqbq59Nb31g6Ynufrbg3lcA7en9+MwXtBh+0uwmIVvDt4XviC3QHS+g==
+ble-glucose@0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.2.9.tgz#1ac216931f198bb02867325e8deb436aa5e8cffd"
+  integrity sha512-+cg5iucZCwBe/4J49mvycq11ujt4d81OFQGZGlwiQAWJIrm45HBUTCBjxtBGGrzNnT4HuuHkWccIW8oO9Js7ng==
   dependencies:
+    bows "1.7.2"
     core-js "2.6.10"
-    lodash "4.17.15"
+    is-electron "2.2.1"
+    lodash "4.17.21"
     sundial "1.6.0"
 
 block-stream@*, block-stream@0.0.9:
@@ -7766,6 +7768,11 @@ is-electron@2.2.0:
   resolved "https://registry.yarnpkg.com/is-electron/-/is-electron-2.2.0.tgz#8943084f09e8b731b3a7a0298a7b5d56f6b7eef0"
   integrity sha512-SpMppC2XR3YdxSzczXReBjqs2zGscWQpBIKqwXYBFic0ERaxNVgwLCHwOLZeESfdJQjX0RDvrJ1lBXX2ij+G1Q==
 
+is-electron@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/is-electron/-/is-electron-2.2.1.tgz#751b1dd8a74907422faa5c35aaa0cf66d98086e9"
+  integrity sha512-r8EEQQsqT+Gn0aXFx7lTFygYQhILLCB+wn0WCDL5LZRINeLH/Rvw1j2oKodELLXYNImQ3CRlVsY8wW4cGOsyuw==
+
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
@@ -9183,11 +9190,6 @@ lodash@3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.3.1.tgz#3b914d4a1bb27efcee076e0dfa58152018e2042e"
   integrity sha1-O5FNShuyfvzuB24N+lgVIBjiBC4=
-
-lodash@4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 lodash@4.17.21, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.3, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.8.0, lodash@~4.17.10:
   version "4.17.21"
