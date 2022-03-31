@@ -271,6 +271,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         if (err === 'E_LIBRE2_UNSUPPORTED') {
           displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED);
           deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
+          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
+          displayErr.linkText = 'Please see this support article.';
         }
 
         if (err.message === 'E_MULTIPLE_DEVICES') {
