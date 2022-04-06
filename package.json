@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.44.0-electron-v16.3",
+  "version": "2.44.0-electron-v16.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -38,7 +38,7 @@
     "@mui/material": "5.5.2",
     "async": "2.6.3",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.2.6",
+    "ble-glucose": "0.2.9",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.0",
     "classnames": "2.3.1",
