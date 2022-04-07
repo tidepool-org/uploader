@@ -84,8 +84,8 @@ const devices = {
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    // PIN pairing for Electron not currently supported on Windows:
+    // https://github.com/electron/electron/issues/33111
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -93,6 +93,15 @@ const devices = {
     name: 'Dexcom',
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
+  },
+  foracareble: {
+    instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
+    key: 'foracareble',
+    name: 'Fora TN\'G Voice',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: false, linux: true}
+    // PIN pairing for Electron not currently supported on Windows:
+    // https://github.com/electron/electron/issues/33111
   },
   glucocardexpression: {
     instructions: {
@@ -178,8 +187,8 @@ const devices = {
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
     enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    // PIN pairing for Electron not currently supported on Windows:
+    // https://github.com/electron/electron/issues/33111
   },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
