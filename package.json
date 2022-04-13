@@ -33,7 +33,7 @@
     "@hot-loader/react-dom": "16.14.0",
     "@material-ui/core": "3.9.4",
     "@material-ui/icons": "3.0.2",
-    "async": "2.6.3",
+    "async": "3.2.2",
     "babyparse": "0.4.6",
     "ble-glucose": "0.2.9",
     "bows": "1.7.2",
