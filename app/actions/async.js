@@ -310,11 +310,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           displayErr.linkText = 'Please see this support article.';
         }
 
-        if (err.message === 'E_MULTIPLE_DEVICES') {
-          displayErr = new Error(ErrorMessages.E_MULTIPLE_DEVICES);
-          deviceDetectErrProps.code = 'E_MULTIPLE_DEVICES';
-        }
-
         displayErr.originalError = err;
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
