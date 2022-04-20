@@ -28,13 +28,15 @@ In `resources\win`:
 
 ### Submit Windows 10 drivers to hardware dashboard for attestation signing
 
+Windows 10 drivers need to be attestation signed on the MS Partner Center:
+
 - `cd win10`
 - `makecab /f TidepoolUSBDriver.ddf`
-- `signtool sign /v /ac "..\DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 4297DE953C8CF10065C31AA717E1302FCD1B9FE4 disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate)
+- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 1E770CC4BB4D6209A9E5C6155FD36040ED1BD19C disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate. Also replace the thumbprint/serial with that of the certificate you're using, and remember to install the root certs on the token when you're doing this for the first time.)
 
-This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
+This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details). If it's the first time you're using the certificate, you need to [add it to Partner Center](https://docs.microsoft.com/en-us/windows-hardware/drivers/dashboard/update-a-code-signing-certificate).
 
-Download the signed drivers from the hardware portal and update the `resources/win/win10` directory.
+Download the signed drivers from the hardware portal and replace the existing drivers the `resources/win/win10` directory.
 
 ### Verify that drivers are correctly signed:
 
