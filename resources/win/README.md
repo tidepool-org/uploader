@@ -24,7 +24,8 @@ To build and sign the driver, check that you have the specified requirements ins
 
 In `resources\win`:
 
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A *.cat`
+- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 <tidepool_cert_thumbprint> *.cat`
+- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 <tidepool_cert_thumbprint> .\win10\*.cat`
 
 ### Submit Windows 10 drivers to hardware dashboard for attestation signing
 
@@ -32,9 +33,9 @@ Windows 10 drivers need to be attestation signed on the MS Partner Center:
 
 - `cd win10`
 - `makecab /f TidepoolUSBDriver.ddf`
-- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 1E770CC4BB4D6209A9E5C6155FD36040ED1BD19C disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate. Also replace the thumbprint/serial with that of the certificate you're using, and remember to install the root certs on the token when you're doing this for the first time.)
+- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 <tidepool_cert_thumbprint> disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate. Also replace the thumbprint/serial with that of the certificate you're using, and remember to install the root certs on the token when you're doing this for the first time.)
 
-This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details). If it's the first time you're using the certificate, you need to [add it to Partner Center](https://docs.microsoft.com/en-us/windows-hardware/drivers/dashboard/update-a-code-signing-certificate).
+This `.cab` can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details). Select all non-ARM64 options for `Requested Signatures` when submitting. If it's the first time you're using the certificate, you need to [add it to Partner Center](https://docs.microsoft.com/en-us/windows-hardware/drivers/dashboard/update-a-code-signing-certificate).
 
 Download the signed drivers from the hardware portal and replace the existing drivers the `resources/win/win10` directory.
 
@@ -48,7 +49,7 @@ Download the signed drivers from the hardware portal and replace the existing dr
 	signtool verify /kp /v /c tidepoolvcp.cat i386\tiusb.sys
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\ser2pl64.sys
 	signtool verify /kp /v /c tidepoolvcp.cat i386\ser2pl.sys
-	signtool verify /kp /v /c tidepoolusb.cat amd64\wdfcoinstaller01009.dll
+	signtool verify /kp /v /c tidepoolvcp.cat amd64\wdfcoinstaller01009.dll
 
 ## Notes
 

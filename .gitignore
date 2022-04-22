@@ -29,6 +29,8 @@ main.js.map
 
 lib/drivers/medtronic/cli/*.json
 lib/drivers/insulet/cli/*.ibf
+resources/win/win10/disk1
+resources/win/win10/setup.*
 
 tmp
 npm-debug.log
