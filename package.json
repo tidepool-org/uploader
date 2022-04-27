@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.45.2-cert-update.1",
+  "version": "2.45.2-remove-win-7-8-drivers.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
