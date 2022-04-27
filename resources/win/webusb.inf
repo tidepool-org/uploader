@@ -4,7 +4,7 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %ManufacturerName%
 CatalogFile = WinUSBInstallation.cat
-DriverVer   = 10/04/2021,1.0.0.0
+DriverVer   = 09/04/2012,13.54.20.543
 
 ; ========== Manufacturer/Models sections ===========
 
@@ -18,24 +18,13 @@ DriverVer   = 10/04/2021,1.0.0.0
 
 [Standard.NTia64]
 %DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
-%DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120 ; Equil
-%DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01 ; Equil in accessory mode
+%DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120
+%DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01
 
 [Standard.NTamd64]
 %DeviceDesc% = USB_Install,USB\VID_0E8D&PID_201D&MI_00
-%DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120 ; Equil
-%DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01 ; Equil in accessory mode
-
-; ================== Class section ==================
-
-[ClassInstall32]
-AddReg=Class_Install_Add_Reg
-
-[Class_Install_Add_Reg]
-HKR,,,0,%ClassName%
-HKR,,NoInstallClass,,1
-HKR,,Icon,,"-20"
-HKR,,LowerLogoVersion,,5.2
+%DeviceDesc% = USB_Install,USB\VID_05C6&PID_9120
+%DeviceDesc% = USB_Install,USB\VID_18D1&PID_2D01
 
 ; =================== Installation ===================
 
@@ -50,12 +39,6 @@ Needs   = WINUSB.NT.Services
 [USB_Install.HW]
 AddReg = Dev_AddReg
 
-[USB_Install.Wdf]
-KmdfService=WINUSB, WinUsb_Install
-
-[WinUsb_Install]
-KmdfLibraryVersion=1.11
-
 [Dev_AddReg]
 HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
 
@@ -65,3 +48,4 @@ HKR,,DeviceInterfaceGUIDs,0x10000,"{D252C909-8325-43A8-9235-0169BF676338}"
 ManufacturerName              = "Tidepool"
 ClassName                     = "WinUSB devices"
 DeviceDesc = "Tidepool USB driver (WinUSB)"
+REG_MULTI_SZ = 0x00010000
