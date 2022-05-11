@@ -22,9 +22,9 @@
   "clinic": "clinic",
   "Can’t find a patient you are looking for?": "Can’t find a patient you are looking for?",
   "Change Workspace": "Change Workspace",
-  "To manage {{workspace}} workspace and view patient invites, go to": "To manage {{workspace}} workspace and view patient invites, go to",
-  "Tidepool Web": "Tidepool Web",
-  "Something went wrong while creating patient account.": "Something went wrong while creating patient account.",
+  "Attestation": "Attestation",
+  "I attest that I have obtained permission from the patient and/or the patient's legal guardian to use Tidepool's software to assist in the management of the patient's health care.": "I attest that I have obtained permission from the patient and/or the patient's legal guardian to use Tidepool's software to assist in the management of the patient's health care.",
+  "This field is required.": "This field is required.",
   "Email address is already associated with another account.": "Email address is already associated with another account.",
   "Private Workspace": "Private Workspace"
   "Uploading Libre 2 data?": "Uploading Libre 2 data?",

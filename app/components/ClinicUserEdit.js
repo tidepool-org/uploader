@@ -44,6 +44,9 @@ function validateForm(values){
   } else {
     errors.year = i18n.t('Hmm, this date doesn’t look right');
   }
+  if(values.attestationSubmitted === false){
+    errors.attestationSubmitted = i18n.t('This field is required.');
+  }
   return errors;
 }
 
@@ -112,7 +115,7 @@ class ClinicUserEdit extends React.Component {
   };
 
   handleCancel = () => {
-    if(this.props.working.creatingClinicCustodialAccount.notification) {
+    if (this.props.working.creatingClinicCustodialAccount.notification) {
       this.props.acknowledgeNotification();
     }
     this.props.cancelEdit();
@@ -130,16 +133,23 @@ class ClinicUserEdit extends React.Component {
           fullName,
           birthDate: dateString,
         };
-        if(email) patient.email = email;
+        if (email) patient.email = email;
         if (mrn) patient.mrn = mrn;
         if (targetId) {
-          var originalPatient = _.get(clinics, [selectedClinicId, 'patients', targetId]);
-          var patientFilled = _.extend({},originalPatient,patient);
-          this.props.updateClinicPatient(selectedClinicId, targetId, patientFilled);
-        } else{
+          var originalPatient = _.get(clinics, [
+            selectedClinicId,
+            'patients',
+            targetId,
+          ]);
+          var patientFilled = _.extend({}, originalPatient, patient);
+          this.props.updateClinicPatient(
+            selectedClinicId,
+            targetId,
+            patientFilled
+          );
+        } else {
           this.props.createClinicUser(selectedClinicId, patient);
         }
-
       } else {
         var profile = {
           fullName: fullName,
@@ -207,7 +217,7 @@ class ClinicUserEdit extends React.Component {
   };
 
   renderNotification = () => {
-    var {creatingClinicCustodialAccount} = this.props.working;
+    var { creatingClinicCustodialAccount } = this.props.working;
     if (_.isNull(creatingClinicCustodialAccount.notification)) {
       return null;
     }
@@ -218,9 +228,11 @@ class ClinicUserEdit extends React.Component {
           {i18n.t(creatingClinicCustodialAccount.notification.message)}
           <i
             className={styles.iconClose}
-            onClick={
-              () => { this.props.acknowledgeNotification('creatingClinicCustodialAccount'); }
-            }
+            onClick={() => {
+              this.props.acknowledgeNotification(
+                'creatingClinicCustodialAccount'
+              );
+            }}
           ></i>
         </span>
       </div>
@@ -277,8 +289,51 @@ class ClinicUserEdit extends React.Component {
     );
   };
 
+  renderAttestationField = (field) => {
+    return (
+      <div>
+        <div className={styles.inputWrap} style={{ flexDirection: 'row' }}>
+          <input
+            id="attestationSubmitted"
+            type="checkbox"
+            name="attestationSubmitted"
+            style={{ marginTop: '5px' }}
+            disabled={field.disabled}
+            {...field.input}
+          />
+          <label
+            className={styles.inputLabel}
+            htmlFor="attestationSubmitted"
+            style={{ marginLeft: '8px', fontSize: '14px' }}
+          >
+            {i18n.t(
+              'I attest that I have obtained permission from the patient and/or the patient\'s legal guardian to use Tidepool\'s software to assist in the management of the patient\'s health care.'
+            )}
+          </label>
+        </div>
+        {this.renderAttestationError(field)}
+      </div>
+    );
+  };
+
+  renderAttestationError = (field) => {
+    if(!field.meta.touched || !field.meta.error){
+      return null;
+    } else {
+      return (
+        <div className={styles.validationError}>{field.meta.error}</div>
+      );
+    }
+  };
+
   render() {
-    const { handleSubmit, targetId, memberships, clinics, selectedClinicId } = this.props;
+    const {
+      handleSubmit,
+      targetId,
+      memberships,
+      clinics,
+      selectedClinicId,
+    } = this.props;
     const isCustodialAccount =
       _.has(_.get(memberships, [targetId, 'permissions']), 'custodian') ||
       (selectedClinicId &&
@@ -345,6 +400,18 @@ class ClinicUserEdit extends React.Component {
               props={{ disabled: !editable }}
             />
           </div>
+          {selectedClinicId && (
+            <div
+              className={styles.inputWrap}
+              style={{ flexDirection: 'row' }}
+            >
+              <Field
+                name="attestationSubmitted"
+                component={this.renderAttestationField}
+                props={{ disabled: !editable }}
+              />
+            </div>
+          )}
           <div className={styles.actions}>
             <div>
               <button
