@@ -29,6 +29,7 @@ module.exports = {
   E_INIT: 'Error during app initialization',
   E_MEDTRONIC_UNSUPPORTED: 'Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry...',
   E_MEDTRONIC_UPLOAD: 'Make sure no other software (e.g. CareLink, OpenAPS, Loop) is talking to your pump. Otherwise, please see the error details below or contact Tidepool Support.',
+  E_LIBREVIEW_FORMAT: 'Please set your LibreView date format to Year-Month-Day and export the CSV again',
   E_OFFLINE: 'Not connected to the Internet!',
   E_READ_FILE: 'Error reading file ',
   E_SERIAL_CONNECTION: 'Hmm, we couldn\'t detect your device',
@@ -36,7 +37,7 @@ module.exports = {
   E_UPLOAD_IN_PROGRESS: 'Sorry, an upload is already in progress',
   E_UNPLUG_AND_RETRY: 'Please unplug device and try again',
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
-  E_LIBRE2_UNSUPPORTED: 'Sorry, we don\'t support the Libre 2 yet',
+  E_LIBRE2_UNSUPPORTED: 'Uploading Libre 2 data?',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
@@ -48,5 +49,4 @@ module.exports = {
   ERR_FETCHING_PATIENT: 'Something went wrong while fetching patient.',
   ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
   ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
-  E_MULTIPLE_DEVICES: 'We found more than one device plugged in. Only plug in the device you intend to upload.',
 };

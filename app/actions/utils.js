@@ -111,6 +111,11 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
       }
 
+      if (err.message === 'E_LIBREVIEW_FORMAT') {
+        displayErr.message = ErrorMessages.E_LIBREVIEW_FORMAT;
+        uploadErrProps.details = 'Could not validate the date format';
+      }
+
       if (!(process.env.NODE_ENV === 'test')) {
         uploadErrProps.stringifiedStack = _.map(
           _.filter(
