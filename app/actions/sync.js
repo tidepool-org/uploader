@@ -251,6 +251,15 @@ export function setAllUsers(user, profile, memberships){
   };
 }
 
+export function acknowledgeNotification(acknowledgedNotification) {
+  return {
+    type: ActionTypes.ACKNOWLEDGE_NOTIFICATION,
+    payload: {
+      acknowledgedNotification: acknowledgedNotification,
+    },
+  };
+}
+
 /*
  * relating to async action creator doAppInit
  */
@@ -862,7 +871,9 @@ export function createClinicCustodialAccountSuccess(clinicId, patient, patientId
   };
 }
 
-export function createClinicCustodialAccountFailure(error, apiError) {
+export function createClinicCustodialAccountFailure(err, apiError) {
+  const error = new Error(getCreateCustodialAccountErrorMessage(err.status || null));
+  error.originalError = err;
   return {
     type: ActionTypes.CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE,
     error: error,

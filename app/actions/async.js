@@ -117,16 +117,51 @@ export function doAppInit(opts, servicesToInit) {
           }
 
           api.user.initializationInfo((err, results) => {
+            const [ user, profile, memberships, associatedAccounts, clinics ] = results;
             if (err) {
               return dispatch(sync.initializeAppFailure(err));
             }
             dispatch(sync.initializeAppSuccess());
             dispatch(doVersionCheck());
             dispatch(sync.setUserInfoFromToken({
-              user: results[0],
-              profile: results[1],
-              memberships: results[2]
+              user: user,
+              profile: profile,
+              memberships: memberships
             }));
+            dispatch(sync.getClinicsForClinicianSuccess(clinics, user.userid));
+            const isClinic = personUtils.isClinic(user);
+            if(!_.isEmpty(clinics)){
+              if (clinics.length == 1) { // select clinic and go to clinic user select page
+                let clinicId = _.get(clinics,'0.clinic.id',null);
+                dispatch(fetchPatientsForClinic(clinicId));
+                dispatch(sync.selectClinic(clinicId));
+                return dispatch(
+                  setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
+                    metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
+                  })
+                );
+              }
+              if (clinics.length > 1) { // more than one clinic - go to workspace switch
+                return dispatch(
+                  setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
+                    metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
+                  })
+                );
+              }
+            }
+            if(isClinic){ // "old" style clinic account without new clinic
+              return dispatch(
+                setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
+                  metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
+                })
+              );
+            }
+            // detect if a DSA here and redirect to data storage screen
+            const { targetUsersForUpload } = getState();
+            if (_.isEmpty(targetUsersForUpload)) {
+              return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
+            }
+
             const { uploadTargetUser } = getState();
             if (uploadTargetUser !== null) {
               dispatch(sync.setBlipViewDataUrl(
@@ -273,11 +308,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
           displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
           displayErr.linkText = 'Please see this support article.';
-        }
-
-        if (err.message === 'E_MULTIPLE_DEVICES') {
-          displayErr = new Error(ErrorMessages.E_MULTIPLE_DEVICES);
-          deviceDetectErrProps.code = 'E_MULTIPLE_DEVICES';
         }
 
         displayErr.originalError = err;

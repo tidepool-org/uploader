@@ -42,7 +42,7 @@ describe('objectBuildingLogic', () => {
     });
 
     test('should not take IOB into account if no BG value was input', () => {
-      var details = _.assign({}, wizDetails, {current_bg: 65535});
+      var details = _.assign({}, wizDetails, {current_bg: null});
       expect(logic.calculateNetRecommendation(details)).to.equal(5.0);
     });
 
