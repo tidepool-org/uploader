@@ -10,5 +10,7 @@
   "We found more than one device plugged in. Only plug in the device you intend to upload.": "We found more than one device plugged in. Only plug in the device you intend to upload.",
   "Uploading Libre 2 data?": "Uploading Libre 2 data?",
   "We couldn't log you in. Try again in a few minutes.": "We couldn't log you in. Try again in a few minutes.",
-  "Please set your LibreView date format to Year-Month-Day and export the CSV again": "Please set your LibreView date format to Year-Month-Day and export the CSV again"
+  "Please set your LibreView date format to Year-Month-Day and export the CSV again": "Please set your LibreView date format to Year-Month-Day and export the CSV again",
+  "Make sure the meter is switched off and plug in cable": "Make sure the meter is switched off and plug in cable",
+  "Make sure meter is switched off before plugging in cable": "Make sure meter is switched off before plugging in cable"
 }
