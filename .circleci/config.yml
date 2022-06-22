@@ -11,6 +11,8 @@ jobs:
       xcode: '12.5.1'
     steps:
     - checkout
+    - run: git submodule sync
+    - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
