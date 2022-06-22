@@ -62,7 +62,9 @@ jobs:
           - ~/.cache/yarn
           - ./node_modules
       # Test
-      - run: yarn lint
+      - run:
+          command: yarn lint
+          shell: powershell.exe
       - run: yarn test
       # Package
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
