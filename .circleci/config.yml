@@ -50,10 +50,10 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      # yarn and nvm should already be installed on this image
       - run: nvm install v12.13.0
       - run: nvm use v12.13.0
       - run: node -v
+      - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
