@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.45.1-relion-prime.2",
+  "version": "2.45.1-relion-prime.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
