@@ -3155,11 +3155,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.27.tgz#5054610d37bb5f6e21342d0e6d24c494231f3b85"
   integrity sha512-94+Ahf9IcaDuJTle/2b+wzvjmutxXAEXU6O81JHblYXUg2BDG+dnBy7VxIPHKAyEEDHzCMQydTJuWvrE+Aanzw==
 
-"@types/node@^8.0.54":
-  version "8.10.66"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.66.tgz#dd035d409df322acc83dff62a602f12a5783bbb3"
-  integrity sha512-tktOkFUA4kXx2hhhrB8bIFb5TbwzS4uOhKEmwiD+NoiL0qtP2OQ9mFldbgD4dV1djrlBYP6eBuQZiWjuHUpqFw==
-
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
@@ -3258,17 +3253,15 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/usb@^1.5.1":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@types/usb/-/usb-1.5.3.tgz#2da43e16699819b524dd106e46ead5c3224a5c69"
-  integrity sha512-f0QO6/x5iWA+FU3VTDrnouVHyeKBnTCGkw5wqKDe7JJnGQgPtlBfWWua6gr/GCRzCZB7qE9mz0jOnSWvra8RBg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/verror@^1.10.3":
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/@types/verror/-/verror-1.10.5.tgz#2a1413aded46e67a1fe2386800e291123ed75eb1"
   integrity sha512-9UjMCHK5GPgQRoNbqdLIAvAy0EInuiqbW0PBMtVP6B5B2HQJlvoJHM+KodPZMEjOa5VkSc+5LH7xy+cUzQdmHw==
+
+"@types/w3c-web-usb@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/w3c-web-usb/-/w3c-web-usb-1.0.6.tgz#5d8560d0d9f585ffc80865bc773db7bc975b680c"
+  integrity sha512-cSjhgrr8g4KbPnnijAr/KJDNKa/bBa+ixYkywFRvrhvi9n1WEl7yYbtRyzE6jqNQiSxxJxoAW3STaOQwJHndaw==
 
 "@types/w3c-web-usb@^1.0.4":
   version "1.0.5"
@@ -8276,12 +8269,14 @@ fstream@^1.0.0, fstream@^1.0.12, fstream@~1.0.10, fstream@~1.0.11:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-ftdi-js@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.7.tgz#f9224ca7c27680f56c1ef8bb19f26af1cfd6397b"
-  integrity sha512-1/oK8Ml8McXQU+7XL4XVdCCtFolLOGTXw/w34VywC35ly8Vc0Mtmzj8bFrIQ+GC70Ho73sDuxObWJY2L15r7lg==
+ftdi-js@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.9.tgz#9251e9f9e9ecae2912163af48926dbde82458fce"
+  integrity sha512-HMJHFtaqFgKzMcL6TMu2zw+YoZ6jbZbi3apT89bgXLhDDGjOTjhJUuv0oY/vubzM02BaoQDgKrmJtKEa2X37SA==
   dependencies:
-    webusb "2.2.0"
+    core-js "2.6.10"
+    is-electron "2.2.1"
+    usb "2.4.3"
 
 ftp@0.3.10:
   version "0.3.10"
@@ -17006,7 +17001,16 @@ usb@2.0.3:
     node-addon-api "^4.2.0"
     node-gyp-build "^4.3.0"
 
-usb@^1.3.1, usb@^1.6.0:
+usb@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/usb/-/usb-2.4.3.tgz#fab8c1820276d0cb34f87a5ddba0152633d4a829"
+  integrity sha512-BmCjjxsriODcrb+TdXdzSDDys+MOUeRvo22ywmyIxYcuVW9YKrr2Wp2gQZUfHrQbvovKu87Po9mk5OPftJdDeQ==
+  dependencies:
+    "@types/w3c-web-usb" "1.0.6"
+    node-addon-api "^4.2.0"
+    node-gyp-build "^4.3.0"
+
+usb@^1.3.1:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/usb/-/usb-1.8.0.tgz#aec44c61558e618c699a2cbd31c86e3dc7f64d87"
   integrity sha512-lA0q2tjDEAq1YUsW6nQ+asw92TtFrQ8rhMd11jAoFhK3xItZUupJ7npZDSmVOpQqQhhdFmX/YciqyywupA/wOQ==
@@ -17443,16 +17447,6 @@ websocket-extensions@>=0.1.1:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
   integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
-
-webusb@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/webusb/-/webusb-2.2.0.tgz#2e666afb182e6a6a1e9e279cc3a343b10aad7a5e"
-  integrity sha512-EP6JOFIqR4vLoDWwtMROs94Sl/sZlmX1WApK9O8/rBMBEiYTrDlgQrfUQ4CW5o+GSxfbA+MpDRgGbEBa5q0ECw==
-  dependencies:
-    "@types/node" "^8.0.54"
-    "@types/usb" "^1.5.1"
-    "@types/w3c-web-usb" "^1.0.4"
-    usb "^1.6.0"
 
 whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.5:
   version "1.0.5"
