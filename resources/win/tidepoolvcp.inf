@@ -80,6 +80,7 @@ CatalogFile=tidepoolvcp.cat
 %PID_3420.DeviceDesc%=TI.Uni,USB\VID_1A61&PID_3420 ; Abbott Strip Port USB Data Cable
 %VID_067B&PID_2303.DeviceDesc% = ComPort.NTx86, USB\VID_067B&PID_2303 ; Prolific PL2303
 %VID_067B&PID_2304.DeviceDesc% = ComPort.NTx86, USB\VID_067B&PID_2304 ; Prolific PL2304
+%USB\VID_0EFB&PID_0011.DeviceDesc%=silabser.NTx86, USB\VID_0EFB&PID_0011 ; Arkray cable
 
 [Tidepool.NTamd64]
 %USB\VID_10C4&PID_85A7.DeviceDesc%=silabser.NTamd64, USB\VID_10C4&PID_85A7
@@ -97,6 +98,7 @@ CatalogFile=tidepoolvcp.cat
 %PID_3420.DeviceDesc%=TI.Uni,USB\VID_1A61&PID_3420 ; Abbott Strip Port USB Data Cable
 %VID_067B&PID_2303.DeviceDesc% = ComPort.NTamd64, USB\VID_067B&PID_2303 ; Prolific PL2303
 %VID_067B&PID_2304.DeviceDesc% = ComPort.NTamd64, USB\VID_067B&PID_2304 ; Prolific PL2304
+%USB\VID_0EFB&PID_0011.DeviceDesc%=silabser.NTx86, USB\VID_0EFB&PID_0011 ; Arkray cable
 
 [FtdiPort.NT.AddService]
 DisplayName    = %SvcDesc%
