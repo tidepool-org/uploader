@@ -8269,10 +8269,10 @@ fstream@^1.0.0, fstream@^1.0.12, fstream@~1.0.10, fstream@~1.0.11:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-ftdi-js@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.9.tgz#9251e9f9e9ecae2912163af48926dbde82458fce"
-  integrity sha512-HMJHFtaqFgKzMcL6TMu2zw+YoZ6jbZbi3apT89bgXLhDDGjOTjhJUuv0oY/vubzM02BaoQDgKrmJtKEa2X37SA==
+ftdi-js@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.10.tgz#98284e94b6072319c8c4e182b686f954e5f8770e"
+  integrity sha512-gyQPNrYMxoY8NckT+vIsiG4xQyV2TQ/jL/mzx+BOGWNVvB22pAuyxQly9jv9OXJjJ7xTJJBHB6uqcOwbUmrFgQ==
   dependencies:
     core-js "2.6.10"
     is-electron "2.2.1"

@@ -52,7 +52,7 @@
     "electron-log": "4.4.6",
     "electron-updater": "4.6.5",
     "es6-error": "4.1.1",
-    "ftdi-js": "0.0.9",
+    "ftdi-js": "0.0.10",
     "history": "4.10.1",
     "i18next": "20.6.1",
     "i18next-fs-backend": "1.1.4",
