@@ -106,6 +106,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'controlled folder access.';
       }
 
+      if (err.code === 'E_OMNIPOD_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the PDM. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029448012#h_01FYCJ3XVYGBZJSJ8WPNETVEHX';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
       if (err.message === 'E_DATETIME_SET_BY_PUMP') {
         displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
         uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
