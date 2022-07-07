@@ -52,7 +52,7 @@
     "electron-log": "4.4.6",
     "electron-updater": "4.6.5",
     "es6-error": "4.1.1",
-    "ftdi-js": "0.0.10",
+    "ftdi-js": "0.3.0",
     "history": "4.10.1",
     "i18next": "20.6.1",
     "i18next-fs-backend": "1.1.4",
@@ -86,7 +86,7 @@
     "tidepool-platform-client": "0.48.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "8.3.2",
-    "webmtp": "0.2.0-update-node-usb.2"
+    "webmtp": "0.3.0"
   },
   "browserslist": "last 2 electron major versions",
   "bin": {

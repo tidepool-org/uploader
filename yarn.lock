@@ -3265,11 +3265,6 @@
   resolved "https://registry.yarnpkg.com/@types/w3c-web-usb/-/w3c-web-usb-1.0.6.tgz#5d8560d0d9f585ffc80865bc773db7bc975b680c"
   integrity sha512-cSjhgrr8g4KbPnnijAr/KJDNKa/bBa+ixYkywFRvrhvi9n1WEl7yYbtRyzE6jqNQiSxxJxoAW3STaOQwJHndaw==
 
-"@types/w3c-web-usb@^1.0.4":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@types/w3c-web-usb/-/w3c-web-usb-1.0.5.tgz#90284d17f35de981670c85d29053ae8b88fa5543"
-  integrity sha512-dYolx2XWesl1TMu+1BjtjU6eC6c2zZ2VDKhjU4f/mtR3+UBfMW6h1tPCQt7leY5Y8JBg0Fe/mMnoDMkPPNX9sw==
-
 "@types/yargs-parser@*":
   version "20.2.1"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.1.tgz#3b9ce2489919d9e4fea439b76916abc34b2df129"
@@ -8280,10 +8275,10 @@ fstream@^1.0.0, fstream@^1.0.12, fstream@~1.0.10, fstream@~1.0.11:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-ftdi-js@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.0.10.tgz#98284e94b6072319c8c4e182b686f954e5f8770e"
-  integrity sha512-gyQPNrYMxoY8NckT+vIsiG4xQyV2TQ/jL/mzx+BOGWNVvB22pAuyxQly9jv9OXJjJ7xTJJBHB6uqcOwbUmrFgQ==
+ftdi-js@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ftdi-js/-/ftdi-js-0.3.0.tgz#25d878ba781b89a908f98532682c17ee8e582740"
+  integrity sha512-GTi5hFw9x4/xYEa5u3EAbj7B7uelkx8ThkduUsbgiDi7f7Tbzb50ss1J0DCwzFGGPT/P+N6bIKoLUCzKzXRhfw==
   dependencies:
     core-js "2.6.10"
     is-electron "2.2.1"
@@ -17009,15 +17004,6 @@ usb@1.6.5:
     nan "2.13.2"
     prebuild-install "^5.3.3"
 
-usb@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/usb/-/usb-2.0.3.tgz#c8a420f9a02bcdf644790eb4fa46506065c16a0d"
-  integrity sha512-UnUtZK5ebhDdNTjcO+cHFnpo25iifNm+E7F4f5g4pCUH+0M8b4SiVqILNzqz9iqQNK326PGawOYdkTJbplqsIg==
-  dependencies:
-    "@types/w3c-web-usb" "^1.0.4"
-    node-addon-api "^4.2.0"
-    node-gyp-build "^4.3.0"
-
 usb@2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/usb/-/usb-2.4.3.tgz#fab8c1820276d0cb34f87a5ddba0152633d4a829"
@@ -17288,13 +17274,13 @@ webidl-conversions@^6.1.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
-webmtp@0.2.0-update-node-usb.2:
-  version "0.2.0-update-node-usb.2"
-  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.2.0-update-node-usb.2.tgz#a0b8fedfd8e438f8711740dbb29c41a998dbe404"
-  integrity sha512-PklF8AbZiVKyYtMC1n2+KUsw52A9hHcwqLUx8G8pjujfuUJFZBIIrwX8/BglBuqVCy3bi91K/QC9rJNwAEM4AA==
+webmtp@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.3.0.tgz#365f99761aaae543c9b6936f853afec69b88e139"
+  integrity sha512-+00B5XkH1inJYEwVY5mKANJB3JMtmri1cWU8/HIJJ+30cStfhgzGJ71yENRhWGkpJ2kewbV6DF6wod9x5K3Wqw==
   dependencies:
     core-js "2.6.11"
-    usb "2.0.3"
+    usb "2.4.3"
 
 webpack-bundle-analyzer@4.5.0:
   version "4.5.0"
