@@ -4,7 +4,12 @@
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
-  "author": "Kent Quirk",
+  "contributors": [
+    "Gerrit Niezen",
+    "Chris McGee",
+    "Jana Beck",
+    "Kent Quirk"
+  ],
   "license": "BSD-2-Clause",
   "repository": "tidepool-org/uploader",
   "scripts": {
