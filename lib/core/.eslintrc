@@ -18,6 +18,7 @@
     "operator-linebreak": "warn",
     "no-else-return": "warn",
     "object-curly-newline": "warn",
+    "linebreak-style": 0,
     "implicit-arrow-linebreak": "warn"
   },
   "settings": {
