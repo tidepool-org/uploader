@@ -17,6 +17,7 @@
     "max-classes-per-file": "warn",
     "operator-linebreak": "warn",
     "arrow-parens": "warn",
+    "linebreak-style": 0,
     "object-curly-newline": "warn"
   },
   "overrides": [

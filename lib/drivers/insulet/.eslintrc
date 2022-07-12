@@ -17,6 +17,7 @@
     "lines-between-class-members": "warn",
     "function-paren-newline": "warn",
     "comma-style": "warn",
+    "linebreak-style": 0,
     "implicit-arrow-linebreak": "warn"
   },
   "settings": {

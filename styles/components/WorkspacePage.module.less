@@ -76,11 +76,15 @@
 .clinicName {
   composes: large from '../core/typography.module.less';
   margin-left: 24px;
+  margin-right: 15px;
+  word-break: break-word;
+  display: flex;
 }
 
 .clinicSwitchButton {
   composes: btn btnPrimary from '../core/buttons.module.less';
   margin-right: 24px;
+  height:fit-content;
 }
 
 .addLink {
