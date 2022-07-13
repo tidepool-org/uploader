@@ -4460,10 +4460,10 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.3.0-optional-context.1:
-  version "0.3.0-optional-context.1"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.3.0-optional-context.1.tgz#4d06c93129ed48affeaa119e48f898b48d7a4490"
-  integrity sha512-rbk8Bd0wtdYRqa/+YLQtxCkV3RCNxOYhosXeqHYgOFqlU2WFhPnzIBQK04Jozeg+zgBWPQG6sa/fVVf36uKQig==
+ble-glucose@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.3.0.tgz#46ca6facd97ba6ec5fb73bdf45dfa7133729d32a"
+  integrity sha512-A/3Yy6QDfaXPQ7y2YsBaCh+iaC6T0Up9X44tg072dyBUrvhKDAwfRaLa4+fg4onSWTIBofiy3P1cZj2LjPNk4A==
   dependencies:
     bows "1.7.2"
     core-js "2.6.10"

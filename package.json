@@ -43,7 +43,7 @@
     "@mui/material": "5.8.7",
     "async": "2.6.3",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.3.0-optional-context.1",
+    "ble-glucose": "0.3.0",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.1",
     "classnames": "2.3.1",
