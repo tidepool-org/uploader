@@ -1,7 +1,6 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 
 const i18n = remote.getGlobal( 'i18n' );
 
@@ -92,6 +91,13 @@ const devices = {
     key: 'dexcom',
     name: 'Dexcom',
     source: {type: 'device', driverId: 'Dexcom'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  weitai: {
+    instructions: 'Plug in PDA with micro-USB',
+    name: 'Equil Insulin Patch/Micro Pump',
+    key: 'weitai',
+    source: {type: 'device', driverId: 'Weitai'},
     enabled: {mac: true, win: true, linux: true}
   },
   foracareble: {
@@ -240,13 +246,6 @@ const devices = {
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  weitai: {
-    instructions: 'Plug in PDA with micro-USB',
-    name: 'Equil Insulin Patch/Micro Pump',
-    key: 'weitai',
-    source: {type: 'device', driverId: 'Weitai'},
     enabled: {mac: true, win: true, linux: true}
   },
 };

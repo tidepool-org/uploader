@@ -20,11 +20,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { remote } from 'electron';
 import { Route, Switch } from 'react-router-dom';
 import dns from 'dns';
-
-const { Menu } = remote;
 
 import bows from 'bows';
 
@@ -59,6 +56,8 @@ import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 
 import styles from '../../styles/components/App.module.less';
+
+const remote = require('@electron/remote');
 
 const serverdata = {
   Local: {
@@ -224,7 +223,7 @@ export class App extends Component {
         }
       });
     }
-    const menu = Menu.buildFromTemplate(template);
+    const menu = remote.Menu.buildFromTemplate(template);
     menu.popup(remote.getCurrentWindow());
   };
 

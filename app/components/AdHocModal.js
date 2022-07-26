@@ -26,7 +26,7 @@ import styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export class AdHocModal extends Component {
@@ -34,7 +34,7 @@ export class AdHocModal extends Component {
     const { showingAdHocPairingDialog, sync } = this.props;
     showingAdHocPairingDialog.callback('adHocModalClose');
     sync.dismissedAdHocPairingDialog();
-  }
+  };
 
   render() {
     const { showingAdHocPairingDialog } = this.props;
