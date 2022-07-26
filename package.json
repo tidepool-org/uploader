@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.45.0",
+  "version": "2.46.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -13,7 +13,7 @@
     "serve-docs": "./node_modules/.bin/gitbook serve",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
     "test-all": "npm run lint && npm run test && npm run build",
-    "lint": "./node_modules/eslint/bin/eslint.js --cache --format=node_modules/eslint-formatter-pretty .",
+    "lint": "node ./node_modules/eslint/bin/eslint.js --cache --format=node_modules/eslint-formatter-pretty .",
     "lint-fix": "npm run lint -- --fix",
     "build-main": "yarn build-main-quiet --progress --profile --colors",
     "build-main-quiet": "cross-env NODE_ENV=production webpack --config webpack.config.main.prod.babel.js",
