@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.46.0-electron-v16.11",
+  "version": "2.46.0-fora-tng-voice.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
