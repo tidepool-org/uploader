@@ -20,7 +20,7 @@ import stacktrace from 'stack-trace';
 
 import sundial from 'sundial';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 import * as syncActions from './sync';
 
 const isBrowser = typeof window !== 'undefined';
@@ -34,12 +34,9 @@ export function getDeviceTargetsByUser(targetsByUser) {
 }
 
 export function getUploadTrackingId(device) {
-  const source = device.source;
+  const {source} = device;
   if (source.type === 'device' || source.type === 'block') {
     return source.driverId;
-  }
-  if (source.type === 'carelink') {
-    return 'CareLink';
   }
   return null;
 }
@@ -81,7 +78,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       }
       const serverErr = 'Origin is not allowed by Access-Control-Allow-Origin';
       let displayErr = new Error(err.message === serverErr ?
-        errorText.E_SERVER_ERR : errorText[err.code || errCode]);
+        ErrorMessages.E_SERVER_ERR : ErrorMessages[err.code || errCode]);
       let uploadErrProps = {
         details: err.message,
         utc: getUtc(utc),
@@ -101,6 +98,22 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.message = 'Couldn\'t connect to device.';
         displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
         displayErr.linkText = 'Is it paired?';
+      }
+
+      if (err.code === 'E_VERIO_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4409628277140';
+        displayErr.linkText = 'controlled folder access.';
+      }
+
+      if (err.message === 'E_DATETIME_SET_BY_PUMP') {
+        displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
+        uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
+      }
+
+      if (err.message === 'E_LIBREVIEW_FORMAT') {
+        displayErr.message = ErrorMessages.E_LIBREVIEW_FORMAT;
+        uploadErrProps.details = 'Could not validate the date format';
       }
 
       if (!(process.env.NODE_ENV === 'test')) {

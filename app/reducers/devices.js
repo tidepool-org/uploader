@@ -1,20 +1,11 @@
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
+
 import { remote } from 'electron';
 
 const i18n = remote.getGlobal( 'i18n' );
 
 const devices = {
-  carelink: {
-    instructions: [i18n.t('Import from CareLink'), i18n.t('(We will not store your credentials)')],
-    isFetching: false,
-    key: 'carelink',
-    name: 'Medtronic',
-    // for the device selection list
-    selectName: 'Medtronic (CareLink import)',
-    source: {type: 'carelink'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',
@@ -37,6 +28,13 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottFreeStyleNeo'},
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
+  },
+  abbottlibreview: {
+    instructions: i18n.t('Select CSV file downloaded from LibreView'),
+    key: 'abbottlibreview',
+    name: 'Abbott LibreView',
+    source: {type: 'block', driverId: 'AbbottLibreView', extension: '.csv'},
+    enabled: {linux: true, mac: true, win: true},
   },
   precisionxtra: {
     instructions: i18n.t('Plug in meter with cable'),
@@ -75,14 +73,14 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier & Dual',
+    name: 'CareSens N Premier, Dual & N Plus BT',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
   },
   caresensble: {
     instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
-    name: 'CareSens N Premier & Dual (using Bluetooth)',
+    name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
@@ -158,6 +156,14 @@ const devices = {
     source: {type: 'device', driverId: 'Medtronic600'},
     enabled: {mac: true, win: true, linux: true}
   },
+  onetouchselect: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    name: 'OneTouch Select Plus Flex',
+    key: 'onetouchselect',
+    source: {type: 'device', driverId: 'OneTouchSelect'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
   onetouchverio: {
     instructions: i18n.t('Plug in meter with micro-USB'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
@@ -166,6 +172,15 @@ const devices = {
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
+  onetouchverioble: {
+    instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
+    name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
+    key: 'onetouchverioble',
+    source: {type: 'device', driverId: 'OneTouchVerioBLE'},
+    enabled: {mac: true, win: false, linux: true}
+    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+  },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
     name: 'OneTouch VerioIQ',
@@ -173,15 +188,6 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchVerioIQ'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
-  },
-  onetouchverioble: {
-    instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
-    name: 'OneTouch Verio Flex & Verio Reflect (with Bluetooth)',
-    key: 'onetouchverioble',
-    source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
   },
   onetouchultramini: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched off'),
@@ -206,7 +212,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Guide & Guide Me',
+    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
@@ -225,6 +231,13 @@ const devices = {
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  weitai: {
+    instructions: 'Plug in PDA with micro-USB',
+    name: 'Equil Insulin Patch/Micro Pump',
+    key: 'weitai',
+    source: {type: 'device', driverId: 'Weitai'},
     enabled: {mac: true, win: true, linux: true}
   },
 };

@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-macos:
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
@@ -11,6 +11,8 @@ jobs:
       xcode: '12.5.1'
     steps:
     - checkout
+    - run: git submodule sync
+    - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
@@ -36,13 +38,46 @@ jobs:
     - run: yarn test
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+  build-windows:
+    machine:
+      # see https://circleci.com/developer/machine/image/windows-server-2019 for details
+      image: windows-server-2019-vs2019:stable
+      resource_class: windows.medium
+      shell: bash.exe
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run: nvm install v12.13.0
+      - run: nvm use v12.13.0
+      - run: node -v
+      - run: npm install --global yarn
+      - run: yarn config set cache-folder ~/.cache/yarn
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+          - ~/.cache/yarn
+          - ./node_modules
+      # Test
+      - run: yarn lint
+      - run: yarn test
+      # Package
+      - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+      - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
 
 # runs build for all branches and all tags starting with v.
 workflows:
   version: 2
   build-release:
     jobs:
-      - build:
+      - build-macos:
+          filters:
+            tags:
+              only: /^v.*/
+      - build-windows:
           filters:
             tags:
               only: /^v.*/

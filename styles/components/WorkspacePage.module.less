@@ -1,0 +1,121 @@
+@import '../core/variables.less';
+@import '../core/icons.module.less';
+
+.wrap {
+  composes: flexRow from '../core/layout.module.less';
+  width:100%;
+  height: @usable-page-height;
+  justify-content: center;
+}
+
+.wrapInner {
+  composes: flexColumn from '../core/layout.module.less';
+  width:570px;
+}
+
+.headerWrap {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: space-between;
+  padding-bottom:16px;
+}
+
+.header {
+  composes: large from '../core/typography.module.less';
+}
+
+.headerDetail {
+  composes: small from '../core/typography.module.less';
+  color: #8A8A8E;
+  margin-bottom: 24px;
+
+  a {
+    color: @link-color;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      text-decoration: underline;
+    }
+  }
+}
+
+.main {
+  composes: flexColumn from '../core/layout.module.less';
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.workspaceList {
+  composes: main;
+  max-height: @usable-page-height - 3 * @btn-height;
+  background-color: white;
+  border: 1px solid #C7C7CC;
+  border-radius: 2px;
+  overflow-y: scroll;
+}
+
+.workspaceItem {
+  composes: flexRow from '../core/layout.module.less';
+  padding: 15px 0;
+  flex-shrink: 0;
+  justify-content: space-between;
+  border-color:#C7C7CC;
+  border-style: solid;
+  border-top-width:0px;
+  border-bottom-width: 1px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+}
+
+.workspaceItem:last-child {
+  padding-bottom: 20px;
+  border-bottom: 0;
+}
+
+.clinicName {
+  composes: large from '../core/typography.module.less';
+  margin-left: 24px;
+  margin-right: 15px;
+  word-break: break-word;
+  display: flex;
+}
+
+.clinicSwitchButton {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  margin-right: 24px;
+  height:fit-content;
+}
+
+.addLink {
+  composes: medium link from '../core/typography.module.less';
+  text-decoration: none;
+  align-self: flex-end;
+  &:hover{
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.error {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  color: red;
+}
+
+.postScript {
+  composes: gray from '../core/typography.module.less';
+  width: 570px;
+  margin: 32px auto;
+
+  a {
+    color: @link-color;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      text-decoration: underline;
+    }
+  }
+}

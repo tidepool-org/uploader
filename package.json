@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.39.0-600-series-duplicate-data.1",
+  "version": "2.46.0-600-series-duplicate-data.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -13,7 +13,7 @@
     "serve-docs": "./node_modules/.bin/gitbook serve",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
     "test-all": "npm run lint && npm run test && npm run build",
-    "lint": "./node_modules/eslint/bin/eslint.js --cache --format=node_modules/eslint-formatter-pretty .",
+    "lint": "node ./node_modules/eslint/bin/eslint.js --cache --format=node_modules/eslint-formatter-pretty .",
     "lint-fix": "npm run lint -- --fix",
     "build-main": "yarn build-main-quiet --progress --profile --colors",
     "build-main-quiet": "cross-env NODE_ENV=production webpack --config webpack.config.main.prod.babel.js",
@@ -35,7 +35,7 @@
     "@material-ui/icons": "3.0.2",
     "async": "2.6.3",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.2.6",
+    "ble-glucose": "0.2.9",
     "bows": "1.7.2",
     "chrome-launcher": "0.13.4",
     "classnames": "2.2.6",
@@ -58,11 +58,12 @@
     "is-electron": "2.2.0",
     "lodash": "4.17.21",
     "lzo-wasm": "0.0.4",
-    "os-name": "3.1.0",
+    "os-name": "4.0.1",
     "pl2303": "0.0.5",
     "plist": "3.0.1",
     "prop-types": "15.7.2",
     "react": "16.14.0",
+    "redux-cache": "0.3.0",
     "react-dom": "16.14.0",
     "react-hot-loader": "4.13.0",
     "react-redux": "7.2.2",
@@ -78,7 +79,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.6.0",
-    "tidepool-platform-client": "0.44.0",
+    "tidepool-platform-client": "0.48.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "7.0.3",
     "webmtp": "0.1.0"
@@ -209,7 +210,8 @@
       "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "platform-client"
     ],
     "moduleDirectories": [
       "node_modules",

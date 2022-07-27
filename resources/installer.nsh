@@ -42,35 +42,20 @@ RequestExecutionLevel admin
   Pop $1
   WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
 
-  ${If} ${IsWin10}
-    ; Windows 10 uses drivers with attestation signing
-    CopyFiles /SILENT $DriverDir\win10\* $DriverDir
-  ${EndIf}
+  ${If} ${AtLeastWin10}
+    ; Only install USB drivers on Win 10 and later
+    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"
+    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe /q"
 
+    IfSilent +3 ; don't use quiet flag if not silent install
+    StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe"
+    StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe"
 
-  StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"
-  StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe /q"
-
-  IfSilent +3 ; don't use quiet flag if not silent install
-  StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe"
-  StrCpy $Installer_x86 "$DriverDir\TidepoolUSBDriver_x86.exe"
-
-  ${If} ${RunningX64}
-      ${If} ${IsWin7}
-        ; 64-bit Windows 7
-        CopyFiles $DriverDir\win7x64\* $DriverDir\amd64
-        ExecWait $Installer_x64
-      ${Else}
-        ExecWait $Installer_x64
-      ${EndIf}
-  ${Else}
-      ${If} ${IsWin7}
-        ; 32-bit Windows 7
-        CopyFiles $DriverDir\win7x86\* $DriverDir\i386
-        ExecWait $Installer_x86
-      ${Else}
-        ExecWait $Installer_x86
-      ${EndIf}
+    ${If} ${RunningX64}
+      ExecWait $Installer_x64
+    ${Else}
+      ExecWait $Installer_x86
+    ${EndIf}
   ${EndIf}
 
   WriteINIStr "$TEMP\TidepoolUploader.ini" "InstallCount" "Value" "$8"
