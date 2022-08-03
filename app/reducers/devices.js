@@ -105,7 +105,7 @@ const devices = {
     key: 'foracareble',
     name: 'Fora TN\'G Voice',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: false, linux: true}
+    enabled: {mac: true, win: true, linux: true}
     // PIN pairing for Electron not currently supported on Windows:
     // https://github.com/electron/electron/issues/33111
   },
