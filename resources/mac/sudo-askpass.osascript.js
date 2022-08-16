@@ -26,7 +26,7 @@ app.includeStandardAdditions = true
 
 const result = app.displayDialog('Please enter your computer password to allow Tidepool Uploader to access your OneTouch meter.', {
   defaultAnswer: '',
-  withIcon: Path('/Applications/Tidepool\ Uploader.app/Contents/Resources/Tidepool\ Uploader.icns'),
+  withIcon: Path('/Applications/Tidepool\ Uploader.app/Contents/Resources/icon.icns'),
   buttons: ['Cancel', 'Why do I need to do this?', 'OK'],
   defaultButton: 'OK',
   hiddenAnswer: true,
