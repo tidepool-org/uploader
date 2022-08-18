@@ -15,9 +15,9 @@
 - `[x]` out-of-range values (LO or HI)
 - `[ ]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
-- `[?]` blood ketone values
+- `[x]` blood ketone values
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
-- `[ ]` ketone out-of-range values
+- `[x]` ketone out-of-range values
 - `[ ]` ketone out-of-range value thresholds
 - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
@@ -36,4 +36,4 @@ Choose one of the following:
 
 ### Known implementation issues/TODOs
 
-*Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+We are also ignoring Hematocrit (HCT) values from the HCT meter, as it's not in our data model yet.
