@@ -125,7 +125,6 @@ Addservice = silabser,0x00000002,silabser.AddService
 [cdcacm.Dev.NT]
 Include=mdmcpq.inf
 Include=msports.inf
-CopyFiles=FakeModemCopyFileSection,SerialEnumerator.NT.Copy
 AddReg=cdcacm.Addreg
 
 [cdcacm.Dev.NT.Services]
@@ -197,7 +196,6 @@ ftcserco.dll =2,i386
 tiusb.i51=2,i386
 tiusb.sys=2,i386
 ser2pl.sys=2,i386
-ser2pl.sys=2,win7x86
 
 [SourceDisksFiles.amd64]
 silabser.sys = 2,amd64
@@ -207,7 +205,6 @@ ftcserco.dll = 2,amd64
 tiusb.i51=2,amd64
 tiusb.sys=2,amd64
 ser2pl64.sys=2,amd64
-ser2pl64.sys=2,win7x64
 
 [DestinationDirs]
 Silabser.Files.Ext = 12
@@ -219,6 +216,7 @@ TI.CopyFiles.NT=12
 TI.CopyFiles.NT.Coinstaller = 11
 ComPort.NTx86.Copy = 12
 ComPort.NTamd64.Copy = 12
+CoInstaller_CopyFiles.KMDF.1.11 = 11 ; windows\system32
 
 ;-------------- FTDI
 
@@ -283,9 +281,6 @@ HKR,,CoInstallers32,0x00010000,"ftcserco.Dll,FTCSERCoInstaller"
 
 
 ;-------------- SI Labs WDF Coinstaller installation
-
-[DestinationDirs]
-CoInstaller_CopyFiles.KMDF.1.11 = 11 ; windows\system32
 
 [silabser.NTx86.CoInstallers]
 AddReg=CoInstaller_AddReg.KMDF.1.11

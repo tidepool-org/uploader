@@ -178,7 +178,7 @@ describe('Asynchronous Actions', () => {
             getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
           },
           user: {
-            initializationInfo: (cb) => { cb(null, [pwd.user, pwd.profile, pwd.memberships] ); }
+            initializationInfo: (cb) => { cb(null, [pwd.user, pwd.profile, pwd.memberships, {}, []] ); }
           }
         },
         device: {
@@ -239,6 +239,10 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {clinicianId: pwd.user.userid, clinics: []},
+        },
+        {
           type: actionTypes.SET_BLIP_VIEW_DATA_URL,
           payload: {url: `http://www.acme.com/patients/${pwd.user.userid}/data`},
           meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
@@ -267,8 +271,413 @@ describe('Asynchronous Actions', () => {
         allUsers: { [pwd.user.userid]: pwd.user },
         uploadTargetUser: pwd.user.userid,
         working: { initializingApp: { inProgress: true } },
+        targetUsersForUpload: pwd.memberships.map(user=>user.userid),
       };
       const store = mockStore(state);
+      store.dispatch(async.doAppInit(config, servicesToInit));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doAppInit [saved session token, verified clinic account]', () => {
+    test('should dispatch INIT_APP_REQUEST, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_NEW_PATIENT_URL, SET_BLIP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, GET_CLINICS_FOR_CLINICIAN_SUCCESS, and SET_PAGE (CLINIC_USER_SELECT) actions', () => {
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [];
+      const config = {
+        os: 'test',
+        version: '0.100.0',
+        API_URL: 'http://www.acme.com'
+      };
+      const servicesToInit = {
+        api: {
+          init: (cb) => { cb(null, {token: 'iAmAToken'}); },
+          makeBlipUrl: (path) => {
+            return 'http://www.acme.com' + path;
+          },
+          setHosts: _.noop,
+          upload: {
+            getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
+          },
+          user: {
+            initializationInfo: (cb) => { cb(null, [userObj.user, profile, memberships, {}, clinics] ); },
+            loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) => cb(null, {
+              patients: memberships,
+              dataDonationAccounts: [],
+              careTeam: [],
+            }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) => cb(null, []),
+          },
+        },
+        device: {
+          init: (opts, cb) => { cb(); }
+        },
+        localStore: {
+          init: (opts, cb) => { cb(); },
+          getInitialState: _.noop,
+          getItem: () => null
+        },
+        log: _.noop
+      };
+
+      const expectedActions = [
+        {
+          type: actionTypes.INIT_APP_REQUEST,
+          meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
+        },
+        {
+          type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
+          type: actionTypes.SET_FORGOT_PASSWORD_URL,
+          payload: {url: 'http://www.acme.com/request-password-from-uploader'},
+          meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
+        },
+        {
+          type: actionTypes.SET_SIGNUP_URL,
+          payload: {url: 'http://www.acme.com/signup'},
+          meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+        },
+        {
+          type: actionTypes.SET_NEW_PATIENT_URL,
+          payload: {url: 'http://www.acme.com/patients/new'},
+          meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+        },
+        {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
+          type: actionTypes.INIT_APP_SUCCESS,
+          meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
+          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {clinicianId: userObj.user.userid, clinics: []},
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/clinic_user_select',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+      ];
+      const store = mockStore({
+        allUsers: { [userObj.user.userid]: userObj.user },
+        targetUsersForUpload: ['def456', 'ghi789'],
+        working: { initializingApp: { inProgress: true } },
+      });
+      store.dispatch(async.doAppInit(config, servicesToInit));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doAppInit [saved session token, new clinic account]', () => {
+    test('should dispatch INIT_APP_REQUEST, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_NEW_PATIENT_URL, SET_BLIP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, GET_CLINICS_FOR_CLINICIAN_SUCCESS, FETCH_PATIENTS_FOR_CLINIC_REQUEST, FETCH_PATIENTS_FOR_CLINIC_SUCCESS, SELECT_CLINIC, and SET_PAGE (CLINIC_USER_SELECT) actions', () => {
+      const userObj = {user: {userid: 'abc123', roles: ['clinician']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [{ clinic: { id: 'clinicId' } }];
+      const config = {
+        os: 'test',
+        version: '0.100.0',
+        API_URL: 'http://www.acme.com'
+      };
+      const servicesToInit = {
+        api: {
+          init: (cb) => { cb(null, {token: 'iAmAToken'}); },
+          makeBlipUrl: (path) => {
+            return 'http://www.acme.com' + path;
+          },
+          setHosts: _.noop,
+          upload: {
+            getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
+          },
+          user: {
+            initializationInfo: (cb) => { cb(null, [userObj.user, profile, memberships, {}, clinics] ); },
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, [{ clinic: { id: 'clinicId' } }]),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+          },
+        },
+        device: {
+          init: (opts, cb) => { cb(); }
+        },
+        localStore: {
+          init: (opts, cb) => { cb(); },
+          getInitialState: _.noop,
+          getItem: () => null
+        },
+        log: _.noop
+      };
+
+      const expectedActions = [
+        {
+          type: actionTypes.INIT_APP_REQUEST,
+          meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
+        },
+        {
+          type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
+          type: actionTypes.SET_FORGOT_PASSWORD_URL,
+          payload: {url: 'http://www.acme.com/request-password-from-uploader'},
+          meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
+        },
+        {
+          type: actionTypes.SET_SIGNUP_URL,
+          payload: {url: 'http://www.acme.com/signup'},
+          meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+        },
+        {
+          type: actionTypes.SET_NEW_PATIENT_URL,
+          payload: {url: 'http://www.acme.com/patients/new'},
+          meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+        },
+        {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
+          type: actionTypes.INIT_APP_SUCCESS,
+          meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
+          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: clinics,
+          },
+        },
+        {
+          type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST
+        },
+        {
+          type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            patients: [{ patient: 'patient1' }],
+            count: 1,
+          }
+        },
+        {
+          type: actionTypes.SELECT_CLINIC,
+          payload: {clinicId:'clinicId'}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/clinic_user_select',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+      ];
+
+      const store = mockStore({
+        allUsers: { [userObj.user.userid]: userObj.user },
+        targetUsersForUpload: ['def456', 'ghi789'],
+        working: { initializingApp: { inProgress: true } },
+      });
+      store.dispatch(async.doAppInit(config, servicesToInit));
+      const actions = store.getActions();
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doAppInit [saved session token, new clinic account] multiple clinics', () => {
+    test('should dispatch INIT_APP_REQUEST, HIDE_UNAVAILABLE_DEVICES, SET_FORGOT_PASSWORD_URL, SET_SIGNUP_URL, SET_NEW_PATIENT_URL, SET_BLIP_URL, INIT_APP_SUCCESS, VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, SET_USER_INFO_FROM_TOKEN, GET_CLINICS_FOR_CLINICIAN_SUCCESS, and SET_PAGE (WORKSPACE_SWITCH) actions', () => {
+      const userObj = {user: {userid: 'abc123', roles: ['clinic']}};
+      const profile = {fullName: 'Jane Doe'};
+      const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [
+        { clinic: { id: 'clinicId' } },
+        { clinic: { id: 'clinicId2' } },
+      ];
+      const config = {
+        os: 'test',
+        version: '0.100.0',
+        API_URL: 'http://www.acme.com'
+      };
+      const servicesToInit = {
+        api: {
+          init: (cb) => { cb(null, {token: 'iAmAToken'}); },
+          makeBlipUrl: (path) => {
+            return 'http://www.acme.com' + path;
+          },
+          setHosts: _.noop,
+          upload: {
+            getVersions: (cb) => { cb(null, {uploaderMinimum: config.version}); }
+          },
+          user: {
+            initializationInfo: (cb) => { cb(null, [userObj.user, profile, memberships, {}, clinics] ); },
+            loginExtended: (creds, opts, cb) =>
+              cb(null, [userObj, profile, memberships]),
+            getAssociatedAccounts: (cb) =>
+              cb(null, {
+                patients: memberships,
+                dataDonationAccounts: [],
+                careTeam: [],
+              }),
+          },
+          clinics: {
+            getClinicsForClinician: (clinician, options, cb) =>
+              cb(null, clinics),
+            getPatientsForClinic: (clinicId, options, cb) =>
+              cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+          },
+        },
+        device: {
+          init: (opts, cb) => { cb(); }
+        },
+        localStore: {
+          init: (opts, cb) => { cb(); },
+          getInitialState: _.noop,
+          getItem: () => null
+        },
+        log: _.noop
+      };
+
+      const expectedActions = [
+        {
+          type: actionTypes.INIT_APP_REQUEST,
+          meta: {source: actionSources[actionTypes.INIT_APP_REQUEST]}
+        },
+        {
+          type: actionTypes.HIDE_UNAVAILABLE_DEVICES,
+          payload: {os: 'test'},
+          meta: {source: actionSources[actionTypes.HIDE_UNAVAILABLE_DEVICES]}
+        },
+        {
+          type: actionTypes.SET_FORGOT_PASSWORD_URL,
+          payload: {url: 'http://www.acme.com/request-password-from-uploader'},
+          meta: {source: actionSources[actionTypes.SET_FORGOT_PASSWORD_URL]}
+        },
+        {
+          type: actionTypes.SET_SIGNUP_URL,
+          payload: {url: 'http://www.acme.com/signup'},
+          meta: {source: actionSources[actionTypes.SET_SIGNUP_URL]}
+        },
+        {
+          type: actionTypes.SET_NEW_PATIENT_URL,
+          payload: {url: 'http://www.acme.com/patients/new'},
+          meta: {source: actionSources[actionTypes.SET_NEW_PATIENT_URL]}
+        },
+        {
+          type: actionTypes.SET_BLIP_URL,
+          payload: {url: 'http://www.acme.com/'},
+          meta: {source: actionSources[actionTypes.SET_BLIP_URL]}
+        },
+        {
+          type: actionTypes.INIT_APP_SUCCESS,
+          meta: {source: actionSources[actionTypes.INIT_APP_SUCCESS]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_REQUEST,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_REQUEST]}
+        },
+        {
+          type: actionTypes.VERSION_CHECK_SUCCESS,
+          meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
+        },
+        {
+          type: actionTypes.SET_USER_INFO_FROM_TOKEN,
+          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
+        },
+        {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: clinics,
+          },
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/workspace_switch',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.WORKSPACE_SWITCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
+        },
+      ];
+      const store = mockStore({
+        allUsers: { [pwd.user.userid]: pwd.user },
+        targetUsersForUpload: ['def456', 'ghi789'],
+        working: { initializingApp: { inProgress: true } },
+      });
       store.dispatch(async.doAppInit(config, servicesToInit));
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
@@ -4493,7 +4902,36 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
 
       const actions = store.getActions();
-      expect(actions[1].error).to.deep.include({ message: ErrorMessages.ERR_CREATING_CUSTODIAL_ACCOUNT });
+      expect(actions[1].error).to.deep.include({ message: getCreateCustodialAccountErrorMessage(500) });
+      expectedActions[1].error = actions[1].error;
+      expect(actions).to.eql(expectedActions);
+    });
+
+    test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and it should call error once for a duplicate email address', () => {
+      __Rewire__('services', {
+        api: {
+          clinics: {
+            createClinicCustodialAccount: sinon.stub().callsArgWith(2, {status: 409, body: 'Error!'}, null),
+          },
+        },
+        log: _.noop
+      });
+
+      let err = new Error(getCreateCustodialAccountErrorMessage(409));
+      err.status = 409;
+
+      let expectedActions = [
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST' },
+        { type: 'CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE', error: err, meta: { apiError: {status: 409, body: 'Error!'} } }
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(async.createClinicCustodialAccount('5f85fbe6686e6bb9170ab5d0'));
+
+      const actions = store.getActions();
+      expect(actions[1].error).to.deep.include({ message:  getCreateCustodialAccountErrorMessage(409)});
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
     });

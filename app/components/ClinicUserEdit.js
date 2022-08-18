@@ -106,9 +106,15 @@ class ClinicUserEdit extends React.Component {
     onSubmitFail: PropTypes.func.isRequired,
     createClinicUser: PropTypes.func.isRequired,
     updateClinicPatient: PropTypes.func.isRequired,
+    acknowledgeNotification: PropTypes.func.isRequired,
+    working: PropTypes.object.isRequired,
+    clinics: PropTypes.object.isRequired,
   };
 
   handleCancel = () => {
+    if(this.props.working.creatingClinicCustodialAccount.notification) {
+      this.props.acknowledgeNotification();
+    }
     this.props.cancelEdit();
   };
 
@@ -194,6 +200,27 @@ class ClinicUserEdit extends React.Component {
           <i
             className={styles.iconClose}
             onClick={this.props.dismissUpdateProfileError}
+          ></i>
+        </span>
+      </div>
+    );
+  };
+
+  renderNotification = () => {
+    var {creatingClinicCustodialAccount} = this.props.working;
+    if (_.isNull(creatingClinicCustodialAccount.notification)) {
+      return null;
+    }
+
+    return (
+      <div className={styles.error}>
+        <span>
+          {i18n.t(creatingClinicCustodialAccount.notification.message)}
+          <i
+            className={styles.iconClose}
+            onClick={
+              () => { this.props.acknowledgeNotification('creatingClinicCustodialAccount'); }
+            }
           ></i>
         </span>
       </div>
@@ -335,6 +362,7 @@ class ClinicUserEdit extends React.Component {
             </div>
             {this.renderCreateError()}
             {this.renderUpdateError()}
+            {this.renderNotification()}
           </div>
         </form>
       </div>
