@@ -4,5 +4,8 @@
   "PC Link Mode": "PC Link Mode",
   "Make sure the meter is switched off and plug in with micro-USB cable": "Make sure the meter is switched off and plug in with micro-USB cable",
   "Turn meter on and make sure Bluetooth is switched on": "Turn meter on and make sure Bluetooth is switched on",
-  "Select CSV file downloaded from LibreView": "Select CSV file downloaded from LibreView"
+  "Select CSV file downloaded from LibreView": "Select CSV file downloaded from LibreView",
+  "Nexus and HCT: Plug in meter with mini-USB": "Nexus and HCT: Plug in meter with mini-USB",
+  "Nexus Mini Ultra & Go: Plug in meter with strip port cable": "Nexus Mini Ultra & Go: Plug in meter with strip port cable",
+  "Nexus and HCT: Plug in meter with mini-USB cable": "Nexus and HCT: Plug in meter with mini-USB cable"
 }

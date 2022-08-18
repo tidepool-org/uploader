@@ -120,8 +120,8 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   glucorx: {
-    instructions: i18n.t('Plug in meter with mini-USB'),
-    name: 'GlucoRx',
+    instructions: [i18n.t('Nexus and HCT: Plug in meter with mini-USB cable'), i18n.t('Nexus Mini Ultra & Go: Plug in meter with strip port cable')],
+    name: 'GlucoRx Nexus, Nexus Mini Ultra, Go & HCT',
     key: 'glucorx',
     source: {type: 'device', driverId: 'GlucoRx'},
     enabled: {mac: true, win: true, linux: true}
