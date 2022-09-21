@@ -1,8 +1,9 @@
 {
-  "Plug in PDA with micro-USB": "Plug in PDA with micro-USB",
+  "Select CSV file downloaded from LibreView": "Select CSV file downloaded from LibreView",
   "Plug in meter with cable and set meter to": "Plug in meter with cable and set meter to",
   "PC Link Mode": "PC Link Mode",
   "Make sure the meter is switched off and plug in with micro-USB cable": "Make sure the meter is switched off and plug in with micro-USB cable",
+  "Make sure the meter is switched off and plug in cable": "Make sure the meter is switched off and plug in cable",
   "Turn meter on and make sure Bluetooth is switched on": "Turn meter on and make sure Bluetooth is switched on",
   "Sorry, we don't support the Libre 2 yet": "Sorry, we don't support the Libre 2 yet",
   "Select CSV file downloaded from LibreView": "Select CSV file downloaded from LibreView"
