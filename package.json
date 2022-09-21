@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.45.1-caresens-instructions.1",
+  "version": "2.46.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -42,7 +42,7 @@
     "commander": "4.1.1",
     "connected-react-router": "6.8.0",
     "core-js": "2.6.11",
-    "cp2102": "0.0.3",
+    "cp2102": "0.0.6",
     "electron-debug": "3.1.0",
     "electron-is-dev": "1.2.0",
     "electron-log": "4.3.0",
