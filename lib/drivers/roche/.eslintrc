@@ -9,6 +9,7 @@
       "allowForLoopAfterthoughts": true
     }],
     "arrow-parens": "warn",
+    "linebreak-style": 0,
     "operator-linebreak": "warn"
   },
   "settings": {
