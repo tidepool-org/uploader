@@ -79,7 +79,11 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   caresensble: {
-    instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
+    instructions: {
+                    text: i18n.t('For uploading instructions,'),
+                    linkText: i18n.t('visit our support site'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX',
+                  },
     name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
