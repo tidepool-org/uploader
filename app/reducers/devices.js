@@ -64,11 +64,11 @@ const devices = {
     source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
-  contourplusone: {
-    instructions: i18n.t('Plug meter into USB port'),
-    key: 'contourplusone',
-    name: 'Ascensia Contour Plus One',
-    source: {type: 'device', driverId: 'ContourPlusOne'},
+  contourplus: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    key: 'contourplus',
+    name: 'Ascensia Contour Plus One/Blue',
+    source: {type: 'device', driverId: 'ContourPlus'},
     enabled: {mac: true, win: true, linux: true}
   },
   caresens: {
