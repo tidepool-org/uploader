@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.44.0-glucorx.3",
+  "version": "2.44.0-glucorx.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
