@@ -30,6 +30,7 @@ import * as metrics from '../constants/metrics';
 import * as sync from './sync';
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
+import driverManifests from '../../lib/core/driverManifests';
 
 let services = {};
 let versionInfo = {};
@@ -66,7 +67,7 @@ function createActionError(usrErrMessage, apiError) {
     },
     cacheKey: `${id}_cacheUntil`,
   };
-}
+};
 
 /*
  * ASYNCHRONOUS ACTION CREATORS
@@ -354,6 +355,68 @@ export function doUpload(deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
+
+    const targetDevice = _.get(devices, deviceKey);
+    const driverId = _.get(targetDevice, 'source.driverId');
+    const driverManifest = _.get(driverManifests, driverId);
+
+    if (driverManifest && driverManifest.mode === 'serial') {
+      dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+        usbVendorId: vendorId,
+        usbProductId: productId
+      }));
+
+      try {
+        opts.port = await navigator.serial.requestPort({ filters: filters });
+      } catch (err) {
+        // not returning error, as we'll attempt user-space driver instead
+        console.log('Error:', err);
+      }
+    }
+
+    if (driverManifest && driverManifest.mode === 'HID') {
+      dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
+
+      const filters = driverManifest.usb.map(({vendorId, productId}) => ({
+        vendorId,
+        productId
+      }));
+
+      try {
+        const existingPermissions = await navigator.hid.getDevices();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
+              && driverManifest.usb[j].productId === existingPermissions[i].productId) {
+                console.log('Device has already been granted permission');
+                opts.hidDevice = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.hidDevice == null) {
+          [opts.hidDevice] = await navigator.hid.requestDevice({ filters: filters });
+        }
+
+        if (opts.hidDevice == null) {
+          throw new Error('No device was selected.');
+        }
+      } catch (err) {
+        console.log('Error:', err);
+
+        let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
+        let errProps = {
+          details: err.message,
+          utc: actionUtils.getUtc(utc),
+          code: 'E_HID_CONNECTION',
+        };
+
+        return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
+      }
+    }
 
     if (opts && opts.ble) {
       // we need to to scan for Bluetooth devices before the version check,

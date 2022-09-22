@@ -19,8 +19,7 @@ module.exports = api => {
     presets: [
       [
         require('@babel/preset-env'),
-        { 
-          targets: { 'electron': require('electron/package.json').version },
+        {
           useBuiltIns: 'usage',
           corejs: 2,
           modules: 'commonjs'
@@ -80,11 +79,7 @@ module.exports = api => {
           [
             require('babel-plugin-module-resolver'),
             {
-              'root': ['./app/node_modules'],
-              'alias': {
-                'node-hid': './app/node_modules/node-hid',
-                'serialport': './app/node_modules/serialport'
-              }
+              'root': ['./app/node_modules']
             }
           ],
           require('babel-plugin-rewire'),

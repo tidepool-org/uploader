@@ -22,8 +22,8 @@ jobs:
           set +e
           curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
           source ~/.nvm/nvm.sh
-          nvm install v12.13.0
-          nvm alias default v12.13.0
+          nvm install v16.14.2
+          nvm alias default v16.14.2
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
@@ -50,8 +50,9 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run: nvm install v12.13.0
-      - run: nvm use v12.13.0
+      # note: node 16.14.2 with npm 8.3.1 breaks yarn installation
+      - run: nvm install v16.13.2
+      - run: nvm use v16.13.2
       - run: node -v
       - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn

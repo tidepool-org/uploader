@@ -34,7 +34,7 @@ import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
 
 import styles from '../../styles/components/Upload.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
