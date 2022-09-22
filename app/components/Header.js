@@ -33,7 +33,7 @@ import { pages, pagesMap } from '../constants/otherConstants';
 import styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export class Header extends Component {
@@ -77,14 +77,14 @@ export class Header extends Component {
     selectClinic(clinic.id);
     setPage(pages.CLINIC_USER_SELECT, true);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
   handlePrivateWorkspaceSwitch = () => {
     const { toggleDropdown } = this.props.sync;
     const { goToPrivateWorkspace } = this.props.async;
     goToPrivateWorkspace();
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
-  }
+  };
 
   render() {
     const { allUsers, dropdown, location } = this.props;

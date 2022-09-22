@@ -20,7 +20,8 @@
     "object-curly-newline": "warn",
     "implicit-arrow-linebreak": "warn",
     "no-param-reassign": "warn",
-    "no-restricted-syntax": "warn"
+    "no-restricted-syntax": "warn",
+    "linebreak-style": 0
   },
   "overrides": [
     {

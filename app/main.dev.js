@@ -1,6 +1,6 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session } from 'electron';
 import os from 'os';
 import osName from 'os-name';
 import open from 'open';
@@ -13,11 +13,14 @@ import uploadDataPeriod from './utils/uploadDataPeriod';
 import i18n from 'i18next';
 import i18nextBackend from 'i18next-fs-backend';
 import i18nextOptions from './utils/config.i18next';
+import path from 'path';
 
 global.i18n = i18n;
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -38,7 +41,7 @@ crashReporter.start({
   uploadToServer: false
 });
 
-console.log('Crash logs can be found in:',crashReporter.getCrashesDirectory());
+console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 let menu;
@@ -48,6 +51,11 @@ let mainWindow = null;
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 
+// SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
+// in Chrome 92+, but we can't do this for our Electron setup,
+// so we have to enable it manually
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
@@ -55,7 +63,6 @@ if (process.env.NODE_ENV === 'production') {
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
-  const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
 }
@@ -67,9 +74,12 @@ app.on('window-all-closed', () => {
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
     const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const options = {
+      loadExtensionOptions: { allowFileAccess: true },
+    };
 
     try {
-      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options);
       console.log(`Added Extension:  ${name}`);
     } catch (err) {
       console.log('An error occurred: ', err);
@@ -103,8 +113,14 @@ function createWindow() {
     height: 769,
     resizable: resizable,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false, // so that we can access process from app.html
     }
+  });
+
+  remoteMain.enable(mainWindow.webContents);
+  mainWindow.webContents.on('render-process-gone', (e, details) => {
+    console.log('Render process gone:', details.reason);
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -131,21 +147,25 @@ operating system, as soon as possible.`,
     checkUpdates();
   });
 
-  mainWindow.webContents.on('new-window', function(event, url){
-    event.preventDefault();
+  mainWindow.webContents.setWindowOpenHandler((details) => {
     let platform = os.platform();
     let chromeInstalls = chromeFinder[platform]();
     if(chromeInstalls.length === 0){
       // no chrome installs found, open user's default browser
-      open(url);
+      open(details.url);
     } else {
-      open(url, {app: chromeInstalls[0]}, function(error){
+      open(details.url, {
+        app: {
+          name: chromeInstalls[0],
+        },
+      }, function(error){
         if(error){
           // couldn't open chrome, try OS default
-          open(url);
+          open(details.url);
         }
       });
     }
+    return { action: 'deny' };
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -160,6 +180,27 @@ operating system, as soon as possible.`,
       callback('');
     } else {
       callback(result.deviceId);
+    }
+  });
+
+  mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+    event.preventDefault();
+    console.log('Port list:', portList);
+    const [selectedPort] = portList;
+    if (!selectedPort) {
+      callback('');
+    } else {
+      callback(selectedPort.portId);
+    }
+  });
+
+  mainWindow.webContents.session.on('select-hid-device', (event, details, callback) => {
+    event.preventDefault();
+    console.log('Device list:', details.deviceList);
+    if (details.deviceList && details.deviceList.length > 0) {
+      callback(details.deviceList[0].deviceId);
+    } else {
+      callback('');
     }
   });
 

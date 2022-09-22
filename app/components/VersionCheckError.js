@@ -22,9 +22,9 @@ import React, { Component } from 'react';
 import ErrorMessages from '../constants/errorMessages';
 
 import styles from '../../styles/components/VersionCheck.module.less';
-import CloudOff from '@material-ui/icons/CloudOff';
+import CloudOff from '@mui/icons-material/CloudOff';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export default class VersionCheckError extends Component {

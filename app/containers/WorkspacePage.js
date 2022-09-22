@@ -6,9 +6,9 @@ import * as metrics from '../constants/metrics';
 import { pages } from '../constants/otherConstants';
 import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
-import { remote } from 'electron';
 import api from '../../lib/core/api';
 
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal('i18n');
 
 const { async, sync } = actions;

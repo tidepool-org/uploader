@@ -18,16 +18,16 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 import personUtils from '../../lib/core/personUtils';
 import api from '../../lib/core/api';
 import * as metrics from '../constants/metrics';
 
-import ListIcon from '@material-ui/icons/List';
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
-import BusinessIcon from '@material-ui/icons/Business';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ListIcon from '@mui/icons-material/List';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import BusinessIcon from '@mui/icons-material/Business';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import styles from '../../styles/components/LoggedInAs.module.less';
 
@@ -50,7 +50,7 @@ export default class LoggedInAs extends Component {
     uploadTargetUser: PropTypes.string,
     loggedInUser: PropTypes.string.isRequired,
     selectedClinicId: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -99,12 +99,12 @@ export default class LoggedInAs extends Component {
   handleSwitchToPrivate = e => {
     e.preventDefault();
     this.props.goToPrivateWorkspace();
-  }
+  };
 
   handleSwitchToClinic = clinic => {
     api.metrics.track(metrics.WORKSPACE_MENU_SWITCH, { clinicId: clinic.id});
     this.props.switchToClinic(clinic);
-  }
+  };
 
   renderChooseDevices() {
     var title = '';
