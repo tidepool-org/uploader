@@ -211,7 +211,7 @@ operating system, as soon as possible.`,
     // Note that this will require logic in the renderer to handle this message and
     // display a prompt to the user.
     mainWindow.webContents.send('bluetooth-pairing-request', details);
-  })
+  });
 
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
@@ -532,8 +532,8 @@ ipcMain.on('autoUpdater', (event, arg) => {
 });
 
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
-  bluetoothPinCallback(response)
-})
+  bluetoothPinCallback(response);
+});
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
