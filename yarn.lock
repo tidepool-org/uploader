@@ -16218,10 +16218,10 @@ sundial@1.6.0:
   dependencies:
     moment-timezone "0.4.1"
 
-sundial@1.7.0-update-deps.2:
-  version "1.7.0-update-deps.2"
-  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0-update-deps.2.tgz#b3b71299913b4a8c38c5d9f55b3cceb87d67daa2"
-  integrity sha512-3z/+S28z//7wM7VkMNWNra9/joZgANYVQWAoTJXWZ9r9SGQuXdetE2+AocwPBSz3QTRlvI45NmnCij9ayEl31Q==
+sundial@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0.tgz#1fa049341335449a8d892f687f23b25c7f373780"
+  integrity sha512-XAniZ1lSJWMtG4vcsuXVpZdMfJ1JW6KGV5uGFj5h0hpG61juM33Dy39MNV9DTSaiZ87x8j479gWj3uWsSj3V2Q==
   dependencies:
     moment-timezone "0.5.37"
 
