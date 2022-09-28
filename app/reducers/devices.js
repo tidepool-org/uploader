@@ -86,9 +86,7 @@ const devices = {
     name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -194,9 +192,7 @@ const devices = {
     name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
