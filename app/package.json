@@ -10,14 +10,9 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "8.0.10",
-    "keytar": "5.6.0",
-    "node-hid": "1.1.0",
+    "drivelist": "11.0.0",
+    "keytar": "7.9.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "9.0.7",
-    "usb": "1.6.3"
-  },
-  "resolutions": {
-    "@serialport/bindings": "9.0.7"
+    "usb": "2.4.3"
   }
 }
