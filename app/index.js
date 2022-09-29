@@ -9,6 +9,7 @@ import { push } from 'connected-react-router';
 import { ipcRenderer } from 'electron';
 import { ConnectedRouter } from 'connected-react-router';
 import { createHashHistory } from 'history';
+import prompt from 'native-prompt'; // TODO: use something else
 
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
@@ -31,7 +32,8 @@ ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
 
-ipcRenderer.on('bluetooth-pairing-request', (event, details) => {
+ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+console.log("got bluetooth pairin request", details);
   const response = {};
 
   switch (details.pairingKind) {
@@ -44,7 +46,7 @@ ipcRenderer.on('bluetooth-pairing-request', (event, details) => {
       break;
     }
     case 'providePin': {
-      const pin = prompt(`Please provide a pin for ${details.deviceId}.`);
+      const pin = await prompt(`Please provide a pin for ${details.deviceId}.`);
       if (pin) {
         response.pin = pin;
         response.confirmed = true;
@@ -54,6 +56,7 @@ ipcRenderer.on('bluetooth-pairing-request', (event, details) => {
     }
   }
 
+  console.log("sending bluetooth pairing response", response);
   ipcRenderer.send('bluetooth-pairing-response', response);
 });
 

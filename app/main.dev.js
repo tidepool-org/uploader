@@ -51,6 +51,7 @@ let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+app.commandLine.appendSwitch('enable-web-bluetooth-confirm-pairing-support', true);
 
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
 // in Chrome 92+, but we can't do this for our Electron setup,
@@ -210,7 +211,8 @@ operating system, as soon as possible.`,
     // Send a IPC message to the renderer to prompt the user to confirm the pairing.
     // Note that this will require logic in the renderer to handle this message and
     // display a prompt to the user.
-    mainWindow.webContents.send('bluetooth-pairing-request', details);
+    console.log("sending bluetooth pairing request", details);
+    mainWindow.webContents.send('bluetooth-pairing-request', _.omit(details, ['frame']));
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -532,6 +534,7 @@ ipcMain.on('autoUpdater', (event, arg) => {
 });
 
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
+  console.log("getting bluetooth pairing response in main");
   bluetoothPinCallback(response);
 });
 
