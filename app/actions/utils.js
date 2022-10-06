@@ -106,6 +106,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'controlled folder access.';
       }
 
+      if (err.code === 'E_VERIO_ACCESS') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360019872851#h_01F85RKK7MSTDYVW4QE2W8BKP8';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
       if (err.code === 'E_OMNIPOD_WRITE') {
         displayErr.message = 'We couldn\'t communicate with the PDM. You may need to give Uploader';
         displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029448012#h_01FYCJ3XVYGBZJSJ8WPNETVEHX';
