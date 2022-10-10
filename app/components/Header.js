@@ -87,16 +87,21 @@ export class Header extends Component {
   };
 
   render() {
-    const { allUsers, dropdown, location } = this.props;
+    const { allUsers, dropdown, location, keycloakConfig } = this.props;
     if (location.pathname === pagesMap.LOADING) {
       return null;
     }
 
     if (location.pathname === pagesMap.LOGIN) {
+      let signupHref = this.props.blipUrls.signUp;
+      if (keycloakConfig.initialized) {
+        signupHref = keycloakConfig.registrationUrl;
+      }
+
       return (
         <div className={styles.header}>
           <div className={styles.signup}>
-            <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
+            <a className={styles.signupLink} href={signupHref} target="_blank">
               <i className={styles.signupIcon}> {i18n.t('Sign up')}</i></a>
           </div>
           <div className={styles.logoWrapper}>
@@ -159,6 +164,7 @@ export default connect(
       // derived state
       hasPrivateWorkspace: true,
       isClinicMember: isClinicMember(state),
+      keycloakConfig: state.keycloakConfig,
     };
   },
   (dispatch) => {

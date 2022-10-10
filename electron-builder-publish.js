@@ -91,7 +91,11 @@ const config = {
       },
       'dir'
     ]
-  }
+  },
+  protocols: [{
+    name: 'Tidepool Uploader',
+    schemes: ['tidepooluploader'],
+  }],
 };
 
 console.log('CIRCLE_TAG:', process.env.CIRCLE_TAG);
@@ -104,7 +108,7 @@ if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.length > 0) ||
   if ( (process.env.CIRCLE_TAG && process.env.CIRCLE_TAG.indexOf('-') !== -1) ||
        (process.env.APPVEYOR_REPO_TAG_NAME && process.env.APPVEYOR_REPO_TAG_NAME.indexOf('-') !== -1) ) {
     // non-production releases have hyphens in their tags
-    releaseType = 'pre-release';
+    releaseType = 'prerelease';
   } else {
     releaseType = 'release';
   }
