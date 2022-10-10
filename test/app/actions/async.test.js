@@ -5053,7 +5053,7 @@ describe('Asynchronous Actions', () => {
           url: 'someUrl',
           realm: 'awesomeRealm',
         }
-      }
+      };
 
       __Rewire__('services', {
         api: {

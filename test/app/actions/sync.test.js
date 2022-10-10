@@ -1855,7 +1855,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_READY');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakInitError', () => {
@@ -1872,8 +1872,8 @@ describe('Synchronous Actions', () => {
       let action = sync.keycloakInitError(event, error);
       expect(action.type).to.equal('KEYCLOAK_INIT_ERROR');
       expect(action.payload.error).to.be.equal(error);
-      expect(action.payload.event).to.equal(event)
-    })
+      expect(action.payload.event).to.equal(event);
+    });
   });
 
   describe('keycloakAuthSuccess', () => {
@@ -1891,7 +1891,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_AUTH_SUCCESS');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakAuthError', () => {
@@ -1909,7 +1909,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_AUTH_ERROR');
       expect(action.payload.error).to.be.equal(error);
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakAuthRefreshSuccess', () => {
@@ -1927,7 +1927,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_AUTH_REFRESH_SUCCESS');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakAuthRefreshError', () => {
@@ -1945,7 +1945,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_AUTH_REFRESH_ERROR');
       expect(action.payload.error).to.be.equal(error);
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakTokenExpired', () => {
@@ -1963,7 +1963,7 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_TOKEN_EXPIRED');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakAuthLogout', () => {
@@ -1981,22 +1981,22 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('KEYCLOAK_AUTH_LOGOUT');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
-    })
+    });
   });
 
   describe('keycloakTokensReceived', () => {
     it('should be a FSA', () => {
-      let tokens = {token: 'token123'}
+      let tokens = {token: 'token123'};
       let action = sync.keycloakTokensReceived(tokens);
       expect(isFSA(action)).to.be.true;
     });
 
     it('type should equal KEYCLOAK_TOKENS_RECEIVED', () => {
-      let tokens = {token: 'token123'}
+      let tokens = {token: 'token123'};
       let action = sync.keycloakTokensReceived(tokens);
       expect(action.type).to.equal('KEYCLOAK_TOKENS_RECEIVED');
       expect(action.payload.tokens.token).to.equal('token123');
-    })
+    });
   });
 
   describe('fetchInfoRequest', () => {
@@ -2017,7 +2017,7 @@ describe('Synchronous Actions', () => {
         url: 'someUrl',
         realm: 'anAwesomeRealm'
       }
-    }
+    };
 
     it('should be a FSA', () => {
       let action = sync.fetchInfoSuccess(info);

@@ -755,7 +755,7 @@ describe('misc reducers', () => {
     describe('setKeycloakRegistrationUrl', () => {
       it('should set registration url state', () => {
         let initialStateForTest = {};
-        let url = "http://registration.url";
+        let url = 'http://registration.url';
 
         let action = actions.sync.setKeycloakRegistrationUrl(url);
         let state = misc.keycloakConfig(initialStateForTest, action);
