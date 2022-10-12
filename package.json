@@ -90,7 +90,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.0",
-    "tidepool-platform-client": "0.48.0",
+    "tidepool-platform-client": "0.49.0-web-1372-keycloak.2",
     "usb-cdc-acm": "0.1.1",
     "uuid": "8.3.2",
     "webmtp": "0.3.0"
