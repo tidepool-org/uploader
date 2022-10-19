@@ -17386,10 +17386,10 @@ webidl-conversions@^6.1.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
-webmtp@0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.3.2.tgz#bb424dd14957197fdd81427e2b43f93d1609be5e"
-  integrity sha512-NcgiypZCPlAUK1PV5dX76ZLn4gjYDFNNO27r9S/iTIji1xywKuVqk5Zvr9YhwUXGhCK1EL46qpbz/3cIgA4irA==
+webmtp@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.3.3.tgz#fdaeea199a75e23a9834d528ce0154b58bbae80c"
+  integrity sha512-XAaTcGoVOMAgTqwWgPiYYJ+TPJEbxjH4xweKceaqBhreH+y/kCTjrfHzhOV8ywbbPPSWB3Fdwsd7aLx2T8l5BQ==
   dependencies:
     core-js "2.6.11"
     usb "2.5.2"
