@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.47.0-macos-omnipod-security.4",
+  "version": "2.47.0-macos-omnipod-security.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
