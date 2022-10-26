@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.45.0-os-metrics.2",
+  "version": "2.47.0-os-metrics.2",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
@@ -10,14 +10,9 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "drivelist": "8.0.10",
-    "keytar": "5.6.0",
-    "node-hid": "1.1.0",
+    "drivelist": "11.0.0",
+    "keytar": "7.9.0",
     "@ronomon/direct-io": "3.0.1",
-    "serialport": "9.0.7",
-    "usb": "1.6.3"
-  },
-  "resolutions": {
-    "@serialport/bindings": "9.0.7"
+    "usb": "2.5.2"
   }
 }

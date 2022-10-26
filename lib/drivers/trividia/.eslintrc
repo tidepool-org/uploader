@@ -6,6 +6,7 @@
   },
   "rules": {
     "max-len": "warn",
+    "linebreak-style": 0,
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
