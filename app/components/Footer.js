@@ -18,8 +18,7 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
-import os from 'os';
-import osName from 'os-name';
+import UAParser from 'ua-parser-js';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
@@ -39,7 +38,9 @@ export default class Footer extends Component {
     let environment = '';
 
     if (debugMode.isDebug) {
-      osArch = `  (${osName()} - ${os.arch()})`;
+      let parser = new UAParser();
+      let uaDetails = parser.getResult();
+      osArch = `  (${uaDetails.os.name} ${uaDetails.os.version} - ${uaDetails.cpu.architecture})`;
       environment = `  - ${this.props.environment}`;
     }
 

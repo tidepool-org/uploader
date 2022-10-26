@@ -16,8 +16,7 @@
  */
 
 import _ from 'lodash';
-import os from 'os';
-import osName from 'os-name';
+import UAParser from 'ua-parser-js';
 
 import * as ActionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -44,7 +43,9 @@ const uploadDataPeriodLabels = {
   [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
 };
 
-const osString = `${osName()} (${os.arch()})`;
+let parser = new UAParser();
+let uaDetails = parser.getResult();
+const osString = `${uaDetails.os.name} ${uaDetails.os.version} (${uaDetails.cpu.architecture})`;
 
 export function addTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
