@@ -40,7 +40,8 @@ export default class Footer extends Component {
     if (debugMode.isDebug) {
       let parser = new UAParser();
       let uaDetails = parser.getResult();
-      osArch = `  (${uaDetails.os.name} ${uaDetails.os.version} - ${uaDetails.cpu.architecture})`;
+      let arch = uaDetails.cpu.architecture || '';
+      osArch = `  (${uaDetails.os.name} ${uaDetails.os.version} ${arch})`;
       environment = `  - ${this.props.environment}`;
     }
 

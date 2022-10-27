@@ -45,7 +45,8 @@ const uploadDataPeriodLabels = {
 
 let parser = new UAParser();
 let uaDetails = parser.getResult();
-const osString = `${uaDetails.os.name} ${uaDetails.os.version} (${uaDetails.cpu.architecture})`;
+let arch = uaDetails.cpu.architecture || '';
+const osString = `${uaDetails.os.name} ${uaDetails.os.version} ${arch}`;
 
 export function addTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
