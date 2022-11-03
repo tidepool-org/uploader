@@ -348,7 +348,7 @@ export default class Upload extends Component {
 
     let binary_link = null;
     if(data.compressed) {
-      let filenameBinary = 'binary-blob.json.gz';
+      let filenameBinary = 'binary-blob.gz';
       let blobBinary = new Blob([data.compressed], {type: 'application/gzip'});
       let dataHrefBinary = URL.createObjectURL(blobBinary);
       binary_link = (

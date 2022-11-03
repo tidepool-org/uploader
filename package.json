@@ -57,6 +57,7 @@
     "electron-log": "4.4.8",
     "electron-updater": "5.0.5",
     "es6-error": "4.1.1",
+    "fast-safe-stringify": "2.1.1",
     "ftdi-js": "0.3.0",
     "history": "4.10.1",
     "i18next": "20.6.1",
