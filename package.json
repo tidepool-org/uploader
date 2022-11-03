@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.47.4-tandem-blobs.1",
+  "version": "2.47.4-tandem-blobs.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
