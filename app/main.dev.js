@@ -65,6 +65,13 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
+  process.env.APPIMAGE = path.join(__dirname, 'release');
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+  Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
 }
 
 app.on('window-all-closed', () => {

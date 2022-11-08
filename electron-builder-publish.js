@@ -91,6 +91,10 @@ const config = {
       },
       'dir'
     ]
+  },
+  linux: {
+    vendor: 'Tidepool Project',
+    target: 'AppImage'
   }
 };
 
