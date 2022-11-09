@@ -11093,10 +11093,10 @@ keyboardevents-areequal@^0.2.1:
   resolved "https://registry.yarnpkg.com/keyboardevents-areequal/-/keyboardevents-areequal-0.2.2.tgz#88191ec738ce9f7591c25e9056de928b40277194"
   integrity sha512-Nv+Kr33T0mEjxR500q+I6IWisOQ0lK1GGOncV0kWE6n4KFmpcu7RUX5/2B0EUtX51Cb0HjZ9VJsSY3u4cBa0kw==
 
-keycloak-js@19.0.2:
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-19.0.2.tgz#df8d12138c3edf70d9880097204a943674c605ee"
-  integrity sha512-tQjkLVVIwaV1xf4Fri5u+d+Ttddrh0S5cv3ltG+uTUd7WNwt5LkOXsPnqWQjj9stpoBTFgTuzIqJ2C6vk0CcEQ==
+keycloak-js@20.0.1:
+  version "20.0.1"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-20.0.1.tgz#3f73499a6b071d096f82ab74257b1b7429f53c8c"
+  integrity sha512-YNj0X0mmdLpqjB9W5DTAVDI14CzZs7RFn9T/t/g8Uq80OjaW2zZUis/g73aWwz04S3B6U6Vrg8h1wAMGbx2NQQ==
   dependencies:
     base64-js "^1.5.1"
     js-sha256 "^0.9.0"
