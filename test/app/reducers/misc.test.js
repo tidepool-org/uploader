@@ -302,9 +302,11 @@ describe('misc reducers', () => {
     });
 
     test('should handle UPDATE_AVAILABLE', () => {
+      const payload = {'example':'info'};
       expect(misc.electronUpdateAvailable(undefined, {
-        type: actionTypes.UPDATE_AVAILABLE
-      })).to.be.true;
+        type: actionTypes.UPDATE_AVAILABLE,
+        payload
+      })).to.deep.equal(payload);
     });
 
     test('should handle UPDATE_NOT_AVAILABLE', () => {
