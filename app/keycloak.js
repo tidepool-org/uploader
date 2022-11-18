@@ -10,8 +10,6 @@ import { ipcRenderer } from 'electron';
 
 export let keycloak = null;
 
-const KEYCLOAK_CLIENT_ID = 'blip-localhost';
-
 let _keycloakConfig = {};
 
 const updateKeycloakConfig = (info, store) => {
@@ -20,7 +18,7 @@ const updateKeycloakConfig = (info, store) => {
       keycloak = new Keycloak({
         url: info.url,
         realm: info.realm,
-        clientId: KEYCLOAK_CLIENT_ID,
+        clientId: 'tidepool-uploader',
       });
       store.dispatch(sync.keycloakInstantiated());
     } else {
@@ -101,9 +99,9 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
     case ActionTypes.KEYCLOAK_READY: {
       let blipUrl = storeAPI.getState()?.blipUrls?.blipUrl;
       if (blipUrl) {
-        let redirectHref = new URL(blipUrl).href;
+        let blipHref = new URL(blipUrl).href;
         let registrationUrl = keycloak.createRegisterUrl({
-          redirectUri: redirectHref,
+          redirectUri: blipHref,
         });
         ipcRenderer.send('keycloakRegistrationUrl', registrationUrl);
         storeAPI.dispatch(sync.setKeycloakRegistrationUrl(registrationUrl));
