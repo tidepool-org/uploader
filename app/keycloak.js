@@ -148,7 +148,7 @@ export const KeycloakWrapper = (props) => {
     keycloak = new Keycloak({
       url: keycloakConfig.url,
       realm: keycloakConfig.realm,
-      clientId: KEYCLOAK_CLIENT_ID,
+      clientId: 'tidepool-uploader',
     });
     setHash(window.location.hash);
   }, [keycloakConfig.realm, keycloakConfig.url]);
