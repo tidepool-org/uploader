@@ -25,6 +25,7 @@ import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getCreateCustodialAccountErrorMessage,
   getUpdateProfileErrorMessage,
@@ -732,7 +733,7 @@ describe('Synchronous Actions', () => {
         deviceModel: 'acme'
       };
 
-      __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
 
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);

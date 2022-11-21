@@ -34,7 +34,7 @@ import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
-import { __Rewire__ as syncRewire } from '../../../app/actions/sync';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -69,9 +69,11 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: false } },
       });
-      store.dispatch(async.doAppInit({}, {}));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      utilsRewireAPI.__Rewire__('initOSDetails', () => {});
+      store.dispatch(async.doAppInit({}, {})).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -163,9 +165,10 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -283,9 +286,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: pwd.memberships.map(user=>user.userid),
       };
       const store = mockStore(state);
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -406,9 +410,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -553,9 +558,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -687,9 +693,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -740,11 +747,12 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
-      expectedActions[2].payload = actions[2].payload;
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
+        expectedActions[2].payload = actions[2].payload;
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -1392,7 +1400,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      syncRewire('osString', 'BeOS R5.1 (RISC-V)');
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,

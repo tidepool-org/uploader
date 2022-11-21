@@ -25,7 +25,7 @@ import configureStore from 'redux-mock-store';
 import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
-import { __Rewire__ } from '../../../app/actions/sync';
+import { __Rewire__ } from '../../../app/actions/utils';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {
