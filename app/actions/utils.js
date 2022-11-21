@@ -26,6 +26,7 @@ import * as syncActions from './sync';
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
 const debug = isBrowser ? require('bows')('utils') : console.log;
+let osString = '';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
@@ -143,4 +144,18 @@ export function mergeProfileUpdates(profile, updates){
       return update;
     }
   });
+}
+
+export async function initOSDetails() {
+  if (typeof navigator !== 'undefined') {
+    const ua = await navigator.userAgentData.getHighEntropyValues(
+      ['architecture', 'platform', 'platformVersion']
+    );
+    
+    osString = `${ua.platform} ${ua.platformVersion} ${ua.architecture}`;
+  }
+}
+
+export function getOSDetails() {
+  return osString;
 }

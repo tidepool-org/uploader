@@ -18,11 +18,11 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
-import UAParser from 'ua-parser-js';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
+import { getOSDetails } from '../actions/utils';
 
 const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
@@ -38,10 +38,7 @@ export default class Footer extends Component {
     let environment = '';
 
     if (debugMode.isDebug) {
-      let parser = new UAParser();
-      let uaDetails = parser.getResult();
-      let arch = uaDetails.cpu.architecture || '';
-      osArch = `  (${uaDetails.os.name} ${uaDetails.os.version} ${arch})`;
+      osArch = ` (${getOSDetails()})`;
       environment = `  - ${this.props.environment}`;
     }
 

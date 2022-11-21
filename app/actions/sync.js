@@ -16,7 +16,6 @@
  */
 
 import _ from 'lodash';
-import UAParser from 'ua-parser-js';
 
 import * as ActionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -42,11 +41,6 @@ const uploadDataPeriodLabels = {
   [uploadDataPeriod.PERIODS.DELTA]: 'new data',
   [uploadDataPeriod.PERIODS.FOUR_WEEKS]: '4 weeks'
 };
-
-let parser = new UAParser();
-let uaDetails = parser.getResult();
-let arch = uaDetails.cpu.architecture || '';
-const osString = `${uaDetails.os.name} ${uaDetails.os.version} ${arch}`;
 
 export function addTargetDevice(userId, deviceKey, selectedClinicId) {
   return {
@@ -388,7 +382,7 @@ export function uploadRequest(userId, device, utc) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: osString,
+    os: `${actionUtils.getOSDetails()}`,
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
@@ -421,7 +415,7 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: osString,
+    os: `${actionUtils.getOSDetails()}`,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
@@ -447,7 +441,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    os: osString,
+    os: `${actionUtils.getOSDetails()}`,
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
