@@ -63,11 +63,11 @@ const devices = {
     source: {type: 'device', driverId: 'BayerContour'},
     enabled: {mac: true, win: true, linux: true}
   },
-  contourplusone: {
-    instructions: i18n.t('Plug meter into USB port'),
-    key: 'contourplusone',
-    name: 'Ascensia Contour Plus One',
-    source: {type: 'device', driverId: 'ContourPlusOne'},
+  contourplus: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    key: 'contourplus',
+    name: 'Ascensia Contour Plus One/Blue',
+    source: {type: 'device', driverId: 'ContourPlus'},
     enabled: {mac: true, win: true, linux: true}
   },
   caresens: {
@@ -78,13 +78,15 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   caresensble: {
-    instructions: i18n.t('Once paired, hold in right arrow until "BT Send" appears on the screen'),
+    instructions: {
+                    text: i18n.t('For uploading instructions,'),
+                    linkText: i18n.t('visit our support site'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX',
+                  },
     name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for Electron not currently supported on Windows:
-    // https://github.com/electron/electron/issues/33111
+    enabled: {mac: true, win: true, linux: true}
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -132,6 +134,13 @@ const devices = {
     name: 'GLUCOCARD Shine Connex & Shine Express',
     key: 'glucocardshinehid',
     source: {type: 'device', driverId: 'GlucocardShineHID'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  glucocardvital: {
+    instructions: i18n.t('Make sure the meter is switched off and plug in cable'),
+    name: 'GLUCOCARD Vital',
+    key: 'glucocardvital',
+    source: {type: 'device', driverId: 'GlucocardVital'},
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
@@ -192,9 +201,7 @@ const devices = {
     name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for Electron not currently supported on Windows:
-    // https://github.com/electron/electron/issues/33111
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
@@ -224,6 +231,13 @@ const devices = {
     key: 'relionpremier',
     source: {type: 'device', driverId: 'ReliOnPremier'},
     enabled: {mac: true, win: true, linux: true}
+  },
+  relionprime: {
+    instructions: i18n.t('Make sure meter is switched off before plugging in cable'),
+    name: 'ReliOn Prime',
+    key: 'relionprime',
+    source: {type: 'device', driverId: 'ReliOnPrime'},
+    enabled: {mac: true, win: true, linux: true},
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),

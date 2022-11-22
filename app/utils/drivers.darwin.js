@@ -73,13 +73,12 @@ export function checkVersion(dispatch) {
   const appFolder = path.dirname(remote.app.getAppPath());
   let helperPath = path.join(appFolder, 'driver/helpers/');
   let driverPath = path.join(appFolder, 'driver/');
-  let iconsPath = path.join(appFolder, '/Tidepool Uploader.icns');
+  let iconsPath = path.join(appFolder, '/icon.icns');
   let scriptPath = path.join(appFolder, 'driver/updateDrivers.sh');
 
   if (!remote.app.isPackaged) {
     driverPath = path.resolve(appFolder, 'build/driver/');
     helperPath = path.join(appFolder, 'resources/mac/helpers/');
-    iconsPath = path.join(appFolder, 'resources/icon.icns');
     scriptPath = path.resolve(appFolder, 'resources/mac/updateDrivers.sh');
   }
 

@@ -47,6 +47,7 @@ console.log('Last crash report:', crashReporter.getLastCrashReport());
 let menu;
 let template;
 let mainWindow = null;
+let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -202,6 +203,14 @@ operating system, as soon as possible.`,
     } else {
       callback('');
     }
+  });
+
+  mainWindow.webContents.session.setBluetoothPairingHandler((details, callback) => {
+    bluetoothPinCallback = callback;
+    // Send a IPC message to the renderer to prompt the user to confirm the pairing.
+    // Note that this will require logic in the renderer to handle this message and
+    // display a prompt to the user.
+    mainWindow.webContents.send('bluetooth-pairing-request', details);
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -520,6 +529,10 @@ ipcMain.on('autoUpdater', (event, arg) => {
     manualCheck = true;
   }
   autoUpdater[arg]();
+});
+
+ipcMain.on('bluetooth-pairing-response', (event, response) => {
+  bluetoothPinCallback(response);
 });
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){

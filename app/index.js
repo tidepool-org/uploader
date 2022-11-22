@@ -31,6 +31,32 @@ ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
 
+ipcRenderer.on('bluetooth-pairing-request', (event, details) => {
+  const response = {};
+
+  switch (details.pairingKind) {
+    case 'confirm': {
+      response.confirmed = confirm(`Do you want to connect to device ${details.deviceId}?`);
+      break;
+    }
+    case 'confirmPin': {
+      response.confirmed = confirm(`Does the pin ${details.pin} match the pin displayed on device ${details.deviceId}?`);
+      break;
+    }
+    case 'providePin': {
+      const pin = prompt(`Please provide a pin for ${details.deviceId}.`);
+      if (pin) {
+        response.pin = pin;
+        response.confirmed = true;
+      } else {
+        response.confirmed = false;
+      }
+    }
+  }
+
+  ipcRenderer.send('bluetooth-pairing-response', response);
+});
+
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 render(
