@@ -16226,10 +16226,10 @@ sundial@1.6.0:
   dependencies:
     moment-timezone "0.4.1"
 
-sundial@1.7.0-update-deps.2:
-  version "1.7.0-update-deps.2"
-  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0-update-deps.2.tgz#b3b71299913b4a8c38c5d9f55b3cceb87d67daa2"
-  integrity sha512-3z/+S28z//7wM7VkMNWNra9/joZgANYVQWAoTJXWZ9r9SGQuXdetE2+AocwPBSz3QTRlvI45NmnCij9ayEl31Q==
+sundial@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0.tgz#1fa049341335449a8d892f687f23b25c7f373780"
+  integrity sha512-XAniZ1lSJWMtG4vcsuXVpZdMfJ1JW6KGV5uGFj5h0hpG61juM33Dy39MNV9DTSaiZ87x8j479gWj3uWsSj3V2Q==
   dependencies:
     moment-timezone "0.5.37"
 
@@ -17129,6 +17129,15 @@ usb@2.4.3:
     node-addon-api "^4.2.0"
     node-gyp-build "^4.3.0"
 
+usb@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/usb/-/usb-2.5.2.tgz#081b83aff83279c6d7605608880009ad698bc2c8"
+  integrity sha512-/7hWfbPL4ExGTQO2v2XfuKoBHDwNMoNPZmyKjsPpS4bnEY3BIsaanPpGsLmaI4MOq9pAWDrIz0DwRA8SqJ1pVQ==
+  dependencies:
+    "@types/w3c-web-usb" "1.0.6"
+    node-addon-api "^4.2.0"
+    node-gyp-build "^4.3.0"
+
 usb@^1.3.1:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/usb/-/usb-1.8.0.tgz#aec44c61558e618c699a2cbd31c86e3dc7f64d87"
@@ -17385,13 +17394,13 @@ webidl-conversions@^6.1.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
-webmtp@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.3.0.tgz#365f99761aaae543c9b6936f853afec69b88e139"
-  integrity sha512-+00B5XkH1inJYEwVY5mKANJB3JMtmri1cWU8/HIJJ+30cStfhgzGJ71yENRhWGkpJ2kewbV6DF6wod9x5K3Wqw==
+webmtp@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/webmtp/-/webmtp-0.3.3.tgz#fdaeea199a75e23a9834d528ce0154b58bbae80c"
+  integrity sha512-XAaTcGoVOMAgTqwWgPiYYJ+TPJEbxjH4xweKceaqBhreH+y/kCTjrfHzhOV8ywbbPPSWB3Fdwsd7aLx2T8l5BQ==
   dependencies:
     core-js "2.6.11"
-    usb "2.4.3"
+    usb "2.5.2"
 
 webpack-bundle-analyzer@4.5.0:
   version "4.5.0"
