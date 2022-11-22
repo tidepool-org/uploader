@@ -211,7 +211,7 @@ operating system, as soon as possible.`,
     // Send a IPC message to the renderer to prompt the user to confirm the pairing.
     // Note that this will require logic in the renderer to handle this message and
     // display a prompt to the user.
-    console.log("sending bluetooth pairing request", details);
+    console.log('Sending bluetooth pairing request', details); // TODO: remove
     mainWindow.webContents.send('bluetooth-pairing-request', _.omit(details, ['frame']));
   });
 
@@ -534,7 +534,7 @@ ipcMain.on('autoUpdater', (event, arg) => {
 });
 
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
-  console.log("getting bluetooth pairing response in main");
+  console.log('Getting bluetooth pairing response in main thread'); // TODO: remove
   bluetoothPinCallback(response);
 });
 
