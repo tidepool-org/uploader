@@ -15,21 +15,21 @@ jobs:
     - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
-        key: dependency-cache-{{ checksum "package.json" }}-v2
+        key: dependency-cache-{{ checksum "package.json" }}
     - run:
         name: Install nvm and node
         command: |
           set +e
           curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
           source ~/.nvm/nvm.sh
-          nvm install v16.14.2
-          nvm alias default v16.14.2
+          nvm install v16.16.0
+          nvm alias default v16.16.0
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn --frozen-lockfile
     - save_cache:
-        key: dependency-cache-{{ checksum "package.json" }}-v2
+        key: dependency-cache-{{ checksum "package.json" }}
         paths:
         - ~/.cache/yarn
         - ./node_modules
@@ -49,16 +49,15 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}-v2
-      # note: node 16.14.2 with npm 8.3.1 breaks yarn installation
-      - run: nvm install v16.13.2
-      - run: nvm use v16.13.2
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run: nvm install v16.16.0
+      - run: nvm use v16.16.0
       - run: node -v
       - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}-v2
+          key: dependency-cache-{{ checksum "package.json" }}
           paths:
           - ~/.cache/yarn
           - ./node_modules
