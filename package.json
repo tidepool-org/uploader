@@ -142,7 +142,7 @@
     "css-loader": "5.2.7",
     "difflet": "1.0.1",
     "drivelist": "11.0.0",
-    "electron": "21.0.0",
+    "electron": "21.3.0",
     "electron-builder": "23.3.0",
     "electron-devtools-installer": "3.2.0",
     "electron-notarize": "1.2.1",
