@@ -15,7 +15,7 @@ jobs:
     - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
+        key: dependency-cache-v2-{{ checksum "package.json" }}
     - run:
         name: Install nvm and node
         command: |
@@ -29,7 +29,7 @@ jobs:
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn --frozen-lockfile
     - save_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
+        key: dependency-cache-v2-{{ checksum "package.json" }}
         paths:
         - ~/.cache/yarn
         - ./node_modules
@@ -49,15 +49,15 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-v2-{{ checksum "package.json" }}
       - run: nvm install v16.16.0
       - run: nvm use v16.16.0
       - run: node -v
-      - run: npm install --global yarn
+      - run: npm install --location=global yarn
       - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-v2-{{ checksum "package.json" }}
           paths:
           - ~/.cache/yarn
           - ./node_modules
