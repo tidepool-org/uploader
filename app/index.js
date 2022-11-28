@@ -33,7 +33,7 @@ ipcRenderer.on('action', function(event, action) {
 });
 
 ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-console.log("got bluetooth pairin request", details);
+console.log('got bluetooth pairing request', JSON.stringify(details, null, 4)); // TODO: remove
   const response = {};
 
   switch (details.pairingKind) {
@@ -56,7 +56,7 @@ console.log("got bluetooth pairin request", details);
     }
   }
 
-  console.log("sending bluetooth pairing response", response);
+  console.log('sending bluetooth pairing response', JSON.stringify(response, null, 4));
   ipcRenderer.send('bluetooth-pairing-response', response);
 });
 
