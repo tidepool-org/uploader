@@ -41,11 +41,13 @@ export class BluetoothModal extends Component {
       return null;
     }
 
+    const { deviceInfo } = showingBluetoothPairingDialog.cfg;
+
     return (
       <div className={styles.modalWrap}>
         <div className={styles.modal}>
           <div className={styles.title}>
-            <div>{i18n.t('Allow the connection on the pump:')}</div>
+            <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: deviceInfo.name })}</div>
           </div>
           <hr className={styles.hr} />
           <div className={styles.actions}>

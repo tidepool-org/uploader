@@ -64,7 +64,7 @@ const initialState = {
   showingDeviceTimePrompt: null,
   isTimezoneFocused: false,
   showingAdHocPairingDialog: false,
-  showingBluetoothPairingDialog: false,
+  showingBluetoothPairingDialog: null,
 };
 
 export default initialState;

@@ -9,5 +9,6 @@
   "Turn meter on and make sure Bluetooth is switched on": "Turn meter on and make sure Bluetooth is switched on",
   "Make sure meter is switched off before plugging in cable": "Make sure meter is switched off before plugging in cable",
   "Plug in PDA with micro-USB": "Plug in PDA with micro-USB",
-  "Couldn't connect to device.": "Couldn't connect to device."
+  "Couldn't connect to device.": "Couldn't connect to device.",
+  "Enter Bluetooth Passkey for device {{device}}:": "Enter Bluetooth Passkey for device {{device}}:"
 }
