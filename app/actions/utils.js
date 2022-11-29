@@ -63,6 +63,12 @@ export function makeDisplayAdhocModal(dispatch) {
   };
 }
 
+export function makeDisplayBluetoothModal(dispatch) {
+  return (cb, cfg) => {
+    dispatch(syncActions.bluetoothPairingRequest(cb, cfg));
+  };
+}
+
 export function makeUploadCb(dispatch, getState, errCode, utc) {
   return (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();

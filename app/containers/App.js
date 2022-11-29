@@ -54,6 +54,7 @@ import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
+import BluetoothModal from '../components/BluetoothModal';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -181,6 +182,7 @@ export class App extends Component {
         <UpdateDriverModal />
         <DeviceTimeModal />
         <AdHocModal />
+        <BluetoothModal />
       </div>
     );
   }

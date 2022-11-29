@@ -1461,6 +1461,8 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  // TODO: write bluetooth pairing tests
+
   describe('fetchPatientsForClinicRequest', () => {
     test('should be an FSA', () => {
       let action = sync.fetchPatientsForClinicRequest();

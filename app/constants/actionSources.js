@@ -125,3 +125,7 @@ export const QUIT_AND_INSTALL = UNDER_THE_HOOD;
 // ad hoc pairing
 export const AD_HOC_PAIRING_REQUEST = USER_VISIBLE;
 export const AD_HOC_PAIRING_DISMISSED = USER;
+
+// bluetooth pairing
+export const BLUETOOTH_PAIRING_REQUEST = USER_VISIBLE;
+export const BLUETOOTH_PAIRING_CONFIRM = USER;

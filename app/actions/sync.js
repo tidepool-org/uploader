@@ -823,6 +823,21 @@ export function dismissedAdHocPairingDialog() {
   };
 }
 
+export function bluetoothPairingRequest(callback, cfg) {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_REQUEST] }
+  };
+}
+
+export function bluetoothPairingConfirm() {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_CONFIRM,
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_CONFIRM] }
+  };
+}
+
 export function fetchPatientsForClinicRequest() {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,

@@ -475,6 +475,8 @@ describe('misc reducers', () => {
     });
   });
 
+  // TODO: write bluetooth pairing tests
+
   describe('notification', () => {
     const ERR = new Error('This is an error :(');
     let initialStateForTest = initialState.notification;
