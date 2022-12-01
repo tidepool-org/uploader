@@ -9,7 +9,6 @@ import { push } from 'connected-react-router';
 import { ipcRenderer } from 'electron';
 import { ConnectedRouter } from 'connected-react-router';
 import { createHashHistory } from 'history';
-import prompt from 'native-prompt'; // TODO: use something else
 
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
@@ -46,7 +45,7 @@ console.log('Got bluetooth pairing request', details); // TODO: remove
       break;
     }
     case 'providePin': {
-      const pin = await prompt(`Please provide a pin for ${details.deviceId}.`);
+      const pin = await prompt(`Please provide a pin for ${details.deviceId}.`); // TODO: use BluetoothModal
       if (pin) {
         response.pin = pin;
         response.confirmed = true;

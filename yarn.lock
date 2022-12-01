@@ -11277,11 +11277,6 @@ napi-macros@2.0.0:
   resolved "https://registry.yarnpkg.com/napi-macros/-/napi-macros-2.0.0.tgz#2b6bae421e7b96eb687aa6c77a7858640670001b"
   integrity sha512-A0xLykHtARfueITVDernsAWdtIMbOJgKgcluwENp3AlsKN/PloyO10HtmoqnFAQAcxPkgZN7wdfPfEd0zNGxbg==
 
-native-prompt@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/native-prompt/-/native-prompt-2.1.4.tgz#db2aacf3d526626bef7900b07bf59a16ff31e39b"
-  integrity sha512-P85BOVMcMwDguw0S6UIJZcVByJ7BtkiZ50oehoVTC8TzmCoOpFL/u1jzj3bWoVszkK+9icg9u7cphPhTuhuX+A==
-
 native-request@^1.0.5:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/native-request/-/native-request-1.1.0.tgz#acdb30fe2eefa3e1bc8c54b3a6852e9c5c0d3cb0"

@@ -66,7 +66,6 @@
     "is-electron": "2.2.1",
     "lodash": "4.17.21",
     "lzo-wasm": "0.0.4",
-    "native-prompt": "^2.1.4",
     "os-name": "4.0.1",
     "pl2303": "0.0.9",
     "plist": "3.0.5",
