@@ -30,8 +30,14 @@ const i18n = remote.getGlobal( 'i18n' );
 export class BluetoothModal extends Component {
   handleContinue = () => {
     const { showingBluetoothPairingDialog, sync } = this.props;
+    console.log('pin', this.pin.value); // TODO: send this
     showingBluetoothPairingDialog.callback('bluetoothModalClose');
     sync.bluetoothPairingConfirm();
+  };
+
+  handleOnChange = (e) => {
+    this.pin = e.target.value;
+    console.log(this.pin);
   };
 
   render() {
@@ -49,7 +55,12 @@ export class BluetoothModal extends Component {
           <div className={styles.title}>
             <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: deviceInfo.name })}</div>
           </div>
-          <hr className={styles.hr} />
+          <div className={styles.textInputWrapper}>
+            <input
+              type="text"
+              ref={(input) => { this.pin = input; }}
+              className={styles.textInput} />
+          </div>
           <div className={styles.actions}>
             <button className={styles.buttonSecondary} onClick={this.handleContinue}>
               {i18n.t('Continue')}
