@@ -35,11 +35,6 @@ export class BluetoothModal extends Component {
     sync.bluetoothPairingConfirm();
   };
 
-  handleOnChange = (e) => {
-    this.pin = e.target.value;
-    console.log(this.pin);
-  };
-
   render() {
     const { showingBluetoothPairingDialog } = this.props;
 

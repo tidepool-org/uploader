@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.46.0-2.46.0-bluetooth-windows.2",
+  "version": "2.47.4-fora-tng-voice-win.2",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {

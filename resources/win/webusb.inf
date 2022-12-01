@@ -4,7 +4,7 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %ManufacturerName%
 CatalogFile = WinUSBInstallation.cat
-DriverVer   = 09/04/2012,13.54.20.543
+DriverVer   = 10/19/2022,14.0.0.0
 
 ; ========== Manufacturer/Models sections ===========
 
