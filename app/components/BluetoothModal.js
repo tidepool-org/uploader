@@ -59,15 +59,15 @@ export class BluetoothModal extends Component {
       return null;
     }
 
-    const { deviceInfo } = showingBluetoothPairingDialog.cfg;
+    const { pairingDetails } = showingBluetoothPairingDialog.cfg;
 
-    switch (details.pairingKind) {
+    switch (pairingDetails.pairingKind) {
       case 'confirm': {
         return (
           <div className={styles.modalWrap}>
             <div className={styles.modal}>
               <div className={styles.title}>
-                <div>{i18n.t('Do you want to connect to {{device}}?', { device: deviceInfo.name })}</div>
+                <div>{i18n.t('Do you want to connect to {{device}}?', { device: pairingDetails.deviceId })}</div>
               </div>
               <div className={styles.actions}>
                 <button className={styles.button} onClick={this.handleContinue}>
@@ -82,12 +82,11 @@ export class BluetoothModal extends Component {
         );
       }
       case 'confirmPin': {
-        response.confirmed = confirm(`Does the pin ${details.pin} match the pin displayed on device ${details.deviceId}?`);
         return (
           <div className={styles.modalWrap}>
             <div className={styles.modal}>
               <div className={styles.title}>
-                <div>{i18n.t('Does the pin {{pin}} match the pin displayed on device {{device}}?', { pin: details.pin, device: deviceInfo.name })}</div>
+                <div>{i18n.t('Does the pin {{pin}} match the pin displayed on device {{device}}?', { pin: pairingDetails.pin, device: pairingDetails.deviceId })}</div>
               </div>
               <div className={styles.actions}>
                 <button className={styles.button} onClick={this.handleContinue}>
@@ -106,7 +105,7 @@ export class BluetoothModal extends Component {
           <div className={styles.modalWrap}>
             <div className={styles.modal}>
               <div className={styles.title}>
-                <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: deviceInfo.name })}</div>
+                <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: pairingDetails.deviceId })}</div>
               </div>
               <div className={styles.textInputWrapper}>
                 <input
