@@ -831,10 +831,10 @@ export function bluetoothPairingRequest(callback, cfg) {
   };
 }
 
-export function bluetoothPairingConfirm() {
+export function dismissedBluetoothPairingDialog() {
   return {
-    type: ActionTypes.BLUETOOTH_PAIRING_CONFIRM,
-    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_CONFIRM] }
+    type: ActionTypes.BLUETOOTH_PAIRING_DISMISSED,
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_DISMISSED] }
   };
 }
 

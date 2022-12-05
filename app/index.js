@@ -32,31 +32,14 @@ ipcRenderer.on('action', function(event, action) {
 });
 
 ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-console.log('Got bluetooth pairing request', details); // TODO: remove
-  const response = {};
+  console.log('Got bluetooth pairing request', details); // TODO: remove
 
-  switch (details.pairingKind) {
-    case 'confirm': {
-      response.confirmed = confirm(`Do you want to connect to device ${details.deviceId}?`);
-      break;
-    }
-    case 'confirmPin': {
-      response.confirmed = confirm(`Does the pin ${details.pin} match the pin displayed on device ${details.deviceId}?`);
-      break;
-    }
-    case 'providePin': {
-      const pin = await prompt(`Please provide a pin for ${details.deviceId}.`); // TODO: use BluetoothModal
-      if (pin) {
-        response.pin = pin;
-        response.confirmed = true;
-      } else {
-        response.confirmed = false;
-      }
-    }
-  }
-
-  console.log('Sending bluetooth pairing response', response); // TODO: remove
-  ipcRenderer.send('bluetooth-pairing-response', response);
+  const { displayBluetoothModal } = config;
+  config.pairingDetails = details;
+  displayBluetoothModal((response) => {
+    console.log('Sending bluetooth pairing response', response); // TODO: remove
+    ipcRenderer.send('bluetooth-pairing-response', response);
+  }, config);
 });
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;

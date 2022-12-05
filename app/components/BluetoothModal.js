@@ -30,9 +30,26 @@ const i18n = remote.getGlobal( 'i18n' );
 export class BluetoothModal extends Component {
   handleContinue = () => {
     const { showingBluetoothPairingDialog, sync } = this.props;
-    console.log('pin', this.pin.value); // TODO: send this
-    showingBluetoothPairingDialog.callback('bluetoothModalClose');
-    sync.bluetoothPairingConfirm();
+    const response = {
+      confirmed: true,
+    };
+
+    if (this.pin.value) {
+      console.log('pin', this.pin.value); // TODO: remove this
+      response.pin = this.pin.value;
+    }
+
+    showingBluetoothPairingDialog.callback(response);
+    sync.dismissedBluetoothPairingDialog();
+  };
+
+  handleCancel = () => {
+    const { showingBluetoothPairingDialog, sync } = this.props;
+    const response = {
+      confirmed : false,
+    };
+    showingBluetoothPairingDialog.callback(response);
+    sync.dismissedBluetoothPairingDialog();
   };
 
   render() {
@@ -44,26 +61,72 @@ export class BluetoothModal extends Component {
 
     const { deviceInfo } = showingBluetoothPairingDialog.cfg;
 
-    return (
-      <div className={styles.modalWrap}>
-        <div className={styles.modal}>
-          <div className={styles.title}>
-            <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: deviceInfo.name })}</div>
+    switch (details.pairingKind) {
+      case 'confirm': {
+        return (
+          <div className={styles.modalWrap}>
+            <div className={styles.modal}>
+              <div className={styles.title}>
+                <div>{i18n.t('Do you want to connect to {{device}}?', { device: deviceInfo.name })}</div>
+              </div>
+              <div className={styles.actions}>
+                <button className={styles.button} onClick={this.handleContinue}>
+                  {i18n.t('Confirm')}
+                </button>
+                <button className={styles.buttonSecondary} onClick={this.handleCancel}>
+                  {i18n.t('Cancel')}
+                </button>
+              </div>
+            </div>
           </div>
-          <div className={styles.textInputWrapper}>
-            <input
-              type="text"
-              ref={(input) => { this.pin = input; }}
-              className={styles.textInput} />
+        );
+      }
+      case 'confirmPin': {
+        response.confirmed = confirm(`Does the pin ${details.pin} match the pin displayed on device ${details.deviceId}?`);
+        return (
+          <div className={styles.modalWrap}>
+            <div className={styles.modal}>
+              <div className={styles.title}>
+                <div>{i18n.t('Does the pin {{pin}} match the pin displayed on device {{device}}?', { pin: details.pin, device: deviceInfo.name })}</div>
+              </div>
+              <div className={styles.actions}>
+                <button className={styles.button} onClick={this.handleContinue}>
+                  {i18n.t('Confirm')}
+                </button>
+                <button className={styles.buttonSecondary} onClick={this.handleCancel}>
+                  {i18n.t('Cancel')}
+                </button>
+              </div>
+            </div>
           </div>
-          <div className={styles.actions}>
-            <button className={styles.buttonSecondary} onClick={this.handleContinue}>
-              {i18n.t('Continue')}
-            </button>
+        );
+      }
+      case 'providePin': {
+        return (
+          <div className={styles.modalWrap}>
+            <div className={styles.modal}>
+              <div className={styles.title}>
+                <div>{i18n.t('Enter Bluetooth Passkey for device {{device}}:', { device: deviceInfo.name })}</div>
+              </div>
+              <div className={styles.textInputWrapper}>
+                <input
+                  type="text"
+                  ref={(input) => { this.pin = input; }}
+                  className={styles.textInput} />
+              </div>
+              <div className={styles.actions}>
+                <button className={styles.button} onClick={this.handleContinue}>
+                  {i18n.t('Continue')}
+                </button>
+                <button className={styles.buttonSecondary} onClick={this.handleCancel}>
+                  {i18n.t('Cancel')}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    );
+        );
+      }
+    }  
   }
 };
 

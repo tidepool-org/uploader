@@ -262,7 +262,7 @@ export function showingBluetoothPairingDialog(state = initialState.showingBlueto
   switch (action.type) {
     case types.BLUETOOTH_PAIRING_REQUEST:
       return { callback: action.payload.callback, cfg: action.payload.cfg };
-    case types.BLUETOOTH_PAIRING_CONFIRM:
+    case types.BLUETOOTH_PAIRING_DISMISSED:
       return initialState.showingBluetoothPairingDialog;
     default:
       return state;
