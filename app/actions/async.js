@@ -20,6 +20,7 @@ import semver from 'semver';
 import os from 'os';
 import { push } from 'connected-react-router';
 import { checkCacheValid } from 'redux-cache';
+import { ipcRenderer } from 'electron';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -289,6 +290,17 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filedata = currentUpload.file.data;
       opts.filename = currentUpload.file.name;
     }
+
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      console.log('Got bluetooth pairing request', details); // TODO: remove
+    
+      const { displayBluetoothModal } = opts;
+      opts.pairingDetails = details;
+      displayBluetoothModal((response) => {
+        console.log('Sending bluetooth pairing response', response); // TODO: remove
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, opts);
+    });
 
     device.detect(driverId, opts, (err, dev) => {
       if (err) {

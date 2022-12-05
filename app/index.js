@@ -31,17 +31,6 @@ ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
 
-ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-  console.log('Got bluetooth pairing request', details); // TODO: remove
-
-  const { displayBluetoothModal } = config;
-  config.pairingDetails = details;
-  displayBluetoothModal((response) => {
-    console.log('Sending bluetooth pairing response', response); // TODO: remove
-    ipcRenderer.send('bluetooth-pairing-response', response);
-  }, config);
-});
-
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 render(
