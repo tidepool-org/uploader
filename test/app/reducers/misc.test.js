@@ -475,7 +475,28 @@ describe('misc reducers', () => {
     });
   });
 
-  // TODO: write bluetooth pairing tests
+  describe('showingBluetoothPairingDialog', () => {
+    test('should return the initial state', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {})).to.be.null;
+    });
+
+    test('should handle BLUETOOTH_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    test('should handle BLUETOOTH_PAIRING_DISMISSED', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+      })).to.be.null;
+    });
+  });
 
   describe('notification', () => {
     const ERR = new Error('This is an error :(');

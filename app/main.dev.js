@@ -55,7 +55,7 @@ app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
 // in Chrome 92+, but we can't do this for our Electron setup,
 // so we have to enable it manually
-// Confirm-only Bluetooth pairing is also still behind a Chromium flag
+// Confirm-only Bluetooth pairing is still behind a Chromium flag (up until v108 at least)
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer,WebBluetoothConfirmPairingSupport');
 
 if (process.env.NODE_ENV === 'production') {
