@@ -90,6 +90,16 @@ export function doAppInit(opts, servicesToInit) {
     dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      console.log('Got bluetooth pairing request', details); // TODO: remove
+    
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      displayBluetoothModal((response) => {
+        console.log('Sending bluetooth pairing response', response); // TODO: remove
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
+
     log('Initializing local store.');
     localStore.init(localStore.getInitialState(), function(localStoreResult){
       log('Initializing device');
@@ -277,7 +287,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       progress: actionUtils.makeProgressFn(dispatch),
       displayTimeModal: actionUtils.makeDisplayTimeModal(dispatch),
       displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
-      displayBluetoothModal: actionUtils.makeDisplayBluetoothModal(dispatch),
       version: version
     });
     const { uploadsByUser } = getState();
@@ -290,17 +299,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filedata = currentUpload.file.data;
       opts.filename = currentUpload.file.name;
     }
-
-    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-      console.log('Got bluetooth pairing request', details); // TODO: remove
-    
-      const { displayBluetoothModal } = opts;
-      opts.pairingDetails = details;
-      displayBluetoothModal((response) => {
-        console.log('Sending bluetooth pairing response', response); // TODO: remove
-        ipcRenderer.send('bluetooth-pairing-response', response);
-      }, opts);
-    });
 
     device.detect(driverId, opts, (err, dev) => {
       if (err) {

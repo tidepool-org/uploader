@@ -34,8 +34,7 @@ export class BluetoothModal extends Component {
       confirmed: true,
     };
 
-    if (this.pin.value) {
-      console.log('pin', this.pin.value); // TODO: remove this
+    if (this.pin && this.pin.value) {
       response.pin = this.pin.value;
     }
 
@@ -59,7 +58,7 @@ export class BluetoothModal extends Component {
       return null;
     }
 
-    const { pairingDetails } = showingBluetoothPairingDialog.cfg;
+    const pairingDetails = showingBluetoothPairingDialog.details;
 
     switch (pairingDetails.pairingKind) {
       case 'confirm': {
