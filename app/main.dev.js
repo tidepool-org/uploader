@@ -208,10 +208,7 @@ operating system, as soon as possible.`,
 
   mainWindow.webContents.session.setBluetoothPairingHandler((details, callback) => {
     bluetoothPinCallback = callback;
-    // Send a IPC message to the renderer to prompt the user to confirm the pairing.
-    // Note that this will require logic in the renderer to handle this message and
-    // display a prompt to the user.
-    console.log('Sending bluetooth pairing request', details); // TODO: remove
+    console.log('Sending bluetooth pairing request to renderer');
     mainWindow.webContents.send('bluetooth-pairing-request', _.omit(details, ['frame']));
   });
 
@@ -534,7 +531,6 @@ ipcMain.on('autoUpdater', (event, arg) => {
 });
 
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
-  console.log('Getting bluetooth pairing response in main thread'); // TODO: remove
   bluetoothPinCallback(response);
 });
 

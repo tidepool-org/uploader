@@ -91,11 +91,8 @@ export function doAppInit(opts, servicesToInit) {
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
     ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-      console.log('Got bluetooth pairing request', details); // TODO: remove
-    
       const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
       displayBluetoothModal((response) => {
-        console.log('Sending bluetooth pairing response', response); // TODO: remove
         ipcRenderer.send('bluetooth-pairing-response', response);
       }, details);
     });

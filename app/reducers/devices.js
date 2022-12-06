@@ -86,7 +86,9 @@ const devices = {
     name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: false, linux: true}
+    // CareSens Bluetooth pairing is tricky; maybe better to wait for Uploader-in-Web
+    // before enabling it in Windows with proper on-screen instructions
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -108,8 +110,6 @@ const devices = {
     name: 'Fora TN\'G Voice',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
-    // PIN pairing for Electron not currently supported on Windows:
-    // https://github.com/electron/electron/issues/33111
   },
   glucocardexpression: {
     instructions: {
