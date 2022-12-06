@@ -58,7 +58,7 @@ export class BluetoothModal extends Component {
       return null;
     }
 
-    const pairingDetails = showingBluetoothPairingDialog.details;
+    const pairingDetails = showingBluetoothPairingDialog.cfg;
 
     switch (pairingDetails.pairingKind) {
       case 'confirm': {
