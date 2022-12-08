@@ -151,8 +151,21 @@ export async function initOSDetails() {
     const ua = await navigator.userAgentData.getHighEntropyValues(
       ['architecture', 'platform', 'platformVersion']
     );
+
+    let osVersion = ua.platformVersion;
+
+    if (navigator.userAgentData.platform === 'Windows') {
+      const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+      if (majorPlatformVersion >= 13) {
+        osVersion = '11';
+      } else if (majorPlatformVersion > 0) {
+        osVersion = '10';
+      } else {
+        osVersion = 'earlier than 10';
+      }
+    }
     
-    osString = `${ua.platform} ${ua.platformVersion} ${ua.architecture}`;
+    osString = `${ua.platform} ${osVersion} ${ua.architecture}`;
   }
 }
 
