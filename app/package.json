@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.47.4-os-metrics.4",
+  "version": "2.47.4-os-metrics.5",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
