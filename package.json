@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.47.4-os-metrics.5",
+  "version": "2.47.4-os-metrics.6",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
