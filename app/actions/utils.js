@@ -149,7 +149,7 @@ export function mergeProfileUpdates(profile, updates){
 export async function initOSDetails() {
   if (typeof navigator !== 'undefined') {
     const ua = await navigator.userAgentData.getHighEntropyValues(
-      ['architecture', 'platform', 'platformVersion']
+      ['platform', 'platformVersion', 'bitness']
     );
 
     let osVersion = ua.platformVersion;
@@ -163,9 +163,11 @@ export async function initOSDetails() {
       } else {
         osVersion = 'earlier than 10';
       }
+
+      osVersion = `${osVersion} ${ua.bitness}-bit`;
     }
     
-    osString = `${ua.platform} ${osVersion} ${ua.architecture}`;
+    osString = `${ua.platform} ${osVersion}`;
   }
 }
 
