@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.47.4",
+  "version": "2.47.4-update-ascensia-listing.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
