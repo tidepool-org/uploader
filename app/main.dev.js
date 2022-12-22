@@ -1,6 +1,6 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
 import open from 'open';
@@ -43,6 +43,9 @@ crashReporter.start({
 
 console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
+
+const PROTOCOL_PREFIX = 'tidepooluploader';
+const baseURL = `file://${__dirname}/app.html`;
 
 let menu;
 let template;
@@ -100,6 +103,23 @@ function addDataPeriodGlobalListener(menu) {
   });
 };
 
+const openExternalUrl = (url) => {
+  let platform = os.platform();
+  let chromeInstalls = chromeFinder[platform]();
+  if(chromeInstalls.length === 0){
+    // no chrome installs found, open user's default browser
+    open(url);
+  } else {
+    open(url, {app: chromeInstalls[0]}, function(error){
+      if(error){
+        // couldn't open chrome, try OS default
+        open(url);
+      }
+    });
+  }
+  return { action: 'deny' };
+};
+
 app.on('ready', async () => {
   await installExtensions();
   setLanguage();
@@ -118,12 +138,86 @@ function createWindow() {
     }
   });
 
+  protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
+    const requestURL = new URL(request.url);
+    if (requestURL.pathname.includes('keycloak-redirect')) {
+      const requestHash = requestURL.hash;
+      const { webContents } = mainWindow;
+      // redirecting from the app html to app html with hash breaks devtools
+      // just send and append the hash if we're already in the app html
+      if (
+        webContents.getURL().includes(baseURL) ||
+        webContents.getURL().startsWith('tidepooluploader')
+      ) {
+        webContents.send('newHash', requestHash);
+      } else {
+        webContents.loadURL(`${baseURL}${requestHash}`);
+      }
+      return;
+    }
+  });
+
   remoteMain.enable(mainWindow.webContents);
   mainWindow.webContents.on('render-process-gone', (e, details) => {
     console.log('Render process gone:', details.reason);
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(baseURL);
+
+  const { session: { webRequest } } = mainWindow.webContents;
+
+  let keycloakRegistrationUrl = '';
+  let keycloakUrl = '';
+  let keycloakRealm = '';
+
+  ipcMain.on('keycloakRegistrationUrl', (event, url) => {
+    keycloakRegistrationUrl = url;
+  });
+
+  ipcMain.on('keycloakInfo', (event, info) => {
+    keycloakUrl = info.url;
+    keycloakRealm = info.realm;
+    setRequestFilter();
+  });
+
+  let setRequestFilter = () => {
+    let urls = ['http://localhost/keycloak-redirect*'];
+    if (keycloakUrl && keycloakRealm) {
+      urls.push(
+        `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
+      );
+    }
+    webRequest.onBeforeRequest({ urls }, async (request, cb) => {
+      const requestURL = new URL(request.url);
+
+      // capture keycloak sign-in redirect
+      if (requestURL.pathname.includes('keycloak-redirect')) {
+        const requestHash = requestURL.hash;
+        const { webContents } = mainWindow;
+        // redirecting from the app html to app html with hash breaks devtools
+        // just send and append the hash if we're already in the app html
+        if (webContents.getURL().includes(baseURL)) {
+          webContents.send('newHash', requestHash);
+        } else {
+          webContents.loadURL(`${baseURL}${requestHash}`);
+        }
+        return;
+      }
+      // capture keycloak registration navigation
+      if (
+        requestURL.href.includes(
+          `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration`
+        )
+      ) {
+        openExternalUrl(keycloakRegistrationUrl);
+        return;
+      }
+
+      cb({ cancel: false });
+    });
+  };
+
+  setRequestFilter();
 
   mainWindow.webContents.on('did-finish-load', async () => {
     if (osName() === 'Windows 7') {
@@ -148,25 +242,9 @@ operating system, as soon as possible.`,
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    let platform = os.platform();
-    let chromeInstalls = chromeFinder[platform]();
-    if(chromeInstalls.length === 0){
-      // no chrome installs found, open user's default browser
-      open(details.url);
-    } else {
-      open(details.url, {
-        app: {
-          name: chromeInstalls[0],
-        },
-      }, function(error){
-        if(error){
-          // couldn't open chrome, try OS default
-          open(details.url);
-        }
-      });
-    }
-    return { action: 'deny' };
+    return openExternalUrl(details.url);
   });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

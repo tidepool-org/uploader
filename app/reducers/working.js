@@ -42,6 +42,7 @@ export default (state = initialWorkingState, action) => {
     case types.GET_CLINICS_FOR_CLINICIAN_REQUEST:
     case types.INIT_APP_REQUEST:
     case types.UPDATE_PROFILE_REQUEST:
+    case types.FETCH_INFO_REQUEST:
       key = actionWorkingMap(action.type);
       if (key) {
         if (_.includes([
@@ -96,6 +97,7 @@ export default (state = initialWorkingState, action) => {
     case types.GET_CLINICS_FOR_CLINICIAN_SUCCESS:
     case types.INIT_APP_SUCCESS:
     case types.UPDATE_PROFILE_SUCCESS:
+    case types.FETCH_INFO_SUCCESS:
       key = actionWorkingMap(action.type);
       if (key) {
         if (action.type === types.LOGOUT_SUCCESS) {
@@ -146,6 +148,7 @@ export default (state = initialWorkingState, action) => {
     case types.GET_CLINICS_FOR_CLINICIAN_FAILURE:
     case types.INIT_APP_FAILURE:
     case types.UPDATE_PROFILE_FAILURE:
+    case types.FETCH_INFO_FAILURE:
       key = actionWorkingMap(action.type);
       if (key) {
         return update(state, {

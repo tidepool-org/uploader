@@ -7,7 +7,11 @@ import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import cp from 'child_process';
 
+const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+  process.env.APPVEYOR_REPO_COMMIT ||
+  cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
 export default merge.smart(baseConfig, {
   devtool: 'source-map',
@@ -56,6 +60,7 @@ export default merge.smart(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
       __ROLLBAR_POST_TOKEN__: JSON.stringify(process.env.ROLLBAR_POST_TOKEN),
+      __VERSION_SHA__: JSON.stringify(VERSION_SHA),
     })
   ],
 
