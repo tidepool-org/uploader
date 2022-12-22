@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.48.1-update-platform.2",
+  "version": "2.48.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
