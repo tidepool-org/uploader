@@ -20,6 +20,7 @@ import semver from 'semver';
 import os from 'os';
 import { push } from 'connected-react-router';
 import { checkCacheValid } from 'redux-cache';
+import { ipcRenderer } from 'electron';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -369,6 +370,7 @@ export function doUpload(deviceKey, opts, utc) {
       }));
 
       try {
+        ipcRenderer.send('setSerialPortFilter', filters);
         opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead

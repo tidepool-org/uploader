@@ -47,6 +47,7 @@ console.log('Last crash report:', crashReporter.getLastCrashReport());
 let menu;
 let template;
 let mainWindow = null;
+let serialPortFilter = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -186,7 +187,18 @@ operating system, as soon as possible.`,
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
     event.preventDefault();
     console.log('Port list:', portList);
-    const [selectedPort] = portList;
+
+    let selectedPort;
+    for (let i = 0; i < serialPortFilter.length; i++) {
+      selectedPort = portList.find((element) => 
+        serialPortFilter[i].usbVendorId === parseInt(element.vendorId, 10) &&
+        serialPortFilter[i].usbProductId === parseInt(element.productId, 10)
+      );
+      if (selectedPort) {
+        break; // prioritize according to the order in the driver manifest
+      }
+    }
+
     if (!selectedPort) {
       callback('');
     } else {
@@ -520,6 +532,10 @@ ipcMain.on('autoUpdater', (event, arg) => {
     manualCheck = true;
   }
   autoUpdater[arg]();
+});
+
+ipcMain.on('setSerialPortFilter', (event, arg) => {
+  serialPortFilter = arg;
 });
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){
