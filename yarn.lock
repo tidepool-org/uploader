@@ -16537,10 +16537,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tidepool-platform-client@0.49.0-web-1372-keycloak.2:
-  version "0.49.0-web-1372-keycloak.2"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.49.0-web-1372-keycloak.2.tgz#6a9116a71c1c97736f0fa3dc5444b02f7c531406"
-  integrity sha512-TJsWZbrT68Frqaay7rXfSyb46KCgKdzvcpTsKvGqgSwYpYWux8xnUAaiC2V5RKAtmcbUPyuoRkGyBpqHTYWsEA==
+tidepool-platform-client@0.51.1-upload-929-upload-session.1:
+  version "0.51.1-upload-929-upload-session.1"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.51.1-upload-929-upload-session.1.tgz#d7ec13f8552f1c7c921b2fd38bb3f4db0428d9fb"
+  integrity sha512-pyhHTBUe4d6EGrBpK/fsf86UY1HtKNC0x6ddtG54BwPJYnSlF926d6i4OARhMlplZpIqivKMT8F6KC6DXx3m5Q==
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
