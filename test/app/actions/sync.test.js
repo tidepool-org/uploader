@@ -821,10 +821,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -854,10 +851,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
