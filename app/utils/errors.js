@@ -30,13 +30,14 @@ const errorProps = {
   sessionTrace: 'Session Trace',
   stringifiedStack: 'Stack Trace',
   utc: 'UTC Time',
-  version: 'Version'
+  version: 'Version',
+  uuid: 'Rollbar UUID'
 };
 
 export function addInfoToError(err, props) {
-  let debug = [];
+  let debug = [];  
   _.forOwn(props, (v, k) => {
-    if (!_.isEmpty(v) && v !== err.message) {
+    if (!_.isEmpty(v) && v !== err.message && k !== 'utc' && k!== 'code') {
       err[k] = v;
       debug.push(`${errorProps[k]}: ${v}`);
     }
