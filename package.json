@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.48.1-cid-changes.4",
+  "version": "2.48.1-cid-changes.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
