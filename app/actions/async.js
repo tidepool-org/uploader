@@ -32,8 +32,10 @@ import * as sync from './sync';
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
 import driverManifests from '../../lib/core/driverManifests';
+import api from '../../lib/core/api';
+import localStore from '../../lib/core/localStore';
 
-let services = {};
+let services = { api };
 let versionInfo = {};
 let hostMap = {
   'darwin': 'mac',
@@ -85,93 +87,90 @@ export function doAppInit(opts, servicesToInit) {
     services = servicesToInit;
     versionInfo.semver = opts.version;
     versionInfo.name = opts.namedVersion;
-    const { api, device, localStore, log } = services;
+    const { api, device, log } = services;
 
     dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
 
-    log('Initializing local store.');
-    localStore.init(localStore.getInitialState(), function(localStoreResult){
-      log('Initializing device');
-      device.init({
-        api,
-        version: opts.namedVersion
-      }, function(deviceError, deviceResult){
-        if (deviceError) {
-          return dispatch(sync.initializeAppFailure(deviceError));
+    log('Initializing device');
+    device.init({
+      api,
+      version: opts.namedVersion
+    }, function(deviceError, deviceResult){
+      if (deviceError) {
+        return dispatch(sync.initializeAppFailure(deviceError));
+      }
+      log('Initializing api');
+      api.init(function(apiError, apiResult){
+        if (apiError) {
+          return dispatch(sync.initializeAppFailure(apiError));
         }
-        log('Initializing api');
-        api.init(function(apiError, apiResult){
-          if (apiError) {
-            return dispatch(sync.initializeAppFailure(apiError));
-          }
-          log('Setting all api hosts');
-          api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
-          dispatch(sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
-          dispatch(sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
-          dispatch(sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
-          dispatch(sync.setBlipUrl(api.makeBlipUrl('/')));
-          let session = apiResult;
-          if (session === undefined) {
-            dispatch(setPage(pages.LOGIN));
-            dispatch(sync.initializeAppSuccess());
-            return dispatch(doVersionCheck());
-          }
+        log('Setting all api hosts');
+        api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
+        dispatch(sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
+        dispatch(sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
+        dispatch(sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
+        dispatch(sync.setBlipUrl(api.makeBlipUrl('/')));
+        let session = apiResult;
+        if (session === undefined) {
+          dispatch(setPage(pages.LOGIN));
+          dispatch(sync.initializeAppSuccess());
+          return dispatch(doVersionCheck());
+        }
 
-          api.user.initializationInfo((err, results) => {
-            const [ user, profile, memberships, associatedAccounts, clinics ] = results;
-            if (err) {
-              return dispatch(sync.initializeAppFailure(err));
-            }
-            dispatch(sync.initializeAppSuccess());
-            dispatch(doVersionCheck());
-            dispatch(sync.setUserInfoFromToken({
-              user: user,
-              profile: profile,
-              memberships: memberships
-            }));
-            dispatch(sync.getClinicsForClinicianSuccess(clinics, user.userid));
-            const isClinic = personUtils.isClinic(user);
-            if(!_.isEmpty(clinics)){
-              if (clinics.length == 1) { // select clinic and go to clinic user select page
-                let clinicId = _.get(clinics,'0.clinic.id',null);
-                dispatch(fetchPatientsForClinic(clinicId));
-                dispatch(sync.selectClinic(clinicId));
-                return dispatch(
-                  setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
-                    metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
-                  })
-                );
-              }
-              if (clinics.length > 1) { // more than one clinic - go to workspace switch
-                return dispatch(
-                  setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
-                    metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
-                  })
-                );
-              }
-            }
-            if(isClinic){ // "old" style clinic account without new clinic
+        api.user.initializationInfo((err, results) => {
+          const [ user, profile, memberships, associatedAccounts, clinics ] = results;
+          if (err) {
+            return dispatch(sync.initializeAppFailure(err));
+          }
+          dispatch(sync.initializeAppSuccess());
+          dispatch(doVersionCheck());
+          dispatch(sync.setUserInfoFromToken({
+            user: user,
+            profile: profile,
+            memberships: memberships
+          }));
+          dispatch(sync.getClinicsForClinicianSuccess(clinics, user.userid));
+          const isClinic = personUtils.isClinic(user);
+          if(!_.isEmpty(clinics)){
+            if (clinics.length == 1) { // select clinic and go to clinic user select page
+              let clinicId = _.get(clinics,'0.clinic.id',null);
+              dispatch(fetchPatientsForClinic(clinicId));
+              dispatch(sync.selectClinic(clinicId));
               return dispatch(
                 setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
                   metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
                 })
               );
             }
-            // detect if a DSA here and redirect to data storage screen
-            const { targetUsersForUpload } = getState();
-            if (_.isEmpty(targetUsersForUpload)) {
-              return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
+            if (clinics.length > 1) { // more than one clinic - go to workspace switch
+              return dispatch(
+                setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
+                  metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
+                })
+              );
             }
+          }
+          if(isClinic){ // "old" style clinic account without new clinic
+            return dispatch(
+              setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
+                metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
+              })
+            );
+          }
+          // detect if a DSA here and redirect to data storage screen
+          const { targetUsersForUpload } = getState();
+          if (_.isEmpty(targetUsersForUpload)) {
+            return dispatch(setPage(pages.NO_UPLOAD_TARGETS));
+          }
 
-            const { uploadTargetUser } = getState();
-            if (uploadTargetUser !== null) {
-              dispatch(sync.setBlipViewDataUrl(
-                api.makeBlipUrl(actionUtils.viewDataPathForUser(uploadTargetUser))
-              ));
-            }
-            dispatch(retrieveTargetsFromStorage());
-          });
+          const { uploadTargetUser } = getState();
+          if (uploadTargetUser !== null) {
+            dispatch(sync.setBlipViewDataUrl(
+              api.makeBlipUrl(actionUtils.viewDataPathForUser(uploadTargetUser))
+            ));
+          }
+          dispatch(retrieveTargetsFromStorage());
         });
       });
     });
@@ -181,19 +180,16 @@ export function doAppInit(opts, servicesToInit) {
 export function doLogin(creds, opts) {
   return (dispatch, getState) => {
     const { api } = services;
+    if (getState().working.loggingIn.inProgress) {
+      return;
+    }
     dispatch(sync.loginRequest());
-
     api.user.loginExtended(creds, opts, (err, results) => {
       if (err) {
         return dispatch(sync.loginFailure(err.status));
       }
       const [{user}, profile, memberships] = results;
       dispatch(fetchAssociatedAccounts(api));
-      dispatch(sync.loginSuccess({
-        user,
-        profile,
-        memberships
-      }));
 
       const isClinic = personUtils.isClinic(user);
 
@@ -202,8 +198,13 @@ export function doLogin(creds, opts) {
         if(err) {
           return dispatch(sync.loginFailure(err));
         }
+        dispatch(sync.loginSuccess({
+          user,
+          profile,
+          memberships
+        }));
         if(!_.isEmpty(clinics)){
-          if (clinics.length == 1) { // select clinic and go to clinic user select page
+          if (clinics.length === 1) { // select clinic and go to clinic user select page
             let clinicId = _.get(clinics,'0.clinic.id',null);
             dispatch(fetchPatientsForClinic(clinicId));
             dispatch(sync.selectClinic(clinicId));
@@ -555,6 +556,23 @@ export function doVersionCheck() {
   };
 }
 
+export function fetchInfo(cb = _.noop) {
+  return (dispatch) => {
+    dispatch(sync.fetchInfoRequest());
+    const { api } = services;
+    api.upload.getInfo((err, info) => {
+      if (err) {
+        dispatch(sync.fetchInfoFailure(
+          createActionError(ErrorMessages.ERR_FETCHING_INFO, err), err
+        ));
+      } else {
+        dispatch(sync.fetchInfoSuccess(info));
+      }
+      return cb(err, info);
+    });
+  };
+}
+
 export function setTargetTimezone(userId, timezoneName) {
   return (dispatch, getState) => {
     const { allUsers, loggedInUser } = getState();
@@ -769,7 +787,7 @@ export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
 export function retrieveTargetsFromStorage() {
   return (dispatch, getState) => {
     const { devices, uploadTargetUser } = getState();
-    const { api, localStore } = services;
+    const { api } = services;
     let fromLocalStore = false;
 
     dispatch(sync.retrieveUsersTargetsFromStorage());

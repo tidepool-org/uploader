@@ -8,18 +8,22 @@ import { Route } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import { ipcRenderer } from 'electron';
 import { ConnectedRouter } from 'connected-react-router';
-import { createHashHistory } from 'history';
+import { createMemoryHistory } from 'history';
+import { KeycloakWrapper } from './keycloak';
 
 import config from '../lib/config';
 window.DEBUG = config.DEBUG;
 import configureStore from './store/configureStore';
-import api from '../lib/core/api';
 import App from './containers/App';
 import './app.global.css';
 import '../styles/main.less';
 
+import localStore from '../lib/core/localStore';
+localStore.init(localStore.getInitialState(), () => {});
 
-const history = createHashHistory();
+// createHashHistory collides with the keycloak library #state
+// createBrowserHistory creates a login loop
+const history = createMemoryHistory();
 
 const store = configureStore(undefined, history);
 store.dispatch(push('/'));
@@ -31,13 +35,19 @@ ipcRenderer.on('action', function(event, action) {
   store.dispatch(action);
 });
 
+ipcRenderer.on('newHash', (e, hash) => {
+  window.location.hash = hash;
+});
+
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 render(
   <AppContainer>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
+        <KeycloakWrapper>
+          <Route path="/" render={(props) => <App {...props} />} />
+        </KeycloakWrapper>
       </ConnectedRouter>
     </Provider>
   </AppContainer>,
