@@ -13,5 +13,14 @@
   "Enter Bluetooth Passkey for device {{device}}:": "Enter Bluetooth Passkey for device {{device}}:",
   "Make sure meter is switched off before plugging in cable": "Make sure meter is switched off before plugging in cable",
   "Do you want to connect to {{device}}?": "Do you want to connect to {{device}}?",
-  "Confirm": "Confirm"
+  "Confirm": "Confirm",
+  "Plug in PDA with micro-USB": "Plug in PDA with micro-USB",
+  "Couldn't connect to device.": "Couldn't connect to device.",
+  "clinic": "clinic",
+  "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
+  "Go to Private Workspace": "Go to Private Workspace",
+  "To manage {{workspace}} workspace and view patient invites, go to": "To manage {{workspace}} workspace and view patient invites, go to",
+  "Tidepool Web": "Tidepool Web",
+  "Private Workspace": "Private Workspace",
+  "your private": "your private"
 }

@@ -44,6 +44,7 @@ const initialState = {
     updatingClinicPatient: Object.assign({}, working),
     fetchingPatientsForClinic: Object.assign({}, working),
     updatingProfile: Object.assign({}, working),
+    fetchingInfo: Object.assign({}, working),
   },
   notification: null,
   dataDonationAccounts: [],
@@ -65,6 +66,7 @@ const initialState = {
   isTimezoneFocused: false,
   showingAdHocPairingDialog: false,
   showingBluetoothPairingDialog: null,
+  keycloakConfig: {},
 };
 
 export default initialState;

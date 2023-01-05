@@ -359,3 +359,23 @@ export const selectedClinicId = (state = initialState.selectedClinicId, action) 
       return state;
   }
 };
+
+export const keycloakConfig = (state = initialState.keycloakConfig, action) => {
+  switch (action.type) {
+    case types.FETCH_INFO_SUCCESS: {
+      let auth = _.get(action.payload, 'info.auth', { url: '', realm: '' });
+      if (!_.isMatch(state, auth)) {
+        return _.extend({}, state, { initialized: false }, auth);
+      }
+      return state;
+    }
+    case types.KEYCLOAK_READY:
+      return _.extend({}, state, { initialized: true });
+    case types.SET_KEYCLOAK_REGISTRATION_URL:
+      return _.extend({}, state, { registrationUrl: action.payload.url });
+    case types.KEYCLOAK_INSTANTIATED:
+      return _.extend({}, state, { instantiated: true });
+    default:
+      return state;
+  }
+};
