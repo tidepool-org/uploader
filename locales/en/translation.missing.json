@@ -19,5 +19,13 @@
   "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible.",
   "See what's new with Tidepool Uploader": "See what's new with Tidepool Uploader",
   "Your version: {{currentVersion}} - installed {{currentDate}}": "Your version: {{currentVersion}} - installed {{currentDate}}",
-  "Your version: {{currentVersion}} - ": "Your version: {{currentVersion}} - "
+  "Your version: {{currentVersion}} - ": "Your version: {{currentVersion}} - ",
+  "Couldn't connect to device.": "Couldn't connect to device.",
+  "clinic": "clinic",
+  "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
+  "Go to Private Workspace": "Go to Private Workspace",
+  "To manage {{workspace}} workspace and view patient invites, go to": "To manage {{workspace}} workspace and view patient invites, go to",
+  "Tidepool Web": "Tidepool Web",
+  "Private Workspace": "Private Workspace",
+  "your private": "your private"
 }
