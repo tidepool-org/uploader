@@ -104,6 +104,11 @@ function addDataPeriodGlobalListener(menu) {
 };
 
 const openExternalUrl = (url) => {
+  // open keycloak in OS default browser
+  if (url.includes('keycloak')) {
+    open(url);
+    return { action: 'deny' };
+  }
   let platform = os.platform();
   let chromeInstalls = chromeFinder[platform]();
   if(chromeInstalls.length === 0){
@@ -604,6 +609,10 @@ if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
 }
 
+if (!app.isDefaultProtocolClient('tidepooluploader')) {
+  app.setAsDefaultProtocolClient('tidepooluploader');
+}
+
 app.on('window-all-closed', () => {
   app.quit();
 });
@@ -612,6 +621,26 @@ app.on('activate', () => {
   // for mac because, normally it's not common to recreate a window in the app
   if (mainWindow === null) {
     createWindow();
+  }
+});
+
+// Protocol handler for osx
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  const requestURL = new URL(url);
+
+  // capture keycloak sign-in redirect
+  if (requestURL.pathname.includes('keycloak-redirect')) {
+    const requestHash = requestURL.hash;
+    const { webContents } = mainWindow;
+    // redirecting from the app html to app html with hash breaks devtools
+    // just send and append the hash if we're already in the app html
+    if (webContents.getURL().includes(baseURL)) {
+      webContents.send('newHash', requestHash);
+    } else {
+      webContents.loadURL(`${baseURL}${requestHash}`);
+    }
+    return;
   }
 });
 
