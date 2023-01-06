@@ -126,7 +126,6 @@ const openExternalUrl = (url) => {
 };
 
 app.on('ready', async () => {
-  //devToolsLog('app.on ready');
   await installExtensions();
   setLanguage();
 });
@@ -627,7 +626,7 @@ if (!gotTheLock) {
   app.quit();
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
+    // windows opens a second instance for custom protocol handling
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
       mainWindow.focus();
@@ -637,7 +636,6 @@ if (!gotTheLock) {
     }
   });
   
-
   // Protocol handler for osx
   app.on('open-url', (event, url) => {
     event.preventDefault();
