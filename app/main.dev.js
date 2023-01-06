@@ -126,6 +126,7 @@ const openExternalUrl = (url) => {
 };
 
 app.on('ready', async () => {
+  //devToolsLog('app.on ready');
   await installExtensions();
   setLanguage();
 });
@@ -144,22 +145,7 @@ function createWindow() {
   });
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
-    const requestURL = new URL(request.url);
-    if (requestURL.pathname.includes('keycloak-redirect')) {
-      const requestHash = requestURL.hash;
-      const { webContents } = mainWindow;
-      // redirecting from the app html to app html with hash breaks devtools
-      // just send and append the hash if we're already in the app html
-      if (
-        webContents.getURL().includes(baseURL) ||
-        webContents.getURL().startsWith('tidepooluploader')
-      ) {
-        webContents.send('newHash', requestHash);
-      } else {
-        webContents.loadURL(`${baseURL}${requestHash}`);
-      }
-      return;
-    }
+    return handleIncomingUrl(request.url);
   });
 
   remoteMain.enable(mainWindow.webContents);
@@ -197,16 +183,7 @@ function createWindow() {
 
       // capture keycloak sign-in redirect
       if (requestURL.pathname.includes('keycloak-redirect')) {
-        const requestHash = requestURL.hash;
-        const { webContents } = mainWindow;
-        // redirecting from the app html to app html with hash breaks devtools
-        // just send and append the hash if we're already in the app html
-        if (webContents.getURL().includes(baseURL)) {
-          webContents.send('newHash', requestHash);
-        } else {
-          webContents.loadURL(`${baseURL}${requestHash}`);
-        }
-        return;
+        return handleIncomingUrl(request.url);
       }
       // capture keycloak registration navigation
       if (
@@ -624,25 +601,49 @@ app.on('activate', () => {
   }
 });
 
-// Protocol handler for osx
-app.on('open-url', (event, url) => {
-  event.preventDefault();
+const handleIncomingUrl = (url) => {
   const requestURL = new URL(url);
-
   // capture keycloak sign-in redirect
   if (requestURL.pathname.includes('keycloak-redirect')) {
     const requestHash = requestURL.hash;
-    const { webContents } = mainWindow;
-    // redirecting from the app html to app html with hash breaks devtools
-    // just send and append the hash if we're already in the app html
-    if (webContents.getURL().includes(baseURL)) {
-      webContents.send('newHash', requestHash);
-    } else {
-      webContents.loadURL(`${baseURL}${requestHash}`);
+    if(mainWindow){
+      const { webContents } = mainWindow;
+      // redirecting from the app html to app html with hash breaks devtools
+      // just send and append the hash if we're already in the app html
+      if (webContents.getURL().includes(baseURL)) {
+        webContents.send('newHash', requestHash);
+      } else {
+        webContents.loadURL(`${baseURL}${requestHash}`);
+      }
+      return;  
     }
-    return;
+    
   }
-});
+};
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+
+      let url = getURLFromArgs(commandLine);
+      return handleIncomingUrl(url);
+    }
+  });
+  
+
+  // Protocol handler for osx
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    return handleIncomingUrl(url);
+  });
+}
 
 function setLanguage() {
   if (process.env.I18N_ENABLED === 'true') {
@@ -664,4 +665,14 @@ function setLanguage() {
       createWindow();
     });
   }
+}
+
+function getURLFromArgs(args) {
+  if (Array.isArray(args) && args.length) {
+    const url = args[args.length - 1];
+    if (url && PROTOCOL_PREFIX && url.startsWith(PROTOCOL_PREFIX)) {
+      return url;
+    }
+  }
+  return undefined;
 }
