@@ -89,8 +89,7 @@ describe('utils', () => {
       expect(result.payload).to.deep.include({
         message: ErrorMessages[errCode],
         details: err.message,
-        name: err.name,
-        version: '0.100.0'
+        name: err.name
       });
       expectedAction.payload = result.payload;
       expectedAction.meta.metric.properties.error = result.payload;
@@ -135,8 +134,7 @@ describe('utils', () => {
       expect(result.payload).to.deep.include({
         message: ErrorMessages[specificErrCode],
         details: err.message,
-        name: err.name,
-        version: '0.100.0'
+        name: err.name
       });
       expectedAction.payload = result.payload;
       expectedAction.meta.metric.properties.error = result.payload;

@@ -1598,8 +1598,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_SERIAL_CONNECTION,
-        version: err.version,
+        message: ErrorMessages.E_SERIAL_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1703,8 +1702,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_HID_CONNECTION,
-        version: err.version
+        message: ErrorMessages.E_HID_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1814,8 +1812,7 @@ describe('Asynchronous Actions', () => {
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_DEVICE_UPLOAD,
         details: err.details,
-        name: err.name,
-        version: err.version
+        name: err.name
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -2025,8 +2022,7 @@ describe('Asynchronous Actions', () => {
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: ErrorMessages.E_FILE_EXT + ext,
-          version: err.version
+          message: ErrorMessages.E_FILE_EXT + ext
         });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
