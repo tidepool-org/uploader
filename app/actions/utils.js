@@ -116,15 +116,6 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         uploadErrProps.details = 'Could not validate the date format';
       }
 
-      if (!(process.env.NODE_ENV === 'test')) {
-        uploadErrProps.stringifiedStack = _.map(
-          _.filter(
-            stacktrace.parse(err),
-            (cs) => { return cs.functionName !== null; }
-          ),
-          'functionName'
-        ).join(', ');
-      }
       return dispatch(syncActions.uploadFailure(displayErr, uploadErrProps, targetDevice));
     }
     const currentUpload = _.get(uploadsByUser, [uploadTargetUser, targetDevice.key], {});
