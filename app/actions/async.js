@@ -33,7 +33,6 @@ import personUtils from '../../lib/core/personUtils';
 import driverManifests from '../../lib/core/driverManifests';
 import api from '../../lib/core/api';
 import localStore from '../../lib/core/localStore';
-import rollbar from '../../app/utils/rollbar';
 
 let services = { api };
 let versionInfo = {};
@@ -265,28 +264,7 @@ export function doLogout() {
   };
 }
 
-export function sendToRollbar(err, props) {
-  return new Promise((resolve) => {
-    if (rollbar) {
-      const extra = {};
-      if (_.get(props, 'data.blobId', false)) {
-        _.assign(extra, { blobId: props.data.blobId });
-      }
-      
-      rollbar.error(err, extra, (err, data) => {
-        if (err) {
-          console.log('Error while reporting error to Rollbar:', err);
-        } else {
-          console.log(`Rollbar UUID: ${data.result.uuid}`);
-          props.uuid = data.result.uuid;
-        }
-        resolve(props);
-      });
-    } else {
-      resolve(props);
-    }
-  });
-}
+
 
 export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
@@ -338,7 +316,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
 
         displayErr.originalError = err;
         if (process.env.NODE_ENV !== 'test') {
-          deviceDetectErrProps = await sendToRollbar(displayErr, deviceDetectErrProps);
+          deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
         }
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
@@ -362,7 +340,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         if (process.env.NODE_ENV !== 'test') {
-          disconnectedErrProps = await sendToRollbar(displayErr, disconnectedErrProps);
+          disconnectedErrProps = await actionUtils.sendToRollbar(displayErr, disconnectedErrProps);
         }
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
@@ -446,7 +424,7 @@ export function doUpload(deviceKey, opts, utc) {
         };
 
         if (process.env.NODE_ENV !== 'test') {
-          errProps = await sendToRollbar(hidErr, errProps);
+          errProps = await actionUtils.sendToRollbar(hidErr, errProps);
         }
         return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
@@ -470,7 +448,7 @@ export function doUpload(deviceKey, opts, utc) {
         };
 
         if (process.env.NODE_ENV !== 'test') {
-          errProps = await sendToRollbar(btErr, errProps);
+          errProps = await actionUtils.sendToRollbar(btErr, errProps);
         }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
