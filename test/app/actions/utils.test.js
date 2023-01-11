@@ -53,12 +53,12 @@ describe('utils', () => {
       expect(typeof fn).to.equal('function');
     });
 
-    test('the returned function should use the configured errCode on error if error does not have a code', async () => {
+    test('the returned function should use the configured errCode on error if error does not have a code', () => {
       const err = new Error('Uh oh...');
       const displayErr = new Error(ErrorMessages[errCode]);
 
       expect(dispatch.callCount).to.equal(0);
-      await fn(err);
+      fn(err);
       expect(dispatch.callCount).to.equal(1);
       const expectedAction = {
         type: 'UPLOAD_FAILURE',
@@ -96,14 +96,14 @@ describe('utils', () => {
       expect(result).to.deep.equal(expectedAction);
     });
 
-    test('the returned function should use the argument error\'s code when present', async () => {
+    test('the returned function should use the argument error\'s code when present', () => {
       const err = new Error('Uh oh...');
       const specificErrCode = 'E_MEDTRONIC_UPLOAD';
       err.code = specificErrCode;
       const displayErr = new Error(ErrorMessages[specificErrCode]);
 
       expect(dispatch.callCount).to.equal(0);
-      await fn(err);
+      fn(err);
       expect(dispatch.callCount).to.equal(1);
       const expectedAction = {
         type: 'UPLOAD_FAILURE',
