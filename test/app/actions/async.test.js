@@ -1503,7 +1503,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, device detection error (serial)]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
+    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', async () => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const targetDevice = {
@@ -1595,7 +1595,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
+      store.dispatch(await async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_SERIAL_CONNECTION
@@ -1607,7 +1607,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, device detection error (hid)]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
+    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', async () => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const targetDevice = {
@@ -1699,7 +1699,7 @@ describe('Asynchronous Actions', () => {
         }
       ];
       const store = mockStore(initialState);
-      store.dispatch(async.doUpload(deviceKey, {}, time));
+      store.dispatch(await async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_HID_CONNECTION
@@ -1711,7 +1711,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('doUpload [device, error during upload]', () => {
-    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', () => {
+    test('should dispatch VERSION_CHECK_REQUEST, VERSION_CHECK_SUCCESS, UPLOAD_REQUEST, DEVICE_DETECT_REQUEST, UPLOAD_FAILURE actions', async () => {
       const userId = 'a1b2c3', deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
       const targetDevice = {

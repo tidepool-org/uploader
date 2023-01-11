@@ -26,7 +26,6 @@ const errorProps = {
   step: 'Driver Step',
   datasetId: 'Dataset ID',
   requestTrace: 'Request Trace',
-  sessionToken: 'Session Token',
   sessionTrace: 'Session Trace',
   utc: 'UTC Time',
   version: 'Version',
@@ -34,11 +33,18 @@ const errorProps = {
 };
 
 export function addInfoToError(err, props) {
-  let debug = [];  
+  let debug = []; 
   _.forOwn(props, (v, k) => {
-    if (!_.isEmpty(v) && v !== err.message && k !== 'utc' && k!== 'code' && k !== 'version') {
+    if (!_.isEmpty(v) && v !== err.message && 
+        k !== 'utc' && 
+        k!== 'code' && 
+        k !== 'version' &&
+        k !== 'data'
+      ) {
       err[k] = v;
-      debug.push(`${errorProps[k]}: ${v}`);
+      if (k !== 'uuid') {
+        debug.push(`${errorProps[k]}: ${v}`);
+      }
     }
   });
   if (!_.isEmpty(debug)) {

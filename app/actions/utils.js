@@ -16,12 +16,12 @@
  */
 
 import _ from 'lodash';
-import stacktrace from 'stack-trace';
 
 import sundial from 'sundial';
 
 import ErrorMessages from '../constants/errorMessages';
 import * as syncActions from './sync';
+import { sendToRollbar } from './async';
 
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
@@ -64,7 +64,7 @@ export function makeDisplayAdhocModal(dispatch) {
 }
 
 export function makeUploadCb(dispatch, getState, errCode, utc) {
-  return (err, recs) => {
+  return async (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
 
@@ -87,7 +87,6 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         datasetId: err.datasetId || null,
         requestTrace: err.requestTrace || null,
         sessionTrace: err.sessionTrace || null,
-        sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
         data: recs
@@ -116,6 +115,9 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         uploadErrProps.details = 'Could not validate the date format';
       }
 
+      if (process.env.NODE_ENV !== 'test') {
+        uploadErrProps = await sendToRollbar(displayErr, uploadErrProps);
+      }
       return dispatch(syncActions.uploadFailure(displayErr, uploadErrProps, targetDevice));
     }
     const currentUpload = _.get(uploadsByUser, [uploadTargetUser, targetDevice.key], {});

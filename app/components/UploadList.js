@@ -130,11 +130,16 @@ export default class UploadList extends Component {
         <span className={styles.errorMessageFriendly}>{i18n.t(upload.error.message)}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
       </div>
     );
+    let rollbarUUID = null;
+    if (!_.isEmpty(upload.error.uuid)) {
+      rollbarUUID = (<div className={styles.errorTextTiny}>Rollbar UUID: {upload.error.uuid}</div>);
+    }
 
     return (
       <div className={styles.errorItem}>
         {errorMessage}
         {errorDetails}
+        {rollbarUUID}
       </div>
     );
   }
