@@ -264,8 +264,6 @@ export function doLogout() {
   };
 }
 
-
-
 export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
     const { device } = services;
