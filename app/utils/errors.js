@@ -37,7 +37,7 @@ export function addInfoToError(err, props) {
   _.forOwn(props, (v, k) => {
     if (!_.isEmpty(v) && v !== err.message && 
         k !== 'utc' && 
-        k!== 'code' && 
+        k !== 'code' && 
         k !== 'version' &&
         k !== 'data'
       ) {
