@@ -18,7 +18,7 @@ import api from '../../lib/core/api';
 import App from './App';
 import '..//app.global.css';
 import '../../styles/main.less';
-import { KeycloakWrapper } from './keycloak';
+import { KeycloakWrapper } from '../keycloak';
 
 const history = createHashHistory();
 

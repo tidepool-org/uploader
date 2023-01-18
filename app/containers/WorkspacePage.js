@@ -8,8 +8,9 @@ import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
 import api from '../../lib/core/api';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal('i18n');
+//const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 
 const { async, sync } = actions;
 

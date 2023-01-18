@@ -19,8 +19,12 @@ import plist from 'plist';
 import fs from 'fs';
 import path from 'path';
 import * as sync from '../actions/sync';
+import env from '../../app/utils/env';
 
-const remote = require('@electron/remote');
+let remote;
+if (env.electron) {
+  remote = require('@electron/remote');
+}
 
 export function checkVersion(dispatch) {
 

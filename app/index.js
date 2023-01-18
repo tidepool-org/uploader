@@ -24,7 +24,7 @@ import Top from './containers/Top';
 
 // createHashHistory collides with the keycloak library #state
 // createBrowserHistory creates a login loop
-c// onst history = createMemoryHistory();
+// const history = createMemoryHistory();
 
 // const store = configureStore(undefined, history);
 // store.dispatch(push('/'));

@@ -533,12 +533,12 @@ export function readFile(userId, deviceKey, file, extension) {
             await getFile();
           } catch (error) {
             console.log('Device not ready yet or not plugged in.', error);
-            let err = new Error(errorText.E_NOT_YET_READY);
+            let err = new Error(ErrorMessages.E_NOT_YET_READY);
             let errProps = {
               code: 'E_NOT_YET_READY',
               version: version
             };
-            return dispatch(syncActions.readFileAborted(err, errProps));
+            return dispatch(sync.readFileAborted(err, errProps));
           }
         } else {
           console.log('Requesting permission..');
@@ -554,7 +554,7 @@ export function readFile(userId, deviceKey, file, extension) {
                 await set('directory', dirHandle);
                 await getFile();
               } catch (error) {
-                let err = new Error(`${errorText.E_READ_FILE}: ${error.message}`);
+                let err = new Error(`${ErrorMessages.E_READ_FILE}: ${error.message}`);
                 let errProps = {
                   code: 'E_READ_FILE',
                   version: version
@@ -570,7 +570,7 @@ export function readFile(userId, deviceKey, file, extension) {
           await set('directory', dirHandle);
           await getFile();
         } catch (error) {
-          let err = new Error(`${errorText.E_READ_FILE}: ${error.message}`);
+          let err = new Error(`${ErrorMessages.E_READ_FILE}: ${error.message}`);
           let errProps = {
             code: 'E_READ_FILE',
             version: version
@@ -596,7 +596,7 @@ export function readFile(userId, deviceKey, file, extension) {
         dispatch(sync.readFileRequest(userId, deviceKey, file.name));
       };
 
-      reader.onerror = () => {
+      const onError = () => {
         let err = new Error(ErrorMessages.E_READ_FILE + file.name);
         let errProps = {
           code: 'E_READ_FILE',

@@ -187,7 +187,7 @@ export class App extends Component {
         weight: 10,
       },
     ];
-    addServers(servers);
+    this.addServers(servers);
     this.setServer({label:'qa2.development.tidepool.org'});
   }
 
@@ -237,7 +237,7 @@ export class App extends Component {
         if (err) {
           this.log(`Error getting server info: ${err}`);
         } else {
-          if (_.get(configInfo, 'auth')) {
+          if (_.get(configInfo, 'auth') && env.electron_renderer) {
             ipcRenderer.send('keycloakInfo', configInfo.auth);
           }
 
