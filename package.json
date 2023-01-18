@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.47.4-os-metrics.6",
+  "version": "2.48.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -41,6 +41,7 @@
     "@hot-loader/react-dom": "16.14.0",
     "@mui/icons-material": "5.8.4",
     "@mui/material": "5.8.7",
+    "@react-keycloak/web": "3.4.0",
     "async": "2.6.3",
     "babyparse": "0.4.6",
     "ble-glucose": "0.3.0",
@@ -65,6 +66,7 @@
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.1",
+    "keycloak-js": "20.0.1",
     "lodash": "4.17.21",
     "lzo-wasm": "0.0.4",
     "os-name": "4.0.1",
@@ -88,7 +90,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.0",
-    "tidepool-platform-client": "0.48.0",
+    "tidepool-platform-client": "0.51.1",
     "usb-cdc-acm": "0.1.1",
     "uuid": "8.3.2",
     "webmtp": "0.3.3"

@@ -780,6 +780,9 @@ describe('Asynchronous Actions', () => {
           },
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -790,9 +793,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: { eventName: metrics.LOGIN_SUCCESS },
           },
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: actionTypes.SET_BLIP_VIEW_DATA_URL,
@@ -854,6 +854,11 @@ describe('Asynchronous Actions', () => {
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -889,7 +894,13 @@ describe('Asynchronous Actions', () => {
           setItem: () => null
         }
       });
-      const store = mockStore({});
+      const store = mockStore({
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
+      });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
@@ -925,6 +936,9 @@ describe('Asynchronous Actions', () => {
           },
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -934,9 +948,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -985,6 +996,11 @@ describe('Asynchronous Actions', () => {
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: [],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1019,6 +1035,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1028,9 +1047,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -1073,6 +1089,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1107,6 +1128,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1116,9 +1140,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST
@@ -1185,6 +1206,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1219,6 +1245,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1228,9 +1257,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -1291,6 +1317,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -3292,9 +3323,12 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => null,
-            removeItem: (item) => null
+
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => null,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3417,11 +3451,9 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
-          }
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3500,11 +3532,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3594,11 +3626,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3671,11 +3703,11 @@ describe('Asynchronous Actions', () => {
         __Rewire__('services', {
           api: {
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3758,11 +3790,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3849,11 +3881,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -5045,6 +5077,85 @@ describe('Asynchronous Actions', () => {
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
       expect(api.clinics.getClinicsForClinician.callCount).to.equal(1);
+    });
+  });
+
+  describe('fetchInfo', () => {
+    it('should trigger FETCH_INFO_SUCCESS and it should call server.getInfo once for a successful request', () => {
+      const info = {
+        auth: {
+          url: 'someUrl',
+          realm: 'awesomeRealm',
+        }
+      };
+
+      __Rewire__('services', {
+        api: {
+          upload: {
+            getInfo: sinon.stub().callsArgWith(0, null, info),
+          },
+        },
+      });
+
+      let expectedActions = [
+        { type: 'FETCH_INFO_REQUEST',  meta: {source: actionSources[actionTypes.FETCH_INFO_REQUEST]} },
+        {
+          type: 'FETCH_INFO_SUCCESS',
+          payload: { info },
+          meta: {source: actionSources[actionTypes.FETCH_INFO_SUCCESS]}
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore(initialState);
+      store.dispatch(
+        async.fetchInfo()
+      );
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+    });
+
+    it('should trigger FETCH_INFO_FAILURE and it should call error once for a failed request', () => {
+
+      __Rewire__('services', {
+        api: {
+          upload: {
+            getInfo: sinon
+            .stub()
+            .callsArgWith(0, { status: 500, body: 'Error!' }, null),
+          },
+        },
+      });
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_INFO);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'FETCH_INFO_REQUEST',  meta: {source: actionSources[actionTypes.FETCH_INFO_REQUEST]} },
+        {
+          type: 'FETCH_INFO_FAILURE',
+          error: true,
+          payload: err,
+          meta: { source: actionSources[actionTypes.FETCH_INFO_FAILURE] },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(
+        async.fetchInfo()
+      );
+
+      const actions = store.getActions();
+      expect(actions[1].payload).to.deep.include({
+        message: ErrorMessages.ERR_FETCHING_INFO,
+      });
+      expectedActions[1].payload = actions[1].payload;
+      expect(actions).to.eql(expectedActions);
     });
   });
 

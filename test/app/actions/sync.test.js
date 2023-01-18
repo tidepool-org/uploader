@@ -1853,4 +1853,211 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('keycloakReady', () => {
+    it('should be a FSA', () => {
+      let event = 'onReady';
+      let error = null;
+      let action = sync.keycloakReady(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_READY', () => {
+      let event = 'onReady';
+      let error = null;
+      let action = sync.keycloakReady(event, error);
+      expect(action.type).to.equal('KEYCLOAK_READY');
+      expect(action.payload.error).to.be.null;
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakInitError', () => {
+    it('should be a FSA', () => {
+      let event = 'onInitError';
+      let error = new Error('Keycloak Init Failure');
+      let action = sync.keycloakInitError(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_INIT_ERROR', () => {
+      let event = 'onInitError';
+      let error = new Error('Keycloak Init Failure');
+      let action = sync.keycloakInitError(event, error);
+      expect(action.type).to.equal('KEYCLOAK_INIT_ERROR');
+      expect(action.payload.error).to.be.equal(error);
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakAuthSuccess', () => {
+    it('should be a FSA', () => {
+      let event = 'onAuthSuccess';
+      let error = null;
+      let action = sync.keycloakAuthSuccess(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_AUTH_SUCCESS', () => {
+      let event = 'onAuthSuccess';
+      let error = null;
+      let action = sync.keycloakAuthSuccess(event, error);
+      expect(action.type).to.equal('KEYCLOAK_AUTH_SUCCESS');
+      expect(action.payload.error).to.be.null;
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakAuthError', () => {
+    it('should be a FSA', () => {
+      let event = 'onAuthError';
+      let error = new Error('Keycloak Auth Failure');
+      let action = sync.keycloakAuthError(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_AUTH_ERROR', () => {
+      let event = 'onAuthError';
+      let error = new Error('Keycloak Auth Failure');
+      let action = sync.keycloakAuthError(event, error);
+      expect(action.type).to.equal('KEYCLOAK_AUTH_ERROR');
+      expect(action.payload.error).to.be.equal(error);
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakAuthRefreshSuccess', () => {
+    it('should be a FSA', () => {
+      let event = 'onAuthRefreshSuccess';
+      let error = null;
+      let action = sync.keycloakAuthRefreshSuccess(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_AUTH_REFRESH_SUCCESS', () => {
+      let event = 'onAuthRefreshSuccess';
+      let error = null;
+      let action = sync.keycloakAuthRefreshSuccess(event, error);
+      expect(action.type).to.equal('KEYCLOAK_AUTH_REFRESH_SUCCESS');
+      expect(action.payload.error).to.be.null;
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakAuthRefreshError', () => {
+    it('should be a FSA', () => {
+      let event = 'onAuthRefreshError';
+      let error = new Error('Keycloak Auth Refresh Failure');
+      let action = sync.keycloakAuthRefreshError(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_AUTH_REFRESH_ERROR', () => {
+      let event = 'onAuthRefreshError';
+      let error = new Error('Keycloak Auth Refresh Failure');
+      let action = sync.keycloakAuthRefreshError(event, error);
+      expect(action.type).to.equal('KEYCLOAK_AUTH_REFRESH_ERROR');
+      expect(action.payload.error).to.be.equal(error);
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakTokenExpired', () => {
+    it('should be a FSA', () => {
+      let event = 'onTokenExpired';
+      let error = null;
+      let action = sync.keycloakTokenExpired(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_TOKEN_EXPIRED', () => {
+      let event = 'onTokenExpired';
+      let error = null;
+      let action = sync.keycloakTokenExpired(event, error);
+      expect(action.type).to.equal('KEYCLOAK_TOKEN_EXPIRED');
+      expect(action.payload.error).to.be.null;
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakAuthLogout', () => {
+    it('should be a FSA', () => {
+      let event = 'onAuthLogout';
+      let error = null;
+      let action = sync.keycloakAuthLogout(event, error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_AUTH_LOGOUT', () => {
+      let event = 'onAuthLogout';
+      let error = null;
+      let action = sync.keycloakAuthLogout(event, error);
+      expect(action.type).to.equal('KEYCLOAK_AUTH_LOGOUT');
+      expect(action.payload.error).to.be.null;
+      expect(action.payload.event).to.equal(event);
+    });
+  });
+
+  describe('keycloakTokensReceived', () => {
+    it('should be a FSA', () => {
+      let tokens = {token: 'token123'};
+      let action = sync.keycloakTokensReceived(tokens);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_TOKENS_RECEIVED', () => {
+      let tokens = {token: 'token123'};
+      let action = sync.keycloakTokensReceived(tokens);
+      expect(action.type).to.equal('KEYCLOAK_TOKENS_RECEIVED');
+      expect(action.payload.tokens.token).to.equal('token123');
+    });
+  });
+
+  describe('fetchInfoRequest', () => {
+    it('should be a FSA', () => {
+      let action = sync.fetchInfoRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_INFO_REQUEST', () => {
+      let action = sync.fetchInfoRequest();
+      expect(action.type).to.equal('FETCH_INFO_REQUEST');
+    });
+  });
+
+  describe('fetchInfoSuccess', () => {
+    const info = {
+      auth: {
+        url: 'someUrl',
+        realm: 'anAwesomeRealm'
+      }
+    };
+
+    it('should be a FSA', () => {
+      let action = sync.fetchInfoSuccess(info);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_INFO_SUCCESS', () => {
+      let action = sync.fetchInfoSuccess(info);
+      expect(action.type).to.equal('FETCH_INFO_SUCCESS');
+      expect(action.payload.info).to.equal(info);
+    });
+  });
+
+  describe('fetchInfoFailure', () => {
+    it('should be a FSA', () => {
+      let error = new Error('fetching info failed :(');
+      let action = sync.fetchInfoFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_INFO_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchInfoFailure(error);
+      expect(action.type).to.equal('FETCH_INFO_FAILURE');
+      expect(action.error).to.equal(true);
+      expect(action.payload).to.equal(error);
+    });
+  });
+
 });
