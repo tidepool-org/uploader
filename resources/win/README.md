@@ -4,37 +4,19 @@ To build and sign the driver, check that you have the specified requirements ins
 
 ## Requirements
 
-- [WDK](https://msdn.microsoft.com/en-us/windows/hardware/gg454513.aspx) (Required for `inf2cat` and `signtool`)
-- [DigiCert High Assurance EV Root CA certificate](https://docs.microsoft.com/en-gb/windows-hardware/drivers/install/cross-certificates-for-kernel-mode-code-signing)
+- [WDK](https://docs.microsoft.com/windows-hardware/drivers/download-the-wdk) (Required for `signtool`)
 
 ## Steps
 
-### Generate the .cat files from the .inf files:
-- Bump version number in .inf file
-- `inf2cat /driver:. /os:7_X64,7_X86,8_X64,8_X86,6_3_X86,6_3_X64,10_X86,10_X64,Server10_X64`
+Use the Developer Command Prompt for Visual Studio instead of the regular Command Prompt to make sure all the paths are set up correctly:
 
-### Install certificates:
-
-- Get the Tidepool certificate.
-- Double-click to install.
-- Also install the DigiCert High Assurance EV Root CA certificate downloaded above, as it's needed to cross-sign the Tidepool certificate.
-- You can verify the certificates are installed by running `certmgr`.
-
-### Sign all the .cat files using signtool:
-
-In `resources\win`:
-
-- `signtool sign /v /ac "DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project"  /sha1 EC02571EB23521ECF39813F1910157CAA08DE97A *.cat`
-
-### Submit Windows 10 drivers to hardware dashboard for attestation signing
-
-- `cd win10`
+- `cd <uploader_directory>resources\win`
 - `makecab /f TidepoolUSBDriver.ddf`
-- `signtool sign /v /ac "..\DigiCertHighAssuranceEVRootCA.crt" /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 4297DE953C8CF10065C31AA717E1302FCD1B9FE4 disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate)
+- `signtool sign /v /tr http://timestamp.digicert.com /td sha256 /fd sha256 /s my /n "Tidepool Project" /sha1 <tidepool_cert_thumbprint> disk1\TidepoolUSBDriver.cab` (You'll need the hardware token and the password in 1Password - if the SafeNet client does not prompt you for a password, you're not using the right certificate. Also replace the thumbprint/serial with that of the certificate you're using, and remember to install the root certs on the token when you're doing this for the first time.)
 
-This can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for Azure AD login details)
+This `.cab` can then be submitted to the hardware dashboard at: https://partner.microsoft.com/en-us/dashboard/hardware/ (search 1Password for "Microsoft Hardware Dashboard" login details). Select all non-ARM64 options for `Requested Signatures` when submitting. If it's the first time you're using the certificate, you need to [add it to Partner Center](https://docs.microsoft.com/en-us/windows-hardware/drivers/dashboard/update-a-code-signing-certificate).
 
-Download the signed drivers from the hardware portal and update the `resources/win/win10` directory.
+Download the signed drivers from the hardware portal and replace the existing drivers the `resources/win/` directory.
 
 ### Verify that drivers are correctly signed:
 
@@ -46,7 +28,7 @@ Download the signed drivers from the hardware portal and update the `resources/w
 	signtool verify /kp /v /c tidepoolvcp.cat i386\tiusb.sys
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\ser2pl64.sys
 	signtool verify /kp /v /c tidepoolvcp.cat i386\ser2pl.sys
-	signtool verify /kp /v /c tidepoolusb.cat amd64\wdfcoinstaller01009.dll
+	signtool verify /kp /v /c phdc_driver.cat amd64\wdfcoinstaller01009.dll
 
 ## Notes
 

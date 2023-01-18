@@ -31,6 +31,7 @@ import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
+import { checkTimezoneName } from 'sundial';
 //const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
@@ -65,7 +66,7 @@ export class MainPage extends Component {
     return (
       <TimezoneDropdown
         dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
-        isClinicAccount={this.props.isClinicAccount}
+        renderClinicUi={this.props.renderClinicUi}
         isUploadInProgress={this.props.uploadIsInProgress}
         onTimezoneChange={this.props.async.setTargetTimezone}
         selectorLabel={i18n.t('Time zone')}
@@ -80,8 +81,8 @@ export class MainPage extends Component {
   }
 
   renderUploadListDoneButton() {
-    const { isClinicAccount } = this.props;
-    if (isClinicAccount && this.props.uploadTargetUser) {
+    const { renderClinicUi } = this.props;
+    if (renderClinicUi && this.props.uploadTargetUser) {
       return <ClinicUploadDone
         onClicked= {this.handleClickChangePerson}
         uploadTargetUser={this.props.uploadTargetUser}
@@ -125,8 +126,8 @@ export class MainPage extends Component {
   }
 
   renderClinicUserBlock() {
-    const { isClinicAccount } = this.props;
-    if (!isClinicAccount) return null;
+    const { renderClinicUi } = this.props;
+    if (!renderClinicUi) return null;
     let timezoneDropdown = this.renderTimezoneDropdown();
     return (
       <ClinicUserBlock
@@ -135,15 +136,18 @@ export class MainPage extends Component {
         memberships={this.props.memberships}
         onEditUser={this.handleClickEditUser}
         targetId={this.props.uploadTargetUser}
-        timezoneDropdown={timezoneDropdown} />
+        timezoneDropdown={timezoneDropdown}
+        selectedClinicId={this.props.selectedClinicId}
+        clinics={this.props.clinics} />
     );
   }
 
   render() {
     let changePersonLink = null;
     let clinicUserBlock = null;
+    let {renderClinicUi} = this.props;
 
-    if(this.props.isClinicAccount){
+    if(renderClinicUi){
       changePersonLink = this.renderChangePersonLink();
       clinicUserBlock = this.renderClinicUserBlock();
     }
@@ -153,7 +157,7 @@ export class MainPage extends Component {
 
     let timezoneDropdown = null;
     let viewDataLinkButton = this.renderUploadListDoneButton();
-    if(!this.props.isClinicAccount){
+    if(!renderClinicUi){
       timezoneDropdown = this.renderTimezoneDropdown();
     }
     return (
@@ -165,7 +169,6 @@ export class MainPage extends Component {
         <UploadList
           rememberMedtronicSerialNumber={this.props.sync.rememberMedtronicSerialNumber}
           disabled={Boolean(this.props.unsupported) || !Boolean(this.props.selectedTimezone)}
-          isClinicAccount={this.props.isClinicAccount}
           isUploadInProgress={this.props.uploadIsInProgress}
           onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CLINIC_CHANGE_DEVICES}})}
           onReset={this.props.sync.resetUpload}
@@ -179,7 +182,10 @@ export class MainPage extends Component {
           toggleErrorDetails={this.props.sync.toggleErrorDetails}
           updateProfileErrorMessage={this.props.updateProfileErrorMessage}
           uploads={this.props.activeUploads}
-          userDropdownShowing={this.props.showingUserSelectionDropdown} />
+          userDropdownShowing={this.props.showingUserSelectionDropdown}
+          selectedClinicId={this.props.selectedClinicId}
+          renderClinicUi={renderClinicUi}
+          showingUserSelectionDropdown={this.props.showingUserSelectionDropdown}/>
         {viewDataLinkButton}
       </div>
     );
@@ -189,12 +195,19 @@ export class MainPage extends Component {
 export default connect(
   (state) => {
     function getSelectedTimezone(state) {
-      return _.get(
+      const timezone =  _.get(
         state,
         ['targetTimezones', state.uploadTargetUser],
         // fall back to the timezone stored under 'noUserSelected', if any
         _.get(state, ['targetTimezones', 'noUserSelected'], null)
       );
+
+      try {
+        checkTimezoneName(timezone);
+      } catch (err) {
+        return null;
+      }
+      return timezone;
     }
     function getActiveUploads(state) {
       const { devices, uploadsByUser, uploadTargetUser } = state;
@@ -210,15 +223,10 @@ export default connect(
           (upload.successful ? {progress: {percentage: 100}} : {});
         activeUploads.push(_.assign({}, device, upload, progress));
       });
-      // ensure that carelink is last
-      const carelink = _.remove(activeUploads, {'key': 'carelink'});
-      if(!_.isEmpty(carelink)){
-        activeUploads = activeUploads.concat(carelink);
-      }
       return activeUploads;
     }
     function shouldShowUserSelectionDropdown(state) {
-      if (!_.isEmpty(state.targetUsersForUpload) && !isClinicAccount(state)) {
+      if (!_.isEmpty(state.targetUsersForUpload) && !renderClinicUi(state)) {
         // if there's only one potential target for upload but it's *not* the loggedInUser
         if (state.targetUsersForUpload.length === 1 &&
           !_.includes(state.targetUsersForUpload, state.loggedInUser)) {
@@ -230,25 +238,52 @@ export default connect(
       }
       return false;
     }
-    function isClinicAccount(state) {
-      return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
+    function hasClinicRole(state) {
+      return (
+        _.indexOf(
+          _.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []),
+          'clinic'
+        ) !== -1
+      );
+    }
+    function hasPatientProfile(state) {
+      return _.has(state.allUsers, [state.loggedInUser, 'profile', 'patient']);
+    }
+    function renderClinicUi(state) {
+      const isClinicMember = _.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
+      const {selectedClinicId, targetUsersForUpload} = state;
+      return !!(
+        (hasClinicRole(state) && !isClinicMember) ||
+        (isClinicMember &&
+          (selectedClinicId || hasPatientProfile(state) || !_.isEmpty(targetUsersForUpload))
+        )
+      );
+    }
+    function targetUsersForUpload(state) {
+      const {targetUsersForUpload, loggedInUser} = state;
+      if (hasPatientProfile(state) && !_.includes(targetUsersForUpload, loggedInUser)){
+        targetUsersForUpload.push(loggedInUser);
+      }
+      return targetUsersForUpload;
     }
     return {
       activeUploads: getActiveUploads(state),
       allUsers: state.allUsers,
       memberships: state.memberships,
       blipUrls: state.blipUrls,
-      isClinicAccount: isClinicAccount(state),
       isTimezoneFocused: state.isTimezoneFocused,
       page: state.page,
       selectedTimezone: getSelectedTimezone(state),
       showingUserSelectionDropdown: shouldShowUserSelectionDropdown(state),
-      targetUsersForUpload: state.targetUsersForUpload,
+      targetUsersForUpload: targetUsersForUpload(state),
       unsupported: state.unsupported,
       updateProfileErrorMessage: state.updateProfileErrorMessage,
-      uploadIsInProgress: state.working.uploading,
+      uploadIsInProgress: state.working.uploading.inProgress,
       uploadTargetUser: state.uploadTargetUser,
       uploadsByUser: state.uploadsByUser,
+      selectedClinicId: state.selectedClinicId,
+      clinics: state.clinics,
+      renderClinicUi: renderClinicUi(state),
     };
   },
   (dispatch) => {

@@ -1,6 +1,6 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
 import open from 'open';
@@ -19,7 +19,8 @@ global.i18n = i18n;
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
-require('@electron/remote/main').initialize();
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -43,17 +44,20 @@ crashReporter.start({
 console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
+const PROTOCOL_PREFIX = 'tidepooluploader';
+const baseURL = `file://${__dirname}/app.html`;
+
 let menu;
 let template;
 let mainWindow = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
-app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 
-// as of March 2021, node-usb is not yet context-aware, see
-// https://github.com/tessel/node-usb/issues/380 for details
-app.allowRendererProcessReuse = false;
+// SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
+// in Chrome 92+, but we can't do this for our Electron setup,
+// so we have to enable it manually
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -72,20 +76,14 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
-    const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+    const options = {
+      loadExtensionOptions: { allowFileAccess: true },
+    };
 
     try {
-      const name = await installExtension([REDUX_DEVTOOLS]);
+      const name = await installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options);
       console.log(`Added Extension:  ${name}`);
-
-      // electron-devtools-installer fails to install React Developer Tools on Electron v12,
-      // so for now we install it manually
-      await session.defaultSession.loadExtension(
-        path.join(__dirname, '..', 'extensions', 'react-devtools'),
-        // allowFileAccess is required to load the devtools extension on file:// URLs.
-        { allowFileAccess: true }
-      );
-      console.log('Added Extension: React Developer Tools');
     } catch (err) {
       console.log('An error occurred: ', err);
     }
@@ -105,6 +103,23 @@ function addDataPeriodGlobalListener(menu) {
   });
 };
 
+const openExternalUrl = (url) => {
+  let platform = os.platform();
+  let chromeInstalls = chromeFinder[platform]();
+  if(chromeInstalls.length === 0){
+    // no chrome installs found, open user's default browser
+    open(url);
+  } else {
+    open(url, {app: chromeInstalls[0]}, function(error){
+      if(error){
+        // couldn't open chrome, try OS default
+        open(url);
+      }
+    });
+  }
+  return { action: 'deny' };
+};
+
 app.on('ready', async () => {
   await installExtensions();
   setLanguage();
@@ -120,15 +135,89 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false, // so that we can access process from app.html
-      enableRemoteModule: true,
     }
   });
 
+  protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
+    const requestURL = new URL(request.url);
+    if (requestURL.pathname.includes('keycloak-redirect')) {
+      const requestHash = requestURL.hash;
+      const { webContents } = mainWindow;
+      // redirecting from the app html to app html with hash breaks devtools
+      // just send and append the hash if we're already in the app html
+      if (
+        webContents.getURL().includes(baseURL) ||
+        webContents.getURL().startsWith('tidepooluploader')
+      ) {
+        webContents.send('newHash', requestHash);
+      } else {
+        webContents.loadURL(`${baseURL}${requestHash}`);
+      }
+      return;
+    }
+  });
+
+  remoteMain.enable(mainWindow.webContents);
   mainWindow.webContents.on('render-process-gone', (e, details) => {
     console.log('Render process gone:', details.reason);
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(baseURL);
+
+  const { session: { webRequest } } = mainWindow.webContents;
+
+  let keycloakRegistrationUrl = '';
+  let keycloakUrl = '';
+  let keycloakRealm = '';
+
+  ipcMain.on('keycloakRegistrationUrl', (event, url) => {
+    keycloakRegistrationUrl = url;
+  });
+
+  ipcMain.on('keycloakInfo', (event, info) => {
+    keycloakUrl = info.url;
+    keycloakRealm = info.realm;
+    setRequestFilter();
+  });
+
+  let setRequestFilter = () => {
+    let urls = ['http://localhost/keycloak-redirect*'];
+    if (keycloakUrl && keycloakRealm) {
+      urls.push(
+        `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
+      );
+    }
+    webRequest.onBeforeRequest({ urls }, async (request, cb) => {
+      const requestURL = new URL(request.url);
+
+      // capture keycloak sign-in redirect
+      if (requestURL.pathname.includes('keycloak-redirect')) {
+        const requestHash = requestURL.hash;
+        const { webContents } = mainWindow;
+        // redirecting from the app html to app html with hash breaks devtools
+        // just send and append the hash if we're already in the app html
+        if (webContents.getURL().includes(baseURL)) {
+          webContents.send('newHash', requestHash);
+        } else {
+          webContents.loadURL(`${baseURL}${requestHash}`);
+        }
+        return;
+      }
+      // capture keycloak registration navigation
+      if (
+        requestURL.href.includes(
+          `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration`
+        )
+      ) {
+        openExternalUrl(keycloakRegistrationUrl);
+        return;
+      }
+
+      cb({ cancel: false });
+    });
+  };
+
+  setRequestFilter();
 
   mainWindow.webContents.on('did-finish-load', async () => {
     if (osName() === 'Windows 7') {
@@ -152,27 +241,15 @@ operating system, as soon as possible.`,
     checkUpdates();
   });
 
-  mainWindow.webContents.on('new-window', function(event, url){
-    event.preventDefault();
-    let platform = os.platform();
-    let chromeInstalls = chromeFinder[platform]();
-    if(chromeInstalls.length === 0){
-      // no chrome installs found, open user's default browser
-      open(url);
-    } else {
-      open(url, {app: chromeInstalls[0]}, function(error){
-        if(error){
-          // couldn't open chrome, try OS default
-          open(url);
-        }
-      });
-    }
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    return openExternalUrl(details.url);
   });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 
-  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, webContents, callback) => {
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
     event.preventDefault();
     console.log('Device list:', deviceList);
     let [result] = deviceList;
@@ -192,6 +269,16 @@ operating system, as soon as possible.`,
       callback('');
     } else {
       callback(selectedPort.portId);
+    }
+  });
+
+  mainWindow.webContents.session.on('select-hid-device', (event, details, callback) => {
+    event.preventDefault();
+    console.log('Device list:', details.deviceList);
+    if (details.deviceList && details.deviceList.length > 0) {
+      callback(details.deviceList[0].deviceId);
+    } else {
+      callback('');
     }
   });
 

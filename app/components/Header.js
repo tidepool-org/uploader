@@ -44,8 +44,10 @@ export class Header extends Component {
     dropdown: PropTypes.bool.isRequired,
     uploadIsInProgress: PropTypes.bool.isRequired,
     user: PropTypes.object,
-    isClinicAccount: PropTypes.bool,
-    targetUsersForUpload: PropTypes.array
+    targetUsersForUpload: PropTypes.array,
+    clinics: PropTypes.object,
+    uploadTargetUser: PropTypes.string,
+    loggedInUser: PropTypes.string.isRequired,
   };
 
   handleClickChooseDevices = metric => {
@@ -61,17 +63,46 @@ export class Header extends Component {
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   };
 
+  handleWorkspaceSwitch = () => {
+    const { toggleDropdown, setUploadTargetUser } = this.props.sync;
+    const { setPage } = this.props.async;
+    setUploadTargetUser(null);
+    setPage(pages.WORKSPACE_SWITCH, true);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  };
+
+  handleSwitchToClinic = (clinic) => {
+    const { toggleDropdown, selectClinic, setUploadTargetUser } = this.props.sync;
+    const { setPage } = this.props.async;
+    setUploadTargetUser(null);
+    selectClinic(clinic.id);
+    setPage(pages.CLINIC_USER_SELECT, true);
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  };
+
+  handlePrivateWorkspaceSwitch = () => {
+    const { toggleDropdown } = this.props.sync;
+    const { goToPrivateWorkspace } = this.props.async;
+    goToPrivateWorkspace();
+    toggleDropdown(true, actionSources.UNDER_THE_HOOD);
+  };
+
   render() {
-    const { allUsers, dropdown, location } = this.props;
+    const { allUsers, dropdown, location, keycloakConfig } = this.props;
     if (location.pathname === pagesMap.LOADING) {
       return null;
     }
 
     if (location.pathname === pagesMap.LOGIN) {
+      let signupHref = this.props.blipUrls.signUp;
+      if (keycloakConfig.initialized) {
+        signupHref = keycloakConfig.registrationUrl;
+      }
+
       return (
         <div className={styles.header}>
           <div className={styles.signup}>
-            <a className={styles.signupLink} href={this.props.blipUrls.signUp} target="_blank">
+            <a className={styles.signupLink} href={signupHref} target="_blank">
               <i className={styles.signupIcon}> {i18n.t('Sign up')}</i></a>
           </div>
           <div className={styles.logoWrapper}>
@@ -98,8 +129,16 @@ export class Header extends Component {
             onClicked={this.props.sync.toggleDropdown.bind(this, this.props.dropdown)}
             onLogout={this.props.async.doLogout}
             user={allUsers[this.props.loggedInUser]}
-            isClinicAccount={this.props.isClinicAccount}
-            targetUsersForUpload={this.props.targetUsersForUpload} />
+            targetUsersForUpload={this.props.targetUsersForUpload}
+            clinics={this.props.clinics}
+            hasPrivateWorkspace={this.props.hasPrivateWorkspace}
+            onWorkspaceSwitch={this.handleWorkspaceSwitch}
+            goToPrivateWorkspace={this.handlePrivateWorkspaceSwitch}
+            switchToClinic={this.handleSwitchToClinic}
+            isClinicMember={this.props.isClinicMember}
+            uploadTargetUser={this.props.uploadTargetUser}
+            loggedInUser={this.props.loggedInUser}
+            selectedClinicId={this.props.selectedClinicId}/>
         </div>
       </div>
     );
@@ -108,8 +147,8 @@ export class Header extends Component {
 
 export default connect(
   (state, ownProps) => {
-    function isClinicAccount(state) {
-      return _.indexOf(_.get(_.get(state.allUsers, state.loggedInUser, {}), 'roles', []), 'clinic') !== -1;
+    function isClinicMember(state) {
+      return !!_.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
     }
     return {
       // plain state
@@ -118,9 +157,15 @@ export default connect(
       dropdown: state.dropdown,
       loggedInUser: state.loggedInUser,
       targetUsersForUpload: state.targetUsersForUpload,
-      uploadIsInProgress: state.working.uploading,
+      uploadIsInProgress: state.working.uploading.inProgress,
+      clinics: state.clinics,
+      uploadTargetUser: state.uploadTargetUser,
+      loggedInUser: state.loggedInUser,
+      selectedClinicId: state.selectedClinicId,
       // derived state
-      isClinicAccount: isClinicAccount(state)
+      hasPrivateWorkspace: true,
+      isClinicMember: isClinicMember(state),
+      keycloakConfig: state.keycloakConfig,
     };
   },
   (dispatch) => {

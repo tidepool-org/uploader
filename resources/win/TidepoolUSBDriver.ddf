@@ -1,0 +1,56 @@
+;*** Submission.ddf Tidepool USB drivers
+;
+.OPTION EXPLICIT     ; Generate errors
+.Set CabinetFileCountThreshold=0
+.Set FolderFileCountThreshold=0
+.Set FolderSizeThreshold=0
+.Set MaxCabinetSize=0
+.Set MaxDiskFileCount=0
+.Set MaxDiskSize=0
+.Set CompressionType=MSZIP
+.Set Cabinet=on
+.Set Compress=on
+;Specify file name for new cab file
+.Set CabinetNameTemplate=TidepoolUSBDriver.cab
+;Specify files to be included in cab file
+.Set DestinationDir=win10
+tidepoolvcp.inf
+tidepoolhid.inf
+ftdibus.inf
+webusb.inf
+phdc.inf
+.Set DestinationDir=win10\amd64
+amd64\ftbusui.dll
+amd64\ftcserco.dll
+amd64\ftd2xx.lib
+amd64\ftd2xx64.dll
+amd64\ftdibus.sys
+amd64\ftlang.dll
+amd64\ftser2k.sys
+amd64\ftserui2.dll
+amd64\ser2pl64.sys
+amd64\silabser.sys
+amd64\tiusb.i51
+amd64\tiusb.sys
+amd64\WdfCoInstaller01009.dll
+.Set DestinationDir=win10\x64
+x64\WdfCoInstaller01009.dll
+x64\WdfCoInstaller01011.dll
+x64\winusbcoinstaller2.dll
+.Set DestinationDir=win10\i386
+i386\ftbusui.dll
+i386\ftcserco.dll
+i386\ftd2xx.dll
+i386\ftd2xx.lib
+i386\ftdibus.sys
+i386\ftlang.dll
+i386\ftser2k.sys
+i386\ftserui2.dll
+i386\ser2pl.sys
+i386\silabser.sys
+i386\tiusb.i51
+i386\tiusb.sys
+.Set DestinationDir=win10\x86
+x86\WdfCoInstaller01009.dll
+x86\WdfCoInstaller01011.dll
+x86\winusbcoinstaller2.dll

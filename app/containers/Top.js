@@ -18,7 +18,7 @@ import api from '../../lib/core/api';
 import App from './App';
 import '..//app.global.css';
 import '../../styles/main.less';
-
+import { KeycloakWrapper } from './keycloak';
 
 const history = createHashHistory();
 
@@ -36,7 +36,9 @@ store.dispatch(push('/'));
 const Top = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Route path="/" render={(props)=><App api={api} {...props}/>} ></Route>
+      <KeycloakWrapper>
+        <Route path="/" render={(props) => <App {...props} />} />
+      </KeycloakWrapper>
     </ConnectedRouter>
   </Provider>
 );

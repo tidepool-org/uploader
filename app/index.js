@@ -6,21 +6,25 @@ import { render } from 'react-dom';
 // import { Provider } from 'react-redux';
 // import { Route } from 'react-router-dom';
 // import { push } from 'connected-react-router';
-// // import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from 'electron';
 // import { ConnectedRouter } from 'connected-react-router';
-// import { createHashHistory } from 'history';
+// import { createMemoryHistory } from 'history';
+// import { KeycloakWrapper } from './keycloak';
 
 // import config from '../lib/config';
 // window.DEBUG = config.DEBUG;
 // import configureStore from './store/configureStore';
-// import api from '../lib/core/api';
 // import App from './containers/App';
 // import './app.global.css';
 // import '../styles/main.less';
 
+import localStore from '../lib/core/localStore';
+localStore.init(localStore.getInitialState(), () => {});
 import Top from './containers/Top';
 
-// const history = createHashHistory();
+// createHashHistory collides with the keycloak library #state
+// createBrowserHistory creates a login loop
+c// onst history = createMemoryHistory();
 
 // const store = configureStore(undefined, history);
 // store.dispatch(push('/'));
@@ -30,6 +34,10 @@ import Top from './containers/Top';
 // from an action creator.
 // ipcRenderer.on('action', function(event, action) {
 //   store.dispatch(action);
+// });
+
+// ipcRenderer.on('newHash', (e, hash) => {
+//   window.location.hash = hash;
 // });
 
 // const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;

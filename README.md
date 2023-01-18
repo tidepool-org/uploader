@@ -1,9 +1,7 @@
 # Tidepool Uploader
 
 
-
 [![CircleCI](https://circleci.com/gh/tidepool-org/uploader/tree/master.svg?style=shield)](https://circleci.com/gh/tidepool-org/uploader/tree/master)
-[![Build status](https://ci.appveyor.com/api/projects/status/jj71uykxm27s3mla/branch/master?svg=true)](https://ci.appveyor.com/project/krystophv/uploader/branch/master)
 
 
 This is an [Electron App](https://electron.atom.io/) that acts as an uploader client for Tidepool. It is intended to allow you to plug diabetes devices into your computer's USB port, read the data stored on them, and upload a standardized version of the data to the Tidepool cloud.
@@ -90,7 +88,7 @@ All debug options are turned *off* by default in `config/local.sh`.
 
 ## Tests
 
-To run the tests in this repository as they are run on CircleCI and Appveyor use:
+To run the tests in this repository as they are run on CircleCI use:
 
 ```bash
 $ yarn test
@@ -104,7 +102,7 @@ $ yarn test
 
 We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
 
-To run the linter (which also runs on CircleCI and Appveyor with every push, along with `npm test`), use:
+To run the linter (which also runs on CircleCI with every push, along with `npm test`), use:
 
 ```
 $ npm run lint
@@ -125,7 +123,7 @@ See [this guidance on our use of GitBook at Tidepool](http://developer.tidepool.
 This section is Tidepool-specific. Release management and application updates are handled via the Github provider in the `electron-builder` project. The recommended workflow for a new production release is as follows:
 
 1. When you're working on what might become a new release, increment the version number in `package.json` and `app/package.json` and commit/push (on the branch)
-1. The CI server(s) will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
+1. The CI server will create a draft release in Github with the title of the version from the `package.json` file and will automatically attach the distribution artifacts to that draft (drafts are not publicly visible)
 1. When your pull request is approved and merged to `master`, go to the draft release and type in the version for the tag name, ensure that you're targeting the `master` branch, fill out the release notes and publish the release. This will create the tag for you.
 
 For a non-production release (alpha, dev, etc.)
@@ -138,22 +136,24 @@ The Uploader has a self-update mechanism that will look at the latest release an
 
 ### CI server environment variables
 
-We use the following environment variables on the CI servers:
+We use the following environment variables on the CI server:
 
-| Variable | CI Server | Use |
+| Variable | OS Image | Use |
 |----------|-----------|-------|
-| APPLEID                  | CircleCI | Notarization |
-| APPLEIDPASS              | CircleCI | Notarization |
+| APPLEID                  | MacOS    | Notarization |
+| APPLEIDPASS              | MacOS    | Notarization |
 | AWS_ACCESS_KEY_ID        | Both     | S3 builds and AV e-mails |
 | AWS_SECRET_ACESS_KEY     | Both     | S3 builds and AV e-mails |
 | CSC_FOR_PULL_REQUEST     | Both     | `true`, code signing for PR |
-| CSC_KEY_PASSWORD         | Both     | Certificate password |
-| CSC_LINK                 | Both     | Code signing certificate |
-| DEBUG                    | CircleCI | Set to `electron-builder` |
+| CSC_KEY_PASSWORD         | MacOS    | Certificate password |
+| CSC_LINK                 | MacOS    | Code signing certificate |
+| WIN_CSC_KEY_PASSWORD     | Windows  | Certificate password |
+| WIN_CSC_LINK             | Windows  | Code signing certificate |
+| DEBUG                    | MacOS    | Set to `electron-builder` |
 | GH_TOKEN                 | Both     | For GitHub builds |
 | PUBLISH_FOR_PULL_REQUEST | Both     | `true`, build artefact for PR |
 | ROLLBAR_POST_TOKEN       | Both     | Rollbar logging |
-| FTP_AV_PASSWORD_TIDEPOOL | Appveyor | AV submission |
+| FTP_AV_PASSWORD_TIDEPOOL | Windows  | AV submission |
 
 ## Editor Configuration
 **Atom**
@@ -229,6 +229,8 @@ To package the app on your local machine, you need to set the `ROLLBAR_POST_TOKE
 
 macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables `APPLEID` and `APPLEIDPASS`. Note that you need to set an app-specific password in https://appleid.apple.com for this to work.
 
+Note that you'll need to build Windows builds on a Windows machine, and MacOS builds on a Mac.
+
 ## Further commands
 
 To run the application without packaging run
@@ -271,7 +273,7 @@ These libraries are used in the following Node.js modules created by Tidepool an
 
 The LGPL is intended to allow use of libraries in applications that don’t necessarily distribute the source of the application. The LGPL has two requirements:
 
-- users must have access to the source code of the library 
+- users must have access to the source code of the library
 - users can make use of modified versions of the library
 
 To satisfy (1) we provide links to the relevant code repositories. To satisfy (2) we dynamically link to the library, so that it’s possible to swap it out for another version of the library.
@@ -292,4 +294,3 @@ If your EULA claims ownership over the code, you have to explicitly mention that
 
 - [LGPL v3 License Text](https://www.gnu.org/licenses/lgpl.html) (on gnu.org)
 - [LGPL on Wikipedia](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License)
-

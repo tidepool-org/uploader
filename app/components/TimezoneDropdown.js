@@ -49,7 +49,7 @@ class TimezoneDropdown extends React.Component {
     updateProfileErrorMessage: PropTypes.string,
     updateProfileErrorDismissed: PropTypes.bool,
     dismissUpdateProfileError: PropTypes.func.isRequired,
-    isClinicAccount: PropTypes.bool,
+    renderClinicUi: PropTypes.bool,
     userDropdownShowing: PropTypes.bool,
     isUploadInProgress: PropTypes.bool.isRequired,
     onBlur: PropTypes.func.isRequired,
@@ -117,11 +117,11 @@ class TimezoneDropdown extends React.Component {
     if(this.props.targetTimezone){
       let textClinic = i18n.t('The device times should be approximately');
       let textPatient = i18n.t('Your device times should be approximately');
-      let text = this.props.isClinicAccount ? textClinic : textPatient;
+      let text = this.props.renderClinicUi ? textClinic : textPatient;
       let timez = this.props.targetTimezone;
       return (
         <div className={styles.timeDetail}>
-          {text} {sundial.formatInTimezone(new Date(), timez, 'h:mm a')}
+          {text} {sundial.formatInTimezone(new Date(), timez, 'LT')}
         </div>
       );
     } else {
@@ -146,7 +146,7 @@ class TimezoneDropdown extends React.Component {
 
   render() {
     var timezoneClasses = cx({
-      [styles.clinic]: this.props.isClinicAccount,
+      [styles.clinic]: this.props.renderClinicUi,
       [styles.userDropdownShowing]: this.props.userDropdownShowing,
       [styles.timezoneDropdown]: true
     });

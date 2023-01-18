@@ -43,25 +43,25 @@ export class DeviceTimeModal extends Component {
       return { value: 'bgm', text: i18n.t('meter') };
     }
     return 'unknown';
-  }
+  };
 
   isDevice = (name) => {
     const { showingDeviceTimePrompt } = this.props;
     const {deviceInfo} = showingDeviceTimePrompt.cfg;
     return deviceInfo && deviceInfo.driverId && deviceInfo.driverId === name;
-  }
+  };
 
   handleContinue = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
     showingDeviceTimePrompt.callback('updateTime');
     sync.dismissedDeviceTimePrompt();
-  }
+  };
 
   handleCancel = () => {
     const { sync, showingDeviceTimePrompt } = this.props;
     showingDeviceTimePrompt.callback('deviceTimePromptClose');
     sync.dismissedDeviceTimePrompt();
-  }
+  };
 
   getActions = () => {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
@@ -74,7 +74,9 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
          !this.isDevice('Tandem') &&
-         !this.isDevice('TrueMetrix')
+         !this.isDevice('TrueMetrix') &&
+         !this.isDevice('Weitai') &&
+         !this.isDevice('OneTouchVerioBLE')
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
@@ -98,7 +100,7 @@ export class DeviceTimeModal extends Component {
     );
 
     return buttons;
-  }
+  };
 
   getMessage = () => {
     const type = this.determineDeviceType();
@@ -116,7 +118,7 @@ export class DeviceTimeModal extends Component {
         );
     }
     return message;
-  }
+  };
 
   getReminder = () => {
     const { showingDeviceTimePrompt: { cfg: { deviceInfo } } } = this.props;

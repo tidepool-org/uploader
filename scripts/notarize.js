@@ -8,6 +8,8 @@ exports.default = async function notarizing(context) {
 
   const appName = context.packager.appInfo.productFilename;
 
+  console.log(`Notarizing ${appName}`);
+
   return await notarize({
     appBundleId: 'org.tidepool.TidepoolUploader',
     appPath: `${appOutDir}/${appName}.app`,
