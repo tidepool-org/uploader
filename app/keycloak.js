@@ -87,7 +87,9 @@ const onKeycloakTokens = (store) => (tokens) => {
 export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.LOGOUT_REQUEST: {
-      keycloak?.logout();
+      keycloak?.logout({
+        redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
+    });
       break;
     }
     case ActionTypes.FETCH_INFO_SUCCESS: {
@@ -129,15 +131,21 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
 
 export const KeycloakWrapper = (props) => {
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
+  const blipUrl = useSelector((state) => state.blipUrls.blipUrl);
+  const blipRedirect = useMemo(() => {
+    if (!blipUrl) return null;
+    let url = new URL(`${blipUrl}upload-redirect`);
+    return url.href;
+  }, [blipUrl]);
   const [, setHash] = useState(window.location.hash);
   const store = useStore();
   const initOptions = useMemo(
     () => ({
       onLoad: 'check-sso',
       enableLogging: process.env.NODE_ENV === 'development',
-      redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
+      redirectUri: blipRedirect,
     }),
-    []
+    [blipRedirect]
   );
 
   const onEvent = useCallback(onKeycloakEvent(store), [store]);
@@ -151,7 +159,7 @@ export const KeycloakWrapper = (props) => {
       clientId: 'tidepool-uploader',
     });
     setHash(window.location.hash);
-  }, [keycloakConfig.realm, keycloakConfig.url]);
+  }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
 
   useEffect(() => {
     window.addEventListener('hashchange', onHashChange, false);
@@ -160,7 +168,7 @@ export const KeycloakWrapper = (props) => {
     };
   }, [onHashChange]);
 
-  if (keycloakConfig.url && keycloakConfig.instantiated) {
+  if (keycloakConfig.url && keycloakConfig.instantiated && blipRedirect) {
     return (
       <ReactKeycloakProvider
         authClient={keycloak}
