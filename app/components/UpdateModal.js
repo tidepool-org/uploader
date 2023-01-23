@@ -88,6 +88,7 @@ export class UpdateModal extends Component {
     if (electronUpdateManualChecked) {
       if (checkingElectronUpdate){
         title = i18n.t('Checking for update...');
+        text = 'Please wait';
       } else {
         if (electronUpdateAvailable) {
           title = i18n.t('Update Available!');
