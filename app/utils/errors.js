@@ -112,7 +112,7 @@ export function createErrorLogger(api) {
     if (_.get(action, 'error', false) === true) {
       let err = _.get(action, 'payload', {});
       if (!err.debug) {
-        err.debug = err.message || 'Unknown error';
+        err.debug = '';
       }
       api.errors.log(
        err,
