@@ -15,112 +15,123 @@
  * == BSD2 LICENSE ==
  */
 
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/components/Login.module.less';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import actions from '../actions/';
 const asyncActions = actions.async;
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
-export class Login extends Component {
-  renderForgotPasswordLink() {
+import { keycloak } from '../keycloak';
+
+export const Login = () => {
+  const dispatch = useDispatch();
+  const disabled = useSelector((state) => Boolean(state.unsupported));
+  const errorMessage = useSelector((state) => state.loginErrorMessage);
+  const forgotPasswordUrl = useSelector(
+    (state) => state.blipUrls.forgotPassword
+  );
+  const isLoggingIn = useSelector(
+    (state) => state.working.loggingIn.inProgress
+  );
+  const keycloakConfig = useSelector((state) => state.keycloakConfig);
+  const keycloakInitializing = keycloakConfig.url && !keycloakConfig.initialized;
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
+
+  const renderForgotPasswordLink = () => {
     return (
-      <a className={styles.forgotLink} href={this.props.forgotPasswordUrl} target="_blank">
+      <a className={styles.forgotLink} href={forgotPasswordUrl} target="_blank">
         {i18n.t('Forgot password?')}
       </a>
     );
-  }
+  };
 
-  renderButton() {
+  const renderButton = () => {
     var text = i18n.t('Log in');
 
-    if (this.props.isLoggingIn) {
+    if (isLoggingIn) {
       text = i18n.t('Logging in...');
     }
 
+    if (keycloakInitializing) {
+      text = i18n.t('Loading...');
+    }
+
     return (
-      <button type="submit"
+      <button
+        type="submit"
         className={styles.button}
-        onClick={this.handleLogin.bind(this)}
-        disabled={this.props.isLoggingIn || this.props.disabled}>
+        onClick={handleLogin}
+        disabled={isLoggingIn || disabled || keycloakInitializing}
+      >
         {text}
       </button>
     );
-  }
+  };
 
-  handleLogin(e) {
+  const handleLogin = (e) => {
     e.preventDefault();
-    var username = this.username.value;
-    var password = this.password.value;
-    var remember = this.remember.checked;
+    if (keycloakConfig.initialized) {
+      keycloak.login();
+    } else {
+      dispatch(asyncActions.doLogin({ username, password }, { remember }));
+    }
+  };
 
-    this.props.onLogin(
-      {username: username, password: password},
-      {remember: remember}
-    );
-  }
-
-  renderError() {
-    if (!this.props.errorMessage) {
+  const renderError = () => {
+    if (!errorMessage) {
       return null;
     }
 
-    return <span>{i18n.t(this.props.errorMessage)}</span>;
-  }
+    return <span>{i18n.t(errorMessage)}</span>;
+  };
 
-  render() {
-    return (
-      <div className={styles.loginPage}>
-        <form className={styles.form}>
-          <div className={styles.inputWrap}>
-            <input className={styles.input} ref={(input) => { this.username = input; }} placeholder={i18n.t('Email')}/>
-          </div>
-          <div className={styles.inputWrap}>
-            <input className={styles.input} ref={(input) => { this.password = input; }} placeholder={i18n.t('Password')} type="password"/>
-          </div>
-          <div className={styles.actions}>
-            <div>
-              <div className={styles.remember}>
-                <input type="checkbox" ref={(input) => { this.remember = input; }} id="remember"/>
-                <label htmlFor="remember">{i18n.t('Remember me')}</label>
-              </div>
-              <div className={styles.forgot}>{this.renderForgotPasswordLink()}</div>
+  return keycloakConfig.url ? (
+    <div className={styles.loginPage}>{renderButton()}</div>
+  ) : (
+    <div className={styles.loginPage}>
+      <form className={styles.form}>
+        <div className={styles.inputWrap}>
+          <input
+            className={styles.input}
+            placeholder={i18n.t('Email')}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputWrap}>
+          <input
+            className={styles.input}
+            placeholder={i18n.t('Password')}
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className={styles.actions}>
+          <div>
+            <div className={styles.remember}>
+              <input
+                type="checkbox"
+                id="remember"
+                value={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
+              <label htmlFor="remember">{i18n.t('Remember me')}</label>
             </div>
-            <div>
-              {this.renderButton()}
-            </div>
+            <div className={styles.forgot}>{renderForgotPasswordLink()}</div>
           </div>
-          <div className={styles.error}>{this.renderError()}</div>
-        </form>
-      </div>
-    );
-  }
-}
-
-Login.propTypes = {
-  disabled: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
-  forgotPasswordUrl: PropTypes.string.isRequired,
-  isLoggingIn: PropTypes.bool.isRequired,
-  onLogin: PropTypes.func.isRequired
+          <div>{renderButton()}</div>
+        </div>
+        <div className={styles.error}>{renderError()}</div>
+      </form>
+    </div>
+  );
 };
 
-export default connect(
-  (state) => {
-    return {
-      disabled: Boolean(state.unsupported),
-      errorMessage: state.loginErrorMessage,
-      forgotPasswordUrl: state.blipUrls.forgotPassword,
-      isLoggingIn: state.working.loggingIn.inProgress,
-    };
-  },
-  (dispatch) => {
-    return {
-      onLogin: bindActionCreators(asyncActions.doLogin, dispatch)
-    };
-  }
-)(Login);
+export default Login;

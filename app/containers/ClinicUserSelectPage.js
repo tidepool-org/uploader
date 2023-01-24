@@ -38,7 +38,7 @@ export class ClinicUserSelectPage extends Component {
     this.props.async.setPage(pages.WORKSPACE_SWITCH, actionSources.USER, {
       metric: { eventName: metrics.WORKSPACE_SWITCH_DISPLAYED}
     });
-  }
+  };
 
   render() {
     const {

@@ -381,7 +381,8 @@ export function uploadRequest(userId, device, utc) {
   utc = actionUtils.getUtc(utc);
   const properties = {
     type: _.get(device, 'source.type', undefined),
-    source: `${actionUtils.getUploadTrackingId(device)}`
+    source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${actionUtils.getOSDetails()}`,
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
     _.extend(properties, { 'limit': uploadDataPeriodLabels[uploadDataPeriod.periodMedtronic600] });
@@ -414,6 +415,7 @@ export function uploadSuccess(userId, device, upload, data, utc) {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${actionUtils.getOSDetails()}`,
     started: upload.history[0].start || '',
     finished: utc || '',
     processed: numRecs || 0
@@ -439,6 +441,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
+    os: `${actionUtils.getOSDetails()}`,
     error: err
   };
   if (_.get(device, 'source.driverId', null) === 'Medtronic600') {
@@ -567,6 +570,36 @@ export function versionCheckFailure(err, currentVersion, requiredVersion) {
       }
     };
   }
+}
+
+/*
+ * relating to async action creator fetchInfo
+ */
+
+export function fetchInfoRequest() {
+  return {
+    type: ActionTypes.FETCH_INFO_REQUEST,
+    meta: {source: actionSources[ActionTypes.FETCH_INFO_REQUEST]}
+  };
+}
+
+export function fetchInfoSuccess(info) {
+  return {
+    payload: { info },
+    type: ActionTypes.FETCH_INFO_SUCCESS,
+    meta: {source: actionSources[ActionTypes.FETCH_INFO_SUCCESS]}
+  };
+}
+
+export function fetchInfoFailure(err) {
+  return {
+    type: ActionTypes.FETCH_INFO_FAILURE,
+    error: true,
+    payload: err,
+    meta: {
+      source: actionSources[ActionTypes.FETCH_INFO_FAILURE]
+    }
+  };
 }
 
 /*
@@ -994,5 +1027,84 @@ export function selectClinic(clinicId) {
     payload: {
       clinicId
     },
+  };
+}
+
+export function keycloakReady(event, error){
+  return {
+    type: ActionTypes.KEYCLOAK_READY,
+    payload: { error, event },
+  };
+}
+
+export function keycloakInitError(event, error){
+  return {
+    type: ActionTypes.KEYCLOAK_INIT_ERROR,
+    error: error,
+    payload: { error, event },
+  };
+}
+
+export function keycloakAuthSuccess(event, error) {
+  return {
+    type: ActionTypes.KEYCLOAK_AUTH_SUCCESS,
+    payload: { error, event },
+  };
+}
+
+export function keycloakAuthError(event, error){
+  return {
+    type: ActionTypes.KEYCLOAK_AUTH_ERROR,
+    error: error,
+    payload: { error, event },
+  };
+}
+
+export function keycloakAuthRefreshSuccess(event, error) {
+  return {
+    type: ActionTypes.KEYCLOAK_AUTH_REFRESH_SUCCESS,
+    payload: { event, error }
+  };
+}
+
+export function keycloakAuthRefreshError(event, error) {
+  return {
+    type: ActionTypes.KEYCLOAK_AUTH_REFRESH_ERROR,
+    error: error,
+    payload: { error, event },
+  };
+}
+
+export function keycloakTokenExpired(event, error) {
+  return {
+    type: ActionTypes.KEYCLOAK_TOKEN_EXPIRED,
+    payload: { error, event },
+  };
+}
+
+export function keycloakAuthLogout(event, error) {
+  return {
+    type: ActionTypes.KEYCLOAK_AUTH_LOGOUT,
+    payload: { error, event },
+  };
+}
+
+export function keycloakTokensReceived(tokens) {
+  return {
+    type: ActionTypes.KEYCLOAK_TOKENS_RECEIVED,
+    payload: { tokens },
+  };
+}
+
+export function setKeycloakRegistrationUrl(url){
+  return {
+    type: ActionTypes.SET_KEYCLOAK_REGISTRATION_URL,
+    payload: { url },
+  };
+}
+
+export function keycloakInstantiated(){
+  return {
+    type: ActionTypes.KEYCLOAK_INSTANTIATED
   };
 }

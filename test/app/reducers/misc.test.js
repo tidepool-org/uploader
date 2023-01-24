@@ -29,7 +29,13 @@ import devices from '../../../app/reducers/devices';
 
 import { UnsupportedError } from '../../../app/utils/errors';
 
-jest.mock('electron');
+jest.mock('@electron/remote', () => ({
+  getGlobal: (string) => {
+    if (string === 'i18n') {
+        return { t: (string) => string };
+    }
+  }
+}));
 
 describe('misc reducers', () => {
   describe('devices', () => {
@@ -707,4 +713,55 @@ describe('misc reducers', () => {
       });
     });
   });
+
+  describe('keycloakConfig', () => {
+    describe('fetchInfoSuccess', () => {
+      it('should set state to info auth key', () => {
+        let initialStateForTest = {};
+        let info = {
+          auth: {
+            url: 'someUrl',
+            realm: 'anAwesomeRealm',
+          },
+        };
+
+        let action = actions.sync.fetchInfoSuccess(info);
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.url).to.equal('someUrl');
+        expect(state.realm).to.equal('anAwesomeRealm');
+      });
+    });
+
+    describe('keycloakReady', () => {
+      it('should set initialized state to true', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+      });
+    });
+
+    describe('keycloakInstantiated', () => {
+      it('should set instantiated state to true', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakInstantiated();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.instantiated).to.be.true;
+      });
+    });
+
+    describe('setKeycloakRegistrationUrl', () => {
+      it('should set registration url state', () => {
+        let initialStateForTest = {};
+        let url = 'http://registration.url';
+
+        let action = actions.sync.setKeycloakRegistrationUrl(url);
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.registrationUrl).to.equal(url);
+      });
+    });
+  });
+
 });

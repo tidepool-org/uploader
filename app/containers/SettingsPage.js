@@ -27,7 +27,8 @@ import * as metrics from '../constants/metrics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/';
-import { remote } from 'electron';
+import { checkTimezoneName } from 'sundial';
+const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
@@ -156,12 +157,19 @@ export default connect(
       return targetDevices;
     }
     function getSelectedTimezone(state) {
-      return _.get(
+      const timezone =  _.get(
         state,
         ['targetTimezones', state.uploadTargetUser],
         // fall back to the timezone stored under 'noUserSelected', if any
         _.get(state, ['targetTimezones', 'noUserSelected'], null)
       );
+
+      try {
+        checkTimezoneName(timezone);
+      } catch (err) {
+        return null;
+      }
+      return timezone;
     }
     function isClinicAccount(state) {
       return (

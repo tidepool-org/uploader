@@ -84,6 +84,11 @@ export default (type) => {
     case types.VERSION_CHECK_REQUEST:
       return 'checkingVersion';
 
+    case types.FETCH_INFO_REQUEST:
+    case types.FETCH_INFO_SUCCESS:
+    case types.FETCH_INFO_FAILURE:
+      return 'fetchingInfo';
+
     default:
       return null;
   }

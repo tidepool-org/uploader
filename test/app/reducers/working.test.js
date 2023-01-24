@@ -16,7 +16,13 @@ import {getLoginErrorMessage, getCreateCustodialAccountErrorMessage, getUpdatePr
 const { working: initialState } = initialAll;
 let tracked = mutationTracker.trackObj(initialState);
 
-jest.mock('electron');
+jest.mock('@electron/remote', () => ({
+  getGlobal: (string) => {
+    if (string === 'i18n') {
+        return { t: (string) => string };
+    }
+  }
+}));
 
 describe('working', () => {
 
@@ -1583,6 +1589,104 @@ describe('working', () => {
       });
 
       expect(mutationTracker.hasMutated(tracked)).to.be.false;
+    });
+  });
+
+  describe('fetchInfo', () => {
+    describe('request', () => {
+      it('should leave fetchingInfo.completed unchanged', () => {
+        expect(initialState.fetchingInfo.completed).to.be.null;
+
+        let requestAction = actions.sync.fetchInfoRequest();
+        let requestState = reducer(initialState, requestAction);
+
+        expect(requestState.fetchingInfo.completed).to.be.null;
+
+        let successAction = actions.sync.fetchInfoSuccess('foo');
+        let successState = reducer(requestState, successAction);
+
+        expect(successState.fetchingInfo.completed).to.be.true;
+
+        let state = reducer(successState, requestAction);
+        expect(state.fetchingInfo.completed).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingInfo.inProgress to be true', () => {
+        let initialStateForTest = _.merge({}, initialState);
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let action = actions.sync.fetchInfoRequest();
+
+        expect(initialStateForTest.fetchingInfo.inProgress).to.be.false;
+
+        let state = reducer(initialStateForTest, action);
+        expect(state.fetchingInfo.inProgress).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('failure', () => {
+      it('should set fetchingInfo.completed to be false', () => {
+        let error = new Error('Something bad happened :(');
+
+        expect(initialState.fetchingInfo.completed).to.be.null;
+
+        let failureAction = actions.sync.fetchInfoFailure(error);
+        let state = reducer(initialState, failureAction);
+
+        expect(state.fetchingInfo.completed).to.be.false;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingInfo.inProgress to be false and set error', () => {
+        let initialStateForTest = _.merge({}, initialState, {
+          fetchingInfo: { inProgress: true, notification: null },
+        });
+
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let error = new Error('Something bad happened :(');
+        let action = actions.sync.fetchInfoFailure(error);
+
+        expect(initialStateForTest.fetchingInfo.inProgress).to.be.true;
+        expect(initialStateForTest.fetchingInfo.notification).to.be.null;
+
+        let state = reducer(initialStateForTest, action);
+
+        expect(state.fetchingInfo.inProgress).to.be.false;
+        expect(state.fetchingInfo.notification.type).to.equal('error');
+        expect(state.fetchingInfo.notification.message).to.equal(error.message);
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('success', () => {
+      it('should set fetchingInfo.completed to be true', () => {
+        expect(initialState.fetchingInfo.completed).to.be.null;
+
+        let successAction = actions.sync.fetchInfoSuccess('foo');
+        let state = reducer(initialState, successAction);
+
+        expect(state.fetchingInfo.completed).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingInfo.inProgress to be false', () => {
+
+        let initialStateForTest = _.merge({}, initialState, {
+          fetchingInfo: { inProgress: true, notification: null },
+        });
+
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+
+        let action = actions.sync.fetchInfoSuccess('foo');
+
+        expect(initialStateForTest.fetchingInfo.inProgress).to.be.true;
+
+        let state = reducer(initialStateForTest, action);
+
+        expect(state.fetchingInfo.inProgress).to.be.false;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
     });
   });
 });
