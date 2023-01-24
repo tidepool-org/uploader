@@ -26,7 +26,7 @@ import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export class UpdateModal extends Component {
@@ -121,7 +121,7 @@ export default connect(
   (state, ownProps) => {
     return {
       // plain state
-      checkingElectronUpdate: state.working.checkingElectronUpdate,
+      checkingElectronUpdate: state.working.checkingElectronUpdate.inProgress,
       electronUpdateAvailableDismissed: state.electronUpdateAvailableDismissed,
       electronUpdateAvailable: state.electronUpdateAvailable,
       electronUpdateDownloaded: state.electronUpdateDownloaded,

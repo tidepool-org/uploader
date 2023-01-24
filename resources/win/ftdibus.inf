@@ -31,7 +31,7 @@ Class=USB
 ClassGUID={36fc9e60-c465-11cf-8056-444553540000}
 Provider=%FTDI%
 CatalogFile=ftdibus.cat
-DriverVer=02/27/2013,2.08.28
+DriverVer=02/27/2013,2.08.28.0
 
 [SourceDisksNames]
 1=%DriversDisk%,,,

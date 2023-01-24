@@ -18,14 +18,13 @@
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
-import os from 'os';
-import osName from 'os-name';
 
 import styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
+import { getOSDetails } from '../actions/utils';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export default class Footer extends Component {
@@ -39,7 +38,7 @@ export default class Footer extends Component {
     let environment = '';
 
     if (debugMode.isDebug) {
-      osArch = `  (${osName()} - ${os.arch()})`;
+      osArch = ` (${getOSDetails()})`;
       environment = `  - ${this.props.environment}`;
     }
 

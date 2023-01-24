@@ -20,12 +20,13 @@ import stacktrace from 'stack-trace';
 
 import sundial from 'sundial';
 
-import errorText from '../constants/errors';
+import ErrorMessages from '../constants/errorMessages';
 import * as syncActions from './sync';
 
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
 const debug = isBrowser ? require('bows')('utils') : console.log;
+let osString = '';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
@@ -34,12 +35,9 @@ export function getDeviceTargetsByUser(targetsByUser) {
 }
 
 export function getUploadTrackingId(device) {
-  const source = device.source;
+  const {source} = device;
   if (source.type === 'device' || source.type === 'block') {
     return source.driverId;
-  }
-  if (source.type === 'carelink') {
-    return 'CareLink';
   }
   return null;
 }
@@ -81,7 +79,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       }
       const serverErr = 'Origin is not allowed by Access-Control-Allow-Origin';
       let displayErr = new Error(err.message === serverErr ?
-        errorText.E_SERVER_ERR : errorText[err.code || errCode]);
+        ErrorMessages.E_SERVER_ERR : ErrorMessages[err.code || errCode]);
       let uploadErrProps = {
         details: err.message,
         utc: getUtc(utc),
@@ -101,6 +99,34 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.message = 'Couldn\'t connect to device.';
         displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
         displayErr.linkText = 'Is it paired?';
+      }
+
+      if (err.code === 'E_VERIO_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4409628277140';
+        displayErr.linkText = 'controlled folder access.';
+      }
+
+      if (err.code === 'E_VERIO_ACCESS') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360019872851#h_01F85RKK7MSTDYVW4QE2W8BKP8';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
+      if (err.code === 'E_OMNIPOD_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the PDM. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029448012#h_01FYCJ3XVYGBZJSJ8WPNETVEHX';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
+      if (err.message === 'E_DATETIME_SET_BY_PUMP') {
+        displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
+        uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
+      }
+
+      if (err.message === 'E_LIBREVIEW_FORMAT') {
+        displayErr.message = ErrorMessages.E_LIBREVIEW_FORMAT;
+        uploadErrProps.details = 'Could not validate the date format';
       }
 
       if (!(process.env.NODE_ENV === 'test')) {
@@ -130,4 +156,33 @@ export function mergeProfileUpdates(profile, updates){
       return update;
     }
   });
+}
+
+export async function initOSDetails() {
+  if (typeof navigator !== 'undefined') {
+    const ua = await navigator.userAgentData.getHighEntropyValues(
+      ['platform', 'platformVersion', 'bitness']
+    );
+
+    let osVersion = ua.platformVersion;
+
+    if (navigator.userAgentData.platform === 'Windows') {
+      const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+      if (majorPlatformVersion >= 13) {
+        osVersion = '11';
+      } else if (majorPlatformVersion > 0) {
+        osVersion = '10';
+      } else {
+        osVersion = 'earlier than 10';
+      }
+
+      osVersion = `${osVersion} ${ua.bitness}-bit`;
+    }
+    
+    osString = `${ua.platform} ${osVersion}`;
+  }
+}
+
+export function getOSDetails() {
+  return osString;
 }

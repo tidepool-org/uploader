@@ -25,7 +25,7 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/UpdateDriverModal.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export class UpdateDriverModal extends Component {
@@ -97,7 +97,7 @@ export default connect(
   (state, ownProps) => {
     return {
       // plain state
-      checkingDriverUpdate: state.working.checkingDriverUpdate,
+      checkingDriverUpdate: state.working.checkingDriverUpdate.inProgress,
       driverUpdateAvailableDismissed: state.driverUpdateAvailableDismissed,
       driverUpdateAvailable: state.driverUpdateAvailable,
       driverUpdateShellOpts: state.driverUpdateShellOpts,

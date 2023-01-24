@@ -22,9 +22,10 @@ import { expect } from 'chai';
 
 import configureStore from 'redux-mock-store';
 
-import errorText from '../../../app/constants/errors';
+import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
+import { __Rewire__ } from '../../../app/actions/utils';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {
@@ -47,6 +48,7 @@ describe('utils', () => {
       uploadTargetDevice: 'foo',
       version: '0.100.0'
     });
+    __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
     test('should return a function', () => {
@@ -55,7 +57,7 @@ describe('utils', () => {
 
     test('the returned function should use the configured errCode on error if error does not have a code', () => {
       const err = new Error('Uh oh...');
-      const displayErr = new Error(errorText[errCode]);
+      const displayErr = new Error(ErrorMessages[errCode]);
 
       expect(dispatch.callCount).to.equal(0);
       fn(err);
@@ -80,6 +82,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }
@@ -87,7 +90,7 @@ describe('utils', () => {
       };
       const result = dispatch.firstCall.args[0];
       expect(result.payload).to.deep.include({
-        message: errorText[errCode],
+        message: ErrorMessages[errCode],
         details: err.message,
         utc: utc,
         name: err.name,
@@ -101,9 +104,9 @@ describe('utils', () => {
 
     test('the returned function should use the argument error\'s code when present', () => {
       const err = new Error('Uh oh...');
-      const specificErrCode = 'E_CARELINK_UNSUPPORTED';
+      const specificErrCode = 'E_MEDTRONIC_UPLOAD';
       err.code = specificErrCode;
-      const displayErr = new Error(errorText[specificErrCode]);
+      const displayErr = new Error(ErrorMessages[specificErrCode]);
 
       expect(dispatch.callCount).to.equal(0);
       fn(err);
@@ -128,6 +131,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }
@@ -135,7 +139,7 @@ describe('utils', () => {
       };
       const result = dispatch.firstCall.args[0];
       expect(result.payload).to.deep.include({
-        message: errorText[specificErrCode],
+        message: ErrorMessages[specificErrCode],
         details: err.message,
         utc: utc,
         name: err.name,
@@ -156,7 +160,7 @@ describe('utils', () => {
       patient: {
         birthday: '1980-02-05',
         diagnosisDate: '1990-02-06',
-        targetDevices: ['carelink', 'omnipod'],
+        targetDevices: ['medtronic', 'omnipod'],
         targetTimezone: 'US/Central'
       },
       termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -172,7 +176,7 @@ describe('utils', () => {
         patient: {
           birthday: '1980-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -189,7 +193,7 @@ describe('utils', () => {
         patient: {
           birthday: '1981-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
@@ -206,7 +210,7 @@ describe('utils', () => {
         patient: {
           birthday: '1980-02-05',
           diagnosisDate: '1990-02-06',
-          targetDevices: ['carelink', 'omnipod'],
+          targetDevices: ['medtronic', 'omnipod'],
           targetTimezone: 'US/Central'
         },
         termsAccepted: '2016-05-09T14:33:59-04:00',
