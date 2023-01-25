@@ -1,4 +1,4 @@
-## Roche Accu-chek Smart Pix
+## Roche Accu-chek Smart Pix (BG Meters)
 
 (Key:
 
