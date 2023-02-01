@@ -39,7 +39,9 @@ jobs:
     # Package
     - run:
         name: fastlane
-        command: bundle exec fastlane mac test
+        command: |
+          bundle update fastlane
+          bundle exec fastlane mac test
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
     machine:
