@@ -12,21 +12,21 @@
 
 #### Basals
 
-  - `[ ]` scheduled basal
-    - `[ ]` basal rate intervals with a start time, duration, and rate delivered
-    - `[ ]` name of basal schedule on each scheduled basal rate interval
-    - `[ ]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
-  - `[ ]` manual temp basal
-    - `[ ]` basal rate intervals with a start time, duration, and rate delivered
-    - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `[ ]` percentage temp basal
-    - `[ ]` basal rate intervals with a start time, duration, percent
-        - `[ ]` rate provided directly OR
+  - `[x]` scheduled basal
+    - `[x]` basal rate intervals with a start time, duration, and rate delivered
+    - `[x]` name of basal schedule on each scheduled basal rate interval
+    - `[?]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
+  - `[?]` manual temp basal
+    - `[?]` basal rate intervals with a start time, duration, and rate delivered
+    - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+  - `[x]` percentage temp basal
+    - `[x]` basal rate intervals with a start time, duration, percent
+        - `[x]` rate provided directly OR
         - `[ ]` rate computed from percent x suppressed.rate
-    - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
-  - `[ ]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
-    - `[ ]` basal interval with a start time and duration but no rate (b/c suspended)
-    - `[ ]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
+    - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
+  - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
+    - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
+    - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
   - `[ ]` final (most recent) basal
     - `[ ]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
     - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
