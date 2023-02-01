@@ -40,6 +40,7 @@ jobs:
     - run:
         name: fastlane
         command: |
+          bundle install
           bundle update fastlane
           bundle exec fastlane mac test
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
