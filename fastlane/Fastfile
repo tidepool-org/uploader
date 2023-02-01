@@ -1,0 +1,9 @@
+platform :mac do
+    before_all do
+      setup_circle_ci
+    end
+  
+    lane :test do
+    end
+  end
+  
