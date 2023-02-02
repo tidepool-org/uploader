@@ -15,7 +15,7 @@
   - `[x]` scheduled basal
     - `[x]` basal rate intervals with a start time, duration, and rate delivered
     - `[x]` name of basal schedule on each scheduled basal rate interval
-    - `[?]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
+    - `[x]` if basal schedule is a single (flat) rate all day, pump records a new basal rate interval every midnight
   - `[?]` manual temp basal
     - `[?]` basal rate intervals with a start time, duration, and rate delivered
     - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the temp basal intersects*
@@ -27,15 +27,17 @@
   - `[x]` "suspended" basals (see [status - suspends & resumes](#device-events) below)
     - `[x]` basal interval with a start time and duration but no rate (b/c suspended)
     - `[?]` object representing suppressed scheduled basal *for each segment of the basal schedule that the suspension of insulin delivery intersects*
-  - `[ ]` final (most recent) basal
+  - `[x]` final (most recent) basal
     - `[ ]` basal rate interval with a start time, duration "guessed" from settings, rate delivered, and an annotation re: the "guessed" duration OR
-    - `[ ]` basal rate interval with a start time and rate, no (= zero) duration
+    - `[x]` basal rate interval with a start time and rate, no (= zero) duration
   - `[ ]` automated basal
     - `[ ]` basal rate intervals with a start time, duration, and rate delivered
     - `[ ]` if closed loop mode changes during basal, two separate basal entries are created
     - `[ ]` if basal rate is a single (flat) rate all day, pump records a new basal rate interval every midnight
 
 Device-specific? (Add any device-specific notes/additions here.)
+
+- As the device needs to be suspended before uploading, we always have the final (most recent) basal and its duration.
 
 #### Boluses
 
