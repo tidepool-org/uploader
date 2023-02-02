@@ -8,7 +8,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '12.5.1'
+      xcode: '13.0.0'
     steps:
     - checkout
     - run: git submodule sync
@@ -37,9 +37,6 @@ jobs:
     - run: yarn lint
     - run: yarn test
     # Package
-    - run: curl https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer -o AppleWWDRCAG3.cer
-    - run: sudo security delete-certificate -Z FF6797793A3CD798DC5B2ABEF56F73EDC9F83A64
-    - run: security import AppleWWDRCAG3.cer /Library/Keychains/System.keychain
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
     machine:
