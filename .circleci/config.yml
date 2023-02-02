@@ -38,7 +38,7 @@ jobs:
     - run: yarn test
     # Package
     - run: curl https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer -o AppleWWDRCAG3.cer
-    - run: security delete-certificate -Z FF6797793A3CD798DC5B2ABEF56F73EDC9F83A64
+    - run: sudo security delete-certificate -Z FF6797793A3CD798DC5B2ABEF56F73EDC9F83A64
     - run: security import AppleWWDRCAG3.cer /Library/Keychains/System.keychain
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
