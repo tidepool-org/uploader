@@ -1030,10 +1030,10 @@ export function selectClinic(clinicId) {
   };
 }
 
-export function keycloakReady(event, error){
+export function keycloakReady(event, error, logoutUrl){
   return {
     type: ActionTypes.KEYCLOAK_READY,
-    payload: { error, event },
+    payload: { error, event, logoutUrl },
   };
 }
 

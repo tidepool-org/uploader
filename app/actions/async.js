@@ -42,6 +42,8 @@ let hostMap = {
   'linux': 'linux',
 };
 
+let win = window;
+
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
   if (apiError) {
@@ -251,17 +253,20 @@ export function doLogin(creds, opts) {
 }
 
 export function doLogout() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const { api } = services;
+    const { keycloakConfig } = getState();
     dispatch(sync.logoutRequest());
     api.user.logout((err) => {
       if (err) {
         dispatch(sync.logoutFailure());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
       else {
         dispatch(sync.logoutSuccess());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
+      }
+      dispatch(setPage(pages.LOGIN, actionSources.USER));
+      if(keycloakConfig.logoutUrl){
+        win.location.assign(keycloakConfig.logoutUrl);
       }
     });
   };

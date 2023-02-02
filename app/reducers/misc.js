@@ -359,7 +359,8 @@ export const keycloakConfig = (state = initialState.keycloakConfig, action) => {
       return state;
     }
     case types.KEYCLOAK_READY:
-      return _.extend({}, state, { initialized: true });
+      let logoutUrl = _.get(action.payload, 'logoutUrl', false);
+      return _.extend({}, state, { initialized: true, logoutUrl });
     case types.SET_KEYCLOAK_REGISTRATION_URL:
       return _.extend({}, state, { registrationUrl: action.payload.url });
     case types.KEYCLOAK_INSTANTIATED:

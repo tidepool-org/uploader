@@ -32,7 +32,10 @@ const updateKeycloakConfig = (info, store) => {
 const onKeycloakEvent = (store) => (event, error) => {
   switch (event) {
     case 'onReady': {
-      store.dispatch(sync.keycloakReady(event, error));
+      let logoutUrl = keycloak.createLogoutUrl({
+        redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
+      });
+      store.dispatch(sync.keycloakReady(event, error, logoutUrl));
       break;
     }
     case 'onInitError': {
@@ -86,12 +89,6 @@ const onKeycloakTokens = (store) => (tokens) => {
 
 export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
   switch (action.type) {
-    case ActionTypes.LOGOUT_REQUEST: {
-      keycloak?.logout({
-        redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
-    });
-      break;
-    }
     case ActionTypes.FETCH_INFO_SUCCESS: {
       if (!_.isEqual(_keycloakConfig, action.payload?.info?.auth)) {
         updateKeycloakConfig(action.payload?.info?.auth, storeAPI);
