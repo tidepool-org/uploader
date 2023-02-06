@@ -42,7 +42,8 @@ let hostMap = {
   'linux': 'linux',
 };
 
-let win = window;
+const isBrowser = typeof window !== 'undefined';
+let win = isBrowser ? window : null;
 
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
@@ -266,7 +267,7 @@ export function doLogout() {
       }
       dispatch(setPage(pages.LOGIN, actionSources.USER));
       if(keycloakConfig.logoutUrl){
-        win.location.assign(keycloakConfig.logoutUrl);
+        win?.location.assign(keycloakConfig.logoutUrl);
       }
     });
   };
