@@ -76,7 +76,7 @@ jobs:
 
 # runs build for all branches and all tags starting with v.
 workflows:
-  version: 2
+  version: 2.1
   build-release:
     jobs:
       - build-macos:
