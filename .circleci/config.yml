@@ -37,6 +37,7 @@ jobs:
     - run: yarn lint
     - run: yarn test
     # Package
+    - run: sudo security delete-certificate -Z FF6797793A3CD798DC5B2ABEF56F73EDC9F83A64
     - run: cp root_certs.keychain ./node_modules/app-builder-lib/certs/ # replace old keychain
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
