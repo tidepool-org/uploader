@@ -37,12 +37,12 @@ jobs:
     - run: yarn lint
     - run: yarn test
     # Package
-    - run: curl -o AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer && sudo security import AppleWWDRCA.cer -k /Users/distiller/Library/Keychains/login.keychain-db
-    - run: curl -o AppleWWDRCAG2.cer https://www.apple.com/certificateauthority/AppleWWDRCAG2.cer && sudo security import AppleWWDRCAG2.cer -k /Users/distiller/Library/Keychains/login.keychain-db
-    - run: curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer && sudo security import AppleWWDRCAG3.cer -k /Users/distiller/Library/Keychains/login.keychain-db
-    - run: curl -o AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer && sudo security import AppleWWDRCAG4.cer -k /Users/distiller/Library/Keychains/login.keychain-db
-    - run: curl -o AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer && sudo security import AppleWWDRCAG5.cer -k /Users/distiller/Library/Keychains/login.keychain-db
-    - run: curl -o AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer && sudo security import AppleWWDRCAG6.cer -k /Users/distiller/Library/Keychains/login.keychain-db
+    - run: curl -o AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCA.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCA.cert
+    - run: curl -o AppleWWDRCAG2.cer https://www.apple.com/certificateauthority/AppleWWDRCAG2.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCAG2.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCAG2.cert
+    - run: curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCAG3.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCAG3.cert
+    - run: curl -o AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCAG4.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCAG4.cert
+    - run: curl -o AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCAG5.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCAG5.cert
+    - run: curl -o AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer && sudo security add-trusted-cert -d -r trustRoot AppleWWDRCAG6.cer -k /Users/distiller/Library/Keychains/login.keychain-db AppleWWDRCAG6.cert
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
     machine:
