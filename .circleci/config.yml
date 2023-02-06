@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  macos: circleci/macos@2.3.4
+  mac: circleci/macos@2.3.4
 jobs:
   build-macos:
     working_directory: ~/tidepool-org/chrome-uploader
