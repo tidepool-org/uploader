@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  macos: circleci/macos@2.3.4
 jobs:
   build-macos:
     working_directory: ~/tidepool-org/chrome-uploader
@@ -10,6 +12,7 @@ jobs:
     macos:
       xcode: '14.2.0'
     steps:
+    - mac/enable-vnc
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
