@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  mac: circleci/macos@2.3.4
+version: 2
 jobs:
   build-macos:
     working_directory: ~/tidepool-org/chrome-uploader
@@ -12,7 +10,6 @@ jobs:
     macos:
       xcode: '14.2.0'
     steps:
-    - mac/enable-vnc
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
@@ -40,8 +37,6 @@ jobs:
     - run: yarn lint
     - run: yarn test
     # Package
-    - run: sudo security delete-certificate -Z FF6797793A3CD798DC5B2ABEF56F73EDC9F83A64
-    - run: cp root_certs.keychain ./node_modules/app-builder-lib/certs/ # replace old keychain
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
     machine:
@@ -76,7 +71,7 @@ jobs:
 
 # runs build for all branches and all tags starting with v.
 workflows:
-  version: 2.1
+  version: 2
   build-release:
     jobs:
       - build-macos:
