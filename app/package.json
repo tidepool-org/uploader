@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.48.1-cid-changes.8",
+  "version": "2.48.1-cid-changes.9",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
