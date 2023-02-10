@@ -138,7 +138,7 @@ export const KeycloakWrapper = (props) => {
   const store = useStore();
   const initOptions = useMemo(
     () => ({
-      onLoad: 'check-sso',
+      checkLoginIframe: false,
       enableLogging: process.env.NODE_ENV === 'development',
       redirectUri: blipRedirect,
     }),

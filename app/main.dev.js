@@ -172,7 +172,7 @@ function createWindow() {
   });
 
   let setRequestFilter = () => {
-    let urls = ['http://localhost/keycloak-redirect*'];
+    let urls = ['http://localhost/keycloak-redirect*', '*://*/upload-redirect*'];
     if (keycloakUrl && keycloakRealm) {
       urls.push(
         `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
@@ -182,7 +182,7 @@ function createWindow() {
       const requestURL = new URL(request.url);
 
       // capture keycloak sign-in redirect
-      if (requestURL.pathname.includes('keycloak-redirect')) {
+      if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
         return handleIncomingUrl(request.url);
       }
       // capture keycloak registration navigation
@@ -604,7 +604,7 @@ app.on('activate', () => {
 const handleIncomingUrl = (url) => {
   const requestURL = new URL(url);
   // capture keycloak sign-in redirect
-  if (requestURL.pathname.includes('keycloak-redirect')) {
+  if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
     const requestHash = requestURL.hash;
     if(mainWindow){
       const { webContents } = mainWindow;
