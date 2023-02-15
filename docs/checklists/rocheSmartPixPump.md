@@ -177,7 +177,7 @@ TODO: continue here
 Settings history:
 
   - `[ ]` device stores all changes to settings OR
-  - `[ ]` device only returns current settings at time of upload
+  - `[x]` device only returns current settings at time of upload
 
 No Tidepool data model yet:
 
