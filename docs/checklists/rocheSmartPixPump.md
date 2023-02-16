@@ -145,7 +145,6 @@ The Aviva Combo meter that works with the Spirit Combo pump uses coded strips, w
     - `[ ]` name of settings profile
     - `[ ]` each schedule as a set of objects each with a rate and a start time
   - `[x]` name of currently active basal schedule
-TODO: continue here
   - `[ ]` units of all blood glucose-related fields (read from device, not hard-coded)
   - `[ ]` units of all carb-related fields (read from device, not hard-coded)
   - `[ ]` carb ratio(s)
@@ -200,6 +199,7 @@ No Tidepool data model yet:
   - `[ ]` clock display preference (12h vs 24h format)
 
 Device-specific? (Add any device-specific notes/additions here.)
+Blood glucose targets, insulin sensitivity factors and carb ratios are set on the Combo meter, not the Combo pump. This means these settings are never transffered to the Smart Pix device. Basically the only pump settings we get are the basal schedules.
 
 #### Wizard
 
@@ -225,15 +225,16 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` link to bolus delivered as a result of wizard (via log entry ID or similar)
 
 Device-specific? (Add any device-specific notes/additions here.)
+Wizard data is calculated on the meter, not the pump, and only carb data is available when meter is uploaded.
 
 #### "Bootstrapping" to UTC
 
-  - `[ ]` index
+  - `[x]` index
     - `[ ]` UTC timestamp (*Hey, one can dream!*) OR
     - `[ ]` internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
-    - `[ ]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
-  - `[ ]` date & time settings changes
-  - `[ ]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
+    - `[x]` ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
+  - `[x]` date & time settings changes
+  - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 Device-specific? (Add any device-specific notes/additions here.)
 
@@ -250,7 +251,7 @@ Device-specific? (Add any device-specific notes/additions here.)
 Choose one of the following:
 
   - `[ ]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+  - `[x]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
