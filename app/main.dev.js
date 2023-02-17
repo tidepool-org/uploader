@@ -141,7 +141,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false, // so that we can access process from app.html
-    }
+    },
+    acceptFirstMouse: true,
   });
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
