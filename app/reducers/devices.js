@@ -252,7 +252,7 @@ const devices = {
   accucheksmartpix: {
     instructions: [
       i18n.t('Ensure the Smart Pix is mounted before starting.'),
-      i18n.t('Click send and then start the transfer from your device.'),
+      i18n.t('Click Upload and then start the transfer from your device.'),
     ],
     name: 'Roche Accu-Chek Smart Pix',
     key: 'accucheksmartpix',
