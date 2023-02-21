@@ -2162,14 +2162,7 @@
     "@react-keycloak/core" "^3.2.0"
     hoist-non-react-statics "^3.3.2"
 
-"@ronomon/direct-io@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@ronomon/direct-io/-/direct-io-3.0.1.tgz#d7bc72b710030469225bfb9c6b6d57554dedae0c"
-  integrity sha512-NkKB32bjq7RfMdAMiWayphMlVWzsfPiKelK+btXLqggv1vDVgv2xELqeo0z4uYLLt86fVReLPxQj7qpg0zWvow==
-  dependencies:
-    "@ronomon/queue" "^3.0.1"
-
-"@ronomon/queue@^3.0.1":
+"@ronomon/queue@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@ronomon/queue/-/queue-3.0.1.tgz#42613e8488289ad452f4cf2244064958fc08d370"
   integrity sha512-STcqSvk+c7ArMrZgYxhM92p6O6F7t0SUbGr+zm8s9fJple5EdJAMwP3dXqgdXeF95xWhBpha5kjEqNAIdI0r4w==
@@ -2246,6 +2239,13 @@
   integrity sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==
   dependencies:
     defer-to-connect "^2.0.0"
+
+"@tidepool/direct-io@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@tidepool/direct-io/-/direct-io-3.0.2.tgz#f1c7e135881076b41c744d68f02ac5cdc2c41a14"
+  integrity sha512-AfOWIRqUDsHIFoglR5ruf6MX0qvHiqsY8OYf+/0GaWGgUzYzDbsRyjUWX5VuGmfd/WwfjZAUI9OHppdpLnsCZQ==
+  dependencies:
+    "@ronomon/queue" "3.0.1"
 
 "@tootallnate/once@1":
   version "1.1.2"
