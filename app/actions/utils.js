@@ -26,6 +26,7 @@ import * as syncActions from './sync';
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
 const debug = isBrowser ? require('bows')('utils') : console.log;
+let osString = '';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
@@ -112,6 +113,18 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'controlled folder access.';
       }
 
+      if (err.code === 'E_VERIO_ACCESS') {
+        displayErr.message = 'We couldn\'t communicate with the meter. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360019872851#h_01F85RKK7MSTDYVW4QE2W8BKP8';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
+      if (err.code === 'E_OMNIPOD_WRITE') {
+        displayErr.message = 'We couldn\'t communicate with the PDM. You may need to give Uploader';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029448012#h_01FYCJ3XVYGBZJSJ8WPNETVEHX';
+        displayErr.linkText = 'access to removable volumes.';
+      }
+
       if (err.message === 'E_DATETIME_SET_BY_PUMP') {
         displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
         uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
@@ -149,4 +162,33 @@ export function mergeProfileUpdates(profile, updates){
       return update;
     }
   });
+}
+
+export async function initOSDetails() {
+  if (typeof navigator !== 'undefined') {
+    const ua = await navigator.userAgentData.getHighEntropyValues(
+      ['platform', 'platformVersion', 'bitness']
+    );
+
+    let osVersion = ua.platformVersion;
+
+    if (navigator.userAgentData.platform === 'Windows') {
+      const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+      if (majorPlatformVersion >= 13) {
+        osVersion = '11';
+      } else if (majorPlatformVersion > 0) {
+        osVersion = '10';
+      } else {
+        osVersion = 'earlier than 10';
+      }
+
+      osVersion = `${osVersion} ${ua.bitness}-bit`;
+    }
+    
+    osString = `${ua.platform} ${osVersion}`;
+  }
+}
+
+export function getOSDetails() {
+  return osString;
 }

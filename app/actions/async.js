@@ -77,7 +77,7 @@ function createActionError(usrErrMessage, apiError) {
  */
 
 export function doAppInit(opts, servicesToInit) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
     if (getState().working.initializingApp.inProgress === false) {
@@ -91,6 +91,9 @@ export function doAppInit(opts, servicesToInit) {
 
     dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
+
+    log('Getting OS details.');
+    await actionUtils.initOSDetails();
 
     ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
       const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
