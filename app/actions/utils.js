@@ -26,6 +26,7 @@ import * as syncActions from './sync';
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
 const debug = isBrowser ? require('bows')('utils') : console.log;
+let osString = '';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
@@ -155,4 +156,33 @@ export function mergeProfileUpdates(profile, updates){
       return update;
     }
   });
+}
+
+export async function initOSDetails() {
+  if (typeof navigator !== 'undefined') {
+    const ua = await navigator.userAgentData.getHighEntropyValues(
+      ['platform', 'platformVersion', 'bitness']
+    );
+
+    let osVersion = ua.platformVersion;
+
+    if (navigator.userAgentData.platform === 'Windows') {
+      const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+      if (majorPlatformVersion >= 13) {
+        osVersion = '11';
+      } else if (majorPlatformVersion > 0) {
+        osVersion = '10';
+      } else {
+        osVersion = 'earlier than 10';
+      }
+
+      osVersion = `${osVersion} ${ua.bitness}-bit`;
+    }
+    
+    osString = `${ua.platform} ${osVersion}`;
+  }
+}
+
+export function getOSDetails() {
+  return osString;
 }
