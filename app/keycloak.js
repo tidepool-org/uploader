@@ -18,7 +18,7 @@ const updateKeycloakConfig = (info, store) => {
       keycloak = new Keycloak({
         url: info.url,
         realm: info.realm,
-        clientId: 'tidepool-uploader',
+        clientId: 'tidepool-uploader-sso',
       });
       store.dispatch(sync.keycloakInstantiated());
     } else {
@@ -153,7 +153,7 @@ export const KeycloakWrapper = (props) => {
     keycloak = new Keycloak({
       url: keycloakConfig.url,
       realm: keycloakConfig.realm,
-      clientId: 'tidepool-uploader',
+      clientId: 'tidepool-uploader-sso',
     });
     setHash(window.location.hash);
   }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
