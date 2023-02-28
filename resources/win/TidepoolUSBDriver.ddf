@@ -17,6 +17,7 @@
 tidepoolvcp.inf
 tidepoolhid.inf
 ftdibus.inf
+ftdiport.inf
 webusb.inf
 phdc.inf
 .Set DestinationDir=win10\amd64
@@ -25,6 +26,7 @@ amd64\ftd2xx.lib
 amd64\ftd2xx64.dll
 amd64\ftdibus.sys
 amd64\ftlang.dll
+amd64\FTSER2K.sys
 amd64\ser2pl64.sys
 amd64\silabser.sys
 amd64\tiusb.i51
@@ -40,6 +42,7 @@ i386\ftd2xx.dll
 i386\ftd2xx.lib
 i386\ftdibus.sys
 i386\ftlang.dll
+i386\FTSER2K.sys
 i386\ser2pl.sys
 i386\silabser.sys
 i386\tiusb.i51
