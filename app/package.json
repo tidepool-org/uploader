@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.49.0-bluetooth-windows.5",
+  "version": "2.49.0-bluetooth-windows.6",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
