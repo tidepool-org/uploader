@@ -14,6 +14,7 @@ import i18n from 'i18next';
 import i18nextBackend from 'i18next-fs-backend';
 import i18nextOptions from './utils/config.i18next';
 import path from 'path';
+import fs from 'fs';
 
 global.i18n = i18n;
 
@@ -68,6 +69,13 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
+  process.env.APPIMAGE = path.join(__dirname, 'release');
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+  Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
 }
 
 app.on('window-all-closed', () => {
@@ -568,7 +576,12 @@ autoUpdater.on('checking-for-update', () => {
   }
 });
 
-autoUpdater.on('update-available', (ev, info) => {
+autoUpdater.on('update-available', (info) => {
+  const installDate = _.get(fs.statSync(app.getPath('exe'), { throwIfNoEntry: false }), 'birthtime');
+  if (installDate) {
+    info.installDate = installDate.toISOString();
+  }
+
   sendAction(syncActions.updateAvailable(info));
   /*
   Example `info`
@@ -581,15 +594,15 @@ autoUpdater.on('update-available', (ev, info) => {
    */
 });
 
-autoUpdater.on('update-not-available', (ev, info) => {
+autoUpdater.on('update-not-available', (info) => {
   sendAction(syncActions.updateNotAvailable(info));
 });
 
-autoUpdater.on('error', (ev, err) => {
+autoUpdater.on('error', (err) => {
   sendAction(syncActions.autoUpdateError(err));
 });
 
-autoUpdater.on('update-downloaded', (ev, info) => {
+autoUpdater.on('update-downloaded', (info) => {
   sendAction(syncActions.updateDownloaded(info));
 });
 
