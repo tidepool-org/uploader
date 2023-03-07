@@ -16,16 +16,17 @@
  */
 
 import _ from 'lodash';
-import stacktrace from 'stack-trace';
 
 import sundial from 'sundial';
 
 import ErrorMessages from '../constants/errorMessages';
 import * as syncActions from './sync';
+import rollbar from '../../app/utils/rollbar';
 
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
 const debug = isBrowser ? require('bows')('utils') : console.log;
+let osString = '';
 
 export function getDeviceTargetsByUser(targetsByUser) {
   return _.mapValues(targetsByUser, (targets) => {
@@ -64,7 +65,7 @@ export function makeDisplayAdhocModal(dispatch) {
 }
 
 export function makeUploadCb(dispatch, getState, errCode, utc) {
-  return (err, recs) => {
+  return async (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
 
@@ -87,7 +88,6 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         datasetId: err.datasetId || null,
         requestTrace: err.requestTrace || null,
         sessionTrace: err.sessionTrace || null,
-        sessionToken: err.sessionToken || null,
         code: err.code || errCode,
         version: version,
         data: recs
@@ -128,14 +128,8 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         uploadErrProps.details = 'Could not validate the date format';
       }
 
-      if (!(process.env.NODE_ENV === 'test')) {
-        uploadErrProps.stringifiedStack = _.map(
-          _.filter(
-            stacktrace.parse(err),
-            (cs) => { return cs.functionName !== null; }
-          ),
-          'functionName'
-        ).join(', ');
+      if (process.env.NODE_ENV !== 'test') {
+        uploadErrProps = await sendToRollbar(displayErr, uploadErrProps);
       }
       return dispatch(syncActions.uploadFailure(displayErr, uploadErrProps, targetDevice));
     }
@@ -155,4 +149,56 @@ export function mergeProfileUpdates(profile, updates){
       return update;
     }
   });
+}
+
+export function sendToRollbar(err, props) {
+  return new Promise((resolve) => {
+    if (rollbar) {
+      const extra = {};
+      if (_.get(props, 'data.blobId', false)) {
+        _.assign(extra, { blobId: props.data.blobId });
+      }
+      
+      rollbar.error(err, extra, (err, data) => {
+        if (err) {
+          console.log('Error while reporting error to Rollbar:', err);
+        } else {
+          console.log(`Rollbar UUID: ${data.result.uuid}`);
+          props.uuid = data.result.uuid;
+        }
+        resolve(props);
+      });
+    } else {
+      resolve(props);
+    }
+  });
+}
+
+export async function initOSDetails() {
+  if (typeof navigator !== 'undefined') {
+    const ua = await navigator.userAgentData.getHighEntropyValues(
+      ['platform', 'platformVersion', 'bitness']
+    );
+
+    let osVersion = ua.platformVersion;
+
+    if (navigator.userAgentData.platform === 'Windows') {
+      const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+      if (majorPlatformVersion >= 13) {
+        osVersion = '11';
+      } else if (majorPlatformVersion > 0) {
+        osVersion = '10';
+      } else {
+        osVersion = 'earlier than 10';
+      }
+
+      osVersion = `${osVersion} ${ua.bitness}-bit`;
+    }
+    
+    osString = `${ua.platform} ${osVersion}`;
+  }
+}
+
+export function getOSDetails() {
+  return osString;
 }

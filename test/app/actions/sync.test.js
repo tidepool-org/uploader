@@ -25,6 +25,7 @@ import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getCreateCustodialAccountErrorMessage,
   getUpdateProfileErrorMessage,
@@ -660,7 +661,11 @@ describe('Synchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: device.source.type, source: device.source.driverId}
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         };
@@ -682,7 +687,8 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                limit: 'all data'
+                limit: 'all data',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -726,6 +732,9 @@ describe('Synchronous Actions', () => {
         post_records: [1,2,3,4,5],
         deviceModel: 'acme'
       };
+
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
+
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);
 
@@ -744,6 +753,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length
@@ -769,6 +779,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length,
@@ -814,6 +825,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError
               }
             }
@@ -821,10 +833,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -846,6 +855,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError,
                 limit: '4 weeks'
               }
@@ -854,10 +864,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;

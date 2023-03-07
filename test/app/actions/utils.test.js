@@ -25,6 +25,7 @@ import configureStore from 'redux-mock-store';
 import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
+import { __Rewire__ } from '../../../app/actions/utils';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {
@@ -47,6 +48,7 @@ describe('utils', () => {
       uploadTargetDevice: 'foo',
       version: '0.100.0'
     });
+    __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
     test('should return a function', () => {
@@ -80,6 +82,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }
@@ -89,10 +92,7 @@ describe('utils', () => {
       expect(result.payload).to.deep.include({
         message: ErrorMessages[errCode],
         details: err.message,
-        utc: utc,
-        name: err.name,
-        code: errCode,
-        version: '0.100.0'
+        name: err.name
       });
       expectedAction.payload = result.payload;
       expectedAction.meta.metric.properties.error = result.payload;
@@ -128,6 +128,7 @@ describe('utils', () => {
             properties: {
               type: 'device',
               source: 'bar',
+              os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
             }
           }
@@ -137,10 +138,7 @@ describe('utils', () => {
       expect(result.payload).to.deep.include({
         message: ErrorMessages[specificErrCode],
         details: err.message,
-        utc: utc,
-        name: err.name,
-        code: specificErrCode,
-        version: '0.100.0'
+        name: err.name
       });
       expectedAction.payload = result.payload;
       expectedAction.meta.metric.properties.error = result.payload;
