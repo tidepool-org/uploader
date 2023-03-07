@@ -301,7 +301,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filename = currentUpload.file.name;
     }
 
-    device.detect(driverId, opts, (err, dev) => {
+    device.detect(driverId, opts, async (err, dev) => {
       if (err) {
         let displayErr = new Error(ErrorMessages.E_SERIAL_CONNECTION);
         let deviceDetectErrProps = {
@@ -324,6 +324,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         displayErr.originalError = err;
+        if (process.env.NODE_ENV !== 'test') {
+          deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -345,6 +348,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
+        if (process.env.NODE_ENV !== 'test') {
+          disconnectedErrProps = await actionUtils.sendToRollbar(displayErr, disconnectedErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
@@ -381,6 +387,7 @@ export function doUpload(deviceKey, opts, utc) {
       }));
 
       try {
+        ipcRenderer.send('setSerialPortFilter', filters);
         opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
@@ -426,6 +433,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_HID_CONNECTION',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(hidErr, errProps);
+        }
         return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
@@ -447,6 +457,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_BLUETOOTH_OFF',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(btErr, errProps);
+        }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');

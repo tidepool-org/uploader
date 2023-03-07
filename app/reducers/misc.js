@@ -162,7 +162,7 @@ export function electronUpdateAvailable(state = initialState.electronUpdateAvail
     case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
       return initialState.electronUpdateAvailable;
     case types.UPDATE_AVAILABLE:
-      return true;
+      return action.payload;
     case types.UPDATE_NOT_AVAILABLE:
       return false;
     default:
