@@ -77,7 +77,7 @@ function createActionError(usrErrMessage, apiError) {
  */
 
 export function doAppInit(opts, servicesToInit) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
     if (getState().working.initializingApp.inProgress === false) {
@@ -91,6 +91,9 @@ export function doAppInit(opts, servicesToInit) {
 
     dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
+
+    log('Getting OS details.');
+    await actionUtils.initOSDetails();
 
     log('Initializing device');
     device.init({
@@ -291,7 +294,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filename = currentUpload.file.name;
     }
 
-    device.detect(driverId, opts, (err, dev) => {
+    device.detect(driverId, opts, async (err, dev) => {
       if (err) {
         let displayErr = new Error(ErrorMessages.E_SERIAL_CONNECTION);
         let deviceDetectErrProps = {
@@ -314,6 +317,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         displayErr.originalError = err;
+        if (process.env.NODE_ENV !== 'test') {
+          deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -335,6 +341,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
+        if (process.env.NODE_ENV !== 'test') {
+          disconnectedErrProps = await actionUtils.sendToRollbar(displayErr, disconnectedErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
@@ -417,6 +426,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_HID_CONNECTION',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(hidErr, errProps);
+        }
         return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
@@ -438,6 +450,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_BLUETOOTH_OFF',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(btErr, errProps);
+        }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');

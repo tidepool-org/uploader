@@ -52,7 +52,7 @@ const devices = {
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
-    name: 'Ascensia (Bayer) Contour Next',
+    name: 'Ascensia (Bayer) Contour Next, Contour Next Link, Contour Next Link 2.4, Contour Next USB, Contour Next One, Contour USB or Contour Next GEN',
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -134,6 +134,13 @@ const devices = {
     name: 'GLUCOCARD Vital',
     key: 'glucocardvital',
     source: {type: 'device', driverId: 'GlucocardVital'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  glucorx: {
+    instructions: [i18n.t('Nexus and HCT: Plug in meter with mini-USB cable'), i18n.t('Nexus Mini Ultra & Go: Plug in meter with strip port cable')],
+    name: 'GlucoRx Nexus, Nexus Mini Ultra, Go & HCT',
+    key: 'glucorx',
+    source: {type: 'device', driverId: 'GlucoRx'},
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {

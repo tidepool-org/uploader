@@ -34,6 +34,7 @@ import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -68,9 +69,11 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: false } },
       });
-      store.dispatch(async.doAppInit({}, {}));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      utilsRewireAPI.__Rewire__('initOSDetails', () => {});
+      store.dispatch(async.doAppInit({}, {})).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -162,9 +165,10 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -282,9 +286,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: pwd.memberships.map(user=>user.userid),
       };
       const store = mockStore(state);
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -405,9 +410,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -552,9 +558,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -686,9 +693,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -739,11 +747,12 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
-      expectedActions[2].payload = actions[2].payload;
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
+        expectedActions[2].payload = actions[2].payload;
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -1422,6 +1431,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
@@ -1569,7 +1579,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1588,6 +1602,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1598,11 +1613,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_SERIAL_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_SERIAL_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1677,7 +1688,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1696,6 +1711,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1706,11 +1722,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_HID_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_HID_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1789,7 +1801,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1808,6 +1824,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1819,12 +1836,8 @@ describe('Asynchronous Actions', () => {
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_DEVICE_UPLOAD,
-        code: err.code,
         details: err.details,
-        name: err.name,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        name: err.name
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1891,7 +1904,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1972,7 +1989,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1991,6 +2012,7 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 deviceModel: 'acme',
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: 5
@@ -2034,10 +2056,7 @@ describe('Asynchronous Actions', () => {
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: ErrorMessages.E_FILE_EXT + ext,
-          code: err.code,
-          version: err.version,
-          debug: err.debug
+          message: ErrorMessages.E_FILE_EXT + ext
         });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
