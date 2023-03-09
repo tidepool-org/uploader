@@ -3807,15 +3807,15 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.3.0-optional-context.1:
-  version "0.3.0-optional-context.1"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.3.0-optional-context.1.tgz#4d06c93129ed48affeaa119e48f898b48d7a4490"
-  integrity sha512-rbk8Bd0wtdYRqa/+YLQtxCkV3RCNxOYhosXeqHYgOFqlU2WFhPnzIBQK04Jozeg+zgBWPQG6sa/fVVf36uKQig==
+ble-glucose@0.3.0-optional-context.2:
+  version "0.3.0-optional-context.2"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.3.0-optional-context.2.tgz#c8c13381dbe1c9adb4d90b0f5f9170711334e70a"
+  integrity sha512-7NPH1DbavRr0lquy1HsaY4CPIuxpERb6kQ6AJenHbtqg67Pczyo8WDK7zNKt6ainqhrwSnV+WOcX3zaBUu53vw==
   dependencies:
     bows "1.7.2"
-    core-js "2.6.10"
+    core-js "2.6.12"
     lodash "4.17.21"
-    sundial "1.6.0"
+    sundial "1.7.0"
 
 block-stream@*, block-stream@0.0.9:
   version "0.0.9"
@@ -11120,13 +11120,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment-timezone@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.4.1.tgz#81f598c3ad5e22cdad796b67ecd8d88d0f5baa06"
-  integrity sha512-5cNPVUwaVJDCe9JM8m/qz17f9SkaI8rpnRUyDJi2K5HAd6EwhuQ3n5nLclZkNC/qJnomKgQH2TIu70Gy2dxFKA==
-  dependencies:
-    moment ">= 2.6.0"
-
 moment-timezone@0.5.37:
   version "0.5.37"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.37.tgz#adf97f719c4e458fdb12e2b4e87b8bec9f4eef1e"
@@ -11134,7 +11127,7 @@ moment-timezone@0.5.37:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.6.0", "moment@>= 2.9.0":
+"moment@>= 2.9.0":
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -15201,13 +15194,6 @@ sumchecker@^3.0.1:
   integrity sha512-MvjXzkz/BOfyVDkG0oFOtBxHX2u3gKbMHIF/dXblZsgD3BWOFLmHovIpZY7BykJdAjcqRCBi1WYBNdEC9yI7vg==
   dependencies:
     debug "^4.1.0"
-
-sundial@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.6.0.tgz#b3bd3f61f3eed78d42723e1e5867052d48fbd1a8"
-  integrity sha512-C3oNJW67wIMvBvYi8lEZ6WIsNoufOBa2/58ure5146QS0ccnJCJ9BV+WkS97ThibFFeQ7iDuWNdEVy5UHCZxPQ==
-  dependencies:
-    moment-timezone "0.4.1"
 
 sundial@1.7.0:
   version "1.7.0"
