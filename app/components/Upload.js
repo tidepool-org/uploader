@@ -23,6 +23,7 @@ import Select from 'react-select';
 
 import sundial from 'sundial';
 import BLE from 'ble-glucose';
+import pako from 'pako';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
@@ -376,20 +377,15 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(_.isArray(data.pages || data.aapPackets)) {
-      /*
-        we currently support binary blobs for Medtronic (.pages) and
-        Libre (.aapPackets)
-      */
-      let filenameBinary = 'binary-blob.json';
-      let jsonDataBinary = JSON.stringify(data, undefined, 4);
-      let blobBinary = new Blob([jsonDataBinary], {type: 'text/json'});
+    if(data.compressed) {
+      let filenameBinary = 'binary-blob.gz';
+      let blobBinary = new Blob([data.compressed], {type: 'application/gzip'});
       let dataHrefBinary = URL.createObjectURL(blobBinary);
       binary_link = (
         <a href={dataHrefBinary}
           className={styles.dataDownloadLink}
           download={filenameBinary}
-          data-downloadurl={['text/json', filenameBinary, dataHrefBinary].join(':')}>
+          data-downloadurl={['application/gzip', filenameBinary, dataHrefBinary].join(':')}>
           Binary blob
         </a>
       );
