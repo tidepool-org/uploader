@@ -232,6 +232,14 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
   },
+  relionplatinum: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'ReliOn Platinum',
+    key: 'relionplatinum',
+    source: {type: 'device', driverId: 'ReliOnPlatinum'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
   relionpremier: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'ReliOn Premier (BLU, Voice & Classic)',
