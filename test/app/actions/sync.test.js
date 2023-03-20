@@ -1468,6 +1468,39 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('bluetoothPairingRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.bluetoothPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate start of a Bluetooth pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_REQUEST]}
+      };
+      expect(sync.bluetoothPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('bluetoothPairingDismissed', () => {
+    test('should be an FSA', () => {
+      let action = sync.dismissedBluetoothPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate dismissing a Bluetooth pairing', () => {
+      const expectedAction = {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_DISMISSED]}
+      };
+      expect(sync.dismissedBluetoothPairingDialog()).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('fetchPatientsForClinicRequest', () => {
     test('should be an FSA', () => {
       let action = sync.fetchPatientsForClinicRequest();

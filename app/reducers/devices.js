@@ -87,8 +87,8 @@ const devices = {
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    // CareSens Bluetooth pairing is tricky; maybe better to wait for Uploader-in-Web
+    // before enabling it in Windows with proper on-screen instructions
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -102,6 +102,13 @@ const devices = {
     name: 'Equil Insulin Patch/Micro Pump',
     key: 'weitai',
     source: {type: 'device', driverId: 'Weitai'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  foracareble: {
+    instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
+    key: 'foracareble',
+    name: 'Fora TN\'G Voice',
+    source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardexpression: {
@@ -201,9 +208,7 @@ const devices = {
     name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),

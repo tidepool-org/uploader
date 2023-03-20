@@ -258,6 +258,17 @@ export function showingAdHocPairingDialog(state = initialState.showingAdHocPairi
   }
 }
 
+export function showingBluetoothPairingDialog(state = initialState.showingBluetoothPairingDialog, action) {
+  switch (action.type) {
+    case types.BLUETOOTH_PAIRING_REQUEST:
+      return { callback: action.payload.callback, cfg: action.payload.cfg };
+    case types.BLUETOOTH_PAIRING_DISMISSED:
+      return initialState.showingBluetoothPairingDialog;
+    default:
+      return state;
+  }
+}
+
 export const clinics = (state = initialState.clinics, action) => {
   switch (action.type) {
     case types.FETCH_PATIENTS_FOR_CLINIC_SUCCESS: {

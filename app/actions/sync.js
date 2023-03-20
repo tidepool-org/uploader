@@ -856,6 +856,21 @@ export function dismissedAdHocPairingDialog() {
   };
 }
 
+export function bluetoothPairingRequest(callback, cfg) {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedBluetoothPairingDialog() {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_DISMISSED,
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_DISMISSED] }
+  };
+}
+
 export function fetchPatientsForClinicRequest() {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,

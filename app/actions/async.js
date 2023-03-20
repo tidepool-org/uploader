@@ -95,6 +95,13 @@ export function doAppInit(opts, servicesToInit) {
     log('Getting OS details.');
     await actionUtils.initOSDetails();
 
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      displayBluetoothModal((response) => {
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
+
     log('Initializing device');
     device.init({
       api,
