@@ -36,7 +36,21 @@
 .text {
   composes: small from '../core/typography.module.less';
   text-align: center;
-  max-width: 260px;
+  width: 100%;
+}
+
+.textRed {
+  composes: small from '../core/typography.module.less';
+  text-align: center;
+  width: 100%;
+  color: #FB5A52;
+}
+
+.body {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
 }
 
 .actions {
