@@ -1,0 +1,73 @@
+/**
+* Copyright (c) 2014, Tidepool Project
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the associated License, which is identical to the BSD 2-Clause
+* License as published by the Open Source Initiative at opensource.org.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the License for more details.
+*
+* You should have received a copy of the License along with this program; if
+* not, you can obtain one from Tidepool Project at tidepool.org.
+*/
+
+@import '../core/variables.less';
+
+.loggedOutPage {
+  composes: page from './App.module.less';
+  width: 488px;
+  background: white;
+  margin-top: auto;
+  border: 1px solid #DFE2E6;
+  border-radius: 4px;
+  padding: 44px;
+}
+
+.form {
+  composes: boxFlex from '../core/layout.module.less';
+  border-color: @purple-light;
+}
+
+.actions {
+  composes: flexRowWrap from '../core/layout.module.less';
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logoWrapper {
+  composes: flexRow from '../core/layout.module.less';
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.logo {
+  width: 227px;
+  height: 24px;
+}
+
+.hr {
+  width: 400px;
+  margin-bottom: 32px;
+  color: #DFE2E6;
+}
+
+.heroText {
+  composes: flexRow from '../core/layout.module.less';
+  composes: medium from '../core/typography.module.less';
+  margin: 15px auto 15px auto;
+}
+
+.explainer {
+  composes: small from '../core/typography.module.less';
+  color: @gray-medium;
+  margin-bottom: 21px;
+}

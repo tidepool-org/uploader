@@ -267,7 +267,20 @@ export function doLogout() {
       dispatch(setPage(pages.LOGIN, actionSources.USER));
     });
   };
+}
+
+export function doLoggedOut() {
+  return (dispatch, getState) => {
+    const { api } = services;
+    dispatch(sync.logoutRequest());
+    api.user.logout((err) => {
+      if (err) {
+        dispatch(sync.logoutFailure());
       }
+      else {
+        dispatch(sync.logoutSuccess());
+      }
+      dispatch(setPage(pages.LOGGED_OUT, actionSources.USER));
     });
   };
 }

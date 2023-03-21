@@ -1373,54 +1373,6 @@ describe('Asynchronous Actions', () => {
     });
   });
 
-  describe('doLogout [no error] with keycloak logout URL', () => {
-    test('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions and set window location', () => {
-      const expectedActions = [
-        {
-          type: actionTypes.LOGOUT_REQUEST,
-          meta: {
-            source: actionSources[actionTypes.LOGOUT_REQUEST],
-            metric: {eventName: metrics.LOGOUT_REQUEST}
-          }
-        },
-        {
-          type: actionTypes.LOGOUT_SUCCESS,
-          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
-        },
-        {
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: {
-            args: [ {
-              pathname: '/login',
-              state: {
-                meta: {source: actionSources.USER}
-              }
-            } ],
-            method: 'push'
-          }
-        }
-      ];
-      __Rewire__('services', {
-        api: {
-          user: {
-            logout: (cb) => cb(null)
-          }
-        }
-      });
-      let winMock = {
-        location: {
-          assign: sinon.stub()
-        }
-      };
-      __Rewire__('win', winMock);
-      const store = mockStore({keycloakConfig: {logoutUrl: 'someLogoutUrl'}});
-      store.dispatch(async.doLogout());
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
-      expect(winMock.location.assign.calledOnceWith('someLogoutUrl')).to.be.true;
-    });
-  });
-
   describe('doLogout [with error]', () => {
     test('should dispatch LOGOUT_REQUEST, LOGOUT_FAILURE, SET_PAGE actions', () => {
       const expectedActions = [
@@ -1462,6 +1414,47 @@ describe('Asynchronous Actions', () => {
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:getLogoutErrorMessage()});
       expectedActions[1].payload = actions[1].payload;
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doLoggedOut', () => {
+    test('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', () => {
+      const expectedActions = [
+        {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        },
+        {
+          type: actionTypes.LOGOUT_SUCCESS,
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/logged_out',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
+            method: 'push'
+          }
+        }
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            logout: (cb) => cb(null)
+          }
+        }
+      });
+      const store = mockStore({keycloakConfig: {}});
+      store.dispatch(async.doLoggedOut());
+      const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
   });
