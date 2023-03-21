@@ -120,8 +120,13 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
       }
       break;
     }
-    default:
+    case ActionTypes.LOGOUT_SUCCESS:
+    case ActionTypes.LOGOUT_FAILURE: {
+      keycloak.clearToken();
+    }
+    default:{
       break;
+    }
   }
   return next(action);
 };

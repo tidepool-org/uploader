@@ -254,9 +254,8 @@ export function doLogin(creds, opts) {
 }
 
 export function doLogout() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const { api } = services;
-    const { keycloakConfig } = getState();
     dispatch(sync.logoutRequest());
     api.user.logout((err) => {
       if (err) {
@@ -266,8 +265,8 @@ export function doLogout() {
         dispatch(sync.logoutSuccess());
       }
       dispatch(setPage(pages.LOGIN, actionSources.USER));
-      if(keycloakConfig.logoutUrl){
-        win?.location.assign(keycloakConfig.logoutUrl);
+    });
+  };
       }
     });
   };
