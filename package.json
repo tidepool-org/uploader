@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.48.1-native-sso.12",
+  "version": "2.48.1-native-sso.13",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
