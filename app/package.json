@@ -12,7 +12,7 @@
   "dependencies": {
     "drivelist": "11.0.0",
     "keytar": "7.9.0",
-    "@ronomon/direct-io": "3.0.1",
+    "@tidepool/direct-io": "3.0.2",
     "usb": "2.4.3"
   }
 }

@@ -14,6 +14,7 @@ import i18n from 'i18next';
 import i18nextBackend from 'i18next-fs-backend';
 import i18nextOptions from './utils/config.i18next';
 import path from 'path';
+import fs from 'fs';
 
 global.i18n = i18n;
 
@@ -51,6 +52,8 @@ const baseURL = fileURL.href;
 let menu;
 let template;
 let mainWindow = null;
+let serialPortFilter = null;
+let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -58,7 +61,8 @@ app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
 // in Chrome 92+, but we can't do this for our Electron setup,
 // so we have to enable it manually
-app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+// Confirm-only Bluetooth pairing is still behind a Chromium flag (up until v108 at least)
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer,WebBluetoothConfirmPairingSupport');
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -69,6 +73,13 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
+  process.env.APPIMAGE = path.join(__dirname, 'release');
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+  Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
 }
 
 app.on('window-all-closed', () => {
@@ -247,7 +258,18 @@ operating system, as soon as possible.`,
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
     event.preventDefault();
     console.log('Port list:', portList);
-    const [selectedPort] = portList;
+
+    let selectedPort;
+    for (let i = 0; i < serialPortFilter.length; i++) {
+      selectedPort = portList.find((element) => 
+        serialPortFilter[i].usbVendorId === parseInt(element.vendorId, 10) &&
+        serialPortFilter[i].usbProductId === parseInt(element.productId, 10)
+      );
+      if (selectedPort) {
+        break; // prioritize according to the order in the driver manifest
+      }
+    }
+
     if (!selectedPort) {
       callback('');
     } else {
@@ -263,6 +285,12 @@ operating system, as soon as possible.`,
     } else {
       callback('');
     }
+  });
+
+  mainWindow.webContents.session.setBluetoothPairingHandler((details, callback) => {
+    bluetoothPinCallback = callback;
+    console.log('Sending bluetooth pairing request to renderer');
+    mainWindow.webContents.send('bluetooth-pairing-request', _.omit(details, ['frame']));
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -551,7 +579,12 @@ autoUpdater.on('checking-for-update', () => {
   }
 });
 
-autoUpdater.on('update-available', (ev, info) => {
+autoUpdater.on('update-available', (info) => {
+  const installDate = _.get(fs.statSync(app.getPath('exe'), { throwIfNoEntry: false }), 'birthtime');
+  if (installDate) {
+    info.installDate = installDate.toISOString();
+  }
+
   sendAction(syncActions.updateAvailable(info));
   /*
   Example `info`
@@ -564,15 +597,15 @@ autoUpdater.on('update-available', (ev, info) => {
    */
 });
 
-autoUpdater.on('update-not-available', (ev, info) => {
+autoUpdater.on('update-not-available', (info) => {
   sendAction(syncActions.updateNotAvailable(info));
 });
 
-autoUpdater.on('error', (ev, err) => {
+autoUpdater.on('error', (err) => {
   sendAction(syncActions.autoUpdateError(err));
 });
 
-autoUpdater.on('update-downloaded', (ev, info) => {
+autoUpdater.on('update-downloaded', (info) => {
   sendAction(syncActions.updateDownloaded(info));
 });
 
@@ -581,6 +614,14 @@ ipcMain.on('autoUpdater', (event, arg) => {
     manualCheck = true;
   }
   autoUpdater[arg]();
+});
+
+ipcMain.on('setSerialPortFilter', (event, arg) => {
+  serialPortFilter = arg;
+});
+
+ipcMain.on('bluetooth-pairing-response', (event, response) => {
+  bluetoothPinCallback(response);
 });
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){

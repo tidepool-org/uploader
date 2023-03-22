@@ -1,0 +1,5 @@
+# easiest way is to just launch `python -m http.server 8080`
+# in a folder that contains the `latest.yml` and installation file
+
+provider: generic
+url: http://127.0.0.1:8080 

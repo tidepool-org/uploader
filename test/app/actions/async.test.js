@@ -1654,11 +1654,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_SERIAL_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_SERIAL_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1767,11 +1763,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_HID_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_HID_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1885,12 +1877,8 @@ describe('Asynchronous Actions', () => {
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_DEVICE_UPLOAD,
-        code: err.code,
         details: err.details,
-        name: err.name,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        name: err.name
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -2109,10 +2097,7 @@ describe('Asynchronous Actions', () => {
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: ErrorMessages.E_FILE_EXT + ext,
-          code: err.code,
-          version: err.version,
-          debug: err.debug
+          message: ErrorMessages.E_FILE_EXT + ext
         });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
