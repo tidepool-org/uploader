@@ -151,7 +151,8 @@ export const KeycloakWrapper = (props) => {
     let url = new URL(`${blipUrl}upload-redirect`);
     return url.href;
   }, [blipUrl]);
-  const [, setHash] = useState(window.location.hash);
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
   const store = useStore();
   const initOptions = useMemo(
     () => ({
@@ -172,7 +173,7 @@ export const KeycloakWrapper = (props) => {
       realm: keycloakConfig.realm,
       clientId: 'tidepool-uploader-sso',
     });
-    setHash(window.location.hash);
+    forceUpdate();
   }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
 
   useEffect(() => {
