@@ -151,8 +151,8 @@ export const KeycloakWrapper = (props) => {
     let url = new URL(`${blipUrl}upload-redirect`);
     return url.href;
   }, [blipUrl]);
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
   const store = useStore();
   const initOptions = useMemo(
     () => ({
