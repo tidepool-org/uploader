@@ -143,6 +143,8 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
   return next(action);
 };
 
+let keyCount = 0;
+
 export const KeycloakWrapper = (props) => {
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
   const blipUrl = useSelector((state) => state.blipUrls.blipUrl);
@@ -167,12 +169,15 @@ export const KeycloakWrapper = (props) => {
   const onTokens = useCallback(onKeycloakTokens(store), [store]);
 
   // watch for hash changes and re-instantiate the authClient and force a re-render of the provider
+  // incrementing externally defined `key` forces unmount/remount as provider doesn't expect to
+  // have the authClient refreshed and only sets up refresh timeout on mount
   const onHashChange = useCallback(() => {
     keycloak = new Keycloak({
       url: keycloakConfig.url,
       realm: keycloakConfig.realm,
       clientId: 'tidepool-uploader-sso',
     });
+    keyCount++;
     forceUpdate();
   }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
 
@@ -190,6 +195,7 @@ export const KeycloakWrapper = (props) => {
         onEvent={onEvent}
         onTokens={onTokens}
         initOptions={initOptions}
+        key={keyCount}
       >
         {props.children}
       </ReactKeycloakProvider>
