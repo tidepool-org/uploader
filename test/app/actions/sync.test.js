@@ -1891,10 +1891,12 @@ describe('Synchronous Actions', () => {
     it('type should equal KEYCLOAK_READY', () => {
       let event = 'onReady';
       let error = null;
-      let action = sync.keycloakReady(event, error);
+      let logoutUrl = 'someLogoutUrl';
+      let action = sync.keycloakReady(event, error, logoutUrl);
       expect(action.type).to.equal('KEYCLOAK_READY');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
+      expect(action.payload.logoutUrl).to.equal(logoutUrl);
     });
   });
 

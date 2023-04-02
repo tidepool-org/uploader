@@ -765,6 +765,14 @@ describe('misc reducers', () => {
         let state = misc.keycloakConfig(initialStateForTest, action);
         expect(state.initialized).to.be.true;
       });
+      it('should set the logoutUrl if provided', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady('ready', null, 'someLogoutUrl');
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+        expect(state.logoutUrl).to.equal('someLogoutUrl');
+      });
     });
 
     describe('keycloakInstantiated', () => {
