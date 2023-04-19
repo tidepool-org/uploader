@@ -162,7 +162,7 @@ export function electronUpdateAvailable(state = initialState.electronUpdateAvail
     case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
       return initialState.electronUpdateAvailable;
     case types.UPDATE_AVAILABLE:
-      return true;
+      return action.payload;
     case types.UPDATE_NOT_AVAILABLE:
       return false;
     default:
@@ -253,6 +253,17 @@ export function showingAdHocPairingDialog(state = initialState.showingAdHocPairi
       return { callback: action.payload.callback, cfg: action.payload.cfg };
     case types.AD_HOC_PAIRING_DISMISSED:
       return initialState.showingAdHocPairingDialog;
+    default:
+      return state;
+  }
+}
+
+export function showingBluetoothPairingDialog(state = initialState.showingBluetoothPairingDialog, action) {
+  switch (action.type) {
+    case types.BLUETOOTH_PAIRING_REQUEST:
+      return { callback: action.payload.callback, cfg: action.payload.cfg };
+    case types.BLUETOOTH_PAIRING_DISMISSED:
+      return initialState.showingBluetoothPairingDialog;
     default:
       return state;
   }
@@ -359,7 +370,8 @@ export const keycloakConfig = (state = initialState.keycloakConfig, action) => {
       return state;
     }
     case types.KEYCLOAK_READY:
-      return _.extend({}, state, { initialized: true });
+      let logoutUrl = _.get(action.payload, 'logoutUrl', false);
+      return _.extend({}, state, { initialized: true, logoutUrl });
     case types.SET_KEYCLOAK_REGISTRATION_URL:
       return _.extend({}, state, { registrationUrl: action.payload.url });
     case types.KEYCLOAK_INSTANTIATED:

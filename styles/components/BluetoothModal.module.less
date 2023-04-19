@@ -1,10 +1,5 @@
 @import '../core/variables.less';
 
-.purpleCentered {
-  color: @purple-dark;
-  text-align: center;
-}
-
 .modalWrap {
   composes: flexRow from '../core/layout.module.less';
   justify-content: center;
@@ -29,28 +24,13 @@
 
 .title {
   composes: small bold from '../core/typography.module.less';
-  padding-top: 10px;
-  padding-bottom: 5px;
+  padding: 10px 10px 5px 10px;
 }
 
 .text {
   composes: small from '../core/typography.module.less';
   text-align: center;
-  width: 100%;
-}
-
-.textRed {
-  composes: small from '../core/typography.module.less';
-  text-align: center;
-  width: 100%;
-  color: #FB5A52;
-}
-
-.body {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
+  max-width: 260px;
 }
 
 .actions {
@@ -65,4 +45,14 @@
 .buttonSecondary {
   composes: btn btnSecondary from '../core/buttons.module.less';
   margin: 6px;
+}
+
+.textInputWrapper {
+  composes: boxFlex from '../core/layout.module.less';
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.textInput {
+  composes: form-control from '../core/forms.less';
 }

@@ -20,6 +20,7 @@ import semver from 'semver';
 import os from 'os';
 import { push } from 'connected-react-router';
 import { checkCacheValid } from 'redux-cache';
+import { ipcRenderer } from 'electron';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -41,6 +42,9 @@ let hostMap = {
   'win32' : 'win',
   'linux': 'linux',
 };
+
+const isBrowser = typeof window !== 'undefined';
+let win = isBrowser ? window : null;
 
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
@@ -76,7 +80,7 @@ function createActionError(usrErrMessage, apiError) {
  */
 
 export function doAppInit(opts, servicesToInit) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
     if (getState().working.initializingApp.inProgress === false) {
@@ -90,6 +94,16 @@ export function doAppInit(opts, servicesToInit) {
 
     dispatch(sync.initializeAppRequest());
     dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
+
+    log('Getting OS details.');
+    await actionUtils.initOSDetails();
+
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      displayBluetoothModal((response) => {
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
 
     log('Initializing device');
     device.init({
@@ -254,12 +268,27 @@ export function doLogout() {
     api.user.logout((err) => {
       if (err) {
         dispatch(sync.logoutFailure());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
       else {
         dispatch(sync.logoutSuccess());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
+      dispatch(setPage(pages.LOGIN, actionSources.USER));
+    });
+  };
+}
+
+export function doLoggedOut() {
+  return (dispatch, getState) => {
+    const { api } = services;
+    dispatch(sync.logoutRequest());
+    api.user.logout((err) => {
+      if (err) {
+        dispatch(sync.logoutFailure());
+      }
+      else {
+        dispatch(sync.logoutSuccess());
+      }
+      dispatch(setPage(pages.LOGGED_OUT, actionSources.USER));
     });
   };
 }
@@ -290,7 +319,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filename = currentUpload.file.name;
     }
 
-    device.detect(driverId, opts, (err, dev) => {
+    device.detect(driverId, opts, async (err, dev) => {
       if (err) {
         let displayErr = new Error(ErrorMessages.E_SERIAL_CONNECTION);
         let deviceDetectErrProps = {
@@ -313,6 +342,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         displayErr.originalError = err;
+        if (process.env.NODE_ENV !== 'test') {
+          deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -334,6 +366,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
+        if (process.env.NODE_ENV !== 'test') {
+          disconnectedErrProps = await actionUtils.sendToRollbar(displayErr, disconnectedErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
@@ -370,6 +405,7 @@ export function doUpload(deviceKey, opts, utc) {
       }));
 
       try {
+        ipcRenderer.send('setSerialPortFilter', filters);
         opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
@@ -415,6 +451,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_HID_CONNECTION',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(hidErr, errProps);
+        }
         return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
@@ -436,6 +475,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_BLUETOOTH_OFF',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(btErr, errProps);
+        }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');

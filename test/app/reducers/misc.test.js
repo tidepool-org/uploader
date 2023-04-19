@@ -302,9 +302,11 @@ describe('misc reducers', () => {
     });
 
     test('should handle UPDATE_AVAILABLE', () => {
+      const payload = {'example':'info'};
       expect(misc.electronUpdateAvailable(undefined, {
-        type: actionTypes.UPDATE_AVAILABLE
-      })).to.be.true;
+        type: actionTypes.UPDATE_AVAILABLE,
+        payload
+      })).to.deep.equal(payload);
     });
 
     test('should handle UPDATE_NOT_AVAILABLE', () => {
@@ -472,6 +474,29 @@ describe('misc reducers', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {
         type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
+    });
+  });
+
+  describe('showingBluetoothPairingDialog', () => {
+    test('should return the initial state', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {})).to.be.null;
+    });
+
+    test('should handle BLUETOOTH_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    test('should handle BLUETOOTH_PAIRING_DISMISSED', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+      })).to.be.null;
     });
   });
 
@@ -739,6 +764,14 @@ describe('misc reducers', () => {
         let action = actions.sync.keycloakReady();
         let state = misc.keycloakConfig(initialStateForTest, action);
         expect(state.initialized).to.be.true;
+      });
+      it('should set the logoutUrl if provided', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady('ready', null, 'someLogoutUrl');
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+        expect(state.logoutUrl).to.equal('someLogoutUrl');
       });
     });
 

@@ -24,6 +24,7 @@ export const pages = {
   CLINIC_USER_SELECT: 'CLINIC_USER_SELECT',
   CLINIC_USER_EDIT: 'CLINIC_USER_EDIT',
   WORKSPACE_SWITCH: 'WORKSPACE_SWITCH',
+  LOGGED_OUT: 'LOGGED_OUT',
 };
 
 export const pagesMap = {
@@ -35,6 +36,7 @@ export const pagesMap = {
   CLINIC_USER_SELECT: '/clinic_user_select',
   CLINIC_USER_EDIT: '/clinic_user_edit',
   WORKSPACE_SWITCH: '/workspace_switch',
+  LOGGED_OUT: '/logged_out'
 };
 
 export const paths = {

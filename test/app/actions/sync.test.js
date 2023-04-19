@@ -25,6 +25,7 @@ import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getCreateCustodialAccountErrorMessage,
   getUpdateProfileErrorMessage,
@@ -660,7 +661,11 @@ describe('Synchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: device.source.type, source: device.source.driverId}
+              properties: {
+                type: device.source.type,
+                source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         };
@@ -682,7 +687,8 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
-                limit: 'all data'
+                limit: 'all data',
+                os: 'BeOS R5.1 (RISC-V)',
               }
             }
           }
@@ -726,6 +732,9 @@ describe('Synchronous Actions', () => {
         post_records: [1,2,3,4,5],
         deviceModel: 'acme'
       };
+
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
+
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);
 
@@ -744,6 +753,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length
@@ -769,6 +779,7 @@ describe('Synchronous Actions', () => {
                 type: device.source.type,
                 deviceModel: 'acme',
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: data.post_records.length,
@@ -814,6 +825,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError
               }
             }
@@ -821,10 +833,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -846,6 +855,7 @@ describe('Synchronous Actions', () => {
               properties: {
                 type: device.source.type,
                 source: device.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: resError,
                 limit: '4 weeks'
               }
@@ -854,10 +864,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -1461,6 +1468,39 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('bluetoothPairingRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.bluetoothPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate start of a Bluetooth pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_REQUEST]}
+      };
+      expect(sync.bluetoothPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('bluetoothPairingDismissed', () => {
+    test('should be an FSA', () => {
+      let action = sync.dismissedBluetoothPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate dismissing a Bluetooth pairing', () => {
+      const expectedAction = {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_DISMISSED]}
+      };
+      expect(sync.dismissedBluetoothPairingDialog()).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('fetchPatientsForClinicRequest', () => {
     test('should be an FSA', () => {
       let action = sync.fetchPatientsForClinicRequest();
@@ -1851,10 +1891,12 @@ describe('Synchronous Actions', () => {
     it('type should equal KEYCLOAK_READY', () => {
       let event = 'onReady';
       let error = null;
-      let action = sync.keycloakReady(event, error);
+      let logoutUrl = 'someLogoutUrl';
+      let action = sync.keycloakReady(event, error, logoutUrl);
       expect(action.type).to.equal('KEYCLOAK_READY');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
+      expect(action.payload.logoutUrl).to.equal(logoutUrl);
     });
   });
 
