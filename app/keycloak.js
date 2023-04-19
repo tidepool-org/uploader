@@ -11,6 +11,16 @@ import { ipcRenderer } from 'electron';
 export let keycloak = null;
 
 let _keycloakConfig = {};
+let refreshTimeout = null;
+
+export const setTokenRefresh = (keycloak) => {
+  if (refreshTimeout) {
+    clearTimeout(refreshTimeout);
+    refreshTimeout = null;
+  }
+  var expiresIn = (keycloak.tokenParsed['exp'] - new Date().getTime() / 1000 + keycloak.timeSkew) * 1000;
+  refreshTimeout = setTimeout(() => { keycloak.updateToken(-1); }, expiresIn - 10000);
+};
 
 const updateKeycloakConfig = (info, store) => {
   if (!_.isEqual(_keycloakConfig, info)) {
@@ -86,6 +96,7 @@ const onKeycloakTokens = (store) => (tokens) => {
     if (!store.getState().loggedInUser) {
       store.dispatch(async.doLogin());
     }
+    setTokenRefresh(keycloak);
   }
 };
 
