@@ -131,7 +131,11 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
         action?.error?.status === 401 ||
         action?.error?.originalError?.status === 401 ||
         action?.error?.status === 403 ||
-        action?.error?.originalError?.status === 403
+        action?.error?.originalError?.status === 403 ||
+        action?.payload?.status === 401 ||
+        action?.payload?.originalError?.status === 401 ||
+        action?.payload?.status === 403 ||
+        action?.payload?.originalError?.status === 403
       ) {
         // on any action with a 401 or 403, we try to refresh to keycloak token to verify
         // if the user is still logged in
