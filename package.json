@@ -145,7 +145,7 @@
     "cross-env": "7.0.3",
     "css-loader": "5.2.7",
     "difflet": "1.0.1",
-    "drivelist": "11.0.0",
+    "drivelist": "11.1.0",
     "electron": "21.3.1",
     "electron-builder": "23.6.0",
     "electron-devtools-installer": "3.2.0",
