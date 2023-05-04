@@ -23,7 +23,7 @@ const updateKeycloakConfig = (info, store) => {
       keycloak = new Keycloak({
         url: info.url,
         realm: info.realm,
-        clientId: 'tidepool-uploader',
+        clientId: 'tidepool-uploader-sso',
       });
       store.dispatch(sync.keycloakInstantiated());
     } else {
@@ -37,7 +37,10 @@ const updateKeycloakConfig = (info, store) => {
 const onKeycloakEvent = (store) => (event, error) => {
   switch (event) {
     case 'onReady': {
-      store.dispatch(sync.keycloakReady(event, error));
+      let logoutUrl = keycloak.createLogoutUrl({
+        redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
+      });
+      store.dispatch(sync.keycloakReady(event, error, logoutUrl));
       break;
     }
     case 'onInitError': {
@@ -62,6 +65,7 @@ const onKeycloakEvent = (store) => (event, error) => {
     }
     case 'onAuthRefreshError': {
       store.dispatch(sync.keycloakAuthRefreshError(event, error));
+      store.dispatch(async.doLoggedOut());
       break;
     }
     case 'onTokenExpired': {
@@ -70,6 +74,7 @@ const onKeycloakEvent = (store) => (event, error) => {
     }
     case 'onAuthLogout': {
       store.dispatch(sync.keycloakAuthLogout(event, error));
+      store.dispatch(async.doLoggedOut());
       break;
     }
     default:
@@ -91,10 +96,6 @@ const onKeycloakTokens = (store) => (tokens) => {
 
 export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
   switch (action.type) {
-    case ActionTypes.LOGOUT_REQUEST: {
-      keycloak?.logout();
-      break;
-    }
     case ActionTypes.FETCH_INFO_SUCCESS: {
       if (!_.isEqual(_keycloakConfig, action.payload?.info?.auth)) {
         updateKeycloakConfig(action.payload?.info?.auth, storeAPI);
@@ -130,37 +131,64 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
       }
       break;
     }
-    default:
+    case ActionTypes.LOGOUT_SUCCESS:
+    case ActionTypes.LOGOUT_FAILURE: {
+      keycloak.clearToken();
+    }
+    default:{
+      if (
+        action?.error?.status === 401 ||
+        action?.error?.originalError?.status === 401 ||
+        action?.error?.status === 403 ||
+        action?.error?.originalError?.status === 403
+      ) {
+        // on any action with a 401 or 403, we try to refresh to keycloak token to verify
+        // if the user is still logged in
+        keycloak.updateToken(-1);
+      }
       break;
+    }
   }
   return next(action);
 };
 
+let keyCount = 0;
+
 export const KeycloakWrapper = (props) => {
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
-  const [, setHash] = useState(window.location.hash);
+  const blipUrl = useSelector((state) => state.blipUrls.blipUrl);
+  const blipRedirect = useMemo(() => {
+    if (!blipUrl) return null;
+    let url = new URL(`${blipUrl}upload-redirect`);
+    return url.href;
+  }, [blipUrl]);
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
   const store = useStore();
   const initOptions = useMemo(
     () => ({
-      onLoad: 'check-sso',
+      checkLoginIframe: false,
       enableLogging: process.env.NODE_ENV === 'development',
-      redirectUri: 'tidepooluploader://localhost/keycloak-redirect'
+      redirectUri: blipRedirect,
     }),
-    []
+    [blipRedirect]
   );
 
   const onEvent = useCallback(onKeycloakEvent(store), [store]);
   const onTokens = useCallback(onKeycloakTokens(store), [store]);
 
   // watch for hash changes and re-instantiate the authClient and force a re-render of the provider
+  // incrementing externally defined `key` forces unmount/remount as provider doesn't expect to
+  // have the authClient refreshed and only sets up refresh timeout on mount
   const onHashChange = useCallback(() => {
     keycloak = new Keycloak({
       url: keycloakConfig.url,
       realm: keycloakConfig.realm,
-      clientId: 'tidepool-uploader',
+      clientId: 'tidepool-uploader-sso',
     });
-    setHash(window.location.hash);
-  }, [keycloakConfig.realm, keycloakConfig.url]);
+    keyCount++;
+    forceUpdate();
+  }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
 
   useEffect(() => {
     window.addEventListener('hashchange', onHashChange, false);
@@ -169,13 +197,14 @@ export const KeycloakWrapper = (props) => {
     };
   }, [onHashChange]);
 
-  if (keycloakConfig.url && keycloakConfig.instantiated) {
+  if (keycloakConfig.url && keycloakConfig.instantiated && blipRedirect) {
     return (
       <ReactKeycloakProvider
         authClient={keycloak}
         onEvent={onEvent}
         onTokens={onTokens}
         initOptions={initOptions}
+        key={keyCount}
       >
         {props.children}
       </ReactKeycloakProvider>

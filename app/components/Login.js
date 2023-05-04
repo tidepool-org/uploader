@@ -78,7 +78,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
-      keycloak.login();
+      window.open(keycloak.createLoginUrl(), '_blank');
     } else {
       dispatch(asyncActions.doLogin({ username, password }, { remember }));
     }

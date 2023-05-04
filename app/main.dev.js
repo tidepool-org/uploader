@@ -46,12 +46,14 @@ console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 const PROTOCOL_PREFIX = 'tidepooluploader';
-const baseURL = `file://${__dirname}/app.html`;
+const fileURL = new URL(`file://${__dirname}/app.html`);
+const baseURL = fileURL.href;
 
 let menu;
 let template;
 let mainWindow = null;
 let serialPortFilter = null;
+let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -59,7 +61,8 @@ app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 // SharedArrayBuffer (used by lzo-wasm) requires cross-origin isolation
 // in Chrome 92+, but we can't do this for our Electron setup,
 // so we have to enable it manually
-app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+// Confirm-only Bluetooth pairing is still behind a Chromium flag (up until v108 at least)
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer,WebBluetoothConfirmPairingSupport');
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
@@ -113,6 +116,11 @@ function addDataPeriodGlobalListener(menu) {
 };
 
 const openExternalUrl = (url) => {
+  // open keycloak in OS default browser
+  if (url.includes('keycloak')) {
+    open(url);
+    return { action: 'deny' };
+  }
   let platform = os.platform();
   let chromeInstalls = chromeFinder[platform]();
   if(chromeInstalls.length === 0){
@@ -144,26 +152,12 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false, // so that we can access process from app.html
-    }
+    },
+    acceptFirstMouse: true,
   });
 
   protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
-    const requestURL = new URL(request.url);
-    if (requestURL.pathname.includes('keycloak-redirect')) {
-      const requestHash = requestURL.hash;
-      const { webContents } = mainWindow;
-      // redirecting from the app html to app html with hash breaks devtools
-      // just send and append the hash if we're already in the app html
-      if (
-        webContents.getURL().includes(baseURL) ||
-        webContents.getURL().startsWith('tidepooluploader')
-      ) {
-        webContents.send('newHash', requestHash);
-      } else {
-        webContents.loadURL(`${baseURL}${requestHash}`);
-      }
-      return;
-    }
+    return handleIncomingUrl(request.url);
   });
 
   remoteMain.enable(mainWindow.webContents);
@@ -190,7 +184,7 @@ function createWindow() {
   });
 
   let setRequestFilter = () => {
-    let urls = ['http://localhost/keycloak-redirect*'];
+    let urls = ['http://localhost/keycloak-redirect*', '*://*/upload-redirect*'];
     if (keycloakUrl && keycloakRealm) {
       urls.push(
         `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
@@ -200,17 +194,8 @@ function createWindow() {
       const requestURL = new URL(request.url);
 
       // capture keycloak sign-in redirect
-      if (requestURL.pathname.includes('keycloak-redirect')) {
-        const requestHash = requestURL.hash;
-        const { webContents } = mainWindow;
-        // redirecting from the app html to app html with hash breaks devtools
-        // just send and append the hash if we're already in the app html
-        if (webContents.getURL().includes(baseURL)) {
-          webContents.send('newHash', requestHash);
-        } else {
-          webContents.loadURL(`${baseURL}${requestHash}`);
-        }
-        return;
+      if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
+        return handleIncomingUrl(request.url);
       }
       // capture keycloak registration navigation
       if (
@@ -300,6 +285,12 @@ operating system, as soon as possible.`,
     } else {
       callback('');
     }
+  });
+
+  mainWindow.webContents.session.setBluetoothPairingHandler((details, callback) => {
+    bluetoothPinCallback = callback;
+    console.log('Sending bluetooth pairing request to renderer');
+    mainWindow.webContents.send('bluetooth-pairing-request', _.omit(details, ['frame']));
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -629,8 +620,16 @@ ipcMain.on('setSerialPortFilter', (event, arg) => {
   serialPortFilter = arg;
 });
 
+ipcMain.on('bluetooth-pairing-response', (event, response) => {
+  bluetoothPinCallback(response);
+});
+
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
+}
+
+if (!app.isDefaultProtocolClient('tidepooluploader')) {
+  app.setAsDefaultProtocolClient('tidepooluploader');
 }
 
 app.on('window-all-closed', () => {
@@ -643,6 +642,49 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+const handleIncomingUrl = (url) => {
+  const requestURL = new URL(url);
+  // capture keycloak sign-in redirect
+  if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
+    const requestHash = requestURL.hash;
+    if(mainWindow){
+      const { webContents } = mainWindow;
+      // redirecting from the app html to app html with hash breaks devtools
+      // just send and append the hash if we're already in the app html
+      if (webContents.getURL().includes(baseURL)) {
+        webContents.send('newHash', requestHash);
+      } else {
+        webContents.loadURL(`${baseURL}${requestHash}`);
+      }
+      return;  
+    }
+    
+  }
+};
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // windows opens a second instance for custom protocol handling
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+
+      let url = getURLFromArgs(commandLine);
+      return handleIncomingUrl(url);
+    }
+  });
+  
+  // Protocol handler for osx
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    return handleIncomingUrl(url);
+  });
+}
 
 function setLanguage() {
   if (process.env.I18N_ENABLED === 'true') {
@@ -664,4 +706,14 @@ function setLanguage() {
       createWindow();
     });
   }
+}
+
+function getURLFromArgs(args) {
+  if (Array.isArray(args) && args.length) {
+    const url = args[args.length - 1];
+    if (url && PROTOCOL_PREFIX && url.startsWith(PROTOCOL_PREFIX)) {
+      return url;
+    }
+  }
+  return undefined;
 }

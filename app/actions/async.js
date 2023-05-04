@@ -51,6 +51,9 @@ let hostMap = {
   'linux': 'linux',
 };
 
+const isBrowser = typeof window !== 'undefined';
+let win = isBrowser ? window : null;
+
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
   if (apiError) {
@@ -102,6 +105,13 @@ export function doAppInit(opts, servicesToInit) {
 
     log('Getting OS details.');
     await actionUtils.initOSDetails();
+
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      displayBluetoothModal((response) => {
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
 
     log('Initializing device');
     device.init({
@@ -266,12 +276,27 @@ export function doLogout() {
     api.user.logout((err) => {
       if (err) {
         dispatch(sync.logoutFailure());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
       else {
         dispatch(sync.logoutSuccess());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
+      dispatch(setPage(pages.LOGIN, actionSources.USER));
+    });
+  };
+}
+
+export function doLoggedOut() {
+  return (dispatch, getState) => {
+    const { api } = services;
+    dispatch(sync.logoutRequest());
+    api.user.logout((err) => {
+      if (err) {
+        dispatch(sync.logoutFailure());
+      }
+      else {
+        dispatch(sync.logoutSuccess());
+      }
+      dispatch(setPage(pages.LOGGED_OUT, actionSources.USER));
     });
   };
 }

@@ -89,7 +89,10 @@ export class Header extends Component {
 
   render() {
     const { allUsers, dropdown, location, keycloakConfig } = this.props;
-    if (location.pathname === pagesMap.LOADING) {
+    if (
+      location.pathname === pagesMap.LOADING ||
+      location.pathname === pagesMap.LOGGED_OUT
+    ) {
       return null;
     }
 
