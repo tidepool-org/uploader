@@ -18,6 +18,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
+import env from '../utils/env';
 
 import actions from '../actions/';
 const asyncActions = actions.async;
@@ -25,6 +26,7 @@ const asyncActions = actions.async;
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
 let i18n = {t:string => string};
+let win = window;
 
 import { keycloak } from '../keycloak';
 
@@ -74,11 +76,15 @@ export const Login = () => {
       </button>
     );
   };
-
+  let redirectUri = win.location.origin;
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
-      window.open(keycloak.createLoginUrl(), '_blank');
+      if (env.electron_renderer) {
+        window.open(keycloak.createLoginUrl(), '_blank');
+      } else {
+        keycloak.login({ redirectUri });
+      }
     } else {
       dispatch(asyncActions.doLogin({ username, password }, { remember }));
     }

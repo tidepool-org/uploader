@@ -24,9 +24,9 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/BluetoothModal.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
-
+// const remote = require('@electron/remote');
+// const i18n = remote.getGlobal( 'i18n' );
+let i18n = {t:string => string};
 export class BluetoothModal extends Component {
   handleContinue = () => {
     const { showingBluetoothPairingDialog, sync } = this.props;
@@ -124,7 +124,7 @@ export class BluetoothModal extends Component {
           </div>
         );
       }
-    }  
+    }
   }
 };
 

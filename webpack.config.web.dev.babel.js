@@ -5,12 +5,19 @@
  */
 
 import webpack from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import merge from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import cp from 'child_process';
 import { spawn } from 'child_process';
 import path from 'path';
+import fs from 'fs';
+import terser from 'terser';
+import optional from 'optional';
+import _ from 'lodash';
+
+const isDev = (process.env.NODE_ENV === 'development');
 
 const VERSION_SHA = process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -26,16 +33,15 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
-  console.log('Using the default environment, which is now production.');
-} else {
-  console.log('***** NOT using the default environment *****');
-  console.log('The default right-click server menu may be incorrect.');
-  console.log('API_URL =', process.env.API_URL);
-  console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
-  console.log('DATA_URL =', process.env.DATA_URL);
-  console.log('BLIP_URL =', process.env.BLIP_URL);
-}
+const apiUrl = _.get(optional('./config/local'), 'environment.API_URL', process.env.API_URL || 'https://api.tidepool.org');
+const uploadUrl = _.get(optional('./config/local'), 'environment.UPLOAD_URL', process.env.UPLOAD_URL || 'https://uploads.tidepool.org');
+const dataUrl = _.get(optional('./config/local'), 'environment.DATA_URL', process.env.DATA_URL || 'https://api.tidepool.org/dataservices');
+const blipUrl = _.get(optional('./config/local'), 'environment.BLIP_URL', process.env.BLIP_URL || 'https://app.tidepool.org');
+
+console.log('API_URL =', apiUrl);
+console.log('UPLOAD_URL =', uploadUrl);
+console.log('DATA_URL =', dataUrl);
+console.log('BLIP_URL =', blipUrl);
 
 export default merge.smart(baseConfig, {
   devtool: 'inline-source-map',//'#cheap-module-source-map',
@@ -229,11 +235,30 @@ export default merge.smart(baseConfig, {
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+      'process.env.API_URL': JSON.stringify(apiUrl),
+      'process.env.UPLOAD_URL': JSON.stringify(uploadUrl),
+      'process.env.DATA_URL': JSON.stringify(dataUrl),
+      'process.env.BLIP_URL': JSON.stringify(blipUrl)
     }),
 
     new webpack.LoaderOptionsPlugin({
       debug: true
     }),
+
+    new CopyWebpackPlugin([
+      {
+        from: 'app/static',
+        transform: (content, path) => {
+          if (isDev || !path.endsWith('js')) {
+           return content;
+          }
+
+          const code = fs.readFileSync(path, 'utf8');
+          const result = terser.minify(code);
+          return result.code;
+        }
+      }
+    ]),
 
     new HtmlWebpackPlugin({
       template: 'app/web.html',

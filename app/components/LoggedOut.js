@@ -8,8 +8,9 @@ import { pages } from '../constants/otherConstants';
 import * as actionSources from '../constants/actionSources';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal('i18n');
+// const remote = require('@electron/remote');
+// const i18n = remote.getGlobal('i18n');
+let i18n = {t:string => string};
 
 export const LoggedOut = () => {
   const dispatch = useDispatch();

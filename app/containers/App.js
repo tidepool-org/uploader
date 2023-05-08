@@ -76,36 +76,30 @@ const serverdata = {
     DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
-  Development: {
-    API_URL: 'https://dev-api.tidepool.org',
-    UPLOAD_URL: 'https://dev-uploads.tidepool.org',
-    DATA_URL: 'https://dev-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://dev-app.tidepool.org'
-  },
-  Staging: {
-    API_URL: 'https://stg-api.tidepool.org',
-    UPLOAD_URL: 'https://stg-uploads.tidepool.org',
-    DATA_URL: 'https://stg-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://stg-app.tidepool.org'
-  },
-  Integration: {
-    API_URL: 'https://int-api.tidepool.org',
-    UPLOAD_URL: 'https://int-uploads.tidepool.org',
-    DATA_URL: 'https://int-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://int-app.tidepool.org'
-  },
-  Production: {
-    API_URL: 'https://api.tidepool.org',
-    UPLOAD_URL: 'https://uploads.tidepool.org',
-    DATA_URL: 'https://api.tidepool.org/dataservices',
-    BLIP_URL: 'https://app.tidepool.org'
+  QA1: {
+    API_URL: 'https://qa1.development.tidepool.org',
+    UPLOAD_URL: 'https://qa1.development.tidepool.org',
+    DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1.development.tidepool.org'
   },
   QA2: {
     API_URL: 'https://qa2.development.tidepool.org',
-    UPLOAD_URL: 'https://int-uploads.tidepool.org',
+    UPLOAD_URL: 'https://qa2.development.tidepool.org',
     DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
-    BLIP_URL: 'https://app-qa2.development.tidepool.org'
-  }
+    BLIP_URL: 'https://qa2.development.tidepool.org'
+  },
+  Integration: {
+    API_URL: 'https://external.integration.tidepool.org',
+    UPLOAD_URL: 'https://external.integration.tidepool.org',
+    DATA_URL: 'https://external.integration.tidepool.org/dataservices',
+    BLIP_URL: 'https://external.integration.tidepool.org'
+  },
+  Production: {
+    API_URL: 'https://api.tidepool.org',
+    UPLOAD_URL: 'https://api.tidepool.org',
+    DATA_URL: 'https://api.tidepool.org/dataservices',
+    BLIP_URL: 'https://app.tidepool.org'
+  },
 };
 
 export class App extends Component {
@@ -120,7 +114,7 @@ export class App extends Component {
     this.log = bows('App');
     let initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
     const selectedEnv = localStore.getItem('selectedEnv');
-    if (selectedEnv) {
+    if (selectedEnv && env.electron) {
       let parsedEnv = JSON.parse(selectedEnv);
       console.log('setting initial server from localstore:', parsedEnv.environment);
       api.setHosts(parsedEnv);
@@ -133,10 +127,10 @@ export class App extends Component {
   }
 
   UNSAFE_componentWillMount(){
-    if(env.electron){
+    if (env.electron) {
       checkVersion(this.props.dispatch);
     }
-    const selectedEnv = localStore.getItem('selectedEnv')
+    const selectedEnv = localStore.getItem('selectedEnv') && env.electron
       ? JSON.parse(localStore.getItem('selectedEnv'))
       : null;
 
@@ -151,50 +145,22 @@ export class App extends Component {
       );
     });
 
+    if (env.electron_renderer) {
+      dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+        if (err) {
+          this.log(`DNS resolver error: ${err}. Retrying...`);
+          dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+            if (!err2) {
+              this.addServers(servers2);
+            }
+          });
+        } else {
+          this.addServers(servers);
+        }
+      });
+    }
 
-
-  if(env.electron_renderer){
-    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      if (err) {
-        this.log(`DNS resolver error: ${err}. Retrying...`);
-        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
-          if (!err2) {
-           this.addServers(servers2);
-          }
-        });
-      } else {
-        this.addServers(servers);
-      }
-    });
-  } else {
-    var servers = [
-      { name: 'localhost', port: 3000, priority: 5, weight: 10 },
-      { name: 'dev1.dev.tidepool.org', port: 443, priority: 5, weight: 10 },
-      {
-        name: 'external.integration.tidepool.org',
-        port: 443,
-        priority: 5,
-        weight: 10,
-      },
-      {
-        name: 'qa1.development.tidepool.org',
-        port: 443,
-        priority: 5,
-        weight: 10,
-      },
-      {
-        name: 'qa2.development.tidepool.org',
-        port: 443,
-        priority: 5,
-        weight: 10,
-      },
-    ];
-    this.addServers(servers);
-    this.setServer({label:'qa2.development.tidepool.org'});
-  }
-
-
-    if(env.electron){
+    if (env.electron) {
       window.addEventListener('contextmenu', this.handleContextMenu, false);
     }
   }

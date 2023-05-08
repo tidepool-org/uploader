@@ -9,7 +9,7 @@ import { Route } from 'react-router-dom';
 import { push } from 'connected-react-router';
 // import { ipcRenderer } from 'electron';
 import { ConnectedRouter } from 'connected-react-router';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 
 import config from '../../lib/config';
 window.DEBUG = config.DEBUG;
@@ -20,7 +20,7 @@ import '..//app.global.css';
 import '../../styles/main.less';
 import { KeycloakWrapper } from '../keycloak';
 
-const history = createHashHistory();
+const history = createBrowserHistory();
 
 const store = configureStore(undefined, history);
 store.dispatch(push('/'));

@@ -1,4 +1,4 @@
-import Keycloak from 'keycloak-js/dist/keycloak.js';
+import Keycloak from 'keycloak-js/dist/keycloak.mjs';
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { useSelector, useStore } from 'react-redux';
@@ -154,7 +154,7 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
 
 let keyCount = 0;
 
-export const KeycloakWrapper = (props) => {
+export const KeycloakElectronWrapper = (props) => {
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
   const blipUrl = useSelector((state) => state.blipUrls.blipUrl);
   const blipRedirect = useMemo(() => {
@@ -213,6 +213,39 @@ export const KeycloakWrapper = (props) => {
     return <React.Fragment>{props.children}</React.Fragment>;
   }
 };
+
+export const KeycloakWebWrapper = (props) => {
+  const keycloakConfig = useSelector((state) => state.keycloakConfig);
+  const store = useStore();
+  let Wrapper = React.Fragment;
+  let wrapperProps = props;
+  const isOauthRedirectRoute = /^(\/upload-redirect)/.test(window?.location?.pathname);
+  if (keycloakConfig?.url && !isOauthRedirectRoute && keycloakConfig?.instantiated) {
+    Wrapper = ReactKeycloakProvider;
+    wrapperProps = {
+      ...wrapperProps,
+
+      authClient: keycloak,
+      onEvent: onKeycloakEvent(store),
+      onTokens: onKeycloakTokens(store),
+      initOptions: {
+        onLoad: 'check-sso',
+        enableLogging: true,
+
+        //redirectUri: blipRedirect,
+        //TODO: might be able to use Iframe/silent sso check if we can get CORP headers served
+        // by envoy on the 3 3rd-party cookie checking html pages. required because we need
+        // SharedArrayBuffer which requires COEP set on our own pages
+        //silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+        checkLoginIframe: false,
+      }
+    };
+  }
+
+  return <Wrapper {...wrapperProps}>{props.children}</Wrapper>;
+};
+
+export const KeycloakWrapper = env.electron ? KeycloakElectronWrapper : KeycloakWebWrapper;
 
 export default {
   keycloak,
