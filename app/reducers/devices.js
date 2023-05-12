@@ -107,7 +107,7 @@ const devices = {
   foracareble: {
     instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
     key: 'foracareble',
-    name: 'Fora TN\'G Voice',
+    name: 'Fora TN\'G Voice (using Bluetooth)',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
   },
