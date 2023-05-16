@@ -34,5 +34,9 @@
   "To manage {{workspace}} workspace and view patient invites, go to": "To manage {{workspace}} workspace and view patient invites, go to",
   "Tidepool Web": "Tidepool Web",
   "Private Workspace": "Private Workspace",
-  "your private": "your private"
+  "your private": "your private",
+  "You have been signed out of your session.": "You have been signed out of your session.",
+  "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.": "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.",
+  "Please sign in again to continue.": "Please sign in again to continue.",
+  "Return to Login": "Return to Login"
 }
