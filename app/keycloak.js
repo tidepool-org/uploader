@@ -16,6 +16,16 @@ if(env.electron_renderer){
 export let keycloak = null;
 
 let _keycloakConfig = {};
+let refreshTimeout = null;
+
+export const setTokenRefresh = (keycloak) => {
+  if (refreshTimeout) {
+    clearTimeout(refreshTimeout);
+    refreshTimeout = null;
+  }
+  var expiresIn = (keycloak.tokenParsed['exp'] - new Date().getTime() / 1000 + keycloak.timeSkew) * 1000;
+  refreshTimeout = setTimeout(() => { keycloak.updateToken(-1); }, expiresIn - 10000);
+};
 
 const updateKeycloakConfig = (info, store) => {
   if (!_.isEqual(_keycloakConfig, info)) {
@@ -91,6 +101,7 @@ const onKeycloakTokens = (store) => (tokens) => {
     if (!store.getState().loggedInUser) {
       store.dispatch(async.doLogin());
     }
+    setTokenRefresh(keycloak);
   }
 };
 
@@ -140,7 +151,11 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
         action?.error?.status === 401 ||
         action?.error?.originalError?.status === 401 ||
         action?.error?.status === 403 ||
-        action?.error?.originalError?.status === 403
+        action?.error?.originalError?.status === 403 ||
+        action?.payload?.status === 401 ||
+        action?.payload?.originalError?.status === 401 ||
+        action?.payload?.status === 403 ||
+        action?.payload?.originalError?.status === 403
       ) {
         // on any action with a 401 or 403, we try to refresh to keycloak token to verify
         // if the user is still logged in
