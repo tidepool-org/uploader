@@ -65,6 +65,7 @@ const initialState = {
   showingDeviceTimePrompt: null,
   isTimezoneFocused: false,
   showingAdHocPairingDialog: false,
+  showingBluetoothPairingDialog: null,
   keycloakConfig: {},
 };
 

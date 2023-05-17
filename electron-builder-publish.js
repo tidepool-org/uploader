@@ -94,7 +94,7 @@ const config = {
   },
   protocols: [{
     name: 'Tidepool Uploader',
-    schemes: ['tidepooluploader'],
+    schemes: ['tidepooluploader', 'tidepoolupload'],
   }],
 };
 

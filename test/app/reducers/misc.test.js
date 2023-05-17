@@ -477,6 +477,29 @@ describe('misc reducers', () => {
     });
   });
 
+  describe('showingBluetoothPairingDialog', () => {
+    test('should return the initial state', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {})).to.be.null;
+    });
+
+    test('should handle BLUETOOTH_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    test('should handle BLUETOOTH_PAIRING_DISMISSED', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+      })).to.be.null;
+    });
+  });
+
   describe('notification', () => {
     const ERR = new Error('This is an error :(');
     let initialStateForTest = initialState.notification;
@@ -741,6 +764,14 @@ describe('misc reducers', () => {
         let action = actions.sync.keycloakReady();
         let state = misc.keycloakConfig(initialStateForTest, action);
         expect(state.initialized).to.be.true;
+      });
+      it('should set the logoutUrl if provided', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady('ready', null, 'someLogoutUrl');
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+        expect(state.logoutUrl).to.equal('someLogoutUrl');
       });
     });
 
