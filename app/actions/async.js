@@ -45,7 +45,7 @@ import localStore from '../../lib/core/localStore';
 let services = { api };
 let versionInfo = {};
 let hostMap = {
-  'MacOS': 'mac', // TODO: check this
+  'macOS': 'mac', // TODO: check this
   'Windows' : 'win',
   'Linux': 'linux',
 };
