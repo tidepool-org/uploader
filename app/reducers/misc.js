@@ -57,9 +57,9 @@ export function devices(state = initialDevices, action) {
       function filterOutUnavailable(os) {
         let filteredDevices = {};
         _.each(state, (device) => {
-          // if (device.enabled[os] === true) {
+          if (device.enabled[os] === true) {
             filteredDevices[device.key] = device;
-          // }
+          }
         });
         return filteredDevices;
       }

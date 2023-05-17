@@ -17,7 +17,6 @@
 
 import _ from 'lodash';
 import semver from 'semver';
-import os from 'os';
 import { push } from 'connected-react-router';
 import { get, set } from 'idb-keyval';
 import sundial from 'sundial';
@@ -46,9 +45,9 @@ import localStore from '../../lib/core/localStore';
 let services = { api };
 let versionInfo = {};
 let hostMap = {
-  'darwin': 'mac',
-  'win32' : 'win',
-  'linux': 'linux',
+  'MacOS': 'mac', // TODO: check this
+  'Windows' : 'win',
+  'Linux': 'linux',
 };
 
 const isBrowser = typeof window !== 'undefined';
@@ -92,7 +91,7 @@ export function doAppInit(opts, servicesToInit) {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
     if (getState().working.initializingApp.inProgress === false) {
-      console.log('App already initialized! Skipping initialization.');
+      log('App already initialized! Skipping initialization.');
       return;
     }
     services = servicesToInit;
@@ -101,7 +100,8 @@ export function doAppInit(opts, servicesToInit) {
     const { api, device, log } = services;
 
     dispatch(sync.initializeAppRequest());
-    dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
+    log('Platform detected:', navigator.userAgentData.platform);
+    dispatch(sync.hideUnavailableDevices(opts.os || hostMap[navigator.userAgentData.platform]));
 
     log('Getting OS details.');
     await actionUtils.initOSDetails();

@@ -748,8 +748,7 @@ export default class Upload extends Component {
 
   isBlockModeFileChosen() {
     const { upload } = this.props;
-    if (_.get(upload, 'source.type', null) !== 'block' &&
-        _.get(upload, 'key', null) !== 'omnipoderos' ) {
+    if (_.get(upload, 'source.type', null) !== 'block') {
       return false;
     }
     else {
