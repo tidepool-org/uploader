@@ -2041,6 +2041,18 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('keycloakReset', () => {
+    it('should be a FSA', () => {
+      let action = sync.keycloakReset();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_RESET', () => {
+      let action = sync.keycloakReset();
+      expect(action.type).to.equal('KEYCLOAK_RESET');
+    });
+  });
+
   describe('fetchInfoRequest', () => {
     it('should be a FSA', () => {
       let action = sync.fetchInfoRequest();

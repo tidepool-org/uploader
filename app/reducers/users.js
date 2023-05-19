@@ -125,9 +125,11 @@ export function loginErrorMessage(state = null, action) {
 export function updateProfileErrorMessage(state = null, action) {
   switch (action.type) {
     case types.UPDATE_PROFILE_FAILURE:
+    case types.UPDATE_CLINIC_PATIENT_FAILURE:
       const err = action.payload;
       return err.message;
     case types.UPDATE_PROFILE_REQUEST:
+    case types.UPDATE_CLINIC_PATIENT_REQUEST:
     case types.SET_UPLOAD_TARGET_USER:
       return null;
     default:
@@ -138,6 +140,7 @@ export function updateProfileErrorMessage(state = null, action) {
 export function updateProfileErrorDismissed(state = null, action) {
   switch (action.type) {
     case types.UPDATE_PROFILE_REQUEST:
+    case types.UPDATE_CLINIC_PATIENT_REQUEST:
     case types.SET_UPLOAD_TARGET_USER:
       return null;
     case types.DISMISS_UPDATE_PROFILE_ERROR:

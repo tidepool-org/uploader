@@ -307,9 +307,24 @@ describe('users', () => {
       })).to.equal(errMsg);
     });
 
+    test('should handle UPDATE_CLINIC_PATIENT_FAILURE', () => {
+      const errMsg = 'Update patient error!';
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_CLINIC_PATIENT_FAILURE,
+        error: true,
+        payload: new Error(errMsg)
+      })).to.equal(errMsg);
+    });
+
     test('should handle UPDATE_PROFILE_REQUEST', () => {
       expect(users.updateProfileErrorMessage(undefined, {
         type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+
+    test('should handle UPDATE_CLINIC_PATIENT_REQUEST', () => {
+      expect(users.updateProfileErrorMessage(undefined, {
+        type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST
       })).to.be.null;
     });
 
@@ -334,6 +349,12 @@ describe('users', () => {
     test('should handle UPDATE_PROFILE_REQUEST', () => {
       expect(users.updateProfileErrorDismissed(undefined, {
         type: actionTypes.UPDATE_PROFILE_REQUEST
+      })).to.be.null;
+    });
+
+    test('should handle UPDATE_CLINIC_PATIENT_REQUEST', () => {
+      expect(users.updateProfileErrorDismissed(undefined, {
+        type: actionTypes.UPDATE_CLINIC_PATIENT_REQUEST
       })).to.be.null;
     });
 
