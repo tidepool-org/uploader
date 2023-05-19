@@ -486,7 +486,7 @@ export default class Upload extends Component {
       disabled = disabled || this.state.medtronic600FormIncomplete;
     }
 
-    if (this.isBlockModeFileChosen()) {
+    if (_.get(upload, 'source.type', null) === 'block') {
       return null;
     }
 

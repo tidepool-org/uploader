@@ -45,7 +45,7 @@ import localStore from '../../lib/core/localStore';
 let services = { api };
 let versionInfo = {};
 let hostMap = {
-  'macOS': 'mac', // TODO: check this
+  'macOS': 'mac',
   'Windows' : 'win',
   'Linux': 'linux',
 };
@@ -91,7 +91,7 @@ export function doAppInit(opts, servicesToInit) {
     // when we are developing with hot reload, we get into trouble if we try to initialize the app
     // when it's already been initialized, so we check the working.initializingApp flag first
     if (getState().working.initializingApp.inProgress === false) {
-      log('App already initialized! Skipping initialization.');
+      console.log('App already initialized! Skipping initialization.');
       return;
     }
     services = servicesToInit;
@@ -678,7 +678,7 @@ export function readFile(userId, deviceKey, file, extension) {
           dispatch(sync.readFileRequest(userId, deviceKey, file.name));
         };
 
-        reader.onerror = onError();
+        reader.onerror = onError;
 
         reader.onloadend = ((theFile) => {
           return (e) => {
