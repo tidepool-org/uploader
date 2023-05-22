@@ -105,7 +105,9 @@ if (env.electron_main) {
 }
 
 if (env.browser) {
-  let period, periodMedtronic600;
+  let period = PERIODS.DELTA;
+  let periodMedtronic600 = PERIODS.DELTA;
+  
   uploadDataPeriod = module.exports = {
     get periodGlobal() {
       return period;
