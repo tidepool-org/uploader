@@ -41,7 +41,7 @@ export default class NoUploadTargets extends Component {
           {isClinicianAccount ? (
             <>
               <a className={styles.linkCentered} href={blipUrl} target="_blank">
-                <div className={styles.buttonCta}>
+                <div className={styles.buttonStandard}>
                   {i18n.t('Set up or join a clinic workspace')}
                 </div>
               </a>
@@ -55,7 +55,7 @@ export default class NoUploadTargets extends Component {
                   href={urls.HOW_TO_CREATE_CLINICIAN_ACCOUNT_KB_ARTICLE}
                   target="_blank"
                 >
-                  {i18n.t('How?')}
+                  {i18n.t('Learn more')}
                 </a>
               </p>
             </>
