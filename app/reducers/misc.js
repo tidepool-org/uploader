@@ -376,6 +376,8 @@ export const keycloakConfig = (state = initialState.keycloakConfig, action) => {
       return _.extend({}, state, { registrationUrl: action.payload.url });
     case types.KEYCLOAK_INSTANTIATED:
       return _.extend({}, state, { instantiated: true });
+    case types.KEYCLOAK_RESET:
+      return _.extend({}, initialState.keycloakConfig);
     default:
       return state;
   }

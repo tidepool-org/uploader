@@ -795,6 +795,16 @@ describe('misc reducers', () => {
         expect(state.registrationUrl).to.equal(url);
       });
     });
+
+    describe('keyckoakReset', () => {
+      it('should reset keycloak state', () => {
+        let initialStateForTest = {registrationUrl: 'some url', instantiated: true};
+
+        let action = actions.sync.keycloakReset();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state).to.deep.equal({});
+      });
+    });
   });
 
 });
