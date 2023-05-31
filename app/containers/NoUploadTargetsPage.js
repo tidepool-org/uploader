@@ -24,10 +24,14 @@ export class NoUploadTargetsPage extends Component {
 
   render() {
     const newPatientLink = _.get(this.props, ['blipUrls', 'newPatient'], '');
+    const blipUrl = _.get(this.props, ['blipUrls', 'blipUrl'], '');
+    const user = _.get(this.props, ['allUsers', this.props.loggedInUser], null);
     return (
       <div>
         <NoUploadTargets
-          newPatientLink={newPatientLink} />
+          blipUrl={blipUrl}
+          newPatientLink={newPatientLink}
+          user={user} />
       </div>
     );
   }
@@ -36,7 +40,9 @@ export class NoUploadTargetsPage extends Component {
 export default connect(
   (state) => {
     return {
+      allUsers: state.allUsers,
       blipUrls: state.blipUrls,
+      loggedInUser: state.loggedInUser,
     };
   }
 )(NoUploadTargetsPage);
