@@ -197,6 +197,7 @@ export class App extends Component {
       api.setHosts(serverinfo);
       localStore.setItem('selectedEnv', JSON.stringify(serverinfo));
 
+      sync.keycloakReset();
       sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD));
       sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP));
       sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT));

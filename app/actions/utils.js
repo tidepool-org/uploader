@@ -140,6 +140,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       return dispatch(syncActions.uploadFailure(displayErr, uploadErrProps, targetDevice));
     }
     const currentUpload = _.get(uploadsByUser, [uploadTargetUser, targetDevice.key], {});
+    debug('Device model used for metrics:', recs.deviceModel);
     dispatch(syncActions.uploadSuccess(uploadTargetUser, targetDevice, currentUpload, recs, utc));
   };
 }

@@ -61,5 +61,6 @@ export const steps = {
 
 export const urls = {
   HOW_TO_UPDATE_KB_ARTICLE: 'http://support.tidepool.org/article/6-how-to-install-or-upgrade-the-tidepool-uploader-gen',
-  HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data'
+  HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data',
+  HOW_TO_CREATE_CLINICIAN_ACCOUNT_KB_ARTICLE: 'https://support.tidepool.org/hc/en-us/articles/9159893429908-Creating-a-new-Clinic-account',
 };

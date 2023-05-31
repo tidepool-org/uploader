@@ -1123,3 +1123,9 @@ export function keycloakInstantiated(){
     type: ActionTypes.KEYCLOAK_INSTANTIATED
   };
 }
+
+export function keycloakReset(){
+  return {
+    type: ActionTypes.KEYCLOAK_RESET
+  };
+}
