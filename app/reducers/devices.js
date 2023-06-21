@@ -15,7 +15,7 @@ const devices = {
     powerOnlyWarning: true,
   },
   abbottfreestylelite: {
-    instructions: i18n.t('Plug in meter with cable'),
+    instructions: i18n.t('Plug cable into meter and then connect cable to computer'),
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
