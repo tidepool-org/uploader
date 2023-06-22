@@ -29,7 +29,13 @@ import devices from '../../../app/reducers/devices';
 
 import { UnsupportedError } from '../../../app/utils/errors';
 
-jest.mock('electron');
+jest.mock('@electron/remote', () => ({
+  getGlobal: (string) => {
+    if (string === 'i18n') {
+        return { t: (string) => string };
+    }
+  }
+}));
 
 describe('misc reducers', () => {
   describe('devices', () => {
@@ -296,9 +302,11 @@ describe('misc reducers', () => {
     });
 
     test('should handle UPDATE_AVAILABLE', () => {
+      const payload = {'example':'info'};
       expect(misc.electronUpdateAvailable(undefined, {
-        type: actionTypes.UPDATE_AVAILABLE
-      })).to.be.true;
+        type: actionTypes.UPDATE_AVAILABLE,
+        payload
+      })).to.deep.equal(payload);
     });
 
     test('should handle UPDATE_NOT_AVAILABLE', () => {
@@ -466,6 +474,29 @@ describe('misc reducers', () => {
       expect(misc.showingAdHocPairingDialog(undefined, {
         type: actionTypes.AD_HOC_PAIRING_DISMISSED,
       })).to.be.false;
+    });
+  });
+
+  describe('showingBluetoothPairingDialog', () => {
+    test('should return the initial state', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {})).to.be.null;
+    });
+
+    test('should handle BLUETOOTH_PAIRING_REQUEST', () => {
+      const callback = () => { };
+      const cfg = { conf: 'object' };
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        payload: { callback, cfg }
+      })).to.deep.equal(
+        { callback, cfg }
+      );
+    });
+
+    test('should handle BLUETOOTH_PAIRING_DISMISSED', () => {
+      expect(misc.showingBluetoothPairingDialog(undefined, {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+      })).to.be.null;
     });
   });
 
@@ -707,4 +738,73 @@ describe('misc reducers', () => {
       });
     });
   });
+
+  describe('keycloakConfig', () => {
+    describe('fetchInfoSuccess', () => {
+      it('should set state to info auth key', () => {
+        let initialStateForTest = {};
+        let info = {
+          auth: {
+            url: 'someUrl',
+            realm: 'anAwesomeRealm',
+          },
+        };
+
+        let action = actions.sync.fetchInfoSuccess(info);
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.url).to.equal('someUrl');
+        expect(state.realm).to.equal('anAwesomeRealm');
+      });
+    });
+
+    describe('keycloakReady', () => {
+      it('should set initialized state to true', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+      });
+      it('should set the logoutUrl if provided', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakReady('ready', null, 'someLogoutUrl');
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.initialized).to.be.true;
+        expect(state.logoutUrl).to.equal('someLogoutUrl');
+      });
+    });
+
+    describe('keycloakInstantiated', () => {
+      it('should set instantiated state to true', () => {
+        let initialStateForTest = {};
+
+        let action = actions.sync.keycloakInstantiated();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.instantiated).to.be.true;
+      });
+    });
+
+    describe('setKeycloakRegistrationUrl', () => {
+      it('should set registration url state', () => {
+        let initialStateForTest = {};
+        let url = 'http://registration.url';
+
+        let action = actions.sync.setKeycloakRegistrationUrl(url);
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state.registrationUrl).to.equal(url);
+      });
+    });
+
+    describe('keyckoakReset', () => {
+      it('should reset keycloak state', () => {
+        let initialStateForTest = {registrationUrl: 'some url', instantiated: true};
+
+        let action = actions.sync.keycloakReset();
+        let state = misc.keycloakConfig(initialStateForTest, action);
+        expect(state).to.deep.equal({});
+      });
+    });
+  });
+
 });

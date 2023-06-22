@@ -26,7 +26,7 @@ import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export class UpdateModal extends Component {
@@ -46,7 +46,40 @@ export class UpdateModal extends Component {
       sync
     } = this.props;
 
-    let title, text, actions;
+    let title, actions, newVersion, newDate, currentVersion, currentDate = 'N/A';
+
+    if (electronUpdateAvailable) {
+      newVersion = electronUpdateAvailable.info.version;
+      newDate = electronUpdateAvailable.info.releaseDate.slice(0, 10);
+      currentVersion = remote.app.getVersion();
+      
+      if (electronUpdateAvailable.info.installDate) {
+        currentDate = electronUpdateAvailable.info.installDate.slice(0, 10);
+      }
+    }
+
+    let text = (
+      <div className={styles.text}>
+        <div className={styles.body}>
+          <div className={styles.text}>
+            {i18n.t('Newest version: {{newVersion}} - released {{newDate}}', { newVersion: newVersion, newDate: newDate })}
+            </div>
+          <div className={styles.textRed}>
+            {i18n.t('Your version: {{currentVersion}} - installed {{currentDate}}', { currentVersion: currentVersion, currentDate: currentDate })}
+          </div>
+        </div>
+        <div className={styles.body}>
+          <a href='http://release.tidepool.org' target='_blank'>{i18n.t('See what\'s new with Tidepool Uploader')}.</a>
+        </div>
+        <div className={styles.body}>
+          {i18n.t('You can continue to use your current version,')}<br/>
+          {i18n.t('but we recommend updating as soon as possible.')}<br/>
+        </div>
+        <div className={styles.body}>
+          {i18n.t('After clicking Install, the uploader will restart to complete the installation.')}
+        </div>
+      </div>
+    );
 
     if(electronUpdateAvailableDismissed){
       return null;
@@ -55,13 +88,13 @@ export class UpdateModal extends Component {
     if (electronUpdateManualChecked) {
       if (checkingElectronUpdate){
         title = i18n.t('Checking for update...');
+        text = 'Please wait';
       } else {
         if (electronUpdateAvailable) {
           title = i18n.t('Update Available!');
           if (!electronUpdateDownloaded) {
             text = i18n.t('Downloading update');
           } else { // available and downloaded
-            text = i18n.t('After clicking Install, the uploader will restart to complete the installation.');
             actions = [
               <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
                 {i18n.t('Dismiss')}
@@ -84,8 +117,7 @@ export class UpdateModal extends Component {
     }
     else { // automatic background check
       if(electronUpdateAvailable && electronUpdateDownloaded){
-        title = i18n.t('Update Available!');
-        text = i18n.t('After clicking Install, the uploader will restart to complete the installation.');
+        title = i18n.t('A new version of Tidepool Uploader is available!');
         actions = [
           <button key='dismiss' className={styles.buttonSecondary} onClick={sync.dismissUpdateAvailable}>
             {i18n.t('Dismiss')}

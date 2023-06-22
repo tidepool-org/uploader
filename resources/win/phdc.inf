@@ -32,11 +32,15 @@ HKR,,Security,,"D:(D;OICI;GA;;;BG)(D;OICI;GA;;;AN)(A;OICI;GRGWGX;;;AU)(A;OICI;GA
 %USB\ACGuide.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D5
 %USB\AvivaConnect.DeviceDesc% = USB_Install, USB\VID_173A&PID_21CF
 %USB\ACGuideMe.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D6
+%USB\ACInstant.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D7
+%USB\ReliOnPlatinum.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D8
 
 [PHDC_Device_WinUSB.NTamd64]
 %USB\ACGuide.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D5
 %USB\AvivaConnect.DeviceDesc% = USB_Install, USB\VID_173A&PID_21CF
 %USB\ACGuideMe.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D6
+%USB\ACInstant.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D7
+%USB\ReliOnPlatinum.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D8
 
 ; =================== Installation ===================
 
@@ -110,6 +114,8 @@ Manufacturer="Roche"
 USB\ACGuide.DeviceDesc="ACCU-CHEK Guide"
 USB\AvivaConnect.DeviceDesc="ACCU-CHEK Aviva Connect"
 USB\ACGuideMe.DeviceDesc="ACCU-CHEK Guide Me"
+USB\ACInstant.DeviceDesc="ACCU-CHEK Instant"
+USB\ReliOnPlatinum.DeviceDesc="ReliOn Platinum"
 WinUSB_SvcDesc="WinUSB Service"
 DISK_NAME="PHDC Driver Install Disk"
 ClassName="PHDC"

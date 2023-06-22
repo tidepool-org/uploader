@@ -34,6 +34,7 @@ import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
+import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -46,6 +47,14 @@ let nonpwd = require('../../lib/fixtures/nonpwd.json');
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
+
+jest.mock('@electron/remote', () => ({
+  getGlobal: (string) => {
+    if (string === 'i18n') {
+        return { t: (string) => string };
+    }
+  }
+}));
 
 describe('Asynchronous Actions', () => {
   afterEach(() => {
@@ -60,9 +69,11 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: false } },
       });
-      store.dispatch(async.doAppInit({}, {}));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      utilsRewireAPI.__Rewire__('initOSDetails', () => {});
+      store.dispatch(async.doAppInit({}, {})).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -154,9 +165,10 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -274,9 +286,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: pwd.memberships.map(user=>user.userid),
       };
       const store = mockStore(state);
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -397,9 +410,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -544,9 +558,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -678,9 +693,10 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -731,11 +747,12 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit));
-      const actions = store.getActions();
-      expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
-      expectedActions[2].payload = actions[2].payload;
-      expect(actions).to.deep.equal(expectedActions);
+      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+        const actions = store.getActions();
+        expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
+        expectedActions[2].payload = actions[2].payload;
+        expect(actions).to.deep.equal(expectedActions);
+      });
     });
   });
 
@@ -763,6 +780,9 @@ describe('Asynchronous Actions', () => {
           },
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -773,9 +793,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: { eventName: metrics.LOGIN_SUCCESS },
           },
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: actionTypes.SET_BLIP_VIEW_DATA_URL,
@@ -837,6 +854,11 @@ describe('Asynchronous Actions', () => {
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -872,7 +894,13 @@ describe('Asynchronous Actions', () => {
           setItem: () => null
         }
       });
-      const store = mockStore({});
+      const store = mockStore({
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
+      });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
         {remember: false}
@@ -908,6 +936,9 @@ describe('Asynchronous Actions', () => {
           },
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -917,9 +948,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -968,6 +996,11 @@ describe('Asynchronous Actions', () => {
         allUsers: {[userObj.user.userid]:userObj.user},
         uploadTargetUser: userObj.user.userid,
         targetUsersForUpload: [],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1002,6 +1035,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1011,9 +1047,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -1056,6 +1089,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1090,6 +1128,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1099,9 +1140,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: actionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST
@@ -1168,6 +1206,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1202,6 +1245,9 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
@@ -1211,9 +1257,6 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
           type: '@@router/CALL_HISTORY_METHOD',
@@ -1274,6 +1317,11 @@ describe('Asynchronous Actions', () => {
       });
       const store = mockStore({
         targetUsersForUpload: ['def456', 'ghi789'],
+        working: {
+          loggingIn: {
+            inProgress: false
+          }
+        }
       });
       store.dispatch(async.doLogin(
         {username: 'jane.doe@me.com', password: 'password'},
@@ -1318,7 +1366,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      const store = mockStore({});
+      const store = mockStore({keycloakConfig: {}});
       store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
@@ -1361,11 +1409,52 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      const store = mockStore({});
+      const store = mockStore({keycloakConfig: {}});
       store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:getLogoutErrorMessage()});
       expectedActions[1].payload = actions[1].payload;
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doLoggedOut', () => {
+    test('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', () => {
+      const expectedActions = [
+        {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        },
+        {
+          type: actionTypes.LOGOUT_SUCCESS,
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/logged_out',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
+            method: 'push'
+          }
+        }
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            logout: (cb) => cb(null)
+          }
+        }
+      });
+      const store = mockStore({keycloakConfig: {}});
+      store.dispatch(async.doLoggedOut());
+      const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1383,6 +1472,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
+      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
@@ -1530,7 +1620,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1549,6 +1643,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1559,11 +1654,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_SERIAL_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_SERIAL_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1638,7 +1729,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1657,6 +1752,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1667,11 +1763,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_HID_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_HID_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1750,7 +1842,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1769,6 +1865,7 @@ describe('Asynchronous Actions', () => {
               properties: {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 error: err
               }
             }
@@ -1780,12 +1877,8 @@ describe('Asynchronous Actions', () => {
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_DEVICE_UPLOAD,
-        code: err.code,
         details: err.details,
-        name: err.name,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        name: err.name
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1852,7 +1945,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1933,7 +2030,11 @@ describe('Asynchronous Actions', () => {
             source: actionSources[actionTypes.UPLOAD_REQUEST],
             metric: {
               eventName: 'Upload Attempted',
-              properties: {type: targetDevice.source.type, source: targetDevice.source.driverId}
+              properties: {
+                type: targetDevice.source.type,
+                source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
+              }
             }
           }
         },
@@ -1952,6 +2053,7 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 deviceModel: 'acme',
                 source: targetDevice.source.driverId,
+                os: 'BeOS R5.1 (RISC-V)',
                 started: time,
                 finished: time,
                 processed: 5
@@ -1995,10 +2097,7 @@ describe('Asynchronous Actions', () => {
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: ErrorMessages.E_FILE_EXT + ext,
-          code: err.code,
-          version: err.version,
-          debug: err.debug
+          message: ErrorMessages.E_FILE_EXT + ext
         });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
@@ -3250,9 +3349,12 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           },
           localStore: {
-            getItem: () => null,
-            removeItem: (item) => null
+
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => null,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3375,11 +3477,9 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
-          }
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3458,11 +3558,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3552,11 +3652,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3629,11 +3729,11 @@ describe('Asynchronous Actions', () => {
         __Rewire__('services', {
           api: {
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3716,11 +3816,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3807,11 +3907,11 @@ describe('Asynchronous Actions', () => {
               }
             },
             makeBlipUrl: blipUrlMaker
-          },
-          localStore: {
-            getItem: () => targets,
-            removeItem: (item) => null
           }
+        });
+        __Rewire__('localStore', {
+          getItem: () => targets,
+          removeItem: (item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -5003,6 +5103,85 @@ describe('Asynchronous Actions', () => {
       expectedActions[1].error = actions[1].error;
       expect(actions).to.eql(expectedActions);
       expect(api.clinics.getClinicsForClinician.callCount).to.equal(1);
+    });
+  });
+
+  describe('fetchInfo', () => {
+    it('should trigger FETCH_INFO_SUCCESS and it should call server.getInfo once for a successful request', () => {
+      const info = {
+        auth: {
+          url: 'someUrl',
+          realm: 'awesomeRealm',
+        }
+      };
+
+      __Rewire__('services', {
+        api: {
+          upload: {
+            getInfo: sinon.stub().callsArgWith(0, null, info),
+          },
+        },
+      });
+
+      let expectedActions = [
+        { type: 'FETCH_INFO_REQUEST',  meta: {source: actionSources[actionTypes.FETCH_INFO_REQUEST]} },
+        {
+          type: 'FETCH_INFO_SUCCESS',
+          payload: { info },
+          meta: {source: actionSources[actionTypes.FETCH_INFO_SUCCESS]}
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore(initialState);
+      store.dispatch(
+        async.fetchInfo()
+      );
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+    });
+
+    it('should trigger FETCH_INFO_FAILURE and it should call error once for a failed request', () => {
+
+      __Rewire__('services', {
+        api: {
+          upload: {
+            getInfo: sinon
+            .stub()
+            .callsArgWith(0, { status: 500, body: 'Error!' }, null),
+          },
+        },
+      });
+
+      let err = new Error(ErrorMessages.ERR_FETCHING_INFO);
+      err.status = 500;
+
+      let expectedActions = [
+        { type: 'FETCH_INFO_REQUEST',  meta: {source: actionSources[actionTypes.FETCH_INFO_REQUEST]} },
+        {
+          type: 'FETCH_INFO_FAILURE',
+          error: true,
+          payload: err,
+          meta: { source: actionSources[actionTypes.FETCH_INFO_FAILURE] },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+      let store = mockStore(initialState);
+      store.dispatch(
+        async.fetchInfo()
+      );
+
+      const actions = store.getActions();
+      expect(actions[1].payload).to.deep.include({
+        message: ErrorMessages.ERR_FETCHING_INFO,
+      });
+      expectedActions[1].payload = actions[1].payload;
+      expect(actions).to.eql(expectedActions);
     });
   });
 

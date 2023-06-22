@@ -24,6 +24,7 @@ export const pages = {
   CLINIC_USER_SELECT: 'CLINIC_USER_SELECT',
   CLINIC_USER_EDIT: 'CLINIC_USER_EDIT',
   WORKSPACE_SWITCH: 'WORKSPACE_SWITCH',
+  LOGGED_OUT: 'LOGGED_OUT',
 };
 
 export const pagesMap = {
@@ -35,6 +36,7 @@ export const pagesMap = {
   CLINIC_USER_SELECT: '/clinic_user_select',
   CLINIC_USER_EDIT: '/clinic_user_edit',
   WORKSPACE_SWITCH: '/workspace_switch',
+  LOGGED_OUT: '/logged_out'
 };
 
 export const paths = {
@@ -59,5 +61,6 @@ export const steps = {
 
 export const urls = {
   HOW_TO_UPDATE_KB_ARTICLE: 'http://support.tidepool.org/article/6-how-to-install-or-upgrade-the-tidepool-uploader-gen',
-  HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data'
+  HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data',
+  HOW_TO_CREATE_CLINICIAN_ACCOUNT_KB_ARTICLE: 'https://support.tidepool.org/hc/en-us/articles/9159893429908-Creating-a-new-Clinic-account',
 };

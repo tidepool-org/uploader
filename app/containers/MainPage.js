@@ -31,7 +31,8 @@ import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
-import { remote } from 'electron';
+import { checkTimezoneName } from 'sundial';
+const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
@@ -193,12 +194,19 @@ export class MainPage extends Component {
 export default connect(
   (state) => {
     function getSelectedTimezone(state) {
-      return _.get(
+      const timezone =  _.get(
         state,
         ['targetTimezones', state.uploadTargetUser],
         // fall back to the timezone stored under 'noUserSelected', if any
         _.get(state, ['targetTimezones', 'noUserSelected'], null)
       );
+
+      try {
+        checkTimezoneName(timezone);
+      } catch (err) {
+        return null;
+      }
+      return timezone;
     }
     function getActiveUploads(state) {
       const { devices, uploadsByUser, uploadTargetUser } = state;

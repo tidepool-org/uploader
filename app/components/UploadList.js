@@ -24,7 +24,7 @@ import Upload from './Upload';
 
 import styles from '../../styles/components/UploadList.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 export default class UploadList extends Component {
@@ -42,7 +42,6 @@ export default class UploadList extends Component {
     onReset: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     readFile: PropTypes.func.isRequired,
-    toggleErrorDetails: PropTypes.func.isRequired,
     updateProfileErrorMessage: PropTypes.string,
     onChooseDevices: PropTypes.func.isRequired,
     timezoneIsSelected: PropTypes.bool.isRequired,
@@ -54,8 +53,6 @@ export default class UploadList extends Component {
 
   static defaultProps = {
     text: {
-      SHOW_ERROR : i18n.t('Error details'),
-      HIDE_ERROR : i18n.t('Hide details'),
       UPLOAD_FAILED : i18n.t('Upload Failed')
     }
   };
@@ -122,34 +119,27 @@ export default class UploadList extends Component {
   }
 
   renderErrorForUpload(upload) {
-    const { targetId, toggleErrorDetails } = this.props;
+    const { targetId } = this.props;
     if (_.isEmpty(upload) || _.isEmpty(upload.error)) {
       return null;
     }
-    const errorDetails = upload.showErrorDetails ?
-      (<div>{upload.error.debug}</div>) : null;
+    const errorDetails = (<div>{upload.error.debug}</div>);
     const errorMessage = (
       <div className={styles.errorMessageWrapper}>
         <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}: </span>
         <span className={styles.errorMessageFriendly}>{i18n.t(upload.error.message)}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
       </div>
     );
-    const showErrorsText = upload.showErrorDetails ? this.props.text.HIDE_ERROR : this.props.text.SHOW_ERROR;
-
-    function makeToggleDetailsFn() {
-      return function(e) {
-        if (e) {
-          e.preventDefault();
-        }
-        toggleErrorDetails(targetId, upload.key, upload.showErrorDetails);
-      };
+    let rollbarUUID = null;
+    if (!_.isEmpty(upload.error.uuid)) {
+      rollbarUUID = (<div className={styles.errorTextTiny}>Rollbar UUID: {upload.error.uuid}</div>);
     }
 
     return (
       <div className={styles.errorItem}>
         {errorMessage}
-        <div><a className={styles.errorTextLink} href="" onClick={makeToggleDetailsFn()}>{showErrorsText}</a></div>
         {errorDetails}
+        {rollbarUUID}
       </div>
     );
   }

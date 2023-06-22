@@ -25,10 +25,10 @@ var personUtils = require('../../lib/core/personUtils');
 var metrics = require('../constants/metrics');
 
 var styles = require('../../styles/components/ClinicUserSelect.module.less');
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 import api from '../../lib/core/api';
@@ -93,7 +93,7 @@ class ClinicUserSelect extends React.Component {
     this.setState({
       clinicDropdownOpen: !this.state.clinicDropdownOpen
     });
-  }
+  };
 
   handleSwitchClinic = (clinic) => {
     this.setState({
@@ -103,12 +103,12 @@ class ClinicUserSelect extends React.Component {
     api.metrics.track(metrics.WORKSPACE_GO_TO_SWITCHER, {
       clinicId: clinic.id,
     });
-  }
+  };
 
   handleSwitchToPrivate = (e) => {
     e.preventDefault();
     this.props.goToPrivateWorkspace();
-  }
+  };
 
   handleWorkspaceSwitch = (e) => {
     e.preventDefault();
@@ -117,14 +117,14 @@ class ClinicUserSelect extends React.Component {
       : {};
     api.metrics.track(metrics.WORKSPACE_TEXT_CHANGE, metricProps);
     this.props.onGoToWorkspaceSwitch();
-  }
+  };
 
   handleTidepoolWebLink = (e) => {
     const metricProps = this.props.selectedClinicId
       ? { clinicId: this.props.selectedClinicId }
       : {};
     api.metrics.track(metrics.WORKSPACE_GO_TO_TIDEPOOL_WEB, metricProps);
-  }
+  };
 
   valueRenderer = (option) => {
     var user, name, bday, mrn, formattedBday, formattedMrn, patient;
@@ -312,7 +312,7 @@ class ClinicUserSelect extends React.Component {
         );
       }
     }
-  }
+  };
 
   renderWebOrSwitchLink = () => {
     const {clinics, selectedClinicId} = this.props;
@@ -345,7 +345,7 @@ class ClinicUserSelect extends React.Component {
         </div>
       );
     }
-  }
+  };
 
   renderPrivateWorkspaceLink = () => {
     const {loggedInUser, allUsers, selectedClinicId} = this.props;
@@ -360,7 +360,7 @@ class ClinicUserSelect extends React.Component {
         </div>
       );
     }
-  }
+  };
 
   render() {
     return (

@@ -24,6 +24,7 @@ import Select from 'react-select';
 import sundial from 'sundial';
 import keytar from 'keytar';
 import BLE from 'ble-glucose';
+import pako from 'pako';
 
 import LoadingBar from './LoadingBar';
 import ProgressBar from './ProgressBar';
@@ -34,7 +35,7 @@ import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
 
 import styles from '../../styles/components/Upload.module.less';
 
-import { remote } from 'electron';
+const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
@@ -187,7 +188,7 @@ export default class Upload extends Component {
       return this.handleMedtronic600Upload();
     }
 
-    if (device === 'caresensble' || device === 'onetouchverioble') {
+    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble') {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 
@@ -346,20 +347,15 @@ export default class Upload extends Component {
     }
 
     let binary_link = null;
-    if(_.isArray(data.pages || data.aapPackets)) {
-      /*
-        we currently support binary blobs for Medtronic (.pages) and
-        Libre (.aapPackets)
-      */
-      let filenameBinary = 'binary-blob.json';
-      let jsonDataBinary = JSON.stringify(data, undefined, 4);
-      let blobBinary = new Blob([jsonDataBinary], {type: 'text/json'});
+    if(data.compressed) {
+      let filenameBinary = 'binary-blob.gz';
+      let blobBinary = new Blob([data.compressed], {type: 'application/gzip'});
       let dataHrefBinary = URL.createObjectURL(blobBinary);
       binary_link = (
         <a href={dataHrefBinary}
           className={styles.dataDownloadLink}
           download={filenameBinary}
-          data-downloadurl={['text/json', filenameBinary, dataHrefBinary].join(':')}>
+          data-downloadurl={['application/gzip', filenameBinary, dataHrefBinary].join(':')}>
           Binary blob
         </a>
       );
