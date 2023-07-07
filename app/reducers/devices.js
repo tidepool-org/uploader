@@ -9,7 +9,7 @@ const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
+    name: 'Abbott FreeStyle Libre & Libre Pro',
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
@@ -73,7 +73,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual & N Plus BT',
+    name: 'CareSens N Premier, Dual, N Plus BT & Pro',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
