@@ -90,7 +90,7 @@
     "source-map-support": "0.5.21",
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
-    "sundial": "1.7.0",
+    "sundial": "1.7.1",
     "tidepool-platform-client": "0.51.1",
     "usb-cdc-acm": "0.1.1",
     "uuid": "9.0.0",

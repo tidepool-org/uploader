@@ -11692,7 +11692,14 @@ moment-timezone@0.5.37:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0":
+moment-timezone@0.5.43:
+  version "0.5.43"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.43.tgz#3dd7f3d0c67f78c23cd1906b9b2137a09b3c4790"
+  integrity sha512-72j3aNyuIsDxdF1i7CEgV2FfxM1r6aaqJyLB2vwb33mXYyoyLly+F1zbWqhA3/bVIoJ4szlUoMbUnVdid32NUQ==
+  dependencies:
+    moment "^2.29.4"
+
+"moment@>= 2.9.0", moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -15791,6 +15798,13 @@ sundial@1.7.0:
   integrity sha512-XAniZ1lSJWMtG4vcsuXVpZdMfJ1JW6KGV5uGFj5h0hpG61juM33Dy39MNV9DTSaiZ87x8j479gWj3uWsSj3V2Q==
   dependencies:
     moment-timezone "0.5.37"
+
+sundial@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.1.tgz#f6b3ebc0ce44fe401756178282214bdb5d1ffa70"
+  integrity sha512-CqnOSZo+qYZ5WAS2Selc+uN1Lj1mY5LjRkJ6DubELTJZl6JVO94VRHckSQXbedi6YBgxZMIkl4fI0jqH0oclag==
+  dependencies:
+    moment-timezone "0.5.43"
 
 superagent@5.2.2:
   version "5.2.2"
