@@ -10474,6 +10474,11 @@ jmespath@0.16.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.16.0.tgz#b15b0a85dfd4d930d43e69ed605943c802785076"
   integrity sha512-9FzQjJ7MATs1tSpnco1K6ayiYE3figslrXA72G2HQ/n76RzvYlofyi5QM+iX4YRs/pu3yzxlVQSST23+dMDknw==
 
+jose@4.14.4:
+  version "4.14.4"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.14.4.tgz#59e09204e2670c3164ee24cbfe7115c6f8bff9ca"
+  integrity sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==
+
 js-message@1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.7.tgz#fbddd053c7a47021871bb8b2c95397cc17c20e47"
@@ -10770,10 +10775,10 @@ keyboardevents-areequal@^0.2.1:
   resolved "https://registry.yarnpkg.com/keyboardevents-areequal/-/keyboardevents-areequal-0.2.2.tgz#88191ec738ce9f7591c25e9056de928b40277194"
   integrity sha512-Nv+Kr33T0mEjxR500q+I6IWisOQ0lK1GGOncV0kWE6n4KFmpcu7RUX5/2B0EUtX51Cb0HjZ9VJsSY3u4cBa0kw==
 
-keycloak-js@20.0.1:
-  version "20.0.1"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-20.0.1.tgz#3f73499a6b071d096f82ab74257b1b7429f53c8c"
-  integrity sha512-YNj0X0mmdLpqjB9W5DTAVDI14CzZs7RFn9T/t/g8Uq80OjaW2zZUis/g73aWwz04S3B6U6Vrg8h1wAMGbx2NQQ==
+keycloak-js@22.0.1:
+  version "22.0.1"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-22.0.1.tgz#7c7a14ddad6103f7675d1ea068e09606628e25bd"
+  integrity sha512-5cwOzMTMW2HuKGaIHv50BJHz2o8ID+YgzaaXKNwOk0XqD6ZOPD/jQXvqTz+Z8ID5cP46zVWnNiTouFK41NbPOQ==
   dependencies:
     base64-js "^1.5.1"
     js-sha256 "^0.9.0"
@@ -16911,8 +16916,10 @@ watchpack@^1.7.4:
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
+    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
