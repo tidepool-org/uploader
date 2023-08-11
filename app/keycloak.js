@@ -219,8 +219,6 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
   return next(action);
 };
 
-let hashChanges = [];
-
 let keyCount = 0;
 
 export const KeycloakWrapper = (props) => {
@@ -250,10 +248,9 @@ export const KeycloakWrapper = (props) => {
   // incrementing externally defined `key` forces unmount/remount as provider doesn't expect to
   // have the authClient refreshed and only sets up refresh timeout on mount
   const onHashChange = useCallback(() => {
-    // we only want to do this once per hash since people can hit the launch button multiple times
-    if (!hashChanges.includes(window.location.hash)) {
-      hashChanges.push(window.location.hash);
-
+    // we only want to do this when unauthenticated since people can hit the
+    // launch button multiple times
+    if (!keycloak?.authenticated) {
       keycloak = new Keycloak({
         url: keycloakConfig.url,
         realm: keycloakConfig.realm,
