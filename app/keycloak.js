@@ -42,7 +42,10 @@ const updateKeycloakConfig = (info, store) => {
   }
 };
 
+let latestKeycloakEvent = null;
+
 const onKeycloakEvent = (store) => (event, error) => {
+  latestKeycloakEvent = event;
   switch (event) {
     case 'onReady': {
       let logoutUrl = keycloak.createLogoutUrl({
@@ -116,7 +119,7 @@ const onKeycloakTokens = (store) => (tokens) => {
       if (tokens.token !== keycloak?.token) {
         if (rollbar) {
           rollbar.info('keycloak token mismatch', {
-            keycloakToken: jose.decodeJwt(keycloak?.token),
+            keycloakToken: keycloak?.token ? jose.decodeJwt(keycloak?.token) : {},
             tokensToken: tokenParsed,
           });
         }
@@ -137,6 +140,17 @@ const onKeycloakTokens = (store) => (tokens) => {
       return;
     }
   } else {
+    const expectedEvents = [
+      'onReady',
+      'onAuthLogout',
+      'onAuthRefreshError',
+      'onAuthError',
+      'onInitError'
+    ];
+    if (expectedEvents.includes(latestKeycloakEvent)) {
+      return;
+    }
+
     // if we don't have a token, we can't save the session
     if(rollbar) {
       rollbar.error('keycloak token missing', {
@@ -234,13 +248,17 @@ export const KeycloakWrapper = (props) => {
   // incrementing externally defined `key` forces unmount/remount as provider doesn't expect to
   // have the authClient refreshed and only sets up refresh timeout on mount
   const onHashChange = useCallback(() => {
-    keycloak = new Keycloak({
-      url: keycloakConfig.url,
-      realm: keycloakConfig.realm,
-      clientId: 'tidepool-uploader-sso',
-    });
-    keyCount++;
-    forceUpdate();
+    // we only want to do this when unauthenticated since people can hit the
+    // launch button multiple times
+    if (!keycloak?.authenticated) {
+      keycloak = new Keycloak({
+        url: keycloakConfig.url,
+        realm: keycloakConfig.realm,
+        clientId: 'tidepool-uploader-sso',
+      });
+      keyCount++;
+      forceUpdate();
+    }
   }, [keycloakConfig.realm, keycloakConfig.url, blipRedirect]);
 
   useEffect(() => {
@@ -249,6 +267,16 @@ export const KeycloakWrapper = (props) => {
       window.removeEventListener('hashchange', onHashChange, false);
     };
   }, [onHashChange]);
+
+  // clear the refresh timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshTimeout) {
+        clearTimeout(refreshTimeout);
+        refreshTimeout = null;
+      }
+    };
+  }, []);
 
   if (keycloakConfig.url && keycloakConfig.instantiated && blipRedirect) {
     return (
