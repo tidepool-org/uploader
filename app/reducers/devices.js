@@ -265,7 +265,7 @@ const devices = {
     powerOnlyWarning: true,
   },
   truemetrix: {
-    instructions: i18n.t('True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
+    instructions: i18n.t('True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
