@@ -1193,6 +1193,59 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
       } else {
         dispatch(sync.getClinicsForClinicianSuccess(clinics, clinicianId, options));
       }
+      console.log('clinics', clinics);
+      // fetch EHR and MRN settings for clinics
+      _.each(clinics, (clinic) => {
+        console.log('fetching settings for clinic', clinic.clinic.id);
+        dispatch(fetchClinicEHRSettings(api, clinic.clinic.id));
+        dispatch(fetchClinicMRNSettings(api, clinic.clinic.id));
+      });
+    });
+  };
+}
+
+/**
+ * Fetch Clinic MRN Settings Action Creator
+ *
+ * @param {Object} api - an instance of the API wrapper
+ * @param {String} clinicId - Id of the clinic
+ */
+export function fetchClinicMRNSettings(api, clinicId) {
+  return (dispatch) => {
+    console.log('fetching MRN settings for clinic', clinicId);
+    dispatch(sync.fetchClinicMRNSettingsRequest());
+
+    api.clinics.getMRNSettings(clinicId, (err, settings) => {
+      if (err) {
+        dispatch(sync.fetchClinicMRNSettingsFailure(
+          createActionError(ErrorMessages.ERR_FETCHING_CLINIC_MRN_SETTINGS, err), err
+        ));
+      } else {
+        dispatch(sync.fetchClinicMRNSettingsSuccess(clinicId, settings));
+      }
+    });
+  };
+}
+
+/**
+ * Fetch Clinic EHR Settings Action Creator
+ *
+ * @param {Object} api - an instance of the API wrapper
+ * @param {String} clinicId - Id of the clinic
+ */
+export function fetchClinicEHRSettings(api, clinicId) {
+  return (dispatch) => {
+    console.log('fetching EHR settings for clinic', clinicId);
+    dispatch(sync.fetchClinicEHRSettingsRequest());
+
+    api.clinics.getEHRSettings(clinicId, (err, settings) => {
+      if (err) {
+        dispatch(sync.fetchClinicEHRSettingsFailure(
+          createActionError(ErrorMessages.ERR_FETCHING_CLINIC_EHR_SETTINGS, err), err
+        ));
+      } else {
+        dispatch(sync.fetchClinicEHRSettingsSuccess(clinicId, settings));
+      }
     });
   };
 }
