@@ -66,7 +66,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual, N Plus BT, Pro & N (model GM505PAD only)',
+    name: 'CareSens N Premier, Dual, N Plus BT, Pro & N (model GM505PAD)',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
