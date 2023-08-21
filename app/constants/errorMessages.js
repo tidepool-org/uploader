@@ -36,6 +36,7 @@ module.exports = {
   E_SERVER_ERR: 'Sorry, the Tidepool servers appear to be down',
   E_UPLOAD_IN_PROGRESS: 'Sorry, an upload is already in progress',
   E_UNPLUG_AND_RETRY: 'Please unplug device and try again',
+  E_UNPLUG_CABLE_AND_RETRY: 'Please unplug cable from computer and try again',
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
   E_LIBRE2_UNSUPPORTED: 'Uploading Libre 2 data?',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',

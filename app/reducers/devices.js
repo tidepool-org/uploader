@@ -1,3 +1,4 @@
+import os from 'os';
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 const remote = require('@electron/remote');
@@ -8,17 +9,17 @@ const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
+    name: 'Abbott FreeStyle Libre & Libre Pro',
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   abbottfreestylelite: {
-    instructions: i18n.t('Plug in meter with cable'),
+    instructions: i18n.t('Plug cable into meter and then connect cable to computer'),
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
-    enabled: {mac: false, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   abbottfreestyleneo: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -65,7 +66,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual & N Plus BT',
+    name: 'CareSens N Premier, Dual, N Plus BT & Pro',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
@@ -271,5 +272,13 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
 };
+
+if (navigator.userAgentData.platform === 'macOS') {
+  devices.abbottfreestylelite.instructions = {
+    text: i18n.t('Plug in meter with'),
+    linkText: i18n.t('EZSync002B cable'),
+    link: 'https://purenitetech.com/product/ezsync002b/',
+  };
+}
 
 export default devices;
