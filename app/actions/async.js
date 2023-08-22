@@ -1193,7 +1193,6 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
       } else {
         dispatch(sync.getClinicsForClinicianSuccess(clinics, clinicianId, options));
       }
-      console.log('clinics', clinics);
       // fetch EHR and MRN settings for clinics
       _.each(clinics, (clinic) => {
         console.log('fetching settings for clinic', clinic.clinic.id);
@@ -1212,7 +1211,6 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
  */
 export function fetchClinicMRNSettings(api, clinicId) {
   return (dispatch) => {
-    console.log('fetching MRN settings for clinic', clinicId);
     dispatch(sync.fetchClinicMRNSettingsRequest());
 
     api.clinics.getMRNSettings(clinicId, (err, settings) => {
@@ -1235,7 +1233,6 @@ export function fetchClinicMRNSettings(api, clinicId) {
  */
 export function fetchClinicEHRSettings(api, clinicId) {
   return (dispatch) => {
-    console.log('fetching EHR settings for clinic', clinicId);
     dispatch(sync.fetchClinicEHRSettingsRequest());
 
     api.clinics.getEHRSettings(clinicId, (err, settings) => {
