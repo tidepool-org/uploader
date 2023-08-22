@@ -43,13 +43,6 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true, linux: true}
   },
-  animas: {
-    instructions: i18n.t('Suspend and align back of pump with IR dongle front'),
-    key: 'animas',
-    name: 'Animas',
-    source: {type: 'device', driverId: 'Animas'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
