@@ -4219,10 +4219,10 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.4.0.tgz#68f995ad7ccf9d55384d6d8e696c411af4d866a0"
-  integrity sha512-g/shuFXNGHG37ktgoQC/cdbWPN2HkTve71M1h+1m6NjAfPw2gPBhZdUVSwilIe3YGSI/rw/S46zaVZdN9/AYuA==
+ble-glucose@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.5.0.tgz#02a5907b8e063e444e9a24f913987bbcd776c42b"
+  integrity sha512-GBMRg+I8pDonoa1juE9UYSc2XOhtAW3p0imII43h94REE/AdW2VixhC00Zq2ut5f8m/isFSx431SsdTbKGpIow==
   dependencies:
     bows "1.7.2"
     core-js "2.6.12"
@@ -16916,10 +16916,8 @@ watchpack@^1.7.4:
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
-    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
-    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
