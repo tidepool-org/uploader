@@ -20,8 +20,8 @@ Download the signed drivers from the hardware portal and replace the existing dr
 
 ### Verify that drivers are correctly signed:
 
-	signtool verify /kp /v /c tidepoolvcp.cat amd64\ftser2k.sys
-	signtool verify /kp /v /c tidepoolvcp.cat i386\ftser2k.sys
+	signtool verify /kp /v /c ftdiport.cat amd64\ftser2k.sys
+	signtool verify /kp /v /c ftdiport.cat i386\ftser2k.sys
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\silabser.sys
 	signtool verify /kp /v /c tidepoolvcp.cat i386\silabser.sys
 	signtool verify /kp /v /c tidepoolvcp.cat amd64\tiusb.sys
