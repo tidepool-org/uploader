@@ -60,11 +60,11 @@ import BluetoothModal from '../components/BluetoothModal';
 import LoggedOut from '../components/LoggedOut.js';
 
 import styles from '../../styles/components/App.module.less';
+import { ipcRenderer } from '../utils/ipc';
 
-let remote, dns, checkVersion, ipcRenderer;
+let remote, dns, checkVersion;
 if(env.electron_renderer){
   remote = require('@electron/remote');
-  ({ipcRenderer} = require('electron'));
   dns = require('dns');
   ({checkVersion} = require('../utils/drivers'));
 }

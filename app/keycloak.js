@@ -7,14 +7,9 @@ import * as jose from 'jose';
 import * as ActionTypes from './constants/actionTypes';
 import { sync, async } from './actions';
 import api from '../lib/core/api';
-import { ipcRenderer } from 'electron';
 import rollbar from './utils/rollbar';
 import env from './utils/env';
-
-let ipcRenderer;
-if(env.electron_renderer){
-  ({ipcRenderer} = require('electron'));
-}
+import { ipcRenderer } from './utils/ipc';
 
 export let keycloak = null;
 
@@ -182,9 +177,7 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
         let registrationUrl = keycloak.createRegisterUrl({
           redirectUri: blipHref,
         });
-        if (env.electron_renderer) {
-          ipcRenderer.send('keycloakRegistrationUrl', registrationUrl);
-        }
+        ipcRenderer.send('keycloakRegistrationUrl', registrationUrl);
         storeAPI.dispatch(sync.setKeycloakRegistrationUrl(registrationUrl));
       }
       break;
@@ -197,9 +190,7 @@ export const keycloakMiddleware = (api) => (storeAPI) => (next) => (action) => {
         let registrationUrl = keycloak.createRegisterUrl({
           redirectUri: blipHref,
         });
-        if (env.electron_renderer) {
-          ipcRenderer.send('keycloakRegistrationUrl', registrationUrl);
-        }
+        ipcRenderer.send('keycloakRegistrationUrl', registrationUrl);
         storeAPI.dispatch(sync.setKeycloakRegistrationUrl(registrationUrl));
       }
       break;

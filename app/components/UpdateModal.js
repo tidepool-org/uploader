@@ -25,11 +25,7 @@ import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
-import env from '../utils/env';
-let ipcRenderer;
-if(env.electron_renderer) {
-  ({ipcRenderer} = require('electron'));
-}
+import { ipcRenderer } from '../utils/ipc';
 
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
@@ -39,9 +35,7 @@ export class UpdateModal extends Component {
   handleInstall = () => {
     const { sync } = this.props;
     sync.quitAndInstall();
-    if(env.electron_renderer){
-      ipcRenderer.send('autoUpdater', 'quitAndInstall');
-    }
+    ipcRenderer.send('autoUpdater', 'quitAndInstall');
   };
 
   render() {
@@ -60,7 +54,7 @@ export class UpdateModal extends Component {
       newVersion = electronUpdateAvailable.info.version;
       newDate = electronUpdateAvailable.info.releaseDate.slice(0, 10);
       currentVersion = remote.app.getVersion();
-      
+
       if (electronUpdateAvailable.info.installDate) {
         currentDate = electronUpdateAvailable.info.installDate.slice(0, 10);
       }

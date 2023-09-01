@@ -15,10 +15,7 @@
  * == BSD2 LICENSE ==
  */
 import env from '../../app/utils/env';
-let ipcRenderer, ipcMain;
-if (env.electron) {
-  ({ ipcRenderer, ipcMain } = require('electron'));
-}
+import { ipcRenderer, ipcMain } from '../../app/utils/ipc';
 
 const PERIODS = {
   ALL: 1,
@@ -107,7 +104,7 @@ if (env.electron_main) {
 if (env.browser) {
   let period = PERIODS.DELTA;
   let periodMedtronic600 = PERIODS.DELTA;
-  
+
   uploadDataPeriod = module.exports = {
     get periodGlobal() {
       return period;

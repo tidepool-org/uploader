@@ -22,10 +22,7 @@ import { get, set } from 'idb-keyval';
 import sundial from 'sundial';
 
 import { checkCacheValid } from 'redux-cache';
-let ipcRenderer;
-if(env.electron_renderer){
-  ({ipcRenderer} = require('electron'));
-}
+import { ipcRenderer } from '../utils/ipc';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -106,16 +103,14 @@ export function doAppInit(opts, servicesToInit) {
     log('Getting OS details.');
     await actionUtils.initOSDetails();
 
-    if (ipcRenderer) {
-      ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-        const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(
-          dispatch
-        );
-        displayBluetoothModal((response) => {
-          ipcRenderer.send('bluetooth-pairing-response', response);
-        }, details);
-      });
-    }
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(
+        dispatch
+      );
+      displayBluetoothModal((response) => {
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
 
     log('Initializing device');
     device.init({
@@ -432,9 +427,7 @@ export function doUpload(deviceKey, opts, utc) {
         }
 
         if (opts.port == null) {
-          if(ipcRenderer) {
-            ipcRenderer.send('setSerialPortFilter', filters);
-          }
+          ipcRenderer.send('setSerialPortFilter', filters);
           opts.port = await navigator.serial.requestPort({ filters: filters });
         }
       } catch (err) {

@@ -16,10 +16,7 @@
  */
 import env from './env';
 import _ from 'lodash';
-let ipcRenderer, ipcMain;
-if (env.electron) {
-  ({ ipcRenderer, ipcMain } = require('electron'));
-}
+import { ipcRenderer, ipcMain } from './ipc';
 
 if (env.electron_renderer) {
   let isDebug =

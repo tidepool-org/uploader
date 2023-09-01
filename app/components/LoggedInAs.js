@@ -17,12 +17,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import env from '../utils/env';
 
-let ipcRenderer;
-if(env.electron_renderer){
-  ({ipcRenderer} = require('electron'));
-}
+import { ipcRenderer } from '../utils/ipc';
 //const remote = require('@electron/remote');
 // const i18n = remote.getGlobal( 'i18n' );
 let i18n = {t:string => string};
@@ -77,9 +73,7 @@ export default class LoggedInAs extends Component {
   handleCheckForUpdates = e => {
     e.preventDefault();
     this.props.onCheckForUpdates();
-    if(env.electron_renderer){
-      ipcRenderer.send('autoUpdater','checkForUpdates');
-    }
+    ipcRenderer.send('autoUpdater','checkForUpdates');
   };
 
   handleLogout = e => {
