@@ -21,9 +21,7 @@ var PropTypes = require('prop-types');
 
 var styles = require('../../styles/components/ClinicUploadDone.module.less');
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 class ClinicUploadDone extends React.Component {
   static propTypes = {

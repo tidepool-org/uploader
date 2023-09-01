@@ -26,10 +26,13 @@ import config from '../../lib/config.js';
 import styles from '../../styles/components/UpdateModal.module.less';
 
 import { ipcRenderer } from '../utils/ipc';
+import env from '../utils/env';
+import { i18n } from '../utils/config.i18next';
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+let remote;
+if (env.electron){
+  remote = require('@electron/remote');
+}
 
 export class UpdateModal extends Component {
   handleInstall = () => {

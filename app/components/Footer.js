@@ -24,9 +24,7 @@ import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
 import { getOSDetails } from '../actions/utils';
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 export default class Footer extends Component {
   static propTypes = {

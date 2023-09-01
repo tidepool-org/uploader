@@ -24,9 +24,7 @@ var pagesMap = require('../constants/otherConstants').pagesMap;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 class UserDropdown extends React.Component {
   static propTypes = {

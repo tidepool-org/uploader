@@ -24,9 +24,7 @@ import ErrorMessages from '../constants/errorMessages';
 import styles from '../../styles/components/VersionCheck.module.less';
 import CloudOff from '@mui/icons-material/CloudOff';
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 export default class VersionCheckError extends Component {
   static propTypes = {

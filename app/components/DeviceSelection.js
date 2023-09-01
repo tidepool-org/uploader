@@ -19,9 +19,7 @@ var _ = require('lodash');
 var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 import { urls } from '../constants/otherConstants';
 

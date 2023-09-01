@@ -24,9 +24,7 @@ var cx = require('classnames');
 
 var styles = require('../../styles/components/TimezoneDropdown.module.less');
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 class TimezoneDropdown extends React.Component {
   constructor(props) {

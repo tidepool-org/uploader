@@ -19,13 +19,11 @@ import React, { useState } from 'react';
 import styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import env from '../utils/env';
+import { i18n } from '../utils/config.i18next';
 
 import actions from '../actions/';
 const asyncActions = actions.async;
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
 let win = window;
 
 import { keycloak } from '../keycloak';

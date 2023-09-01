@@ -33,9 +33,7 @@ import { pages, pagesMap } from '../constants/otherConstants';
 import styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 export class Header extends Component {
   static propTypes = {

@@ -17,9 +17,7 @@
 
 var React = require('react');
 var styles = require('../../styles/components/App.module.less');
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 class Loading extends React.Component {
   render() {

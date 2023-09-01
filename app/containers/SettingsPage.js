@@ -33,8 +33,7 @@ import { checkTimezoneName } from 'sundial';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-// const i18n = remote.getGlobal('i18n');
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 export class SettingsPage extends Component {
   handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {

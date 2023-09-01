@@ -25,10 +25,7 @@ import { sync as syncActions } from '../actions/';
 import styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
-
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 
 export class AdHocModal extends Component {
   handleContinue = () => {

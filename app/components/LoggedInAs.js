@@ -19,9 +19,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { ipcRenderer } from '../utils/ipc';
-//const remote = require('@electron/remote');
-// const i18n = remote.getGlobal( 'i18n' );
-let i18n = {t:string => string};
+import { i18n } from '../utils/config.i18next';
 import personUtils from '../../lib/core/personUtils';
 import api from '../../lib/core/api';
 import * as metrics from '../constants/metrics';

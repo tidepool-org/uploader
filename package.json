@@ -80,6 +80,7 @@
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-hot-loader": "4.13.0",
+    "react-i18next": "7.13.0",
     "react-redux": "7.2.6",
     "react-router-dom": "5.2.0",
     "react-select": "1.2.1",
