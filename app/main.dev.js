@@ -248,7 +248,7 @@ operating system, as soon as possible.`,
     console.log('Device list:', deviceList);
     let [result] = deviceList;
     global.bluetoothDeviceId = result.deviceId;
-    if (!result) {
+    if (!result || result.deviceName.startsWith('Unknown')) {
       callback('');
     } else {
       callback(result.deviceId);
