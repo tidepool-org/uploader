@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.54.2-ble-startsWith.1",
+  "version": "2.54.2-ble-startsWith.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
