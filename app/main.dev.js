@@ -250,7 +250,7 @@ operating system, as soon as possible.`,
     global.bluetoothDeviceId = result.deviceId;
     if (!result || result.deviceName.startsWith('Unknown')) {
       // The device wasn't found so we need to either wait longer (eg until the
-      // device is turned on) or until the user cancels the request
+      // device is turned on and ready) or until timeout
     } else {
       callback(result.deviceId);
     }
