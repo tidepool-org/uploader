@@ -6,10 +6,10 @@ services:
     privileged: true
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: "tidepool/uploader:latest"
     container_name: "uploader"
-    environment: 
+    environment:
       - API_URL=${API_URL:-http://localhost:3000}
       - UPLOAD_URL=${UPLOAD_URL:-http://localhost:3000}
       - DATA_URL=${DATA_URL:-http://localhost:3000}
@@ -19,7 +19,7 @@ services:
       - REDUX_DEV_UI=${REDUX_DEV_UI:-false}
       - DISPLAY=unix$DISPLAY
       - ROLLBAR_POST_TOKEN=${ROLLBAR_POST_TOKEN}
-    volumes: 
+    volumes:
       - .:/home/node/uploader
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /dev:/dev
