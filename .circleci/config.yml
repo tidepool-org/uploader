@@ -51,7 +51,7 @@ jobs:
     docker:
       - image: cimg/base:2023.03-18.04
     steps:
-      - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser
+      - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser xvfb
       - checkout
       - run: mv .nvmrc .nvmrc.tmp
       - node/install:
