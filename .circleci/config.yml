@@ -49,7 +49,7 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
       BASH_ENV: ".circleci/bash_env.sh"
     docker:
-      - image: cimg/2023.03-18.04
+      - image: cimg/base:2023.03-18.04
     steps:
     - run: sudo apt-get -qq -y update && \
         sudo apt-get -qq -y install build-essential git curl libusb-1.0 libavutil-dev libxss1 \
