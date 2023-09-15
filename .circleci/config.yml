@@ -49,6 +49,10 @@ jobs:
     docker:
       - image: cimg/node:16.14.2-browsers
     steps:
+    - run: sudo apt-get -qq -y update && \
+        sudo apt-get -qq -y install build-essential git curl libusb-1.0 libavutil-dev libxss1 \
+        libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module \
+        chromium-browser
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
