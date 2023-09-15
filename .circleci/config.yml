@@ -46,26 +46,15 @@ jobs:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
       BASH_ENV: ".circleci/bash_env.sh"
-    macos:
-      xcode: '12.5.1'
+    docker:
+      - image: circleci/node:16.14.2-browsers
     steps:
     - checkout
-    - run: brew install wget docker
     - run: git submodule sync
     - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
-    - run:
-        name: Install nvm and node
-        command: |
-          set +e
-          curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
-          source ~/.nvm/nvm.sh
-          nvm install v16.14.2
-          nvm alias default v16.14.2
-    - run: node -v
-    - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn --frozen-lockfile
     - save_cache:
