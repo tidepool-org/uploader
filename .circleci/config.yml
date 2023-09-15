@@ -48,6 +48,7 @@ jobs:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
       BASH_ENV: ".circleci/bash_env.sh"
+      DISPLAY: ":99"
     docker:
       - image: cimg/base:2023.03-18.04
     steps:
@@ -57,6 +58,7 @@ jobs:
       - node/install:
           install-yarn: true
           node-version: '16.14.2'
+      - run: Xvfb :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
       - run: mv .nvmrc.tmp .nvmrc
       - run: git submodule sync
       - run: git submodule update --init
