@@ -51,11 +51,11 @@ jobs:
     docker:
       - image: cimg/base:2023.03-18.04
     steps:
-      - checkout
       - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser
       - node/install:
           install-yarn: true
           node-version: '16.14.2'
+      - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
