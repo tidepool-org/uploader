@@ -47,7 +47,7 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
       BASH_ENV: ".circleci/bash_env.sh"
     docker:
-      - image: circleci/node:16.14.2-browsers
+      - image: cimg/node:16.14.2-browsers
     steps:
     - checkout
     - run: git submodule sync
