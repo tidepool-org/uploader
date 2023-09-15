@@ -44,11 +44,13 @@ jobs:
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
     # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
     environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
       xcode: '12.5.1'
     steps:
     - checkout
+    - run: brew install wget
     - run: git submodule sync
     - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
