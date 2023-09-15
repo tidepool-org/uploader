@@ -38,6 +38,42 @@ jobs:
     - run: yarn test
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+  build-web:
+    working_directory: ~/tidepool-org/chrome-uploader
+    parallelism: 1
+    # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
+    # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
+    environment:
+      BASH_ENV: ".circleci/bash_env.sh"
+    macos:
+      xcode: '12.5.1'
+    steps:
+    - checkout
+    - run: git submodule sync
+    - run: git submodule update --init
+    - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+    - restore_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+    - run:
+        name: Install nvm and node
+        command: |
+          set +e
+          curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+          source ~/.nvm/nvm.sh
+          nvm install v16.14.2
+          nvm alias default v16.14.2
+    - run: node -v
+    - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+    - run: yarn config set cache-folder ~/.cache/yarn
+    - run: yarn --frozen-lockfile
+    - save_cache:
+        key: dependency-cache-{{ checksum "package.json" }}
+        paths:
+        - ~/.cache/yarn
+        - ./node_modules
+    # Test
+    - run: yarn lint
+    - run: yarn test
     # Build docker image
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
