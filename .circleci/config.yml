@@ -116,6 +116,10 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+      - build-web:
+          filters:
+            tags:
+              only: /^v.*/
       - build-windows:
           filters:
             tags:
