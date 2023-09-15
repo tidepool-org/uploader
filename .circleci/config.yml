@@ -38,6 +38,8 @@ jobs:
     - run: yarn test
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+    # Build docker image
+    - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
     machine:
       # see https://circleci.com/developer/machine/image/windows-server-2019 for details
