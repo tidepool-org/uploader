@@ -73,8 +73,7 @@ jobs:
           - ./node_modules
       # Test
       - run: yarn lint
-      - run: Xvfb :99 -screen 0 1280x1024x24 &
-      - run: yarn test
+      - run: Xvfb :99 -screen 0 1280x1024x24 & > /dev/null && yarn test
       # Build docker image
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
