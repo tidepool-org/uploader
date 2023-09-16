@@ -58,7 +58,7 @@ jobs:
       - node/install:
           install-yarn: true
           node-version: '16.14.2'
-      - run: Xvfb :99 -screen 0 1280x1024x24 &
+      - run: sudo Xvfb :99 -screen 0 1280x1024x24 &
       - run: mv .nvmrc.tmp .nvmrc
       - run: git submodule sync
       - run: git submodule update --init
