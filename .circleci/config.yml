@@ -58,7 +58,6 @@ jobs:
       - node/install:
           install-yarn: true
           node-version: '16.14.2'
-      - run: sudo Xvfb :99 -screen 0 1280x1024x24 &
       - run: mv .nvmrc.tmp .nvmrc
       - run: git submodule sync
       - run: git submodule update --init
@@ -74,6 +73,7 @@ jobs:
           - ./node_modules
       # Test
       - run: yarn lint
+      - run: Xvfb :99 -screen 0 1280x1024x24 &
       - run: yarn test
       # Build docker image
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
