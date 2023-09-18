@@ -66,7 +66,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual, N Plus BT & Pro',
+    name: 'CareSens N Premier, Dual, N Plus BT, Pro & N (Model: GM505PAD)',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
@@ -265,7 +265,7 @@ const devices = {
     powerOnlyWarning: true,
   },
   truemetrix: {
-    instructions: i18n.t('True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
+    instructions: i18n.t('True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
