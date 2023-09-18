@@ -11,13 +11,12 @@ jobs:
     macos:
       xcode: '13.4.1'
     steps:
-    - run: cd ~
-    - run: curl https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer -o AppleWWDRCAG3.cer
-    - run: sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain AppleWWDRCAG3.cer
-    - run: cd ~/tidepool-org/chrome-uploader
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
+    - run: curl https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer -o AppleWWDRCAG3.cer
+    - run: sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain AppleWWDRCAG3.cer
+    - run: rm -f AppleWWDRCAG3.cer
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
