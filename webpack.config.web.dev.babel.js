@@ -71,7 +71,7 @@ console.log('BLIP_URL =', blipUrl);
 
 const output = {
   path: path.join(__dirname, 'dist'),
-  publicPath: isDev ? `${devPublicPath}/dist/` : '/',
+  publicPath: isDev ? `${devPublicPath}/` : '/',
   filename: 'bundle.js',
   libraryTarget: 'umd',
 };
@@ -116,6 +116,10 @@ let plugins = [
     debug: true,
   }),
 
+  new MiniCssExtractPlugin({
+    filename: isDev ? 'style.css' : 'style.[contenthash].css',
+  }),
+
   new CopyWebpackPlugin([
     {
       from: 'app/static',
@@ -135,8 +139,8 @@ let plugins = [
     template: 'app/web.ejs',
     //inject: false,
   }),
-  new webpack.NamedModulesPlugin(),
 
+  new webpack.NamedModulesPlugin(),
 
   /** Upload sourcemap to Rollbar */
   ...(ROLLBAR_POST_TOKEN ? [new RollbarSourceMapPlugin({
@@ -145,14 +149,11 @@ let plugins = [
     publicPath: 'http://dynamichost/dist'
   })] : []),
 ];
-let cssLoader = 'style-loader';
+let styleLoader = 'style-loader';
 if (isDev) {
   plugins.push(new webpack.HotModuleReplacementPlugin());
 } else if (isProd) {
-  cssLoader = MiniCssExtractPlugin.loader;
-  plugins.push(new MiniCssExtractPlugin({
-    filename: 'style.css'
-  }));
+  styleLoader = MiniCssExtractPlugin.loader;
 }
 
 export default merge.smart(baseConfig, {
@@ -189,7 +190,7 @@ export default merge.smart(baseConfig, {
         test: /\.global\.css$/,
         use: [
           {
-            loader: cssLoader,
+            loader: styleLoader,
           },
           {
             loader: 'css-loader',
@@ -204,7 +205,7 @@ export default merge.smart(baseConfig, {
         test: /^((?!\.global).)*\.css$/,
         use: [
           {
-            loader: cssLoader,
+            loader: styleLoader,
           },
           {
             loader: 'css-loader',
@@ -223,7 +224,7 @@ export default merge.smart(baseConfig, {
         test: /\.module\.less$/,
         use: [
           {
-            loader: cssLoader,
+            loader: styleLoader,
           },
           {
             loader: 'css-loader',
@@ -248,7 +249,7 @@ export default merge.smart(baseConfig, {
         test: /^((?!module).)*\.less$/,
         use: [
           {
-            loader: cssLoader,
+            loader: styleLoader,
           },
           {
             loader: 'css-loader',
