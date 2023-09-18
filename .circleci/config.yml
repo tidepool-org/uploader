@@ -9,7 +9,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '12.5.1'
+      xcode: '14.3.1'
     steps:
     - checkout
     - run: git submodule sync
