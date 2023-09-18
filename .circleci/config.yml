@@ -11,8 +11,10 @@ jobs:
     macos:
       xcode: '13.4.1'
     steps:
+    - run: cd ../
     - run: curl https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer -o AppleWWDRCAG3.cer
     - run: sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain AppleWWDRCAG3.cer
+    - run: cd chrome-uploader
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
