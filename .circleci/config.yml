@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build-macos:
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
@@ -42,8 +43,8 @@ jobs:
     machine:
       # see https://circleci.com/developer/machine/image/windows-server-2019 for details
       image: windows-server-2019-vs2019:stable
-      resource_class: windows.medium
-      shell: bash.exe
+    resource_class: windows.medium
+    shell: bash.exe
     steps:
       - checkout
       - run: git submodule sync
