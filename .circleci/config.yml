@@ -14,12 +14,12 @@ jobs:
     - checkout
     - run: git submodule sync
     - run: git submodule update --init
-    #- run: curl -o AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer && sudo security import AppleWWDRCA.cer -k /Library/Keychains/System.keychain
-    - run: curl -o AppleWWDRCAG2.cer https://www.apple.com/certificateauthority/AppleWWDRCAG2.cer && sudo security import AppleWWDRCAG2.cer -k /Library/Keychains/System.keychain
-    #- run: curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer && sudo security import AppleWWDRCAG3.cer -k /Library/Keychains/System.keychain
-    - run: curl -o AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer && sudo security import AppleWWDRCAG4.cer -k /Library/Keychains/System.keychain
-    - run: curl -o AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer && sudo security import AppleWWDRCAG5.cer -k /Library/Keychains/System.keychain
-    - run: curl -o AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer && sudo security import AppleWWDRCAG6.cer -k /Library/Keychains/System.keychain
+    # #- run: curl -o AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer && sudo security import AppleWWDRCA.cer -k /Library/Keychains/System.keychain
+    # - run: curl -o AppleWWDRCAG2.cer https://www.apple.com/certificateauthority/AppleWWDRCAG2.cer && sudo security import AppleWWDRCAG2.cer -k /Library/Keychains/System.keychain
+    # #- run: curl -o AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer && sudo security import AppleWWDRCAG3.cer -k /Library/Keychains/System.keychain
+    # - run: curl -o AppleWWDRCAG4.cer https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer && sudo security import AppleWWDRCAG4.cer -k /Library/Keychains/System.keychain
+    # - run: curl -o AppleWWDRCAG5.cer https://www.apple.com/certificateauthority/AppleWWDRCAG5.cer && sudo security import AppleWWDRCAG5.cer -k /Library/Keychains/System.keychain
+    # - run: curl -o AppleWWDRCAG6.cer https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer && sudo security import AppleWWDRCAG6.cer -k /Library/Keychains/System.keychain
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
