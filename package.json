@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.54.2-add-new-meters.2",
+  "version": "2.54.2-tandem-no-carbs.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
