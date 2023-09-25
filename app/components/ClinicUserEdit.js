@@ -32,7 +32,12 @@ function zeroPad(value){
   return _.padStart(value, 2, '0');
 }
 
-function validateForm(values){
+function validateForm(values, props){
+  var mrnRequired = _.get(
+    props,
+    ['clinics', props.selectedClinicId, 'mrnSettings', 'required'],
+    false
+  );
   var errors = {};
   if(!values.fullName){
     errors.fullName = i18n.t('Your patient\'s full name is needed');
@@ -43,6 +48,9 @@ function validateForm(values){
     }
   } else {
     errors.year = i18n.t('Hmm, this date doesn’t look right');
+  }
+  if(mrnRequired && !values.mrn){
+    errors.mrn = i18n.t('Patient\'s MRN is required');
   }
   return errors;
 }
@@ -295,6 +303,11 @@ class ClinicUserEdit extends React.Component {
       ? i18n.t('Edit patient account')
       : i18n.t('Create a new patient account');
     const editable = targetId ? isCustodialAccount : true;
+    const mrnRequired = _.get(
+      clinics,
+      [selectedClinicId, 'mrnSettings', 'required'],
+      false
+    );
 
     return (
       <div className={styles.main}>
@@ -327,7 +340,7 @@ class ClinicUserEdit extends React.Component {
           </div>
           <div className={styles.inputWrap}>
             <label className={styles.inputLabel} htmlFor="mrn">
-              {i18n.t('MRN (optional)')}
+              {i18n.t(mrnRequired ? 'MRN' : 'MRN (optional)')}
             </label>
             <Field
               name="mrn"

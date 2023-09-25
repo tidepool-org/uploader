@@ -654,6 +654,49 @@ describe('misc reducers', () => {
         expect(state.clinicId123.clinicians.clinicianId1234).to.eql(clinics[0].clinician);
         expect(state.clinicId456.clinicians.clinicianId4567).to.eql(clinics[1].clinician);
       });
+
+      describe('fetchClinicMRNSettingsSuccess', () => {
+        it('should add clinic MRN settings to state', () => {
+          let clinicId = 'clinicId123';
+          let mrnSettings = {
+            required: true,
+            unique: true,
+          };
+          let initialStateForTest = {
+            [clinicId]: {
+              id: clinicId,
+            },
+          };
+          let action = actions.sync.fetchClinicMRNSettingsSuccess(
+            clinicId,
+            mrnSettings
+          );
+          let state = misc.clinics(initialStateForTest, action);
+          expect(state.clinicId123.mrnSettings).to.eql(mrnSettings);
+        });
+      });
+
+      describe('fetchClinicEHRSettingsSuccess', () => {
+        it('should add clinic EHR settings to state', () => {
+          let clinicId = 'clinicId123';
+          let ehrSettings = {
+            enabled: true,
+            facility: 'facility',
+            sourceId: 'sourceId',
+          };
+          let initialStateForTest = {
+            [clinicId]: {
+              id: clinicId,
+            },
+          };
+          let action = actions.sync.fetchClinicEHRSettingsSuccess(
+            clinicId,
+            ehrSettings
+          );
+          let state = misc.clinics(initialStateForTest, action);
+          expect(state.clinicId123.ehrSettings).to.eql(ehrSettings);
+        });
+      });
     });
 
     describe('addTargetDevice', () => {
