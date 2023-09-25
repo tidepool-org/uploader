@@ -270,6 +270,7 @@ ExcludeFromSelect=*
 %VID_0403&PID_6048.DeviceDesc%=FtdiPort.NT,FTDIBUS\COMPORT&VID_0403&PID_6048
 %VID_0403&PID_6049.DeviceDesc%=FtdiPort.NT,FTDIBUS\COMPORT&VID_0403&PID_6049
 %VID_0403&PID_0000.DeviceDesc%=FtdiPort.NT,FTDIBUS\COMPORT&VID_0403&PID_0000
+%VID_1A79&PID_6001.DeviceDesc%=FtdiPort.NT,FTDIBUS\COMPORT&VID_1A79&PID_6001 ; Bayer cable
 
 [FtdiHw.NTamd64]
 %VID_0403&PID_6001.DeviceDesc%=FtdiPort.NTamd64,FTDIBUS\COMPORT&VID_0403&PID_6001
@@ -297,6 +298,7 @@ ExcludeFromSelect=*
 %VID_0403&PID_6048.DeviceDesc%=FtdiPort.NTamd64,FTDIBUS\COMPORT&VID_0403&PID_6048
 %VID_0403&PID_6049.DeviceDesc%=FtdiPort.NTamd64,FTDIBUS\COMPORT&VID_0403&PID_6049
 %VID_0403&PID_0000.DeviceDesc%=FtdiPort.NTamd64,FTDIBUS\COMPORT&VID_0403&PID_0000
+%VID_1A79&PID_6001.DeviceDesc%=FtdiPort.NTamd64,FTDIBUS\COMPORT&VID_1A79&PID_6001 ; Bayer cable
 
 [FtdiPort.NT.AddService]
 DisplayName    = %SvcDesc%
@@ -383,6 +385,7 @@ VID_0403&PID_6047.DeviceDesc="USB Serial Port"
 VID_0403&PID_6048.DeviceDesc="USB Serial Port"
 VID_0403&PID_6049.DeviceDesc="USB Serial Port"
 VID_0403&PID_0000.DeviceDesc="USB Serial Port"
+VID_1A79&PID_6001.DeviceDesc="USB Serial Port"
 SvcDesc="USB Serial Port Driver"
 SerEnum.SvcDesc="Serenum Filter Driver"
 
