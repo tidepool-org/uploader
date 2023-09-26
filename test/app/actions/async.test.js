@@ -2794,7 +2794,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -2922,7 +2922,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3003,7 +3003,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -3949,14 +3949,14 @@ describe('Asynchronous Actions', () => {
     describe('user is clinician account', () => {
       test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to clinic user select page)', () => {
         const targets = {
-          abc123: [{key: 'carelink'}],
+          abc123: [{key: 'medtronic'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
@@ -4004,7 +4004,7 @@ describe('Asynchronous Actions', () => {
             def456: {},
           },
           devices: {
-            carelink: {},
+            medtronic: {},
             dexcom: {},
             omnipod: {}
           },
@@ -4012,7 +4012,7 @@ describe('Asynchronous Actions', () => {
           targetsForUpload: ['abc123', 'def456'],
           uploadTargetUser: 'abc123',
           targetDevices: {
-            abc123: ['carelink']
+            abc123: ['medtronic']
           },
           targetTimezones: {
             abc123: 'US/Mountain'
@@ -4026,14 +4026,14 @@ describe('Asynchronous Actions', () => {
     describe('user is not clinician account', () => {
       test('should dispatch SELECT_CLINIC, then SET_PAGE (redirect to main page)', () => {
         const targets = {
-          abc123: [{key: 'carelink', timezone: 'US/Eastern'}],
+          abc123: [{key: 'medtronic', timezone: 'US/Eastern'}],
           def456: [
             {key: 'dexcom', timezone: 'US/Mountain'},
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
         const devicesByUser = {
-          abc123: ['carelink'],
+          abc123: ['medtronic'],
           def456: ['dexcom', 'omnipod']
         };
         const expectedActions = [
