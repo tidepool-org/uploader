@@ -45,6 +45,8 @@ const initialState = {
     fetchingPatientsForClinic: Object.assign({}, working),
     updatingProfile: Object.assign({}, working),
     fetchingInfo: Object.assign({}, working),
+    fetchingClinicMRNSettings: Object.assign({}, working),
+    fetchingClinicEHRSettings: Object.assign({}, working),
   },
   notification: null,
   dataDonationAccounts: [],
