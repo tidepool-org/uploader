@@ -156,7 +156,7 @@ function createWindow() {
     acceptFirstMouse: true,
   });
 
-  protocol.registerHttpProtocol(PROTOCOL_PREFIX, (request, cb) => {
+  protocol.handle(PROTOCOL_PREFIX, (request) => {
     return handleIncomingUrl(request.url);
   });
 
