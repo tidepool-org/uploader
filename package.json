@@ -46,7 +46,7 @@
     "babyparse": "0.4.6",
     "ble-glucose": "0.4.0",
     "bows": "1.7.2",
-    "chrome-launcher": "1.0.0",
+    "chrome-launcher": "0.15.2",
     "classnames": "2.3.2",
     "commander": "4.1.1",
     "connected-react-router": "6.9.3",
