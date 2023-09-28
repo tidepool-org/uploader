@@ -54,6 +54,9 @@ jobs:
             exit 1
           fi
 
+          # Decode the base64-encoded certificate to a temporary file
+          echo "$CSC_LINK" | base64 --decode > certificate.p12
+
           # Create a temporary directory for the custom keychain
           temp_keychain_dir=$(mktemp -d)
           custom_keychain_path="$temp_keychain_dir/custom.keychain"
@@ -64,9 +67,9 @@ jobs:
           # Save the temp_keychain_dir to a file for later cleanup
           echo "$temp_keychain_dir" > keychain_dir.txt
 
-          # Create a custom keychain using CSC_LINK
+          # Create a custom keychain using the decoded certificate
           security create-keychain -p "$custom_keychain_password" "$custom_keychain_path"
-          security import "$CSC_LINK" -k "$custom_keychain_path" -P "$CSC_KEY_PASSWORD"
+          security import certificate.p12 -k "$custom_keychain_path" -P "$CSC_KEY_PASSWORD"
 
           # Set the custom keychain as the system default
           security default-keychain -s "$custom_keychain_path"
@@ -92,6 +95,9 @@ jobs:
 
           # Remove the keychain_dir.txt file
           rm -f keychain_dir.txt
+
+          # Remove the temporary certificate file
+          rm -f certificate.p12
   build-windows:
     machine:
       # see https://circleci.com/developer/machine/image/windows-server-2019 for details
