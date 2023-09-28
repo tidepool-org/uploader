@@ -43,8 +43,55 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
+
+    # Keychain setup step
+    - run:
+        name: Setup Custom Keychain
+        command: |
+          # Check if CSC_LINK and CSC_KEY_PASSWORD are set
+          if [[ -z "$CSC_LINK" || -z "$CSC_KEY_PASSWORD" ]]; then
+            echo "CSC_LINK or CSC_KEY_PASSWORD environment variables are missing. Aborting."
+            exit 1
+          fi
+
+          # Create a temporary directory for the custom keychain
+          temp_keychain_dir=$(mktemp -d)
+          custom_keychain_path="$temp_keychain_dir/custom.keychain"
+
+          # Keychain and certificate password
+          custom_keychain_password="tempChainPass"
+
+          # Save the temp_keychain_dir to a file for later cleanup
+          echo "$temp_keychain_dir" > keychain_dir.txt
+
+          # Create a custom keychain using CSC_LINK
+          security create-keychain -p "$custom_keychain_password" "$custom_keychain_path"
+          security import "$CSC_LINK" -k "$custom_keychain_path" -P "$CSC_KEY_PASSWORD"
+
+          # Set the custom keychain as the system default
+          security default-keychain -s "$custom_keychain_path"
+
+          # Remove CSC_LINK from the environment variables
+          unset CSC_LINK
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+    # Keychain cleanup step
+    - run:
+        name: Cleanup Custom Keychain
+        command: |
+          # Read the temp_keychain_dir path from the saved file
+          temp_keychain_dir=$(cat keychain_dir.txt)
+
+          # Clean up: Delete the temporary keychain directory
+          if [ -d "$temp_keychain_dir" ]; then
+            rm -rf "$temp_keychain_dir"
+            echo "Custom keychain directory deleted."
+          else
+            echo "Custom keychain directory not found."
+          fi
+
+          # Remove the keychain_dir.txt file
+          rm -f keychain_dir.txt
   build-windows:
     machine:
       # see https://circleci.com/developer/machine/image/windows-server-2019 for details
