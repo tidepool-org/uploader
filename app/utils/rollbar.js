@@ -6,7 +6,7 @@ let rollbar;
 if (process.env.NODE_ENV === 'production') {
 
   rollbar = new Rollbar({
-      accessToken: '1843589282464f4facd43f794c8201a8',
+      accessToken: 'e73a71af17f7497eb606ef6278b190f3',
       captureUncaught: true,
       enabled: process.env.NODE_ENV === 'production',
       payload: {

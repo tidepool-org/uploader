@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.54.2-circleci-resource.4",
+  "version": "2.55.1-circleci-resource.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -92,7 +92,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.1",
-    "tidepool-platform-client": "0.51.1",
+    "tidepool-platform-client": "0.53.0",
     "usb-cdc-acm": "0.1.1",
     "uuid": "9.0.0",
     "webmtp": "0.3.3"
