@@ -16089,10 +16089,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tidepool-platform-client@0.51.1:
-  version "0.51.1"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.51.1.tgz#113bd8f255a2d8f3e0731e2064be162c98432fdc"
-  integrity sha512-EDixfdgpriRlwLBiymbjeowJ48NuIy56oatQXNEMcvLt9i0w8D/l2tnVhKpTitmalhLirzG5HbKt/gytEjxLTw==
+tidepool-platform-client@0.53.0:
+  version "0.53.0"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.53.0.tgz#0cff3fe1fbf53e613af86e150a477e9bb243d491"
+  integrity sha512-oXYJ5AyecKXeAUGUCR7W1AfwJmRT5wcujtNT1YVy39ZxB2bHTV+H56y/Y1l0d3z7uNhTSlp7VMMy47Mu+4+SOQ==
   dependencies:
     async "0.9.0"
     lodash "3.3.1"
