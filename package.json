@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.55.1",
+  "version": "2.55.1-circleci-resource.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -148,7 +148,7 @@
     "difflet": "1.0.1",
     "drivelist": "11.1.0",
     "electron": "24.2.0",
-    "electron-builder": "23.6.0",
+    "electron-builder": "24.6.4",
     "electron-devtools-installer": "3.2.0",
     "electron-notarize": "1.2.2",
     "electron-rebuild": "3.2.9",
