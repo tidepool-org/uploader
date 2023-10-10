@@ -54,6 +54,16 @@ export default (type) => {
     case types.GET_CLINICS_FOR_CLINICIAN_FAILURE:
       return 'fetchingClinicsForClinician';
 
+    case types.FETCH_CLINIC_MRN_SETTINGS_REQUEST:
+    case types.FETCH_CLINIC_MRN_SETTINGS_SUCCESS:
+    case types.FETCH_CLINIC_MRN_SETTINGS_FAILURE:
+      return 'fetchingClinicMRNSettings';
+
+    case types.FETCH_CLINIC_EHR_SETTINGS_REQUEST:
+    case types.FETCH_CLINIC_EHR_SETTINGS_SUCCESS:
+    case types.FETCH_CLINIC_EHR_SETTINGS_FAILURE:
+      return 'fetchingClinicEHRSettings';
+
     case types.CHECKING_FOR_DRIVER_UPDATE:
     case types.DRIVER_UPDATE_AVAILABLE:
     case types.DRIVER_UPDATE_NOT_AVAILABLE:

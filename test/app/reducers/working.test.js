@@ -1689,4 +1689,174 @@ describe('working', () => {
       });
     });
   });
+
+  describe('fetchClinicMRNSettings', () => {
+    describe('request', () => {
+      it('should leave fetchingClinicMRNSettings.completed unchanged', () => {
+        expect(initialState.fetchingClinicMRNSettings.completed).to.be.null;
+
+        let requestAction = actions.sync.fetchClinicMRNSettingsRequest();
+        let requestState = reducer(initialState, requestAction);
+
+        expect(requestState.fetchingClinicMRNSettings.completed).to.be.null;
+
+        let successAction = actions.sync.fetchClinicMRNSettingsSuccess('foo');
+        let successState = reducer(requestState, successAction);
+
+        expect(successState.fetchingClinicMRNSettings.completed).to.be.true;
+
+        let state = reducer(successState, requestAction);
+        expect(state.fetchingClinicMRNSettings.completed).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingClinicMRNSettings.inProgress to be true', () => {
+        let initialStateForTest = _.merge({}, initialState);
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let action = actions.sync.fetchClinicMRNSettingsRequest();
+
+        expect(initialStateForTest.fetchingClinicMRNSettings.inProgress).to.be.false;
+
+        let state = reducer(initialStateForTest, action);
+        expect(state.fetchingClinicMRNSettings.inProgress).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('failure', () => {
+      it('should set fetchingClinicMRNSettings.completed to be false', () => {
+        let error = new Error('Something bad happened :(');
+
+        expect(initialState.fetchingClinicMRNSettings.completed).to.be.null;
+
+        let failureAction = actions.sync.fetchClinicMRNSettingsFailure(error);
+        let state = reducer(initialState, failureAction);
+
+        expect(state.fetchingClinicMRNSettings.completed).to.be.false;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingClinicMRNSettings.inProgress to be false and set error', () => {
+        let initialStateForTest = _.merge({}, initialState, {
+          fetchingClinicMRNSettings: { inProgress: true, notification: null },
+        });
+
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let error = new Error('Something bad happened :(');
+        let action = actions.sync.fetchClinicMRNSettingsFailure(error);
+
+        expect(initialStateForTest.fetchingClinicMRNSettings.inProgress).to.be.true;
+        expect(initialStateForTest.fetchingClinicMRNSettings.notification).to.be.null;
+
+        let state = reducer(initialStateForTest, action);
+
+        expect(state.fetchingClinicMRNSettings.inProgress).to.be.false;
+        expect(state.fetchingClinicMRNSettings.notification.type).to.equal('error');
+        expect(state.fetchingClinicMRNSettings.notification.message).to.equal(error.message);
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('success', () => {
+      let initialStateForTest = _.merge({}, initialState, {
+        fetchingClinicMRNSettings: { inProgress: true, notification: null },
+      });
+
+      let tracked = mutationTracker.trackObj(initialStateForTest);
+
+      let action = actions.sync.fetchClinicMRNSettingsSuccess({});
+
+      expect(initialStateForTest.fetchingClinicMRNSettings.inProgress).to.be.true;
+
+      let state = reducer(initialStateForTest, action);
+
+      expect(state.fetchingClinicMRNSettings.inProgress).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
+    });
+  });
+
+  describe('fetchClinicEHRSettings', () => {
+    describe('request', () => {
+      it('should leave fetchingClinicEHRSettings.completed unchanged', () => {
+        expect(initialState.fetchingClinicEHRSettings.completed).to.be.null;
+
+        let requestAction = actions.sync.fetchClinicEHRSettingsRequest();
+        let requestState = reducer(initialState, requestAction);
+
+        expect(requestState.fetchingClinicEHRSettings.completed).to.be.null;
+
+        let successAction = actions.sync.fetchClinicEHRSettingsSuccess('foo');
+        let successState = reducer(requestState, successAction);
+
+        expect(successState.fetchingClinicEHRSettings.completed).to.be.true;
+
+        let state = reducer(successState, requestAction);
+        expect(state.fetchingClinicEHRSettings.completed).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingClinicEHRSettings.inProgress to be true', () => {
+        let initialStateForTest = _.merge({}, initialState);
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let action = actions.sync.fetchClinicEHRSettingsRequest();
+
+        expect(initialStateForTest.fetchingClinicEHRSettings.inProgress).to.be.false;
+
+        let state = reducer(initialStateForTest, action);
+        expect(state.fetchingClinicEHRSettings.inProgress).to.be.true;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('failure', () => {
+      it('should set fetchingClinicEHRSettings.completed to be false', () => {
+        let error = new Error('Something bad happened :(');
+
+        expect(initialState.fetchingClinicEHRSettings.completed).to.be.null;
+
+        let failureAction = actions.sync.fetchClinicEHRSettingsFailure(error);
+        let state = reducer(initialState, failureAction);
+
+        expect(state.fetchingClinicEHRSettings.completed).to.be.false;
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+
+      it('should set fetchingClinicEHRSettings.inProgress to be false and set error', () => {
+        let initialStateForTest = _.merge({}, initialState, {
+          fetchingClinicEHRSettings: { inProgress: true, notification: null },
+        });
+
+        let tracked = mutationTracker.trackObj(initialStateForTest);
+        let error = new Error('Something bad happened :(');
+        let action = actions.sync.fetchClinicEHRSettingsFailure(error);
+
+        expect(initialStateForTest.fetchingClinicEHRSettings.inProgress).to.be.true;
+        expect(initialStateForTest.fetchingClinicEHRSettings.notification).to.be.null;
+
+        let state = reducer(initialStateForTest, action);
+
+        expect(state.fetchingClinicEHRSettings.inProgress).to.be.false;
+        expect(state.fetchingClinicEHRSettings.notification.type).to.equal('error');
+        expect(state.fetchingClinicEHRSettings.notification.message).to.equal(error.message);
+        expect(mutationTracker.hasMutated(tracked)).to.be.false;
+      });
+    });
+
+    describe('success', () => {
+      let initialStateForTest = _.merge({}, initialState, {
+        fetchingClinicEHRSettings: { inProgress: true, notification: null },
+      });
+
+      let tracked = mutationTracker.trackObj(initialStateForTest);
+
+      let action = actions.sync.fetchClinicEHRSettingsSuccess('clinic12',{});
+
+      expect(initialStateForTest.fetchingClinicEHRSettings.inProgress).to.be.true;
+
+      let state = reducer(initialStateForTest, action);
+
+      expect(state.fetchingClinicEHRSettings.inProgress).to.be.false;
+      expect(mutationTracker.hasMutated(tracked)).to.be.false;
+    });
+  });
 });
