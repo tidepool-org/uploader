@@ -50,21 +50,16 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: choco install wget -y
       - run:
-          name: Swap node versions
+          command: wget https://nodejs.org/dist/v18.16.1/node-v18.16.1-x86.msi -P C:\Users\circleci\Downloads\
+          shell: cmd.exe
+      - run: MsiExec.exe /i C:\Users\circleci\Downloads\node-v18.16.1-x86.msi /qn
+      - run: 
           command: |
-            set +e
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            nvm install v18.16.1
-            nvm use v18.16.1
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-      - run: choco install nvm
-      - run: nvm install v18.16.1
-      - run: nvm use v18.16.1
+              Start-Process powershell -verb runAs -Args "-start GeneralProfile"
+              nvm install 18.16.1
+              nvm use 18.16.1
       - run: node -v
       - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn
