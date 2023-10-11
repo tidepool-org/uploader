@@ -833,10 +833,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -867,10 +864,7 @@ describe('Synchronous Actions', () => {
         };
         const action = sync.uploadFailure(origError, errProps, device);
         expect(action.payload).to.deep.include({
-          message: resError.message,
-          code: resError.code,
-          utc: resError.utc,
-          debug: resError.debug
+          message: resError.message
         });
         expectedAction.payload = action.payload;
         expectedAction.meta.metric.properties.error = action.payload;
@@ -1474,6 +1468,39 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('bluetoothPairingRequest', () => {
+    test('should be an FSA', () => {
+      let action = sync.bluetoothPairingRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate start of a Bluetooth pairing', () => {
+      const callback = () => {};
+      const cfg = {conf: 'obj'};
+      const expectedAction = {
+        payload: { callback, cfg },
+        type: actionTypes.BLUETOOTH_PAIRING_REQUEST,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_REQUEST]}
+      };
+      expect(sync.bluetoothPairingRequest(callback, cfg)).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('bluetoothPairingDismissed', () => {
+    test('should be an FSA', () => {
+      let action = sync.dismissedBluetoothPairingDialog();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to indicate dismissing a Bluetooth pairing', () => {
+      const expectedAction = {
+        type: actionTypes.BLUETOOTH_PAIRING_DISMISSED,
+        meta: {source: actionSources[actionTypes.BLUETOOTH_PAIRING_DISMISSED]}
+      };
+      expect(sync.dismissedBluetoothPairingDialog()).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('fetchPatientsForClinicRequest', () => {
     test('should be an FSA', () => {
       let action = sync.fetchPatientsForClinicRequest();
@@ -1864,10 +1891,12 @@ describe('Synchronous Actions', () => {
     it('type should equal KEYCLOAK_READY', () => {
       let event = 'onReady';
       let error = null;
-      let action = sync.keycloakReady(event, error);
+      let logoutUrl = 'someLogoutUrl';
+      let action = sync.keycloakReady(event, error, logoutUrl);
       expect(action.type).to.equal('KEYCLOAK_READY');
       expect(action.payload.error).to.be.null;
       expect(action.payload.event).to.equal(event);
+      expect(action.payload.logoutUrl).to.equal(logoutUrl);
     });
   });
 
@@ -2012,6 +2041,18 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('keycloakReset', () => {
+    it('should be a FSA', () => {
+      let action = sync.keycloakReset();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal KEYCLOAK_RESET', () => {
+      let action = sync.keycloakReset();
+      expect(action.type).to.equal('KEYCLOAK_RESET');
+    });
+  });
+
   describe('fetchInfoRequest', () => {
     it('should be a FSA', () => {
       let action = sync.fetchInfoRequest();
@@ -2057,6 +2098,96 @@ describe('Synchronous Actions', () => {
       expect(action.type).to.equal('FETCH_INFO_FAILURE');
       expect(action.error).to.equal(true);
       expect(action.payload).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicMRNSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicMRNSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicMRNSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicMRNSettingsSuccess', () => {
+    let clinicId = 'clinic123';
+    let settings = { required: true, unique: true };
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicMRNSettingsSuccess(clinicId, settings);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicMRNSettingsSuccess(clinicId, settings);
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.settings).to.equal(settings);
+    });
+  });
+
+  describe('fetchClinicMRNSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching clinic mrn settings failed :(');
+      let action = sync.fetchClinicMRNSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicMRNSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicEHRSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicEHRSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicEHRSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicEHRSettingsSuccess', () => {
+    let clinicId = 'clinicId123';
+    let settings = {
+      enabled: true,
+      facility: 'facility',
+      sourceId: 'sourceId',
+    };
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicEHRSettingsSuccess(clinicId, settings);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicEHRSettingsSuccess(clinicId, settings);
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.settings).to.equal(settings);
+    });
+  });
+
+  describe('fetchClinicEHRSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching clinic ehr settings failed :(');
+      let action = sync.fetchClinicEHRSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicEHRSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
     });
   });
 

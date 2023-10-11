@@ -1,3 +1,4 @@
+import os from 'os';
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 const remote = require('@electron/remote');
@@ -8,17 +9,17 @@ const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     key: 'abbottfreestylelibre',
-    name: 'Abbott FreeStyle Libre',
+    name: 'Abbott FreeStyle Libre & Libre Pro',
     source: {type: 'device', driverId: 'AbbottFreeStyleLibre'},
     enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   abbottfreestylelite: {
-    instructions: i18n.t('Plug in meter with cable'),
+    instructions: i18n.t('Plug cable into meter and then connect cable to computer'),
     key: 'abbottfreestylelite',
     name: 'Abbott FreeStyle Lite & Freedom Lite',
     source: {type: 'device', driverId: 'AbbottFreeStyleLite'},
-    enabled: {mac: false, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true}
   },
   abbottfreestyleneo: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -42,17 +43,10 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true, linux: true}
   },
-  animas: {
-    instructions: i18n.t('Suspend and align back of pump with IR dongle front'),
-    key: 'animas',
-    name: 'Animas',
-    source: {type: 'device', driverId: 'Animas'},
-    enabled: {mac: true, win: true, linux: true}
-  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
-    name: 'Ascensia (Bayer) Contour Next',
+    name: 'Ascensia (Bayer) Contour Next, Contour Next Link, Contour Next Link 2.4, Contour Next USB, Contour Next One, Contour USB or Contour Next GEN',
     source: {type: 'device', driverId: 'BayerContourNext'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -72,7 +66,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual & N Plus BT',
+    name: 'CareSens N Premier, Dual, N Plus BT, Pro & N (Model: GM505PAD)',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
@@ -87,8 +81,8 @@ const devices = {
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    // CareSens Bluetooth pairing is tricky; maybe better to wait for Uploader-in-Web
+    // before enabling it in Windows with proper on-screen instructions
   },
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
@@ -102,6 +96,13 @@ const devices = {
     name: 'Equil Insulin Patch/Micro Pump',
     key: 'weitai',
     source: {type: 'device', driverId: 'Weitai'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  foracareble: {
+    instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
+    key: 'foracareble',
+    name: 'Fora TN\'G Voice (using Bluetooth)',
+    source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
   },
   glucocardexpression: {
@@ -201,9 +202,7 @@ const devices = {
     name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
-    enabled: {mac: true, win: false, linux: true}
-    // PIN pairing for WebBluetooth is not currently supported on Windows 10:
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=960258
+    enabled: {mac: true, win: true, linux: true}
   },
   onetouchverioiq: {
     instructions: i18n.t('Plug in meter with mini-USB'),
@@ -226,6 +225,14 @@ const devices = {
     key: 'onetouchultra2',
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
+  },
+  relionplatinum: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'ReliOn Platinum',
+    key: 'relionplatinum',
+    source: {type: 'device', driverId: 'ReliOnPlatinum'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
   relionpremier: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
@@ -268,12 +275,20 @@ const devices = {
     powerOnlyWarning: true,
   },
   truemetrix: {
-    instructions: i18n.t('True Metrix & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
+    instructions: i18n.t('True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
     name: 'Trividia Health True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
   },
 };
+
+if (navigator.userAgentData.platform === 'macOS') {
+  devices.abbottfreestylelite.instructions = {
+    text: i18n.t('Plug in meter with'),
+    linkText: i18n.t('EZSync002B cable'),
+    link: 'https://purenitetech.com/product/ezsync002b/',
+  };
+}
 
 export default devices;

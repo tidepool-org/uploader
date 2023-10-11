@@ -20,6 +20,7 @@ import semver from 'semver';
 import os from 'os';
 import { push } from 'connected-react-router';
 import { checkCacheValid } from 'redux-cache';
+import { ipcRenderer } from 'electron';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -41,6 +42,9 @@ let hostMap = {
   'win32' : 'win',
   'linux': 'linux',
 };
+
+const isBrowser = typeof window !== 'undefined';
+let win = isBrowser ? window : null;
 
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
@@ -93,6 +97,13 @@ export function doAppInit(opts, servicesToInit) {
 
     log('Getting OS details.');
     await actionUtils.initOSDetails();
+
+    ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      displayBluetoothModal((response) => {
+        ipcRenderer.send('bluetooth-pairing-response', response);
+      }, details);
+    });
 
     log('Initializing device');
     device.init({
@@ -257,12 +268,27 @@ export function doLogout() {
     api.user.logout((err) => {
       if (err) {
         dispatch(sync.logoutFailure());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
       else {
         dispatch(sync.logoutSuccess());
-        dispatch(setPage(pages.LOGIN, actionSources.USER));
       }
+      dispatch(setPage(pages.LOGIN, actionSources.USER));
+    });
+  };
+}
+
+export function doLoggedOut() {
+  return (dispatch, getState) => {
+    const { api } = services;
+    dispatch(sync.logoutRequest());
+    api.user.logout((err) => {
+      if (err) {
+        dispatch(sync.logoutFailure());
+      }
+      else {
+        dispatch(sync.logoutSuccess());
+      }
+      dispatch(setPage(pages.LOGGED_OUT, actionSources.USER));
     });
   };
 }
@@ -293,7 +319,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       opts.filename = currentUpload.file.name;
     }
 
-    device.detect(driverId, opts, (err, dev) => {
+    device.detect(driverId, opts, async (err, dev) => {
       if (err) {
         let displayErr = new Error(ErrorMessages.E_SERIAL_CONNECTION);
         let deviceDetectErrProps = {
@@ -316,6 +342,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         displayErr.originalError = err;
+        if (process.env.NODE_ENV !== 'test') {
+          deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, deviceDetectErrProps, targetDevice));
       }
 
@@ -337,6 +366,9 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
         }
 
+        if (process.env.NODE_ENV !== 'test') {
+          disconnectedErrProps = await actionUtils.sendToRollbar(displayErr, disconnectedErrProps);
+        }
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
@@ -373,6 +405,7 @@ export function doUpload(deviceKey, opts, utc) {
       }));
 
       try {
+        ipcRenderer.send('setSerialPortFilter', filters);
         opts.port = await navigator.serial.requestPort({ filters: filters });
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
@@ -418,6 +451,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_HID_CONNECTION',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(hidErr, errProps);
+        }
         return dispatch(sync.uploadFailure(hidErr, errProps, devices[deviceKey]));
       }
     }
@@ -439,6 +475,9 @@ export function doUpload(deviceKey, opts, utc) {
           code: 'E_BLUETOOTH_OFF',
         };
 
+        if (process.env.NODE_ENV !== 'test') {
+          errProps = await actionUtils.sendToRollbar(btErr, errProps);
+        }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
       console.log('Done.');
@@ -1153,6 +1192,56 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
         ));
       } else {
         dispatch(sync.getClinicsForClinicianSuccess(clinics, clinicianId, options));
+      }
+      // fetch EHR and MRN settings for clinics
+      _.each(clinics, (clinic) => {
+        console.log('fetching settings for clinic', clinic.clinic.id);
+        dispatch(fetchClinicEHRSettings(api, clinic.clinic.id));
+        dispatch(fetchClinicMRNSettings(api, clinic.clinic.id));
+      });
+    });
+  };
+}
+
+/**
+ * Fetch Clinic MRN Settings Action Creator
+ *
+ * @param {Object} api - an instance of the API wrapper
+ * @param {String} clinicId - Id of the clinic
+ */
+export function fetchClinicMRNSettings(api, clinicId) {
+  return (dispatch) => {
+    dispatch(sync.fetchClinicMRNSettingsRequest());
+
+    api.clinics.getMRNSettings(clinicId, (err, settings) => {
+      if (err) {
+        dispatch(sync.fetchClinicMRNSettingsFailure(
+          createActionError(ErrorMessages.ERR_FETCHING_CLINIC_MRN_SETTINGS, err), err
+        ));
+      } else {
+        dispatch(sync.fetchClinicMRNSettingsSuccess(clinicId, settings));
+      }
+    });
+  };
+}
+
+/**
+ * Fetch Clinic EHR Settings Action Creator
+ *
+ * @param {Object} api - an instance of the API wrapper
+ * @param {String} clinicId - Id of the clinic
+ */
+export function fetchClinicEHRSettings(api, clinicId) {
+  return (dispatch) => {
+    dispatch(sync.fetchClinicEHRSettingsRequest());
+
+    api.clinics.getEHRSettings(clinicId, (err, settings) => {
+      if (err) {
+        dispatch(sync.fetchClinicEHRSettingsFailure(
+          createActionError(ErrorMessages.ERR_FETCHING_CLINIC_EHR_SETTINGS, err), err
+        ));
+      } else {
+        dispatch(sync.fetchClinicEHRSettingsSuccess(clinicId, settings));
       }
     });
   };

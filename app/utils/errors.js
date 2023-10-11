@@ -26,19 +26,25 @@ const errorProps = {
   step: 'Driver Step',
   datasetId: 'Dataset ID',
   requestTrace: 'Request Trace',
-  sessionToken: 'Session Token',
   sessionTrace: 'Session Trace',
-  stringifiedStack: 'Stack Trace',
   utc: 'UTC Time',
-  version: 'Version'
+  version: 'Version',
+  uuid: 'Rollbar UUID'
 };
 
 export function addInfoToError(err, props) {
-  let debug = [];
+  let debug = []; 
   _.forOwn(props, (v, k) => {
-    if (!_.isEmpty(v) && v !== err.message) {
+    if (!_.isEmpty(v) && v !== err.message && 
+        k !== 'utc' && 
+        k !== 'code' && 
+        k !== 'version' &&
+        k !== 'data'
+      ) {
       err[k] = v;
-      debug.push(`${errorProps[k]}: ${v}`);
+      if (k !== 'uuid') {
+        debug.push(`${errorProps[k]}: ${v}`);
+      }
     }
   });
   if (!_.isEmpty(debug)) {
@@ -106,7 +112,7 @@ export function createErrorLogger(api) {
     if (_.get(action, 'error', false) === true) {
       let err = _.get(action, 'payload', {});
       if (!err.debug) {
-        err.debug = err.message || 'Unknown error';
+        err.debug = '';
       }
       api.errors.log(
        err,

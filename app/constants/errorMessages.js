@@ -37,6 +37,7 @@ module.exports = {
   E_SERVER_ERR: 'Sorry, the Tidepool servers appear to be down',
   E_UPLOAD_IN_PROGRESS: 'Sorry, an upload is already in progress',
   E_UNPLUG_AND_RETRY: 'Please unplug device and try again',
+  E_UNPLUG_CABLE_AND_RETRY: 'Please unplug cable from computer and try again',
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
   E_LIBRE2_UNSUPPORTED: 'Uploading Libre 2 data?',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
@@ -51,4 +52,6 @@ module.exports = {
   ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
   ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
   ERR_FETCHING_INFO: 'Something went wrong while fetching server configuration.',
+  ERR_FETCHING_CLINIC_MRN_SETTINGS: 'Something went wrong while fetching clinic MRN settings.',
+  ERR_FETCHING_CLINIC_EHR_SETTINGS: 'Something went wrong while fetching clinic EHR settings.',
 };

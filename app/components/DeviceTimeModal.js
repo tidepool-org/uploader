@@ -69,7 +69,6 @@ export class DeviceTimeModal extends Component {
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
     if ( !this.isDevice('AccuChekSmartPix') &&
-         !this.isDevice('Animas') &&
          !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps

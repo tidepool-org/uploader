@@ -56,6 +56,8 @@ import UpdateModal from '../components/UpdateModal';
 import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
+import BluetoothModal from '../components/BluetoothModal';
+import LoggedOut from '../components/LoggedOut.js';
 
 import styles from '../../styles/components/App.module.less';
 
@@ -180,6 +182,7 @@ export class App extends Component {
       api.setHosts(serverinfo);
       localStore.setItem('selectedEnv', JSON.stringify(serverinfo));
 
+      sync.keycloakReset();
       sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD));
       sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP));
       sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT));
@@ -213,6 +216,7 @@ export class App extends Component {
           <Route path="/clinic_user_edit" component={ClinicUserEditPage} />
           <Route path="/no_upload_targets" component={NoUploadTargetsPage} />
           <Route path="/workspace_switch" component={WorkspacePage} />
+          <Route path="/logged_out" component={LoggedOut} />
         </Switch>
         <Footer version={config.version} environment={this.state.server} />
         {/* VersionCheck as overlay */}
@@ -221,6 +225,7 @@ export class App extends Component {
         <UpdateDriverModal />
         <DeviceTimeModal />
         <AdHocModal />
+        <BluetoothModal />
       </div>
     );
   }

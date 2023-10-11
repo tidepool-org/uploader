@@ -856,6 +856,21 @@ export function dismissedAdHocPairingDialog() {
   };
 }
 
+export function bluetoothPairingRequest(callback, cfg) {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_REQUEST,
+    payload: { callback, cfg },
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_REQUEST] }
+  };
+}
+
+export function dismissedBluetoothPairingDialog() {
+  return {
+    type: ActionTypes.BLUETOOTH_PAIRING_DISMISSED,
+    meta: { source: actionSources[ActionTypes.BLUETOOTH_PAIRING_DISMISSED] }
+  };
+}
+
 export function fetchPatientsForClinicRequest() {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,
@@ -1030,10 +1045,62 @@ export function selectClinic(clinicId) {
   };
 }
 
-export function keycloakReady(event, error){
+export function fetchClinicMRNSettingsRequest() {
+  return {
+    type: ActionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+  };
+}
+
+export function fetchClinicMRNSettingsSuccess(clinicId, settings) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+    payload: {
+      clinicId,
+      settings,
+    },
+  };
+}
+
+export function fetchClinicMRNSettingsFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_MRN_SETTINGS_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function fetchClinicEHRSettingsRequest() {
+  return {
+    type: ActionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+  };
+}
+
+export function fetchClinicEHRSettingsSuccess(clinicId, settings) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+    payload: {
+      clinicId,
+      settings,
+    },
+  };
+}
+
+export function fetchClinicEHRSettingsFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_EHR_SETTINGS_FAILURE,
+    error: error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function keycloakReady(event, error, logoutUrl){
   return {
     type: ActionTypes.KEYCLOAK_READY,
-    payload: { error, event },
+    payload: { error, event, logoutUrl },
   };
 }
 
@@ -1106,5 +1173,11 @@ export function setKeycloakRegistrationUrl(url){
 export function keycloakInstantiated(){
   return {
     type: ActionTypes.KEYCLOAK_INSTANTIATED
+  };
+}
+
+export function keycloakReset(){
+  return {
+    type: ActionTypes.KEYCLOAK_RESET
   };
 }

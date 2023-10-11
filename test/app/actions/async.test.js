@@ -841,7 +841,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -983,7 +985,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -1083,6 +1087,8 @@ describe('Asynchronous Actions', () => {
           },
           clinics: {
             getClinicsForClinician: (clinician, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop
@@ -1182,6 +1188,26 @@ describe('Asynchronous Actions', () => {
             }],
           },
         },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -1200,6 +1226,8 @@ describe('Asynchronous Actions', () => {
               cb(null, [{ clinic: { id: 'clinicId' } }]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -1290,6 +1318,46 @@ describe('Asynchronous Actions', () => {
             ],
           },
         },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -1311,6 +1379,8 @@ describe('Asynchronous Actions', () => {
               ]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -1366,7 +1436,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      const store = mockStore({});
+      const store = mockStore({keycloakConfig: {}});
       store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
@@ -1409,11 +1479,52 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      const store = mockStore({});
+      const store = mockStore({keycloakConfig: {}});
       store.dispatch(async.doLogout());
       const actions = store.getActions();
       expect(actions[1].payload).to.deep.include({message:getLogoutErrorMessage()});
       expectedActions[1].payload = actions[1].payload;
+      expect(actions).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('doLoggedOut', () => {
+    test('should dispatch LOGOUT_REQUEST, LOGOUT_SUCCESS, SET_PAGE actions', () => {
+      const expectedActions = [
+        {
+          type: actionTypes.LOGOUT_REQUEST,
+          meta: {
+            source: actionSources[actionTypes.LOGOUT_REQUEST],
+            metric: {eventName: metrics.LOGOUT_REQUEST}
+          }
+        },
+        {
+          type: actionTypes.LOGOUT_SUCCESS,
+          meta: {source: actionSources[actionTypes.LOGOUT_SUCCESS]}
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/logged_out',
+              state: {
+                meta: {source: actionSources.USER}
+              }
+            } ],
+            method: 'push'
+          }
+        }
+      ];
+      __Rewire__('services', {
+        api: {
+          user: {
+            logout: (cb) => cb(null)
+          }
+        }
+      });
+      const store = mockStore({keycloakConfig: {}});
+      store.dispatch(async.doLoggedOut());
+      const actions = store.getActions();
       expect(actions).to.deep.equal(expectedActions);
     });
   });
@@ -1613,11 +1724,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_SERIAL_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_SERIAL_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1726,11 +1833,7 @@ describe('Asynchronous Actions', () => {
       store.dispatch(async.doUpload(deviceKey, {}, time));
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
-        message: ErrorMessages.E_HID_CONNECTION,
-        code: err.code,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        message: ErrorMessages.E_HID_CONNECTION
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -1844,12 +1947,8 @@ describe('Asynchronous Actions', () => {
       const actions = store.getActions();
       expect(actions[4].payload).to.deep.include({
         message: ErrorMessages.E_DEVICE_UPLOAD,
-        code: err.code,
         details: err.details,
-        name: err.name,
-        utc: err.utc,
-        version: err.version,
-        debug: err.debug
+        name: err.name
       });
       expectedActions[4].payload = actions[4].payload;
       expectedActions[4].meta.metric.properties.error = actions[4].payload;
@@ -2068,10 +2167,7 @@ describe('Asynchronous Actions', () => {
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
         expect(actions[1].payload).to.deep.include({
-          message: ErrorMessages.E_FILE_EXT + ext,
-          code: err.code,
-          version: err.version,
-          debug: err.debug
+          message: ErrorMessages.E_FILE_EXT + ext
         });
         expectedActions[1].payload = actions[1].payload;
         expect(actions).to.deep.equal(expectedActions);
@@ -5014,18 +5110,20 @@ describe('Asynchronous Actions', () => {
   describe('getClinicsForClinician', () => {
     test('should trigger GET_CLINICS_FOR_CLINICIAN_SUCCESS and it should call clinics.getClinicsForClinician once for a successful request', () => {
       let clinicianId = 'clinicianId1';
-      let clinics = [
-        {
+      let clinics = [{
+        clinic: {
           id: '5f85fbe6686e6bb9170ab5d0',
           address: '1 Address Ln, City Zip',
           name: 'Clinic1',
           phoneNumbers: [{ number: '(888) 555-5555', type: 'Office' }],
         },
-      ];
+      }];
 
       let api = {
         clinics: {
           getClinicsForClinician: sinon.stub().callsArgWith(2, null, clinics),
+          getEHRSettings: sinon.stub().callsArgWith(1, null, {}),
+          getMRNSettings: sinon.stub().callsArgWith(1, null, {}),
         },
       };
 
@@ -5036,6 +5134,26 @@ describe('Asynchronous Actions', () => {
           payload: {
             clinicianId: clinicianId,
             clinics: clinics
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
           },
         },
       ];
