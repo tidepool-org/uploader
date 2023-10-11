@@ -50,7 +50,7 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run: npm install -g npm@latest
+      - run: choco install nvm
       - run: nvm install v18.16.1
       - run: nvm use v18.16.1
       - run: node -v
