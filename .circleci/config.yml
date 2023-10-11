@@ -50,19 +50,9 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run: choco install wget -y
-      - run:
-          command: wget https://nodejs.org/dist/v18.16.1/node-v18.16.1-x86.msi -P C:\Users\circleci\Downloads\
-          shell: cmd.exe
-      - run: MsiExec.exe /i C:\Users\circleci\Downloads\node-v18.16.1-x86.msi /qn
-      - run: 
-          command: |
-              Start-Process powershell -verb runAs -Args "-start GeneralProfile"
-              nvm install 18.16.1
-              nvm use 18.16.1
+      - run: nvm install v18.16.1
+      - run: nvm use v18.16.1
       - run: node -v
-      - run: npm install --global yarn
-      - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
