@@ -50,9 +50,11 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: nvm -v
       - run: nvm install v18.16.1
       - run: nvm use v18.16.1
-      - run: node -v
+      - run: npm install --global yarn
+      - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
