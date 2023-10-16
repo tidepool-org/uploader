@@ -39,18 +39,17 @@ jobs:
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
+    resource_class: windows.medium
     machine:
-      # see https://circleci.com/developer/machine/image/windows-server-2019 for details
-      image: windows-server-2019-vs2019:stable
-      resource_class: windows.medium
-      shell: cmd.exe
+      image: windows-default
+      shell: bash.exe
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run: nvm list
+      - run: nvm version
       - run: nvm install v18.16.1
       - run: nvm use v18.16.1
       - run: npm install --global yarn
