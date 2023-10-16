@@ -4237,10 +4237,10 @@ bl@~1.1.2:
   dependencies:
     readable-stream "~2.0.5"
 
-ble-glucose@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.4.0.tgz#68f995ad7ccf9d55384d6d8e696c411af4d866a0"
-  integrity sha512-g/shuFXNGHG37ktgoQC/cdbWPN2HkTve71M1h+1m6NjAfPw2gPBhZdUVSwilIe3YGSI/rw/S46zaVZdN9/AYuA==
+ble-glucose@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.5.0.tgz#02a5907b8e063e444e9a24f913987bbcd776c42b"
+  integrity sha512-GBMRg+I8pDonoa1juE9UYSc2XOhtAW3p0imII43h94REE/AdW2VixhC00Zq2ut5f8m/isFSx431SsdTbKGpIow==
   dependencies:
     bows "1.7.2"
     core-js "2.6.12"
