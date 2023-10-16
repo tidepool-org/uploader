@@ -43,14 +43,14 @@ jobs:
       # see https://circleci.com/developer/machine/image/windows-server-2019 for details
       image: windows-server-2019-vs2019:stable
       resource_class: windows.medium
-      shell: bash.exe
+      shell: cmd.exe
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run: nvm -v
+      - run: nvm list
       - run: nvm install v18.16.1
       - run: nvm use v18.16.1
       - run: npm install --global yarn
