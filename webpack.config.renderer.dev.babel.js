@@ -227,7 +227,6 @@ export default (env => merge.smart(baseConfig, {
       __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
-      'process.env.NODE_OPTIONS': '--openssl-legacy-provider',
     }),
 
     new webpack.LoaderOptionsPlugin({
