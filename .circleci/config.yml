@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build-macos:
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
@@ -8,7 +9,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '12.5.1'
+      xcode: '13.4.1'
     steps:
     - checkout
     - run: git submodule sync
@@ -36,13 +37,66 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
+
+    # Keychain setup step
+    - run:
+        name: Setup Custom Keychain
+        command: |
+          # Check if CSC_LINK and CSC_KEY_PASSWORD are set
+          if [[ -z "$CSC_LINK" || -z "$CSC_KEY_PASSWORD" ]]; then
+            echo "CSC_LINK or CSC_KEY_PASSWORD environment variables are missing. Aborting."
+            exit 1
+          fi
+
+          # Decode the base64-encoded certificate to a temporary file
+          echo "$CSC_LINK" | base64 --decode > certificate.p12
+
+          # Create a temporary directory for the custom keychain
+          temp_keychain_dir=$(mktemp -d)
+          custom_keychain_path="$temp_keychain_dir/custom.keychain"
+
+          # Keychain and certificate password
+          custom_keychain_password="tempChainPass"
+
+          # Save the temp_keychain_dir to a file for later cleanup
+          echo "$temp_keychain_dir" > keychain_dir.txt
+
+          # Create a custom keychain using the decoded certificate
+          security create-keychain -p "$custom_keychain_password" "$custom_keychain_path"
+          security import certificate.p12 -k "$custom_keychain_path" -P "$CSC_KEY_PASSWORD"
+
+          # Set the custom keychain as the system default
+          security default-keychain -s "$custom_keychain_path"
+
+          # Remove CSC_LINK from the environment variables
+          unset CSC_LINK
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+    # Keychain cleanup step
+    - run:
+        name: Cleanup Custom Keychain
+        command: |
+          # Read the temp_keychain_dir path from the saved file
+          temp_keychain_dir=$(cat keychain_dir.txt)
+
+          # Clean up: Delete the temporary keychain directory
+          if [ -d "$temp_keychain_dir" ]; then
+            rm -rf "$temp_keychain_dir"
+            echo "Custom keychain directory deleted."
+          else
+            echo "Custom keychain directory not found."
+          fi
+
+          # Remove the keychain_dir.txt file
+          rm -f keychain_dir.txt
+
+          # Remove the temporary certificate file
+          rm -f certificate.p12
   build-windows:
-    resource_class: windows.medium
     machine:
       image: windows-server-2022-gui:current
       shell: bash.exe
+    resource_class: windows.medium
     steps:
       - checkout
       - run: git submodule sync
