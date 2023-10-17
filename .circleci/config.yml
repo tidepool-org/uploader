@@ -22,8 +22,8 @@ jobs:
           set +e
           curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
           source ~/.nvm/nvm.sh
-          nvm install v16.14.2
-          nvm alias default v16.14.2
+          nvm install v18.16.1
+          nvm alias default v18.16.1
     - run: node -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
@@ -39,10 +39,9 @@ jobs:
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
   build-windows:
+    resource_class: windows.medium
     machine:
-      # see https://circleci.com/developer/machine/image/windows-server-2019 for details
-      image: windows-server-2019-vs2019:stable
-      resource_class: windows.medium
+      image: windows-server-2022-gui:current
       shell: bash.exe
     steps:
       - checkout
@@ -50,9 +49,8 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      # note: node 16.14.2 with npm 8.3.1 breaks yarn installation
-      - run: nvm install v16.13.2
-      - run: nvm use v16.13.2
+      - run: nvm install v18.16.1
+      - run: nvm use v18.16.1
       - run: node -v
       - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn

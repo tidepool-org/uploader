@@ -32,7 +32,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
+    "package": "cross-env NODE_OPTIONS=--openssl-legacy-provider npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
   },
   "dependencies": {
     "@electron/remote": "2.0.11",
@@ -147,7 +147,7 @@
     "css-loader": "5.2.7",
     "difflet": "1.0.1",
     "drivelist": "11.1.0",
-    "electron": "26.2.4",
+    "electron": "26.4.0",
     "electron-builder": "24.6.4",
     "electron-devtools-installer": "3.2.0",
     "electron-notarize": "1.2.2",
