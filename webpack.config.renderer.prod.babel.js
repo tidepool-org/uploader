@@ -186,7 +186,7 @@ export default merge.smart(baseConfig, {
         use: [{
           loader: 'file-loader',
           options: {
-            name: '[name].[sha512:hash:6].[ext]'
+            name: '[name].[ext]'
           }
         }]
       }
@@ -234,6 +234,7 @@ export default merge.smart(baseConfig, {
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
       __ROLLBAR_POST_TOKEN__: JSON.stringify(ROLLBAR_POST_TOKEN),
       'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+      'process.env.NODE_OPTIONS': '--openssl-legacy-provider',
     }),
 
     /**

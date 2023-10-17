@@ -61,6 +61,7 @@ export default merge.smart(baseConfig, {
       'process.env.BUILD': JSON.stringify(process.env.BUILD) || '"prod"',
       __ROLLBAR_POST_TOKEN__: JSON.stringify(process.env.ROLLBAR_POST_TOKEN),
       __VERSION_SHA__: JSON.stringify(VERSION_SHA),
+      'process.env.NODE_OPTIONS': '--openssl-legacy-provider',
     })
   ],
 
