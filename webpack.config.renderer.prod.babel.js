@@ -186,7 +186,7 @@ export default merge.smart(baseConfig, {
         use: [{
           loader: 'file-loader',
           options: {
-            name: '[name].[ext]'
+            name: '[name].[sha512:hash:6].[ext]'
           }
         }]
       }
