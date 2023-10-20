@@ -46,22 +46,22 @@ if (process.env.DEBUG_ERROR === 'true') {
 const apiUrl = _.get(
   optional('./config/local'),
   'environment.API_URL',
-  process.env.API_URL || 'https://api.tidepool.org'
+  process.env.API_URL || null
 );
 const uploadUrl = _.get(
   optional('./config/local'),
   'environment.UPLOAD_URL',
-  process.env.UPLOAD_URL || 'https://uploads.tidepool.org'
+  process.env.UPLOAD_URL || null
 );
 const dataUrl = _.get(
   optional('./config/local'),
   'environment.DATA_URL',
-  process.env.DATA_URL || 'https://api.tidepool.org/dataservices'
+  process.env.DATA_URL || null
 );
 const blipUrl = _.get(
   optional('./config/local'),
   'environment.BLIP_URL',
-  process.env.BLIP_URL || 'https://app.tidepool.org'
+  process.env.BLIP_URL || null
 );
 
 console.log('API_URL =', apiUrl);

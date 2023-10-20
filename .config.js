@@ -15,6 +15,61 @@
  * == BSD2 LICENSE ==
  */
 
+import env from "./app/utils/env";
+
+const serverEnvironments = {
+  local: {
+    API_URL: 'http://localhost:8009',
+    UPLOAD_URL: 'http://localhost:8009',
+    DATA_URL: 'http://localhost:9220',
+    BLIP_URL: 'http://localhost:3000'
+  },
+  qa1: {
+    API_URL: 'https://qa1.development.tidepool.org',
+    UPLOAD_URL: 'https://qa1.development.tidepool.org',
+    DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1.development.tidepool.org'
+  },
+  qa2: {
+    API_URL: 'https://qa2.development.tidepool.org',
+    UPLOAD_URL: 'https://qa2.development.tidepool.org',
+    DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa2.development.tidepool.org'
+  },
+  int: {
+    API_URL: 'https://external.integration.tidepool.org/',
+    UPLOAD_URL: 'https://external.integration.tidepool.org/',
+    DATA_URL: 'https://external.integration.tidepool.org/dataservices',
+    BLIP_URL: 'https://external.integration.tidepool.org/'
+  },
+  prd: {
+    API_URL: 'https://api.tidepool.org',
+    UPLOAD_URL: 'https://api.tidepool.org',
+    DATA_URL: 'https://api.tidepool.org/dataservices',
+    BLIP_URL: 'https://app.tidepool.org'
+  },
+};
+
+function serverEnvFromLocation() {
+  const currentUrl = new URL(window.location.href);
+  const subdomain = currentUrl.hostname.split('.')[0];
+  const containsHyphen = subdomain.indexOf('-') > -1;
+
+  if(subdomain === 'localhost') {
+    return 'local';
+  }
+
+  if(containsHyphen) {
+    const envAbbr = subdomain.split('-')[1];
+    if(envAbbr === 'external') {
+      return 'int';
+    }
+    return envAbbr;
+  }
+
+  return 'prd';
+}
+
 function stringToBoolean(str, defaultValue) {
   if (str === 'true') {
     return true;
@@ -32,14 +87,16 @@ function stringToArray(str, defaultValue) {
   return str.split(',');
 }
 
+const selectedServerEnv = env.browser ? serverEnvFromLocation() : 'prd';
+
 module.exports = {
   // this is to always have the Bows logger turned on!
   // NB: it is distinct from our own "debug mode"
   DEBUG: stringToBoolean(process.env.DEBUG, true),
   // the defaults for these need to be pointing to prod
-  API_URL: process.env.API_URL || 'https://api.tidepool.org',
-  UPLOAD_URL: process.env.UPLOAD_URL || 'https://uploads.tidepool.org',
-  DATA_URL: process.env.DATA_URL || 'https://api.tidepool.org/dataservices',
-  BLIP_URL: process.env.BLIP_URL || 'https://app.tidepool.org',
+  API_URL: process.env.API_URL || serverEnvironments[selectedServerEnv].API_URL,
+  UPLOAD_URL: process.env.UPLOAD_URL || serverEnvironments[selectedServerEnv].UPLOAD_URL,
+  DATA_URL: process.env.DATA_URL || serverEnvironments[selectedServerEnv].DATA_URL,
+  BLIP_URL: process.env.BLIP_URL || serverEnvironments[selectedServerEnv].BLIP_URL,
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
 };
