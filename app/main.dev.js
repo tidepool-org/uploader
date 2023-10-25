@@ -246,8 +246,9 @@ operating system, as soon as possible.`,
     console.log('Device list:', deviceList);
     let [result] = deviceList;
     global.bluetoothDeviceId = result.deviceId;
-    if (!result) {
-      callback('');
+    if (!result || result.deviceName.startsWith('Unknown')) {
+      // The device wasn't found so we need to either wait longer (eg until the
+      // device is turned on and ready) or until timeout
     } else {
       callback(result.deviceId);
     }

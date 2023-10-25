@@ -30,14 +30,14 @@ import { i18n } from '../utils/config.i18next';
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
-    const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
-    if(_.indexOf(tags, 'insulin-pump') !== -1){
+    const { deviceTags } = showingDeviceTimePrompt.cfg;
+    if(_.indexOf(deviceTags, 'insulin-pump') !== -1){
       return { value: 'insulin-pump', text: i18n.t('pump') };
     }
-    if(_.indexOf(tags, 'cgm') !== -1){
+    if(_.indexOf(deviceTags, 'cgm') !== -1){
       return { value: 'cgm', text: i18n.t('CGM') };
     }
-    if(_.indexOf(tags, 'bgm') !== -1){
+    if(_.indexOf(deviceTags, 'bgm') !== -1){
       return { value: 'bgm', text: i18n.t('meter') };
     }
     return 'unknown';
@@ -72,8 +72,7 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
          !this.isDevice('Tandem') &&
          !this.isDevice('TrueMetrix') &&
-         !this.isDevice('Weitai') &&
-         !this.isDevice('OneTouchVerioBLE')
+         !this.isDevice('Weitai')
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
