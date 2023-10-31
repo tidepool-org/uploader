@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.55.1-verio-ble-time-update.4",
+  "version": "2.55.1-notary-tool.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
