@@ -314,10 +314,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-usb@2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/usb/-/usb-2.10.0.tgz#c582b62d709c85d63c76a9864fc670d6ad65928b"
-  integrity sha512-FbzLhziRs4rHnTDZX+eKl9yBVjiuMNX+opl0r8TFPj265PuNtqak3qw5c8DLpBwq3z1JZgAOgm5Nn7cV30nCxg==
+usb@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/usb/-/usb-2.11.0.tgz#bbb2257c65534635a450aed3754df7c8844d518e"
+  integrity sha512-u5+NZ6DtoW8TIBtuSArQGAZZ/K15i3lYvZBAYmcgI+RcDS9G50/KPrUd3CrU8M92ahyCvg5e0gc8BDvr5Hwejg==
   dependencies:
     "@types/w3c-web-usb" "^1.0.6"
     node-addon-api "^7.0.0"
