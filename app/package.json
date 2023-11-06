@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.55.1-notary-tool.2",
+  "version": "2.55.1-accu-chek-error.2",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
