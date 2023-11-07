@@ -5,7 +5,7 @@ RUN mkdir -p dist node_modules .yarn-cache && chown -R node:node .
 FROM base as build
 ARG API_HOST
 ARG REALM_HOST
-ARG PORT=3000
+ARG PORT=3001
 ARG SERVICE_NAME=uploader
 ARG ROLLBAR_POST_SERVER_TOKEN
 ARG I18N_ENABLED=false
@@ -47,7 +47,7 @@ RUN apk del .build-deps
 FROM base as production
 ARG API_HOST
 ARG REALM_HOST
-ARG PORT=3000
+ARG PORT=3001
 ARG SERVICE_NAME=uploader
 ARG ROLLBAR_POST_SERVER_TOKEN
 ARG I18N_ENABLED=false

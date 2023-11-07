@@ -140,7 +140,7 @@ app.post('/event/csp-report/violation', (req, res) => {
 
 // If no ports specified, just start on default HTTP port
 if (!(config.httpPort || config.httpsPort)) {
-  config.httpPort = 3000;
+  config.httpPort = 3001;
 }
 
 if (config.httpPort) {
