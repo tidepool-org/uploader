@@ -33,6 +33,13 @@
 #### Notes:
 - control solution tests are not sent from the meter
 
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[ ]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API
+
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*

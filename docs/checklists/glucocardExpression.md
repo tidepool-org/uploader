@@ -27,4 +27,11 @@
 - `[ ]` device settings, other than date & time (e.g., target blood glucose range)
 - `[ ]` tag/note (e.g., pre- vs. post-meal)
 
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[ ]` legacy "jellyfish" ingestion API
+  - `[x]` platform ingestion API
+
 ### Known implementation issues/TODOs

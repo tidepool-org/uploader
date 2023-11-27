@@ -99,6 +99,13 @@ Device-specific? (Add any device-specific notes/additions here.)
   - `[ ]` food (e.g., Dexcom allows logging carb events)
   - `[ ]` notes/other events
 
+### Tidepool ingestion API
+
+Choose one of the following:
+
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API
+
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
