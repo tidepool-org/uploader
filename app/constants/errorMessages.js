@@ -47,4 +47,6 @@ module.exports = {
   ERR_YOUR_ACCOUNT_NOT_CONFIGURED: 'Sorry! It appears that your account hasn\'t been fully set up.',
   ERR_FETCHING_PATIENTS_FOR_CLINIC: 'Something went wrong while fetching patients for clinic.',
   ERR_FETCHING_INFO: 'Something went wrong while fetching server configuration.',
+  ERR_FETCHING_CLINIC_MRN_SETTINGS: 'Something went wrong while fetching clinic MRN settings.',
+  ERR_FETCHING_CLINIC_EHR_SETTINGS: 'Something went wrong while fetching clinic EHR settings.',
 };

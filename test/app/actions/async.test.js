@@ -841,7 +841,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -983,7 +985,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -1083,6 +1087,8 @@ describe('Asynchronous Actions', () => {
           },
           clinics: {
             getClinicsForClinician: (clinician, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop
@@ -1182,6 +1188,26 @@ describe('Asynchronous Actions', () => {
             }],
           },
         },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -1200,6 +1226,8 @@ describe('Asynchronous Actions', () => {
               cb(null, [{ clinic: { id: 'clinicId' } }]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -1290,6 +1318,46 @@ describe('Asynchronous Actions', () => {
             ],
           },
         },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
       ];
       __Rewire__('services', {
         api: {
@@ -1311,6 +1379,8 @@ describe('Asynchronous Actions', () => {
               ]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -5040,18 +5110,20 @@ describe('Asynchronous Actions', () => {
   describe('getClinicsForClinician', () => {
     test('should trigger GET_CLINICS_FOR_CLINICIAN_SUCCESS and it should call clinics.getClinicsForClinician once for a successful request', () => {
       let clinicianId = 'clinicianId1';
-      let clinics = [
-        {
+      let clinics = [{
+        clinic: {
           id: '5f85fbe6686e6bb9170ab5d0',
           address: '1 Address Ln, City Zip',
           name: 'Clinic1',
           phoneNumbers: [{ number: '(888) 555-5555', type: 'Office' }],
         },
-      ];
+      }];
 
       let api = {
         clinics: {
           getClinicsForClinician: sinon.stub().callsArgWith(2, null, clinics),
+          getEHRSettings: sinon.stub().callsArgWith(1, null, {}),
+          getMRNSettings: sinon.stub().callsArgWith(1, null, {}),
         },
       };
 
@@ -5062,6 +5134,26 @@ describe('Asynchronous Actions', () => {
           payload: {
             clinicianId: clinicianId,
             clinics: clinics
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
           },
         },
       ];

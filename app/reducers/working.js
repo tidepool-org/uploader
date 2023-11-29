@@ -43,6 +43,8 @@ export default (state = initialWorkingState, action) => {
     case types.INIT_APP_REQUEST:
     case types.UPDATE_PROFILE_REQUEST:
     case types.FETCH_INFO_REQUEST:
+    case types.FETCH_CLINIC_MRN_SETTINGS_REQUEST:
+    case types.FETCH_CLINIC_EHR_SETTINGS_REQUEST:
       key = actionWorkingMap(action.type);
       if (key) {
         if (_.includes([
@@ -98,6 +100,8 @@ export default (state = initialWorkingState, action) => {
     case types.INIT_APP_SUCCESS:
     case types.UPDATE_PROFILE_SUCCESS:
     case types.FETCH_INFO_SUCCESS:
+    case types.FETCH_CLINIC_MRN_SETTINGS_SUCCESS:
+    case types.FETCH_CLINIC_EHR_SETTINGS_SUCCESS:
       key = actionWorkingMap(action.type);
       if (key) {
         if (action.type === types.LOGOUT_SUCCESS) {
@@ -149,6 +153,8 @@ export default (state = initialWorkingState, action) => {
     case types.INIT_APP_FAILURE:
     case types.UPDATE_PROFILE_FAILURE:
     case types.FETCH_INFO_FAILURE:
+    case types.FETCH_CLINIC_MRN_SETTINGS_FAILURE:
+    case types.FETCH_CLINIC_EHR_SETTINGS_FAILURE:
       key = actionWorkingMap(action.type);
       if (key) {
         return update(state, {

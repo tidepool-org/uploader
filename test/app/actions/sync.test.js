@@ -2101,4 +2101,94 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('fetchClinicMRNSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicMRNSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicMRNSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicMRNSettingsSuccess', () => {
+    let clinicId = 'clinic123';
+    let settings = { required: true, unique: true };
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicMRNSettingsSuccess(clinicId, settings);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicMRNSettingsSuccess(clinicId, settings);
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.settings).to.equal(settings);
+    });
+  });
+
+  describe('fetchClinicMRNSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching clinic mrn settings failed :(');
+      let action = sync.fetchClinicMRNSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_MRN_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicMRNSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_MRN_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicEHRSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicEHRSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicEHRSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicEHRSettingsSuccess', () => {
+    let clinicId = 'clinicId123';
+    let settings = {
+      enabled: true,
+      facility: 'facility',
+      sourceId: 'sourceId',
+    };
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicEHRSettingsSuccess(clinicId, settings);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicEHRSettingsSuccess(clinicId, settings);
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.settings).to.equal(settings);
+    });
+  });
+
+  describe('fetchClinicEHRSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching clinic ehr settings failed :(');
+      let action = sync.fetchClinicEHRSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_EHR_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicEHRSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
 });
