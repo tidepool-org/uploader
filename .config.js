@@ -19,30 +19,56 @@ import env from "./app/utils/env";
 
 const serverEnvironments = {
   local: {
+    hosts: ['localhost:3001'],
     API_URL: 'http://localhost:8009',
     UPLOAD_URL: 'http://localhost:8009',
     DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
+  development: {
+    hosts: ['localhost:31500'],
+    API_URL: 'http://localhost:31500',
+    UPLOAD_URL: 'http://localhost:31500',
+    DATA_URL: 'http://localhost:31500/dataservices',
+    BLIP_URL: 'http://localhost:31500'
+  },
+  dev1: {
+    hosts: ['dev1.dev.tidepool.org'],
+    API_URL: 'https://dev1.dev.tidepool.org',
+    UPLOAD_URL: 'https://dev1.dev.tidepool.org',
+    DATA_URL: 'https://dev1.dev.tidepool.org/dataservices',
+    BLIP_URL: 'https://dev1.dev.tidepool.org'
+  },
   qa1: {
+    hosts: ['qa1.development.tidepool.org', 'dev-app.tidepool.org', 'dev-api.tidepool.org'],
     API_URL: 'https://qa1.development.tidepool.org',
     UPLOAD_URL: 'https://qa1.development.tidepool.org',
     DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa1.development.tidepool.org'
   },
   qa2: {
+    hosts: ['qa2.development.tidepool.org', 'stg-app.tidepool.org', 'stg-api.tidepool.org'],
     API_URL: 'https://qa2.development.tidepool.org',
     UPLOAD_URL: 'https://qa2.development.tidepool.org',
     DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa2.development.tidepool.org'
   },
+  qa3: {
+    hosts: ['qa3.development.tidepool.org'],
+    API_URL: 'https://qa3.development.tidepool.org',
+    UPLOAD_URL: 'https://qa3.development.tidepool.org',
+    DATA_URL: 'https://qa3.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa3.development.tidepool.org'
+  },
   int: {
-    API_URL: 'https://external.integration.tidepool.org/',
-    UPLOAD_URL: 'https://external.integration.tidepool.org/',
+    hosts: ['external.integration.tidepool.org', 'int-app.tidepool.org', 'int-api.tidepool.org'],
+    API_URL: 'https://external.integration.tidepool.org',
+    UPLOAD_URL: 'https://external.integration.tidepool.org',
     DATA_URL: 'https://external.integration.tidepool.org/dataservices',
-    BLIP_URL: 'https://external.integration.tidepool.org/'
+    BLIP_URL: 'https://external.integration.tidepool.org'
   },
   prd: {
+    hosts: ['app.tidepool.org', 'api.tidepool.org', 'prd-app.tidepool.org', 'prd-api.tidepool.org'],
     API_URL: 'https://api.tidepool.org',
     UPLOAD_URL: 'https://api.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
@@ -51,22 +77,20 @@ const serverEnvironments = {
 };
 
 function serverEnvFromLocation() {
-  const currentUrl = new URL(window.location.href);
-  const subdomain = currentUrl.hostname.split('.')[0];
-  const containsHyphen = subdomain.indexOf('-') > -1;
-
-  if(subdomain === 'localhost') {
-    return 'local';
+  const url = new URL(window.location.href);
+  let host = url.hostname;
+  if (host === 'localhost') {
+    host += ':' + url.port;
   }
+  return serverEnvFromHost(host)
+}
 
-  if(containsHyphen) {
-    const envAbbr = subdomain.split('-')[1];
-    if(envAbbr === 'external') {
-      return 'int';
+function serverEnvFromHost(host) {
+  for (const [server, environment] of Object.entries(serverEnvironments)) {
+    if (_.includes(environment.hosts, host)) {
+      return server
     }
-    return envAbbr;
   }
-
   return 'prd';
 }
 

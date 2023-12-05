@@ -71,7 +71,7 @@ console.log('BLIP_URL =', blipUrl);
 
 const output = {
   path: path.join(__dirname, 'dist'),
-  publicPath: isDev ? `${devPublicPath}/` : '/',
+  publicPath: isDev ? `${devPublicPath}/` : '/uploader/',
   filename: 'bundle.js',
   libraryTarget: 'umd',
 };

@@ -92,7 +92,10 @@ app.use(nonceMiddleware, helmet.contentSecurityPolicy({
     childSrc: ["'self'", 'blob:', 'https://docs.google.com', 'https://app.pendo.io'],
     frameSrc: ['https://docs.google.com', 'https://app.pendo.io', '*.tidepool.org', 'localhost:*', 'tidepooluploader://*'],
     connectSrc: [].concat([
-      process.env.API_HOST || 'localhost:*',
+      process.env.API_URL || 'localhost:*',
+      process.env.UPLOAD_URL || 'localhost:*',
+      process.env.DATA_URL || 'localhost:*',
+      process.env.BLIP_URL || 'localhost:*',
       process.env.REALM_HOST,
       'https://api.github.com/repos/tidepool-org/uploader/releases',
       'https://static.zdassets.com',
@@ -122,7 +125,7 @@ app.get('/silent-check-sso.html', (req, res) => {
   res.send(res.locals.ssoHtmlWithNonces);
 });
 
-app.use(express.static(staticDir, { index: false }));
+app.use('/uploader', express.static(staticDir, { index: false }));
 
 //So that we can use react-router and browser history
 app.get('*', (req, res) => {
