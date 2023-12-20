@@ -108,7 +108,8 @@ export function doAppInit(opts, servicesToInit) {
     log('Initializing device');
     device.init({
       api,
-      version: opts.namedVersion
+      version: opts.namedVersion,
+      uploaderDestination: opts.uploaderDestination,
     }, function(deviceError, deviceResult){
       if (deviceError) {
         return dispatch(sync.initializeAppFailure(deviceError));
