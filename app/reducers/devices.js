@@ -79,7 +79,7 @@ const devices = {
     name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
-    enabled: {mac: true, win: false, linux: true}
+    enabled: {mac: true, win: true, linux: true}
     // CareSens Bluetooth pairing is tricky; maybe better to wait for Uploader-in-Web
     // before enabling it in Windows with proper on-screen instructions
   },

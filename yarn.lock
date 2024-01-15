@@ -15253,11 +15253,6 @@ semver@~5.1.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.1.1.tgz#a3292a373e6f3e0798da0b20641b9a9c5bc47e19"
   integrity sha512-bNx9Zdbi1OUN62PbKeG4IgGG8YILX/nkHJ0NQEBwg5FmX8qTJfqhYd3reqkm0DxHCC8nkazb6UjNiBSHCBWVtA==
 
-semver@~7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
-  integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
-
 send@0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/send/-/send-0.16.2.tgz#6ecca1e0f8c156d141597559848df64730a6bbc1"
