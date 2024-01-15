@@ -22,11 +22,11 @@ let history;
 if (env.electron) {
   history = createMemoryHistory();
 } else {
-  history = createBrowserHistory();
+  history = createBrowserHistory({basename: '/uploader'});
 }
 
 const store = configureStore(undefined, history);
-store.dispatch(push('/'));
+store.dispatch(push('/uploader'));
 
 // This is the communication mechanism for receiving actions dispatched from
 // the `main` Electron process. `action` should always be the resulting object

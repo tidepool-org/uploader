@@ -74,7 +74,7 @@ export const Login = () => {
       </button>
     );
   };
-  let redirectUri = win.location.origin;
+  let redirectUri = win.location.origin + (env.electron ? '' : '/uploader');
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
