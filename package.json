@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.55.1-tandem-compatibility.updates.1",
+  "version": "2.55.1-mrn-validation.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
