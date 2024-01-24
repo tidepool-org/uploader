@@ -436,7 +436,7 @@ export function doUpload(deviceKey, opts, utc) {
       }
     }
 
-    if (env.browser && driverManifest && driverManifest.mode === 'HID') {
+    if (driverManifest && driverManifest.mode === 'HID') {
       dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const filters = driverManifest.usb.map(({vendorId, productId}) => ({
@@ -548,8 +548,6 @@ export function doUpload(deviceKey, opts, utc) {
 }
 
 export function readFile(userId, deviceKey, file, extension) {
-  const version = versionInfo.semver;
-
   return async (dispatch, getState) => {
     if (!file) {
       const getFile = async () => {
@@ -568,6 +566,7 @@ export function readFile(userId, deviceKey, file, extension) {
       };
 
       let dirHandle = await get('directory');
+      const version = versionInfo.semver;
 
       if (dirHandle) {
         console.log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
@@ -580,7 +579,7 @@ export function readFile(userId, deviceKey, file, extension) {
             let err = new Error(ErrorMessages.E_NOT_YET_READY);
             let errProps = {
               code: 'E_NOT_YET_READY',
-              version: version
+              version: version,
             };
             return dispatch(sync.readFileAborted(err, errProps));
           }
@@ -606,6 +605,13 @@ export function readFile(userId, deviceKey, file, extension) {
                 return dispatch(sync.readFileAborted(err, errProps));
               }
             }
+          } else {
+            let err = new Error(ErrorMessages.E_READ_FILE);
+            let errProps = {
+              code: 'E_READ_FILE',
+              version: version
+            }
+            return dispatch(sync.readFileAborted(err, errProps));
           }
         }
       } else {
