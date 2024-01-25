@@ -18,7 +18,7 @@
 import _ from 'lodash';
 import semver from 'semver';
 import { push } from 'connected-react-router';
-import { get, set } from 'idb-keyval';
+import { get, set, del } from 'idb-keyval';
 import sundial from 'sundial';
 
 import { checkCacheValid } from 'redux-cache';
@@ -398,6 +398,7 @@ export function doUpload(deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
+    const { log } = services;
 
     const targetDevice = _.get(devices, deviceKey);
     const driverId = _.get(targetDevice, 'source.driverId');
@@ -420,7 +421,7 @@ export function doUpload(deviceKey, opts, utc) {
           for (let j = 0; j < driverManifest.usb.length; j++) {
             if (driverManifest.usb[j].vendorId === usbVendorId
               && driverManifest.usb[j].productId === usbProductId) {
-                console.log('Device has already been granted permission');
+                log('Device has already been granted permission');
                 opts.port = existingPermissions[i];
             }
           }
@@ -432,7 +433,7 @@ export function doUpload(deviceKey, opts, utc) {
         }
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
-        console.log('Error:', err);
+        log('Error:', err);
       }
     }
 
@@ -451,7 +452,7 @@ export function doUpload(deviceKey, opts, utc) {
           for (let j = 0; j < driverManifest.usb.length; j++) {
             if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
               && driverManifest.usb[j].productId === existingPermissions[i].productId) {
-                console.log('Device has already been granted permission');
+                log('Device has already been granted permission');
                 opts.hidDevice = existingPermissions[i];
             }
           }
@@ -465,7 +466,7 @@ export function doUpload(deviceKey, opts, utc) {
           throw new Error('No device was selected.');
         }
       } catch (err) {
-        console.log('Error:', err);
+        log('Error:', err);
 
         let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
         let errProps = {
@@ -485,11 +486,11 @@ export function doUpload(deviceKey, opts, utc) {
       // we need to to scan for Bluetooth devices before the version check,
       // otherwise it doesn't count as a response to a user request anymore
       dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
-      console.log('Scanning..');
+      log('Scanning..');
       try {
         await opts.ble.scan();
       } catch (err) {
-        console.log('Error:', err);
+        log('Error:', err);
 
         let btErr = new Error(ErrorMessages.E_BLUETOOTH_OFF);
         let errProps = {
@@ -503,7 +504,7 @@ export function doUpload(deviceKey, opts, utc) {
         }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
-      console.log('Done.');
+      log('Done.');
     }
 
     dispatch(sync.versionCheckRequest());
@@ -548,13 +549,16 @@ export function doUpload(deviceKey, opts, utc) {
 }
 
 export function readFile(userId, deviceKey, file, extension) {
+  const { log } = services;
+
   return async (dispatch, getState) => {
     if (!file) {
       const getFile = async () => {
+        dispatch(sync.choosingFile(userId, deviceKey));
         const regex = new RegExp('.+\.ibf', 'g');
 
         for await (const entry of dirHandle.values()) {
-          console.log(entry);
+          log(entry);
           // On Eros PDM there should only be one .ibf file
           if (regex.test(entry.name)) {
             file = {
@@ -569,13 +573,13 @@ export function readFile(userId, deviceKey, file, extension) {
       const version = versionInfo.semver;
 
       if (dirHandle) {
-        console.log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
+        log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
         if ((await dirHandle.queryPermission()) === 'granted') {
-          console.log('Permission already granted.');
+          log('Permission already granted.');
           try {
             await getFile();
           } catch (error) {
-            console.log('Device not ready yet or not plugged in.', error);
+            log('Device not ready yet or not plugged in.', error);
             let err = new Error(ErrorMessages.E_NOT_YET_READY);
             let errProps = {
               code: 'E_NOT_YET_READY',
@@ -584,14 +588,14 @@ export function readFile(userId, deviceKey, file, extension) {
             return dispatch(sync.readFileAborted(err, errProps));
           }
         } else {
-          console.log('Requesting permission..');
+          log('Requesting permission..');
           if ((await dirHandle.requestPermission()) === 'granted') {
             try {
               await getFile();
             } catch (err) {
               // device mounted on a different drive number/letter, so we'll have to
               // show directory picker again
-              console.log(err.name, err.message);
+              log(err.name, err.message);
               try {
                 dirHandle = await window.showDirectoryPicker();
                 await set('directory', dirHandle);
@@ -610,7 +614,7 @@ export function readFile(userId, deviceKey, file, extension) {
             let errProps = {
               code: 'E_READ_FILE',
               version: version
-            }
+            };
             return dispatch(sync.readFileAborted(err, errProps));
           }
         }
@@ -629,15 +633,17 @@ export function readFile(userId, deviceKey, file, extension) {
         }
       }
     }
-    dispatch(sync.choosingFile(userId, deviceKey));
+    
     const version = versionInfo.semver;
 
-    if (file.name.slice(-extension.length) !== extension) {
+    if (!file || file.name.slice(-extension.length) !== extension) {
       let err = new Error(ErrorMessages.E_FILE_EXT + extension);
       let errProps = {
         code: 'E_FILE_EXT',
         version: version
       };
+      log('Wrong directory selected');
+      del('directory');
       return dispatch(sync.readFileAborted(err, errProps));
     }
     else {
@@ -668,7 +674,7 @@ export function readFile(userId, deviceKey, file, extension) {
           };
           return dispatch(doUpload(deviceKey, opts));
         } catch (err) {
-          console.log('Error', err);
+          log('Error', err);
           return onError();
         }
       } else {
