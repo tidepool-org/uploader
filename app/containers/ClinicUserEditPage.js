@@ -36,30 +36,46 @@ export class ClinicUserEditPage extends Component {
   };
 
   render() {
-    const { allUsers, uploadTargetUser, memberships } = this.props;
+    const {
+      allUsers,
+      uploadTargetUser,
+      memberships,
+      loggedInUser,
+      createCustodialAccountErrorMessage,
+      createCustodialAccountErrorDismissed,
+      updateProfileErrorMessage,
+      updateProfileErrorDismissed,
+      selectedClinicId,
+      clinics,
+      working,
+      async,
+      sync
+    } = this.props;
+
     return (
       <div>
         <ClinicUserEdit
           targetId={uploadTargetUser}
           allUsers={allUsers}
           memberships={memberships}
-          loggedInUser={this.props.loggedInUser}
-          createUser={this.props.async.createCustodialAccount}
-          createClinicUser={this.props.async.createClinicCustodialAccount}
-          updateUser={this.props.async.clickEditUserNext}
-          updateClinicPatient={this.props.async.clickClinicEditUserNext}
+          loggedInUser={loggedInUser}
+          createUser={async.createCustodialAccount}
+          createClinicUser={async.createClinicCustodialAccount}
+          updateUser={async.clickEditUserNext}
+          updateClinicPatient={async.clickClinicEditUserNext}
           cancelEdit={_.partial(this.handleClickChangePerson, {metric: {eventName: metrics.CLINIC_ADD_CANCEL}})}
-          createCustodialAccountErrorMessage={this.props.createCustodialAccountErrorMessage}
-          createCustodialAccountErrorDismissed={this.props.createCustodialAccountErrorDismissed}
-          updateProfileErrorMessage={this.props.updateProfileErrorMessage}
-          updateProfileErrorDismissed={this.props.updateProfileErrorDismissed}
-          dismissCreateCustodialAccountError={this.props.sync.dismissCreateCustodialAccountError}
-          dismissUpdateProfileError={this.props.sync.dismissUpdateProfileError}
-          onSubmitFail={this.props.sync.clinicInvalidDate}
-          selectedClinicId={this.props.selectedClinicId}
-          clinics={this.props.clinics}
-          working={this.props.working}
-          acknowledgeNotification={this.props.sync.acknowledgeNotification} />
+          createCustodialAccountErrorMessage={createCustodialAccountErrorMessage}
+          createCustodialAccountErrorDismissed={createCustodialAccountErrorDismissed}
+          updateProfileErrorMessage={updateProfileErrorMessage}
+          updateProfileErrorDismissed={updateProfileErrorDismissed}
+          dismissCreateCustodialAccountError={sync.dismissCreateCustodialAccountError}
+          dismissUpdateProfileError={sync.dismissUpdateProfileError}
+          onSubmitFail={sync.clinicInvalidDate}
+          selectedClinicId={selectedClinicId}
+          clinics={clinics}
+          working={working}
+          acknowledgeNotification={sync.acknowledgeNotification}
+          fetchPatientsForClinic={async.fetchPatientsForClinic} />
       </div>
     );
   }
