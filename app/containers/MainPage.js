@@ -32,7 +32,6 @@ import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
 import { checkTimezoneName } from 'sundial';
-//const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;

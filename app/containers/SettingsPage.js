@@ -28,7 +28,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/';
 import { checkTimezoneName } from 'sundial';
-//const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;

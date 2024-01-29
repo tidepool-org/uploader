@@ -1,7 +1,6 @@
-import os from 'os';
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-//const remote = require('@electron/remote');
+import env from '../utils/env';
 
 import { i18n } from '../utils/config.i18next';
 const devices = {
@@ -286,6 +285,11 @@ if (navigator.userAgentData.platform === 'macOS') {
     linkText: i18n.t('EZSync002B cable'),
     link: 'https://purenitetech.com/product/ezsync002b/',
   };
+}
+
+if (env.electron) {
+  devices.onetouchverio.enabled = {linux: true, win: true, linux:true};
+  devices.onetouchselect.enabled = {linux: true, win: true, linux:true};
 }
 
 export default devices;
