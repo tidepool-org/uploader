@@ -216,7 +216,8 @@ export default class Upload extends Component {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 
-    if (_.get(upload, 'key', null) === 'omnipoderos') {
+    if (env.browser && _.get(upload, 'key', null) === 'omnipoderos') {
+      // we use File System Access API only in the browser; Electron uses Node.js File API
       return this.handleOmnipodErosUpload();
     }
 
@@ -746,7 +747,8 @@ export default class Upload extends Component {
 
   isBlockModeFileChosen() {
     const { upload } = this.props;
-    if (_.get(upload, 'source.type', null) !== 'block') {
+    if (_.get(upload, 'source.type', null) !== 'block' &&
+        _.get(upload, 'key', null) !== 'omnipoderos') {
       return false;
     }
     else {
