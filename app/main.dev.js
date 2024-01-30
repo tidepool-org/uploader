@@ -49,6 +49,7 @@ let menu;
 let template;
 let mainWindow = null;
 let serialPortFilter = null;
+let usbFilter = null;
 let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
@@ -283,6 +284,28 @@ operating system, as soon as possible.`,
       callback(details.deviceList[0].deviceId);
     } else {
       callback('');
+    }
+  });
+
+  mainWindow.webContents.session.on('select-usb-device', (event, details, callback) => {
+    event.preventDefault();
+    console.log('Device list:', details.deviceList);
+
+    let selectedDevice;
+    for (let i = 0; i < usbFilter.length; i++) {
+      selectedDevice = details.deviceList.find((element) =>
+        usbFilter[i].vendorId === element.vendorId &&
+        usbFilter[i].productId === element.productId
+    );
+      if (selectedDevice) {
+        break;
+      }
+    }
+
+    if (!selectedDevice) {
+      callback('');
+    } else {
+      callback(selectedDevice.deviceId);
     }
   });
 
@@ -617,6 +640,10 @@ ipcMain.on('autoUpdater', (event, arg) => {
 
 ipcMain.on('setSerialPortFilter', (event, arg) => {
   serialPortFilter = arg;
+});
+
+ipcMain.on('setUSBFilter', (event, arg) => {
+  usbFilter = arg;
 });
 
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
