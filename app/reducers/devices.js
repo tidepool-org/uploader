@@ -288,8 +288,8 @@ if (navigator.userAgentData.platform === 'macOS') {
 }
 
 if (env.electron) {
-  devices.onetouchverio.enabled = {linux: true, win: true, linux:true};
-  devices.onetouchselect.enabled = {linux: true, win: true, linux:true};
+  devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
 }
 
 export default devices;
