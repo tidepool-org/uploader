@@ -342,8 +342,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         if (err === 'E_G7_UNSUPPORTED') {
-          displayErr = new Error(ErrorMessages.E_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_UNSUPPORTED';
+          displayErr = new Error(ErrorMessages.E_G7_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_G7_UNSUPPORTED';
         }
 
         displayErr.originalError = err;
