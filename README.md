@@ -23,7 +23,7 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
-1. Make sure you have node v12.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
+1. Make sure you have node v16.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
 1. Run the following command:
@@ -142,6 +142,7 @@ We use the following environment variables on the CI server:
 |----------|-----------|-------|
 | APPLEID                  | MacOS    | Notarization |
 | APPLEIDPASS              | MacOS    | Notarization |
+| TEAMID                   | MacOS    | Notarization |
 | AWS_ACCESS_KEY_ID        | Both     | S3 builds and AV e-mails |
 | AWS_SECRET_ACESS_KEY     | Both     | S3 builds and AV e-mails |
 | CSC_FOR_PULL_REQUEST     | Both     | `true`, code signing for PR |
@@ -227,7 +228,7 @@ $ npm run package -- --[option]
 
 To package the app on your local machine, you need to set the `ROLLBAR_POST_TOKEN` environment variable to send telemetry data to Rollbar. You can get one for free from https://rollbar.com
 
-macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables `APPLEID` and `APPLEIDPASS`. Note that you need to set an app-specific password in https://appleid.apple.com for this to work.
+macOS: To notarize the app so that it will run on macOS Mojave, you need to set the environment variables `APPLEID`, `APPLEIDPASS`, and `TEAMID`. Note that you need to set an app-specific password in https://appleid.apple.com for this to work.
 
 Note that you'll need to build Windows builds on a Windows machine, and MacOS builds on a Mac.
 

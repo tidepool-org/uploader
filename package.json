@@ -44,7 +44,7 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.3",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.4.0",
+    "ble-glucose": "0.5.0",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
     "classnames": "2.3.2",

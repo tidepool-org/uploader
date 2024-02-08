@@ -52,6 +52,36 @@ function validateForm(values, props){
   if(mrnRequired && !values.mrn){
     errors.mrn = i18n.t('Patient\'s MRN is required');
   }
+  // mrn needs to be uppercase alphanumeric between 6 and 25 characters
+  if(values.mrn && !/^[A-Z0-9]{6,25}$/.test(values.mrn)){
+    errors.mrn = (
+      <div>
+        {i18n.t('Patient’s MRN is invalid. MRN must meet the following criteria:')}
+        <ul>
+          <li>{i18n.t('All upper case letters or numbers')}</li>
+          <li>{i18n.t('Minimum length: 6 characters')}</li>
+          <li>{i18n.t('Maximum length: 25 characters')}</li>
+          <li>{i18n.t('No spaces')}</li>
+        </ul>
+      </div>
+    );
+  }
+  // mrn needs to be unique
+  if (values.mrn && props.selectedClinicId) {
+    var { targetId } = props;
+    var patients = _.get(
+      props.clinics,
+      [props.selectedClinicId, 'patients'],
+      {}
+    );
+    var filteredPatients = _.reject(patients, { id: targetId });
+    var mrnExists = _.find(filteredPatients, { mrn: values.mrn });
+    if (mrnExists) {
+      errors.mrn = i18n.t(
+        'This MRN is already in use. Please enter a valid MRN.'
+      );
+    }
+  }
   return errors;
 }
 
@@ -119,6 +149,57 @@ class ClinicUserEdit extends React.Component {
     clinics: PropTypes.object.isRequired,
   };
 
+  static defaultProps = {
+    searchDebounceMs: 1000,
+  };
+
+  constructor(props) {
+    super(props);
+    const { targetId, memberships, selectedClinicId, clinics } = props;
+    this.state = {
+      searchText: '',
+      updateTrigger: false,
+      isCustodialAccount: this.isCustodialAccount(memberships, targetId, selectedClinicId, clinics)
+    };
+  };
+
+  isCustodialAccount = (memberships, targetId, selectedClinicId, clinics) => {
+    return (
+      _.has(_.get(memberships, [targetId, 'permissions']), 'custodian') ||
+      (selectedClinicId &&
+        _.has(
+          _.get(clinics, [
+            selectedClinicId,
+            'patients',
+            targetId,
+            'permissions',
+          ]),
+          'custodian'
+        ))
+    );
+  };
+
+  componentDidUpdate(prevProps) {
+    const { targetId, memberships, selectedClinicId, clinics } = this.props;
+    if (
+      this.props.working.fetchingPatientsForClinic.inProgress === false &&
+      prevProps.working.fetchingPatientsForClinic.inProgress === true
+    ) {
+      this.props.change('_forceValidation', Date.now());
+    }
+
+    if (this.props.targetId !== prevProps.targetId) {
+      this.setState({
+        isCustodialAccount: this.isCustodialAccount(
+          memberships,
+          targetId,
+          selectedClinicId,
+          clinics
+        )
+      });
+    }
+  };
+
   handleCancel = () => {
     if(this.props.working.creatingClinicCustodialAccount.notification) {
       this.props.acknowledgeNotification();
@@ -173,6 +254,22 @@ class ClinicUserEdit extends React.Component {
       }
     }
   };
+
+  handleSearchChange = () => _.debounce((e) => {
+    let searchText = e.target.value;
+    const {fetchPatientsForClinic, selectedClinicId, targetId} = this.props;
+    if(searchText !== this.state.searchText){
+      if(_.isEmpty(searchText)){
+        if(!targetId){
+          this.setState({searchText});
+          fetchPatientsForClinic(selectedClinicId);
+        }
+      } else {
+        this.setState({searchText});
+        fetchPatientsForClinic(selectedClinicId, {search: searchText});
+      }
+    }
+  }, this.props.searchDebounceMs);
 
   renderCreateError = () => {
     if (
@@ -286,23 +383,12 @@ class ClinicUserEdit extends React.Component {
   };
 
   render() {
-    const { handleSubmit, targetId, memberships, clinics, selectedClinicId } = this.props;
-    const isCustodialAccount =
-      _.has(_.get(memberships, [targetId, 'permissions']), 'custodian') ||
-      (selectedClinicId &&
-        _.has(
-          _.get(clinics, [
-            selectedClinicId,
-            'patients',
-            targetId,
-            'permissions',
-          ]),
-          'custodian'
-        ));
+    const { handleSubmit, targetId, clinics, selectedClinicId } = this.props;
+
     const titleText = targetId
       ? i18n.t('Edit patient account')
       : i18n.t('Create a new patient account');
-    const editable = targetId ? isCustodialAccount : true;
+    const editable = targetId ? this.state.isCustodialAccount : true;
     const mrnRequired = _.get(
       clinics,
       [selectedClinicId, 'mrnSettings', 'required'],
@@ -346,6 +432,7 @@ class ClinicUserEdit extends React.Component {
               name="mrn"
               component={renderInput}
               props={{ disabled: !editable }}
+              onChange={this.handleSearchChange()}
             />
           </div>
           <div className={styles.inputWrap}>
