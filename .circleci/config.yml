@@ -26,6 +26,9 @@ jobs:
           nvm install v18.17.1
           nvm alias default v18.17.1
     - run: node -v
+    - run: npm install --global npm node-gyp
+    - run: npm -v
+    - run: node-gyp -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn --frozen-lockfile
