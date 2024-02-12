@@ -7,6 +7,9 @@
   "Make sure the meter is switched off and plug in with micro-USB cable": "Make sure the meter is switched off and plug in with micro-USB cable",
   "Make sure the meter is switched off and plug in cable": "Make sure the meter is switched off and plug in cable",
   "Turn meter on and make sure Bluetooth is switched on": "Turn meter on and make sure Bluetooth is switched on",
+  "Sorry, we don't support the Libre 2 yet": "Sorry, we don't support the Libre 2 yet",
+  "Ensure the Smart Pix is mounted before starting.": "Ensure the Smart Pix is mounted before starting.",
+  "Click send and then start the transfer from your device.": "Click send and then start the transfer from your device.",
   "Nexus and HCT: Plug in meter with mini-USB": "Nexus and HCT: Plug in meter with mini-USB",
   "Nexus Mini Ultra & Go: Plug in meter with strip port cable": "Nexus Mini Ultra & Go: Plug in meter with strip port cable",
   "Nexus and HCT: Plug in meter with mini-USB cable": "Nexus and HCT: Plug in meter with mini-USB cable",
@@ -47,5 +50,7 @@
   "Plug cable into meter and then connect cable to computer": "Plug cable into meter and then connect cable to computer",
   "True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle • True Metrix Go: Plug in meter with micro-USB cable": "True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle • True Metrix Go: Plug in meter with micro-USB cable",
   "Plug into USB. Wait for Export to complete. Click Upload.": "Plug into USB. Wait for Export to complete. Click Upload.",
-  "Your device is not yet ready or not plugged in": "Your device is not yet ready or not plugged in"
+  "Your device is not yet ready or not plugged in": "Your device is not yet ready or not plugged in",
+  "Click Upload and then start the transfer from your device.": "Click Upload and then start the transfer from your device.",
+  "Device not ready yet or not mounted.": "Device not ready yet or not mounted."
 }
