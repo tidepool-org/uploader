@@ -175,7 +175,6 @@
     "lzo-decompress": "1.0.1",
     "mini-css-extract-plugin": "0.12.0",
     "object-invariant-test-helper": "0.1.1",
-    "open": "8.4.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
