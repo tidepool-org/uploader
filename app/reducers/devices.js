@@ -192,7 +192,7 @@ const devices = {
     name: 'OneTouch Select Plus Flex',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: false, mac: false, win: false}, // can't access Verio meters from browser
+    enabled: {linux: true, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
