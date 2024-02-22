@@ -45,9 +45,6 @@ if (env.electron_main) {
       i18nextOptions['lng'] = lng;
     }
 
-    console.log('i18nextOptions', i18nextOptions);
-    console.log('i18n', i18n);
-
     if (!i18n.isInitialized) {
       i18n
         .use(reactI18nextModule)
@@ -122,10 +119,6 @@ if (env.browser && !env.electron_renderer) {
         // Default namespace
         translation: require('../../locales/en/translation.json'),
       },
-      // fr: {
-      //   // Default namespace
-      //   translation: require('../../locales/fr/translation.json')
-      // },
       es: {
         // Default namespace
         translation: require('../../locales/es/translation.json'),

@@ -14,7 +14,7 @@ import config from '../../lib/config';
 window.DEBUG = config.DEBUG;
 import configureStore from '../store/configureStore';
 import App from './App';
-import '..//app.global.css';
+import '../app.global.css';
 import '../../styles/main.less';
 import { KeycloakWrapper } from '../keycloak';
 
@@ -39,7 +39,6 @@ ipcRenderer.on('newHash', (e, hash) => {
   window.location.hash = hash;
 });
 
-// const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 const Top = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
