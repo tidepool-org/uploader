@@ -24,8 +24,6 @@ import { i18n } from '../utils/config.i18next';
 import actions from '../actions/';
 const asyncActions = actions.async;
 
-let win = window;
-
 import { keycloak } from '../keycloak';
 
 export const Login = () => {
@@ -74,7 +72,7 @@ export const Login = () => {
       </button>
     );
   };
-  let redirectUri = win.location.origin + (env.electron ? '' : '/uploader');
+  let redirectUri = window.location.origin + (env.electron ? '' : '/uploader');
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
