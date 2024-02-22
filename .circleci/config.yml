@@ -146,6 +146,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       # note: node 16.14.2 with npm 8.3.1 breaks yarn installation
       - run: python -m pip install packaging
+      - run: pip install setuptools
       - run: nvm install v16.13.2
       - run: nvm use v16.13.2
       - run: node -v
