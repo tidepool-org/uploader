@@ -53,7 +53,6 @@ import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
-import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 import BluetoothModal from '../components/BluetoothModal';
@@ -62,11 +61,10 @@ import LoggedOut from '../components/LoggedOut.js';
 import styles from '../../styles/components/App.module.less';
 import { ipcRenderer } from '../utils/ipc';
 
-let remote, dns, checkVersion;
+let remote, dns;
 if(env.electron_renderer){
   remote = require('@electron/remote');
   dns = require('dns');
-  ({checkVersion} = require('../utils/drivers'));
 }
 
 const serverdata = {
@@ -127,9 +125,6 @@ export class App extends Component {
   }
 
   UNSAFE_componentWillMount(){
-    if (env.electron) {
-      checkVersion(this.props.dispatch);
-    }
     const selectedEnv = localStore.getItem('selectedEnv') && env.electron
       ? JSON.parse(localStore.getItem('selectedEnv'))
       : null;
@@ -237,7 +232,6 @@ export class App extends Component {
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />
-        <UpdateDriverModal />
         <DeviceTimeModal />
         <AdHocModal />
         <BluetoothModal />
