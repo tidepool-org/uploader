@@ -1,0 +1,9 @@
+{
+	"name": "org.tidepool.uploader",
+	"description": "Tidepool Uploader",
+	"path": "C:\\Users\\gerri\\sandbox\\native-msg.exe",
+	"type": "stdio",
+	"allowed_origins": [
+		"chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/"
+	]
+}
