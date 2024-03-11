@@ -2,6 +2,8 @@
 let reply;
 let port;
 
+/* global chrome */
+
 function connect() {
     const hostName = 'org.tidepool.uploader';
     console.log('Connecting to native messaging host', hostName);
@@ -12,7 +14,6 @@ function connect() {
 
 function sendNativeMessage(message) {
     port.postMessage(message);
-    //port.postMessage('\n');
     console.log('Sent message:', JSON.stringify(message));
 }
   
@@ -32,9 +33,9 @@ function onDisconnected() {
 
 chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
-        console.log("Received message from the web page:", request);
+        console.log('Received message from the web page:', request);
 
-        if (request.command == "openDevice") {
+        if (request.command == 'openDevice') {
         	connect();
         }
         
