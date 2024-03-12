@@ -13,8 +13,8 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  */
 
-let reply;
-let port;
+let reply = undefined;
+let port = undefined;
 
 /* global chrome */
 
@@ -49,7 +49,7 @@ chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
         console.log('Received message from the web page:', request);
 
-        if (request.command == 'openDevice') {
+        if (!port) {
         	connect();
         }
         
