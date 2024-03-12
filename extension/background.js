@@ -19,7 +19,7 @@ let port = undefined;
 /* global chrome */
 
 function connect() {
-    const hostName = 'org.tidepool.uploader-helper';
+    const hostName = 'org.tidepool.uploader_helper';
     console.log('Connecting to native messaging host', hostName);
     port = chrome.runtime.connectNative(hostName);
     port.onMessage.addListener(onNativeMessage);
