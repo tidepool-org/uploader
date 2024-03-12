@@ -1,9 +1,8 @@
 {
   "manifest_version": 3,
-  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcBHwzDvyBQ6bDppkIs9MP4ksKqCMyXQ/A52JivHZKh4YO/9vJsT3oaYhSpDCE9RPocOEQvwsHsFReW2nUEc6OLLyoCFFxIb7KkLGsmfakkut/fFdNJYh0xOTbSN8YvLWcqph09XAY2Y/f0AL7vfO1cuCqtkMt8hFrBGWxDdf9CQIDAQAB",
-  "name": "Native Messaging Example",
+  "name": "Tidepool Uploader Helper",
   "version": "1.0",
-  "description": "Send a message to a native application.",
+  "description": "This extension supports additional upload mechanisms for specific blood glucose meters, expanding support for compatible devices.",
   "icons": {
     "128": "icon-128.png"
   },
@@ -14,6 +13,10 @@
     "service_worker": "background.js"
   },
   "externally_connectable": {
-    "matches": ["http://localhost:3005/*"]
-  }
+    "matches": [
+      "http://localhost:3005/*",
+      "https://*.tidepool.org/*"
+    ]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAos4V4S/7tWoEGVppnpQaDsl0DjibWk12sSUfr3chmbDcPfQPw+1iZNZ16oMazdfyj/UBQA5hYlCycSSGExvl8N1JM0/sJ5DEs1hy5cmyR6MuAdXOuu0X1NzRS8rdi67msWXVJUO51AUIByHy5BArjw3AzaE4kxAWRexUvMjb8wC7/k5hmU7pimL/t7sa0O6ghmzJFvqu7nzK6x5+bGeHRfXg0OLqtAc3eLByRZbT0HOfgPEFsBq5LrbS3/MvzjNorWon0BcLYV7JayFkmpV/p3nQp+7SwiHKadsexlwreOly+Gk6tppkieiYsznI4kqQOpVrPrI+iMe+LCfw4NzhVQIDAQAB"
 }
