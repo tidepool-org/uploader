@@ -1851,16 +1851,16 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('selectClinic', () => {
+  describe('selectClinicSuccess', () => {
     let clinicId = 'clinic123';
     test('should be an FSA', () => {
-      let action = sync.selectClinic(clinicId);
+      let action = sync.selectClinicSuccess(clinicId);
       expect(isFSA(action)).to.be.true;
     });
 
-    test('type should equal SELECT_CLINIC', () => {
-      let action = sync.selectClinic(clinicId);
-      expect(action.type).to.equal('SELECT_CLINIC');
+    test('type should equal SELECT_CLINIC_SUCCESS', () => {
+      let action = sync.selectClinicSuccess(clinicId);
+      expect(action.type).to.equal('SELECT_CLINIC_SUCCESS');
       expect(action.payload.clinicId).to.equal(clinicId);
     });
   });
@@ -2188,6 +2188,110 @@ describe('Synchronous Actions', () => {
       let action = sync.fetchClinicEHRSettingsFailure(error);
       expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_FAILURE');
       expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicPatientCountRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_REQUEST', () => {
+      let action = sync.fetchClinicPatientCountRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_REQUEST');
+    });
+  });
+
+  describe('fetchClinicPatientCountSuccess', () => {
+    const clinicId = 'clinic123';
+    const results = { patientCount: 33 };
+
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSuccess(clinicId, results);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SUCCESS', () => {
+      let action = sync.fetchClinicPatientCountSuccess(clinicId, results);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SUCCESS');
+      expect(action.payload.clinicId).to.equal('clinic123');
+      expect(action.payload.patientCount).to.equal(33);
+    });
+  });
+
+  describe('fetchClinicPatientCountFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching patients failed :(');
+      let action = sync.fetchClinicPatientCountFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicPatientCountFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicPatientCountSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsSuccess', () => {
+    const clinicId = 'clinic123';
+    const results = { foo: 'bar' };
+
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal('clinic123');
+      expect(action.payload.patientCountSettings).to.eql({ foo: 'bar' });
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching patients failed :(');
+      let action = sync.fetchClinicPatientCountSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicPatientCountSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('setClinicUIDetails', () => {
+    it('should be a TSA', () => {
+      let action = sync.setClinicUIDetails();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal SET_CLINIC_UI_DETAILS', () => {
+      let clinicId = 'clinicId';
+      let uiDetails = { foo: 'bar' };
+      let action = sync.setClinicUIDetails(clinicId, uiDetails);
+      expect(action.type).to.equal('SET_CLINIC_UI_DETAILS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.uiDetails).to.eql(uiDetails);
     });
   });
 

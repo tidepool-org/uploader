@@ -29,6 +29,7 @@ import LoggedInAs from '../components/LoggedInAs';
 
 import * as actionSources from '../constants/actionSources';
 import { pages, pagesMap } from '../constants/otherConstants';
+import api from '../../lib/core/api';
 
 import styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
@@ -71,10 +72,10 @@ export class Header extends Component {
   };
 
   handleSwitchToClinic = (clinic) => {
-    const { toggleDropdown, selectClinic, setUploadTargetUser } = this.props.sync;
-    const { setPage } = this.props.async;
+    const { toggleDropdown, setUploadTargetUser } = this.props.sync;
+    const { setPage, selectClinic } = this.props.async;
     setUploadTargetUser(null);
-    selectClinic(clinic.id);
+    selectClinic(api, clinic.id);
     setPage(pages.CLINIC_USER_SELECT, true);
     toggleDropdown(true, actionSources.UNDER_THE_HOOD);
   };
