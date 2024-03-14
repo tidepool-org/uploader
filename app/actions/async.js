@@ -209,7 +209,7 @@ export function doLogin(creds, opts) {
       const isClinic = personUtils.isClinic(user);
 
       // detect if a VCA here and redirect to clinic user select screen
-      dispatch(getClinicsForClinician(api, user.userid, {}, (err, clinics) => {
+      dispatch(getClinicsForClinician(api, user.userid, { limit: 1000, offset: 0 }, (err, clinics) => {
         if(err) {
           return dispatch(sync.loginFailure(err));
         }
