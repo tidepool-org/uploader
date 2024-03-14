@@ -871,6 +871,20 @@ export function dismissedBluetoothPairingDialog() {
   };
 }
 
+export function displayPatientLimitModal() {
+  return {
+    type: ActionTypes.SHOW_PATIENT_LIMIT_MODAL,
+    meta: { source: actionSources[ActionTypes.SHOW_PATIENT_LIMIT_MODAL] }
+  };
+}
+
+export function dismissPatientLimitModal() {
+  return {
+    type: ActionTypes.DISMISS_PATIENT_LIMIT_MODAL,
+    meta: { source: actionSources[ActionTypes.DISMISS_PATIENT_LIMIT_MODAL] }
+  };
+}
+
 export function fetchPatientsForClinicRequest() {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,

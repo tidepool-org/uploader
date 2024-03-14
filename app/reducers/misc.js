@@ -258,6 +258,17 @@ export function showingAdHocPairingDialog(state = initialState.showingAdHocPairi
   }
 }
 
+export function showingPatientLimitModal(state = initialState.showingPatientLimitModal, action) {
+  switch (action.type) {
+    case types.SHOW_PATIENT_LIMIT_MODAL:
+      return true;
+    case types.DISMISS_PATIENT_LIMIT_MODAL:
+      return false;
+    default:
+      return state;
+  }
+}
+
 export function showingBluetoothPairingDialog(state = initialState.showingBluetoothPairingDialog, action) {
   switch (action.type) {
     case types.BLUETOOTH_PAIRING_REQUEST:

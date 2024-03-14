@@ -2191,6 +2191,40 @@ describe('Synchronous Actions', () => {
     });
   });
 
+  describe('displayPatientLimitModal', () => {
+    test('should be an FSA', () => {
+      let action = sync.displayPatientLimitModal();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to display the patient limit modal', () => {
+      const expectedAction = {
+        type: actionTypes.SHOW_PATIENT_LIMIT_MODAL,
+        meta: { source: actionSources[actionTypes.SHOW_PATIENT_LIMIT_MODAL] }
+      };
+
+      expect(sync.displayPatientLimitModal()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissPatientLimitModal', () => {
+    test('should be an FSA', () => {
+      let action = sync.dismissPatientLimitModal();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to dismiss the patient limit modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_PATIENT_LIMIT_MODAL,
+        meta: { source: actionSources[actionTypes.DISMISS_PATIENT_LIMIT_MODAL] }
+      };
+
+      expect(sync.dismissPatientLimitModal()).to.deep.equal(expectedAction);
+    });
+  });
+
   describe('fetchClinicPatientCountRequest', () => {
     it('should be a TSA', () => {
       let action = sync.fetchClinicPatientCountRequest();

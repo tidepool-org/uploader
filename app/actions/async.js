@@ -1027,6 +1027,12 @@ export function checkUploadTargetUserAndMaybeRedirect() {
 
 export function clickAddNewUser(){
   return (dispatch, getState) =>{
+    // check state for clinic patient limit exceeded and if so, display the limit modal
+    const { selectedClinicId, clinics } = getState();
+    const clinic = _.get(clinics, selectedClinicId);
+    if (clinic?.ui.warnings.limitReached) {
+      return dispatch(sync.displayPatientLimitModal());
+    }
     dispatch(sync.setUploadTargetUser(null));
     dispatch(setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_ADD}}));
   };
