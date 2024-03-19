@@ -32,11 +32,11 @@ function sendNativeMessage(message) {
 }
   
 function onNativeMessage(message) {
-	if (message.msgType == 'info') {
+    if (message.msgType == 'info') {
     	console.log(message.details);
     } else {
- 		reply(message);
- 	}
+        reply(message);
+    }
 }
   
 function onDisconnected() {
@@ -45,22 +45,20 @@ function onDisconnected() {
     reply({ msgType: 'error', details: 'Disconnected: ' + chrome.runtime.lastError.message });
 }
 
-chrome.runtime.onMessageExternal.addListener(
-    function(request, sender, sendResponse) {
+chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
         console.log('Received message from the web page:', request);
 
         if (!port) {
-        	connect();
+            connect();
         }
         
-        // Process the request here
         if (port) {
-	        sendNativeMessage(request);
+            sendNativeMessage(request);
 
-	        reply = sendResponse;
-	        return true; // indicates we will asynchronously use sendResponse
-	    } else {
-	    	sendResponse({ msgType: 'error', details: 'Not connected.'});
-	    }
+            reply = sendResponse;
+            return true; // indicates we will asynchronously use sendResponse
+        } else {
+            sendResponse({ msgType: 'error', details: 'Not connected.'});
+        }
     }
 );

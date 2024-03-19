@@ -188,7 +188,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   onetouchselect: {
-    instructions: i18n.t('Plug in meter with micro-USB and make sure Uploader Helper extension is installed'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Select Plus Flex',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
@@ -196,7 +196,7 @@ const devices = {
     powerOnlyWarning: true,
   },
   onetouchverio: {
-    instructions: i18n.t('Plug in meter with micro-USB and make sure Uploader Helper extension is installed'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
