@@ -48,7 +48,7 @@ const PatientLimitModal = () => {
                 rel="noreferrer"
               >
                 {i18n.t('learn more about our plans')}
-              </a>
+              </a>.
             </div>
           </div>
         </div>

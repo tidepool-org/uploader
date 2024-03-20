@@ -88,6 +88,33 @@ describe('clinicUtils', function() {
       });
     });
 
+    it('should set appropriate details for a tier0100 clinic that has a patient count hard limit and no start date', () => {
+      const details = clinicUtils.clinicTierDetails(createClinic({
+        tier: 'tier0100',
+        patientCountSettings: { hardLimit: { patientCount: DEFAULT_CLINIC_PATIENT_COUNT_HARD_LIMIT } }
+      }));
+
+      expect(details.planName).to.equal('base');
+      expect(details.patientLimitEnforced).to.equal(true);
+
+      expect(details.display).to.eql({
+        planName: true,
+        patientCount: true,
+        patientLimit: true,
+        workspacePlan: true,
+        workspaceLimitDescription: false,
+        workspaceLimitFeedback: false,
+        workspaceLimitResolutionLink: false,
+      });
+
+      expect(details.entitlements).to.eql({
+        patientTags: false,
+        rpmReport: false,
+        summaryDashboard: false,
+        tideDashboard: false,
+      });
+    });
+
     it('should set appropriate details for a tier0100 clinic that has a patient count hard limit start date in the past', () => {
       const details = clinicUtils.clinicTierDetails(createClinic({
         tier: 'tier0100',
