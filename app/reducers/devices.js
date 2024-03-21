@@ -207,7 +207,7 @@ const devices = {
   },
   onetouchverioble: {
     instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
-    name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
+    name: 'OneTouch Verio Flex, Verio Reflect, Select Plus Flex and Ultra Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
     enabled: {mac: true, win: true, linux: true}
