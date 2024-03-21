@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.56.1-enforce-patient-limit.2",
+  "version": "2.56.1-enforce-patient-limit.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
