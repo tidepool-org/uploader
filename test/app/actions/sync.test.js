@@ -474,6 +474,7 @@ describe('Synchronous Actions', () => {
       const user = {userid: 'abc123'};
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [];
       test('should be an FSA', () => {
         let action = sync.setUserInfoFromToken({ user, profile, memberships });
         expect(isFSA(action)).to.be.true;
@@ -482,10 +483,10 @@ describe('Synchronous Actions', () => {
       test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: { user, profile, memberships },
+          payload: { user, profile, memberships, clinics },
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         };
-        expect(sync.setUserInfoFromToken({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.setUserInfoFromToken({ user, profile, memberships, clinics })).to.deep.equal(expectedAction);
       });
     });
   });
@@ -513,20 +514,21 @@ describe('Synchronous Actions', () => {
       const user = {userid: 'abc123'};
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [];
       test('should be an FSA', () => {
-        expect(isFSA(sync.loginSuccess({ user, profile, memberships }))).to.be.true;
+        expect(isFSA(sync.loginSuccess({ user, profile, memberships, clinics }))).to.be.true;
       });
 
       test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.LOGIN_SUCCESS,
-          payload: { user, profile, memberships },
+          payload: { user, profile, memberships, clinics },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
         };
-        expect(sync.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.loginSuccess({ user, profile, memberships, clinics })).to.deep.equal(expectedAction);
       });
     });
 

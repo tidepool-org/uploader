@@ -25,12 +25,13 @@ import * as users from '../../../app/reducers/users';
 
 describe('users', () => {
   describe('allUsers', () => {
-    const user = {userid: 'a1b2c3', email: 'annie@foo.com'};
+    const user = {userid: 'a1b2c3', email: 'annie@foo.com', isClinicMember: false};
     const profile = {fullName: 'Annie Foo'};
     const memberships = [
       {userid: 'a1b2c3', profile: {fullName: 'Annie Foo'}, permissions: { root: {}}},
       {userid: 'd4e5f6', profile: {b: 2}, permissions: { upload: {}, view: {}} }
     ];
+    const clinics = [];
     const account = {userid: 'jkl012', profile: {fullName: 'Jane Doe', patient: { birthday: '2010-01-01' }}};
     test('should return the initial state', () => {
       expect(users.allUsers(undefined, {})).to.deep.equal({});
@@ -39,10 +40,10 @@ describe('users', () => {
     test('should handle LOGIN_SUCCESS', () => {
       const action = {
         type: actionTypes.LOGIN_SUCCESS,
-        payload: { user, profile, memberships }
+        payload: { user, profile, memberships, clinics }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, profile},
+        a1b2c3: {email: user.email, profile, isClinicMember: false},
         d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};
@@ -53,10 +54,10 @@ describe('users', () => {
     test('should handle SET_USER_INFO_FROM_TOKEN', () => {
       const action = {
         type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-        payload: { user, profile, memberships }
+        payload: { user, profile, memberships, clinics }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, profile},
+        a1b2c3: {email: user.email, profile, isClinicMember: false},
         d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};
@@ -67,10 +68,10 @@ describe('users', () => {
     test('should handle SET_ALL_USERS', () => {
       const action = {
         type: actionTypes.SET_ALL_USERS,
-        payload: { user, profile, memberships }
+        payload: { user, profile, memberships, clinics }
       };
       expect(users.allUsers(undefined, action)).to.deep.equal({
-        a1b2c3: {email: user.email, profile},
+        a1b2c3: {email: user.email, profile, isClinicMember: false},
         d4e5f6: {profile: {b: 2}}
       });
       let initialState = {};

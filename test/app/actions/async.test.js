@@ -783,11 +783,19 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
             profile,
             memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -818,13 +826,6 @@ describe('Asynchronous Actions', () => {
             ],
             method: 'push',
           },
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [],
-          }
         },
       ];
       __Rewire__('services', {
@@ -941,10 +942,18 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile, memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -961,13 +970,6 @@ describe('Asynchronous Actions', () => {
               }
             } ],
             method: 'push'
-          }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [],
           }
         },
       ];
@@ -1042,10 +1044,18 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: []
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile, memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -1065,13 +1075,6 @@ describe('Asynchronous Actions', () => {
               }
             } ],
             method: 'push'
-          }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: []
           }
         },
       ];
@@ -1137,10 +1140,47 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile,
+            memberships,
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -1176,37 +1216,6 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [{
-              clinic: {
-                id: 'clinicId'
-              }
-            }],
-          },
-        },
-        {
-          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
-        },
-        {
-          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
-          payload: {
-            clinicId: 'clinicId',
-            settings: {},
-          },
-        },
-        {
-          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
-        },
-        {
-          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
-          payload: {
-            clinicId: 'clinicId',
-            settings: {},
-          },
         },
       ];
       __Rewire__('services', {
@@ -1276,32 +1285,6 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: {
-            user: userObj.user,
-            profile, memberships
-          },
-          meta: {
-            source: actionSources[actionTypes.LOGIN_SUCCESS],
-            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
-          }
-        },
-        {
-          type: '@@router/CALL_HISTORY_METHOD',
-          payload: {
-            args: [ {
-              pathname: '/workspace_switch',
-              state: {
-                meta: {
-                  metric: {eventName: metrics.WORKSPACE_SWITCH_DISPLAYED},
-                  source: actionSources.USER
-                }
-              }
-            } ],
-            method: 'push'
-          }
-        },
-        {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
           payload: {
             clinicianId: 'abc123',
@@ -1357,6 +1340,44 @@ describe('Asynchronous Actions', () => {
             clinicId: 'clinicId2',
             settings: {},
           },
+        },
+        {
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: {
+            user: userObj.user,
+            profile,
+            memberships,
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            },
+            {
+              clinic: {
+                id: 'clinicId2'
+              }
+            }
+],
+          },
+          meta: {
+            source: actionSources[actionTypes.LOGIN_SUCCESS],
+            metric: {eventName: metrics.CLINIC_LOGIN_SUCCESS}
+          }
+        },
+        {
+          type: '@@router/CALL_HISTORY_METHOD',
+          payload: {
+            args: [ {
+              pathname: '/workspace_switch',
+              state: {
+                meta: {
+                  metric: {eventName: metrics.WORKSPACE_SWITCH_DISPLAYED},
+                  source: actionSources.USER
+                }
+              }
+            } ],
+            method: 'push'
+          }
         },
       ];
       __Rewire__('services', {

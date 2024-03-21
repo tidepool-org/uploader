@@ -143,7 +143,8 @@ export function doAppInit(opts, servicesToInit) {
           dispatch(sync.setUserInfoFromToken({
             user: user,
             profile: profile,
-            memberships: memberships
+            memberships: memberships,
+            clinics: clinics,
           }));
           dispatch(sync.getClinicsForClinicianSuccess(clinics, user.userid));
           const isClinic = personUtils.isClinic(user);
@@ -216,7 +217,8 @@ export function doLogin(creds, opts) {
         dispatch(sync.loginSuccess({
           user,
           profile,
-          memberships
+          memberships,
+          clinics
         }));
         if(!_.isEmpty(clinics)){
           if (clinics.length === 1) { // select clinic and go to clinic user select page
@@ -1193,7 +1195,6 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
     dispatch(sync.getClinicsForClinicianRequest());
 
     api.clinics.getClinicsForClinician(clinicianId, options, (err, clinics) => {
-      cb(err, clinics);
       if (err) {
         dispatch(sync.getClinicsForClinicianFailure(
           createActionError(ErrorMessages.ERR_FETCHING_CLINICS_FOR_CLINICIAN, err), err
@@ -1207,6 +1208,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
         dispatch(fetchClinicEHRSettings(api, clinic.clinic.id));
         dispatch(fetchClinicMRNSettings(api, clinic.clinic.id));
       });
+      cb(err, clinics);
     });
   };
 }

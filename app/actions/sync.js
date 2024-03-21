@@ -290,10 +290,10 @@ export function initializeAppFailure(err) {
 }
 
 export function setUserInfoFromToken(results) {
-  const { user, profile, memberships } = results;
+  const { user, profile, memberships, clinics } = results;
   return {
     type: ActionTypes.SET_USER_INFO_FROM_TOKEN,
-    payload: { user, profile, memberships },
+    payload: { user, profile, memberships, clinics },
     meta: {source: actionSources[ActionTypes.SET_USER_INFO_FROM_TOKEN]}
   };
 }
@@ -310,14 +310,14 @@ export function loginRequest() {
 }
 
 export function loginSuccess(results) {
-  const { user, profile, memberships } = results;
+  const { user, profile, memberships, clinics } = results;
   const isClinicAccount = personUtils.isClinicianAccount(user);
   if (isClinicAccount) {
     uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: { user, profile, memberships },
+    payload: { user, profile, memberships, clinics },
     meta: {
       source: actionSources[ActionTypes.LOGIN_SUCCESS],
       metric: {eventName: isClinicAccount ? metrics.CLINIC_LOGIN_SUCCESS : metrics.LOGIN_SUCCESS}
