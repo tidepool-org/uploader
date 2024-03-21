@@ -1030,7 +1030,7 @@ export function clickAddNewUser(){
     // check state for clinic patient limit exceeded and if so, display the limit modal
     const { selectedClinicId, clinics } = getState();
     const clinic = _.get(clinics, selectedClinicId);
-    if (clinic?.ui.warnings.limitReached) {
+    if (clinic?.ui?.warnings.limitReached) {
       return dispatch(sync.displayPatientLimitModal());
     }
     dispatch(sync.setUploadTargetUser(null));
