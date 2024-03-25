@@ -28,12 +28,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/';
 import { checkTimezoneName } from 'sundial';
-const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-const i18n = remote.getGlobal('i18n');
+import { i18n } from '../utils/config.i18next';
 
 export class SettingsPage extends Component {
   handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {

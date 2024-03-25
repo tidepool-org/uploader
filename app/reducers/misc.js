@@ -183,47 +183,6 @@ export function electronUpdateDownloaded(state = initialState.electronUpdateDown
   }
 }
 
-export function driverUpdateAvailable(state = initialState.driverUpdateAvailable, action) {
-  switch (action.type) {
-    case types.DRIVER_UPDATE_AVAILABLE:
-      return action.payload;
-    case types.DRIVER_UPDATE_NOT_AVAILABLE:
-    case types.DRIVER_INSTALL:
-      return false;
-    default:
-      return state;
-  }
-}
-
-export function driverUpdateAvailableDismissed(state = initialState.driverUpdateAvailableDismissed, action) {
-  switch (action.type) {
-    case types.CHECKING_FOR_DRIVER_UPDATE:
-      return false;
-    case types.DISMISS_DRIVER_UPDATE_AVAILABLE:
-      return true;
-    default:
-      return state;
-  }
-}
-
-export function driverUpdateShellOpts(state = initialState.driverUpdateShellOpts, action) {
-  switch (action.type) {
-    case types.DRIVER_INSTALL_SHELL_OPTS:
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-export function driverUpdateComplete(state = initialState.driverUpdateComplete, action) {
-  switch (action.type) {
-    case types.DRIVER_INSTALL:
-      return true;
-    default:
-      return state;
-  }
-}
-
 export function showingDeviceTimePrompt(state = initialState.showingDeviceTimePrompt, action) {
   switch (action.type) {
     case types.DEVICE_TIME_INCORRECT:

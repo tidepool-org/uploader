@@ -17,10 +17,12 @@
 
 import _ from 'lodash';
 import semver from 'semver';
-import os from 'os';
 import { push } from 'connected-react-router';
+import { get, set, del } from 'idb-keyval';
+import sundial from 'sundial';
+
 import { checkCacheValid } from 'redux-cache';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from '../utils/ipc';
 
 import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
@@ -32,15 +34,17 @@ import * as sync from './sync';
 import * as actionUtils from './utils';
 import personUtils from '../../lib/core/personUtils';
 import driverManifests from '../../lib/core/driverManifests';
+import env from '../utils/env';
 import api from '../../lib/core/api';
 import localStore from '../../lib/core/localStore';
+
 
 let services = { api };
 let versionInfo = {};
 let hostMap = {
-  'darwin': 'mac',
-  'win32' : 'win',
-  'linux': 'linux',
+  'macOS': 'mac',
+  'Windows' : 'win',
+  'Linux': 'linux',
 };
 
 const isBrowser = typeof window !== 'undefined';
@@ -93,13 +97,16 @@ export function doAppInit(opts, servicesToInit) {
     const { api, device, log } = services;
 
     dispatch(sync.initializeAppRequest());
-    dispatch(sync.hideUnavailableDevices(opts.os || hostMap[os.platform()]));
+    log('Platform detected:', navigator.userAgentData.platform);
+    dispatch(sync.hideUnavailableDevices(opts.os || hostMap[navigator.userAgentData.platform]));
 
     log('Getting OS details.');
     await actionUtils.initOSDetails();
 
     ipcRenderer.on('bluetooth-pairing-request', async (event, details) => {
-      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(dispatch);
+      const displayBluetoothModal = actionUtils.makeDisplayBluetoothModal(
+        dispatch
+      );
       displayBluetoothModal((response) => {
         ipcRenderer.send('bluetooth-pairing-response', response);
       }, details);
@@ -391,6 +398,7 @@ export function doUpload(deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
+    const { log } = services;
 
     const targetDevice = _.get(devices, deviceKey);
     const driverId = _.get(targetDevice, 'source.driverId');
@@ -405,11 +413,27 @@ export function doUpload(deviceKey, opts, utc) {
       }));
 
       try {
-        ipcRenderer.send('setSerialPortFilter', filters);
-        opts.port = await navigator.serial.requestPort({ filters: filters });
+        const existingPermissions = await navigator.serial.getPorts();
+
+        for (let i = 0; i < existingPermissions.length; i++) {
+          const { usbProductId, usbVendorId } = existingPermissions[i].getInfo();
+
+          for (let j = 0; j < driverManifest.usb.length; j++) {
+            if (driverManifest.usb[j].vendorId === usbVendorId
+              && driverManifest.usb[j].productId === usbProductId) {
+                log('Device has already been granted permission');
+                opts.port = existingPermissions[i];
+            }
+          }
+        }
+
+        if (opts.port == null) {
+          ipcRenderer.send('setSerialPortFilter', filters);
+          opts.port = await navigator.serial.requestPort({ filters: filters });
+        }
       } catch (err) {
         // not returning error, as we'll attempt user-space driver instead
-        console.log('Error:', err);
+        log('Error:', err);
       }
     }
 
@@ -428,7 +452,7 @@ export function doUpload(deviceKey, opts, utc) {
           for (let j = 0; j < driverManifest.usb.length; j++) {
             if (driverManifest.usb[j].vendorId === existingPermissions[i].vendorId
               && driverManifest.usb[j].productId === existingPermissions[i].productId) {
-                console.log('Device has already been granted permission');
+                log('Device has already been granted permission');
                 opts.hidDevice = existingPermissions[i];
             }
           }
@@ -442,7 +466,7 @@ export function doUpload(deviceKey, opts, utc) {
           throw new Error('No device was selected.');
         }
       } catch (err) {
-        console.log('Error:', err);
+        log('Error:', err);
 
         let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
         let errProps = {
@@ -462,11 +486,11 @@ export function doUpload(deviceKey, opts, utc) {
       // we need to to scan for Bluetooth devices before the version check,
       // otherwise it doesn't count as a response to a user request anymore
       dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
-      console.log('Scanning..');
+      log('Scanning..');
       try {
         await opts.ble.scan();
       } catch (err) {
-        console.log('Error:', err);
+        log('Error:', err);
 
         let btErr = new Error(ErrorMessages.E_BLUETOOTH_OFF);
         let errProps = {
@@ -480,7 +504,7 @@ export function doUpload(deviceKey, opts, utc) {
         }
         return dispatch(sync.uploadFailure(btErr, errProps, devices[deviceKey]));
       }
-      console.log('Done.');
+      log('Done.');
     }
 
     dispatch(sync.versionCheckRequest());
@@ -525,19 +549,101 @@ export function doUpload(deviceKey, opts, utc) {
 }
 
 export function readFile(userId, deviceKey, file, extension) {
-  return (dispatch, getState) => {
+  const { log } = services;
+
+  return async (dispatch, getState) => {
     if (!file) {
-      return;
+      const getFile = async () => {
+        dispatch(sync.choosingFile(userId, deviceKey));
+        const regex = new RegExp('.+\.ibf', 'g');
+
+        for await (const entry of dirHandle.values()) {
+          log(entry);
+          // On Eros PDM there should only be one .ibf file
+          if (regex.test(entry.name)) {
+            file = {
+              handle: await entry.getFile(),
+              name: entry.name,
+            };
+          }
+        }
+      };
+
+      let dirHandle = await get('directory');
+      const version = versionInfo.semver;
+
+      if (dirHandle) {
+        log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
+        if ((await dirHandle.queryPermission()) === 'granted') {
+          log('Permission already granted.');
+          try {
+            await getFile();
+          } catch (error) {
+            log('Device not ready yet or not plugged in.', error);
+            let err = new Error(ErrorMessages.E_NOT_YET_READY);
+            let errProps = {
+              code: 'E_NOT_YET_READY',
+              version: version,
+            };
+            return dispatch(sync.readFileAborted(err, errProps));
+          }
+        } else {
+          log('Requesting permission..');
+          if ((await dirHandle.requestPermission()) === 'granted') {
+            try {
+              await getFile();
+            } catch (err) {
+              // device mounted on a different drive number/letter, so we'll have to
+              // show directory picker again
+              log(err.name, err.message);
+              try {
+                dirHandle = await window.showDirectoryPicker();
+                await set('directory', dirHandle);
+                await getFile();
+              } catch (error) {
+                let err = new Error(`${ErrorMessages.E_READ_FILE}: ${error.message}`);
+                let errProps = {
+                  code: 'E_READ_FILE',
+                  version: version
+                };
+                return dispatch(sync.readFileAborted(err, errProps));
+              }
+            }
+          } else {
+            let err = new Error(ErrorMessages.E_READ_FILE);
+            let errProps = {
+              code: 'E_READ_FILE',
+              version: version
+            };
+            return dispatch(sync.readFileAborted(err, errProps));
+          }
+        }
+      } else {
+        try {
+          dirHandle = await window.showDirectoryPicker();
+          await set('directory', dirHandle);
+          await getFile();
+        } catch (error) {
+          let err = new Error(`${ErrorMessages.E_READ_FILE}: ${error.message}`);
+          let errProps = {
+            code: 'E_READ_FILE',
+            version: version
+          };
+          return dispatch(sync.readFileAborted(err, errProps));
+        }
+      }
     }
-    dispatch(sync.choosingFile(userId, deviceKey));
+    
     const version = versionInfo.semver;
 
-    if (file.name.slice(-extension.length) !== extension) {
+    if (!file || file.name.slice(-extension.length) !== extension) {
       let err = new Error(ErrorMessages.E_FILE_EXT + extension);
       let errProps = {
         code: 'E_FILE_EXT',
         version: version
       };
+      log('Wrong directory selected');
+      del('directory');
       return dispatch(sync.readFileAborted(err, errProps));
     }
     else {
@@ -546,7 +652,7 @@ export function readFile(userId, deviceKey, file, extension) {
         dispatch(sync.readFileRequest(userId, deviceKey, file.name));
       };
 
-      reader.onerror = () => {
+      const onError = () => {
         let err = new Error(ErrorMessages.E_READ_FILE + file.name);
         let errProps = {
           code: 'E_READ_FILE',
@@ -555,14 +661,39 @@ export function readFile(userId, deviceKey, file, extension) {
         return dispatch(sync.readFileFailure(err, errProps));
       };
 
-      reader.onloadend = ((theFile) => {
-        return (e) => {
-          dispatch(sync.readFileSuccess(userId, deviceKey, e.srcElement.result));
-          dispatch(doUpload(deviceKey));
-        };
-      })(file);
+      if (file.handle) {
+        // we're using File System Access API
+        dispatch(sync.readFileRequest(userId, deviceKey, file.name));
+        try {
+          const filedata = await file.handle.arrayBuffer();
 
-      reader.readAsArrayBuffer(file);
+          dispatch(sync.readFileSuccess(userId, deviceKey, filedata));
+          const opts = {
+            filename : file.name,
+            filedata : filedata,
+          };
+          return dispatch(doUpload(deviceKey, opts));
+        } catch (err) {
+          log('Error', err);
+          return onError();
+        }
+      } else {
+        let reader = new FileReader();
+        reader.onloadstart = () => {
+          dispatch(sync.readFileRequest(userId, deviceKey, file.name));
+        };
+
+        reader.onerror = onError;
+
+        reader.onloadend = ((theFile) => {
+          return (e) => {
+            dispatch(sync.readFileSuccess(userId, deviceKey, e.srcElement.result));
+            dispatch(doUpload(deviceKey));
+          };
+        })(file);
+
+        reader.readAsArrayBuffer(file);
+      }
     }
   };
 }
@@ -572,6 +703,9 @@ export function doVersionCheck() {
     dispatch(sync.versionCheckRequest());
     const { api } = services;
     const version = versionInfo.semver;
+    if(env.browser){
+      return dispatch(sync.versionCheckSuccess());
+    }
     api.upload.getVersions((err, versions) => {
       if (err) {
         return dispatch(sync.versionCheckFailure(err));

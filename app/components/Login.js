@@ -18,12 +18,11 @@
 import React, { useState } from 'react';
 import styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
+import env from '../utils/env';
+import { i18n } from '../utils/config.i18next';
 
 import actions from '../actions/';
 const asyncActions = actions.async;
-
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
 
 import { keycloak } from '../keycloak';
 
@@ -73,11 +72,15 @@ export const Login = () => {
       </button>
     );
   };
-
+  let redirectUri = window.location.origin + (env.electron ? '' : '/uploader');
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
-      window.open(keycloak.createLoginUrl(), '_blank');
+      if (env.electron_renderer) {
+        window.open(keycloak.createLoginUrl(), '_blank');
+      } else {
+        keycloak.login({ redirectUri });
+      }
     } else {
       dispatch(asyncActions.doLogin({ username, password }, { remember }));
     }

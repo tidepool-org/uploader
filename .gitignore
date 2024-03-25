@@ -10,7 +10,9 @@ lib-cov
 pids
 logs
 results
-config/
+config/*
+!config/local.sh
+!config/local.example.js
 build
 build/Release
 .eslintcache

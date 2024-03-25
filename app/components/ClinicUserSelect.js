@@ -28,8 +28,7 @@ var styles = require('../../styles/components/ClinicUserSelect.module.less');
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 import api from '../../lib/core/api';
 

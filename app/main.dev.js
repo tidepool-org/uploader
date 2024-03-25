@@ -10,13 +10,9 @@ import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
-import i18n from 'i18next';
-import i18nextBackend from 'i18next-fs-backend';
-import i18nextOptions from './utils/config.i18next';
+import { setLanguage, i18n } from './utils/config.i18next';
 import path from 'path';
 import fs from 'fs';
-
-global.i18n = i18n;
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
@@ -53,6 +49,7 @@ let menu;
 let template;
 let mainWindow = null;
 let serialPortFilter = null;
+let usbFilter = null;
 let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
@@ -139,7 +136,9 @@ const openExternalUrl = (url) => {
 
 app.on('ready', async () => {
   await installExtensions();
-  setLanguage();
+  setLanguage(() => {
+    createWindow();
+  });
 });
 
 function createWindow() {
@@ -285,6 +284,28 @@ operating system, as soon as possible.`,
       callback(details.deviceList[0].deviceId);
     } else {
       callback('');
+    }
+  });
+
+  mainWindow.webContents.session.on('select-usb-device', (event, details, callback) => {
+    event.preventDefault();
+    console.log('Device list:', details.deviceList);
+
+    let selectedDevice;
+    for (let i = 0; i < usbFilter.length; i++) {
+      selectedDevice = details.deviceList.find((element) =>
+        usbFilter[i].vendorId === element.vendorId &&
+        usbFilter[i].productId === element.productId
+    );
+      if (selectedDevice) {
+        break;
+      }
+    }
+
+    if (!selectedDevice) {
+      callback('');
+    } else {
+      callback(selectedDevice.deviceId);
     }
   });
 
@@ -621,6 +642,10 @@ ipcMain.on('setSerialPortFilter', (event, arg) => {
   serialPortFilter = arg;
 });
 
+ipcMain.on('setUSBFilter', (event, arg) => {
+  usbFilter = arg;
+});
+
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
@@ -685,28 +710,6 @@ if (!gotTheLock) {
     event.preventDefault();
     return handleIncomingUrl(url);
   });
-}
-
-function setLanguage() {
-  if (process.env.I18N_ENABLED === 'true') {
-    let lng = app.getLocale();
-    // remove country in language locale
-    if (_.includes(lng,'-'))
-      lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
-
-    i18nextOptions['lng'] = lng;
-  }
-
-  if (!i18n.Initialize) {
-    i18n.use(i18nextBackend).init(i18nextOptions, function(err, t) {
-      if (err) {
-        console.log('An error occurred in i18next:', err);
-      }
-
-      global.i18n = i18n;
-      createWindow();
-    });
-  }
 }
 
 function getURLFromArgs(args) {
