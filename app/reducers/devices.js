@@ -188,19 +188,19 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   onetouchselect: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Select Plus Flex',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: false, mac: false, win: false}, // can't access Verio meters from browser
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: false, mac: false, win: false}, // can't access Verio meters from browser
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverioble: {
@@ -289,7 +289,9 @@ if (navigator.userAgentData.platform === 'macOS') {
 
 if (env.electron) {
   devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchverio.instructions = i18n.t('Plug in meter with micro-USB cable');
   devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchselect.instructions = i18n.t('Plug in meter with micro-USB cable');
 }
 
 export default devices;
