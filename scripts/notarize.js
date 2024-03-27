@@ -11,7 +11,6 @@ exports.default = async function notarizing(context) {
   console.log(`Notarizing ${appName}`);
 
   return await notarize({
-    appBundleId: 'org.tidepool.TidepoolUploader',
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLEID,
     appleIdPassword: process.env.APPLEIDPASS,
