@@ -53,4 +53,6 @@ module.exports = {
   ERR_FETCHING_INFO: 'Something went wrong while fetching server configuration.',
   ERR_FETCHING_CLINIC_MRN_SETTINGS: 'Something went wrong while fetching clinic MRN settings.',
   ERR_FETCHING_CLINIC_EHR_SETTINGS: 'Something went wrong while fetching clinic EHR settings.',
+  ERR_FETCHING_CLINIC_PATIENT_COUNT: 'Something went wrong while fetching clinic patient count.',
+  ERR_FETCHING_CLINIC_PATIENT_COUNT_SETTINGS: 'Something went wrong while fetching clinic patient count settings.',
 };

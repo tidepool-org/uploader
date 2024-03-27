@@ -1,0 +1,76 @@
+@import '../core/variables.less';
+
+.modalWrap {
+  composes: flexColumn from '../core/layout.module.less';
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  composes: boxFlex flexColumn from '../core/layout.module.less';
+  min-width: 350px;
+  max-width: calc(100% - 80px);
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: solid 1px @gray-light;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+}
+
+.text {
+  composes: small from '../core/typography.module.less';
+  width: 100%;
+  color: #4f6a92;
+}
+
+.body {
+  composes: flexColumn from '../core/layout.module.less';
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 35px;
+  margin-left: 35px;
+  margin-right: 35px;
+  padding: 0 20px;
+}
+
+.actions {
+  composes: flexColumn from '../core/layout.module.less';
+  padding-bottom: 22px;
+  width: 310px;
+  align-items: center;
+}
+
+.button {
+  composes: btn btnPrimary from '../core/buttons.module.less';
+  font-size: 12px;
+  margin: 6px;
+  padding: 0 10px;
+}
+
+.image {
+  width: 213px;
+  margin-bottom: 24px;
+}
+
+.largeText {
+  composes: medium from '../core/typography.module.less';
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.smallText {
+  composes: tiny from '../core/typography.module.less';
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.learnMoreLink {
+  composes: link from '../core/typography.module.less';
+  color: #6783ff;
+}
