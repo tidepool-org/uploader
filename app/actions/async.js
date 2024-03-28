@@ -345,6 +345,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           displayErr.linkText = 'Please see this support article.';
         }
 
+        if (err === 'E_G7_UNSUPPORTED') {
+          displayErr = new Error(ErrorMessages.E_G7_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_G7_UNSUPPORTED';
+        }
+
         displayErr.originalError = err;
         if (process.env.NODE_ENV !== 'test') {
           deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);
