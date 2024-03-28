@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.56.1-g7-unsupported.1",
+  "version": "2.56.1-enforce-patient-limit.6",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -60,6 +60,7 @@
     "fast-safe-stringify": "2.1.1",
     "ftdi-js": "0.3.0",
     "history": "4.10.1",
+    "i18n-iso-countries": "6.1.0",
     "i18next": "20.6.1",
     "i18next-fs-backend": "1.1.4",
     "iconv-lite": "0.6.3",
@@ -92,7 +93,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.1",
-    "tidepool-platform-client": "0.53.0",
+    "tidepool-platform-client": "0.56.0-web-2763-pendo-patient-count.1",
     "usb-cdc-acm": "0.1.1",
     "uuid": "9.0.0",
     "webmtp": "0.3.3"
@@ -174,6 +175,7 @@
     "less-loader": "6.2.0",
     "lzo-decompress": "1.0.1",
     "mini-css-extract-plugin": "0.12.0",
+    "moment": "2.29.4",
     "object-invariant-test-helper": "0.1.1",
     "open": "8.4.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
@@ -191,7 +193,8 @@
     "webpack-dev-server": "3.11.2",
     "webpack-hot-middleware": "2.25.3",
     "webpack-merge": "4.2.2",
-    "xmlbuilder": "15.1.1"
+    "xmlbuilder": "15.1.1",
+    "yup": "0.32.9"
   },
   "devEngines": {
     "node": ">=7.9.x",
@@ -229,6 +232,9 @@
       "app"
     ],
     "runner": "@jest-runner/electron",
-    "testEnvironment": "@jest-runner/electron/environment"
+    "testEnvironment": "@jest-runner/electron/environment",
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ]
   }
 }
