@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.56.1-enforce-patient-limit.5",
+  "version": "2.56.1-enforce-patient-limit.6",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
