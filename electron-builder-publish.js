@@ -74,8 +74,6 @@ const config = {
   },
   mac: {
     category: 'public.app-category.tools',
-    entitlements: 'resources/mac/entitlements.mac.plist',
-    entitlementsInherit: 'resources/mac/entitlements.mac.plist',
     target: [
       {
         target: 'zip',
@@ -92,6 +90,7 @@ const config = {
       'dir'
     ],
     notarize: false,
+    asarUnpack: 'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
   },
   protocols: [{
     name: 'Tidepool Uploader',
