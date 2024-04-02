@@ -13627,10 +13627,10 @@ sundial@1.7.0:
   dependencies:
     moment-timezone "0.5.37"
 
-sundial@1.7.2-alpha.3:
-  version "1.7.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.2-alpha.3.tgz#02ffa7dcd94e61d215760ade0d98ba5bb2acaaff"
-  integrity sha512-kOtN9Aqu0WNYplWB8gBZLjuSCDzwz3C6lK4FygagN1FpqrMeMlU3ojpwqqjkp9le71GLxuvun0qvJ3NJ17p98A==
+sundial@1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.3.tgz#a192d79fec85f4e1ce511eac4b293adcfd3260a9"
+  integrity sha512-YuMw2QfP1zTp45BWPfJLvQqWXYUWL9yoLzC4Brmj9yX5vwxMKq+zXDBJPFgYZLAsNN33BURRpUN7txBrO90g3A==
   dependencies:
     moment-timezone "0.5.43"
 
@@ -13863,10 +13863,10 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tidepool-platform-client@0.54.0-web-2595-critical-depandancy-updates.1:
-  version "0.54.0-web-2595-critical-depandancy-updates.1"
-  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.54.0-web-2595-critical-depandancy-updates.1.tgz#611d3416a91712696e1400ec105b6b51f9f6bf3d"
-  integrity sha512-oazVZAsUygLBHtwX6mWZGrNV8rGn5Y0VUfx9IuRCyDiblM9WVmpHtmriKUsX4Q+nQxLroFZ55BHCRBOp+5ea7A==
+tidepool-platform-client@0.56.0:
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/tidepool-platform-client/-/tidepool-platform-client-0.56.0.tgz#1a65bcb03624e220b248d1438ab075c9823850df"
+  integrity sha512-/ZaHQZtB5uFxKTjWCDdFinOeZgRmV/xsVkeOR5MiBmo+or6KNOAmsVQ9vdU1MX3lVCpqHLgFsOctzgVsCaC+XA==
   dependencies:
     async "0.9.0"
     lodash "4.17.21"
