@@ -75,11 +75,11 @@ if (process.env.NODE_ENV === 'development') {
   require('module').globalPaths.push(p); // eslint-disable-line
   process.env.APPIMAGE = path.join(__dirname, 'release');
   autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
-  // Object.defineProperty(app, 'isPackaged', {
-  //   get() {
-  //     return true;
-  //   }
-  // });
+  Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
 }
 
 app.on('window-all-closed', () => {
