@@ -91,9 +91,7 @@ const config = {
       },
       'dir'
     ],
-    notarize: {
-      teamId: process.env.TEAMID
-    }
+    notarize: false,
   },
   protocols: [{
     name: 'Tidepool Uploader',
