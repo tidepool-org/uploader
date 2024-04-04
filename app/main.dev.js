@@ -262,7 +262,7 @@ operating system, as soon as possible.`,
 
     let selectedPort;
     for (let i = 0; i < serialPortFilter.length; i++) {
-      selectedPort = portList.find((element) => 
+      selectedPort = portList.find((element) =>
         serialPortFilter[i].usbVendorId === parseInt(element.vendorId, 10) &&
         serialPortFilter[i].usbProductId === parseInt(element.productId, 10)
       );
@@ -653,14 +653,14 @@ const handleIncomingUrl = (url) => {
       const { webContents } = mainWindow;
       // redirecting from the app html to app html with hash breaks devtools
       // just send and append the hash if we're already in the app html
-      if (webContents.getURL().includes(baseURL)) {
-        webContents.send('newHash', requestHash);
-      } else {
+      // if (webContents.getURL().includes(baseURL)) {
+      //   webContents.send('newHash', requestHash);
+      // } else {
         webContents.loadURL(`${baseURL}${requestHash}`);
-      }
-      return;  
+      // }
+      return;
     }
-    
+
   }
 };
 
@@ -679,7 +679,7 @@ if (!gotTheLock) {
       return handleIncomingUrl(url);
     }
   });
-  
+
   // Protocol handler for osx
   app.on('open-url', (event, url) => {
     event.preventDefault();
