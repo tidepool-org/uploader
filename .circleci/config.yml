@@ -116,7 +116,7 @@ jobs:
       - run: mv .nvmrc .nvmrc.tmp
       - node/install:
           install-yarn: true
-          node-version: '16.14.2'
+          node-version: '18.17.1'
       - run: mv .nvmrc.tmp .nvmrc
       - run: git submodule sync
       - run: git submodule update --init
