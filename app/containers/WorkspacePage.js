@@ -21,7 +21,7 @@ export const WorkspacePage = (props) => {
 
   const handleSwitchWorkspace = (clinic) => {
     dispatch(sync.setUploadTargetUser(null));
-    dispatch(sync.selectClinic(clinic.id));
+    dispatch(async.selectClinic(api, clinic.id));
     dispatch(async.fetchPatientsForClinic(clinic.id));
     dispatch(
       async.setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {

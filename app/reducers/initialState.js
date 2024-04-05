@@ -46,6 +46,8 @@ const initialState = {
     fetchingInfo: Object.assign({}, working),
     fetchingClinicMRNSettings: Object.assign({}, working),
     fetchingClinicEHRSettings: Object.assign({}, working),
+    fetchingClinicPatientCount: Object.assign({}, working),
+    fetchingClinicPatientCountSettings: Object.assign({}, working),
   },
   notification: null,
   dataDonationAccounts: [],
@@ -63,6 +65,7 @@ const initialState = {
   isTimezoneFocused: false,
   showingAdHocPairingDialog: false,
   showingBluetoothPairingDialog: null,
+  showingPatientLimitModal: false,
   keycloakConfig: {},
 };
 

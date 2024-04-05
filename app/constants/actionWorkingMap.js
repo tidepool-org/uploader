@@ -64,6 +64,16 @@ export default (type) => {
     case types.FETCH_CLINIC_EHR_SETTINGS_FAILURE:
       return 'fetchingClinicEHRSettings';
 
+    case types.FETCH_CLINIC_PATIENT_COUNT_REQUEST:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SUCCESS:
+    case types.FETCH_CLINIC_PATIENT_COUNT_FAILURE:
+      return 'fetchingClinicPatientCount';
+
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE:
+      return 'fetchingClinicPatientCountSettings';
+
     case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
     case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
     case types.UPDATE_AVAILABLE:

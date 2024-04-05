@@ -668,6 +668,59 @@ describe('misc reducers', () => {
       });
     });
 
+    describe('fetchClinicPatientCountSuccess', () => {
+      it('should update `patientCount` in state', () => {
+        let clinicId = 'clinicId123';
+        let results = { patientCount: 33 };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCount: 32,
+          },
+        };
+        let action = actions.sync.fetchClinicPatientCountSuccess(clinicId, results);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patientCount).to.eql(33);
+      });
+    });
+
+    describe('fetchClinicPatientCountSettingsSuccess', () => {
+      it('should update `patientCountSettings` in state', () => {
+        let clinicId = 'clinicId123';
+        let results = { foo: 'bar' };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCountSettings: { bar: 'baz' },
+          },
+        };
+        let action = actions.sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patientCountSettings).to.eql({ foo: 'bar' });
+      });
+    });
+
+    describe('setClinicUIDetails', () => {
+      it('should merge the provided `uiDetails` with clinic state', () => {
+        let clinicId = 'clinicId123';
+        let uiDetails = { foo: 'bar', bar: 'baz' };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCount: 1,
+          },
+        };
+        let action = actions.sync.setClinicUIDetails(clinicId, uiDetails);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId]).to.eql({
+          id: clinicId,
+          patientCount: 1,
+          foo: 'bar',
+          bar: 'baz',
+        });
+      });
+    });
+
     describe('logoutRequest', () => {
       test('should set clinics to initial state', () => {
         let initialStateForTest = {
@@ -691,7 +744,7 @@ describe('misc reducers', () => {
       test('should set state to clinicId', () => {
         let initialStateForTest = null;
 
-        let action = actions.sync.selectClinic('clinicId123');
+        let action = actions.sync.selectClinicSuccess('clinicId123');
 
         let state = misc.selectedClinicId(initialStateForTest, action);
 

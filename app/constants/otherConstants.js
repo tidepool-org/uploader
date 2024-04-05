@@ -14,6 +14,17 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
+import env from '../utils/env';
+
+let t;
+if (env.electron_renderer) {
+  const remote = require('@electron/remote');
+  const i18n = remote.getGlobal( 'i18n' );
+  t = i18n.t.bind(i18n);
+} else {
+  const i18n = require('i18next');
+  t = i18n.t.bind(i18n);
+}
 
 export const pages = {
   LOADING: 'LOADING',
@@ -64,3 +75,14 @@ export const urls = {
   HOW_TO_SHARE_DATA_KB_ARTICLE: 'http://support.tidepool.org/article/16-share-your-data',
   HOW_TO_CREATE_CLINICIAN_ACCOUNT_KB_ARTICLE: 'https://support.tidepool.org/hc/en-us/articles/9159893429908-Creating-a-new-Clinic-account',
 };
+
+export const MGDL_UNITS = t('mg/dL');
+export const MMOLL_UNITS = t('mmol/L');
+export const MGDL_PER_MMOLL = 18.01559;
+
+export const DEFAULT_CLINIC_TIER = 'tier0100';
+export const DEFAULT_CLINIC_PATIENT_COUNT_HARD_LIMIT = 250;
+export const CLINIC_REMAINING_PATIENTS_WARNING_THRESHOLD = 40;
+
+export const URL_TIDEPOOL_PLUS_PLANS = 'https://tidepool.org/providers/tidepoolplus/plans';
+export const URL_TIDEPOOL_PLUS_CONTACT_SALES = 'https://app.cronofy.com/add_to_calendar/scheduling/-hq0nDA6';

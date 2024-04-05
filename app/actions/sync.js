@@ -290,10 +290,10 @@ export function initializeAppFailure(err) {
 }
 
 export function setUserInfoFromToken(results) {
-  const { user, profile, memberships } = results;
+  const { user, profile, memberships, clinics } = results;
   return {
     type: ActionTypes.SET_USER_INFO_FROM_TOKEN,
-    payload: { user, profile, memberships },
+    payload: { user, profile, memberships, clinics },
     meta: {source: actionSources[ActionTypes.SET_USER_INFO_FROM_TOKEN]}
   };
 }
@@ -310,14 +310,14 @@ export function loginRequest() {
 }
 
 export function loginSuccess(results) {
-  const { user, profile, memberships } = results;
+  const { user, profile, memberships, clinics } = results;
   const isClinicAccount = personUtils.isClinicianAccount(user);
   if (isClinicAccount) {
     uploadDataPeriod.setPeriodMedtronic600(uploadDataPeriod.PERIODS.FOUR_WEEKS);
   }
   return {
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: { user, profile, memberships },
+    payload: { user, profile, memberships, clinics },
     meta: {
       source: actionSources[ActionTypes.LOGIN_SUCCESS],
       metric: {eventName: isClinicAccount ? metrics.CLINIC_LOGIN_SUCCESS : metrics.LOGIN_SUCCESS}
@@ -821,6 +821,20 @@ export function dismissedBluetoothPairingDialog() {
   };
 }
 
+export function displayPatientLimitModal() {
+  return {
+    type: ActionTypes.SHOW_PATIENT_LIMIT_MODAL,
+    meta: { source: actionSources[ActionTypes.SHOW_PATIENT_LIMIT_MODAL] }
+  };
+}
+
+export function dismissPatientLimitModal() {
+  return {
+    type: ActionTypes.DISMISS_PATIENT_LIMIT_MODAL,
+    meta: { source: actionSources[ActionTypes.DISMISS_PATIENT_LIMIT_MODAL] }
+  };
+}
+
 export function fetchPatientsForClinicRequest() {
   return {
     type: ActionTypes.FETCH_PATIENTS_FOR_CLINIC_REQUEST,
@@ -986,9 +1000,9 @@ export function getClinicsForClinicianFailure(error, apiError) {
   };
 }
 
-export function selectClinic(clinicId) {
+export function selectClinicSuccess(clinicId) {
   return {
-    type: ActionTypes.SELECT_CLINIC,
+    type: ActionTypes.SELECT_CLINIC_SUCCESS,
     payload: {
       clinicId
     },
@@ -1043,6 +1057,68 @@ export function fetchClinicEHRSettingsFailure(error, apiError) {
     error: error,
     meta: {
       apiError: apiError || null,
+    },
+  };
+}
+
+export function fetchClinicPatientCountRequest() {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_REQUEST,
+  };
+}
+
+export function fetchClinicPatientCountSuccess(clinicId, results) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_SUCCESS,
+    payload: {
+      clinicId: clinicId,
+      patientCount: results.patientCount,
+    },
+  };
+}
+
+export function fetchClinicPatientCountFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_FAILURE,
+    error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function fetchClinicPatientCountSettingsRequest() {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST,
+  };
+}
+
+export function fetchClinicPatientCountSettingsSuccess(clinicId, patientCountSettings) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS,
+    payload: {
+      clinicId: clinicId,
+      patientCountSettings: patientCountSettings,
+    },
+  };
+}
+
+export function fetchClinicPatientCountSettingsFailure(error, apiError) {
+  return {
+    type: ActionTypes.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE,
+    error,
+    meta: {
+      apiError: apiError || null,
+    },
+  };
+}
+
+export function setClinicUIDetails(clinicId, uiDetails) {
+  return {
+    type: ActionTypes.SET_CLINIC_UI_DETAILS,
+    payload: {
+      clinicId: clinicId,
+      uiDetails: uiDetails,
     },
   };
 }

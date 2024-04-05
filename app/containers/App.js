@@ -56,6 +56,7 @@ import UpdateModal from '../components/UpdateModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 import BluetoothModal from '../components/BluetoothModal';
+import PatientLimitModal from '../components/PatientLimitModal.js';
 import LoggedOut from '../components/LoggedOut.js';
 
 import styles from '../../styles/components/App.module.less';
@@ -235,6 +236,7 @@ export class App extends Component {
         <DeviceTimeModal />
         <AdHocModal />
         <BluetoothModal />
+        <PatientLimitModal />
       </div>
     );
   }
