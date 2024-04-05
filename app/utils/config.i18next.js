@@ -36,6 +36,7 @@ if (env.electron_main) {
 
   setLanguage = (cb) => {
     cb ??= _.noop;
+    console.log('I18N_ENABLED', process.env.I18N_ENABLED)
     if (process.env.I18N_ENABLED === 'true') {
       let lng = app.getLocale();
       // remove country in language locale
@@ -128,6 +129,7 @@ if (env.browser && !env.electron_renderer) {
 
   let setLanguage = (cb) => {
     cb ??= _.noop;
+    console.log('I18N_ENABLED', process.env.I18N_ENABLED)
     if (process.env.I18N_ENABLED === 'true') {
       let lng = navigator.language;
       // remove country in language locale

@@ -64,10 +64,17 @@ const blipUrl = _.get(
   process.env.BLIP_URL || null
 );
 
+const i18nEnabled = _.get(
+  optional('./config/local'),
+  'environment.I18N_ENABLED',
+  process.env.I18N_ENABLED || 'true'
+)
+
 console.log('API_URL =', apiUrl);
 console.log('UPLOAD_URL =', uploadUrl);
 console.log('DATA_URL =', dataUrl);
 console.log('BLIP_URL =', blipUrl);
+console.log('I18N_ENABLED =', i18nEnabled);
 
 const output = {
   path: path.join(__dirname, 'dist'),
@@ -110,6 +117,7 @@ let plugins = [
     'process.env.UPLOAD_URL': JSON.stringify(uploadUrl),
     'process.env.DATA_URL': JSON.stringify(dataUrl),
     'process.env.BLIP_URL': JSON.stringify(blipUrl),
+    'process.env.I18N_ENABLED': JSON.stringify(i18nEnabled),
   }),
 
   new webpack.LoaderOptionsPlugin({
