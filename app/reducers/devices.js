@@ -62,7 +62,8 @@ const devices = {
     key: 'contourplus',
     name: 'Ascensia Contour Plus One/Blue',
     source: {type: 'device', driverId: 'ContourPlus'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
@@ -96,7 +97,8 @@ const devices = {
     name: 'Equil Insulin Patch/Micro Pump',
     key: 'weitai',
     source: {type: 'device', driverId: 'Weitai'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true
   },
   foracareble: {
     instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
@@ -128,7 +130,8 @@ const devices = {
     name: 'GLUCOCARD Shine Connex & Shine Express',
     key: 'glucocardshinehid',
     source: {type: 'device', driverId: 'GlucocardShineHID'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true
   },
   glucocardvital: {
     instructions: i18n.t('Make sure the meter is switched off and plug in cable'),
