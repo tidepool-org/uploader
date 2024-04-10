@@ -123,4 +123,5 @@ module.exports = {
   DATA_URL: process.env.DATA_URL || serverEnvironments[selectedServerEnv].DATA_URL,
   BLIP_URL: process.env.BLIP_URL || serverEnvironments[selectedServerEnv].BLIP_URL,
   DEFAULT_TIMEZONE: process.env.DEFAULT_TIMEZONE || 'America/Los_Angeles',
+  I18N_ENABLED: stringToBoolean(process.env.I18N_ENABLED, false),
 };
