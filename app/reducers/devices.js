@@ -142,6 +142,13 @@ const devices = {
     source: {type: 'device', driverId: 'GlucoRx'},
     enabled: {mac: true, win: true, linux: true}
   },
+  pogo: {
+    instructions: 'Plug in meter with micro-USB',
+    name: 'Intuity Medical POGO',
+    key: 'pogo',
+    source: {type: 'device', driverId: 'IntuityPOGO'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   omnipod: {
     instructions: i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.'),
     key: 'omnipod',
