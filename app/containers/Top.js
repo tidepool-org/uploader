@@ -16,7 +16,7 @@ import configureStore from '../store/configureStore';
 import App from './App';
 import '../app.global.css';
 import '../../styles/main.less';
-import { KeycloakWrapper } from '../keycloak';
+import { OidcWrapper } from '../auth';
 
 let history;
 if (env.electron) {
@@ -42,9 +42,9 @@ ipcRenderer.on('newHash', (e, hash) => {
 const Top = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <KeycloakWrapper>
+      <OidcWrapper>
         <Route path="/" render={(props) => <App {...props} />} />
-      </KeycloakWrapper>
+      </OidcWrapper>
     </ConnectedRouter>
   </Provider>
 );

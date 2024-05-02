@@ -20,13 +20,13 @@ import styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import env from '../utils/env';
 import { i18n } from '../utils/config.i18next';
+import { useAuth } from 'react-oidc-context';
 
 import actions from '../actions/';
 const asyncActions = actions.async;
 
-import { keycloak } from '../keycloak';
-
 export const Login = () => {
+  const auth = useAuth();
   const dispatch = useDispatch();
   const disabled = useSelector((state) => Boolean(state.unsupported));
   const errorMessage = useSelector((state) => state.loginErrorMessage);
@@ -37,10 +37,13 @@ export const Login = () => {
     (state) => state.working.loggingIn.inProgress
   );
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
-  const keycloakInitializing = keycloakConfig.url && !keycloakConfig.initialized;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
+
+  if(auth?.user){
+    auth.events._raiseUserSignedIn(auth.user);
+  }
 
   const renderForgotPasswordLink = () => {
     return (
@@ -51,13 +54,13 @@ export const Login = () => {
   };
 
   const renderButton = () => {
-    var text = i18n.t('Log in');
+    let text = i18n.t('Log in');
 
     if (isLoggingIn) {
       text = i18n.t('Logging in...');
     }
 
-    if (keycloakInitializing) {
+    if (auth?.isLoading) {
       text = i18n.t('Loading...');
     }
 
@@ -66,20 +69,22 @@ export const Login = () => {
         type="submit"
         className={styles.button}
         onClick={handleLogin}
-        disabled={isLoggingIn || disabled || keycloakInitializing}
+        disabled={isLoggingIn || disabled || auth?.isLoading}
       >
         {text}
       </button>
     );
   };
-  let redirectUri = window.location.origin + (env.electron ? '' : '/uploader');
+
+  const redirectUri = window.location.origin + (env.electron ? '' : '/uploader');
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
       if (env.electron_renderer) {
-        window.open(keycloak.createLoginUrl(), '_blank');
+        auth.signinRedirect();
       } else {
-        keycloak.login({ redirectUri });
+        auth.signinRedirect({redirect_uri: redirectUri});
       }
     } else {
       dispatch(asyncActions.doLogin({ username, password }, { remember }));
@@ -94,7 +99,7 @@ export const Login = () => {
     return <span>{i18n.t(errorMessage)}</span>;
   };
 
-  return keycloakConfig.url ? (
+  return keycloakConfig.url || auth?.isLoading ? (
     <div className={styles.loginPage}>{renderButton()}</div>
   ) : (
     <div className={styles.loginPage}>

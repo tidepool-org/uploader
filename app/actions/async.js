@@ -1179,10 +1179,18 @@ export function clickAddNewUser(){
 
 export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
   return (dispatch, getState) => {
-    if(pagesMap[page]){
+    if (pagesMap[page]) {
+      const pageProps = { pathname: pagesMap[page] };
+
       const meta = { source: actionSource };
       _.assign(meta, metric);
-      dispatch(push({pathname: pagesMap[page], state: { meta }}));
+      pageProps.state = { meta };
+
+      const { hash } = window.location;
+      if (hash) {
+        pageProps.hash = hash;
+      }
+      dispatch(push(pageProps));
     }
   };
 }
