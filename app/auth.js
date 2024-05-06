@@ -7,7 +7,6 @@ import _ from 'lodash';
 import * as ActionTypes from './constants/actionTypes';
 import { sync, async } from './actions';
 import api from '../lib/core/api';
-import rollbar from './utils/rollbar';
 import env from './utils/env';
 import { ipcRenderer } from './utils/ipc';
 
