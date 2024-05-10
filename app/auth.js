@@ -47,13 +47,13 @@ export const oidcMiddleware = api => storeAPI => next => action => {
       }
       break;
     }
+    case ActionTypes.LOGOUT_REQUEST: {
+      userManager?.removeUser();
+      break;
+    }
     case ActionTypes.LOGOUT_SUCCESS:
     case ActionTypes.LOGOUT_FAILURE: {
-      if (env.electron) {
-        userManager?.removeUser().finally(() => {
-          storeAPI.dispatch(async.doLoggedOut());
-        });
-      } else {
+      if (!env.electron) {
         userManager?.signoutSilent();
       }
       break;
@@ -154,7 +154,6 @@ export const OidcWrapper = props => {
 
     userManager.events.addUserUnloaded(() => {
       store.dispatch(sync.keycloakAuthLogout('onAuthLogout', null));
-      loggedOut();
     });
 
     const keycloakInitOptions = {
