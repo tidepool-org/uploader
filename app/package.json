@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.57.0-in-browser-merged",
+  "version": "2.57.0-fix-user-space.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
