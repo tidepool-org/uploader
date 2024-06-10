@@ -32,7 +32,7 @@
     "dev": "cross-env START_HOT=1 yarn start-renderer-dev",
     "dev-web": "cross-env HOT=1 NODE_ENV=development webpack-dev-server --config webpack.config.web.dev.babel.js",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
-    "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
+    "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron --no-sandbox -r @babel/register ./app/main.dev.js",
     "server": "node server",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
     "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
