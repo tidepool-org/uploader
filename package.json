@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.57.0-fix-user-space.1",
+  "version": "2.57.0-fix-upload-record.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
