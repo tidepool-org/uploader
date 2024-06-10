@@ -78,6 +78,18 @@
 
 .errorMessageLink {
   composes: link from '../core/typography.module.less';
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.errorSubmitSuccess {
+  color: @green;
+}
+
+.errorSubmitFailed {
+  color: @red;
 }
 
 .errorTextLink {
@@ -86,6 +98,12 @@
 
 .errorTextTiny {
   composes: tiny from '../core/typography.module.less';
+}
+
+.errorLinkIcon {
+  height: 0.8em;
+  width: 0.8em;
+  vertical-align: text-bottom;
 }
 
 .main {

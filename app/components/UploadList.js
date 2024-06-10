@@ -19,10 +19,13 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cx from 'classnames';
+import api from '../../lib/core/api';
+import * as metrics  from '../constants/metrics';
 
 import Upload from './Upload';
 
 import styles from '../../styles/components/UploadList.module.less';
+import { Email, CheckCircle } from '@mui/icons-material';
 
 const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
@@ -59,6 +62,10 @@ export default class UploadList extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      uploadErrorSubmitSuccessSet: [],
+      uploadErrorSubmitFailedSet: [],
+    };
   }
 
   render() {
@@ -100,9 +107,8 @@ export default class UploadList extends Component {
             {this.renderErrorForUpload(upload)}
           </div>
         );
-      } else {
-        return;
       }
+      return;
     });
 
     return (
@@ -118,8 +124,84 @@ export default class UploadList extends Component {
     );
   }
 
+  handleErrorSubmit(error) {
+    const { targetId, uploads } = this.props;
+    const baseUrl = 'https://tidepoolsupport.zendesk.com';
+    const url = `${baseUrl}/api/v2/requests`;
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    const errorParts = {
+      'User Email': error.userEmail,
+      'User Name': error.userName,
+      'User ID': error.loggedInUser,
+      'Clinic Name': error.clinicName,
+      'Clinic ID': error.clinicId,
+      'Upload Target User': targetId,
+      'Operating System': error.os,
+      'Uploader Version': error.version,
+      'Selected Device': error.device,
+      '[Tidepool Support] Troubleshooting Info': error.debug
+    };
+
+    if (error.uuid) {
+      errorParts['[Tidepool Support] Rollbar UUID'] = error.uuid;
+      errorParts['[Tidepool Support] Rollbar Link'] = `https://rollbar.com/occurrence/uuid?uuid=${error.uuid}`;
+    }
+
+    const errorBodyText = _.reduce(errorParts, (text, value, key) => {
+      if (value) {
+        return `${text}\n${key}: ${value}`;
+      }
+      return text;
+    }, '');
+
+    const body = {
+      request: {
+        requester: {
+          name: error.userName,
+          email: error.userEmail
+        },
+        subject: `Uploader Error Report: ${error.message}`,
+        comment: {
+          body: errorBodyText
+        },
+      },
+    };
+
+    api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_REQUEST);
+
+    fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+    }).then((response) => {
+      if (response.status === 201) {
+        api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_SUCCESS);
+        this.setState({
+          uploadErrorSubmitSuccessSet: this.state.uploadErrorSubmitSuccessSet.concat(
+            [error.uuid]
+          ),
+        });
+      } else {
+        api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
+        this.setState({
+          uploadErrorSubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
+            [error.uuid]
+          ),
+        });
+      }
+    }).catch((error) => {
+      api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
+      this.setState({
+        uploaderrorsubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
+          [error.uuid]
+        ),
+      });
+    });
+  }
+
   renderErrorForUpload(upload) {
-    const { targetId } = this.props;
     if (_.isEmpty(upload) || _.isEmpty(upload.error)) {
       return null;
     }
@@ -127,12 +209,55 @@ export default class UploadList extends Component {
     const errorMessage = (
       <div className={styles.errorMessageWrapper}>
         <span className={styles.errorMessage}>{this.props.text.UPLOAD_FAILED}: </span>
-        <span className={styles.errorMessageFriendly}>{i18n.t(upload.error.message)}&nbsp;<a href={upload.error.link} target="_blank">{upload.error.linkText}</a></span>
+        <span className={styles.errorMessageFriendly}>
+          {i18n.t(upload.error.message)}&nbsp;
+          {
+            upload.error.link &&
+            upload.error.linkText &&
+            <a href={upload.error.link} target="_blank">
+              {upload.error.linkText}
+            </a>
+          }
+        </span>
       </div>
     );
+
     let rollbarUUID = null;
     if (!_.isEmpty(upload.error.uuid)) {
       rollbarUUID = (<div className={styles.errorTextTiny}>Rollbar UUID: {upload.error.uuid}</div>);
+    }
+
+    let sendToSupport = null;
+    if (this.state.uploadErrorSubmitSuccessSet.includes(upload.error.uuid)) {
+      sendToSupport = (
+        <div className={styles.errorSubmitSuccess}>
+          <CheckCircle className={styles.errorLinkIcon} sx={{height:'0.8em', width:'0.8em'}} />
+          {i18n.t(
+            'Thanks for sharing. Someone will get back to you by email soon.'
+          )}
+        </div>
+      );
+    } else if (this.state.uploadErrorSubmitFailedSet.includes(upload.error.uuid)) {
+      sendToSupport = (
+        <div className={styles.errorSubmitFailed}>
+          {i18n.t(
+            'Sorry, we were unable to submit this error. Please reach out to the Tidepool Support Team.'
+          )}
+        </div>
+      );
+    } else {
+      sendToSupport = (
+        <div>
+          <a
+            className={styles.errorMessageLink}
+            href="#"
+            onClick={this.handleErrorSubmit.bind(this, upload.error)}
+          >
+            <Email className={styles.errorLinkIcon} sx={{height:'0.8em', width:'0.8em'}} />
+            {i18n.t('Share this issue with the Tidepool Support Team')}
+          </a>
+        </div>
+      );
     }
 
     return (
@@ -140,6 +265,7 @@ export default class UploadList extends Component {
         {errorMessage}
         {errorDetails}
         {rollbarUUID}
+        {sendToSupport}
       </div>
     );
   }
@@ -150,7 +276,7 @@ export default class UploadList extends Component {
 
   renderChooseDeviceLink(){
     if(this.props.renderClinicUi || this.props.showingUserSelectionDropdown){
-      var classes = cx({
+      const classes = cx({
         [styles.chooseDeviceLink]: true,
         [styles.linkDisabled]: this.props.isUploadInProgress
       });
@@ -160,8 +286,7 @@ export default class UploadList extends Component {
             {i18n.t('Change Devices')}
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
