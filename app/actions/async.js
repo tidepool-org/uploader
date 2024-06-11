@@ -333,6 +333,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           version: version
         };
 
+        if (targetDevice.powerOnlyWarning) {
+          displayErr = new Error(ErrorMessages.E_USB_CABLE);
+          deviceDetectErrProps.code = 'E_USB_CABLE';
+        }
+
         if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
           displayErr = new Error(ErrorMessages.E_DEXCOM_CONNECTION);
           deviceDetectErrProps.code = 'E_DEXCOM_CONNECTION';
@@ -387,6 +392,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
         errorMessage = 'E_BLUETOOTH_PAIR';
       }
+
+      if (targetDevice.powerOnlyWarning) {
+        errorMessage = 'E_USB_CABLE';
+      }
+
       device.upload(
         driverId,
         opts,
@@ -459,6 +469,11 @@ export function doUpload(deviceKey, opts, utc) {
           utc: actionUtils.getUtc(utc),
           code: 'E_HID_CONNECTION',
         };
+
+        if (targetDevice.powerOnlyWarning) {
+          hidErr = new Error(ErrorMessages.E_USB_CABLE);
+          errProps.code = 'E_USB_CABLE';
+        }
 
         if (process.env.NODE_ENV !== 'test') {
           errProps = await actionUtils.sendToRollbar(hidErr, errProps);
