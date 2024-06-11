@@ -498,7 +498,7 @@ export function doUpload(deviceKey, opts, utc) {
         const os = actionUtils.getOSDetails();
         const version = versionInfo.semver;
 
-        log('Error:', err);
+        console.log('Error:', err);
 
         const hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
 
@@ -545,7 +545,7 @@ export function doUpload(deviceKey, opts, utc) {
         const clinic = _.get(clinics, selectedClinicId, {});
         const os = actionUtils.getOSDetails();
         const version = versionInfo.semver;
-        log('Error:', err);
+        console.log('Error:', err);
 
         let btErr = new Error(ErrorMessages.E_BLUETOOTH_OFF);
         let errProps = {
