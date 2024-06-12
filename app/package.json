@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.57.1-support-ticket.1",
+  "version": "2.57.1-support-ticket.2",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
