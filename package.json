@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.57.0",
+  "version": "2.56.1-smartpix.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -32,7 +32,7 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.renderer.dev.babel.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
+    "package": "cross-env NODE_OPTIONS=--openssl-legacy-provider npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
   },
   "dependencies": {
     "@electron/remote": "2.1.2",
@@ -64,6 +64,7 @@
     "i18next": "20.6.1",
     "i18next-fs-backend": "1.1.4",
     "iconv-lite": "0.6.3",
+    "idb-keyval": "6.2.0",
     "identity-obj-proxy": "3.0.0",
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.2",
@@ -96,7 +97,8 @@
     "tidepool-platform-client": "0.56.1",
     "usb-cdc-acm": "0.1.1",
     "uuid": "9.0.1",
-    "webmtp": "0.3.3"
+    "webmtp": "0.3.3",
+    "xml2js": "0.4.19"
   },
   "browserslist": "last 2 electron major versions",
   "bin": {
