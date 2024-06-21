@@ -6,8 +6,7 @@ import styles from '../../styles/components/PatientLimitModal.module.less';
 import { sync as syncActions } from '../actions/';
 import { URL_TIDEPOOL_PLUS_PLANS } from '../constants/otherConstants';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal('i18n');
+import { i18n } from '../utils/config.i18next';
 
 const PatientLimitModal = () => {
   const showingPatientLimitModal = useSelector(

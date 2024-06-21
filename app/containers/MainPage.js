@@ -32,12 +32,11 @@ import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
 import UserDropdown from '../components/UserDropdown';
 import { checkTimezoneName } from 'sundial';
-const remote = require('@electron/remote');
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-const i18n = remote.getGlobal('i18n');
+import { i18n } from '../utils/config.i18next';
 
 export class MainPage extends Component {
   handleClickEditUser = () => {

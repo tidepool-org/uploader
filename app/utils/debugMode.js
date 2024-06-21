@@ -14,38 +14,39 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-import isElectron from 'is-electron';
-import { ipcRenderer, ipcMain } from 'electron';
-let isRenderer = (process && process.type === 'renderer');
+import env from './env';
+import _ from 'lodash';
+import { ipcRenderer, ipcMain } from './ipc';
 
-if (isRenderer) {
-  let isDebug = process.env.DEBUG_ERROR ||
+if (env.electron_renderer) {
+  let isDebug =
+    process.env.DEBUG_ERROR ||
     JSON.parse(localStorage.getItem('isDebug')) ||
     false;
 
-  const debugMode = module.exports = {
+  const debugMode = (module.exports = {
     isDebug,
     setDebug: function(isDebug) {
       ipcRenderer.send('setDebug', isDebug);
       localStorage.setItem('isDebug', JSON.stringify(isDebug));
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
-    }
-  };
+    },
+  });
 } else {
-  let isDebug = process.env.DEBUG_ERROR || false;
+  let isDebug = _.get(process, 'env.DEBUG_ERROR', false);
 
-  if (isElectron()) {
+  if (env.electron_main) {
     ipcMain.on('setDebug', (event, arg) => {
       debugMode.isDebug = arg;
     });
   }
 
-  const debugMode = module.exports = {
+  const debugMode = (module.exports = {
     isDebug,
     setDebug: function(isDebug) {
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
-    }
-  };
+    },
+  });
 }

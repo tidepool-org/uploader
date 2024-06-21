@@ -34,7 +34,6 @@ export default (state = initialWorkingState, action) => {
     case types.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
     case types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST:
     case types.UPDATE_CLINIC_PATIENT_REQUEST:
-    case types.CHECKING_FOR_DRIVER_UPDATE:
     case types.VERSION_CHECK_REQUEST:
     case types.UPLOAD_REQUEST:
     case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
@@ -98,8 +97,6 @@ export default (state = initialWorkingState, action) => {
     case types.UPLOAD_SUCCESS:
     case types.UPDATE_AVAILABLE:
     case types.UPDATE_NOT_AVAILABLE:
-    case types.DRIVER_UPDATE_AVAILABLE:
-    case types.DRIVER_UPDATE_NOT_AVAILABLE:
     case types.INIT_APP_SUCCESS:
     case types.UPDATE_PROFILE_SUCCESS:
     case types.FETCH_INFO_SUCCESS:

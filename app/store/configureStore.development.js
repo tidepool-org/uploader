@@ -7,7 +7,7 @@ import api from '../../lib/core/api';
 import config from '../../lib/config';
 import { createErrorLogger } from '../utils/errors';
 import { createMetricsTracker } from '../utils/metrics';
-import { keycloakMiddleware } from '../keycloak';
+import { oidcMiddleware } from '../auth';
 
 api.create({
   apiUrl: config.API_URL,
@@ -31,6 +31,8 @@ export default function configureStore(initialState, history) {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
       actionCreators,
+      trace: true,
+      traceLimit: 250,
     }) :
     compose;
   /* eslint-enable no-underscore-dangle */
@@ -41,17 +43,17 @@ export default function configureStore(initialState, history) {
       router,
       createErrorLogger(api),
       createMetricsTracker(api),
-      keycloakMiddleware(api),
+      oidcMiddleware(api),
     )
   );
 
   const store = createStore(rootReducer(history), initialState, enhancer);
 
-  if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers')(history)).default // eslint-disable-line global-require
-    );
-  }
+  // if (module.hot) {
+  //   module.hot.accept('../reducers', () =>
+  //     store.replaceReducer(require('../reducers')(history)).default // eslint-disable-line global-require
+  //   );
+  // }
 
   return store;
 }

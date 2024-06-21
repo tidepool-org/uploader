@@ -1,10 +1,8 @@
-import os from 'os';
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-const remote = require('@electron/remote');
+import env from '../utils/env';
 
-const i18n = remote.getGlobal( 'i18n' );
-
+import { i18n } from '../utils/config.i18next';
 const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -148,9 +146,17 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
+    instructions: i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.'),
     key: 'omnipod',
-    name: 'Insulet Omnipod',
+    name: 'Insulet Omnipod DASH',
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
+  },
+  omnipoderos: {
+    instructions: i18n.t('Plug into USB. Wait for Export to complete. Click Upload.'),
+    key: 'omnipoderos',
+    name: 'Insulet Omnipod Classic',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
@@ -185,19 +191,19 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   onetouchselect: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Select Plus Flex',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: true, mac: true, win: true},
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: true, mac: true, win: true},
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverioble: {
@@ -284,4 +290,12 @@ if (navigator.userAgentData.platform === 'macOS') {
   };
 }
 
+if (env.electron) {
+  devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchverio.instructions = i18n.t('Plug in meter with micro-USB cable');
+  devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchselect.instructions = i18n.t('Plug in meter with micro-USB cable');
+}
+
 export default devices;
+

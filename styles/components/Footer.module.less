@@ -13,6 +13,8 @@
 * not, you can obtain one from Tidepool Project at tidepool.org.
 */
 
+@import '../core/variables.less';
+
 .footer {
   composes: flexColumn from '../core/layout.module.less';
   flex-shrink: 0;
@@ -58,4 +60,10 @@
 .version {
   composes: lightGray from '../core/typography.module.less';
   margin: 10px auto;
+}
+
+.betaWarning {
+  composes: large from '../core/typography.module.less';
+  color: @red-error;
+  margin: 0px auto;
 }
