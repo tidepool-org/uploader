@@ -47,6 +47,10 @@ const baseURL = fileURL.href;
 
 let menu;
 let template;
+
+/**
+ * @type {BrowserWindow}
+ */
 let mainWindow = null;
 let serialPortFilter = null;
 let usbFilter = null;
@@ -182,8 +186,12 @@ function createWindow() {
     setRequestFilter();
   });
 
-  let setRequestFilter = () => {
-    let urls = ['http://localhost/keycloak-redirect*', '*://*/upload-redirect*'];
+  const setRequestFilter = () => {
+    const urls = [
+      'http://localhost/keycloak-redirect*',
+      '*://*/*upload-redirect*',
+      '*://*/*protocol/openid-connect/auth*',
+    ];
     if (keycloakUrl && keycloakRealm) {
       urls.push(
         `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
@@ -192,10 +200,19 @@ function createWindow() {
     webRequest.onBeforeRequest({ urls }, async (request, cb) => {
       const requestURL = new URL(request.url);
 
+      // catch attempts to load the auth page in the app and launch externally
+      if (requestURL.pathname.includes('/protocol/openid-connect/auth')) {
+        return openExternalUrl(request.url);
+      }
+
       // capture keycloak sign-in redirect
-      if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
+      if (
+        requestURL.pathname.includes('keycloak-redirect') ||
+        requestURL.pathname.includes('upload-redirect')
+      ) {
         return handleIncomingUrl(request.url);
       }
+
       // capture keycloak registration navigation
       if (
         requestURL.href.includes(
@@ -673,19 +690,16 @@ const handleIncomingUrl = (url) => {
   const requestURL = new URL(url);
   // capture keycloak sign-in redirect
   if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
-    const requestHash = requestURL.hash;
     if(mainWindow){
       const { webContents } = mainWindow;
-      // redirecting from the app html to app html with hash breaks devtools
-      // just send and append the hash if we're already in the app html
-      if (webContents.getURL().includes(baseURL)) {
-        webContents.send('newHash', requestHash);
-      } else {
-        webContents.loadURL(`${baseURL}${requestHash}`);
+      const requestHash = requestURL.hash;
+      const newUrl = `${baseURL}${requestHash}`;
+      if(webContents.getURL() !== newUrl){
+        webContents.loadURL(newUrl);
       }
-      return;  
+      return;
     }
-    
+
   }
 };
 
