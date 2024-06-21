@@ -15,25 +15,27 @@
  * == BSD2 LICENSE ==
  */
 
-import _ from 'lodash';
-import semver from 'semver';
-import os from 'os';
+import async from 'async';
 import { push } from 'connected-react-router';
-import { checkCacheValid } from 'redux-cache';
 import { ipcRenderer } from 'electron';
+import _ from 'lodash';
+import os from 'os';
+import { checkCacheValid } from 'redux-cache';
+import semver from 'semver';
 
-import * as actionTypes from '../constants/actionTypes';
 import * as actionSources from '../constants/actionSources';
-import { pages, pagesMap, paths, steps, urls } from '../constants/otherConstants';
+import * as actionTypes from '../constants/actionTypes';
 import ErrorMessages from '../constants/errorMessages';
 import * as metrics from '../constants/metrics';
+import { pages, pagesMap, paths } from '../constants/otherConstants';
 
+import api from '../../lib/core/api';
+import driverManifests from '../../lib/core/driverManifests';
+import localStore from '../../lib/core/localStore';
+import personUtils from '../../lib/core/personUtils';
+import { clinicUIDetails } from '../../lib/core/clinicUtils';
 import * as sync from './sync';
 import * as actionUtils from './utils';
-import personUtils from '../../lib/core/personUtils';
-import driverManifests from '../../lib/core/driverManifests';
-import api from '../../lib/core/api';
-import localStore from '../../lib/core/localStore';
 
 let services = { api };
 let versionInfo = {};
@@ -141,7 +143,8 @@ export function doAppInit(opts, servicesToInit) {
           dispatch(sync.setUserInfoFromToken({
             user: user,
             profile: profile,
-            memberships: memberships
+            memberships: memberships,
+            clinics: clinics,
           }));
           dispatch(sync.getClinicsForClinicianSuccess(clinics, user.userid));
           const isClinic = personUtils.isClinic(user);
@@ -149,7 +152,7 @@ export function doAppInit(opts, servicesToInit) {
             if (clinics.length == 1) { // select clinic and go to clinic user select page
               let clinicId = _.get(clinics,'0.clinic.id',null);
               dispatch(fetchPatientsForClinic(clinicId));
-              dispatch(sync.selectClinic(clinicId));
+              dispatch(selectClinic(api, clinicId));
               return dispatch(
                 setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
                   metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
@@ -207,20 +210,21 @@ export function doLogin(creds, opts) {
       const isClinic = personUtils.isClinic(user);
 
       // detect if a VCA here and redirect to clinic user select screen
-      dispatch(getClinicsForClinician(api, user.userid, {}, (err, clinics) => {
+      dispatch(getClinicsForClinician(api, user.userid, { limit: 1000, offset: 0 }, (err, clinics) => {
         if(err) {
           return dispatch(sync.loginFailure(err));
         }
         dispatch(sync.loginSuccess({
           user,
           profile,
-          memberships
+          memberships,
+          clinics
         }));
         if(!_.isEmpty(clinics)){
           if (clinics.length === 1) { // select clinic and go to clinic user select page
             let clinicId = _.get(clinics,'0.clinic.id',null);
             dispatch(fetchPatientsForClinic(clinicId));
-            dispatch(sync.selectClinic(clinicId));
+            dispatch(selectClinic(api, clinicId));
             return dispatch(
               setPage(pages.CLINIC_USER_SELECT, actionSources.USER, {
                 metric: { eventName: metrics.CLINIC_SEARCH_DISPLAYED },
@@ -329,6 +333,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           version: version
         };
 
+        if (targetDevice.powerOnlyWarning) {
+          displayErr = new Error(ErrorMessages.E_USB_CABLE);
+          deviceDetectErrProps.code = 'E_USB_CABLE';
+        }
+
         if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
           displayErr = new Error(ErrorMessages.E_DEXCOM_CONNECTION);
           deviceDetectErrProps.code = 'E_DEXCOM_CONNECTION';
@@ -339,6 +348,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
           displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
           displayErr.linkText = 'Please see this support article.';
+        }
+
+        if (err === 'E_G7_UNSUPPORTED') {
+          displayErr = new Error(ErrorMessages.E_G7_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_G7_UNSUPPORTED';
         }
 
         displayErr.originalError = err;
@@ -378,6 +392,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
         errorMessage = 'E_BLUETOOTH_PAIR';
       }
+
+      if (targetDevice.powerOnlyWarning) {
+        errorMessage = 'E_USB_CABLE';
+      }
+
       device.upload(
         driverId,
         opts,
@@ -450,6 +469,11 @@ export function doUpload(deviceKey, opts, utc) {
           utc: actionUtils.getUtc(utc),
           code: 'E_HID_CONNECTION',
         };
+
+        if (targetDevice.powerOnlyWarning) {
+          hidErr = new Error(ErrorMessages.E_USB_CABLE);
+          errProps.code = 'E_USB_CABLE';
+        }
 
         if (process.env.NODE_ENV !== 'test') {
           errProps = await actionUtils.sendToRollbar(hidErr, errProps);
@@ -929,7 +953,7 @@ export function goToPrivateWorkspace() {
     const isClinicianAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
     const metricProps = selectedClinicId ? { clinicId: selectedClinicId } : {};
     api.metrics.track(metrics.WORKSPACE_SWITCH_PRIVATE, metricProps);
-    dispatch(sync.selectClinic(null));
+    dispatch(selectClinic(api, null));
     if (isClinicianAccount) {
       return dispatch(
         setPage(
@@ -1025,6 +1049,12 @@ export function checkUploadTargetUserAndMaybeRedirect() {
 
 export function clickAddNewUser(){
   return (dispatch, getState) =>{
+    // check state for clinic patient limit exceeded and if so, display the limit modal
+    const { selectedClinicId, clinics } = getState();
+    const clinic = _.get(clinics, selectedClinicId);
+    if (clinic?.ui?.warnings.limitReached) {
+      return dispatch(sync.displayPatientLimitModal());
+    }
     dispatch(sync.setUploadTargetUser(null));
     dispatch(setPage(pages.CLINIC_USER_EDIT, undefined, {metric: {eventName: metrics.CLINIC_ADD}}));
   };
@@ -1185,7 +1215,6 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
     dispatch(sync.getClinicsForClinicianRequest());
 
     api.clinics.getClinicsForClinician(clinicianId, options, (err, clinics) => {
-      cb(err, clinics);
       if (err) {
         dispatch(sync.getClinicsForClinicianFailure(
           createActionError(ErrorMessages.ERR_FETCHING_CLINICS_FOR_CLINICIAN, err), err
@@ -1199,6 +1228,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
         dispatch(fetchClinicEHRSettings(api, clinic.clinic.id));
         dispatch(fetchClinicMRNSettings(api, clinic.clinic.id));
       });
+      cb(err, clinics);
     });
   };
 }
@@ -1244,5 +1274,70 @@ export function fetchClinicEHRSettings(api, clinicId) {
         dispatch(sync.fetchClinicEHRSettingsSuccess(clinicId, settings));
       }
     });
+  };
+}
+
+
+/**
+ * Select Clinic Action Creator
+ *
+ * Immediately sets or unsets the selected clinic to state,
+ * then fetches additional clinic metadata asynchronously.
+ *
+ * @param {Object} api - an instance of the API wrapper
+ * @param {String | null} clinicId - Id of the clinic, or null do unset
+ */
+export function selectClinic(api, clinicId) {
+  return (dispatch, getState) => {
+    dispatch(sync.selectClinicSuccess(clinicId));
+
+    const { clinics = {} } = getState();
+    const clinic = clinics[clinicId];
+
+    if (clinic) {
+      const fetchers = {};
+
+      if (_.isNil(clinics[clinicId].patientCount)) {
+        fetchers.clinicPatientCount = api.clinics.getClinicPatientCount.bind(api, clinicId);
+        dispatch(sync.fetchClinicPatientCountRequest());
+      }
+
+      if (_.isNil(clinics[clinicId].patientCountSettings)) {
+        fetchers.clinicPatientCountSettings = api.clinics.getClinicPatientCountSettings.bind(api, clinicId);
+        dispatch(sync.fetchClinicPatientCountSettingsRequest());
+      }
+
+      async.parallel(async.reflectAll(fetchers), (err, results) => {
+        const selectedClinic = { ...clinic };
+        const errors = _.mapValues(results, ({error}) => error);
+        const values = _.mapValues(results, ({value}) => value);
+
+        if (errors?.clinicPatientCount) {
+          dispatch(sync.fetchClinicPatientCountFailure(
+            createActionError(ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT, errors.clinicPatientCount), errors.clinicPatientCount
+          ));
+        }
+
+        if (errors?.clinicPatientCountSettings) {
+          dispatch(sync.fetchClinicPatientCountSettingsFailure(
+            createActionError(ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT_SETTINGS, errors.clinicPatientCountSettings), errors.clinicPatientCountSettings
+          ));
+        }
+
+        if (values.clinicPatientCount) {
+          dispatch(sync.fetchClinicPatientCountSuccess(clinicId, values.clinicPatientCount));
+          selectedClinic.patientCount = values.clinicPatientCount?.patientCount;
+        }
+
+        if (values.clinicPatientCountSettings) {
+          dispatch(sync.fetchClinicPatientCountSettingsSuccess(clinicId, values.clinicPatientCountSettings));
+          selectedClinic.patientCountSettings = values.clinicPatientCountSettings;
+        }
+
+        if (_.isFinite(selectedClinic.patientCount) && _.isPlainObject(selectedClinic.patientCountSettings)) {
+          dispatch(sync.setClinicUIDetails(clinicId, clinicUIDetails(selectedClinic)));
+        }
+      });
+    }
   };
 }

@@ -90,7 +90,8 @@ const config = {
         ]
       },
       'dir'
-    ]
+    ],
+    notarize: false,
   },
   protocols: [{
     name: 'Tidepool Uploader',
