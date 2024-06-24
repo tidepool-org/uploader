@@ -8,6 +8,12 @@ import webpack from 'webpack';
 import { dependencies as externals } from './app/package.json';
 import { optionalDependencies as additionalExternals } from './app/package.json';
 
+// this is needed to support Node.js v17+ when using Webpack v4
+// see https://github.com/webpack/webpack/issues/13572 for details
+import crypto from 'crypto';
+const crypto_orig_createHash = crypto.createHash;
+crypto.createHash = algorithm => crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm);
+
 export default {
   module: {
     rules: [{
