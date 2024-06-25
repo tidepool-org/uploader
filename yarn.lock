@@ -3944,15 +3944,15 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-ble-glucose@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.5.0.tgz#02a5907b8e063e444e9a24f913987bbcd776c42b"
-  integrity sha512-GBMRg+I8pDonoa1juE9UYSc2XOhtAW3p0imII43h94REE/AdW2VixhC00Zq2ut5f8m/isFSx431SsdTbKGpIow==
+ble-glucose@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.7.0.tgz#e6463c23a1832ca1a551eb4ab67642e18efd4108"
+  integrity sha512-hrOEJcFbyq6gsHTeX9ogd+G3AsZlUwpAttoNyC3wN1TKVibqLLh8zOm3FdKrAkibRPseS+Se/Nve121rLBY5tg==
   dependencies:
     bows "1.7.2"
-    core-js "2.6.12"
+    core-js "3.36.1"
     lodash "4.17.21"
-    sundial "1.7.0"
+    sundial "1.7.4"
 
 bluebird-lst@^1.0.9:
   version "1.0.9"
@@ -5075,6 +5075,11 @@ core-js@2.6.12, core-js@^2.6.12, core-js@^2.6.5:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
+core-js@3.36.1:
+  version "3.36.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.36.1.tgz#c97a7160ebd00b2de19e62f4bbd3406ab720e578"
+  integrity sha512-BTvUrwxVBezj5SZ3f10ImnX2oRByMxql3EimVqMysepbC9EeMUOpLwdy6Eoili2x6E4kf+ZUB5k/+Jv55alPfA==
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -10746,13 +10751,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment-timezone@0.5.37:
-  version "0.5.37"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.37.tgz#adf97f719c4e458fdb12e2b4e87b8bec9f4eef1e"
-  integrity sha512-uEDzDNFhfaywRl+vwXxffjjq1q0Vzr+fcQpQ1bU0kbzorfS7zVtZnCnGc8mhWmF39d4g4YriF6kwA75mJKE/Zg==
-  dependencies:
-    moment ">= 2.9.0"
-
 moment-timezone@0.5.43:
   version "0.5.43"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.43.tgz#3dd7f3d0c67f78c23cd1906b9b2137a09b3c4790"
@@ -10760,7 +10758,7 @@ moment-timezone@0.5.43:
   dependencies:
     moment "^2.29.4"
 
-moment@2.29.4, "moment@>= 2.9.0", moment@^2.29.4:
+moment@2.29.4, moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -14229,17 +14227,17 @@ sumchecker@^3.0.1:
   dependencies:
     debug "^4.1.0"
 
-sundial@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.0.tgz#1fa049341335449a8d892f687f23b25c7f373780"
-  integrity sha512-XAniZ1lSJWMtG4vcsuXVpZdMfJ1JW6KGV5uGFj5h0hpG61juM33Dy39MNV9DTSaiZ87x8j479gWj3uWsSj3V2Q==
-  dependencies:
-    moment-timezone "0.5.37"
-
 sundial@1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.3.tgz#a192d79fec85f4e1ce511eac4b293adcfd3260a9"
   integrity sha512-YuMw2QfP1zTp45BWPfJLvQqWXYUWL9yoLzC4Brmj9yX5vwxMKq+zXDBJPFgYZLAsNN33BURRpUN7txBrO90g3A==
+  dependencies:
+    moment-timezone "0.5.43"
+
+sundial@1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/sundial/-/sundial-1.7.4.tgz#7de4e442c9762625fb0466da4c7e43c7431fb321"
+  integrity sha512-k6UBVVzJ+lARSy3vnE6VxYP/J86Cu4thwoAKGG1MTBg0o8NQsw8YZ+Zg3irw91kQF7wjysnK77/ie5vzYedSpA==
   dependencies:
     moment-timezone "0.5.43"
 
