@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.57.1-support-ticket.4",
+  "version": "2.57.1-support-ticket.5",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
