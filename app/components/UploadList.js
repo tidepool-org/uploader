@@ -239,11 +239,28 @@ export default class UploadList extends Component {
       );
     } else if (this.state.uploadErrorSubmitFailedSet.includes(upload.error.uuid)) {
       sendToSupport = (
-        <div className={styles.errorSubmitFailed}>
-          {i18n.t(
-            'Sorry, we were unable to submit this error. Please reach out to the Tidepool Support Team.'
-          )}
-        </div>
+        <>
+          <div className={styles.errorSubmitFailed}>
+            {i18n.t('Sorry, we were unable to submit this error.')}
+          </div>
+          <div>
+            {i18n.t('Make sure you are online and ')}
+            <a
+              className={styles.errorMessageLink}
+              href="#"
+              onClick={this.handleErrorSubmit.bind(this, upload.error)}
+            >
+              {i18n.t('try again')}
+            </a>
+            {i18n.t(' or contact us directly at ')}
+            <a
+              className={styles.errorMessageLink}
+              href="mailto:support@tidepool.org"
+            >
+              support@tidepool.org
+            </a>
+          </div>
+        </>
       );
     } else {
       sendToSupport = (
