@@ -500,7 +500,7 @@ export function doUpload(deviceKey, opts, utc) {
 
         console.log('Error:', err);
 
-        const hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
+        let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
 
         let errProps = {
           details: err.message,
