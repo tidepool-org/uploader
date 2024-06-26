@@ -21,11 +21,13 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 import api from '../../lib/core/api';
 import * as metrics  from '../constants/metrics';
+import { v4 as uuidv4 } from 'uuid';
 
 import Upload from './Upload';
 
 import styles from '../../styles/components/UploadList.module.less';
-import { Email, CheckCircle } from '@mui/icons-material';
+import Email from '@mui/icons-material/Email';
+import CheckCircle from '@mui/icons-material/CheckCircle';
 
 const remote = require('@electron/remote');
 const i18n = remote.getGlobal( 'i18n' );
@@ -147,7 +149,10 @@ export default class UploadList extends Component {
     if (error.uuid) {
       errorParts['[Tidepool Support] Rollbar UUID'] = error.uuid;
       errorParts['[Tidepool Support] Rollbar Link'] = `https://rollbar.com/occurrence/uuid?uuid=${error.uuid}`;
+    } else {
+      error.unique_id = uuidv4();
     }
+    const errorId = error.uuid || error.unique_id;
 
     const errorBodyText = _.reduce(errorParts, (text, value, key) => {
       if (value) {
@@ -180,22 +185,22 @@ export default class UploadList extends Component {
         api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_SUCCESS);
         this.setState({
           uploadErrorSubmitSuccessSet: this.state.uploadErrorSubmitSuccessSet.concat(
-            [error.uuid]
+            [errorId]
           ),
         });
       } else {
         api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
         this.setState({
           uploadErrorSubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
-            [error.uuid]
+            [errorId]
           ),
         });
       }
-    }).catch((error) => {
+    }).catch((err) => {
       api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
       this.setState({
-        uploaderrorsubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
-          [error.uuid]
+        uploadErrorSubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
+          [errorId]
         ),
       });
     });
@@ -228,7 +233,8 @@ export default class UploadList extends Component {
     }
 
     let sendToSupport = null;
-    if (this.state.uploadErrorSubmitSuccessSet.includes(upload.error.uuid)) {
+    const errorId = upload.error.uuid || upload.error.unique_id;
+    if (this.state.uploadErrorSubmitSuccessSet.includes(errorId)) {
       sendToSupport = (
         <div className={styles.errorSubmitSuccess}>
           <CheckCircle className={styles.errorLinkIcon} sx={{height:'0.8em', width:'0.8em'}} />
@@ -237,7 +243,7 @@ export default class UploadList extends Component {
           )}
         </div>
       );
-    } else if (this.state.uploadErrorSubmitFailedSet.includes(upload.error.uuid)) {
+    } else if (this.state.uploadErrorSubmitFailedSet.includes(errorId)) {
       sendToSupport = (
         <>
           <div className={styles.errorSubmitFailed}>
