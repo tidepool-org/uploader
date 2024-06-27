@@ -410,7 +410,7 @@ export function uploadProgress(step, percentage, isFirstUpload) {
 
 export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
-  const numRecs = _.get(data, 'post_records.length', undefined);
+  const numRecs = data?.post_records?.length || data?.postRecords?.length;
   const properties = {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
