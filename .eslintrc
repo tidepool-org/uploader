@@ -6,7 +6,8 @@
     "browser": true,
     // in CommonJS
     "node": true,
-    "es6": true
+    "es6": true,
+    "es2020": true // e.g. BigInt
   },
   "globals": {
     "jest": true,
