@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.57.0-km-processed.1",
+  "version": "2.56.1-remove-open.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -176,7 +176,6 @@
     "mini-css-extract-plugin": "0.12.0",
     "moment": "2.29.4",
     "object-invariant-test-helper": "0.1.1",
-    "open": "8.4.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
