@@ -93,7 +93,7 @@ const devices = {
     instructions: {
                     text: i18n.t('Plug in meter with cable and set meter to'),
                     linkText: i18n.t('PC Link Mode'),
-                    link: 'https://support.tidepool.org/hc/en-us/articles/4402234174100',
+                    link: 'https://support.tidepool.org/hc/en-us/articles/27971030950804',
                   },
     name: 'EmbraceTALK',
     key: 'embracetalk',
