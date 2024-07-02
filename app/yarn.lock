@@ -77,10 +77,10 @@ detect-libc@^2.0.0:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-2.0.2.tgz#8ccf2ba9315350e1241b88d0ac3b0e1fbd99605d"
   integrity sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==
 
-drivelist@11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/drivelist/-/drivelist-11.1.0.tgz#39b17b78bf7d717e666ad57f006ffaf9ee344ac7"
-  integrity sha512-DT328SbKqB78y+HUeuazwj4+Enh5ormv9OgTIMB0/OP2VxKLFDOrKhejJxjP9ytmJok8W/nzR8gSWdpiaJi1XA==
+drivelist@11.2.2:
+  version "11.2.2"
+  resolved "https://registry.yarnpkg.com/drivelist/-/drivelist-11.2.2.tgz#2dd7d10816852415f43d87adc2cdac3b1132527b"
+  integrity sha512-shzkC4h3Q6sVkF9v9lbT1j49LN47O7h0GJk9E4VtJe81Xp6GF1O36gpnWpqRL6VvFya086eu4XcBEOwSXHHjeQ==
   dependencies:
     bindings "^1.5.0"
     debug "^4.3.4"
