@@ -62,3 +62,7 @@ export const UNSUPPORTED_SCREEN_DISPLAYED = 'Electron Uploader - Unsupported scr
 export const QUIT_AND_INSTALL = 'Electron Uploader - Auto-update occurred';
 
 export const DEVICE_TIME_INCORRECT = 'Device time incorrect';
+
+export const SUBMIT_ERROR_TO_ZENDESK_REQUEST = 'Submit Error to Zendesk Request';
+export const SUBMIT_ERROR_TO_ZENDESK_SUCCESS = 'Submit Error to Zendesk Success';
+export const SUBMIT_ERROR_TO_ZENDESK_FAILURE = 'Submit Error to Zendesk Failure';

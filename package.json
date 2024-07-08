@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.57.1-react-oidc-context.4",
+  "version": "2.58.0-react-oidc-context.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -47,8 +47,12 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.3",
     "babyparse": "0.4.6",
+<<<<<<< HEAD
     "ble-glucose": "0.5.0",
     "body-parser": "1.18.3",
+=======
+    "ble-glucose": "0.6.0",
+>>>>>>> master
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
     "classnames": "2.5.1",
@@ -188,7 +192,6 @@
     "mini-css-extract-plugin": "0.12.0",
     "moment": "2.29.4",
     "object-invariant-test-helper": "0.1.1",
-    "open": "8.4.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "optional": "0.1.4",
     "redux-mock-store": "1.5.4",

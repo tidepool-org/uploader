@@ -1,7 +1,8 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.57.1-react-oidc-context.4",
+  "version": "2.58.0-react-oidc-context.4",
+
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
