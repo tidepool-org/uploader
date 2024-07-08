@@ -74,6 +74,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
   return async (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+    const driverId = _.get(targetDevice, 'source.driverId');
 
     if (err) {
       if(err === 'deviceTimePromptClose'){
@@ -83,8 +84,17 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       if (typeof err === 'string') {
         err = new Error(err);
       }
+      const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+      const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+      const name = _.get(
+        allUsers,
+        [loggedInUser, 'profile', 'fullName'],
+        'Unknown'
+      );
+      const clinic = _.get(clinics, selectedClinicId, {});
+      const os = getOSDetails();
       const serverErr = 'Origin is not allowed by Access-Control-Allow-Origin';
-      let displayErr = new Error(err.message === serverErr ?
+      const displayErr = new Error(err.message === serverErr ?
         ErrorMessages.E_SERVER_ERR : ErrorMessages[err.code || errCode]);
       let uploadErrProps = {
         details: err.message,
@@ -96,8 +106,19 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         sessionTrace: err.sessionTrace || null,
         code: err.code || errCode,
         version: version,
-        data: recs
+        data: recs,
+        loggedInUser: loggedInUser,
+        userEmail: userEmail,
+        userName: name,
+        os: os,
+        device: driverId,
       };
+
+      if (selectedClinicId) {
+        uploadErrProps.clinicId = selectedClinicId;
+        uploadErrProps.clinicName = clinic.name;
+      }
+
       displayErr.originalError = err;
 
       if (errCode === 'E_BLUETOOTH_PAIR') {
@@ -165,7 +186,7 @@ export function sendToRollbar(err, props) {
       if (_.get(props, 'data.blobId', false)) {
         _.assign(extra, { blobId: props.data.blobId });
       }
-      
+
       rollbar.error(err, extra, (err, data) => {
         if (err) {
           console.log('Error while reporting error to Rollbar:', err);
@@ -201,7 +222,7 @@ export async function initOSDetails() {
 
       osVersion = `${osVersion} ${ua.bitness}-bit`;
     }
-    
+
     osString = `${ua.platform} ${osVersion}`;
   }
 }

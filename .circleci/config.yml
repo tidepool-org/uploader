@@ -106,6 +106,8 @@ jobs:
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: python -m pip install packaging
+      - run: pip install setuptools
       - run: nvm install v18.17.1
       - run: nvm use v18.17.1
       - run: node -v

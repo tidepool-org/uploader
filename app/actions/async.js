@@ -302,7 +302,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
     const { device } = services;
     const version = versionInfo.semver;
-    const { devices, os, targetTimezones, uploadTargetUser } = getState();
+    const { devices, os, targetTimezones, uploadTargetUser, uploadsByUser } = getState();
     const targetDevice = _.find(devices, {source: {driverId: driverId}});
     dispatch(sync.deviceDetectRequest());
     _.assign(opts, {
@@ -313,7 +313,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       displayAdHocModal: actionUtils.makeDisplayAdhocModal(dispatch),
       version: version
     });
-    const { uploadsByUser } = getState();
     const currentUpload = _.get(
       uploadsByUser,
       [uploadTargetUser, targetDevice.key],
@@ -326,13 +325,29 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
 
     device.detect(driverId, opts, async (err, dev) => {
       if (err) {
+        const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+        const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+        const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
+        const clinic = _.get(clinics, selectedClinicId, {});
+        const os = actionUtils.getOSDetails();
+
         let displayErr = new Error(ErrorMessages.E_SERIAL_CONNECTION);
         let deviceDetectErrProps = {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_SERIAL_CONNECTION',
-          version: version
+          version: version,
+          loggedInUser: loggedInUser,
+          userEmail: userEmail,
+          userName: name,
+          os: os,
+          device: driverId,
         };
+
+        if (selectedClinicId) {
+          deviceDetectErrProps.clinicId = selectedClinicId;
+          deviceDetectErrProps.clinicName = clinic.name;
+        }
 
         if (targetDevice.powerOnlyWarning) {
           displayErr = new Error(ErrorMessages.E_USB_CABLE);
@@ -364,12 +379,27 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       }
 
       if (!dev && opts.filename == null) {
+        const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+        const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+        const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
+        const clinic = _.get(clinics, selectedClinicId, {});
+        const os = actionUtils.getOSDetails();
         let displayErr = new Error(ErrorMessages.E_HID_CONNECTION);
         let disconnectedErrProps = {
           utc: actionUtils.getUtc(utc),
           code: 'E_HID_CONNECTION',
-          version: version
+          version: version,
+          loggedInUser: loggedInUser,
+          userEmail: userEmail,
+          userName: name,
+          os: os,
+          device: driverId,
         };
+
+        if (selectedClinicId) {
+          disconnectedErrProps.clinicId = selectedClinicId;
+          disconnectedErrProps.clinicName = clinic.name;
+        }
 
         if (targetDevice.powerOnlyWarning) {
           displayErr = new Error(ErrorMessages.E_USB_CABLE);
@@ -387,7 +417,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         return dispatch(sync.uploadFailure(displayErr, disconnectedErrProps, targetDevice));
       }
 
-      var errorMessage = 'E_DEVICE_UPLOAD';
+      let errorMessage = 'E_DEVICE_UPLOAD';
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
       } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
@@ -462,14 +492,33 @@ export function doUpload(deviceKey, opts, utc) {
           throw new Error('No device was selected.');
         }
       } catch (err) {
+        const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+        const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+        const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
+        const clinic = _.get(clinics, selectedClinicId, {});
+        const os = actionUtils.getOSDetails();
+        const version = versionInfo.semver;
+
         console.log('Error:', err);
 
         let hidErr = new Error(ErrorMessages.E_HID_CONNECTION);
+
         let errProps = {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_HID_CONNECTION',
+          loggedInUser: loggedInUser,
+          userEmail: userEmail,
+          userName: name,
+          os: os,
+          version: version,
+          device: driverId,
         };
+
+        if (selectedClinicId) {
+          errProps.clinicId = selectedClinicId;
+          errProps.clinicName = clinic.name;
+        }
 
         if (targetDevice.powerOnlyWarning) {
           hidErr = new Error(ErrorMessages.E_USB_CABLE);
@@ -491,6 +540,12 @@ export function doUpload(deviceKey, opts, utc) {
       try {
         await opts.ble.scan();
       } catch (err) {
+        const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+        const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+        const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
+        const clinic = _.get(clinics, selectedClinicId, {});
+        const os = actionUtils.getOSDetails();
+        const version = versionInfo.semver;
         console.log('Error:', err);
 
         let btErr = new Error(ErrorMessages.E_BLUETOOTH_OFF);
@@ -498,7 +553,18 @@ export function doUpload(deviceKey, opts, utc) {
           details: err.message,
           utc: actionUtils.getUtc(utc),
           code: 'E_BLUETOOTH_OFF',
+          loggedInUser: loggedInUser,
+          userEmail: userEmail,
+          userName: name,
+          os: os,
+          version: version,
+          device: driverId,
         };
+
+        if (selectedClinicId) {
+          errProps.clinicId = selectedClinicId;
+          errProps.clinicName = clinic.name;
+        }
 
         if (process.env.NODE_ENV !== 'test') {
           errProps = await actionUtils.sendToRollbar(btErr, errProps);
