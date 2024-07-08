@@ -47,12 +47,8 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.3",
     "babyparse": "0.4.6",
-<<<<<<< HEAD
-    "ble-glucose": "0.5.0",
-    "body-parser": "1.18.3",
-=======
     "ble-glucose": "0.6.0",
->>>>>>> master
+    "body-parser": "1.18.3",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
     "classnames": "2.5.1",
