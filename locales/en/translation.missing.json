@@ -91,5 +91,6 @@
   "Allowed special characters: - _ + > <": "Allowed special characters: - _ + > <",
   "Please select a duration period": "Please select a duration period",
   "Please select a last upload date option": "Please select a last upload date option",
-  "Please select at least one tag": "Please select at least one tag"
+  "Please select at least one tag": "Please select at least one tag",
+  "Share this issue with the Tidepool Support Team": "Share this issue with the Tidepool Support Team"
 }
