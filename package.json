@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.58.0",
+  "version": "2.58.0-remove-lzo-decompress.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
