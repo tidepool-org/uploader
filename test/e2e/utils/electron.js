@@ -1,5 +1,5 @@
 
-const { _electron: electron, } = require('@playwright/test')
+const { _electron: electron, } = require('@playwright/test');
 
 /**
  * Launches Electron using Playwright.
