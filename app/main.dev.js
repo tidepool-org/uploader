@@ -152,6 +152,7 @@ function createWindow() {
     height: 769,
     resizable: resizable,
     webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false, // so that we can access process from app.html
     },
@@ -704,6 +705,11 @@ const handleIncomingUrl = (url) => {
 
   }
 };
+
+ipcMain.handle('handle-incoming-url', async (event, url) => {
+  console.log('handle-incoming-url called with URL:', url);
+  handleIncomingUrl(url);
+});
 
 const gotTheLock = app.requestSingleInstanceLock();
 
