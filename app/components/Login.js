@@ -15,33 +15,38 @@
  * == BSD2 LICENSE ==
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
-
 import actions from '../actions/';
 const asyncActions = actions.async;
 
 const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
-
+const i18n = remote.getGlobal('i18n');
 import { keycloak } from '../keycloak';
 
 export const Login = () => {
   const dispatch = useDispatch();
   const disabled = useSelector((state) => Boolean(state.unsupported));
   const errorMessage = useSelector((state) => state.loginErrorMessage);
-  const forgotPasswordUrl = useSelector(
-    (state) => state.blipUrls.forgotPassword
-  );
-  const isLoggingIn = useSelector(
-    (state) => state.working.loggingIn.inProgress
-  );
+  const forgotPasswordUrl = useSelector((state) => state.blipUrls.forgotPassword);
+  const isLoggingIn = useSelector((state) => state.working.loggingIn.inProgress);
   const keycloakConfig = useSelector((state) => state.keycloakConfig);
   const keycloakInitializing = keycloakConfig.url && !keycloakConfig.initialized;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
+  const [loginUrl, setLoginUrl] = useState('');
+
+  useEffect(() => {
+    if (keycloakConfig.initialized) {
+      try {
+        setLoginUrl(keycloak.createLoginUrl());
+      } catch (error) {
+        console.error('Error creating Keycloak login URL:', error);
+      }
+    }
+  }, [keycloakConfig]);
 
   const renderForgotPasswordLink = () => {
     return (
@@ -52,7 +57,7 @@ export const Login = () => {
   };
 
   const renderButton = () => {
-    var text = i18n.t('Log in');
+    let text = i18n.t('Log in');
 
     if (isLoggingIn) {
       text = i18n.t('Logging in...');
@@ -68,6 +73,7 @@ export const Login = () => {
         className={styles.button}
         onClick={handleLogin}
         disabled={isLoggingIn || disabled || keycloakInitializing}
+        data-testUrl={loginUrl ? loginUrl.toString() : ''}
       >
         {text}
       </button>
@@ -77,7 +83,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     if (keycloakConfig.initialized) {
-      window.open(keycloak.createLoginUrl(), '_blank');
+      window.open(loginUrl, '_blank');
     } else {
       dispatch(asyncActions.doLogin({ username, password }, { remember }));
     }

@@ -150,6 +150,7 @@
     "cross-env": "7.0.3",
     "css-loader": "5.2.7",
     "difflet": "1.0.1",
+    "dotenv": "^16.4.5",
     "drivelist": "11.1.0",
     "electron": "27.3.0",
     "electron-builder": "24.9.1",
