@@ -12,10 +12,12 @@ jobs:
           name: Install nvm and node
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-            source ~/.nvm/nvm.sh
-            nvm install v18.17.1
-            nvm alias default v18.17.1
-            nvm use v18.17.1
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install 18.17.1
+            nvm alias default 18.17.1
+            nvm use default
+            echo 'export PATH=$NVM_DIR/versions/node/v18.17.1/bin:$PATH' >> $BASH_ENV
             node --version
       - checkout
       - run: git submodule sync
@@ -24,7 +26,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-web-{{ checksum "package.json" }}
       - run: yarn config set cache-folder ~/.cache/yarn
-      - run: yarn --frozen-lockfile
+      - run: node --version && yarn --frozen-lockfile
       - save_cache:
           key: dependency-cache-web-{{ checksum "package.json" }}
           paths:
