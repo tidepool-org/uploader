@@ -45,6 +45,8 @@ jobs:
           command: xvfb-run -a -e /dev/stdout -s "-screen 0 2920x2580x24" yarn test-e2e
       - store_test_results:
           path: test-results/results.xml
+      - store_artifacts:
+          path: /videos
   build-macos:
     resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader

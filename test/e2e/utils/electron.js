@@ -9,8 +9,7 @@ const { _electron: electron, } = require('@playwright/test');
 async function startElectron () {
   return await electron.launch({ 
     args: ['./app/main.prod.js'], 
-    
-    // recordVideo: { dir: './videos' },
+    recordVideo: { dir: './videos' },
   });
 }
 
