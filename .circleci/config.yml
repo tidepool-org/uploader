@@ -28,6 +28,7 @@ jobs:
           paths:
             - ~/.cache/yarn
             - ./node_modules
+      - run: yarn build
       - run:
           name: Run E2E Tests
           command: yarn test-e2e
