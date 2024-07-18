@@ -6,10 +6,7 @@ jobs:
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     docker:
-      - image: cimg/node:18.17.1-browsers 
-    environment:
-      BASH_ENV: ".circleci/bash_env.sh"
-      DISPLAY: ":99"
+      - image: mcr.microsoft.com/playwright:v1.45.1-jammy
     steps:
       - run:
           name: Install nvm and node
@@ -33,21 +30,11 @@ jobs:
             - ~/.cache/yarn
             - ./node_modules
       - run: yarn build
-      - run: npx playwright install
+      - run: npx playwright install --with-deps
       # Run end-to-end tests
       - run:
-          name: Start Xvfb
-          command: |
-            if pgrep -x "Xvfb" > /dev/null; then
-              echo "Stopping existing Xvfb instance"
-              pkill -x Xvfb
-            fi
-            Xvfb :99 -screen 0 1280x1024x24 &> /dev/null &
-      - run:
           name: Run E2E Tests
-          command: |
-            export DISPLAY=:99
-            yarn test-e2e
+          command: xvfb-run yarn test-e2e
   build-macos:
     resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
