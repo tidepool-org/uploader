@@ -18,7 +18,8 @@ module.exports = defineConfig({
   expect: {
     timeout: 20000
   },
-  
+
+  reporter: [['list'], ['junit', { outputFile: 'test-results/results.xml' }]],
   fullyParallel: false, 
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
