@@ -15,6 +15,7 @@ jobs:
             source ~/.nvm/nvm.sh
             nvm install v18.17.1
             nvm alias default v18.17.1
+            nvm use v18.17.1
             node --version
       - checkout
       - run: git submodule sync
