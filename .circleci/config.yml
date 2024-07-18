@@ -24,6 +24,11 @@ jobs:
       - run: yarn build
       - run: npx playwright install --with-deps
       - run:
+          name: Install Xvfb and xdpyinfo
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb xdpyinfo
+      - run:
           name: Ensure Xvfb can start
           command: |
             if pgrep -x "Xvfb" > /dev/null; then
