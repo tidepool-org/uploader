@@ -23,9 +23,9 @@ test.describe('Home screen', () => {
 
   // TESTS
   test('has correct links', async () => {
-   expect(await window.getByRole('link', { name: 'Get Support' }).getAttribute('href'))
+    expect(await window.getByRole('link', { name: 'Get Support' }).getAttribute('href'))
       .toBe('http://support.tidepool.org/');
-   expect(await window.getByRole('link', { name: 'Privacy and Terms of Use' })
+    expect(await window.getByRole('link', { name: 'Privacy and Terms of Use' })
       .getAttribute('href')).toBe('http://tidepool.org/legal/');
   });
 
@@ -57,8 +57,12 @@ test.describe('Home screen', () => {
       await window.waitForSelector('body');
       await window.waitForLoadState('domcontentloaded');
 
-      const login = window.getByRole('button', { name: 'Log in' });
-      url = await login.getAttribute('data-testurl');
+      await window.getByRole('button', { name: 'Log in' }).click();
+
+      // eslint-disable-next-line max-len
+      const urlPattern = /\/realms\/qa2\/protocol\/openid-connect\/auth\?client_id=tidepool-uploader-sso/;
+      url = (await window.waitForRequest(request => urlPattern.test(request.url()))).url();
+      
       console.log('[Electron][Auth URL] ', url);
       electronApp.close();
       resolve();
