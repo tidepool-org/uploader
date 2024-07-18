@@ -24,13 +24,22 @@ jobs:
       - run: yarn build
       - run: npx playwright install --with-deps
       - run:
-          name: Install Xvfb
+          name: Ensure Xvfb can start
           command: |
-            sudo apt-get update
-            sudo apt-get install -y xvfb
+            if pgrep -x "Xvfb" > /dev/null; then
+              echo "Stopping existing Xvfb instance"
+              pkill -x Xvfb
+            fi
+      - run:
+          name: Start Xvfb with verbose logging
+          command: |
+            Xvfb :99 -screen 0 1280x1024x24 -ac +extension GLX +render -noreset &
+            export DISPLAY=:99
+            sleep 3
+            xdpyinfo -display :99
       - run:
           name: Run E2E Tests
-          command: xvfb-run yarn test-e2e
+          command: xvfb-run --auto-servernum --server-args='-screen 0 1280x1024x24' yarn test-e2e
   build-macos:
     resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
