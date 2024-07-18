@@ -6,7 +6,7 @@ jobs:
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     docker:
-      - image: circleci/node:18.17.1-browsers
+      - image: cimg/node:18.17.1-browsers
     steps:
       - checkout
       - run: git submodule sync
