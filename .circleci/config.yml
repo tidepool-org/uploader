@@ -24,7 +24,7 @@ jobs:
       - run: yarn build
       - run: npx playwright install chromium
       - run:
-          name: Install Xvfb and xdpyinfo
+          name: Install Xvfb
           command: |
             sudo apt-get update
             sudo apt-get install -y xvfb
@@ -36,7 +36,7 @@ jobs:
               pkill -x Xvfb
             fi
       - run:
-          name: Start Xvfb with verbose logging
+          name: Start Xvfb
           command: |
             Xvfb :99 -screen 0 1680x1224x24 -ac +extension GLX +render -noreset &
             export DISPLAY=:99
@@ -240,4 +240,11 @@ workflows:
               only: /^v.*/
           requires:
             - test-e2e
+      - test-e2e:
+          filters:
+            tags:
+              only: /^v.*/
+  test:
+    jobs:
       - test-e2e
+
