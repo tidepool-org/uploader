@@ -40,12 +40,14 @@ jobs:
           command: |
             Xvfb :99 -screen 0 1680x1224x24 -ac +extension GLX +render -noreset &
             export DISPLAY=:99
+            export ELECTRON_ENABLE_LOGGING=true
+            export ELECTRON_ENABLE_STACK_DUMPING=true
       - run:
           name: Test Internet Access
           command: curl -I https://www.google.com
       - run:
           name: Run E2E Tests
-          command: xvfb-run -a -e /dev/stdout -s "-screen 0 2920x2580x24" yarn test-e2e
+          command: DEBUG=playwright:*,pw:browser*,electron:* xvfb-run -a -e /dev/stdout -s "-screen 0 2920x2580x24" yarn test-e2e
       - store_test_results:
           path: test-results/results.xml
       - store_artifacts:

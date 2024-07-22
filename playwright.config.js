@@ -16,7 +16,7 @@ module.exports = defineConfig({
   // globalTimeout: 10000,
   timeout: 60000,
   expect: {
-    timeout: 20000
+    timeout: 5000
   },
 
   reporter: [['list'], ['junit', { outputFile: 'test-results/results.xml' }]],
@@ -24,7 +24,8 @@ module.exports = defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  // TODO: Change this back to 2
+  retries: process.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
