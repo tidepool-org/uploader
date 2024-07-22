@@ -27,27 +27,33 @@ jobs:
           name: Install Xvfb
           command: |
             sudo apt-get update
-            sudo apt-get install -y xvfb
+            sudo apt-get install -y xvfb dbus
       - run:
-          name: Ensure Xvfb can start
+          name: Ensure Xvfb and dbus can start
           command: |
             if pgrep -x "Xvfb" > /dev/null; then
               echo "Stopping existing Xvfb instance"
               pkill -x Xvfb
             fi
+            if pgrep -x "dbus-daemon" > /dev/null; then
+              echo "Stopping existing dbus-daemon instance"
+              pkill -x dbus-daemon
+            fi
       - run:
-          name: Start Xvfb
+          name: Start Xvfb and dbus
           command: |
             Xvfb :99 -screen 0 1680x1224x24 -ac +extension GLX +render -noreset &
-            export DISPLAY=:99
-            export ELECTRON_ENABLE_LOGGING=true
-            export ELECTRON_ENABLE_STACK_DUMPING=true
+            service dbus start
       - run:
           name: Test Internet Access
           command: curl -I https://www.google.com
       - run:
           name: Run E2E Tests
-          command: DEBUG=playwright:*,pw:browser*,electron:* xvfb-run -a -e /dev/stdout -s "-screen 0 2920x2580x24" yarn test-e2e
+          command: |
+            export DISPLAY=:99
+            export ELECTRON_ENABLE_LOGGING=true
+            export ELECTRON_ENABLE_STACK_DUMPING=true
+            DEBUG=playwright:*,pw:browser*,electron:* xvfb-run -a -e /dev/stdout -s "-screen 0 2920x2580x24" yarn test-e2e
       - store_test_results:
           path: test-results/results.xml
       - store_artifacts:
