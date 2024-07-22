@@ -22,7 +22,7 @@ jobs:
             - ~/.cache/yarn
             - ./node_modules
       - run: yarn build
-      - run: npx playwright install chromium
+      - run: npx playwright install --with-deps
       - run:
           name: Install Xvfb
           command: |
