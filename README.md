@@ -270,7 +270,7 @@ Tidepool Uploader makes use of the following LGPL-licensed libraries:
 These libraries are used in the following Node.js modules created by Tidepool and are dependencies of the Tidepool Uploader:
 
 - https://github.com/tidepool-org/node-mtp (libmtp)
-- https://github.com/tidepool-org/lzo-decompress (libavutil)
+- https://github.com/tidepool-org/lzo-wasm (libavutil)
 
 The LGPL is intended to allow use of libraries in applications that don’t necessarily distribute the source of the application. The LGPL has two requirements:
 
