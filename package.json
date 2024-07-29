@@ -186,7 +186,7 @@
     "mini-css-extract-plugin": "0.12.0",
     "moment": "2.30.1",
     "object-invariant-test-helper": "0.1.1",
-    "optimize-css-assets-webpack-plugin": "5.0.4",
+    "optimize-css-assets-webpack-plugin": "6.0.1",
     "optional": "0.1.4",
     "redux-mock-store": "1.5.4",
     "salinity": "0.0.8",
