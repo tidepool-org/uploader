@@ -45,7 +45,7 @@
     "@mui/icons-material": "5.15.6",
     "@mui/material": "5.15.6",
     "@react-keycloak/web": "3.4.0",
-    "async": "2.6.3",
+    "async": "2.6.4",
     "babyparse": "0.4.6",
     "ble-glucose": "0.6.0",
     "body-parser": "1.18.3",
