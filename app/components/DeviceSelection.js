@@ -19,19 +19,11 @@ var _ = require('lodash');
 var PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
-var node_os = require('os');
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 import { urls } from '../constants/otherConstants';
 
 import styles from '../../styles/components/DeviceSelection.module.less';
-
-var hostMap = {
-  'darwin': 'mac',
-  'win32' : 'win',
-  'linux': 'linux',
-};
 
 class DeviceSelection extends React.Component {
   static propTypes = {

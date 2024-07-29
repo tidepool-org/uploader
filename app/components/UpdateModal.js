@@ -19,15 +19,20 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ipcRenderer } from 'electron';
 
 import { sync as syncActions } from '../actions/';
 import config from '../../lib/config.js';
 
 import styles from '../../styles/components/UpdateModal.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { ipcRenderer } from '../utils/ipc';
+import env from '../utils/env';
+import { i18n } from '../utils/config.i18next';
+
+let remote;
+if (env.electron){
+  remote = require('@electron/remote');
+}
 
 export class UpdateModal extends Component {
   handleInstall = () => {
@@ -52,7 +57,7 @@ export class UpdateModal extends Component {
       newVersion = electronUpdateAvailable.info.version;
       newDate = electronUpdateAvailable.info.releaseDate.slice(0, 10);
       currentVersion = remote.app.getVersion();
-      
+
       if (electronUpdateAvailable.info.installDate) {
         currentDate = electronUpdateAvailable.info.installDate.slice(0, 10);
       }

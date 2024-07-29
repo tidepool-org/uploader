@@ -29,8 +29,7 @@ import styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export default class UploadList extends Component {
   static propTypes = {
