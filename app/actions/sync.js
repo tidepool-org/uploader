@@ -759,56 +759,6 @@ export function quitAndInstall() {
   };
 }
 
-/*
- * relating to driver updates
- */
-
-export function checkingForDriverUpdate() {
-  return {
-    type: ActionTypes.CHECKING_FOR_DRIVER_UPDATE,
-    meta: { source: actionSources[ActionTypes.CHECKING_FOR_DRIVER_UPDATE] }
-  };
-}
-
-export function driverUpdateAvailable(current, available) {
-  return {
-    type: ActionTypes.DRIVER_UPDATE_AVAILABLE,
-    payload: { current, available },
-    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_AVAILABLE] }
-  };
-}
-
-export function driverUpdateNotAvailable() {
-  return {
-    type: ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
-    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE] }
-  };
-}
-
-export function dismissDriverUpdateAvailable() {
-  return {
-    type: ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
-    meta: { source: actionSources[ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE] }
-  };
-}
-
-export function driverInstall() {
-  return {
-    type: ActionTypes.DRIVER_INSTALL,
-    meta: {
-      source: actionSources[ActionTypes.DRIVER_INSTALL]
-    }
-  };
-}
-
-export function driverUpdateShellOpts(opts) {
-  return {
-    type: ActionTypes.DRIVER_INSTALL_SHELL_OPTS,
-    payload: { opts },
-    meta: {source: actionSources[ActionTypes.DRIVER_INSTALL_SHELL_OPTS] }
-  };
-}
-
 export function deviceTimeIncorrect(callback, cfg, times) {
   return {
     type: ActionTypes.DEVICE_TIME_INCORRECT,

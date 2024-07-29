@@ -20,14 +20,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ipcRenderer } from 'electron';
+import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
-import dns from 'dns';
+import { hot } from 'react-hot-loader';
 
 import bows from 'bows';
 
 import config from '../../lib/config.js';
 import api from '../../lib/core/api';
+import env from '../utils/env';
 
 import device from '../../lib/core/device.js';
 import localStore from '../../lib/core/localStore.js';
@@ -37,7 +38,6 @@ const asyncActions = actions.async;
 const syncActions = actions.sync;
 
 import { urls, pagesMap, paths } from '../constants/otherConstants';
-import { checkVersion } from '../utils/drivers';
 import debugMode from '../utils/debugMode';
 
 import MainPage from './MainPage';
@@ -53,7 +53,6 @@ import VersionCheckError from '../components/VersionCheckError';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UpdateModal from '../components/UpdateModal';
-import UpdateDriverModal from '../components/UpdateDriverModal';
 import DeviceTimeModal from '../components/DeviceTimeModal';
 import AdHocModal from '../components/AdHocModal';
 import BluetoothModal from '../components/BluetoothModal';
@@ -61,8 +60,13 @@ import PatientLimitModal from '../components/PatientLimitModal.js';
 import LoggedOut from '../components/LoggedOut.js';
 
 import styles from '../../styles/components/App.module.less';
+import { ipcRenderer } from '../utils/ipc';
 
-const remote = require('@electron/remote');
+let remote, dns;
+if(env.electron_renderer){
+  remote = require('@electron/remote');
+  dns = require('dns');
+}
 
 const serverdata = {
   Local: {
@@ -71,30 +75,30 @@ const serverdata = {
     DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
-  Development: {
-    API_URL: 'https://dev-api.tidepool.org',
-    UPLOAD_URL: 'https://dev-uploads.tidepool.org',
-    DATA_URL: 'https://dev-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://dev-app.tidepool.org'
+  QA1: {
+    API_URL: 'https://qa1.development.tidepool.org',
+    UPLOAD_URL: 'https://qa1.development.tidepool.org',
+    DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa1.development.tidepool.org'
   },
-  Staging: {
-    API_URL: 'https://stg-api.tidepool.org',
-    UPLOAD_URL: 'https://stg-uploads.tidepool.org',
-    DATA_URL: 'https://stg-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://stg-app.tidepool.org'
+  QA2: {
+    API_URL: 'https://qa2.development.tidepool.org',
+    UPLOAD_URL: 'https://qa2.development.tidepool.org',
+    DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa2.development.tidepool.org'
   },
   Integration: {
-    API_URL: 'https://int-api.tidepool.org',
-    UPLOAD_URL: 'https://int-uploads.tidepool.org',
-    DATA_URL: 'https://int-api.tidepool.org/dataservices',
-    BLIP_URL: 'https://int-app.tidepool.org'
+    API_URL: 'https://external.integration.tidepool.org',
+    UPLOAD_URL: 'https://external.integration.tidepool.org',
+    DATA_URL: 'https://external.integration.tidepool.org/dataservices',
+    BLIP_URL: 'https://external.integration.tidepool.org'
   },
   Production: {
     API_URL: 'https://api.tidepool.org',
-    UPLOAD_URL: 'https://uploads.tidepool.org',
+    UPLOAD_URL: 'https://api.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
     BLIP_URL: 'https://app.tidepool.org'
-  }
+  },
 };
 
 export class App extends Component {
@@ -109,7 +113,7 @@ export class App extends Component {
     this.log = bows('App');
     let initial_server = _.findKey(serverdata, (key) => key.BLIP_URL === config.BLIP_URL);
     const selectedEnv = localStore.getItem('selectedEnv');
-    if (selectedEnv) {
+    if (selectedEnv && env.electron) {
       let parsedEnv = JSON.parse(selectedEnv);
       console.log('setting initial server from localstore:', parsedEnv.environment);
       api.setHosts(parsedEnv);
@@ -118,11 +122,11 @@ export class App extends Component {
     this.state = {
       server: initial_server
     };
+
   }
 
   UNSAFE_componentWillMount(){
-    checkVersion(this.props.dispatch);
-    const selectedEnv = localStore.getItem('selectedEnv')
+    const selectedEnv = localStore.getItem('selectedEnv') && env.electron
       ? JSON.parse(localStore.getItem('selectedEnv'))
       : null;
 
@@ -137,24 +141,30 @@ export class App extends Component {
       );
     });
 
-    dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
-      if (err) {
-        this.log(`DNS resolver error: ${err}. Retrying...`);
-        dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
-          if (!err2) {
-           this.addServers(servers2);
-          }
-        });
-      } else {
-        this.addServers(servers);
-      }
-    });
+    if (env.electron_renderer) {
+      dns.resolveSrv('environments-srv.tidepool.org', (err, servers) => {
+        if (err) {
+          this.log(`DNS resolver error: ${err}. Retrying...`);
+          dns.resolveSrv('environments-srv.tidepool.org', (err2, servers2) => {
+            if (!err2) {
+              this.addServers(servers2);
+            }
+          });
+        } else {
+          this.addServers(servers);
+        }
+      });
+    }
 
-    window.addEventListener('contextmenu', this.handleContextMenu, false);
+    if (env.electron) {
+      window.addEventListener('contextmenu', this.handleContextMenu, false);
+    }
   }
 
   componentWillUnmount(){
-    window.removeEventListener('contextmenu', this.handleContextMenu, false);
+    if(env.electron){
+      window.removeEventListener('contextmenu', this.handleContextMenu, false);
+    }
   }
 
   addServers = (servers) => {
@@ -192,7 +202,7 @@ export class App extends Component {
         if (err) {
           this.log(`Error getting server info: ${err}`);
         } else {
-          if (_.get(configInfo, 'auth')) {
+          if (_.get(configInfo, 'auth') && env.electron_renderer) {
             ipcRenderer.send('keycloakInfo', configInfo.auth);
           }
 
@@ -223,7 +233,6 @@ export class App extends Component {
         {/* VersionCheck as overlay */}
         {this.renderVersionCheck()}
         <UpdateModal />
-        <UpdateDriverModal />
         <DeviceTimeModal />
         <AdHocModal />
         <BluetoothModal />
@@ -302,7 +311,7 @@ export class App extends Component {
 
 App.propTypes = {};
 
-export default connect(
+export default hot(module)(connect(
   (state, ownProps) => {
     return {
       // plain state
@@ -321,4 +330,4 @@ export default connect(
       dispatch: dispatch
     };
   }
-)(App);
+)(App));

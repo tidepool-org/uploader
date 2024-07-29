@@ -17,9 +17,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ipcRenderer } from 'electron';
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+
+import { ipcRenderer } from '../utils/ipc';
+import { i18n } from '../utils/config.i18next';
 import personUtils from '../../lib/core/personUtils';
 import api from '../../lib/core/api';
 import * as metrics from '../constants/metrics';

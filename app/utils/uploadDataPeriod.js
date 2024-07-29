@@ -14,9 +14,8 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-const isElectron = require('is-electron');
-const { ipcRenderer, ipcMain } = require('electron');
-let isRenderer = (process && process.type === 'renderer');
+import env from '../../app/utils/env';
+import { ipcRenderer, ipcMain } from '../../app/utils/ipc';
 
 const PERIODS = {
   ALL: 1,
@@ -24,9 +23,10 @@ const PERIODS = {
   FOUR_WEEKS: 3,
 };
 
-if (isRenderer) {
+let uploadDataPeriod;
+if (env.electron_renderer) {
   const remote = require('@electron/remote');
-  const uploadDataPeriod = module.exports = {
+  uploadDataPeriod = module.exports = {
     get periodGlobal() {
       return remote.getGlobal('period');
     },
@@ -64,49 +64,76 @@ if (isRenderer) {
   ipcRenderer.on('savePeriodMedtronic600', (event, arg) => {
     localStorage.setItem('uploadDataPeriodMedtronic600', arg);
   });
-
-} else {
-  // main process
-
-  if (isElectron()) {
-    global.periodMedtronic600 = PERIODS.DELTA;
-    global.period = PERIODS.DELTA;
-
-    ipcMain.on('setUploadDataPeriodMedtronic600', (event, arg) => {
-      global.periodMedtronic600 = arg;
-    });
-    ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
-      global.period = arg;
-    });
-
-    const uploadDataPeriod = module.exports = {
-      get periodGlobal() {
-        return global.period;
-      },
-      get periodMedtronic600() {
-        return global.periodMedtronic600;
-      },
-      PERIODS,
-      // since the main process does not have access to localStorage,
-      // we have to send the values back to the renderer process to save it
-      setPeriodMedtronic600: function(toPeriod, window) {
-        global.periodMedtronic600 = toPeriod;
-        window.webContents.send('savePeriodMedtronic600', toPeriod);
-        return global.periodMedtronic600;
-      },
-      setPeriodGlobal: function(toPeriod, window) {
-        global.period = toPeriod;
-        window.webContents.send('savePeriodGlobal', toPeriod);
-        return global.period;
-      }
-    };
-  } else {
-    // we're running as a Node process (e.g. running as a script),
-    // so just default to delta
-    const uploadDataPeriod = module.exports = {
-      periodMedtronic600: PERIODS.DELTA,
-      periodGlobal: PERIODS.DELTA,
-      PERIODS,
-    };
-  }
 }
+
+if (env.electron_main) {
+  // main process
+  global.periodMedtronic600 = PERIODS.DELTA;
+  global.period = PERIODS.DELTA;
+
+  ipcMain.on('setUploadDataPeriodMedtronic600', (event, arg) => {
+    global.periodMedtronic600 = arg;
+  });
+  ipcMain.on('setUploadDataPeriodGlobal', (event, arg) => {
+    global.period = arg;
+  });
+
+  uploadDataPeriod = module.exports = {
+    get periodGlobal() {
+      return global.period;
+    },
+    get periodMedtronic600() {
+      return global.periodMedtronic600;
+    },
+    PERIODS,
+    // since the main process does not have access to localStorage,
+    // we have to send the values back to the renderer process to save it
+    setPeriodMedtronic600: function(toPeriod, window) {
+      global.periodMedtronic600 = toPeriod;
+      window.webContents.send('savePeriodMedtronic600', toPeriod);
+      return global.periodMedtronic600;
+    },
+    setPeriodGlobal: function(toPeriod, window) {
+      global.period = toPeriod;
+      window.webContents.send('savePeriodGlobal', toPeriod);
+      return global.period;
+    }
+  };
+}
+
+if (env.browser) {
+  let period = PERIODS.DELTA;
+  let periodMedtronic600 = PERIODS.DELTA;
+
+  uploadDataPeriod = module.exports = {
+    get periodGlobal() {
+      return period;
+    },
+    get periodMedtronic600() {
+      return periodMedtronic600;
+    },
+    PERIODS,
+    setPeriodMedtronic600: function(toPeriod) {
+      periodMedtronic600 = toPeriod;
+      localStorage.setItem('uploadDataPeriodMedtronic600', toPeriod);
+      return periodMedtronic600;
+    },
+    setPeriodGlobal: function(toPeriod) {
+      period = toPeriod;
+      localStorage.setItem('uploadDataPeriodGlobal', toPeriod);
+      return period;
+    }
+  };
+}
+
+if (!env.electron && env.node) {
+  // we're running as a Node process (e.g. running as a script),
+  // so just default to delta
+  uploadDataPeriod = module.exports = {
+    periodMedtronic600: PERIODS.DELTA,
+    periodGlobal: PERIODS.DELTA,
+    PERIODS,
+  };
+}
+
+export default uploadDataPeriod;

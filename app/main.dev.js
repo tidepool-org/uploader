@@ -9,14 +9,10 @@ import { sync as syncActions } from './actions';
 import debugMode from '../app/utils/debugMode';
 import Rollbar from 'rollbar/src/server/rollbar';
 import uploadDataPeriod from './utils/uploadDataPeriod';
-import i18n from 'i18next';
-import i18nextBackend from 'i18next-fs-backend';
-import i18nextOptions from './utils/config.i18next';
+import { setLanguage, i18n } from './utils/config.i18next';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-
-global.i18n = i18n;
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
@@ -51,8 +47,13 @@ const baseURL = fileURL.href;
 
 let menu;
 let template;
+
+/**
+ * @type {BrowserWindow}
+ */
 let mainWindow = null;
 let serialPortFilter = null;
+let usbFilter = null;
 let bluetoothPinCallback = null;
 
 // Web Bluetooth should only be an experimental feature on Linux
@@ -138,7 +139,9 @@ const openExternalUrl = (url) => {
 
 app.on('ready', async () => {
   await installExtensions();
-  setLanguage();
+  setLanguage(() => {
+    createWindow();
+  });
 });
 
 function createWindow() {
@@ -182,8 +185,12 @@ function createWindow() {
     setRequestFilter();
   });
 
-  let setRequestFilter = () => {
-    let urls = ['http://localhost/keycloak-redirect*', '*://*/upload-redirect*'];
+  const setRequestFilter = () => {
+    const urls = [
+      'http://localhost/keycloak-redirect*',
+      '*://*/*upload-redirect*',
+      '*://*/*protocol/openid-connect/auth*',
+    ];
     if (keycloakUrl && keycloakRealm) {
       urls.push(
         `${keycloakUrl}/realms/${keycloakRealm}/login-actions/registration*`
@@ -192,10 +199,19 @@ function createWindow() {
     webRequest.onBeforeRequest({ urls }, async (request, cb) => {
       const requestURL = new URL(request.url);
 
+      // catch attempts to load the auth page in the app and launch externally
+      if (requestURL.pathname.includes('/protocol/openid-connect/auth')) {
+        return openExternalUrl(request.url);
+      }
+
       // capture keycloak sign-in redirect
-      if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
+      if (
+        requestURL.pathname.includes('keycloak-redirect') ||
+        requestURL.pathname.includes('upload-redirect')
+      ) {
         return handleIncomingUrl(request.url);
       }
+
       // capture keycloak registration navigation
       if (
         requestURL.href.includes(
@@ -284,6 +300,28 @@ operating system, as soon as possible.`,
       callback(details.deviceList[0].deviceId);
     } else {
       callback('');
+    }
+  });
+
+  mainWindow.webContents.session.on('select-usb-device', (event, details, callback) => {
+    event.preventDefault();
+    console.log('Device list:', details.deviceList);
+
+    let selectedDevice;
+    for (let i = 0; i < usbFilter.length; i++) {
+      selectedDevice = details.deviceList.find((element) =>
+        usbFilter[i].vendorId === element.vendorId &&
+        usbFilter[i].productId === element.productId
+    );
+      if (selectedDevice) {
+        break;
+      }
+    }
+
+    if (!selectedDevice) {
+      callback('');
+    } else {
+      callback(selectedDevice.deviceId);
     }
   });
 
@@ -620,6 +658,10 @@ ipcMain.on('setSerialPortFilter', (event, arg) => {
   serialPortFilter = arg;
 });
 
+ipcMain.on('setUSBFilter', (event, arg) => {
+  usbFilter = arg;
+});
+
 ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
@@ -647,19 +689,16 @@ const handleIncomingUrl = (url) => {
   const requestURL = new URL(url);
   // capture keycloak sign-in redirect
   if (requestURL.pathname.includes('keycloak-redirect') || requestURL.pathname.includes('upload-redirect')) {
-    const requestHash = requestURL.hash;
     if(mainWindow){
       const { webContents } = mainWindow;
-      // redirecting from the app html to app html with hash breaks devtools
-      // just send and append the hash if we're already in the app html
-      if (webContents.getURL().includes(baseURL)) {
-        webContents.send('newHash', requestHash);
-      } else {
-        webContents.loadURL(`${baseURL}${requestHash}`);
+      const requestHash = requestURL.hash;
+      const newUrl = `${baseURL}${requestHash}`;
+      if(webContents.getURL() !== newUrl){
+        webContents.loadURL(newUrl);
       }
-      return;  
+      return;
     }
-    
+
   }
 };
 
@@ -684,28 +723,6 @@ if (!gotTheLock) {
     event.preventDefault();
     return handleIncomingUrl(url);
   });
-}
-
-function setLanguage() {
-  if (process.env.I18N_ENABLED === 'true') {
-    let lng = app.getLocale();
-    // remove country in language locale
-    if (_.includes(lng,'-'))
-      lng = (_.split(lng,'-').length > 0) ? _.split(lng,'-')[0] : lng;
-
-    i18nextOptions['lng'] = lng;
-  }
-
-  if (!i18n.Initialize) {
-    i18n.use(i18nextBackend).init(i18nextOptions, function(err, t) {
-      if (err) {
-        console.log('An error occurred in i18next:', err);
-      }
-
-      global.i18n = i18n;
-      createWindow();
-    });
-  }
 }
 
 function getURLFromArgs(args) {

@@ -20,8 +20,7 @@ import PropTypes from 'prop-types';
 
 import styles from '../../styles/components/VersionCheck.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export default class UpdatePlease extends Component {
   static propTypes = {
@@ -45,7 +44,7 @@ export default class UpdatePlease extends Component {
             <p className={styles.lineOne}>{updateText.NEEDS_UPDATED}</p>
             <p className={styles.lineTwo}>{updateText.IMPROVEMENTS}</p>
             <p className={styles.mostImportant}>
-             {i18n.t('Follow')} <a className={styles.link} href={knowledgeBaseLink} target="_blank">{i18n.t('these instructions')}</a> {i18n.t('to do so.')}}
+             {i18n.t('Follow')} <a className={styles.link} href={knowledgeBaseLink} target="_blank">{i18n.t('these instructions')}</a> {i18n.t('to do so.')}
             </p>
           </div>
         </div>
