@@ -33,16 +33,26 @@ const errorProps = {
 };
 
 export function addInfoToError(err, props) {
-  let debug = []; 
+  const debug = [];
   _.forOwn(props, (v, k) => {
-    if (!_.isEmpty(v) && v !== err.message && 
-        k !== 'utc' && 
-        k !== 'code' && 
+    if (!_.isEmpty(v) && v !== err.message &&
+        k !== 'utc' &&
+        k !== 'code' &&
         k !== 'version' &&
         k !== 'data'
       ) {
       err[k] = v;
-      if (k !== 'uuid') {
+      if (
+        k !== 'uuid' &&
+        k !== 'os' &&
+        k !== 'loggedInUser' &&
+        k !== 'userEmail' &&
+        k !== 'version' &&
+        k !== 'clinicName' &&
+        k !== 'clinicId' &&
+        k !== 'userName' &&
+        k !== 'device'
+      ) {
         debug.push(`${errorProps[k]}: ${v}`);
       }
     }
