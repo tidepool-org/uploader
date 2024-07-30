@@ -243,6 +243,17 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
+  relionplatinumble: {
+    instructions: {
+                    text: i18n.t('To pair: With meter off, hold the down arrow button until Bluetooth symbol appears \u2022 For full pairing instructions,'),
+                    linkText: i18n.t('visit our support site'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX', // FIXME
+                  },
+    name: 'ReliOn Platinum (using Bluetooth)',
+    key: 'relionplatinumble',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionpremier: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'ReliOn Premier (BLU, Voice & Classic)',
@@ -298,4 +309,3 @@ if (env.electron) {
 }
 
 export default devices;
-
