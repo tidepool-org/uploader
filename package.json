@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.58.0-react-oidc-context.4",
+  "version": "2.58.0-embrace-support.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
