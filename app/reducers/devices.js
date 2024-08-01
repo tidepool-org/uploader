@@ -247,7 +247,7 @@ const devices = {
     instructions: {
                     text: i18n.t('To pair: With meter off, hold the down arrow button until Bluetooth symbol appears \u2022 For full pairing instructions,'),
                     linkText: i18n.t('visit our support site'),
-                    link: 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX', // FIXME
+                    link: 'https://support.tidepool.org/hc/en-us/articles/14204858905492-Uploading-your-ReliOn-Platinum-meter',
                   },
     name: 'ReliOn Platinum (using Bluetooth)',
     key: 'relionplatinumble',
