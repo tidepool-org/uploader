@@ -282,9 +282,9 @@ export default class UploadList extends Component {
       );
     }
 
-    if (upload.error.code === 'E_NO_RECORDS') {
+    if (upload.error.code === 'E_NO_RECORDS' || upload.error.code === 'E_NO_NEW_RECORDS') {
       return (
-        <div className={styles.main}>
+        <div className={styles.errorItem}>
           <div className={styles.errorMessageWrapper}>
             <span className={styles.boldMessage}>{i18n.t('Data is up to date')}</span>
             <span className={styles.errorMessageFriendly}>

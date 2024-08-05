@@ -160,6 +160,11 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.code = 'E_NO_RECORDS';
       }
 
+      if (err.code === 'E_NO_NEW_RECORDS') {
+        displayErr.message = ErrorMessages.E_NO_NEW_RECORDS;
+        displayErr.code = 'E_NO_NEW_RECORDS';
+      }
+
       if (process.env.NODE_ENV !== 'test') {
         uploadErrProps = await sendToRollbar(displayErr, uploadErrProps);
       }
