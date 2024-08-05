@@ -64,5 +64,6 @@
   "Your version: {{currentVersion}} - installed {{currentDate}}": "Your version: {{currentVersion}} - installed {{currentDate}}",
   "See what's new with Tidepool Uploader": "See what's new with Tidepool Uploader",
   "You can continue to use your current version,": "You can continue to use your current version,",
-  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible."
+  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible.",
+  "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.": "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload."
 }
