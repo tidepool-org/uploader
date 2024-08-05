@@ -45,6 +45,7 @@ module.exports = {
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
   E_NOT_YET_READY: 'Your device is not yet ready or not plugged in',
   E_NO_NEW_RECORDS: 'No new records to upload',
+  E_NO_RECORDS: 'There is no data on the device. If you think this is an error, please reach out below.',
   E_DATETIME_SET_BY_PUMP: 'Please correct the date/time on the linked pump.',
   ERR_FETCHING_CLINICS_FOR_CLINICIAN: 'Something went wrong while getting clinics for clinician.',
   ERR_FETCHING_ASSOCIATED_ACCOUNTS: 'Something went wrong while fetching associated accounts.',
