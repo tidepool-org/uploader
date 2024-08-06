@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.58.0-bluetooth-delta.1",
+  "version": "2.58.0-handle-empty.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
