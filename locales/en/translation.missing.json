@@ -64,5 +64,10 @@
   "Your version: {{currentVersion}} - installed {{currentDate}}": "Your version: {{currentVersion}} - installed {{currentDate}}",
   "See what's new with Tidepool Uploader": "See what's new with Tidepool Uploader",
   "You can continue to use your current version,": "You can continue to use your current version,",
-  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible."
+  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible.",
+  "Plug in PDA with micro-USB": "Plug in PDA with micro-USB",
+  "There is no new data since last time. If you think this is an error, please reach out below.": "There is no new data since last time. If you think this is an error, please reach out below.",
+  "Share this issue with the Tidepool Support Team": "Share this issue with the Tidepool Support Team",
+  "Data is up to date": "Data is up to date",
+  "There is no data on the device. If you think this is an error, please reach out below.": "There is no data on the device. If you think this is an error, please reach out below."
 }
