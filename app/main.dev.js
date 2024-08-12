@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
-import open from 'open';
 import { autoUpdater } from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
 import { sync as syncActions } from './actions';
@@ -13,6 +12,7 @@ import uploadDataPeriod from './utils/uploadDataPeriod';
 import { setLanguage, i18n } from './utils/config.i18next';
 import path from 'path';
 import fs from 'fs';
+import child_process from 'child_process';
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
@@ -118,22 +118,21 @@ function addDataPeriodGlobalListener(menu) {
 
 const openExternalUrl = (url) => {
   // open keycloak in OS default browser
-  if (url.includes('keycloak')) {
-    open(url);
+  if (url.includes('keycloak') || url.includes('upload-redirect')) {
+    shell.openExternal(url);
     return { action: 'deny' };
   }
-  let platform = os.platform();
-  let chromeInstalls = chromeFinder[platform]();
+  const platform = os.platform();
+  const chromeInstalls = chromeFinder[platform]();
   if(chromeInstalls.length === 0){
     // no chrome installs found, open user's default browser
-    open(url);
+    shell.openExternal(url);
   } else {
-    open(url, {app: chromeInstalls[0]}, function(error){
-      if(error){
-        // couldn't open chrome, try OS default
-        open(url);
-      }
-    });
+    const launch = child_process.spawnSync(chromeInstalls[0], [url]);
+    if(launch.error){
+      // couldn't open chrome, try OS default
+      shell.openExternal(url);
+    }
   }
   return { action: 'deny' };
 };
