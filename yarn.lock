@@ -4008,10 +4008,10 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-ble-glucose@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.6.0.tgz#61805e9a04ef9c28ee4736a07c2e8d8f6167fc80"
-  integrity sha512-Vky9hM5WpV3DYgzLffP3Q1MrEgLMZjvvlBmuB9KVF+4TUiJJwsk2XP+gGydiW5QJBpWq1J2Kd4CqZQ9gdI239Q==
+ble-glucose@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ble-glucose/-/ble-glucose-0.7.0.tgz#e6463c23a1832ca1a551eb4ab67642e18efd4108"
+  integrity sha512-hrOEJcFbyq6gsHTeX9ogd+G3AsZlUwpAttoNyC3wN1TKVibqLLh8zOm3FdKrAkibRPseS+Se/Nve121rLBY5tg==
   dependencies:
     bows "1.7.2"
     core-js "3.36.1"
