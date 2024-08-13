@@ -59,6 +59,12 @@ class DeviceSelection extends React.Component {
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
     var {devices} = this.props;
+    
+    const sortedDevices = _.chain(devices)
+    .values()
+    .sortBy('name')
+    .keyBy('key')
+    .value();
 
     var onCheckedChange = function(e) {
       if (e.target.checked) {
@@ -70,7 +76,7 @@ class DeviceSelection extends React.Component {
     };
     var {targetDevices} = this.props;
 
-    var items = _.map(devices, function(device) {
+    var items = _.map(sortedDevices, function(device) {
       var isChecked = _.includes(targetDevices, device.key);
 
       return (
