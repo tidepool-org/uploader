@@ -27,13 +27,19 @@ export function allUsers(state = {}, action) {
     case types.LOGIN_SUCCESS:
     case types.SET_USER_INFO_FROM_TOKEN:
     case types.SET_ALL_USERS: {
-      const { user, profile, memberships } = action.payload;
+      const { user, profile, memberships, clinics } = action.payload;
       let newState = {};
       _.each(memberships, (membership) => {
         newState[membership.userid] = (membership.userid === user.userid) ?
           _.assign({}, _.omit(user, 'userid'), {profile}) :
           _.assign({}, {profile: membership.profile});
       });
+      newState = update(newState, { $merge: {
+        [user.userid]: {
+          ...newState[user.userid],
+          isClinicMember: clinics.length > 0,
+        }
+      } });
       return newState;
     }
     case types.FETCH_ASSOCIATED_ACCOUNTS_SUCCESS:

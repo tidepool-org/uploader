@@ -34,7 +34,6 @@ export default (state = initialWorkingState, action) => {
     case types.CREATE_CUSTODIAL_ACCOUNT_REQUEST:
     case types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST:
     case types.UPDATE_CLINIC_PATIENT_REQUEST:
-    case types.CHECKING_FOR_DRIVER_UPDATE:
     case types.VERSION_CHECK_REQUEST:
     case types.UPLOAD_REQUEST:
     case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
@@ -45,12 +44,16 @@ export default (state = initialWorkingState, action) => {
     case types.FETCH_INFO_REQUEST:
     case types.FETCH_CLINIC_MRN_SETTINGS_REQUEST:
     case types.FETCH_CLINIC_EHR_SETTINGS_REQUEST:
+    case types.FETCH_CLINIC_PATIENT_COUNT_REQUEST:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST:
       key = actionWorkingMap(action.type);
       if (key) {
         if (_.includes([
           types.CREATE_CUSTODIAL_ACCOUNT_REQUEST,
           types.CREATE_CLINIC_CUSTODIAL_ACCOUNT_REQUEST,
           types.FETCH_PATIENTS_FOR_CLINIC_REQUEST,
+          types.FETCH_CLINIC_PATIENT_COUNT_REQUEST,
+          types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST
         ], action.type)) {
           return update(state, {
             [key]: {
@@ -94,14 +97,13 @@ export default (state = initialWorkingState, action) => {
     case types.UPLOAD_SUCCESS:
     case types.UPDATE_AVAILABLE:
     case types.UPDATE_NOT_AVAILABLE:
-    case types.DRIVER_UPDATE_AVAILABLE:
-    case types.DRIVER_UPDATE_NOT_AVAILABLE:
-    case types.GET_CLINICS_FOR_CLINICIAN_SUCCESS:
     case types.INIT_APP_SUCCESS:
     case types.UPDATE_PROFILE_SUCCESS:
     case types.FETCH_INFO_SUCCESS:
     case types.FETCH_CLINIC_MRN_SETTINGS_SUCCESS:
     case types.FETCH_CLINIC_EHR_SETTINGS_SUCCESS:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SUCCESS:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS:
       key = actionWorkingMap(action.type);
       if (key) {
         if (action.type === types.LOGOUT_SUCCESS) {
@@ -149,12 +151,13 @@ export default (state = initialWorkingState, action) => {
     case types.UPLOAD_FAILURE:
     case types.UPLOAD_CANCELLED:
     case types.AUTOUPDATE_ERROR:
-    case types.GET_CLINICS_FOR_CLINICIAN_FAILURE:
     case types.INIT_APP_FAILURE:
     case types.UPDATE_PROFILE_FAILURE:
     case types.FETCH_INFO_FAILURE:
     case types.FETCH_CLINIC_MRN_SETTINGS_FAILURE:
     case types.FETCH_CLINIC_EHR_SETTINGS_FAILURE:
+    case types.FETCH_CLINIC_PATIENT_COUNT_FAILURE:
+    case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE:
       key = actionWorkingMap(action.type);
       if (key) {
         return update(state, {
@@ -173,7 +176,7 @@ export default (state = initialWorkingState, action) => {
         return state;
       }
 
-    case types.SELECT_CLINIC:
+    case types.SELECT_CLINIC_SUCCESS:
       const newState = _.cloneDeep(state);
       _.forEach([
         'fetchingPatientsForClinic',

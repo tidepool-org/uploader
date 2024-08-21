@@ -23,6 +23,7 @@ import ClinicUserSelect from '../components/ClinicUserSelect';
 import {pages} from '../constants/otherConstants';
 import * as actionSources from '../constants/actionSources';
 import * as metrics from '../constants/metrics';
+import api from '../../lib/core/api';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
@@ -31,7 +32,7 @@ export class ClinicUserSelectPage extends Component {
 
   onSetSelectedClinicId = (clinicId) => {
     this.props.async.fetchPatientsForClinic(clinicId);
-    this.props.sync.selectClinic(clinicId);
+    this.props.async.selectClinic(api, clinicId);
   };
 
   onGoToWorkspaceSwitch = () => {

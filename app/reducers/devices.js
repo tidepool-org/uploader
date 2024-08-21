@@ -1,10 +1,8 @@
-import os from 'os';
 import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
-const remote = require('@electron/remote');
+import env from '../utils/env';
 
-const i18n = remote.getGlobal( 'i18n' );
-
+import { i18n } from '../utils/config.i18next';
 const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -62,7 +60,8 @@ const devices = {
     key: 'contourplus',
     name: 'Ascensia Contour Plus One/Blue',
     source: {type: 'device', driverId: 'ContourPlus'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
@@ -87,7 +86,7 @@ const devices = {
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
     key: 'dexcom',
-    name: 'Dexcom',
+    name: 'Dexcom (G4, G5 & G6) Receiver',
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -96,7 +95,8 @@ const devices = {
     name: 'Equil Insulin Patch/Micro Pump',
     key: 'weitai',
     source: {type: 'device', driverId: 'Weitai'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true
   },
   foracareble: {
     instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
@@ -128,7 +128,8 @@ const devices = {
     name: 'GLUCOCARD Shine Connex & Shine Express',
     key: 'glucocardshinehid',
     source: {type: 'device', driverId: 'GlucocardShineHID'},
-    enabled: {mac: true, win: true, linux: true}
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true
   },
   glucocardvital: {
     instructions: i18n.t('Make sure the meter is switched off and plug in cable'),
@@ -145,9 +146,17 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: [i18n.t('Classic PDM: Plug into USB. Wait for Export to complete. Click Upload.'), i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.')],
+    instructions: i18n.t('Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.'),
     key: 'omnipod',
-    name: 'Insulet Omnipod',
+    name: 'Insulet Omnipod DASH',
+    source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,
+  },
+  omnipoderos: {
+    instructions: i18n.t('Plug into USB. Wait for Export to complete. Click Upload.'),
+    key: 'omnipoderos',
+    name: 'Insulet Omnipod Classic',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
@@ -182,19 +191,19 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   onetouchselect: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Select Plus Flex',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: true, mac: true, win: true},
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
-    instructions: i18n.t('Plug in meter with micro-USB'),
+    instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
     name: 'OneTouch Verio, Verio Flex and Verio Reflect',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: true, mac: true, win: true},
+    enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
   onetouchultraplus: {
@@ -258,7 +267,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
+    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
@@ -274,7 +283,7 @@ const devices = {
   },
   truemetrix: {
     instructions: i18n.t('True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
-    name: 'Trividia Health True Metrix',
+    name: 'True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
@@ -287,6 +296,13 @@ if (navigator.userAgentData.platform === 'macOS') {
     linkText: i18n.t('EZSync002B cable'),
     link: 'https://purenitetech.com/product/ezsync002b/',
   };
+}
+
+if (env.electron) {
+  devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchverio.instructions = i18n.t('Plug in meter with micro-USB cable');
+  devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
+  devices.onetouchselect.instructions = i18n.t('Plug in meter with micro-USB cable');
 }
 
 export default devices;

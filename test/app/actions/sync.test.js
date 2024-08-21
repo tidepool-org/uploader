@@ -474,6 +474,7 @@ describe('Synchronous Actions', () => {
       const user = {userid: 'abc123'};
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [];
       test('should be an FSA', () => {
         let action = sync.setUserInfoFromToken({ user, profile, memberships });
         expect(isFSA(action)).to.be.true;
@@ -482,10 +483,10 @@ describe('Synchronous Actions', () => {
       test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: { user, profile, memberships },
+          payload: { user, profile, memberships, clinics },
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         };
-        expect(sync.setUserInfoFromToken({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.setUserInfoFromToken({ user, profile, memberships, clinics })).to.deep.equal(expectedAction);
       });
     });
   });
@@ -513,20 +514,21 @@ describe('Synchronous Actions', () => {
       const user = {userid: 'abc123'};
       const profile = {fullName: 'Jane Doe'};
       const memberships = [{userid: 'def456'}, {userid: 'ghi789'}];
+      const clinics = [];
       test('should be an FSA', () => {
-        expect(isFSA(sync.loginSuccess({ user, profile, memberships }))).to.be.true;
+        expect(isFSA(sync.loginSuccess({ user, profile, memberships, clinics }))).to.be.true;
       });
 
       test('should create an action to set the logged-in user (plus user\'s profile, careteam memberships)',  () => {
         const expectedAction = {
           type: actionTypes.LOGIN_SUCCESS,
-          payload: { user, profile, memberships },
+          payload: { user, profile, memberships, clinics },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
             metric: {eventName: metrics.LOGIN_SUCCESS}
           }
         };
-        expect(sync.loginSuccess({ user, profile, memberships })).to.deep.equal(expectedAction);
+        expect(sync.loginSuccess({ user, profile, memberships, clinics })).to.deep.equal(expectedAction);
       });
     });
 
@@ -1283,103 +1285,6 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('checkingForDriverUpdate', () => {
-    test('should be an FSA', () => {
-      let action = sync.checkingForDriverUpdate();
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to indicate a driver update check', () => {
-      const expectedAction = {
-        type: actionTypes.CHECKING_FOR_DRIVER_UPDATE,
-        meta: {source: actionSources[actionTypes.CHECKING_FOR_DRIVER_UPDATE]}
-      };
-      expect(sync.checkingForDriverUpdate()).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('driverUpdateAvailable', () => {
-    const current = '1';
-    const available = '2';
-    test('should be an FSA', () => {
-      let action = sync.driverUpdateAvailable(current, available);
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to indicate a driver update being available', () => {
-      const expectedAction = {
-        type: actionTypes.DRIVER_UPDATE_AVAILABLE,
-        payload: { current, available },
-        meta: {source: actionSources[actionTypes.DRIVER_UPDATE_AVAILABLE]}
-      };
-      expect(sync.driverUpdateAvailable(current, available)).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('driverUpdateNotAvailable', () => {
-    const updateInfo = {'url':'http://example.com'};
-    test('should be an FSA', () => {
-      let action = sync.driverUpdateNotAvailable(updateInfo);
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to indicate no driver update available', () => {
-      const expectedAction = {
-        type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
-        meta: {source: actionSources[actionTypes.DRIVER_UPDATE_NOT_AVAILABLE]}
-      };
-      expect(sync.driverUpdateNotAvailable(updateInfo)).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('dismissDriverUpdateAvailable', () => {
-    test('should be an FSA', () => {
-      let action = sync.dismissDriverUpdateAvailable();
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to indicate user dismissing driver update available modal', () => {
-      const expectedAction = {
-        type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
-        meta: {source: actionSources[actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE]}
-      };
-      expect(sync.dismissDriverUpdateAvailable()).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('driverInstall', () => {
-    const updateInfo = {'url':'http://example.com'};
-    test('should be an FSA', () => {
-      let action = sync.driverInstall(updateInfo);
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to indicate a driver update install', () => {
-      const expectedAction = {
-        type: actionTypes.DRIVER_INSTALL,
-        meta: {source: actionSources[actionTypes.DRIVER_INSTALL]}
-      };
-      expect(sync.driverInstall(updateInfo)).to.deep.equal(expectedAction);
-    });
-  });
-
-  describe('driverUpdateShellOpts', () => {
-    const opts = {'url':'http://example.com'};
-    test('should be an FSA', () => {
-      let action = sync.driverUpdateShellOpts(opts);
-      expect(isFSA(action)).to.be.true;
-    });
-
-    test('should create an action to set update script opts', () => {
-      const expectedAction = {
-        type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
-        payload: { opts },
-        meta: {source: actionSources[actionTypes.DRIVER_INSTALL_SHELL_OPTS]}
-      };
-      expect(sync.driverUpdateShellOpts(opts)).to.deep.equal(expectedAction);
-    });
-  });
-
   describe('deviceTimeIncorrect', () => {
     const callback = () => {},
       cfg = { config: 'value'},
@@ -1851,16 +1756,16 @@ describe('Synchronous Actions', () => {
     });
   });
 
-  describe('selectClinic', () => {
+  describe('selectClinicSuccess', () => {
     let clinicId = 'clinic123';
     test('should be an FSA', () => {
-      let action = sync.selectClinic(clinicId);
+      let action = sync.selectClinicSuccess(clinicId);
       expect(isFSA(action)).to.be.true;
     });
 
-    test('type should equal SELECT_CLINIC', () => {
-      let action = sync.selectClinic(clinicId);
-      expect(action.type).to.equal('SELECT_CLINIC');
+    test('type should equal SELECT_CLINIC_SUCCESS', () => {
+      let action = sync.selectClinicSuccess(clinicId);
+      expect(action.type).to.equal('SELECT_CLINIC_SUCCESS');
       expect(action.payload.clinicId).to.equal(clinicId);
     });
   });
@@ -2188,6 +2093,144 @@ describe('Synchronous Actions', () => {
       let action = sync.fetchClinicEHRSettingsFailure(error);
       expect(action.type).to.equal('FETCH_CLINIC_EHR_SETTINGS_FAILURE');
       expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('displayPatientLimitModal', () => {
+    test('should be an FSA', () => {
+      let action = sync.displayPatientLimitModal();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to display the patient limit modal', () => {
+      const expectedAction = {
+        type: actionTypes.SHOW_PATIENT_LIMIT_MODAL,
+        meta: { source: actionSources[actionTypes.SHOW_PATIENT_LIMIT_MODAL] }
+      };
+
+      expect(sync.displayPatientLimitModal()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('dismissPatientLimitModal', () => {
+    test('should be an FSA', () => {
+      let action = sync.dismissPatientLimitModal();
+
+      expect(isFSA(action)).to.be.true;
+    });
+
+    test('should create an action to dismiss the patient limit modal', () => {
+      const expectedAction = {
+        type: actionTypes.DISMISS_PATIENT_LIMIT_MODAL,
+        meta: { source: actionSources[actionTypes.DISMISS_PATIENT_LIMIT_MODAL] }
+      };
+
+      expect(sync.dismissPatientLimitModal()).to.deep.equal(expectedAction);
+    });
+  });
+
+  describe('fetchClinicPatientCountRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_REQUEST', () => {
+      let action = sync.fetchClinicPatientCountRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_REQUEST');
+    });
+  });
+
+  describe('fetchClinicPatientCountSuccess', () => {
+    const clinicId = 'clinic123';
+    const results = { patientCount: 33 };
+
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSuccess(clinicId, results);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SUCCESS', () => {
+      let action = sync.fetchClinicPatientCountSuccess(clinicId, results);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SUCCESS');
+      expect(action.payload.clinicId).to.equal('clinic123');
+      expect(action.payload.patientCount).to.equal(33);
+    });
+  });
+
+  describe('fetchClinicPatientCountFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching patients failed :(');
+      let action = sync.fetchClinicPatientCountFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicPatientCountFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsRequest', () => {
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSettingsRequest();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST', () => {
+      let action = sync.fetchClinicPatientCountSettingsRequest();
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST');
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsSuccess', () => {
+    const clinicId = 'clinic123';
+    const results = { foo: 'bar' };
+
+    it('should be a TSA', () => {
+      let action = sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS', () => {
+      let action = sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS');
+      expect(action.payload.clinicId).to.equal('clinic123');
+      expect(action.payload.patientCountSettings).to.eql({ foo: 'bar' });
+    });
+  });
+
+  describe('fetchClinicPatientCountSettingsFailure', () => {
+    it('should be a TSA', () => {
+      let error = new Error('fetching patients failed :(');
+      let action = sync.fetchClinicPatientCountSettingsFailure(error);
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE and error should equal passed error', () => {
+      let error = new Error('stink :(');
+      let action = sync.fetchClinicPatientCountSettingsFailure(error);
+      expect(action.type).to.equal('FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE');
+      expect(action.error).to.equal(error);
+    });
+  });
+
+  describe('setClinicUIDetails', () => {
+    it('should be a TSA', () => {
+      let action = sync.setClinicUIDetails();
+      expect(isFSA(action)).to.be.true;
+    });
+
+    it('type should equal SET_CLINIC_UI_DETAILS', () => {
+      let clinicId = 'clinicId';
+      let uiDetails = { foo: 'bar' };
+      let action = sync.setClinicUIDetails(clinicId, uiDetails);
+      expect(action.type).to.equal('SET_CLINIC_UI_DETAILS');
+      expect(action.payload.clinicId).to.equal(clinicId);
+      expect(action.payload.uiDetails).to.eql(uiDetails);
     });
   });
 

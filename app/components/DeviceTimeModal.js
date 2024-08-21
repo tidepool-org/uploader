@@ -25,20 +25,19 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/DeviceTimeModal.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
-    const { deviceTags } = showingDeviceTimePrompt.cfg;
-    if(_.indexOf(deviceTags, 'insulin-pump') !== -1){
+    const { deviceInfo } = showingDeviceTimePrompt.cfg;
+    if(_.indexOf(deviceInfo?.tags, 'insulin-pump') !== -1){
       return { value: 'insulin-pump', text: i18n.t('pump') };
     }
-    if(_.indexOf(deviceTags, 'cgm') !== -1){
+    if(_.indexOf(deviceInfo?.tags, 'cgm') !== -1){
       return { value: 'cgm', text: i18n.t('CGM') };
     }
-    if(_.indexOf(deviceTags, 'bgm') !== -1){
+    if(_.indexOf(deviceInfo?.tags, 'bgm') !== -1){
       return { value: 'bgm', text: i18n.t('meter') };
     }
     return 'unknown';
