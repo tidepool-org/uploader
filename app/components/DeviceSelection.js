@@ -76,6 +76,11 @@ class DeviceSelection extends React.Component {
     };
     var {targetDevices} = this.props;
 
+    // filter out devices (from API call property targetDevices) 
+    // that are not in device list (devices.js)
+    const filteredTargetDevices = _.filter(targetDevices, (device) => _.has(sortedDevices, device));
+    targetDevices = filteredTargetDevices;
+
     var items = _.map(sortedDevices, function(device) {
       var isChecked = _.includes(targetDevices, device.key);
 
@@ -101,8 +106,8 @@ class DeviceSelection extends React.Component {
     formClassesObject[styles.groups] = this.props.userDropdownShowing;
     formClassesObject[styles.clinic] = this.props.renderClinicUi;
     var formClasses = cx(formClassesObject);
-
-    var disabled = (this.props.targetDevices.length > 0 &&
+    
+    var disabled = (targetDevices.length > 0 &&
       this.props.userIsSelected) &&
       !this.props.disabled ?
       false : true;
