@@ -51,3 +51,8 @@ _book/
 web/
 
 \.vscode/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+videos

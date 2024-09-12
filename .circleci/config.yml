@@ -2,6 +2,36 @@ version: 2.1
 orbs:
   node: circleci/node@5.2.0
 jobs:
+  test-e2e:
+    working_directory: ~/tidepool-org/chrome-uploader
+    parallelism: 1
+    docker:
+      - image: cimg/node:18.17.1-browsers 
+    steps:
+      - run:
+          name: Install nvm and node
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+            source ~/.nvm/nvm.sh
+            nvm install v18.17.1
+            nvm alias default v18.17.1
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+      - restore_cache:
+          key: dependency-cache-web-{{ checksum "package.json" }}
+      - run: yarn config set cache-folder ~/.cache/yarn
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          key: dependency-cache-web-{{ checksum "package.json" }}
+          paths:
+            - ~/.cache/yarn
+            - ./node_modules
+      - run: yarn build
+      - run:
+          name: Run E2E Tests
+          command: yarn test-e2e
   build-macos:
     resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
@@ -178,11 +208,18 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+          requires:
+            - test-e2e
       - build-web:
           filters:
             tags:
               only: /^v.*/
+          requires:
+            - test-e2e
       - build-windows:
           filters:
             tags:
               only: /^v.*/
+          requires:
+            - test-e2e
+      - test-e2e
