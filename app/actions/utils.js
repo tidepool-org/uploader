@@ -123,8 +123,22 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
 
       if (errCode === 'E_BLUETOOTH_PAIR') {
         displayErr.message = 'Couldn\'t connect to device.';
-        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
         displayErr.linkText = 'Is it paired?';
+
+        switch(uploadTargetDevice) {
+          case 'foracareble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/14620487836564';
+            break;
+          case 'caresensble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX';
+            break;
+          case 'onetouchverioble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/11554128490900';
+            break;
+          default:
+            displayErr.message += ' Is it paired?';
+            displayErr.linkText = null;
+        }
       }
 
       if (err.code === 'E_VERIO_WRITE') {
