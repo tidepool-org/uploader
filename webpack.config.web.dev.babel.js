@@ -82,13 +82,7 @@ const output = {
   libraryTarget: 'umd',
 };
 
-const entry = isDev
-  ? [
-      `webpack-dev-server/client?http://localhost:${port}/`,
-      'webpack/hot/only-dev-server',
-      require.resolve('./app/index'),
-    ]
-  : [require.resolve('./app/index')];
+const entry = [require.resolve('./app/index')];
 
 let devtool = process.env.WEBPACK_DEVTOOL || 'inline-source-map';
 if (process.env.WEBPACK_DEVTOOL === false) devtool = undefined;
@@ -127,20 +121,22 @@ let plugins = [
     filename: isDev ? 'style.css' : 'style.[contenthash].css',
   }),
 
-  new CopyWebpackPlugin([
-    {
-      from: 'app/static',
-      transform: (content, path) => {
-        if (isDev || !path.endsWith('js')) {
-          return content;
-        }
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: 'app/static',
+        transform: (content, path) => {
+          if (isDev || !path.endsWith('js')) {
+            return content;
+          }
 
-        const code = fs.readFileSync(path, 'utf8');
-        const result = terser.minify(code);
-        return result.code;
+          const code = fs.readFileSync(path, 'utf8');
+          const result = terser.minify(code);
+          return result.code;
+        },
       },
-    },
-  ]),
+    ],
+  }),
 
   new HtmlWebpackPlugin({
     template: 'app/web.ejs',
@@ -157,9 +153,7 @@ let plugins = [
   })] : []),
 ];
 let styleLoader = 'style-loader';
-if (isDev) {
-  plugins.push(new webpack.HotModuleReplacementPlugin());
-} else if (isProd) {
+if (isProd) {
   styleLoader = MiniCssExtractPlugin.loader;
 }
 
@@ -400,25 +394,27 @@ export default merge.smart(baseConfig, {
   },
 
   devServer: {
-    clientLogLevel: 'debug',
+    client: {
+      logging: 'verbose'
+    },
     port,
-    publicPath: devPublicPath,
-    compress: true,
-    noInfo: true,
-    stats: 'errors-only',
-    inline: true,
-    lazy: false,
-    hot: true,
+    devMiddleware: {
+      publicPath: devPublicPath,
+      stats: 'errors-only'
+    },
+    hot: 'only',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
     },
-    contentBase: path.join(__dirname),
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-      poll: 100,
+    static: {
+      directory: path.join(__dirname),
+      watch: {
+        aggregateTimeout: 300,
+        ignored: /node_modules/,
+        poll: 100
+      }
     },
     historyApiFallback: {
       verbose: true,

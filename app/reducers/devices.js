@@ -86,8 +86,19 @@ const devices = {
   dexcom: {
     instructions: i18n.t('Plug in receiver with micro-USB'),
     key: 'dexcom',
-    name: 'Dexcom',
+    name: 'Dexcom (G4, G5 & G6) Receiver',
     source: {type: 'device', driverId: 'Dexcom'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  embracetalk: {
+    instructions: {
+                    text: i18n.t('Plug in meter with cable and set meter to'),
+                    linkText: i18n.t('PC Link Mode'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/27971030950804',
+                  },
+    name: 'EmbraceTALK',
+    key: 'embracetalk',
+    source: {type: 'device', driverId: 'EmbraceTALK'},
     enabled: {mac: true, win: true, linux: true}
   },
   weitai: {
@@ -146,7 +157,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
-    instructions: i18n.t('DASH PDM: Unlock. Plug into USB. Tap Export on PDM. Click Upload.'),
+    instructions: i18n.t('Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.'),
     key: 'omnipod',
     name: 'Insulet Omnipod DASH',
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
@@ -270,7 +281,7 @@ const devices = {
   },
   accuchekusb: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Roche Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
+    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
     key: 'accuchekusb',
     source: {type: 'device', driverId: 'AccuChekUSB'},
     enabled: {mac: true, win: true, linux: true},
@@ -286,7 +297,7 @@ const devices = {
   },
   truemetrix: {
     instructions: i18n.t('True Metrix, True Metrix Pro & True Metrix Air: Place meter in cradle \u2022 True Metrix Go: Plug in meter with micro-USB cable'),
-    name: 'Trividia Health True Metrix',
+    name: 'True Metrix',
     key: 'truemetrix',
     source: {type: 'device', driverId: 'TrueMetrix'},
     enabled: {mac: true, win: true, linux: true}
