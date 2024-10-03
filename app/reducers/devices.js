@@ -41,6 +41,14 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true, linux: true}
   },
+  accuchekusb: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
@@ -278,14 +286,6 @@ const devices = {
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
     enabled: {mac: true, win: true, linux: true},
-  },
-  accuchekusb: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
-    key: 'accuchekusb',
-    source: {type: 'device', driverId: 'AccuChekUSB'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
   tandem: {
     instructions: i18n.t('Plug in pump with micro-USB'),
