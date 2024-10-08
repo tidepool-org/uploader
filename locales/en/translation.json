@@ -183,7 +183,6 @@
   "Day": "Day",
   "Year": "Year",
   "Logout": "Logout",
-  "Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry... If you are no longer using an unsupported pump and still get this message, create a new CareLink account and try uploading again.": "Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry... If you are no longer using an unsupported pump and still get this message, create a new CareLink account and try uploading again.",
   "Something went wrong during device upload": "Something went wrong during device upload",
   "Please choose a file ending in ": "Please choose a file ending in ",
   "Hmm, your device doesn't appear to be connected": "Hmm, your device doesn\"t appear to be connected",
