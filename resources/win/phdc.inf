@@ -8,7 +8,7 @@ Signature = "$Windows NT$"
 Class = PHDC
 ClassGUID = {182A3B42-D570-4066-8D13-C72202B40D78}
 Provider = %Manufacturer%
-DriverVer = 11/11/2015, 1.0.0.0
+DriverVer = 09/19/2024, 4.0.0.0
 CatalogFile = phdc_driver.cat
 
 ; ================== Class section ==================

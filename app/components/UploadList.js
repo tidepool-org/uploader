@@ -29,8 +29,7 @@ import styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export default class UploadList extends Component {
   static propTypes = {
@@ -58,7 +57,7 @@ export default class UploadList extends Component {
 
   static defaultProps = {
     text: {
-      UPLOAD_FAILED : i18n.t('Upload Failed')
+      UPLOAD_FAILED: i18n.t('Upload Failed')
     }
   };
 
@@ -86,7 +85,7 @@ export default class UploadList extends Component {
     const { disabled, onReset, onUpload, targetId } = this.props;
 
     const headlineText = this.props.renderClinicUi ? i18n.t('Devices') : i18n.t('Upload Devices');
-    const medtronicEnabled = _.findIndex(this.props.uploads, {key:'medtronic'}) === -1 ? false : true;
+    const medtronicEnabled = _.findIndex(this.props.uploads, { key: 'medtronic' }) === -1 ? false : true;
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
         if (upload.key === 'carelink') {
@@ -237,7 +236,7 @@ export default class UploadList extends Component {
     if (this.state.uploadErrorSubmitSuccessSet.includes(errorId)) {
       sendToSupport = (
         <div className={styles.errorSubmitSuccess}>
-          <CheckCircle className={styles.errorLinkIcon} sx={{height:'0.8em', width:'0.8em'}} />
+          <CheckCircle className={styles.errorLinkIcon} sx={{ height: '0.8em', width: '0.8em' }} />
           {i18n.t(
             'Thanks for sharing. Someone will get back to you by email soon.'
           )}
@@ -276,22 +275,37 @@ export default class UploadList extends Component {
             href="#"
             onClick={this.handleErrorSubmit.bind(this, upload.error)}
           >
-            <Email className={styles.errorLinkIcon} sx={{height:'0.8em', width:'0.8em'}} />
+            <Email className={styles.errorLinkIcon} sx={{ height: '0.8em', width: '0.8em' }} />
             {i18n.t('Share this issue with the Tidepool Support Team')}
           </a>
         </div>
       );
     }
 
-    return (
-      <div className={styles.errorItem}>
-        {errorMessage}
-        {errorDetails}
-        {rollbarUUID}
-        {sendToSupport}
-      </div>
-    );
-  }
+    if (upload.error.code === 'E_NO_RECORDS' || upload.error.code === 'E_NO_NEW_RECORDS') {
+      return (
+        <div className={styles.errorItem}>
+          <div className={styles.errorMessageWrapper}>
+            <span className={styles.boldMessage}>{i18n.t('Data is up to date')}</span>
+            <span className={styles.errorMessageFriendly}>
+              &nbsp;&#8212; {i18n.t(upload.error.message)}
+            </span>
+          </div>
+          {rollbarUUID}
+          {sendToSupport}
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.errorItem}>
+          {errorMessage}
+          {errorDetails}
+          {rollbarUUID}
+          {sendToSupport}
+        </div>
+      );
+    }
+}
 
   noopHandler(e){
     e.preventDefault();

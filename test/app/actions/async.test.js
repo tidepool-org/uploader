@@ -2170,11 +2170,6 @@ describe('Asynchronous Actions', () => {
         err.debug = `Code: ${err.code} | Version: ${version}`;
         const expectedActions = [
           {
-            type: actionTypes.CHOOSING_FILE,
-            payload: { userId, deviceKey },
-            meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
-          },
-          {
             type: actionTypes.READ_FILE_ABORTED,
             error: true,
             payload: err,
@@ -2187,10 +2182,10 @@ describe('Asynchronous Actions', () => {
         const store = mockStore(state);
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
-        expect(actions[1].payload).to.deep.include({
+        expect(actions[0].payload).to.deep.include({
           message: ErrorMessages.E_FILE_EXT + ext
         });
-        expectedActions[1].payload = actions[1].payload;
+        expectedActions[0].payload = actions[0].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
