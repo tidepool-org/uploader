@@ -441,7 +441,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
-    deviceModel: _.get(data, 'deviceModel', undefined),
+    device: device.key,
     os: `${actionUtils.getOSDetails()}`,
     error: err
   };
