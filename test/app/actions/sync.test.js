@@ -829,7 +829,7 @@ describe('Synchronous Actions', () => {
                 source: device.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
                 error: resError,
-                device: undefined,
+                deviceDriver: undefined,
               }
             }
           }
@@ -861,7 +861,7 @@ describe('Synchronous Actions', () => {
                 os: 'BeOS R5.1 (RISC-V)',
                 error: resError,
                 limit: '4 weeks',
-                device: undefined,
+                deviceDriver: undefined,
               }
             }
           }
