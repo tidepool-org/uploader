@@ -1735,7 +1735,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: undefined,
               }
             }
           }
@@ -1844,7 +1845,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: undefined,
               }
             }
           }
@@ -1957,7 +1959,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: undefined,
               }
             }
           }
