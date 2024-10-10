@@ -205,7 +205,7 @@
     "xmlbuilder": "15.1.1",
     "yup": "0.32.9"
   },
-  "devEngines": {
+  "engines": {
     "node": ">=7.9.x",
     "npm": ">=3.x"
   },

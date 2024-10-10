@@ -28,7 +28,6 @@ jobs:
           nvm install v18.17.1
           nvm alias default v18.17.1
     - run: node -v
-    - run: nvm use --delete-prefix v18.17.1 --silent
     - run: npm install --global npm node-gyp
     - run: npm -v
     - run: node-gyp -v
