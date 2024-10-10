@@ -212,7 +212,7 @@ export default class Upload extends Component {
       return this.handleMedtronic600Upload();
     }
 
-    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble') {
+    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble' || device === 'relionplatinumble') {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 
