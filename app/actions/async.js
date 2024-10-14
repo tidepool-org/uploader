@@ -430,10 +430,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         errorMessage = 'E_BLUETOOTH_PAIR';
       }
 
-      if (targetDevice.powerOnlyWarning) {
-        errorMessage = 'E_USB_CABLE';
-      }
-
       device.upload(
         driverId,
         opts,
