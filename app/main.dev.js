@@ -273,11 +273,16 @@ operating system, as soon as possible.`,
 
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
     event.preventDefault();
+    portList = portList.filter(port => (
+      // filter out signature pads
+      port.serialNumber !== 'TOPAZBSB' &&
+      !(typeof port.deviceInstanceId === 'string' && port.deviceInstanceId.includes('TOPAZBSB'))
+    ));
     console.log('Port list:', portList);
 
     let selectedPort;
     for (let i = 0; i < serialPortFilter.length; i++) {
-      selectedPort = portList.find((element) => 
+      selectedPort = portList.find((element) =>
         serialPortFilter[i].usbVendorId === parseInt(element.vendorId, 10) &&
         serialPortFilter[i].usbProductId === parseInt(element.productId, 10)
       );
@@ -717,7 +722,7 @@ if (!gotTheLock) {
       return handleIncomingUrl(url);
     }
   });
-  
+
   // Protocol handler for osx
   app.on('open-url', (event, url) => {
     event.preventDefault();
