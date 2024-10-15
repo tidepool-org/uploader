@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.59.1-platinum-ble.3",
+  "version": "2.59.1-platinum-ble.4",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
