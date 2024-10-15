@@ -273,7 +273,11 @@ operating system, as soon as possible.`,
 
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
     event.preventDefault();
-    portList = portList.filter(port => port.serialNumber !== 'TOPAZBSB'); // filter out signature pads
+    portList = portList.filter(port => (
+      // filter out signature pads
+      port.serialNumber !== 'TOPAZBSB' &&
+      !(typeof port.deviceInstanceId === 'string' && port.deviceInstanceId.includes('TOPAZBSB'))
+    ));
     console.log('Port list:', portList);
 
     let selectedPort;
