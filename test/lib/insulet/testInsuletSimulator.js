@@ -166,6 +166,33 @@ describe('insuletSimulator.js', () => {
         simulator.bolusTermination(term2);
         expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedNormal: 4.0, expectedExtended: 2.8, expectedDuration: 3600000})]);
       });
+
+      test('is amended when duration left is zero but still cancelled ', () => {
+        var val = {
+          time: '2014-09-25T01:00:00.000Z',
+          deviceTime: '2014-09-25T01:00:00',
+          timezoneOffset: 0,
+          conversionOffset: 0,
+          deviceId: 'InsOmn1234',
+          normal: 1.3,
+          extended: 1.4,
+          duration: 360000,
+          type: 'bolus',
+          subType: 'dual/square'
+        };
+
+        var term = {
+          time: '2014-09-25T01:00:05.000Z',
+          type: 'termination',
+          subType: 'bolus',
+          missedInsulin: 2.3,
+          durationLeft: 0
+        };
+
+        simulator.bolus(val);
+        simulator.bolusTermination(term);
+        expect(simulator.getEvents()).deep.equals([_.assign({}, val, {expectedExtended: 3.7})]);
+      });
     });
   });
 
