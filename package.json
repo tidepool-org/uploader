@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.59.1-remove-jellyfish.1",
+  "version": "2.59.1-remove-jellyfish.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
