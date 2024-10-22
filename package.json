@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.59.1-handle-empty.4",
+  "version": "2.59.1-platinum-ble.4",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -35,7 +35,7 @@
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron --no-sandbox -r @babel/register ./app/main.dev.js",
     "server": "node server",
     "prepare-qa-build": "node -r @babel/register scripts/prepare-qa-build.js",
-    "package": "npm run build-quiet && electron-builder -p always -c electron-builder-publish.js"
+    "package": "yarn build-quiet && electron-builder -p always -c electron-builder-publish.js"
   },
   "dependencies": {
     "@electron/remote": "2.1.2",
