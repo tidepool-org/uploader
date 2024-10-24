@@ -45,8 +45,6 @@ export default (env => merge.smart(baseConfig, {
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
     require.resolve('./app/index')
   ],
 
@@ -206,10 +204,6 @@ export default (env => merge.smart(baseConfig, {
     }
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin({
-      multiStep: true
-    }),
-
     new webpack.NoEmitOnErrorsPlugin(),
 
      /**
@@ -240,27 +234,29 @@ export default (env => merge.smart(baseConfig, {
   },
 
   devServer: {
-    clientLogLevel: 'debug',
+    client: {
+      logging: 'verbose'
+    },
     port,
-    publicPath,
-    compress: true,
-    noInfo: true,
-    stats: 'errors-only',
-    inline: true,
-    lazy: false,
-    hot: true,
+    devMiddleware: {
+      publicPath,
+      stats: 'errors-only'
+    },
+    hot: 'only',
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-      poll: 100
+    static: {
+      directory: path.join(__dirname, 'dist'),
+      watch: {
+        aggregateTimeout: 300,
+        ignored: /node_modules/,
+        poll: 100
+      }
     },
     historyApiFallback: {
       verbose: true,
       disableDotRule: false
     },
-    before() {
+    onBeforeSetupMiddleware() {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         let argv = null;

@@ -41,6 +41,14 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true, linux: true}
   },
+  accuchekusb: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
@@ -88,6 +96,17 @@ const devices = {
     key: 'dexcom',
     name: 'Dexcom (G4, G5 & G6) Receiver',
     source: {type: 'device', driverId: 'Dexcom'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  embracetalk: {
+    instructions: {
+                    text: i18n.t('Plug in meter with cable and set meter to'),
+                    linkText: i18n.t('PC Link Mode'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/27971030950804',
+                  },
+    name: 'EmbraceTALK',
+    key: 'embracetalk',
+    source: {type: 'device', driverId: 'EmbraceTALK'},
     enabled: {mac: true, win: true, linux: true}
   },
   weitai: {
@@ -251,6 +270,17 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
+  relionplatinumble: {
+    instructions: {
+                    text: i18n.t('To pair: With meter off, hold the down arrow button until Bluetooth symbol appears \u2022 For full pairing instructions,'),
+                    linkText: i18n.t('visit our support site'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/14204858905492-Uploading-your-ReliOn-Platinum-meter',
+                  },
+    name: 'ReliOn Platinum (using Bluetooth)',
+    key: 'relionplatinumble',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionpremier: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
     name: 'ReliOn Premier (BLU, Voice & Classic)',
@@ -264,14 +294,6 @@ const devices = {
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
     enabled: {mac: true, win: true, linux: true},
-  },
-  accuchekusb: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
-    key: 'accuchekusb',
-    source: {type: 'device', driverId: 'AccuChekUSB'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
   tandem: {
     instructions: i18n.t('Plug in pump with micro-USB'),

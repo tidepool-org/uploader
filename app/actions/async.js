@@ -424,7 +424,8 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       let errorMessage = 'E_DEVICE_UPLOAD';
       if (_.get(targetDevice, 'source.driverId', null) === 'Medtronic') {
         errorMessage = 'E_MEDTRONIC_UPLOAD';
-      } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE') {
+      } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE' ||
+                 _.get(targetDevice, 'source.driverId', null) === 'OneTouchVerioBLE') {
         errorMessage = 'E_BLUETOOTH_PAIR';
       }
 
