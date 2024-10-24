@@ -225,9 +225,17 @@ const devices = {
     enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
+  onetouchultraplus: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    name: 'OneTouch Ultra Plus Flex',
+    key: 'onetouchultraplus',
+    source: {type: 'device', driverId: 'OneTouchUltraPlus'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
   onetouchverioble: {
     instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
-    name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
+    name: 'OneTouch Verio Flex, Verio Reflect, Select Plus Flex and Ultra Plus Flex (with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
     enabled: {mac: true, win: true, linux: true}
