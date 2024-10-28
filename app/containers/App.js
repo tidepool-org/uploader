@@ -131,8 +131,11 @@ export class App extends Component {
       : null;
 
     this.props.async.fetchInfo((err, info) => {
+      if (err) {
+        this.log('fetchInfo error:', err);
+      }
       this.props.async.doAppInit(
-        _.assign({ 
+        _.assign({
           environment: this.state.server,
           uploaderDestination: info.versions?.uploaderDestination,
         }, config, selectedEnv),
