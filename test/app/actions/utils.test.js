@@ -84,6 +84,7 @@ describe('utils', () => {
               source: 'bar',
               os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
+              device: undefined,
             }
           }
         }
@@ -130,6 +131,7 @@ describe('utils', () => {
               source: 'bar',
               os: 'BeOS R5.1 (RISC-V)',
               error: displayErr,
+              device: undefined,
             }
           }
         }
