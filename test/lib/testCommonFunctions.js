@@ -138,31 +138,31 @@ describe('commonFunctions.js', () => {
 
   describe('stripUnwantedFields', () => {
     const record = {
-        _deduplicator: {
-            hash: 'ABCD'
-        },
-        annotations: [
-            {
-                code: 'basal/unknown-duration'
-            }
+      _deduplicator: {
+        hash: 'ABCD'
+      },
+      annotations: [
+        {
+          code: 'basal/unknown-duration'
+        }
+      ],
+      clockDriftOffset: -257000,
+      conversionOffset: 0,
+      deliveryType: 'suspend',
+      deviceId: 'tandemCIQ1234',
+      deviceTime: '2024-10-17T16:53:54',
+      guid: '1234',
+      id: '5678',
+      payload: {
+        logIndices: [
+          282622
         ],
-        clockDriftOffset: -257000,
-        conversionOffset: 0,
-        deliveryType: 'suspend',
-        deviceId: 'tandemCIQ1234',
-        deviceTime: '2024-10-17T16:53:54',
-        guid: '1234',
-        id: '5678',
-        payload: {
-            logIndices: [
-                282622
-            ],
-        },
-        time: '2024-10-17T15:53:54Z',
-        timezoneOffset: 60,
-        type: 'basal',
-        uploadId: 'upid_1234'
-    }
+      },
+      time: '2024-10-17T15:53:54Z',
+      timezoneOffset: 60,
+      type: 'basal',
+      uploadId: 'upid_1234'
+    };
 
     test('removes unwanted fields', () => {
       expect(common.stripUnwantedFields(record)).to.deep.equal({
