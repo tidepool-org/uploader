@@ -22,6 +22,7 @@ var builder = require('../../lib/objectBuilder')();
 var TZOUtil = require('../../lib/TimezoneOffsetUtil');
 
 var common = require('../../lib/commonFunctions');
+var annotate = require('../../lib/eventAnnotations');
 
 describe('commonFunctions.js', () => {
 
@@ -164,7 +165,7 @@ describe('commonFunctions.js', () => {
     }
 
     test('removes unwanted fields', () => {
-    expect(common.stripUnwantedFields(record)).to.deep.equal({
+      expect(common.stripUnwantedFields(record)).to.deep.equal({
         annotations: [
             {
                 code: 'basal/unknown-duration'
@@ -185,6 +186,41 @@ describe('commonFunctions.js', () => {
         type: 'basal'
       });
     });
+  });
 
+  describe('toFixedNumber', () => {
+    test('to 4 digits', () => {
+      const value = (1.12345678).toFixedNumber(5);
+      expect(value).to.equal(1.12346);
+    });
+  });
+
+  describe('updateDuration', () => {
+    const lastBasal = builder.makeScheduledBasal()
+      .with_deviceTime('2015-11-05T17:00:00')
+      .with_time('2015-11-05T17:00:00.000Z')
+      .with_rate(0.3)
+      .with_duration(0)
+      .with_scheduleName('Test')
+      .with_conversionOffset(0)
+      .with_timezoneOffset(0)
+      .done();
+    annotate.annotateEvent(lastBasal, 'basal/unknown-duration');
+
+    const basal = builder.makeScheduledBasal()
+      .with_deviceTime('2015-11-05T17:30:00')
+      .with_time('2015-11-05T17:30:00.000Z')
+      .with_rate(0.6)
+      .with_duration(15000)
+      .with_scheduleName('Test2')
+      .with_conversionOffset(0)
+      .with_timezoneOffset(0)
+      .done();
+
+    test('updates previous duration and removes annotations', () => {
+      const updatedBasal = common.updateDuration(basal, lastBasal);
+      expect(updatedBasal.duration).to.equal(1800000);
+      expect(updatedBasal.annotations).to.be.undefined;
+    });
   });
 });
