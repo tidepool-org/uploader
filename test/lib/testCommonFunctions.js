@@ -69,7 +69,7 @@ describe('commonFunctions.js', () => {
           ]
         }
       };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      var finalBasal = common.finalScheduledBasal(basal, settings, 'test');
       expect(finalBasal.annotations[0].code).to.equal('final-basal/fabricated-from-schedule');
       expect(finalBasal.duration).to.equal(23001000); // 864e5 - millisInDay
     });
@@ -85,7 +85,7 @@ describe('commonFunctions.js', () => {
           ]
         }
       };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      var finalBasal = common.finalScheduledBasal(basal, settings, 'test');
       // TODO: to make the following test more robust, consider using chai-things (new dependency)
       // that supports assertions on array elements, e.g.:
       // finalBasal.annotations.should.include.something.that.deep.equals({code : 'basal/unknown-duration'});
@@ -105,7 +105,7 @@ describe('commonFunctions.js', () => {
           ]
         }
       };
-      var finalBasal = common.finalScheduledBasal(basal,settings,'test');
+      var finalBasal = common.finalScheduledBasal(basal, settings, 'test');
       expect(finalBasal.annotations[0].code).to.equal('basal/unknown-duration');
       expect(finalBasal.duration).to.equal(0);
     });
@@ -130,9 +130,61 @@ describe('commonFunctions.js', () => {
 
     test('rounds to nearest 15 minutes for clock skew', () => {
       basal.with_time('2015-11-05T17:05:00.000Z')
-           .with_conversionOffset(420000);
+        .with_conversionOffset(420000);
       expect(common.computeMillisInCurrentDay(basal)).to.equal(61200000);
     });
   });
 
+  describe('stripUnwantedFields', () => {
+    const record = {
+        _deduplicator: {
+            hash: 'ABCD'
+        },
+        annotations: [
+            {
+                code: 'basal/unknown-duration'
+            }
+        ],
+        clockDriftOffset: -257000,
+        conversionOffset: 0,
+        deliveryType: 'suspend',
+        deviceId: 'tandemCIQ1234',
+        deviceTime: '2024-10-17T16:53:54',
+        guid: '1234',
+        id: '5678',
+        payload: {
+            logIndices: [
+                282622
+            ],
+        },
+        time: '2024-10-17T15:53:54Z',
+        timezoneOffset: 60,
+        type: 'basal',
+        uploadId: 'upid_1234'
+    }
+
+    test('removes unwanted fields', () => {
+    expect(common.stripUnwantedFields(record)).to.deep.equal({
+        annotations: [
+            {
+                code: 'basal/unknown-duration'
+            }
+        ],
+        clockDriftOffset: -257000,
+        conversionOffset: 0,
+        deliveryType: 'suspend',
+        deviceId: 'tandemCIQ1234',
+        deviceTime: '2024-10-17T16:53:54',
+        payload: {
+            logIndices: [
+                282622
+            ],
+        },
+        time: '2024-10-17T15:53:54Z',
+        timezoneOffset: 60,
+        type: 'basal'
+      });
+    });
+
+  });
 });
