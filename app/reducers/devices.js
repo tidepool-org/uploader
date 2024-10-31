@@ -49,6 +49,13 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
+  aviva: {
+    instructions: i18n.t('Align meter with infrared cable'),
+    name: 'Accu-Chek Aviva',
+    key: 'aviva',
+    source: {type: 'device', driverId: 'Aviva'},
+    enabled: {mac: true, win: true, linux: true},
+  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
