@@ -70,7 +70,8 @@ const config = {
     publisherName: [
       'Tidepool Project'
     ],
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com'
+    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    asarUnpack: '**\\*.node',
   },
   mac: {
     category: 'public.app-category.tools',
