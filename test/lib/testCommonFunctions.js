@@ -189,7 +189,7 @@ describe('commonFunctions.js', () => {
   });
 
   describe('toFixedNumber', () => {
-    test('to 4 digits', () => {
+    test('to 5 digits', () => {
       const value = (1.12345678).toFixedNumber(5);
       expect(value).to.equal(1.12346);
     });
