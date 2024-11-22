@@ -210,6 +210,8 @@ export function sendToRollbar(err, props) {
     }
 
     const extra = { ...props };
+    delete extra.data;
+
     if (_.get(props, 'data.blobId', false)) {
       extra.blobId = props.data.blobId;
     }
