@@ -209,19 +209,19 @@ export function sendToRollbar(err, props) {
       return resolve(props);
     }
 
-    const extra = {};
+    const extra = { ...props };
     if (_.get(props, 'data.blobId', false)) {
-      _.assign(extra, { blobId: props.data.blobId });
+      extra.blobId = props.data.blobId;
     }
     
-    rollbar.error(err, {...extra, ... props}, (reportingErr, data) => {
+    rollbar.error(err, extra, (reportingErr, data) => {
       if (reportingErr) {
         console.log('Error while reporting error to Rollbar:', reportingErr);
-        } else {
-          console.log(`Rollbar UUID: ${data.result.uuid}`);
-          props.uuid = data.result.uuid;
-        }
-        resolve(props);
+      } else {
+        console.log(`Rollbar UUID: ${data.result.uuid}`);
+        props.uuid = data.result.uuid;
+      }
+      resolve(props);
     });
   });
 }
