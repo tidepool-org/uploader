@@ -58,7 +58,7 @@
     "cp2102": "0.1.1",
     "cross-env": "7.0.3",
     "electron-is-dev": "2.0.0",
-    "electron-log": "5.2.2",
+    "electron-log": "4.4.0",
     "electron-updater": "6.3.9",
     "es6-error": "4.1.1",
     "express": "4.21.1",
