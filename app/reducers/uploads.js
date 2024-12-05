@@ -139,6 +139,8 @@ export function uploadsByUser(state = {}, action) {
             readingFile: {$set: false}
           }}}
         );
+      } else {
+        return state;
       }
     }
     case types.READ_FILE_REQUEST: {

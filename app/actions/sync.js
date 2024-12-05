@@ -410,7 +410,7 @@ export function uploadProgress(step, percentage, isFirstUpload) {
 
 export function uploadSuccess(userId, device, upload, data, utc) {
   utc = actionUtils.getUtc(utc);
-  const numRecs = _.get(data, 'post_records.length', undefined);
+  const numRecs = data?.post_records?.length || data?.postRecords?.length;
   const properties = {
     type: _.get(device, 'source.type', undefined),
     deviceModel: _.get(data, 'deviceModel', undefined),
@@ -441,6 +441,7 @@ export function uploadFailure(err, errProps, device) {
   const properties = {
     type: _.get(device, 'source.type', undefined),
     source: `${actionUtils.getUploadTrackingId(device)}`,
+    device: device.key,
     os: `${actionUtils.getOSDetails()}`,
     error: err
   };
@@ -756,56 +757,6 @@ export function quitAndInstall() {
       source: actionSources[ActionTypes.QUIT_AND_INSTALL],
       metric: { eventName: metrics.QUIT_AND_INSTALL }
     }
-  };
-}
-
-/*
- * relating to driver updates
- */
-
-export function checkingForDriverUpdate() {
-  return {
-    type: ActionTypes.CHECKING_FOR_DRIVER_UPDATE,
-    meta: { source: actionSources[ActionTypes.CHECKING_FOR_DRIVER_UPDATE] }
-  };
-}
-
-export function driverUpdateAvailable(current, available) {
-  return {
-    type: ActionTypes.DRIVER_UPDATE_AVAILABLE,
-    payload: { current, available },
-    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_AVAILABLE] }
-  };
-}
-
-export function driverUpdateNotAvailable() {
-  return {
-    type: ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE,
-    meta: { source: actionSources[ActionTypes.DRIVER_UPDATE_NOT_AVAILABLE] }
-  };
-}
-
-export function dismissDriverUpdateAvailable() {
-  return {
-    type: ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE,
-    meta: { source: actionSources[ActionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE] }
-  };
-}
-
-export function driverInstall() {
-  return {
-    type: ActionTypes.DRIVER_INSTALL,
-    meta: {
-      source: actionSources[ActionTypes.DRIVER_INSTALL]
-    }
-  };
-}
-
-export function driverUpdateShellOpts(opts) {
-  return {
-    type: ActionTypes.DRIVER_INSTALL_SHELL_OPTS,
-    payload: { opts },
-    meta: {source: actionSources[ActionTypes.DRIVER_INSTALL_SHELL_OPTS] }
   };
 }
 

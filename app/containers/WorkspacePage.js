@@ -8,8 +8,7 @@ import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
 import api from '../../lib/core/api';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal('i18n');
+import { i18n } from '../utils/config.i18next';
 
 const { async, sync } = actions;
 

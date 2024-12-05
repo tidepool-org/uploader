@@ -23,8 +23,7 @@ import personUtils from '../../lib/core/personUtils';
 
 import styles from '../../styles/components/NoUploadTargets.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export default class NoUploadTargets extends Component {
   static propTypes = {

@@ -74,11 +74,6 @@ export default (type) => {
     case types.FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE:
       return 'fetchingClinicPatientCountSettings';
 
-    case types.CHECKING_FOR_DRIVER_UPDATE:
-    case types.DRIVER_UPDATE_AVAILABLE:
-    case types.DRIVER_UPDATE_NOT_AVAILABLE:
-      return 'checkingDriverUpdate';
-
     case types.AUTO_UPDATE_CHECKING_FOR_UPDATES:
     case types.MANUAL_UPDATE_CHECKING_FOR_UPDATES:
     case types.UPDATE_AVAILABLE:

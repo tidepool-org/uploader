@@ -74,6 +74,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
   return async (err, recs) => {
     const { devices, uploadsByUser, uploadTargetDevice, uploadTargetUser, version } = getState();
     const targetDevice = devices[uploadTargetDevice];
+    const driverId = _.get(targetDevice, 'source.driverId');
 
     if (err) {
       if(err === 'deviceTimePromptClose'){
@@ -83,8 +84,17 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       if (typeof err === 'string') {
         err = new Error(err);
       }
+      const { loggedInUser, allUsers, clinics, selectedClinicId } = getState();
+      const userEmail = _.get(allUsers, [loggedInUser, 'username'], 'Unknown');
+      const name = _.get(
+        allUsers,
+        [loggedInUser, 'profile', 'fullName'],
+        'Unknown'
+      );
+      const clinic = _.get(clinics, selectedClinicId, {});
+      const os = getOSDetails();
       const serverErr = 'Origin is not allowed by Access-Control-Allow-Origin';
-      let displayErr = new Error(err.message === serverErr ?
+      const displayErr = new Error(err.message === serverErr ?
         ErrorMessages.E_SERVER_ERR : ErrorMessages[err.code || errCode]);
       let uploadErrProps = {
         details: err.message,
@@ -96,14 +106,39 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         sessionTrace: err.sessionTrace || null,
         code: err.code || errCode,
         version: version,
-        data: recs
+        data: recs,
+        loggedInUser: loggedInUser,
+        userEmail: userEmail,
+        userName: name,
+        os: os,
+        device: driverId,
       };
+
+      if (selectedClinicId) {
+        uploadErrProps.clinicId = selectedClinicId;
+        uploadErrProps.clinicName = clinic.name;
+      }
+
       displayErr.originalError = err;
 
       if (errCode === 'E_BLUETOOTH_PAIR') {
         displayErr.message = 'Couldn\'t connect to device.';
-        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972';
         displayErr.linkText = 'Is it paired?';
+
+        switch(uploadTargetDevice) {
+          case 'foracareble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/14620487836564';
+            break;
+          case 'caresensble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX';
+            break;
+          case 'onetouchverioble':
+            displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/11554128490900';
+            break;
+          default:
+            displayErr.message += ' Is it paired?';
+            displayErr.linkText = null;
+        }
       }
 
       if (err.code === 'E_VERIO_WRITE') {
@@ -132,6 +167,16 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       if (err.message === 'E_LIBREVIEW_FORMAT') {
         displayErr.message = ErrorMessages.E_LIBREVIEW_FORMAT;
         uploadErrProps.details = 'Could not validate the date format';
+      }
+
+      if (err.code === 'E_NO_RECORDS') {
+        displayErr.message = ErrorMessages.E_NO_RECORDS;
+        displayErr.code = 'E_NO_RECORDS';
+      }
+
+      if (err.code === 'E_NO_NEW_RECORDS') {
+        displayErr.message = ErrorMessages.E_NO_NEW_RECORDS;
+        displayErr.code = 'E_NO_NEW_RECORDS';
       }
 
       if (process.env.NODE_ENV !== 'test') {
@@ -165,7 +210,7 @@ export function sendToRollbar(err, props) {
       if (_.get(props, 'data.blobId', false)) {
         _.assign(extra, { blobId: props.data.blobId });
       }
-      
+
       rollbar.error(err, extra, (err, data) => {
         if (err) {
           console.log('Error while reporting error to Rollbar:', err);
@@ -201,7 +246,7 @@ export async function initOSDetails() {
 
       osVersion = `${osVersion} ${ua.bitness}-bit`;
     }
-    
+
     osString = `${ua.platform} ${osVersion}`;
   }
 }
