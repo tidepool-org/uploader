@@ -160,7 +160,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       }
 
       if (err.code === 'E_OMNIPOD_CHECKSUM') {
-        displayErr.message = 'Before you click to upload, please make sure your PDM displays the message';
+        displayErr.message = 'Before you click to upload, please wait until your PDM displays the message';
         displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029369472-Uploading-your-Insulet-Omnipod-DASH#h_351dc475-a17c-4d1d-a66b-04912d0b652f';
         displayErr.linkText = '\"Your PDM data is ready for export\".';
       }
