@@ -159,6 +159,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'access to removable volumes.';
       }
 
+      if (err.code === 'E_OMNIPOD_CHECKSUM') {
+        displayErr.message = 'Before you click to upload, please make sure your PDM displays the message';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029369472-Uploading-your-Insulet-Omnipod-DASH#h_351dc475-a17c-4d1d-a66b-04912d0b652f';
+        displayErr.linkText = '\"Your PDM data is ready for export\".';
+      }
+
       if (err.message === 'E_DATETIME_SET_BY_PUMP') {
         displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
         uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
