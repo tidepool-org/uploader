@@ -28,10 +28,9 @@ jobs:
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-          nvm install v20.18.0
-          nvm alias default v20.18.0
+          nvm install v20.18.1
+          nvm alias default v20.18.1
     - run: node -v
-    - run: npm install --global npm node-gyp
     - run: echo $SHELL
     - run: npm -v
     - run: node-gyp -v
@@ -152,8 +151,8 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: python -m pip install packaging
       - run: pip install setuptools
-      - run: nvm install v20.18.0
-      - run: nvm use v20.18.0
+      - run: nvm install v20.18.1
+      - run: nvm use v20.18.1
       - run: node -v
       - run: npm install --global npm@8 node-gyp
       - run: npm -v
