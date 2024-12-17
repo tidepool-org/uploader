@@ -80,7 +80,7 @@ jobs:
           # Remove CSC_LINK from the environment variables
           unset CSC_LINK
     # remove symlink that can cause MacOS security check to fail
-    - run: find ./app/node_modules/@tidepool/direct-io/build/node_gyp_bins -type l -delete
+    - run: rm -rf ./app/node_modules/@tidepool/direct-io/build/node_gyp_bins
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
     # Keychain cleanup step
