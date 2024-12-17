@@ -20,6 +20,12 @@ jobs:
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
     - run:
+        name: Install Python via Homebrew
+        command: |
+          brew update
+          brew install python@3.11
+          python3 --version
+    - run:
         name: Install nvm and node
         command: |
           set +e
@@ -79,8 +85,6 @@ jobs:
 
           # Remove CSC_LINK from the environment variables
           unset CSC_LINK
-    # remove symlink that can cause MacOS security check to fail
-    - run: rm -rf ./app/node_modules/@tidepool/direct-io/build/node_gyp_bins
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
     # Keychain cleanup step
