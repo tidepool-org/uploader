@@ -208,7 +208,6 @@
   },
   "resolutions": {
     "charm": "1.0.2",
-    "**/**/fsevents": "^1.2.9",
     "**/**/node-gyp": "^8.4.0"
   },
   "jest": {
