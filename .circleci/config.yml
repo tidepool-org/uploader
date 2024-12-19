@@ -20,12 +20,6 @@ jobs:
     - restore_cache:
         key: dependency-cache-{{ checksum "package.json" }}
     - run:
-        name: Install Python via Homebrew
-        command: |
-          brew update
-          brew install python@3.11
-          python3 --version
-    - run:
         name: Install nvm and node
         command: |
           set +e
@@ -37,7 +31,7 @@ jobs:
           nvm install v20.18.1
           nvm alias default v20.18.1
     - run: node -v
-    - run: npm install --global npm node-gyp@9.0.0
+    - run: npm install --global npm node-gyp
     - run: echo $SHELL
     - run: npm -v
     - run: node-gyp -v
