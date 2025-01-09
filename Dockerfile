@@ -1,4 +1,4 @@
-FROM node:20.18.0-alpine as base
+FROM node:20.14.0-alpine as base
 WORKDIR /app
 RUN mkdir -p dist node_modules .yarn-cache && chown -R node:node .
 
