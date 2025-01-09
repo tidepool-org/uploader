@@ -156,6 +156,7 @@ function createWindow() {
     },
     acceptFirstMouse: true,
   });
+  mainWindow.setContentSize(663, 741); // newer electron versions break layout on Windows if this is not set
 
   protocol.handle(PROTOCOL_PREFIX, (request) => {
     return handleIncomingUrl(request.url);
