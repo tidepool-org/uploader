@@ -211,7 +211,8 @@
     "npm": ">=3.x"
   },
   "resolutions": {
-    "charm": "1.0.2"
+    "charm": "1.0.2",
+    "**/**/node-gyp": "^8.4.0"
   },
   "jest": {
     "moduleNameMapper": {
