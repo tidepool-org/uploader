@@ -31,7 +31,7 @@ jobs:
           nvm install v20.14.0
           nvm alias default v20.14.0
     - run: node -v
-    - run: npm install --global npm node-gyp
+    - run: npm install --global node-gyp
     - run: echo $SHELL
     - run: npm -v
     - run: node-gyp -v
