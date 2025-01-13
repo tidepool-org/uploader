@@ -71,7 +71,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  require('electron-debug')(); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
   process.env.APPIMAGE = path.join(__dirname, 'release');
@@ -157,6 +156,7 @@ function createWindow() {
     },
     acceptFirstMouse: true,
   });
+  mainWindow.setContentSize(663, 741); // newer electron versions break layout on Windows if this is not set
 
   protocol.handle(PROTOCOL_PREFIX, (request) => {
     return handleIncomingUrl(request.url);
