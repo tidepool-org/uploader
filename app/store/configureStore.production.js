@@ -6,7 +6,7 @@ import api from '../../lib/core/api';
 import config from '../../lib/config';
 import { createErrorLogger } from '../utils/errors';
 import { createMetricsTracker } from '../utils/metrics';
-import { keycloakMiddleware } from '../keycloak';
+import { oidcMiddleware } from '../auth';
 
 api.create({
   apiUrl: config.API_URL,
@@ -22,7 +22,7 @@ export default function configureStore(initialState, history) {
     router,
     createErrorLogger(api),
     createMetricsTracker(api),
-    keycloakMiddleware(api),
+    oidcMiddleware(api),
   );
 
   return createStore(rootReducer(history), initialState, enhancer); // eslint-disable-line

@@ -21,8 +21,7 @@ var React = require('react');
 
 var styles = require('../../styles/components/ViewDataLink.module.less');
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 class ViewDataLink extends React.Component {
   static propTypes = {

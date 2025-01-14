@@ -8,7 +8,7 @@ Signature = "$Windows NT$"
 Class = PHDC
 ClassGUID = {182A3B42-D570-4066-8D13-C72202B40D78}
 Provider = %Manufacturer%
-DriverVer = 11/11/2015, 1.0.0.0
+DriverVer = 09/19/2024, 4.0.0.0
 CatalogFile = phdc_driver.cat
 
 ; ================== Class section ==================
@@ -34,6 +34,7 @@ HKR,,Security,,"D:(D;OICI;GA;;;BG)(D;OICI;GA;;;AN)(A;OICI;GRGWGX;;;AU)(A;OICI;GA
 %USB\ACGuideMe.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D6
 %USB\ACInstant.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D7
 %USB\ReliOnPlatinum.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D8
+%USB\ACGuideLink.DeviceDesc% = USB_Install, USB\VID_173A&PID_21DB
 
 [PHDC_Device_WinUSB.NTamd64]
 %USB\ACGuide.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D5
@@ -41,6 +42,7 @@ HKR,,Security,,"D:(D;OICI;GA;;;BG)(D;OICI;GA;;;AN)(A;OICI;GRGWGX;;;AU)(A;OICI;GA
 %USB\ACGuideMe.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D6
 %USB\ACInstant.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D7
 %USB\ReliOnPlatinum.DeviceDesc% = USB_Install, USB\VID_173A&PID_21D8
+%USB\ACGuideLink.DeviceDesc% = USB_Install, USB\VID_173A&PID_21DB
 
 ; =================== Installation ===================
 
@@ -116,6 +118,7 @@ USB\AvivaConnect.DeviceDesc="ACCU-CHEK Aviva Connect"
 USB\ACGuideMe.DeviceDesc="ACCU-CHEK Guide Me"
 USB\ACInstant.DeviceDesc="ACCU-CHEK Instant"
 USB\ReliOnPlatinum.DeviceDesc="ReliOn Platinum"
+USB\ACGuideLink.DeviceDesc="ACCU-CHEK Guide Link"
 WinUSB_SvcDesc="WinUSB Service"
 DISK_NAME="PHDC Driver Install Disk"
 ClassName="PHDC"

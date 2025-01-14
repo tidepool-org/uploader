@@ -340,76 +340,6 @@ describe('misc reducers', () => {
     });
   });
 
-  describe('driverUpdateAvailable', () => {
-    test('should return the initial state', () => {
-      expect(misc.driverUpdateAvailable(undefined, {})).to.be.null;
-    });
-
-    test('should handle DRIVER_UPDATE_AVAILABLE', () => {
-      const payload = {'example':'info'};
-      expect(misc.driverUpdateAvailable(undefined, {
-        type: actionTypes.DRIVER_UPDATE_AVAILABLE,
-        payload
-      })).to.deep.equal(payload);
-    });
-
-    test('should handle DRIVER_UPDATE_NOT_AVAILABLE', () => {
-      expect(misc.driverUpdateAvailable(undefined, {
-        type: actionTypes.DRIVER_UPDATE_NOT_AVAILABLE
-      })).to.be.false;
-    });
-
-    test('should handle DRIVER_INSTALL', () => {
-      expect(misc.driverUpdateAvailable(undefined, {
-        type: actionTypes.DRIVER_INSTALL
-      })).to.be.false;
-    });
-  });
-
-  describe('driverUpdateAvailableDismissed', () => {
-    test('should return the initial state', () => {
-      expect(misc.driverUpdateAvailableDismissed(undefined, {})).to.be.null;
-    });
-
-    test('should handle CHECKING_FOR_DRIVER_UPDATE', () => {
-      expect(misc.driverUpdateAvailableDismissed(undefined, {
-        type: actionTypes.CHECKING_FOR_DRIVER_UPDATE
-      })).to.be.false;
-    });
-
-    test('should handle DISMISS_DRIVER_UPDATE_AVAILABLE', () => {
-      expect(misc.driverUpdateAvailableDismissed(undefined, {
-        type: actionTypes.DISMISS_DRIVER_UPDATE_AVAILABLE
-      })).to.be.true;
-    });
-  });
-
-  describe('driverUpdateShellOpts', () => {
-    test('should return the initial state', () => {
-      expect(misc.driverUpdateShellOpts(undefined, {})).to.be.null;
-    });
-
-    test('should handle DRIVER_INSTALL_SHELL_OPTS', () => {
-      const payload = {'example':'info'};
-      expect(misc.driverUpdateShellOpts(undefined, {
-        type: actionTypes.DRIVER_INSTALL_SHELL_OPTS,
-        payload
-      })).to.deep.equal(payload);
-    });
-  });
-
-  describe('driverUpdateComplete', () => {
-    test('should return the initial state', () => {
-      expect(misc.driverUpdateComplete(undefined, {})).to.be.null;
-    });
-
-    test('should handle DRIVER_INSTALL', () => {
-      expect(misc.driverUpdateComplete(undefined, {
-        type: actionTypes.DRIVER_INSTALL
-      })).to.be.true;
-    });
-  });
-
   describe('showingDeviceTimePrompt', () => {
     test('should return the initial state', () => {
       expect(misc.showingDeviceTimePrompt(undefined, {})).to.be.null;
@@ -654,6 +584,49 @@ describe('misc reducers', () => {
         expect(state.clinicId123.clinicians.clinicianId1234).to.eql(clinics[0].clinician);
         expect(state.clinicId456.clinicians.clinicianId4567).to.eql(clinics[1].clinician);
       });
+
+      describe('fetchClinicMRNSettingsSuccess', () => {
+        it('should add clinic MRN settings to state', () => {
+          let clinicId = 'clinicId123';
+          let mrnSettings = {
+            required: true,
+            unique: true,
+          };
+          let initialStateForTest = {
+            [clinicId]: {
+              id: clinicId,
+            },
+          };
+          let action = actions.sync.fetchClinicMRNSettingsSuccess(
+            clinicId,
+            mrnSettings
+          );
+          let state = misc.clinics(initialStateForTest, action);
+          expect(state.clinicId123.mrnSettings).to.eql(mrnSettings);
+        });
+      });
+
+      describe('fetchClinicEHRSettingsSuccess', () => {
+        it('should add clinic EHR settings to state', () => {
+          let clinicId = 'clinicId123';
+          let ehrSettings = {
+            enabled: true,
+            facility: 'facility',
+            sourceId: 'sourceId',
+          };
+          let initialStateForTest = {
+            [clinicId]: {
+              id: clinicId,
+            },
+          };
+          let action = actions.sync.fetchClinicEHRSettingsSuccess(
+            clinicId,
+            ehrSettings
+          );
+          let state = misc.clinics(initialStateForTest, action);
+          expect(state.clinicId123.ehrSettings).to.eql(ehrSettings);
+        });
+      });
     });
 
     describe('addTargetDevice', () => {
@@ -695,6 +668,59 @@ describe('misc reducers', () => {
       });
     });
 
+    describe('fetchClinicPatientCountSuccess', () => {
+      it('should update `patientCount` in state', () => {
+        let clinicId = 'clinicId123';
+        let results = { patientCount: 33 };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCount: 32,
+          },
+        };
+        let action = actions.sync.fetchClinicPatientCountSuccess(clinicId, results);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patientCount).to.eql(33);
+      });
+    });
+
+    describe('fetchClinicPatientCountSettingsSuccess', () => {
+      it('should update `patientCountSettings` in state', () => {
+        let clinicId = 'clinicId123';
+        let results = { foo: 'bar' };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCountSettings: { bar: 'baz' },
+          },
+        };
+        let action = actions.sync.fetchClinicPatientCountSettingsSuccess(clinicId, results);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId].patientCountSettings).to.eql({ foo: 'bar' });
+      });
+    });
+
+    describe('setClinicUIDetails', () => {
+      it('should merge the provided `uiDetails` with clinic state', () => {
+        let clinicId = 'clinicId123';
+        let uiDetails = { foo: 'bar', bar: 'baz' };
+        let initialStateForTest = {
+          [clinicId]: {
+            id: clinicId,
+            patientCount: 1,
+          },
+        };
+        let action = actions.sync.setClinicUIDetails(clinicId, uiDetails);
+        let state = misc.clinics(initialStateForTest, action);
+        expect(state[clinicId]).to.eql({
+          id: clinicId,
+          patientCount: 1,
+          foo: 'bar',
+          bar: 'baz',
+        });
+      });
+    });
+
     describe('logoutRequest', () => {
       test('should set clinics to initial state', () => {
         let initialStateForTest = {
@@ -718,7 +744,7 @@ describe('misc reducers', () => {
       test('should set state to clinicId', () => {
         let initialStateForTest = null;
 
-        let action = actions.sync.selectClinic('clinicId123');
+        let action = actions.sync.selectClinicSuccess('clinicId123');
 
         let state = misc.selectedClinicId(initialStateForTest, action);
 

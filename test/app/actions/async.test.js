@@ -533,7 +533,7 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
-          type: actionTypes.SELECT_CLINIC,
+          type: actionTypes.SELECT_CLINIC_SUCCESS,
           payload: {clinicId:'clinicId'}
         },
         {
@@ -783,11 +783,19 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
             profile,
             memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -819,13 +827,6 @@ describe('Asynchronous Actions', () => {
             method: 'push',
           },
         },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [],
-          }
-        },
       ];
       __Rewire__('services', {
         api: {
@@ -841,7 +842,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -939,10 +942,18 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [],
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile, memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -961,13 +972,6 @@ describe('Asynchronous Actions', () => {
             method: 'push'
           }
         },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [],
-          }
-        },
       ];
       __Rewire__('services', {
         api: {
@@ -983,7 +987,9 @@ describe('Asynchronous Actions', () => {
             return 'http://www.acme.com' + path;
           },
           clinics: {
-            getClinicsForClinician: (clinicianId, options, cb) => cb(null, [])
+            getClinicsForClinician: (clinicianId, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop,
@@ -1038,10 +1044,18 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: []
+          }
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile, memberships,
+            clinics: [],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -1063,13 +1077,6 @@ describe('Asynchronous Actions', () => {
             method: 'push'
           }
         },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: []
-          }
-        },
       ];
       __Rewire__('services', {
         api: {
@@ -1083,6 +1090,8 @@ describe('Asynchronous Actions', () => {
           },
           clinics: {
             getClinicsForClinician: (clinician, options, cb) => cb(null, []),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           }
         },
         log: _.noop
@@ -1131,10 +1140,47 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile,
+            memberships,
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            }],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -1153,7 +1199,7 @@ describe('Asynchronous Actions', () => {
           }
         },
         {
-          type: actionTypes.SELECT_CLINIC,
+          type: actionTypes.SELECT_CLINIC_SUCCESS,
           payload: {clinicId:'clinicId'}
         },
         {
@@ -1170,17 +1216,6 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [{
-              clinic: {
-                id: 'clinicId'
-              }
-            }],
-          },
         },
       ];
       __Rewire__('services', {
@@ -1200,6 +1235,8 @@ describe('Asynchronous Actions', () => {
               cb(null, [{ clinic: { id: 'clinicId' } }]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -1248,10 +1285,79 @@ describe('Asynchronous Actions', () => {
           type: actionTypes.GET_CLINICS_FOR_CLINICIAN_REQUEST
         },
         {
+          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
+          payload: {
+            clinicianId: 'abc123',
+            clinics: [{
+                clinic: {
+                  id: 'clinicId'
+                }
+              },
+              {
+                clinic: {
+                  id: 'clinicId2'
+                }
+              }
+            ],
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_EHR_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_REQUEST,
+        },
+        {
+          type: actionTypes.FETCH_CLINIC_MRN_SETTINGS_SUCCESS,
+          payload: {
+            clinicId: 'clinicId2',
+            settings: {},
+          },
+        },
+        {
           type: actionTypes.LOGIN_SUCCESS,
           payload: {
             user: userObj.user,
-            profile, memberships
+            profile,
+            memberships,
+            clinics: [{
+              clinic: {
+                id: 'clinicId'
+              }
+            },
+            {
+              clinic: {
+                id: 'clinicId2'
+              }
+            }
+],
           },
           meta: {
             source: actionSources[actionTypes.LOGIN_SUCCESS],
@@ -1272,23 +1378,6 @@ describe('Asynchronous Actions', () => {
             } ],
             method: 'push'
           }
-        },
-        {
-          type: actionTypes.GET_CLINICS_FOR_CLINICIAN_SUCCESS,
-          payload: {
-            clinicianId: 'abc123',
-            clinics: [{
-                clinic: {
-                  id: 'clinicId'
-                }
-              },
-              {
-                clinic: {
-                  id: 'clinicId2'
-                }
-              }
-            ],
-          },
         },
       ];
       __Rewire__('services', {
@@ -1311,6 +1400,8 @@ describe('Asynchronous Actions', () => {
               ]),
             getPatientsForClinic: (clinicId, options, cb) =>
               cb(null, { data: [{ patient: 'patient1' }], meta: { count: 1 } }),
+            getEHRSettings: (clinicId, cb) => cb(null, {}),
+            getMRNSettings: (clinicId, cb) => cb(null, {}),
           },
         },
         log: _.noop,
@@ -1644,7 +1735,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: 'a_pump',
               }
             }
           }
@@ -1753,7 +1845,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: 'a_pump',
               }
             }
           }
@@ -1866,7 +1959,8 @@ describe('Asynchronous Actions', () => {
                 type: targetDevice.source.type,
                 source: targetDevice.source.driverId,
                 os: 'BeOS R5.1 (RISC-V)',
-                error: err
+                error: err,
+                device: 'a_pump',
               }
             }
           }
@@ -2079,11 +2173,6 @@ describe('Asynchronous Actions', () => {
         err.debug = `Code: ${err.code} | Version: ${version}`;
         const expectedActions = [
           {
-            type: actionTypes.CHOOSING_FILE,
-            payload: { userId, deviceKey },
-            meta: {source: actionSources[actionTypes.CHOOSING_FILE]}
-          },
-          {
             type: actionTypes.READ_FILE_ABORTED,
             error: true,
             payload: err,
@@ -2096,10 +2185,10 @@ describe('Asynchronous Actions', () => {
         const store = mockStore(state);
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
-        expect(actions[1].payload).to.deep.include({
+        expect(actions[0].payload).to.deep.include({
           message: ErrorMessages.E_FILE_EXT + ext
         });
-        expectedActions[1].payload = actions[1].payload;
+        expectedActions[0].payload = actions[0].payload;
         expect(actions).to.deep.equal(expectedActions);
       });
     });
@@ -3961,7 +4050,7 @@ describe('Asynchronous Actions', () => {
         };
         const expectedActions = [
           {
-            type: actionTypes.SELECT_CLINIC,
+            type: actionTypes.SELECT_CLINIC_SUCCESS,
             payload: { clinicId: null }
           },
           {
@@ -4038,7 +4127,7 @@ describe('Asynchronous Actions', () => {
         };
         const expectedActions = [
           {
-            type: actionTypes.SELECT_CLINIC,
+            type: actionTypes.SELECT_CLINIC_SUCCESS,
             payload: { clinicId: null }
           },
           {
@@ -5040,18 +5129,20 @@ describe('Asynchronous Actions', () => {
   describe('getClinicsForClinician', () => {
     test('should trigger GET_CLINICS_FOR_CLINICIAN_SUCCESS and it should call clinics.getClinicsForClinician once for a successful request', () => {
       let clinicianId = 'clinicianId1';
-      let clinics = [
-        {
+      let clinics = [{
+        clinic: {
           id: '5f85fbe6686e6bb9170ab5d0',
           address: '1 Address Ln, City Zip',
           name: 'Clinic1',
           phoneNumbers: [{ number: '(888) 555-5555', type: 'Office' }],
         },
-      ];
+      }];
 
       let api = {
         clinics: {
           getClinicsForClinician: sinon.stub().callsArgWith(2, null, clinics),
+          getEHRSettings: sinon.stub().callsArgWith(1, null, {}),
+          getMRNSettings: sinon.stub().callsArgWith(1, null, {}),
         },
       };
 
@@ -5062,6 +5153,26 @@ describe('Asynchronous Actions', () => {
           payload: {
             clinicianId: clinicianId,
             clinics: clinics
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_EHR_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
+          },
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_REQUEST',
+        },
+        {
+          type: 'FETCH_CLINIC_MRN_SETTINGS_SUCCESS',
+          payload: {
+            clinicId: '5f85fbe6686e6bb9170ab5d0',
+            settings: {},
           },
         },
       ];
@@ -5182,6 +5293,242 @@ describe('Asynchronous Actions', () => {
       });
       expectedActions[1].payload = actions[1].payload;
       expect(actions).to.eql(expectedActions);
+    });
+  });
+
+  describe('selectClinic', () => {
+    it('should trigger SELECT_CLINIC_SUCCESS, FETCH_CLINIC_PATIENT_COUNT_SUCCESS, and FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS for a successful request', () => {
+      const clinicId = 'clinic123';
+      const countResults = { patientCount: 33 };
+      const settingsResults = {bar: 'baz'};
+
+      let api = {
+        clinics: {
+          getClinicPatientCount: sinon
+            .stub()
+            .callsArgWith(1, null, countResults),
+          getClinicPatientCountSettings: sinon
+            .stub()
+            .callsArgWith(1, null, settingsResults),
+        },
+      };
+
+      let expectedActions = [
+        { type: 'SELECT_CLINIC_SUCCESS', payload: { clinicId } },
+        { type: 'FETCH_CLINIC_PATIENT_COUNT_REQUEST' },
+        { type: 'FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST' },
+        {
+          type: 'FETCH_CLINIC_PATIENT_COUNT_SUCCESS',
+          payload: { clinicId, patientCount: 33 },
+        },
+        {
+          type: 'FETCH_CLINIC_PATIENT_COUNT_SETTINGS_SUCCESS',
+          payload: { clinicId, patientCountSettings: settingsResults },
+        },
+        {
+          type: 'SET_CLINIC_UI_DETAILS',
+          payload: {
+            clinicId: 'clinic123',
+            uiDetails: {
+              entitlements: {
+                patientTags: false,
+                rpmReport: false,
+                summaryDashboard: false,
+                tideDashboard: false,
+              },
+              patientLimitEnforced: false,
+              planName: 'internationalBase',
+              ui: {
+                display: {
+                  patientCount: true,
+                  patientLimit: false,
+                  planName: false,
+                  workspacePlan: false,
+                  workspaceLimitDescription: false,
+                  workspaceLimitFeedback: false,
+                  workspaceLimitResolutionLink: false,
+                },
+                text: {
+                  planDisplayName: 'Base',
+                  limitDescription: undefined,
+                  limitFeedback: undefined,
+                  limitResolutionLink: undefined,
+                },
+                warnings: {
+                  limitApproaching: false,
+                  limitReached: false,
+                },
+              },
+            },
+          },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore({
+        ...initialState,
+        clinics: {
+          [clinicId]: {
+            patientCount: undefined,
+            patientCountSettings: undefined,
+          },
+        },
+      });
+
+      store.dispatch(
+        async.selectClinic(api, clinicId)
+      );
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.clinics.getClinicPatientCount.callCount).to.equal(1);
+      expect(api.clinics.getClinicPatientCountSettings.callCount).to.equal(1);
+    });
+
+    it('should trigger SELECT_CLINIC_SUCCESS, but not FETCH_CLINIC_PATIENT_COUNT_REQUEST or FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST for a successful request if data available in clinic state', () => {
+      const clinicId = 'clinic123';
+
+      let api = {
+        clinics: {
+          getClinicPatientCount: sinon.stub(),
+          getClinicPatientCountSettings: sinon.stub(),
+        },
+      };
+
+      let expectedActions = [
+        { type: 'SELECT_CLINIC_SUCCESS', payload: { clinicId } },
+        {
+          type: 'SET_CLINIC_UI_DETAILS',
+          payload: {
+            clinicId: 'clinic123',
+            uiDetails: {
+              entitlements: {
+                patientTags: false,
+                rpmReport: false,
+                summaryDashboard: false,
+                tideDashboard: false,
+              },
+              patientLimitEnforced: false,
+              planName: 'internationalBase',
+              ui: {
+                display: {
+                  patientCount: true,
+                  patientLimit: false,
+                  planName: false,
+                  workspacePlan: false,
+                  workspaceLimitDescription: false,
+                  workspaceLimitFeedback: false,
+                  workspaceLimitResolutionLink: false,
+                },
+                text: {
+                  planDisplayName: 'Base',
+                  limitDescription: undefined,
+                  limitFeedback: undefined,
+                  limitResolutionLink: undefined,
+                },
+                warnings: {
+                  limitApproaching: false,
+                  limitReached: false,
+                },
+              },
+            },
+          },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore({
+        ...initialState,
+        clinics: {
+          [clinicId]: {
+            patientCount: 33,
+            patientCountSettings: { foo: 'bar' },
+          },
+        },
+      });
+
+      store.dispatch(
+        async.selectClinic(api, clinicId)
+      );
+
+      const actions = store.getActions();
+      expect(actions).to.eql(expectedActions);
+      expect(api.clinics.getClinicPatientCount.callCount).to.equal(0);
+      expect(api.clinics.getClinicPatientCountSettings.callCount).to.equal(0);
+    });
+
+    it('should trigger FETCH_CLINIC_PATIENT_COUNT_FAILURE and FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE and it should call error once for a failed request', () => {
+      const clinicId = 'clinic123';
+
+      let api = {
+        clinics: {
+          getClinicPatientCount: sinon
+            .stub()
+            .callsArgWith(1, { status: 500, body: 'Count Error!' }, null),
+          getClinicPatientCountSettings: sinon
+            .stub()
+            .callsArgWith(1, { status: 500, body: 'Settings Error!' }, null),
+        },
+      };
+
+      let countErr = new Error(ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT);
+      countErr.status = 500;
+
+      let settingsErr = new Error(ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT_SETTINGS);
+      settingsErr.status = 500;
+
+      let expectedActions = [
+        { type: 'SELECT_CLINIC_SUCCESS', payload: { clinicId } },
+        { type: 'FETCH_CLINIC_PATIENT_COUNT_REQUEST' },
+        { type: 'FETCH_CLINIC_PATIENT_COUNT_SETTINGS_REQUEST' },
+        {
+          type: 'FETCH_CLINIC_PATIENT_COUNT_FAILURE',
+          error: countErr,
+          meta: { apiError: { status: 500, body: 'Count Error!' } },
+        },
+        {
+          type: 'FETCH_CLINIC_PATIENT_COUNT_SETTINGS_FAILURE',
+          error: settingsErr,
+          meta: { apiError: { status: 500, body: 'Settings Error!' } },
+        },
+      ];
+      _.each(expectedActions, (action) => {
+        expect(isFSA(action)).to.be.true;
+      });
+
+      let store = mockStore({
+        ...initialState,
+        clinics: {
+          [clinicId]: {
+            patientCount: undefined,
+            patientCountSettings: undefined,
+          },
+        },
+      });
+
+      store.dispatch(
+        async.selectClinic(api, clinicId)
+      );
+
+      const actions = store.getActions();
+
+      expect(actions[3].error).to.deep.include({
+        message: ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT,
+      });
+      expectedActions[3].error = actions[3].error;
+
+      expect(actions[4].error).to.deep.include({
+        message: ErrorMessages.ERR_FETCHING_CLINIC_PATIENT_COUNT_SETTINGS,
+      });
+      expectedActions[4].error = actions[4].error;
+      expect(actions).to.eql(expectedActions);
+
+      expect(api.clinics.getClinicPatientCount.callCount).to.equal(1);
+      expect(api.clinics.getClinicPatientCountSettings.callCount).to.equal(1);
     });
   });
 

@@ -22,7 +22,6 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 
 import sundial from 'sundial';
-import keytar from 'keytar';
 import BLE from 'ble-glucose';
 import pako from 'pako';
 
@@ -34,9 +33,13 @@ import uploadDataPeriod from '../utils/uploadDataPeriod';
 import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
 
 import styles from '../../styles/components/Upload.module.less';
+import env from '../utils/env';
+let keytar;
+if(env.electron_renderer){
+  keytar = require('keytar');
+}
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
@@ -104,17 +107,33 @@ export default class Upload extends Component {
    }
 
   populateRememberedSerialNumber() {
-    keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
-      .then((serialNumber) => {
-        if(serialNumber) {
-          this.setState({
-            medtronicSerialNumberValue: serialNumber,
-            medtronicSerialNumberRemember: true,
-            medtronicFormIncomplete: false,
-          });
-        }
-    });
+    if(env.electron_renderer){
+      keytar.getPassword(MEDTRONIC_KEYTAR_SERVICE, this.props.targetId)
+        .then((serialNumber) => {
+          if(serialNumber) {
+            this.setState({
+              medtronicSerialNumberValue: serialNumber,
+              medtronicSerialNumberRemember: true,
+              medtronicFormIncomplete: false,
+            });
+          }
+        });
+    }
   }
+
+  handleCareLinkUpload = () => {
+    /*
+    Once everyone has switched away from the CareLink option, this function, as
+    well as the props addDevice, removeDevice and onDone can be removed from
+    Upload, UploadList and MainPage components. See following PR for details:
+    https://github.com/tidepool-org/chrome-uploader/pull/602
+    */
+    var addDevice = this.props.addDevice.bind(null, this.props.targetId);
+    var removeDevice = this.props.removeDevice.bind(null, this.props.targetId);
+    addDevice('medtronic');
+    removeDevice('carelink');
+    this.props.onDone();
+  };
 
   handleMedtronicUpload() {
     if (this.state.medtronicSerialNumberRemember) {
@@ -156,6 +175,11 @@ export default class Upload extends Component {
     this.props.onUpload(options);
   }
 
+  handleOmnipodErosUpload() {
+    const { upload } = this.props;
+    this.props.readFile(null, upload.source.extension);
+  }
+
   handleReset = e => {
     if (e) {
       e.preventDefault();
@@ -188,8 +212,13 @@ export default class Upload extends Component {
       return this.handleMedtronic600Upload();
     }
 
-    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble') {
+    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble' || device === 'relionplatinumble') {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
+    }
+
+    if (env.browser && _.get(upload, 'key', null) === 'omnipoderos') {
+      // we use File System Access API only in the browser; Electron uses Node.js File API
+      return this.handleOmnipodErosUpload();
     }
 
     var options = {};
@@ -718,7 +747,8 @@ export default class Upload extends Component {
 
   isBlockModeFileChosen() {
     const { upload } = this.props;
-    if (_.get(upload, 'source.type', null) !== 'block') {
+    if (_.get(upload, 'source.type', null) !== 'block' &&
+        _.get(upload, 'key', null) !== 'omnipoderos') {
       return false;
     }
     else {

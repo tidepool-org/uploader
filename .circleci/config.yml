@@ -1,6 +1,9 @@
-version: 2
+version: 2.1
+orbs:
+  node: circleci/node@5.2.0
 jobs:
   build-macos:
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
@@ -8,7 +11,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '12.5.1'
+      xcode: '13.4.1'
     steps:
     - checkout
     - run: git submodule sync
@@ -20,11 +23,18 @@ jobs:
         name: Install nvm and node
         command: |
           set +e
-          curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
           source ~/.nvm/nvm.sh
-          nvm install v16.14.2
-          nvm alias default v16.14.2
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          nvm install v18.17.1
+          nvm alias default v18.17.1
     - run: node -v
+    - run: npm install --global npm node-gyp
+    - run: echo $SHELL
+    - run: npm -v
+    - run: node-gyp -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: yarn config set cache-folder ~/.cache/yarn
     - run: yarn --frozen-lockfile
@@ -36,24 +46,118 @@ jobs:
     # Test
     - run: yarn lint
     - run: yarn test
+
+    # Keychain setup step
+    - run:
+        name: Setup Custom Keychain
+        command: |
+          # Check if CSC_LINK and CSC_KEY_PASSWORD are set
+          if [[ -z "$CSC_LINK" || -z "$CSC_KEY_PASSWORD" ]]; then
+            echo "CSC_LINK or CSC_KEY_PASSWORD environment variables are missing. Aborting."
+            exit 1
+          fi
+
+          # Decode the base64-encoded certificate to a temporary file
+          echo "$CSC_LINK" | base64 --decode > certificate.p12
+
+          # Create a temporary directory for the custom keychain
+          temp_keychain_dir=$(mktemp -d)
+          custom_keychain_path="$temp_keychain_dir/custom.keychain"
+
+          # Keychain and certificate password
+          custom_keychain_password="tempChainPass"
+
+          # Save the temp_keychain_dir to a file for later cleanup
+          echo "$temp_keychain_dir" > keychain_dir.txt
+
+          # Create a custom keychain using the decoded certificate
+          security create-keychain -p "$custom_keychain_password" "$custom_keychain_path"
+          security import certificate.p12 -k "$custom_keychain_path" -P "$CSC_KEY_PASSWORD"
+
+          # Set the custom keychain as the system default
+          security default-keychain -s "$custom_keychain_path"
+
+          # Remove CSC_LINK from the environment variables
+          unset CSC_LINK
     # Package
     - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+    # Keychain cleanup step
+    - run:
+        name: Cleanup Custom Keychain
+        command: |
+          # Read the temp_keychain_dir path from the saved file
+          temp_keychain_dir=$(cat keychain_dir.txt)
+
+          # Clean up: Delete the temporary keychain directory
+          if [ -d "$temp_keychain_dir" ]; then
+            rm -rf "$temp_keychain_dir"
+            echo "Custom keychain directory deleted."
+          else
+            echo "Custom keychain directory not found."
+          fi
+
+          # Remove the keychain_dir.txt file
+          rm -f keychain_dir.txt
+
+          # Remove the temporary certificate file
+          rm -f certificate.p12
+  build-web:
+    working_directory: ~/tidepool-org/chrome-uploader
+    parallelism: 1
+    # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
+    # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      BASH_ENV: ".circleci/bash_env.sh"
+      DISPLAY: ":99"
+    docker:
+      - image: cimg/node:18.17.1-browsers
+    steps:
+      - setup_remote_docker:
+          version: docker23
+      - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatspi2.0-0 libcairo2 libcups2 libgbm1 libgdk-pixbuf2.0-0 libgtk-3-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 libxss1 xdg-utils xvfb libdbus-glib-1-2 libgtk-3-dev libxt6
+      - checkout
+      # - run: mv .nvmrc .nvmrc.tmp
+      # - node/install:
+      #     install-yarn: true
+      #     node-version: '18.17.1'
+      # - run: mv .nvmrc.tmp .nvmrc
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+      - restore_cache:
+          key: dependency-cache-web-{{ checksum "package.json" }}
+      - run: yarn config set cache-folder ~/.cache/yarn
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          key: dependency-cache-web-{{ checksum "package.json" }}
+          paths:
+          - ~/.cache/yarn
+          - ./node_modules
+      # Test
+      - run: yarn lint
+      - run: Xvfb :99 -screen 0 1280x1024x24 & > /dev/null && yarn test
+      # Build docker image
+      - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
     machine:
-      # see https://circleci.com/developer/machine/image/windows-server-2019 for details
-      image: windows-server-2019-vs2019:stable
-      resource_class: windows.medium
+      image: windows-server-2022-gui:current
       shell: bash.exe
+    resource_class: windows.medium
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      # note: node 16.14.2 with npm 8.3.1 breaks yarn installation
-      - run: nvm install v16.13.2
-      - run: nvm use v16.13.2
+      - run: python -m pip install packaging
+      - run: pip install setuptools
+      - run: nvm install v18.17.1
+      - run: nvm use v18.17.1
       - run: node -v
+      - run: npm install --global npm@8 node-gyp
+      - run: npm -v
+      - run: node-gyp -v
       - run: npm install --global yarn
       - run: yarn config set cache-folder ~/.cache/yarn
       - run: yarn --frozen-lockfile
@@ -75,6 +179,10 @@ workflows:
   build-release:
     jobs:
       - build-macos:
+          filters:
+            tags:
+              only: /^v.*/
+      - build-web:
           filters:
             tags:
               only: /^v.*/

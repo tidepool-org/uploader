@@ -25,20 +25,19 @@ import { sync as syncActions } from '../actions/';
 
 import styles from '../../styles/components/DeviceTimeModal.module.less';
 
-const remote = require('@electron/remote');
-const i18n = remote.getGlobal( 'i18n' );
+import { i18n } from '../utils/config.i18next';
 
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {
     const { showingDeviceTimePrompt } = this.props;
-    const { tags } = showingDeviceTimePrompt.cfg.deviceInfo;
-    if(_.indexOf(tags, 'insulin-pump') !== -1){
+    const { deviceInfo } = showingDeviceTimePrompt.cfg;
+    if(_.indexOf(deviceInfo?.tags, 'insulin-pump') !== -1){
       return { value: 'insulin-pump', text: i18n.t('pump') };
     }
-    if(_.indexOf(tags, 'cgm') !== -1){
+    if(_.indexOf(deviceInfo?.tags, 'cgm') !== -1){
       return { value: 'cgm', text: i18n.t('CGM') };
     }
-    if(_.indexOf(tags, 'bgm') !== -1){
+    if(_.indexOf(deviceInfo?.tags, 'bgm') !== -1){
       return { value: 'bgm', text: i18n.t('meter') };
     }
     return 'unknown';
@@ -68,14 +67,12 @@ export class DeviceTimeModal extends Component {
     const reminder = this.getReminder();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
-    if ( !this.isDevice('Animas') &&
-         !this.isDevice('InsuletOmniPod') &&
+    if ( !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
          !this.isDevice('Tandem') &&
          !this.isDevice('TrueMetrix') &&
-         !this.isDevice('Weitai') &&
-         !this.isDevice('OneTouchVerioBLE')
+         !this.isDevice('Weitai')
       ) {
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
