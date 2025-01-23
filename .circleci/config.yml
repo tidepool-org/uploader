@@ -28,8 +28,8 @@ jobs:
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-          nvm install v18.17.1
-          nvm alias default v18.17.1
+          nvm install v20.14.0
+          nvm alias default v20.14.0
     - run: node -v
     - run: npm install --global node-gyp
     - run: echo $SHELL
@@ -111,7 +111,7 @@ jobs:
       BASH_ENV: ".circleci/bash_env.sh"
       DISPLAY: ":99"
     docker:
-      - image: cimg/node:18.17.1-browsers
+      - image: cimg/node:20.14.0-browsers
     steps:
       - setup_remote_docker:
           version: docker23
@@ -152,8 +152,8 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: python -m pip install packaging
       - run: pip install setuptools
-      - run: nvm install v18.17.1
-      - run: nvm use v18.17.1
+      - run: nvm install v20.14.0
+      - run: nvm use v20.14.0
       - run: node -v
       - run: npm install --global npm@8 node-gyp
       - run: npm -v

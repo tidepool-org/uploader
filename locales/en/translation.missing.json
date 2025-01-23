@@ -72,5 +72,11 @@
   "There is no new data since last time. If you think this is an error, please reach out below.": "There is no new data since last time. If you think this is an error, please reach out below.",
   "Data is up to date": "Data is up to date",
   "There is no data on the device. If you think this is an error, please reach out below.": "There is no data on the device. If you think this is an error, please reach out below.",
-  "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.": "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload."
+  "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.": "Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.",
+  "Clinic Workspace": "Clinic Workspace",
+  "To manage your clinic workspaces and view patient invites": "To manage your clinic workspaces and view patient invites",
+  "login to your account in Tidepool Web": "login to your account in Tidepool Web",
+  "Go to Workspace": "Go to Workspace",
+  "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
+  "Go to Private Workspace": "Go to Private Workspace"
 }
