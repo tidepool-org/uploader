@@ -211,24 +211,26 @@ export function mergeProfileUpdates(profile, updates){
 
 export function sendToRollbar(err, props) {
   return new Promise((resolve) => {
-    if (rollbar) {
-      const extra = {};
-      if (_.get(props, 'data.blobId', false)) {
-        _.assign(extra, { blobId: props.data.blobId });
-      }
-
-      rollbar.error(err, extra, (err, data) => {
-        if (err) {
-          console.log('Error while reporting error to Rollbar:', err);
-        } else {
-          console.log(`Rollbar UUID: ${data.result.uuid}`);
-          props.uuid = data.result.uuid;
-        }
-        resolve(props);
-      });
-    } else {
-      resolve(props);
+    if (!rollbar) {
+      return resolve(props);
     }
+
+    const extra = { ...props };
+    delete extra.data;
+
+    if (_.get(props, 'data.blobId', false)) {
+      extra.blobId = props.data.blobId;
+    }
+    
+    rollbar.error(err, extra, (reportingErr, data) => {
+      if (reportingErr) {
+        console.log('Error while reporting error to Rollbar:', reportingErr);
+      } else {
+        console.log(`Rollbar UUID: ${data.result.uuid}`);
+        props.uuid = data.result.uuid;
+      }
+      resolve(props);
+    });
   });
 }
 
