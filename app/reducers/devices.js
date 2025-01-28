@@ -109,6 +109,13 @@ const devices = {
     source: {type: 'device', driverId: 'EmbraceTALK'},
     enabled: {mac: true, win: true, linux: true}
   },
+  caresens: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'EmbracePRO',
+    key: 'embracepro',
+    source: {type: 'device', driverId: 'EmbracePRO'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   weitai: {
     instructions: 'Plug in PDA with micro-USB',
     name: 'Equil Insulin Patch/Micro Pump',
