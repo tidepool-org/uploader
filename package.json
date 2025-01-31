@@ -144,11 +144,10 @@
     "@babel/register": "7.25.9",
     "@babel/runtime-corejs2": "7.26.0",
     "@electron/notarize": "2.5.0",
-    "@jest-runner/electron": "3.0.1",
+    "@kayahr/jest-electron-runner": "29.15.0",
     "@tidepool/direct-io": "3.0.2",
     "aws-sdk": "2.1692.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "26.6.3",
+    "babel-jest": "29.7.0",
     "babel-loader": "8.2.5",
     "babel-plugin-add-module-exports": "1.0.4",
     "babel-plugin-dev-expression": "0.2.2",
@@ -181,7 +180,7 @@
     "flux-standard-action": "2.1.2",
     "ftp": "0.3.10",
     "html-webpack-plugin": "4.5.2",
-    "jest": "26.6.3",
+    "jest": "29.7.0",
     "json-loader": "0.5.7",
     "less-loader": "6.2.0",
     "mini-css-extract-plugin": "0.12.0",
@@ -231,7 +230,7 @@
       "**/test/(app|lib)/**/*.js"
     ],
     "transformIgnorePatterns": [
-      "../node_modules/(?!(webmtp)/)",
+      "../node_modules/(?!(webmtp|uuid)/)",
       "platform-client"
     ],
     "modulePathIgnorePatterns": [
@@ -241,8 +240,8 @@
       "node_modules",
       "app"
     ],
-    "runner": "@jest-runner/electron",
-    "testEnvironment": "@jest-runner/electron/environment",
+    "runner": "@kayahr/jest-electron-runner",
+    "testEnvironment": "@kayahr/jest-electron-runner/environment",
     "setupFiles": [
       "<rootDir>/jest.setup.js"
     ]
