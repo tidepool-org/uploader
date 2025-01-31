@@ -3,6 +3,7 @@ WORKDIR /app
 RUN mkdir -p dist node_modules .yarn-cache && chown -R node:node .
 
 FROM base as build
+ARG VERSION_SHA
 ARG API_URL
 ARG UPLOAD_URL
 ARG DATA_URL
