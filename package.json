@@ -1,5 +1,9 @@
 {
   "name": "tidepool-uploader",
+  "engines": {
+    "node": "20.14.0"
+  },
+  "packageManager": "yarn@3.6.4",
   "version": "2.61.0",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
@@ -47,8 +51,8 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.4",
     "babyparse": "0.4.6",
-    "body-parser": "1.20.3",
     "ble-glucose": "0.7.0",
+    "body-parser": "1.20.3",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
     "classnames": "2.5.1",
@@ -207,8 +211,7 @@
     "npm": ">=3.x"
   },
   "resolutions": {
-    "charm": "1.0.2",
-    "**/**/node-gyp": "^8.4.0"
+    "charm": "1.0.2"
   },
   "jest": {
     "moduleNameMapper": {
