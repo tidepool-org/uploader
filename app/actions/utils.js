@@ -159,6 +159,12 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         displayErr.linkText = 'access to removable volumes.';
       }
 
+      if (err.code === 'E_OMNIPOD_CHECKSUM') {
+        displayErr.message = 'Before you click to upload, please wait until your PDM displays the message';
+        displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029369472-Uploading-your-Insulet-Omnipod-DASH#h_351dc475-a17c-4d1d-a66b-04912d0b652f';
+        displayErr.linkText = '\"Your PDM data is ready for export\".';
+      }
+
       if (err.message === 'E_DATETIME_SET_BY_PUMP') {
         displayErr.message = ErrorMessages.E_DATETIME_SET_BY_PUMP;
         uploadErrProps.details = 'Incorrect date/time being synced from linked pump';
@@ -167,6 +173,16 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       if (err.message === 'E_LIBREVIEW_FORMAT') {
         displayErr.message = ErrorMessages.E_LIBREVIEW_FORMAT;
         uploadErrProps.details = 'Could not validate the date format';
+      }
+
+      if (err.code === 'E_NO_RECORDS') {
+        displayErr.message = ErrorMessages.E_NO_RECORDS;
+        displayErr.code = 'E_NO_RECORDS';
+      }
+
+      if (err.code === 'E_NO_NEW_RECORDS') {
+        displayErr.message = ErrorMessages.E_NO_NEW_RECORDS;
+        displayErr.code = 'E_NO_NEW_RECORDS';
       }
 
       if (process.env.NODE_ENV !== 'test') {
@@ -195,24 +211,26 @@ export function mergeProfileUpdates(profile, updates){
 
 export function sendToRollbar(err, props) {
   return new Promise((resolve) => {
-    if (rollbar) {
-      const extra = {};
-      if (_.get(props, 'data.blobId', false)) {
-        _.assign(extra, { blobId: props.data.blobId });
-      }
-
-      rollbar.error(err, extra, (err, data) => {
-        if (err) {
-          console.log('Error while reporting error to Rollbar:', err);
-        } else {
-          console.log(`Rollbar UUID: ${data.result.uuid}`);
-          props.uuid = data.result.uuid;
-        }
-        resolve(props);
-      });
-    } else {
-      resolve(props);
+    if (!rollbar) {
+      return resolve(props);
     }
+
+    const extra = { ...props };
+    delete extra.data;
+
+    if (_.get(props, 'data.blobId', false)) {
+      extra.blobId = props.data.blobId;
+    }
+    
+    rollbar.error(err, extra, (reportingErr, data) => {
+      if (reportingErr) {
+        console.log('Error while reporting error to Rollbar:', reportingErr);
+      } else {
+        console.log(`Rollbar UUID: ${data.result.uuid}`);
+        props.uuid = data.result.uuid;
+      }
+      resolve(props);
+    });
   });
 }
 
