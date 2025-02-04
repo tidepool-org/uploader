@@ -98,6 +98,13 @@ const devices = {
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
+  embracepro: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'EmbracePRO',
+    key: 'embracepro',
+    source: {type: 'device', driverId: 'EmbracePRO'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   embracetalk: {
     instructions: {
                     text: i18n.t('Plug in meter with cable and set meter to'),
@@ -107,13 +114,6 @@ const devices = {
     name: 'EmbraceTALK',
     key: 'embracetalk',
     source: {type: 'device', driverId: 'EmbraceTALK'},
-    enabled: {mac: true, win: true, linux: true}
-  },
-  caresens: {
-    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'EmbracePRO',
-    key: 'embracepro',
-    source: {type: 'device', driverId: 'EmbracePRO'},
     enabled: {mac: true, win: true, linux: true}
   },
   weitai: {
@@ -169,6 +169,13 @@ const devices = {
     name: 'GlucoRx Nexus, Nexus Mini Ultra, Go & HCT',
     key: 'glucorx',
     source: {type: 'device', driverId: 'GlucoRx'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  glucozenauto: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'GlucoZen.auto',
+    key: 'glucozenauto',
+    source: {type: 'device', driverId: 'GlucoZenAuto'},
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
