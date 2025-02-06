@@ -40,10 +40,10 @@ RUN \
   && apk --no-cache upgrade \
   && apk add --no-cache --virtual .build-deps alpine-sdk python3 linux-headers eudev-dev ffmpeg-dev \
   && rm -rf /var/cache/apk/* /tmp/*
+RUN corepack enable
 USER node
 RUN mkdir -p /home/node/.yarn-cache /home/node/.cache/yarn
 COPY --chown=node:node package.json yarn.lock ./
-RUN corepack enable --install-directory ~/bin
 RUN --mount=type=cache,target=/home/node/.yarn-cache,id=yarn,uid=1000,gid=1000 yarn install --ignore-scripts --cache-folder /home/node/.yarn-cache
 # Copy source files, and possibily invalidate so we have to rebuild
 COPY --chown=node:node . .

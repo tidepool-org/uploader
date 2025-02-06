@@ -9,6 +9,7 @@ const config = {
     output: 'release'
   },
   afterSign: 'scripts/notarize.js',
+  nativeRebuilder: 'legacy',
   dmg: {
     contents: [
       {
