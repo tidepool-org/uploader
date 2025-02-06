@@ -1,5 +1,5 @@
 import env from './env';
-import { reactI18nextModule } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import _ from 'lodash';
 
 let i18n;
@@ -56,7 +56,7 @@ if (env.electron_main) {
 
     if (!i18n.isInitialized) {
       i18n
-        .use(reactI18nextModule)
+        .use(initReactI18next)
         .use(i18nextBackend)
         .init(i18nextOptions, function(err, t) {
           if (err) {
@@ -147,7 +147,7 @@ if (env.browser && !env.electron_renderer) {
     }
 
     if (!i18n.isInitialized) {
-      i18n.use(reactI18nextModule).init(i18nextOptions, function(err, t) {
+      i18n.use(initReactI18next).init(i18nextOptions, function(err, t) {
         if (err) {
           console.log('An error occurred in i18next:', err);
         }
