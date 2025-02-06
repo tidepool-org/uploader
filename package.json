@@ -30,7 +30,7 @@
     "build-renderer-quiet": "cross-env NODE_ENV=production webpack --config webpack.config.renderer.prod.babel.mjs",
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-quiet": "concurrently \"yarn build-main-quiet\" \"yarn build-renderer-quiet\"",
-    "build-web": "cross-env NODE_ENV=production webpack --config webpack.config.web.dev.babel.js",
+    "build-web": "cross-env NODE_ENV=production webpack --config webpack.config.web.dev.babel.mjs",
     "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
     "postinstall": "electron-builder install-app-deps",
     "dev": "cross-env START_HOT=1 yarn start-renderer-dev",

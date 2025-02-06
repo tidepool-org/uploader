@@ -38,16 +38,19 @@ RUN \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
   && apk --no-cache update \
   && apk --no-cache upgrade \
-  && apk add --no-cache --virtual .build-deps alpine-sdk python3 linux-headers eudev-dev ffmpeg-dev \
+  && apk add --no-cache --virtual .build-deps alpine-sdk python3 py3-setuptools linux-headers eudev-dev ffmpeg-dev jq \
   && rm -rf /var/cache/apk/* /tmp/*
-RUN corepack enable
+RUN corepack enable \
+  && yarn set version 3.6.4 \
+  && mkdir -p dist node_modules .yarn-cache .yarn && chown -R node:node .
 USER node
 RUN mkdir -p /home/node/.yarn-cache /home/node/.cache/yarn && yarn config set cacheFolder /home/node/.yarn-cache
-COPY --chown=node:node package.json yarn.lock ./
-RUN --mount=type=cache,target=/home/node/.yarn-cache,id=yarn,uid=1000,gid=1000 yarn install --silent
+COPY --chown=node:node package.json yarn.lock .yarnrc.yml ./
+RUN jq 'del(.scripts.postinstall)' package.json > package.json.tmp && mv package.json.tmp package.json
+RUN --mount=type=cache,target=/home/node/.yarn-cache,id=yarn,uid=1000,gid=1000 yarn install --immutable --inline-builds
 # Copy source files, and possibily invalidate so we have to rebuild
 COPY --chown=node:node . .
-RUN npm run build-web
+RUN yarn run build-web
 USER root
 RUN apk del .build-deps
 

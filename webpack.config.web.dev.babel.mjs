@@ -334,9 +334,8 @@ export default merge(baseConfig, {
       : [
           new TerserPlugin({
             parallel: true,
-            sourceMap: true,
-            cache: true,
             terserOptions: {
+              sourceMap: true,
               mangle: false
             },
             extractComments: false
