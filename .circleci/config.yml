@@ -129,7 +129,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-web-{{ checksum "package.json" }}
 
-      - run: corepack enable
+      - run: corepack enable --install-directory ~/bin
       - run: yarn config set cacheFolder ~/.cache/yarn
       - run: yarn --frozen-lockfile
       - save_cache:
