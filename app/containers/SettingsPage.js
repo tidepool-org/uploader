@@ -21,7 +21,7 @@ import DeviceSelection from '../components/DeviceSelection';
 import UserDropdown from '../components/UserDropdown';
 import ClinicUserBlock from '../components/ClinicUserBlock';
 import cx from 'classnames';
-import styles from '../../styles/components/App.module.less';
+import * as styles from '../../styles/components/App.module.less';
 import { pages } from '../constants/otherConstants';
 import * as metrics from '../constants/metrics';
 import { connect } from 'react-redux';

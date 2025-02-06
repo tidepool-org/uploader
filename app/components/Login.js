@@ -16,7 +16,7 @@
  */
 
 import React, { useState } from 'react';
-import styles from '../../styles/components/Login.module.less';
+import * as styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import env from '../utils/env';
 import { i18n } from '../utils/config.i18next';

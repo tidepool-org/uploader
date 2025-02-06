@@ -10,16 +10,21 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import merge from 'webpack-merge';
-import baseConfig from './webpack.config.base';
-import cp from 'child_process';
-import { spawn } from 'child_process';
-import path from 'path';
-import fs from 'fs';
-import terser from 'terser';
+import { merge } from 'webpack-merge';
+import baseConfig from './webpack.config.base.mjs';
+import cp from 'node:child_process';
+import path from 'node:path';
+import fs from 'node:fs';
+import * as terser from 'terser';
 import optional from 'optional';
 import _ from 'lodash';
+import { fileURLToPath } from 'node:url';
 import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
+
+// Create dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const isDev = process.env.NODE_ENV === 'development';
 const isTest = process.env.NODE_ENV === 'test';
@@ -43,13 +48,15 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
+const localConfig = optional('./config/local');
+
 const apiUrl = _.get(
-  optional('./config/local'),
+  localConfig,
   'environment.API_URL',
   process.env.API_URL || null
 );
 const uploadUrl = _.get(
-  optional('./config/local'),
+  localConfig,
   'environment.UPLOAD_URL',
   process.env.UPLOAD_URL || null
 );
@@ -59,12 +66,12 @@ const dataUrl = _.get(
   process.env.DATA_URL || null
 );
 const blipUrl = _.get(
-  optional('./config/local'),
+  localConfig,
   'environment.BLIP_URL',
   process.env.BLIP_URL || null
 );
 const i18nEnabled = _.get(
-  optional('./config/local'),
+  localConfig,
   'I18N_ENABLED',
   process.env.I18N_ENABLED || null
 );
@@ -82,12 +89,15 @@ const output = {
   libraryTarget: 'umd',
 };
 
-const entry = [require.resolve('./app/index')];
+const entry = [path.resolve(__dirname, './app/index.js')];
 
 let devtool = process.env.WEBPACK_DEVTOOL || 'inline-source-map';
 if (process.env.WEBPACK_DEVTOOL === false) devtool = undefined;
 
-let plugins = [
+const plugins = [
+  new NodePolyfillPlugin({
+    additionalAliases: ['process'],
+  }),
   new webpack.NoEmitOnErrorsPlugin(),
 
   /**
@@ -143,8 +153,6 @@ let plugins = [
     //inject: false,
   }),
 
-  new webpack.NamedModulesPlugin(),
-
   /** Upload sourcemap to Rollbar */
   ...(ROLLBAR_POST_TOKEN ? [new RollbarSourceMapPlugin({
     accessToken: ROLLBAR_POST_TOKEN,
@@ -157,7 +165,7 @@ if (isProd) {
   styleLoader = MiniCssExtractPlugin.loader;
 }
 
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool,
 
   mode: isDev ? 'development' : 'production',
@@ -271,75 +279,27 @@ export default merge.smart(baseConfig, {
 
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-
-            options: {
-              limit: 10000,
-              mimetype: 'application/font-woff',
-            },
-          },
-        ],
+        type: 'asset',
       },
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-
-            options: {
-              limit: 10000,
-              mimetype: 'application/font-woff',
-            },
-          },
-        ],
+        type: 'asset',
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-
-            options: {
-              limit: 10000,
-              mimetype: 'application/octet-stream',
-            },
-          },
-        ],
+        type: 'asset',
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
+        type: 'asset',
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-
-            options: {
-              limit: 10000,
-              mimetype: 'image/svg+xml',
-            },
-          },
-        ],
+        type: 'asset',
       },
-
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-            },
-          },
-        ],
+        type: 'asset',
       },
       {
         test: /\.wasm$/,
@@ -353,11 +313,19 @@ export default merge.smart(baseConfig, {
           },
         ],
       },
+      {
+        test: /\.node$/,
+        loader: 'node-loader',
+      },
     ],
   },
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
+    },
+    fallback: {
+      dns: false,
+      child_process: false,
     },
   },
   optimization: {
@@ -381,16 +349,14 @@ export default merge.smart(baseConfig, {
               }
             }
           })
-        ]
+        ],
+      moduleIds: 'named',
   },
   plugins,
 
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
     __filename: false,
-    fs: 'empty',
-    dns: 'empty',
-    child_process: 'empty',
   },
 
   devServer: {

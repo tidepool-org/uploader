@@ -8,8 +8,17 @@ let setLanguage;
 
 if (env.electron_main) {
   i18n = require('i18next');
+
+  if(i18n.default) {
+    i18n = i18n.default;
+  }
+
   const { app } = require('electron');
-  const i18nextBackend = require('i18next-fs-backend');
+  let i18nextBackend = require('i18next-fs-backend');
+
+  if(i18nextBackend.default) {
+    i18nextBackend = i18nextBackend.default;
+  }
 
   var path = require('path');
 
@@ -73,7 +82,7 @@ if (env.electron_main) {
 }
 
 if (env.browser && !env.electron_renderer) {
-  i18n = require('i18next');
+  i18n = require('i18next').default;
   i18nextOptions = {
     // backend: {
     //   loadPath: './locales/{{lng}}/{{ns}}.json',
