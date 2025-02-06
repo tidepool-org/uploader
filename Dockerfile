@@ -42,9 +42,9 @@ RUN \
   && rm -rf /var/cache/apk/* /tmp/*
 RUN corepack enable
 USER node
-RUN mkdir -p /home/node/.yarn-cache /home/node/.cache/yarn
+RUN mkdir -p /home/node/.yarn-cache /home/node/.cache/yarn && yarn config set cacheFolder /home/node/.yarn-cache
 COPY --chown=node:node package.json yarn.lock ./
-RUN --mount=type=cache,target=/home/node/.yarn-cache,id=yarn,uid=1000,gid=1000 yarn install --ignore-scripts --cache-folder /home/node/.yarn-cache
+RUN --mount=type=cache,target=/home/node/.yarn-cache,id=yarn,uid=1000,gid=1000 yarn install --silent
 # Copy source files, and possibily invalidate so we have to rebuild
 COPY --chown=node:node . .
 RUN npm run build-web
