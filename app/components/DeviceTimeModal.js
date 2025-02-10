@@ -78,10 +78,11 @@ export class DeviceTimeModal extends Component {
 
       let prompt;
       if (isTimeSetOnly) {
-        prompt =
+        prompt = (
           <div>
-            {i18n.t('If you want to continue with the upload:', { text: type.text })}<br/>&nbsp;
+            {i18n.t('If you want to continue with the upload:', { text: type.text })}<br />&nbsp;
           </div>
+        );
       } else {
         prompt = (
           <div>
