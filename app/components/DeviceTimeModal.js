@@ -65,6 +65,7 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
     const reminder = this.getReminder();
+    const isTimeSetOnly = this.isSetTimeOnly();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
     if ( !this.isDevice('InsuletOmniPod') &&
@@ -74,9 +75,23 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('TrueMetrix') &&
          !this.isDevice('Weitai')
       ) {
+
+      let prompt;
+      if (isTimeSetOnly) {
+        prompt =
+          <div>
+            {i18n.t('If you want to continue with the upload:', { text: type.text })}<br/>&nbsp;
+          </div>
+      } else {
+        prompt = (
+          <div>
+            {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
+          </div>
+        );
+      }
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
-        {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
+        {prompt}
         <button className={styles.button} onClick={this.handleContinue}>
           {i18n.t('Automatically update time to')}<br/>
           {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
@@ -131,6 +146,11 @@ export class DeviceTimeModal extends Component {
     return reminder;
   };
 
+  isSetTimeOnly = () => {
+    const { showingDeviceTimePrompt: { cfg: { deviceInfo } } } = this.props;
+    return deviceInfo.setTimeOnly ? true : false;
+  };
+
   render() {
     const { showingDeviceTimePrompt } = this.props;
 
@@ -144,32 +164,57 @@ export class DeviceTimeModal extends Component {
     const actions = this.getActions();
     const message = this.getMessage();
 
-    return (
-      <div className={styles.modalWrap}>
-        <div className={styles.modal}>
-          <div className={styles.title}>
-            <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
-            <div className={styles.highlight}>{`${timezone}:`}</div>
-          </div>
-          <hr className={styles.hr} />
-          <div className={styles.text}>
-            <div className={styles.timeCompare}>
-              <div>{timezone}:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+    if (this.isSetTimeOnly()) {
+      return (
+        <div className={styles.modalWrap}>
+          <div className={styles.modal}>
+            <div className={styles.title}>
+              <div>{i18n.t('We will be updating the time on your {{text}} to',{ text: type.text })}</div>
+              <div className={styles.highlight}>{`${timezone}:`}</div>
             </div>
-            <div className={styles.timeCompare}>
-              <div>{i18n.t('Device time:')}</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
+            <hr className={styles.hr} />
+            <div className={styles.text}>
+              <div className={styles.timeCompare}>
+                <div>{timezone}:</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+              </div>
             </div>
+            <hr className={styles.hr} />
+            <div className={styles.actions}>
+              {actions}
+            </div>
+            {message}
           </div>
-          <hr className={styles.hr} />
-          <div className={styles.actions}>
-            {actions}
-          </div>
-          {message}
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={styles.modalWrap}>
+          <div className={styles.modal}>
+            <div className={styles.title}>
+              <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
+              <div className={styles.highlight}>{`${timezone}:`}</div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.text}>
+              <div className={styles.timeCompare}>
+                <div>{timezone}:</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+              </div>
+              <div className={styles.timeCompare}>
+                <div>{i18n.t('Device time:')}</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
+              </div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.actions}>
+              {actions}
+            </div>
+            {message}
+          </div>
+        </div>
+      );
+    }
   }
 };
 
