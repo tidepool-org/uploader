@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import limitReached_img from '../../images/LimitReached.svg';
-import styles from '../../styles/components/PatientLimitModal.module.less';
+import * as styles from '../../styles/components/PatientLimitModal.module.less';
 import { sync as syncActions } from '../actions/';
 import { URL_TIDEPOOL_PLUS_PLANS } from '../constants/otherConstants';
 

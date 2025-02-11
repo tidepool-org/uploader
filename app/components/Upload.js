@@ -32,7 +32,7 @@ import uploadDataPeriod from '../utils/uploadDataPeriod';
 
 import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
 
-import styles from '../../styles/components/Upload.module.less';
+import * as styles from '../../styles/components/Upload.module.less';
 import env from '../utils/env';
 let keytar;
 if(env.electron_renderer){

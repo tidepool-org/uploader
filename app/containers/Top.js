@@ -1,4 +1,4 @@
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import rollbar from '../utils/rollbar';
 import _ from 'lodash';
 import React from 'react';
@@ -48,4 +48,4 @@ const Top = () => (
     </ConnectedRouter>
   </Provider>
 );
-export default hot(module)(Top);
+export default hot(Top);

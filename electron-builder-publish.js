@@ -9,7 +9,9 @@ const config = {
     output: 'release'
   },
   afterSign: 'scripts/notarize.js',
+  nativeRebuilder: 'legacy',
   dmg: {
+    artifactName: '${productName}-${version}.${ext}',
     contents: [
       {
         x: 381,
@@ -75,17 +77,18 @@ const config = {
   },
   mac: {
     category: 'public.app-category.tools',
+    artifactName: '${productName}-${version}-${os}.${ext}',
     target: [
       {
         target: 'zip',
         arch: [
-          'x64'
+          'universal'
         ]
       },
       {
         target: 'dmg',
         arch: [
-          'x64'
+          'universal'
         ]
       },
       'dir'
