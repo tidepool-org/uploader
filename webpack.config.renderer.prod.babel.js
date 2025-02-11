@@ -14,7 +14,9 @@ import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
+  process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
