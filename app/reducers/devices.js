@@ -41,6 +41,14 @@ const devices = {
     source: {type: 'device', driverId: 'AbbottPrecisionXtra'},
     enabled: {mac: false, win: true, linux: true}
   },
+  accuchekusb: {
+    instructions: i18n.t('Plug in meter with micro-USB cable'),
+    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
+    key: 'accuchekusb',
+    source: {type: 'device', driverId: 'AccuChekUSB'},
+    enabled: {mac: true, win: true, linux: true},
+    powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
   bayercontournext: {
     instructions: i18n.t('Plug meter into USB port'),
     key: 'bayercontournext',
@@ -65,7 +73,7 @@ const devices = {
   },
   caresens: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
-    name: 'CareSens N Premier, Dual, N Plus BT, Pro & N (Model: GM505PAD)',
+    name: 'CareSens N Premier, Dual, N Plus BT, N (Model: GM505PAD) & Pro (Connect with USB)',
     key: 'caresens',
     source: {type: 'device', driverId: 'CareSens'},
     enabled: {mac: true, win: true, linux: true}
@@ -76,7 +84,7 @@ const devices = {
                     linkText: i18n.t('visit our support site'),
                     link: 'https://support.tidepool.org/hc/en-us/articles/360035332972#h_01EDCWR70ZH3WMHY4RX3SC80NX',
                   },
-    name: 'CareSens N Premier, Dual & N Plus BT (using Bluetooth)',
+    name: 'CareSens N Premier, Dual & N Plus BT (Connect with Bluetooth)',
     key: 'caresensble',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: false, linux: true}
@@ -112,7 +120,7 @@ const devices = {
   foracareble: {
     instructions: i18n.t('Hold Bluetooth switch on meter until Bluetooth indicator starts to flash'),
     key: 'foracareble',
-    name: 'Fora TN\'G Voice (using Bluetooth)',
+    name: 'Fora TN\'G Voice (Connect with Bluetooth)',
     source: {type: 'device', driverId: 'BluetoothLE'},
     enabled: {mac: true, win: true, linux: true}
   },
@@ -203,7 +211,7 @@ const devices = {
   },
   onetouchselect: {
     instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
-    name: 'OneTouch Select Plus Flex',
+    name: 'OneTouch Select Plus Flex (Connect with USB)',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
     enabled: {linux: false, mac: false, win: true},
@@ -211,15 +219,23 @@ const devices = {
   },
   onetouchverio: {
     instructions: i18n.t('Plug in meter with micro-USB cable and make sure Uploader Helper extension is installed'),
-    name: 'OneTouch Verio, Verio Flex and Verio Reflect',
+    name: 'OneTouch Verio, Verio Flex and Verio Reflect (Connect with USB)',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
     enabled: {linux: false, mac: false, win: true},
     powerOnlyWarning: true,
   },
+  onetouchultraplus: {
+    instructions: i18n.t('Plug in meter with micro-USB'),
+    name: 'OneTouch Ultra Plus Flex (Connect with USB)',
+    key: 'onetouchultraplus',
+    source: {type: 'device', driverId: 'OneTouchUltraPlus'},
+    enabled: {linux: true, mac: true, win: true},
+    powerOnlyWarning: true,
+  },
   onetouchverioble: {
     instructions: i18n.t('Turn meter on and make sure Bluetooth is switched on'),
-    name: 'OneTouch Verio Flex, Verio Reflect & Select Plus Flex (with Bluetooth)',
+    name: 'OneTouch Verio Flex, Verio Reflect, Select Plus Flex and Ultra Plus Flex (Connect with Bluetooth)',
     key: 'onetouchverioble',
     source: {type: 'device', driverId: 'OneTouchVerioBLE'},
     enabled: {mac: true, win: true, linux: true}
@@ -248,11 +264,22 @@ const devices = {
   },
   relionplatinum: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'ReliOn Platinum',
+    name: 'ReliOn Platinum (Connect with USB)',
     key: 'relionplatinum',
     source: {type: 'device', driverId: 'ReliOnPlatinum'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,  // shows warning for power-only USB cables
+  },
+  relionplatinumble: {
+    instructions: {
+                    text: i18n.t('To pair: With meter off, hold the down arrow button until Bluetooth symbol appears \u2022 For full pairing instructions,'),
+                    linkText: i18n.t('visit our support site'),
+                    link: 'https://support.tidepool.org/hc/en-us/articles/14204858905492-Uploading-your-ReliOn-Platinum-meter',
+                  },
+    name: 'ReliOn Platinum (Connect with Bluetooth)',
+    key: 'relionplatinumble',
+    source: {type: 'device', driverId: 'BluetoothLE'},
+    enabled: {mac: true, win: true, linux: true}
   },
   relionpremier: {
     instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
@@ -267,14 +294,6 @@ const devices = {
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
     enabled: {mac: true, win: true, linux: true},
-  },
-  accuchekusb: {
-    instructions: i18n.t('Plug in meter with micro-USB cable'),
-    name: 'Accu-Chek Aviva Connect, Instant, Guide & Guide Me',
-    key: 'accuchekusb',
-    source: {type: 'device', driverId: 'AccuChekUSB'},
-    enabled: {mac: true, win: true, linux: true},
-    powerOnlyWarning: true,  // shows warning for power-only USB cables
   },
   tandem: {
     instructions: i18n.t('Plug in pump with micro-USB'),

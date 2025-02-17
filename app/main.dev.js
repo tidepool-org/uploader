@@ -71,7 +71,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  require('electron-debug')(); // eslint-disable-line global-require
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
   require('module').globalPaths.push(p); // eslint-disable-line
   process.env.APPIMAGE = path.join(__dirname, 'release');
@@ -157,6 +156,7 @@ function createWindow() {
     },
     acceptFirstMouse: true,
   });
+  mainWindow.setContentSize(663, 741); // newer electron versions break layout on Windows if this is not set
 
   protocol.handle(PROTOCOL_PREFIX, (request) => {
     return handleIncomingUrl(request.url);
@@ -273,11 +273,16 @@ operating system, as soon as possible.`,
 
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
     event.preventDefault();
+    portList = portList.filter(port => (
+      // filter out signature pads
+      port.serialNumber !== 'TOPAZBSB' &&
+      !(typeof port.deviceInstanceId === 'string' && port.deviceInstanceId.includes('TOPAZBSB'))
+    ));
     console.log('Port list:', portList);
 
     let selectedPort;
     for (let i = 0; i < serialPortFilter.length; i++) {
-      selectedPort = portList.find((element) => 
+      selectedPort = portList.find((element) =>
         serialPortFilter[i].usbVendorId === parseInt(element.vendorId, 10) &&
         serialPortFilter[i].usbProductId === parseInt(element.productId, 10)
       );
@@ -717,7 +722,7 @@ if (!gotTheLock) {
       return handleIncomingUrl(url);
     }
   });
-  
+
   // Protocol handler for osx
   app.on('open-url', (event, url) => {
     event.preventDefault();
