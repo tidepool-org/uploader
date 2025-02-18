@@ -78,5 +78,6 @@
   "login to your account in Tidepool Web": "login to your account in Tidepool Web",
   "Go to Workspace": "Go to Workspace",
   "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
-  "Go to Private Workspace": "Go to Private Workspace"
+  "Go to Private Workspace": "Go to Private Workspace",
+  "Couldn't connect to device.": "Couldn't connect to device."
 }
