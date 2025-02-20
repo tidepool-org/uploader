@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.61.0-sampleinterval-backfilled.1",
+  "version": "2.61.0-sampleinterval-backfilled.2",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
