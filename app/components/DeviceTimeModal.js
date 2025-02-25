@@ -23,7 +23,7 @@ import sundial from 'sundial';
 
 import { sync as syncActions } from '../actions/';
 
-import styles from '../../styles/components/DeviceTimeModal.module.less';
+import * as styles from '../../styles/components/DeviceTimeModal.module.less';
 
 import { i18n } from '../utils/config.i18next';
 

@@ -21,7 +21,7 @@ import React, { Component } from 'react';
 
 import ErrorMessages from '../constants/errorMessages';
 
-import styles from '../../styles/components/VersionCheck.module.less';
+import * as styles from '../../styles/components/VersionCheck.module.less';
 import CloudOff from '@mui/icons-material/CloudOff';
 
 import { i18n } from '../utils/config.i18next';
