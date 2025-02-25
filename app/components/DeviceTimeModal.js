@@ -79,7 +79,20 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('Weitai')
       ) {
 
-      if (!isTimeSetOnly) {
+      let buttonText = (
+        <div>
+          {i18n.t('Automatically update time to')}<br/>
+          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
+        </div>
+      );
+
+      if (isTimeSetOnly) {
+        buttonText = (
+          <div>
+            {i18n.t('Continue with the upload')}{footnote}
+          </div>
+        );
+      } else {
         prompt = (
           <div>
             {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
@@ -96,8 +109,7 @@ export class DeviceTimeModal extends Component {
         <div className={styles.buttonGroup} key='continue' >
         {prompt}
         <button className={styles.button} onClick={this.handleContinue}>
-          {i18n.t('Automatically update time to')}<br/>
-          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
+          {buttonText}
         </button>
         </div>
       );
@@ -106,7 +118,7 @@ export class DeviceTimeModal extends Component {
       <div className={styles.buttonGroup} key='cancel'>
       {question}
       {reminder}
-      <button className={styles.button} onClick={this.handleCancel}>
+      <button className={styles.buttonSecondary} onClick={this.handleCancel}>
         {i18n.t('Cancel this upload')}
       </button>
       </div>
