@@ -16,9 +16,11 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
+  process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
-  cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
+  cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
 const publicPath = `http://localhost:${port}/dist`;
