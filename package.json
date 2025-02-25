@@ -4,7 +4,7 @@
     "node": "20.14.0"
   },
   "packageManager": "yarn@3.6.4",
-  "version": "2.61.0-upload-1440-dep-updates.2",
+  "version": "2.61.0-upload-1440-dep-updates.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
