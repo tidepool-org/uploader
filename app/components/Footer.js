@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
 
-import styles from '../../styles/components/Footer.module.less';
+import * as styles from '../../styles/components/Footer.module.less';
 import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
 import env from '../utils/env';
