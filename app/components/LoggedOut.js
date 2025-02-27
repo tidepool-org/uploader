@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/components/LoggedOut.module.less';
+import * as styles from '../../styles/components/LoggedOut.module.less';
 import { useDispatch } from 'react-redux';
 
 import actions from '../actions/';

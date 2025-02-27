@@ -17,12 +17,12 @@
 
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
-import { hot } from 'react-hot-loader';
 
 import bows from 'bows';
 
@@ -59,7 +59,7 @@ import BluetoothModal from '../components/BluetoothModal';
 import PatientLimitModal from '../components/PatientLimitModal.js';
 import LoggedOut from '../components/LoggedOut.js';
 
-import styles from '../../styles/components/App.module.less';
+import * as styles from '../../styles/components/App.module.less';
 import { ipcRenderer } from '../utils/ipc';
 
 let remote, dns;
@@ -317,7 +317,7 @@ export class App extends Component {
 
 App.propTypes = {};
 
-export default hot(module)(connect(
+export default hot(connect(
   (state, ownProps) => {
     return {
       // plain state

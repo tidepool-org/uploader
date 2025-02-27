@@ -2,23 +2,30 @@
 * Build config for electron 'Renderer Process' file
 */
 
-import path from 'path';
+import path from 'node:path';
 import webpack from 'webpack';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import baseConfig from './webpack.config.base';
+import baseConfig from './webpack.config.base.mjs';
 import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
-import cp from 'child_process';
+import cp from 'node:child_process';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { fileURLToPath } from 'node:url';
 
-const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+// Create dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
+  process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
-const ROLLBAR_POST_TOKEN = process.env.ROLLBAR_POST_TOKEN;
+const { ROLLBAR_POST_TOKEN } = process.env;
 
 if (process.env.DEBUG_ERROR === 'true') {
   console.log('~ ~ ~ ~ ~ ~ ~ ~ ~ ~');
@@ -38,8 +45,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool: 'source-map',
 
   mode: 'production',
@@ -50,7 +56,6 @@ export default merge.smart(baseConfig, {
 
   output: {
     path: path.join(__dirname, 'app/dist'),
-    publicPath: '../dist/',
     filename: 'renderer.prod.js'
   },
 
@@ -135,49 +140,29 @@ export default merge.smart(baseConfig, {
         ]
       },
 
-      // Fonts
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/font-woff'
-        }
-      }] },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/font-woff'
-        }
-      }] },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/octet-stream'
-        }
-      }] },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'file-loader'
-      }] },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'image/svg+xml'
-        }
-      }] },
-
-      // Images
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: [{
-          loader: 'url-loader'
-        }]
+        type: 'asset',
       },
 
       {
@@ -197,24 +182,22 @@ export default merge.smart(baseConfig, {
     minimizer: process.env.E2E_BUILD
       ? []
       : [
-          new TerserPlugin({
-            parallel: true,
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            mangle: false,
             sourceMap: true,
-            cache: true,
-            terserOptions: {
-              mangle: false
-            },
-            extractComments: false
-          }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-              map: {
-                inline: false,
-                annotation: true
-              }
+          }
+        }),
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            map: {
+              inline: false,
+              annotation: true,
             }
-          })
-        ]
+          }
+        })
+      ],
   },
 
   plugins: [
