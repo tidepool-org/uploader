@@ -5,15 +5,22 @@
  */
 
 import webpack from 'webpack';
-import merge from 'webpack-merge';
-import baseConfig from './webpack.config.base';
-import cp from 'child_process';
-import { spawn } from 'child_process';
-import path from 'path';
+import { merge } from 'webpack-merge';
+import baseConfig from './webpack.config.base.mjs';
+import cp from 'node:child_process';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+// Create dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
+  process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
-  cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
+  cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
 const port = process.env.PORT || 3005;
 const publicPath = `http://localhost:${port}/dist`;
@@ -36,7 +43,7 @@ if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL &&
   console.log('BLIP_URL =', process.env.BLIP_URL);
 }
 
-export default (env => merge.smart(baseConfig, {
+export default (env => merge(baseConfig, {
   devtool: 'inline-source-map',//'#cheap-module-source-map',
 
   mode: 'development',
@@ -45,7 +52,7 @@ export default (env => merge.smart(baseConfig, {
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    require.resolve('./app/index')
+    path.resolve(__dirname, './app/index')
   ],
 
   output: {
@@ -139,51 +146,29 @@ export default (env => merge.smart(baseConfig, {
           }
         }]
       },
-
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/font-woff'
-        }
-      }] },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/font-woff'
-        }
-      }] },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'application/octet-stream'
-        }
-      }] },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'file-loader'
-      }] },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: [{
-        loader: 'url-loader',
-
-        options: {
-          limit: 10000,
-          mimetype: 'image/svg+xml'
-        }
-      }] },
-
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        type: 'asset',
+      },
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-          }
-        }]
+        type: 'asset',
       },
       {
         test: /\.wasm$/,
@@ -194,7 +179,11 @@ export default (env => merge.smart(baseConfig, {
             name: '[name].[ext]'
           }
         }]
-      }
+      },
+      {
+        test: /\.node$/,
+        loader: 'node-loader',
+      },
 
     ]
   },
@@ -226,6 +215,7 @@ export default (env => merge.smart(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
+
   ],
 
   node: {
@@ -256,15 +246,15 @@ export default (env => merge.smart(baseConfig, {
       verbose: true,
       disableDotRule: false
     },
-    onBeforeSetupMiddleware() {
+    setupMiddlewares(middlewares, devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
-        let argv = null;
-        if (env && env.argv) {
-          argv = env.argv;
+        const argv = null;
+        if (env?.argv) {
+          const { argv } = env;
         }
 
-        spawn('npm', ['run', 'start-main-dev', `"${argv}"`], {
+        spawn('yarn', ['start-main-dev', `"${argv}"`], {
           shell: true,
           env: process.env,
           stdio: 'inherit'
@@ -274,6 +264,7 @@ export default (env => merge.smart(baseConfig, {
       } else {
         console.log('not starting main process');
       }
+      return middlewares;
     }
   }
 }));

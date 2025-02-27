@@ -26,7 +26,7 @@ import ClinicUploadDone from '../components/ClinicUploadDone';
 import ClinicUserBlock from '../components/ClinicUserBlock';
 import cx from 'classnames';
 import React, { Component } from 'react';
-import styles from '../../styles/components/App.module.less';
+import * as styles from '../../styles/components/App.module.less';
 import TimezoneDropdown from '../components/TimezoneDropdown';
 import UploadList from '../components/UploadList';
 import ViewDataLink from '../components/ViewDataLink';
