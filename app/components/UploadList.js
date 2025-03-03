@@ -25,7 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Upload from './Upload';
 
-import styles from '../../styles/components/UploadList.module.less';
+import * as styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
