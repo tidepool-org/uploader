@@ -182,12 +182,8 @@ export class DeviceTimeModal extends Component {
       return (
         <div className={styles.modalWrap}>
           <div className={styles.modal}>
-
-            <div className={styles.title}>
-              <div>{i18n.t('Upload from this meter?')}</div>
-            </div>
             <div className={styles.warningText}>
-              <WarningIcon classes={{root:styles.warningIcon}} fontSize='inherit'/> {i18n.t('Warning: The readings may not be shown at the correct time or day of the year.')}
+              <WarningIcon classes={{root:styles.warningIcon}} fontSize='inherit'/> {i18n.t('Warning: The readings may not be shown at the correct date or time.')}
             </div>
             <div className={styles.text}>
               <div className={styles.body}>
@@ -202,12 +198,12 @@ export class DeviceTimeModal extends Component {
             <hr className={styles.hr} />
             <div className={styles.text}>
               <div className={styles.timeCompare}>
-                <div>{i18n.t('Device time:')}</div>
+                <div>{i18n.t('Device Time:')}</div>
                 <div className={styles.highlight}>{i18n.t('Unknown')}</div>
               </div>
               <div className={styles.timeCompare}>
-                <div>Time in {timezone}:</div>
-                <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+                <div>{i18n.t('Tidepool Time:')}</div>
+                <div className={styles.highlight}>({timezone}) {sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
               </div>
             </div>
             <hr className={styles.hr} />

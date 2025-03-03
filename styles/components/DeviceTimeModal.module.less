@@ -82,7 +82,7 @@
   padding: 0 15px;
   line-height: 25px;
   height: 55px;
-  width: 350px;
+  width: 300px;
 }
 
 .buttonGroup {
@@ -98,16 +98,18 @@
   padding: 0 15px;
   line-height: 25px;
   height: 55px;
-  width: 250px;
+  width: 200px;
 }
 
 .warningText {
+  composes: small bold from '../core/typography.module.less';
   background-color: #FFEFD5; /* Light orange background */
   padding: 4px 8px;
   border-radius: 4px;
   display: flex;
   align-items: center; /* Centers the icon with the text */
   gap: 8px; /* Adds spacing between icon and text */
+  margin-top: 30px;
 }
 
 .warningIcon {
