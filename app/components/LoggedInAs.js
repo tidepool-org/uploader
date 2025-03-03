@@ -29,7 +29,7 @@ import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import BusinessIcon from '@mui/icons-material/Business';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import styles from '../../styles/components/LoggedInAs.module.less';
+import * as styles from '../../styles/components/LoggedInAs.module.less';
 
 export default class LoggedInAs extends Component {
   static propTypes = {

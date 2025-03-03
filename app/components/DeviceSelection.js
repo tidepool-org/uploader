@@ -23,7 +23,7 @@ import { i18n } from '../utils/config.i18next';
 
 import { urls } from '../constants/otherConstants';
 
-import styles from '../../styles/components/DeviceSelection.module.less';
+import * as styles from '../../styles/components/DeviceSelection.module.less';
 
 class DeviceSelection extends React.Component {
   static propTypes = {
@@ -59,7 +59,7 @@ class DeviceSelection extends React.Component {
     var addDevice = this.props.addDevice.bind(null, targetUser);
     var removeDevice = this.props.removeDevice.bind(null, targetUser);
     var {devices} = this.props;
-    
+
     const sortedDevices = _.chain(devices)
     .values()
     .sortBy('name')

@@ -2,12 +2,19 @@
  * Build config for electron 'Main Process' file
  */
 
+import _ from 'lodash';
 import webpack from 'webpack';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './webpack.config.base';
+import baseConfig from './webpack.config.base.mjs';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import cp from 'child_process';
+import cp from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Create dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const VERSION_SHA = 
   process.env.VERSION_SHA ||
@@ -15,7 +22,7 @@ const VERSION_SHA =
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool: 'source-map',
 
   mode: 'production',
@@ -35,9 +42,10 @@ export default merge.smart(baseConfig, {
       : [
           new TerserPlugin({
             parallel: true,
-            sourceMap: true,
-            cache: true,
             extractComments: false,
+            terserOptions: {
+              sourceMap: true,
+            }
           })
         ]
   },

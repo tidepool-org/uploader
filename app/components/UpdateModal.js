@@ -23,7 +23,7 @@ import { bindActionCreators } from 'redux';
 import { sync as syncActions } from '../actions/';
 import config from '../../lib/config.js';
 
-import styles from '../../styles/components/UpdateModal.module.less';
+import * as styles from '../../styles/components/UpdateModal.module.less';
 
 import { ipcRenderer } from '../utils/ipc';
 import env from '../utils/env';
