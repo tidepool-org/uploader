@@ -25,10 +25,11 @@ const isDev = process.env.NODE_ENV === 'development';
 const isTest = process.env.NODE_ENV === 'test';
 const isProd = process.env.NODE_ENV === 'production';
 
-const VERSION_SHA =
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
-  cp.execSync('git rev-parse HEAD', { cwd: __dirname, encoding: 'utf8' });
+  cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
 const {ROLLBAR_POST_TOKEN} = process.env;
 

@@ -9,7 +9,9 @@ import baseConfig from './webpack.config.base';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import cp from 'child_process';
 
-const VERSION_SHA = process.env.CIRCLE_SHA1 ||
+const VERSION_SHA = 
+  process.env.VERSION_SHA ||
+  process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
   cp.execSync('git rev-parse HEAD', {cwd: __dirname, encoding: 'utf8' });
 
