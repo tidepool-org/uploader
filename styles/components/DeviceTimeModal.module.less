@@ -39,6 +39,7 @@
 
 .list {
   padding-left: 15px;
+  width: 600px;
 }
 
 .list > li {
@@ -47,9 +48,6 @@
 
 .title {
   composes: small bold from '../core/typography.module.less';
-  composes: boxFlex from '../core/layout.module.less';
-  width: 100%;
-  padding: 10px 20px;
 }
 
 .text {
@@ -60,7 +58,7 @@
 .timeCompare {
   display:flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 5px 20px;
 }
 
 .body {
@@ -82,7 +80,7 @@
   padding: 0 15px;
   line-height: 25px;
   height: 55px;
-  width: 300px;
+  width: 360px;
 }
 
 .buttonGroup {
@@ -98,21 +96,42 @@
   padding: 0 15px;
   line-height: 25px;
   height: 55px;
-  width: 200px;
+  width: 180px;
 }
 
 .warningText {
-  composes: small bold from '../core/typography.module.less';
+  composes: small from '../core/typography.module.less';
   background-color: #FFEFD5; /* Light orange background */
-  padding: 4px 8px;
+  padding: 4px 12px;
   border-radius: 4px;
   display: flex;
   align-items: center; /* Centers the icon with the text */
-  gap: 8px; /* Adds spacing between icon and text */
+  gap: 12px; /* Adds spacing between icon and text */
   margin-top: 30px;
+  max-width: 600px;
 }
 
 .warningIcon {
   color: #D97706; /* Dark orange text */
   font-size: 1.5em !important;
+}
+
+.warningMessage {
+    display: flex;
+    flex-direction: column;
+}
+
+.ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+}
+
+.li {
+    flex: 1 1 auto;
+    min-width: 100px;
+    word-break: break-word;
 }
