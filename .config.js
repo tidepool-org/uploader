@@ -60,6 +60,20 @@ const serverEnvironments = {
     DATA_URL: 'https://qa3.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa3.development.tidepool.org'
   },
+  qa4: {
+    hosts: ['qa4.development.tidepool.org'],
+    API_URL: 'https://qa4.development.tidepool.org',
+    UPLOAD_URL: 'https://qa4.development.tidepool.org',
+    DATA_URL: 'https://qa4.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa4.development.tidepool.org'
+  },
+  qa5: {
+    hosts: ['qa5.development.tidepool.org'],
+    API_URL: 'https://qa5.development.tidepool.org',
+    UPLOAD_URL: 'https://qa5.development.tidepool.org',
+    DATA_URL: 'https://qa5.development.tidepool.org/dataservices',
+    BLIP_URL: 'https://qa5.development.tidepool.org'
+  },
   int: {
     hosts: ['external.integration.tidepool.org', 'int-app.tidepool.org', 'int-api.tidepool.org'],
     API_URL: 'https://external.integration.tidepool.org',
