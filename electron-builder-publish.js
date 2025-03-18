@@ -66,12 +66,15 @@ const config = {
         ]
       }
     ],
-    publisherName: [
-      'Tidepool Project'
-    ],
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    signtoolOptions: {
+      publisherName: [
+        'Tidepool Project'
+      ],
+      rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    },
     asarUnpack: '**\\*.node',
   },
+  npmRebuild: true,
   mac: {
     category: 'public.app-category.tools',
     artifactName: '${productName}-${version}-${os}.${ext}',
