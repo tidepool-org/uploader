@@ -74,7 +74,6 @@ const config = {
     },
     asarUnpack: '**\\*.node',
   },
-  npmRebuild: true,
   mac: {
     category: 'public.app-category.tools',
     artifactName: '${productName}-${version}-${os}.${ext}',
