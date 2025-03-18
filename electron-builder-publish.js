@@ -56,14 +56,12 @@ const config = {
       {
         target: 'nsis',
         arch: [
-          'ia32',
           'x64'
         ]
       },
       {
         target: 'zip',
         arch: [
-          'ia32',
           'x64'
         ]
       }
