@@ -63,7 +63,7 @@ export class DeviceTimeModal extends Component {
   };
 
   getActions = () => {
-    const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone, tzoUtil }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
     const reminder = this.getReminder();
     const isTimeSetOnly = this.isSetTimeOnly();
@@ -96,6 +96,18 @@ export class DeviceTimeModal extends Component {
           <i>Note that past data times will remain incorrect</i>
         </div>
       );
+
+      // these devices can correct past data times,
+      // even though they're not pumps
+      if (this.isDevice('AbbottFreeStyleNeo') ||
+          this.isDevice('AbbottFreeStyleLibre') ||
+          this.isDevice('Dexcom')) {
+        buttonText = (
+          <div>
+            {i18n.t('Continue with the upload')}
+          </div>
+        );
+      }
 
       if (isTimeSetOnly) {
         buttonText = (
@@ -133,15 +145,18 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
     if (type.value === 'bgm') {
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            {i18n.t('* Changing your device time will not change any previous records.')}<br/>
-            {i18n.t('All future readings will be in {{timezone}}.', { timezone: timezone })}
-            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Click to learn more about meters and device time.')}</a>
-            </div>
-          </div>
+      message = (
+          <ol>
+            <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
+            <li>{i18n.t('Tidepool can not fix past readings, so if you choose to upload, the readings will remain incorrect. However, Tidepool will update the meter\'s clock so future readings show the right time.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more.')}</a></li>
+          </ol>
         );
+    } else {
+      message = (
+        <div>
+        {i18n.t('Please correct the {{device}}\'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.', { device: type.text})}
+        </div>
+      );
     }
     return message;
   };
@@ -259,7 +274,7 @@ export class DeviceTimeModal extends Component {
               <WarningIcon classes={{ root: styles.warningIcon }} fontSize='inherit' />
               <div className={styles.warningMessage}>
                 <strong>{i18n.t('Warning: Time Mismatch Detected')}</strong>
-                <div>{i18n.t('The device is {{mismatch}}, based on the time zone selected in Tidepool Uploader.', { mismatch: mismatch })}</div>
+                <div>{i18n.t('The {{device}} is {{mismatch}}, based on the time zone selected in Tidepool Uploader.', { device: type.text, mismatch: mismatch })}</div>
               </div>
             </div>
             <hr className={styles.hr} />
@@ -275,10 +290,7 @@ export class DeviceTimeModal extends Component {
             </div>
             <hr className={styles.hr} />
             <div className={styles.list}>
-              <ol>
-                <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
-                <li>{i18n.t('Tidepool can not fix past readings, so if you choose to upload, the readings will remain incorrect. However, Tidepool will update the meter\'s clock so future readings show the right time.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more.')}</a></li>
-              </ol>
+              {message}
             </div>
             <div className={styles.actions}>
               {actions}
