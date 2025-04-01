@@ -4534,15 +4534,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ble-glucose@npm:0.7.0":
-  version: 0.7.0
-  resolution: "ble-glucose@npm:0.7.0"
+"ble-glucose@npm:0.8.0":
+  version: 0.8.0
+  resolution: "ble-glucose@npm:0.8.0"
   dependencies:
     bows: 1.7.2
     core-js: 3.36.1
     lodash: 4.17.21
     sundial: 1.7.4
-  checksum: 5832b1c591b865022080dd61cf35595cf149cfefc9b5bf5fa16f99d894d2bf9171530a4194a188bba69ceb1af4897f6dce87dd993bb159bb4f9c58cecd04a126
+  checksum: c2c20c3764cc8011d01f47ad45e0c22f224960c7bfed74c129431306ba7856c468495b1cda0fc51849b95afcfd6d059c01cf4db0b46dcb477a09ccfcadf036b2
   languageName: node
   linkType: hard
 
@@ -15170,7 +15170,7 @@ __metadata:
     babel-plugin-transform-define: 2.1.4
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babyparse: 0.4.6
-    ble-glucose: 0.7.0
+    ble-glucose: 0.8.0
     body-parser: 1.20.3
     bows: 1.7.2
     chai: 4.4.1
