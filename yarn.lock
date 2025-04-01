@@ -15044,15 +15044,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tidepool-platform-client@npm:0.61.0":
-  version: 0.61.0
-  resolution: "tidepool-platform-client@npm:0.61.0"
+"tidepool-platform-client@npm:0.62.0-getinfouser.2":
+  version: 0.62.0-getinfouser.2
+  resolution: "tidepool-platform-client@npm:0.62.0-getinfouser.2"
   dependencies:
     async: 0.9.0
     lodash: 4.17.21
     superagent: 5.2.2
     uuid: 3.1.0
-  checksum: 96e221a65b7a003523e03d9ba357b0c1aa371b779ffd363c325ba015b893462955188662587b502193aaf269d6784577c8d24b8c764ba4ad759d4b0ba511c8ae
+  checksum: 6e18df10d5ca3194d5b4490a8c326ba06f87a1420a574a9e83ed48e80399203e12d01691a3089bb8752ee8bd5b39050b6316ddf6a0dd413c867dd09cb51f25af
   languageName: node
   linkType: hard
 
@@ -15205,7 +15205,7 @@ __metadata:
     sudo-prompt: 9.2.1
     sundial: 1.7.5
     terser-webpack-plugin: 5.3.11
-    tidepool-platform-client: 0.61.0
+    tidepool-platform-client: 0.62.0-getinfouser.2
     url-loader: 4.1.1
     uuid: 9.0.1
     webmtp: 0.3.3

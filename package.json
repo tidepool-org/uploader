@@ -108,7 +108,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.5",
-    "tidepool-platform-client": "0.61.0",
+    "tidepool-platform-client": "0.62.0-getinfouser.2",
     "uuid": "9.0.1",
     "webmtp": "0.3.3"
   },
