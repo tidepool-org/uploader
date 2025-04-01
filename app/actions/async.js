@@ -115,7 +115,8 @@ export function doAppInit(opts, servicesToInit) {
     log('Initializing device');
     device.init({
       api,
-      version: opts.namedVersion
+      version: opts.namedVersion,
+      uploaderDestination: opts.uploaderDestination,
     }, function(deviceError, deviceResult){
       if (deviceError) {
         return dispatch(sync.initializeAppFailure(deviceError));
@@ -427,10 +428,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE' ||
                  _.get(targetDevice, 'source.driverId', null) === 'OneTouchVerioBLE') {
         errorMessage = 'E_BLUETOOTH_PAIR';
-      }
-
-      if (targetDevice.powerOnlyWarning) {
-        errorMessage = 'E_USB_CABLE';
       }
 
       device.upload(

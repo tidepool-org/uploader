@@ -1,10 +1,10 @@
 {
   "name": "tidepool-uploader",
+  "version": "2.61.0-remove-jellyfish.8",
   "engines": {
     "node": "20.14.0"
   },
   "packageManager": "yarn@3.6.4",
-  "version": "2.61.0-upload-1440-dep-updates.3",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -54,6 +54,7 @@
     "ble-glucose": "0.7.0",
     "body-parser": "1.20.3",
     "bows": "1.7.2",
+    "caniuse-lite": "1.0.30001651",
     "chrome-launcher": "0.15.2",
     "classnames": "2.5.1",
     "commander": "4.1.1",
@@ -107,7 +108,7 @@
     "stack-trace": "0.0.10",
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.5",
-    "tidepool-platform-client": "0.61.0",
+    "tidepool-platform-client": "0.62.0-getinfouser.2",
     "uuid": "9.0.1",
     "webmtp": "0.3.3"
   },
