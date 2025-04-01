@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.60.0-remove-jellyfish.7",
+  "version": "2.61.0-remove-jellyfish.8",
   "engines": {
     "node": "20.14.0"
   },
