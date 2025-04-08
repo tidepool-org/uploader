@@ -93,7 +93,7 @@ export class DeviceTimeModal extends Component {
       let buttonText = (
         <div>
           {i18n.t('Continue with the upload')}<br/>
-          <i>Note that past data times will remain incorrect</i>
+          <i>{i18n.t('Note that past data times will remain incorrect')}</i>
         </div>
       );
 
@@ -104,7 +104,8 @@ export class DeviceTimeModal extends Component {
           this.isDevice('Dexcom')) {
         buttonText = (
           <div>
-            {i18n.t('Continue with the upload')}
+            {i18n.t('Continue with the upload')}<br/>
+            <i>{i18n.t('Note that the {{text}} time will be updated', { text: type.text })}</i>
           </div>
         );
       }
@@ -144,7 +145,20 @@ export class DeviceTimeModal extends Component {
     const type = this.determineDeviceType();
     const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
-    if (type.value === 'bgm') {
+
+    if (this.isDevice('AbbottFreeStyleNeo') ||
+        this.isDevice('AbbottFreeStyleLibre') ||
+        this.isDevice('Dexcom')) {
+      // these devices can correct past data times,
+      // even though they're not pumps
+      message = (
+          <ol>
+            <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
+            <li>{i18n.t('If you continue, Tidepool will correct past reading timestamps and automatically update the time so that future readings also show the right time.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more.')}</a></li>
+          </ol>
+        );
+    } else if (type.value === 'bgm' && !this.isDevice('TrueMetrix')) {
+      // these devices cannot correct past data times, but we can update the device time
       message = (
           <ol>
             <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
@@ -152,6 +166,7 @@ export class DeviceTimeModal extends Component {
           </ol>
         );
     } else {
+      // for these devices we cannot update the device time
       message = (
         <div>
         {i18n.t('Please correct the {{device}}\'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.', { device: type.text})}
