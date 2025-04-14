@@ -66,6 +66,7 @@ export default class UploadList extends Component {
     this.state = {
       uploadErrorSubmitSuccessSet: [],
       uploadErrorSubmitFailedSet: [],
+      uploadErrorSubmitClicked: false,
     };
   }
 
@@ -145,6 +146,10 @@ export default class UploadList extends Component {
       '[Tidepool Support] Troubleshooting Info': error.debug
     };
 
+    if (this.state.uploadErrorSubmitClicked) return;
+
+    this.setState({ uploadErrorSubmitClicked: true });
+
     if (error.uuid) {
       errorParts['[Tidepool Support] Rollbar UUID'] = error.uuid;
       errorParts['[Tidepool Support] Rollbar Link'] = `https://rollbar.com/occurrence/uuid?uuid=${error.uuid}`;
@@ -180,6 +185,7 @@ export default class UploadList extends Component {
       headers,
       body: JSON.stringify(body),
     }).then((response) => {
+      this.setState({ uploadErrorSubmitClicked: false });
       if (response.status === 201) {
         api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_SUCCESS);
         this.setState({
@@ -233,6 +239,7 @@ export default class UploadList extends Component {
 
     let sendToSupport = null;
     const errorId = upload.error.uuid || upload.error.unique_id;
+    const { uploadErrorSubmitClicked } = this.state;
     if (this.state.uploadErrorSubmitSuccessSet.includes(errorId)) {
       sendToSupport = (
         <div className={styles.errorSubmitSuccess}>
@@ -274,6 +281,7 @@ export default class UploadList extends Component {
             className={styles.errorMessageLink}
             href="#"
             onClick={this.handleErrorSubmit.bind(this, upload.error)}
+            style={{ pointerEvents: uploadErrorSubmitClicked ? 'none' : 'auto', opacity: uploadErrorSubmitClicked ? 0.5 : 1 }}
           >
             <Email className={styles.errorLinkIcon} sx={{ height: '0.8em', width: '0.8em' }} />
             {i18n.t('Share this issue with the Tidepool Support Team')}
