@@ -202,6 +202,7 @@ export default class UploadList extends Component {
         });
       }
     }).catch((err) => {
+      this.setState({ uploadErrorSubmitClicked: false });
       api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
       this.setState({
         uploadErrorSubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
