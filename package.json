@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.61.0-time-discrepancies.1",
+  "version": "2.61.0-time-discrepancies.2",
   "engines": {
     "node": "20.14.0"
   },
