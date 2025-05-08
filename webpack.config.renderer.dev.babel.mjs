@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION_SHA = 
+const VERSION_SHA =
   process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -249,10 +249,7 @@ export default (env => merge(baseConfig, {
     setupMiddlewares(middlewares, devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
-        const argv = null;
-        if (env?.argv) {
-          const { argv } = env;
-        }
+        const argv = env?.argv;
 
         spawn('yarn', ['start-main-dev', `"${argv}"`], {
           shell: true,

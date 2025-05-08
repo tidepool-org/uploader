@@ -20,6 +20,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 cd $APP_ROOT
-./node_modules/.bin/webpack-dev-server --config webpack.config.renderer.dev.babel.js --env argv="$1"
+./node_modules/.bin/webpack-dev-server --config webpack.config.renderer.dev.babel.mjs --env argv="$1"
 
 # To debug this script, add " &> /tmp/uploader.txt" to the previous line
