@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.61.0-tandem-fsl.5",
+  "version": "2.61.0-usb-warning-fixes.1",
   "engines": {
     "node": "20.14.0"
   },
