@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import sundial from 'sundial';
+import WarningIcon from '@mui/icons-material/Warning';
 
 import { sync as syncActions } from '../actions/';
 
@@ -65,8 +66,11 @@ export class DeviceTimeModal extends Component {
     const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
     const reminder = this.getReminder();
+    const isTimeSetOnly = this.isSetTimeOnly();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
+    let prompt;
+    let question;
     if ( !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
@@ -74,22 +78,47 @@ export class DeviceTimeModal extends Component {
          !this.isDevice('TrueMetrix') &&
          !this.isDevice('Weitai')
       ) {
-      buttons.push(
-        <div className={styles.buttonGroup} key='continue' >
-        {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
-        <button className={styles.button} onClick={this.handleContinue}>
+
+      let buttonText = (
+        <div>
           {i18n.t('Automatically update time to')}<br/>
           {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
+        </div>
+      );
+
+      if (isTimeSetOnly) {
+        buttonText = (
+          <div>
+            {i18n.t('Continue with the upload')}{footnote}
+          </div>
+        );
+      } else {
+        prompt = (
+          <div>
+            {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
+          </div>
+        );
+        question = (
+          <div>
+            { i18n.t('Are you in {{timezone}}? Double-check', { timezone: timezone }) } < br />
+            { i18n.t('selected time zone and current device time.') }
+          </div>
+        );
+      }
+      buttons.push(
+        <div className={styles.buttonGroup} key='continue' >
+        {prompt}
+        <button className={styles.button} onClick={this.handleContinue}>
+          {buttonText}
         </button>
         </div>
       );
     }
     buttons.push(
       <div className={styles.buttonGroup} key='cancel'>
-      {i18n.t('Are you in {{timezone}}? Double-check',{ timezone: timezone })}<br/>
-      {i18n.t('selected time zone and current device time.')}
+      {question}
       {reminder}
-      <button className={styles.button} onClick={this.handleCancel}>
+      <button className={styles.buttonSecondary} onClick={this.handleCancel}>
         {i18n.t('Cancel this upload')}
       </button>
       </div>
@@ -131,6 +160,11 @@ export class DeviceTimeModal extends Component {
     return reminder;
   };
 
+  isSetTimeOnly = () => {
+    const { showingDeviceTimePrompt: { cfg: { deviceInfo } } } = this.props;
+    return deviceInfo.setTimeOnly ? true : false;
+  };
+
   render() {
     const { showingDeviceTimePrompt } = this.props;
 
@@ -138,38 +172,82 @@ export class DeviceTimeModal extends Component {
       return null;
     }
 
-    const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone, deviceInfo }, times: { serverTime, deviceTime } } } = this.props;
 
     const type = this.determineDeviceType();
     const actions = this.getActions();
     const message = this.getMessage();
 
-    return (
-      <div className={styles.modalWrap}>
-        <div className={styles.modal}>
-          <div className={styles.title}>
-            <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
-            <div className={styles.highlight}>{`${timezone}:`}</div>
-          </div>
-          <hr className={styles.hr} />
-          <div className={styles.text}>
-            <div className={styles.timeCompare}>
-              <div>{timezone}:</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+    if (this.isSetTimeOnly()) {
+      return (
+        <div className={styles.modalWrap}>
+          <div className={styles.modal}>
+            <div className={styles.warningText}>
+              <WarningIcon classes={{root:styles.warningIcon}} fontSize='inherit'/> {i18n.t('Warning: The readings may not be shown at the correct date or time.')}
             </div>
-            <div className={styles.timeCompare}>
-              <div>{i18n.t('Device time:')}</div>
-              <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
+            <div className={styles.text}>
+              <div className={styles.body}>
+                {i18n.t('{{model}} meters are not able share device time with Tidepool. This means we cannot', { model: deviceInfo.model })}<br/>
+                {i18n.t('confirm the data you want to upload corresponds with your selected timezone. Tidepool')}<br/>
+                {i18n.t('Uploader can set the device\'s date and time based on your current timezone, so future')}<br/>
+                {i18n.t('readings have an accurate timestamp associated with them. If this meter already has the')}<br/>
+                {i18n.t('correct date and time, nothing will change.')}<br/>
+              </div>
+            </div>
+
+            <hr className={styles.hr} />
+            <div className={styles.text}>
+              <div className={styles.timeCompare}>
+                <div>{i18n.t('Device Time:')}</div>
+                <div className={styles.highlight}>{i18n.t('Unknown')}</div>
+              </div>
+              <div className={styles.timeCompare}>
+                <div>{i18n.t('Tidepool Time:')}</div>
+                <div className={styles.highlight}>({timezone}) {sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+              </div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.actions}>
+              {actions}
+            </div>
+            <div className={styles.text}>
+              <div className={styles.body}>
+              {i18n.t('* By clicking "Continue", you acknowledge that the date and time of past data may not')}<br/>
+              {i18n.t('be accurate and Tidepool will update the date and time of this meter to ensure future')}<br/>
+              {i18n.t('readings have an accurate timestamp.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more about meters and device time.')}</a>
+              </div>
             </div>
           </div>
-          <hr className={styles.hr} />
-          <div className={styles.actions}>
-            {actions}
-          </div>
-          {message}
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={styles.modalWrap}>
+          <div className={styles.modal}>
+            <div className={styles.title}>
+              <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
+              <div className={styles.highlight}>{`${timezone}:`}</div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.text}>
+              <div className={styles.timeCompare}>
+                <div>{timezone}:</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+              </div>
+              <div className={styles.timeCompare}>
+                <div>{i18n.t('Device time:')}</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
+              </div>
+            </div>
+            <hr className={styles.hr} />
+            <div className={styles.actions}>
+              {actions}
+            </div>
+            {message}
+          </div>
+        </div>
+      );
+    }
   }
 };
 
