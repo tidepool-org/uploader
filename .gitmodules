@@ -1,3 +1,6 @@
 [submodule "lib/drivers/tandem"]
 	path = lib/drivers/tandem
 	url = git@github.com:tidepool-org/tandem-driver.git
+[submodule "lib/drivers/fora"]
+	path = lib/drivers/fora
+	url = git@github.com:tidepool-org/fora-driver.git

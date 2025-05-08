@@ -79,6 +79,7 @@
   "Go to Workspace": "Go to Workspace",
   "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
   "Go to Private Workspace": "Go to Private Workspace",
+  "Couldn't connect to device.": "Couldn't connect to device."
   "Continue with the upload": "Continue with the upload",
   "Note that past data times will remain incorrect": "Note that past data times will remain incorrect",
   "Note that the {{text}} time will be updated": "Note that the {{text}} time will be updated",
