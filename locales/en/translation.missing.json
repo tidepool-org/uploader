@@ -78,5 +78,14 @@
   "login to your account in Tidepool Web": "login to your account in Tidepool Web",
   "Go to Workspace": "Go to Workspace",
   "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
-  "Go to Private Workspace": "Go to Private Workspace"
+  "Go to Private Workspace": "Go to Private Workspace",
+  "Continue with the upload": "Continue with the upload",
+  "Note that past data times will remain incorrect": "Note that past data times will remain incorrect",
+  "Note that the {{text}} time will be updated": "Note that the {{text}} time will be updated",
+  "Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.": "Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.",
+  "If you continue, Tidepool will correct past reading timestamps and automatically update the time so that future readings also show the right time.": "If you continue, Tidepool will correct past reading timestamps and automatically update the time so that future readings also show the right time.",
+  "Learn more.": "Learn more.",
+  "Warning: Time Mismatch Detected": "Warning: Time Mismatch Detected",
+  "The {{device}} is {{mismatch}}, based on the time zone selected in Tidepool Uploader.": "The {{device}} is {{mismatch}}, based on the time zone selected in Tidepool Uploader.",
+  "Device Time:": "Device Time:"
 }

@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.61.0-usb-warning-fixes.1",
+  "version": "2.61.0-time-discrepancies.3",
   "engines": {
     "node": "20.14.0"
   },

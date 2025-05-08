@@ -63,7 +63,7 @@ export class DeviceTimeModal extends Component {
   };
 
   getActions = () => {
-    const { showingDeviceTimePrompt: { cfg: { timezone }, times: { serverTime, deviceTime } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone, tzoUtil }, times: { serverTime, deviceTime } } } = this.props;
     const type = this.determineDeviceType();
     const reminder = this.getReminder();
     const isTimeSetOnly = this.isSetTimeOnly();
@@ -71,6 +71,17 @@ export class DeviceTimeModal extends Component {
     const footnote = type.value === 'bgm' ? '*' : '';
     let prompt;
     let question;
+
+    buttons.push(
+      <div className={styles.buttonGroup} key='cancel'>
+      {question}
+      {reminder}
+      <button className={styles.buttonSecondary} onClick={this.handleCancel}>
+        {i18n.t('Cancel this upload')}
+      </button>
+      </div>
+    );
+
     if ( !this.isDevice('InsuletOmniPod') &&
          !this.isDevice('Medtronic') &&     // these two lines should be removed
          !this.isDevice('Medtronic600') &&  // when we can update time on Medtronic pumps
@@ -81,10 +92,23 @@ export class DeviceTimeModal extends Component {
 
       let buttonText = (
         <div>
-          {i18n.t('Automatically update time to')}<br/>
-          {sundial.formatInTimezone(serverTime, timezone, 'LT')}{footnote}, {i18n.t('and upload')}
+          {i18n.t('Continue with the upload')}<br/>
+          <i>{i18n.t('Note that past data times will remain incorrect')}</i>
         </div>
       );
+
+      // these devices can correct past data times,
+      // even though they're not pumps
+      if (this.isDevice('AbbottFreeStyleNeo') ||
+          this.isDevice('AbbottFreeStyleLibre') ||
+          this.isDevice('Dexcom')) {
+        buttonText = (
+          <div>
+            {i18n.t('Continue with the upload')}<br/>
+            <i>{i18n.t('Note that the {{text}} time will be updated', { text: type.text })}</i>
+          </div>
+        );
+      }
 
       if (isTimeSetOnly) {
         buttonText = (
@@ -107,22 +131,12 @@ export class DeviceTimeModal extends Component {
       }
       buttons.push(
         <div className={styles.buttonGroup} key='continue' >
-        {prompt}
         <button className={styles.button} onClick={this.handleContinue}>
           {buttonText}
         </button>
         </div>
       );
     }
-    buttons.push(
-      <div className={styles.buttonGroup} key='cancel'>
-      {question}
-      {reminder}
-      <button className={styles.buttonSecondary} onClick={this.handleCancel}>
-        {i18n.t('Cancel this upload')}
-      </button>
-      </div>
-    );
 
     return buttons;
   };
@@ -131,16 +145,33 @@ export class DeviceTimeModal extends Component {
     const type = this.determineDeviceType();
     const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
-    if (type.value === 'bgm') {
-        message = (
-          <div className={styles.text}>
-            <div className={styles.body}>
-            {i18n.t('* Changing your device time will not change any previous records.')}<br/>
-            {i18n.t('All future readings will be in {{timezone}}.', { timezone: timezone })}
-            <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Click to learn more about meters and device time.')}</a>
-            </div>
-          </div>
+
+    if (this.isDevice('AbbottFreeStyleNeo') ||
+        this.isDevice('AbbottFreeStyleLibre') ||
+        this.isDevice('Dexcom')) {
+      // these devices can correct past data times,
+      // even though they're not pumps
+      message = (
+          <ol>
+            <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
+            <li>{i18n.t('If you continue, Tidepool will correct past reading timestamps and automatically update the time so that future readings also show the right time.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more.')}</a></li>
+          </ol>
         );
+    } else if (type.value === 'bgm' && !this.isDevice('TrueMetrix')) {
+      // these devices cannot correct past data times, but we can update the device time
+      message = (
+          <ol>
+            <li>{i18n.t('Please check that the time zone you selected in Tidepool Uploader is correct before continuing. Cancel this upload if it is not correct.')}</li>
+            <li>{i18n.t('Tidepool can not fix past readings, so if you choose to upload, the readings will remain incorrect. However, Tidepool will update the meter\'s clock so future readings show the right time.')} <a href='https://support.tidepool.org/hc/en-us/articles/360034136632' target='_blank'>{i18n.t('Learn more.')}</a></li>
+          </ol>
+        );
+    } else {
+      // for these devices we cannot update the device time
+      message = (
+        <div>
+        {i18n.t('Please correct the {{device}}\'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.', { device: type.text})}
+        </div>
+      );
     }
     return message;
   };
@@ -165,6 +196,35 @@ export class DeviceTimeModal extends Component {
     return deviceInfo.setTimeOnly ? true : false;
   };
 
+  getDifference = (from, to) => {
+    const units = [
+        ['year', 31536000000],
+        ['month', 2628000000],
+        ['week', 604800000],
+        ['day', 86400000],
+        ['hour', 3600000],
+        ['minute', 60000],
+        ['second', 1000]
+    ];
+
+    const diff = to - from;
+    const formatter = new Intl.RelativeTimeFormat('en', { numeric: 'always' });
+
+    for (const [unit, ms] of units) {
+        const value = Math.round(diff / ms);
+        if (Math.abs(value) >= 1) {
+          const parts = formatter.formatToParts(value, unit);
+
+          if (diff > 0) {
+            return `${parts[1].value} ${parts[2].value} ahead`;
+          } else {
+            return `${parts[0].value} ${parts[1].value.replace(/\s*ago$/, '')} behind`;
+          }
+        }
+    }
+    return 'up to date';
+  };
+
   render() {
     const { showingDeviceTimePrompt } = this.props;
 
@@ -177,6 +237,7 @@ export class DeviceTimeModal extends Component {
     const type = this.determineDeviceType();
     const actions = this.getActions();
     const message = this.getMessage();
+    const mismatch = this.getDifference(serverTime, deviceTime);
 
     if (this.isSetTimeOnly()) {
       return (
@@ -224,26 +285,31 @@ export class DeviceTimeModal extends Component {
       return (
         <div className={styles.modalWrap}>
           <div className={styles.modal}>
-            <div className={styles.title}>
-              <div>{i18n.t('Your {{text}} doesn\'t appear to be in',{ text: type.text })}</div>
-              <div className={styles.highlight}>{`${timezone}:`}</div>
+            <div className={styles.warningText}>
+              <WarningIcon classes={{ root: styles.warningIcon }} fontSize='inherit' />
+              <div className={styles.warningMessage}>
+                <strong>{i18n.t('Warning: Time Mismatch Detected')}</strong>
+                <div>{i18n.t('The {{device}} is {{mismatch}}, based on the time zone selected in Tidepool Uploader.', { device: type.text, mismatch: mismatch })}</div>
+              </div>
             </div>
             <hr className={styles.hr} />
             <div className={styles.text}>
               <div className={styles.timeCompare}>
-                <div>{timezone}:</div>
-                <div className={styles.highlight}>{sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
+                <div>{i18n.t('Device Time:')}</div>
+                <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
               </div>
               <div className={styles.timeCompare}>
-                <div>{i18n.t('Device time:')}</div>
-                <div className={styles.highlight}>{sundial.formatInTimezone(deviceTime, timezone, 'LT, LL')}</div>
+                <div>Tidepool Time:</div>
+                <div className={styles.highlight}>{timezone} {sundial.formatInTimezone(serverTime, timezone, 'LT, LL')}</div>
               </div>
             </div>
             <hr className={styles.hr} />
+            <div className={styles.list}>
+              {message}
+            </div>
             <div className={styles.actions}>
               {actions}
             </div>
-            {message}
           </div>
         </div>
       );
