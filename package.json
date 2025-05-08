@@ -1,10 +1,10 @@
 {
   "name": "tidepool-uploader",
+  "version": "2.61.0-prevent-double-submit.1",
   "engines": {
     "node": "20.14.0"
   },
   "packageManager": "yarn@3.6.4",
-  "version": "2.61.0-prevent-double-submit.1",
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
@@ -63,7 +63,7 @@
     "cross-env": "7.0.3",
     "electron-is-dev": "2.0.0",
     "electron-log": "4.4.0",
-    "electron-updater": "6.3.9",
+    "electron-updater": "6.6.2",
     "es6-error": "4.1.1",
     "express": "4.21.2",
     "fast-safe-stringify": "2.1.1",
@@ -163,7 +163,7 @@
     "difflet": "1.0.1",
     "drivelist": "12.0.2",
     "electron": "31.1.0",
-    "electron-builder": "25.1.8",
+    "electron-builder": "26.0.11",
     "electron-devtools-installer": "3.2.0",
     "enzyme": "3.11.0",
     "eslint": "8.56.0",
