@@ -5,7 +5,6 @@
     "node": "20.14.0"
   },
   "packageManager": "yarn@3.6.4",
-
   "description": "Tidepool Project Universal Uploader",
   "private": true,
   "main": "main.prod.js",
