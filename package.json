@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.61.0-embrace-pro.3",
+  "version": "2.61.0-remove-jdrf.1",
   "engines": {
     "node": "20.14.0"
   },

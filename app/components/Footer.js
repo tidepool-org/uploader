@@ -20,7 +20,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import * as styles from '../../styles/components/Footer.module.less';
-import logo from '../../images/JDRF_Reverse_Logo x2.png';
 import debugMode from '../utils/debugMode';
 import env from '../utils/env';
 import { getOSDetails } from '../actions/utils';
@@ -58,9 +57,6 @@ export default class Footer extends Component {
           </div>
           <div>
             <a className={styles.footerLink} href="http://tidepool.org/legal/" target="_blank">{i18n.t('Privacy and Terms of Use')}</a>
-          </div>
-          <div className={styles.jdrfContainer}>
-            <span className={styles.jdrfText}>{i18n.t('Made possible by')}</span><img className={styles.jdrfImage} src={logo}/>
           </div>
         </div>
         <div className={styles.footerRow}>
