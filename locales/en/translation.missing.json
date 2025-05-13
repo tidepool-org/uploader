@@ -66,5 +66,20 @@
   "Your version: {{currentVersion}} - installed {{currentDate}}": "Your version: {{currentVersion}} - installed {{currentDate}}",
   "See what's new with Tidepool Uploader": "See what's new with Tidepool Uploader",
   "You can continue to use your current version,": "You can continue to use your current version,",
-  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible."
+  "but we recommend updating as soon as possible.": "but we recommend updating as soon as possible.",
+  "Clinic Workspace": "Clinic Workspace",
+  "To manage your clinic workspaces and view patient invites": "To manage your clinic workspaces and view patient invites",
+  "login to your account in Tidepool Web": "login to your account in Tidepool Web",
+  "Go to Workspace": "Go to Workspace",
+  "Want to use Tidepool for your private data?": "Want to use Tidepool for your private data?",
+  "Go to Private Workspace": "Go to Private Workspace",
+  "clinic": "clinic",
+  "Can’t find a patient you are looking for?": "Can’t find a patient you are looking for?",
+  "Change Workspace": "Change Workspace",
+  "Contact us to unlock plans": "Contact us to unlock plans",
+  "Unlock plans": "Unlock plans",
+  "Limited to {{limit}} patients": "Limited to {{limit}} patients",
+  "Maximum of {{limit}} patient accounts reached": "Maximum of {{limit}} patient accounts reached",
+  "Private Workspace": "Private Workspace",
+  "your private": "your private"
 }
