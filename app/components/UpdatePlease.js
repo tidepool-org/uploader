@@ -18,7 +18,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import styles from '../../styles/components/VersionCheck.module.less';
+import * as styles from '../../styles/components/VersionCheck.module.less';
 
 import { i18n } from '../utils/config.i18next';
 

@@ -1,5 +1,5 @@
 import env from './env';
-import { reactI18nextModule } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import _ from 'lodash';
 
 let i18n;
@@ -8,8 +8,17 @@ let setLanguage;
 
 if (env.electron_main) {
   i18n = require('i18next');
+
+  if(i18n.default) {
+    i18n = i18n.default;
+  }
+
   const { app } = require('electron');
-  const i18nextBackend = require('i18next-fs-backend');
+  let i18nextBackend = require('i18next-fs-backend');
+
+  if(i18nextBackend.default) {
+    i18nextBackend = i18nextBackend.default;
+  }
 
   var path = require('path');
 
@@ -47,7 +56,7 @@ if (env.electron_main) {
 
     if (!i18n.isInitialized) {
       i18n
-        .use(reactI18nextModule)
+        .use(initReactI18next)
         .use(i18nextBackend)
         .init(i18nextOptions, function(err, t) {
           if (err) {
@@ -73,7 +82,7 @@ if (env.electron_main) {
 }
 
 if (env.browser && !env.electron_renderer) {
-  i18n = require('i18next');
+  i18n = require('i18next').default;
   i18nextOptions = {
     // backend: {
     //   loadPath: './locales/{{lng}}/{{ns}}.json',
@@ -138,7 +147,7 @@ if (env.browser && !env.electron_renderer) {
     }
 
     if (!i18n.isInitialized) {
-      i18n.use(reactI18nextModule).init(i18nextOptions, function(err, t) {
+      i18n.use(initReactI18next).init(i18nextOptions, function(err, t) {
         if (err) {
           console.log('An error occurred in i18next:', err);
         }

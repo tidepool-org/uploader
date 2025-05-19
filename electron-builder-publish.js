@@ -10,6 +10,7 @@ const config = {
   },
   afterSign: 'scripts/notarize.js',
   dmg: {
+    artifactName: '${productName}-${version}.${ext}',
     contents: [
       {
         x: 381,
@@ -55,43 +56,47 @@ const config = {
       {
         target: 'nsis',
         arch: [
-          'ia32',
           'x64'
         ]
       },
       {
         target: 'zip',
         arch: [
-          'ia32',
           'x64'
         ]
       }
     ],
-    publisherName: [
-      'Tidepool Project'
-    ],
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    signtoolOptions: {
+      publisherName: [
+        'Tidepool Project'
+      ],
+      rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    },
     asarUnpack: '**\\*.node',
   },
   mac: {
     category: 'public.app-category.tools',
+    artifactName: '${productName}-${version}-${os}.${ext}',
     target: [
       {
         target: 'zip',
         arch: [
-          'x64'
+          'universal'
         ]
       },
       {
         target: 'dmg',
         arch: [
-          'x64'
+          'universal'
         ]
       },
       'dir'
     ],
     notarize: false,
-    asarUnpack: 'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
+    asarUnpack: [
+      'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
+      'app/node_modules/@tidepool/direct-io',
+    ],
   },
   protocols: [{
     name: 'Tidepool Uploader',

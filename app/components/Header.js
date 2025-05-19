@@ -31,7 +31,7 @@ import * as actionSources from '../constants/actionSources';
 import { pages, pagesMap } from '../constants/otherConstants';
 import api from '../../lib/core/api';
 
-import styles from '../../styles/components/Header.module.less';
+import * as styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
 import { i18n } from '../utils/config.i18next';

@@ -27,7 +27,7 @@
   width: 100%;
   max-width: 550px;
   margin: 0px auto;
-  justify-content: space-between;
+  justify-content: space-around;
   align-self: flex-end;
   align-items: center;
 }
@@ -35,26 +35,12 @@
 .footerLink {
   composes: invertLink gray from '../core/typography.module.less';
   text-decoration: none;
+  line-height: 36px;
   &:hover,
   &:focus,
   &:active {
     text-decoration: none;
   }
-}
-
-.jdrfContainer {
-  composes: flexRow from '../core/layout.module.less';
-  align-items: center;
-}
-
-.jdrfText {
-  composes: gray from '../core/typography.module.less';
-}
-
-.jdrfImage {
-  width: 82px;
-  height: 24px;
-  padding-left: 7px;
 }
 
 .version {
