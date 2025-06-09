@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0",
+  "version": "2.62.0-op5-unsupported.1",
   "engines": {
     "node": "20.14.0"
   },
