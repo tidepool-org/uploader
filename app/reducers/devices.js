@@ -303,7 +303,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   relionprime: {
-    instructions: i18n.t('Make sure meter is switched off before plugging in cable'),
+    instructions: i18n.t('Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.'),
     name: 'ReliOn Prime',
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
