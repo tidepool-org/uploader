@@ -186,7 +186,7 @@ workflows:
               only: /^v.*/
       - build-windows:
           context:
-            - OIDC-Azure
+            - Azure Signing Uploader-01
           filters:
             tags:
               only: /^v.*/
