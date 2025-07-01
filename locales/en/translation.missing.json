@@ -81,5 +81,7 @@
   "Limited to {{limit}} patients": "Limited to {{limit}} patients",
   "Maximum of {{limit}} patient accounts reached": "Maximum of {{limit}} patient accounts reached",
   "Private Workspace": "Private Workspace",
-  "your private": "your private"
+  "your private": "your private",
+  "Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.": "Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.",
+  "Share this issue with the Tidepool Support Team": "Share this issue with the Tidepool Support Team"
 }
