@@ -129,10 +129,19 @@ jobs:
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
     machine:
-      image: windows-server-2022-gui:current
+      image: cimg/azure:2023.07
       shell: bash.exe
     resource_class: windows.medium
     steps:
+      - run:
+          name: az login using OIDC
+          command: |
+            az login \
+                --service-principal \
+                --user "${AZURE_CLIENT_ID}" \
+                --tenant "${AZURE_TENANT_ID}" \
+                --federated-token "${CIRCLE_OIDC_TOKEN}"
+      - run: az vm list
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
@@ -169,6 +178,8 @@ workflows:
             tags:
               only: /^v.*/
       - build-windows:
+          context:
+            - OIDC-Azure
           filters:
             tags:
               only: /^v.*/
