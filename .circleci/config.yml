@@ -129,10 +129,17 @@ jobs:
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
     machine:
-      image: cimg/azure:2023.07
+      image: windows-server-2022-gui:current
       shell: bash.exe
     resource_class: windows.medium
     steps:
+      - run:
+          name: Install Azure CLI
+          command: |
+            echo "Downloading Azure CLI installer..."
+            curl -L -o azurecli.msi https://aka.ms/installazurecliwindows
+            echo "Installing Azure CLI..."
+            cmd.exe /C "start /wait msiexec /i azurecli.msi /quiet /qn /norestart"
       - run:
           name: az login using OIDC
           command: |
