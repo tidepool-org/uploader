@@ -13,7 +13,7 @@ exports.default = async function (configuration) {
   const command = 'azuresigntool sign -kvu "${AZURE_KEY_VAULT_URI}" --azure-key-vault-managed-identity -kvc "${AZURE_CERT_NAME}" -tr http://timestamp.digicert.com -v';
 
   // throws an error if non-0 exit code, that's what we want.
-  cp.execSync(`${command.join(' ')} "${configuration.path}"`, {
+  cp.execSync(`${command} "${configuration.path}"`, {
     stdio: 'inherit',
   });
 };
