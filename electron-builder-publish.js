@@ -67,10 +67,7 @@ const config = {
       }
     ],
     signtoolOptions: {
-      publisherName: [
-        'Tidepool Project'
-      ],
-      rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+      sign: './customSign.js'
     },
     asarUnpack: '**\\*.node',
   },

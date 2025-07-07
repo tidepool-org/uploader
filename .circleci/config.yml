@@ -133,13 +133,6 @@ jobs:
       shell: bash.exe
     resource_class: windows.medium
     steps:
-      # - run:
-      #     name: Install Azure CLI
-      #     command: |
-      #       echo "Downloading Azure CLI installer..."
-      #       curl -L -o azurecli.msi https://aka.ms/installazurecliwindows
-      #       echo "Installing Azure CLI..."
-      #       cmd.exe /C "start /wait msiexec /i azurecli.msi /quiet /qn /norestart"
       - run:
           name: az login using OIDC
           command: |
@@ -169,13 +162,7 @@ jobs:
       - run: yarn test
       # Package
       - run: |
-          if [ -z "$CIRCLE_PR_NUMBER" ]; then
-            yarn package
-            azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" --azure-key-vault-managed-identity -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v "${{ env.ARTIFACTS_PATH }}/${{ env.PRODUCT_NAME }}.exe"
-          else
-            echo "Forked repo; no package built.";
-          fi
-
+          if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
       - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
 
 # runs build for all branches and all tags starting with v.
