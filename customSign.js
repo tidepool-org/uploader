@@ -8,6 +8,9 @@ function isEmpty(value) {
 exports.default = async function (configuration) {
   const timeserver = 'http://timestamp.digicert.com';
   const azureURL = process.env.AZURE_KEY_VAULT_URI;
+  const clientId = process.env.AZURE_CLIENT_ID;
+  const tenantId = process.env.AZURE_TENANT_ID;
+  const clientSecret = process.env.AZURE_CLIENT_SECRET;
   const certificateName = process.env.AZURE_CERT_NAME;
 
   if (isEmpty(configuration.path)) {
@@ -18,7 +21,12 @@ exports.default = async function (configuration) {
       'azuresigntool.exe sign',
       '-kvu',
       azureURL,
-      '--azure-key-vault-managed-identity',
+      '-kvi',
+      clientId,
+      '-kvt',
+      tenantId,
+      '-kvs',
+      clientSecret,
       '-kvc',
       certificateName,
       '-tr',

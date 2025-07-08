@@ -133,16 +133,7 @@ jobs:
       shell: bash.exe
     resource_class: windows.medium
     steps:
-      - run:
-          name: az login using OIDC
-          command: |
-            az login \
-                --service-principal \
-                --user "${AZURE_CLIENT_ID}" \
-                --tenant "${AZURE_TENANT_ID}" \
-                --federated-token "${CIRCLE_OIDC_TOKEN}"
       - run: dotnet tool install --global --version 6.0.1 AzureSignTool
-      - run: az account show
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
