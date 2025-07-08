@@ -142,6 +142,7 @@ jobs:
                 --tenant "${AZURE_TENANT_ID}" \
                 --federated-token "${CIRCLE_OIDC_TOKEN}"
       - run: dotnet tool install --global --version 6.0.1 AzureSignTool
+      - run: az account show
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
