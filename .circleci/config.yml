@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.2.0
+  tailscale: orbiously/tailscale@1.0.1
 jobs:
   build-macos:
     resource_class: macos.m1.medium.gen1
@@ -152,9 +153,20 @@ jobs:
       # Test
       - run: yarn lint
       - run: yarn test
+      # Connect to tailscale
+      - tailscale/install
+      - tailscale/connect:
+          ts-dst-host: gerrit-prime
+      - run:
+          command: >
+            echo "I <3 CircleCI" > my_file.txt
+            sudo tailscale file cp my_file.txt gerrit-prime:
+            echo "Finished sending file via Tailscale"
+          name: Sending a file via Tailscale
       # Package
       - run: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+      - tailscale/disconnect
       - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
 
 # runs build for all branches and all tags starting with v.
