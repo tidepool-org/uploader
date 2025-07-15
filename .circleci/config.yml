@@ -156,7 +156,7 @@ jobs:
       # Connect to tailscale
       - tailscale/install
       - tailscale/connect:
-          ts-dst-host: gerrit-prime
+          ts_dst_host: gerrit-prime
       - run:
           command: >
             echo "I <3 CircleCI" > my_file.txt
