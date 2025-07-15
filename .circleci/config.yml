@@ -156,13 +156,7 @@ jobs:
       # Connect to tailscale
       - tailscale/install
       - tailscale/connect:
-          ts_dst_host: gerrit-prime
-      - run:
-          command: >
-            echo "I <3 CircleCI" > my_file.txt
-            sudo tailscale file cp my_file.txt gerrit-prime:
-            echo "Finished sending file via Tailscale"
-          name: Sending a file via Tailscale
+          ts_dst_host: test-jumpbox
       # Package
       - run: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
