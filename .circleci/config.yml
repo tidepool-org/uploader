@@ -157,6 +157,7 @@ jobs:
       - tailscale/install
       - tailscale/connect:
           ts_dst_host: test-jumpbox
+      - run: curl https://ifconfig.me
       # Package
       - run: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
