@@ -154,7 +154,7 @@ jobs:
       - run: yarn lint
       - run: yarn test
       # Connect to tailscale
-      - set-dnsclientserveraddress -interfaceindex (Get-NetAdapter -Name "Ethernet").InterfaceIndex -serveraddresses ("100.100.100.100", "10.128.0.1")
+      - run: powershell.exe -Command "Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name 'Ethernet').InterfaceIndex -ServerAddresses ('100.100.100.100','10.128.0.1')"
       - tailscale/install
       - tailscale/connect:
           ts_dst_host: test-jumpbox
