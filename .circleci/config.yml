@@ -149,13 +149,11 @@ jobs:
       - run: npm install --global yarn
       - run: corepack enable
       - run: yarn config set cacheFolder ~/.cache/yarn
-      - run: yarn install --immutable --prefer-offline
+      - run: yarn install --immutable
       # Test
       - run: yarn lint
       - run: yarn test
       # Connect to tailscale
-      - run: powershell.exe -Command "Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name 'Ethernet').InterfaceIndex -ServerAddresses ('100.100.100.100','10.128.0.1')"
-      - tailscale/install
       - tailscale/connect:
           ts_dst_host: test-jumpbox
       - run: curl https://icanhazip.com
