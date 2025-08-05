@@ -72,7 +72,7 @@ const config = {
       certificateProfileName: 'tidepool-public-certificate',
       codeSigningAccountName: 'tidepool-org-signing'
     },
-    asarUnpack: '**\\*.node',
+    //asarUnpack: '**\\*.node',
   },
   mac: {
     category: 'public.app-category.tools',
