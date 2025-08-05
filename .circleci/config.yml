@@ -27,9 +27,7 @@ jobs:
     - run: npm -v
     - run: node-gyp -v
     - run: corepack enable
-    - node/install-packages:
-        pkg-manager: yarn
-        args: [--immutable, --prefer-offline, --cache-folder, ~/.cache/yarn]
+    - run: yarn install --immutable --prefer-offline --cache-folder ~/.cache/yarn
     # Test
     - run: yarn lint
     - run: yarn test
