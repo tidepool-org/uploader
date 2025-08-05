@@ -133,7 +133,8 @@ jobs:
       shell: bash.exe
     resource_class: windows.medium
     steps:
-      - run: pwsh.exe -NoProfile -NonInteractive -Command Register-PackageSource -Name "NuGet" -Location "https://api.nuget.org/v3/index.json" -ProviderName NuGet
+      - run: dotnet new tool-manifest
+      - run: dotnet tool install sign --version 0.9.1-beta.24469.1
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
