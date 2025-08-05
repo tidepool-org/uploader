@@ -66,8 +66,11 @@ const config = {
         ]
       }
     ],
-    signtoolOptions: {
-      sign: './customSign.js'
+    azureSignOptions: {
+      publisherName: 'Tidepool Project',
+      endpoint: 'https://wus2.codesigning.azure.net/',
+      certificateProfileName: 'tidepool-public-certificate',
+      codeSigningAccountName: 'tidepool-org-signing'
     },
     asarUnpack: '**\\*.node',
   },
