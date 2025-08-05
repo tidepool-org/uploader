@@ -133,7 +133,7 @@ jobs:
       shell: bash.exe
     resource_class: windows.medium
     steps:
-      - run: dotnet tool install --global --version 6.0.1 AzureSignTool
+      - run: pwsh.exe -NoProfile -NonInteractive -Command Register-PackageSource -Name "NuGet" -Location "https://api.nuget.org/v3/index.json" -ProviderName NuGet
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
