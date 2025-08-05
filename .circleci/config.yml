@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  node: circleci/node@7.1.0
+  node: circleci/node@5.2.0
   tailscale: orbiously/tailscale@1.0.1
 jobs:
   build-macos:
@@ -18,16 +18,26 @@ jobs:
     - run: git submodule sync
     - run: git submodule update --init
     - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
-    - node/install:
-        install-yarn: true
-        node-version: '20.14.0'
-    - run: node --version
+    - run:
+        name: Install nvm and node
+        command: |
+          set +e
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+          source ~/.nvm/nvm.sh
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          nvm install v20.14.0
+          nvm alias default v20.14.0
+    - run: node -v
     - run: npm install --global node-gyp
     - run: echo $SHELL
     - run: npm -v
     - run: node-gyp -v
+    - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: corepack enable
-    - run: yarn install --immutable --prefer-offline --cache-folder ~/.cache/yarn
+    - run: yarn config set cacheFolder ~/.cache/yarn
+    - run: yarn --frozen-lockfile
     # Test
     - run: yarn lint
     - run: yarn test
@@ -139,7 +149,7 @@ jobs:
       - run: npm install --global yarn
       - run: corepack enable
       - run: yarn config set cacheFolder ~/.cache/yarn
-      - run: yarn --frozen-lockfile
+      - run: yarn install --immutable --prefer-offline
       # Test
       - run: yarn lint
       - run: yarn test
