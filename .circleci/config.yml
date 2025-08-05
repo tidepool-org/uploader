@@ -129,13 +129,16 @@ jobs:
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then ./artifact.sh; else echo "Forked repo; no docker image built."; fi
   build-windows:
     machine:
-      image:  windows-server-2019-vs2019:current
+      image: windows-server-2022-gui:current
       shell: bash.exe
     resource_class: windows.medium
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
+      - run: pwsh.exe -command "Install-Module PowerShellGet -Scope CurrentUser -Force -AllowClobber"
+      - run: pwsh.exe -command "Install-Module PackageManagement -Scope CurrentUser -Force -AllowClobber"
+      - run: pwsh.exe -command "Get-Command Install-Package"
       - run: python -m pip install packaging
       - run: pip install setuptools
       - run: nvm install v20.14.0
