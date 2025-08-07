@@ -153,15 +153,19 @@ jobs:
       # Test
       - run: yarn lint
       - run: yarn test
-      - run: pwsh.exe -NonInteractive -Command \
-              "Invoke-TrustedSigning \
+      - run: |
+            pwsh.exe -NonInteractive -Command "
+              Install-Module -Name TrustedSigning -RequiredVersion 0.5.3 -Force -Repository PSGallery;
+              \$dummyExePath = 'C:\\Users\\circleci\\project\\dummy.exe';
+              Set-Content -Path \$dummyExePath -Value 'This is a dummy executable for testing purposes.';
+              Invoke-TrustedSigning \
                 -Endpoint 'https://wus2.codesigning.azure.net/' \
                 -CertificateProfileName 'tidepool-public-certificate' \
                 -CodeSigningAccountName 'tidepool-org-signing' \
                 -TimestampRfc3161 'http://timestamp.acs.microsoft.com' \
                 -TimestampDigest 'SHA256' \
                 -FileDigest 'SHA256' \
-                -Files 'C:\\Users\\circleci\\project\\release\\win-unpacked\\resources\\driver\\TidepoolUSBDriver_x86.exe'"
+                -Files \$dummyExePath"
       # Package
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
       - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
