@@ -136,9 +136,9 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: pwsh.exe -command "Install-Module PowerShellGet -Scope CurrentUser -Force -AllowClobber"
-      - run: pwsh.exe -command "Install-Module PackageManagement -Scope CurrentUser -Force -AllowClobber"
-      - run: pwsh.exe -command "Get-Command Install-Package"
+      - run: pwsh.exe -command "Install-PackageProvider -Name NuGet -Force -Scope CurrentUser"
+      - run: pwsh.exe -command "Unregister-PSRepository -Name 'Nuget'"
+      - run: pwsh.exe -command "Register-PSRepository -Name 'Nuget' -SourceLocation 'https://api.nuget.org/v3/index.json' -InstallationPolicy Trusted"
       - run: python -m pip install packaging
       - run: pip install setuptools
       - run: nvm install v20.14.0
