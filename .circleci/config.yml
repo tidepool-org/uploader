@@ -157,7 +157,7 @@ jobs:
             pwsh.exe -NonInteractive -Command "
               Install-Module -Name TrustedSigning -RequiredVersion 0.5.3 -Force -Repository PSGallery;
               \$dummyExePath = 'C:\\Users\\circleci\\project\\dummy.exe';
-              Set-Content -Path \$dummyExePath -Value 'This is a dummy executable for testing purposes.';
+              Copy-Item -Path 'C:\\Windows\\System32\\notepad.exe' -Destination \$dummyExePath;
               Invoke-TrustedSigning \
                 -Endpoint 'https://wus2.codesigning.azure.net/' \
                 -CertificateProfileName 'tidepool-public-certificate' \
