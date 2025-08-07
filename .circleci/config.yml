@@ -137,7 +137,7 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: pwsh.exe -command "Unregister-PSRepository -Name 'Nuget'"
-      - run: pwsh.exe -command "Register-PSRepository -Name 'Nuget' -SourceLocation 'https://api.nuget.org/v3/index.json' -InstallationPolicy Trusted"
+      - run: pwsh.exe -command "Register-PSRepository -Name 'Nuget' -SourceLocation 'https://api.nuget.org/v2/index.json' -InstallationPolicy Trusted"
       - run: python -m pip install packaging
       - run: pip install setuptools
       - run: nvm install v20.14.0
@@ -154,8 +154,7 @@ jobs:
       - run: yarn lint
       - run: yarn test
       # Package
-      - run: |
-          if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
+      - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
       - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
 
 # runs build for all branches and all tags starting with v.
