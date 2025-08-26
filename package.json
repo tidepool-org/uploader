@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0-prime-desc.1",
+  "version": "2.62.0-prime-desc.2",
   "engines": {
     "node": "20.14.0"
   },
