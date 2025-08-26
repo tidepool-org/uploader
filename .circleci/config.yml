@@ -153,19 +153,22 @@ jobs:
       # Test
       - run: yarn lint
       - run: yarn test
-      - run: |
-            pwsh.exe -NonInteractive -Command "
-              Install-Module -Name TrustedSigning -RequiredVersion 0.5.3 -Force -Repository PSGallery;
-              \$dummyExePath = 'C:\\Users\\circleci\\project\\dummy.exe';
-              Copy-Item -Path 'C:\\Windows\\System32\\notepad.exe' -Destination \$dummyExePath;
-              Invoke-TrustedSigning \
-                -Endpoint 'https://wus2.codesigning.azure.net/' \
-                -CertificateProfileName 'tidepool-public-certificate' \
-                -CodeSigningAccountName 'tidepool-org-signing' \
-                -TimestampRfc3161 'http://timestamp.acs.microsoft.com' \
-                -TimestampDigest 'SHA256' \
-                -FileDigest 'SHA256' \
-                -Files \$dummyExePath"
+      # Workaround from https://github.com/electron-userland/electron-builder/issues/9076
+      - run:
+          name: Install and Invoke TrustedSigning @0.5.3 on dummy executable
+          shell: pwsh
+          command: |
+            Install-Module -Name TrustedSigning -RequiredVersion 0.5.3 -Force -Repository PSGallery
+            $dummyExePath = 'C:\Users\circleci\project\dummy.exe'
+            Copy-Item -Path 'C:\Windows\System32\notepad.exe' -Destination $dummyExePath
+            Invoke-TrustedSigning `
+              -Endpoint 'https://wus2.codesigning.azure.net/' `
+              -CertificateProfileName 'tidepool-public-certificate' `
+              -CodeSigningAccountName 'tidepool-org-signing' `
+              -TimestampRfc3161 'http://timestamp.acs.microsoft.com' `
+              -TimestampDigest 'SHA256' `
+              -FileDigest 'SHA256' `
+              -Files $dummyExePath
       # Package
       - run: if [ -z "$CIRCLE_PR_NUMBER" ]; then yarn package; else echo "Forked repo; no package built."; fi
       - run: if [ -n "$CIRCLE_TAG" ]; then yarn av-whitelist; else echo "Not a tagged release."; fi
