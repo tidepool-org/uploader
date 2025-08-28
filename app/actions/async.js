@@ -364,10 +364,15 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         if (err === 'E_LIBRE2_UNSUPPORTED') {
-          displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
-          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
-          displayErr.linkText = 'Please see this support article.';
+          if (selectedClinicId) {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_CLINIC);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_CLINIC';
+          } else {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_PERSONAL);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_PERSONAL';
+          }
+          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/35556633048340-Connecting-your-LibreView-Account-to-Tidepool';
+          displayErr.linkText = 'Learn more.';
         }
 
         if (err === 'E_G7_UNSUPPORTED') {
