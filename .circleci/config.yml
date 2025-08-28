@@ -155,10 +155,10 @@ jobs:
       - run: yarn test
       # Workaround from https://github.com/electron-userland/electron-builder/issues/9076
       - run:
-          name: Install and Invoke TrustedSigning @0.5.3 on dummy executable
+          name: Install and Invoke TrustedSigning on dummy executable
           shell: pwsh
           command: |
-            Install-Module -Name TrustedSigning -RequiredVersion 0.5.3 -Force -Repository PSGallery
+            Install-Module -Name TrustedSigning -MinimumVersion 0.5.0 -Force -Repository PSGallery -Scope CurrentUser
             $dummyExePath = 'C:\Users\circleci\project\dummy.exe'
             Copy-Item -Path 'C:\Windows\System32\notepad.exe' -Destination $dummyExePath
             Invoke-TrustedSigning `
