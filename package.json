@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0-fix-ble-timestamp.1",
+  "version": "2.62.0-fix-ble-timestamp.2",
   "engines": {
     "node": "20.14.0"
   },
