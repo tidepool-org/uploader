@@ -66,11 +66,11 @@ const config = {
         ]
       }
     ],
-    signtoolOptions: {
-      publisherName: [
-        'Tidepool Project'
-      ],
-      rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    azureSignOptions: {
+      publisherName: 'Tidepool Project',
+      endpoint: 'https://wus2.codesigning.azure.net/',
+      certificateProfileName: 'tidepool-public-certificate',
+      codeSigningAccountName: 'tidepool-org-signing'
     },
     asarUnpack: '**\\*.node',
   },
