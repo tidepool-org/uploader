@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0-ciq-plus-temp-basals.1",
+  "version": "2.62.0-ciq-plus-temp-basals.2",
   "engines": {
     "node": "20.14.0"
   },
