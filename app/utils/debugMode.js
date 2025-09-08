@@ -14,9 +14,9 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-import env from './env';
+import env from './env.js';
 import _ from 'lodash';
-import { ipcRenderer, ipcMain } from './ipc';
+import { ipcRenderer, ipcMain } from './ipc.js';
 
 if (env.electron_renderer) {
   let isDebug =

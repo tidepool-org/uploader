@@ -4,12 +4,12 @@ import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, sessio
 import os from 'os';
 import osName from 'os-name';
 import { autoUpdater } from 'electron-updater';
-import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
-import { sync as syncActions } from './actions';
-import debugMode from '../app/utils/debugMode';
-import Rollbar from 'rollbar/src/server/rollbar';
-import uploadDataPeriod from './utils/uploadDataPeriod';
-import { setLanguage, i18n } from './utils/config.i18next';
+import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
+import { sync as syncActions } from './actions/sync.js';
+import debugMode from '../app/utils/debugMode.js';
+import Rollbar from 'rollbar/src/server/rollbar.js';
+import uploadDataPeriod from './utils/uploadDataPeriod.js';
+import { setLanguage, i18n } from './utils/config.i18next.js';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';

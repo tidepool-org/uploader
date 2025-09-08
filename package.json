@@ -2,7 +2,7 @@
   "name": "tidepool-uploader",
   "version": "2.62.0-libre2-c2c-notice.1",
   "engines": {
-    "node": "20.14.0"
+    "node": "22.18.0"
   },
   "packageManager": "yarn@3.6.4",
   "description": "Tidepool Project Universal Uploader",
@@ -63,7 +63,7 @@
     "cross-env": "7.0.3",
     "electron-is-dev": "2.0.0",
     "electron-log": "4.4.0",
-    "electron-updater": "6.6.7",
+    "electron-updater": "6.6.8",
     "es6-error": "4.1.1",
     "express": "4.21.2",
     "fast-safe-stringify": "2.1.1",
@@ -162,8 +162,8 @@
     "css-loader": "7.1.2",
     "difflet": "1.0.1",
     "drivelist": "12.0.2",
-    "electron": "31.1.0",
-    "electron-builder": "26.0.18",
+    "electron": "38.0.0",
+    "electron-builder": "26.0.20",
     "electron-devtools-installer": "3.2.0",
     "enzyme": "3.11.0",
     "eslint": "8.56.0",
@@ -247,6 +247,5 @@
     "setupFiles": [
       "<rootDir>/jest.setup.js"
     ]
-  },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  }
 }

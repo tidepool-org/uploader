@@ -8,6 +8,7 @@
     "name": "Tidepool Project",
     "email": "gerrit@tidepool.org"
   },
+  "type": "module",
   "license": "BSD-2-Clause",
   "dependencies": {
     "@tidepool/direct-io": "3.0.2",
