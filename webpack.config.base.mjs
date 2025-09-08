@@ -3,16 +3,16 @@
  */
 
 import _ from 'lodash';
-import path from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import webpack from 'webpack';
-import { dependencies as externals } from './app/package.json';
-import { optionalDependencies as additionalExternals } from './app/package.json';
+import appPkg from './app/package.json' with { type: 'json' };
 
-// this is needed to support Node.js v17+ when using Webpack v4
-// see https://github.com/webpack/webpack/issues/13572 for details
-import crypto from 'crypto';
-const crypto_orig_createHash = crypto.createHash;
-crypto.createHash = algorithm => crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const externals = _.get(appPkg, 'dependencies', {});
+const additionalExternals = _.get(appPkg, 'optionalDependencies', {});
 
 export default {
   module: {
@@ -38,7 +38,9 @@ export default {
   output: {
     path: path.join(__dirname, 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    libraryTarget: 'commonjs2'
+    library: {
+      type: 'commonjs2'
+    }
   },
 
   /**
@@ -46,11 +48,10 @@ export default {
    */
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
-    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
     alias: {
       superagent: 'superagent/lib/client.js',
       emitter: 'component-emitter',
-      reduce  : 'reduce-component'
+      reduce: 'reduce-component'
     }
   },
   resolveLoader: { },
@@ -59,8 +60,6 @@ export default {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production'
     }),
-
-    new webpack.NamedModulesPlugin()
   ],
 
   externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]

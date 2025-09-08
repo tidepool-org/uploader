@@ -98,6 +98,13 @@ const devices = {
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
+  embracepro: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'EmbracePRO',
+    key: 'embracepro',
+    source: {type: 'device', driverId: 'EmbracePRO'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   embracetalk: {
     instructions: {
                     text: i18n.t('Plug in meter with cable and set meter to'),
@@ -162,6 +169,13 @@ const devices = {
     name: 'GlucoRx Nexus, Nexus Mini Ultra, Go & HCT',
     key: 'glucorx',
     source: {type: 'device', driverId: 'GlucoRx'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  glucozenauto: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'GlucoZen.auto',
+    key: 'glucozenauto',
+    source: {type: 'device', driverId: 'GlucoZenAuto'},
     enabled: {mac: true, win: true, linux: true}
   },
   omnipod: {
@@ -289,7 +303,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   relionprime: {
-    instructions: i18n.t('Make sure meter is switched off before plugging in cable'),
+    instructions: i18n.t('Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.'),
     name: 'ReliOn Prime',
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},

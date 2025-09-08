@@ -410,11 +410,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           disconnectedErrProps.clinicName = clinic.name;
         }
 
-        if (targetDevice.powerOnlyWarning) {
-          displayErr = new Error(ErrorMessages.E_USB_CABLE);
-          disconnectedErrProps.code = 'E_USB_CABLE';
-        }
-
         if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
           displayErr = new Error(ErrorMessages.E_DEXCOM_CONNECTION);
           disconnectedErrProps.code = 'E_DEXCOM_CONNECTION';
@@ -432,10 +427,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
       } else if (_.get(targetDevice, 'source.driverId', null) === 'BluetoothLE' ||
                  _.get(targetDevice, 'source.driverId', null) === 'OneTouchVerioBLE') {
         errorMessage = 'E_BLUETOOTH_PAIR';
-      }
-
-      if (targetDevice.powerOnlyWarning) {
-        errorMessage = 'E_USB_CABLE';
       }
 
       device.upload(
