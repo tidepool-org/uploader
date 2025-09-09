@@ -3259,6 +3259,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.9.0":
+  version: 20.19.13
+  resolution: "@types/node@npm:20.19.13"
+  dependencies:
+    undici-types: ~6.21.0
+  checksum: 173975790cd21f0fcbaaf7fde597ff14f84faed7a3d93ae9cb66698e637309ed7223e3bc6380e3f1f4ea1a49bb90b76e8ab424efed2939b1da1639cb595de618
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^22.7.7":
   version: 22.18.1
   resolution: "@types/node@npm:22.18.1"
@@ -6701,6 +6710,19 @@ __metadata:
   bin:
     electron: cli.js
   checksum: 3260af2d1e9ae505109c815e924cde380abd4c62562ab6594c8f8e9ab0321e7b702db47fd7349c2749cef6879a4437414912f71ef4e8a88e1c2ae46a93af828f
+  languageName: node
+  linkType: hard
+
+"electron@npm:^33.0.1":
+  version: 33.4.11
+  resolution: "electron@npm:33.4.11"
+  dependencies:
+    "@electron/get": ^2.0.0
+    "@types/node": ^20.9.0
+    extract-zip: ^2.0.1
+  bin:
+    electron: cli.js
+  checksum: 1e40caaa381db922137df566219320155c179c968de3bd427ebe7ff3903e35ad1a528deb5c657cd74c644c92046705e084651f2dfcdb3e64d2a424ff8519397f
   languageName: node
   linkType: hard
 
