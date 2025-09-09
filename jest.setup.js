@@ -18,3 +18,11 @@ jest.mock('@electron/remote', () => {
     getGlobal: jest.fn(() => mockI18n),
   };
 });
+
+jest.mock('./app/utils/ipc.js', () => ({
+  ipcRenderer: {
+    send: jest.fn(),
+    on: jest.fn()
+  },
+  ipcMain: {}
+}));

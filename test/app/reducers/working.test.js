@@ -24,6 +24,20 @@ jest.mock('@electron/remote', () => ({
   }
 }));
 
+jest.mock('../../../app/utils/ipc.js', () => ({
+  ipcRenderer: {
+    send: jest.fn(),
+    on: jest.fn()
+  },
+  ipcMain: {}
+}));
+
+jest.mock('../../../app/utils/config.i18next.js', () => ({
+  i18n: {
+    t: jest.fn(),
+  }
+}));
+
 describe('working', () => {
 
   describe('logout', () => {
