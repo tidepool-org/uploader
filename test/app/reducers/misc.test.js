@@ -20,7 +20,7 @@ import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
-import actions from '../../../app/actions/index.';
+import actions from '../../../app/actions/index.js';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as misc from '../../../app/reducers/misc';
 import initialState from '../../../app/reducers/initialState';

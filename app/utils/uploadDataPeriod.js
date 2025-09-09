@@ -14,8 +14,8 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-import env from '../../app/utils/env';
-import { ipcRenderer, ipcMain } from '../../app/utils/ipc';
+import env from '../../app/utils/env.js';
+import { ipcRenderer, ipcMain } from '../../app/utils/ipc.js';
 
 const PERIODS = {
   ALL: 1,
@@ -24,9 +24,11 @@ const PERIODS = {
 };
 
 let uploadDataPeriod;
+
 if (env.electron_renderer) {
+  // Use require for electron remote since it's a mixed CommonJS/ES module environment
   const remote = require('@electron/remote');
-  uploadDataPeriod = module.exports = {
+  uploadDataPeriod = {
     get periodGlobal() {
       return remote.getGlobal('period');
     },
@@ -78,7 +80,7 @@ if (env.electron_main) {
     global.period = arg;
   });
 
-  uploadDataPeriod = module.exports = {
+  uploadDataPeriod = {
     get periodGlobal() {
       return global.period;
     },
@@ -105,7 +107,7 @@ if (env.browser) {
   let period = PERIODS.DELTA;
   let periodMedtronic600 = PERIODS.DELTA;
 
-  uploadDataPeriod = module.exports = {
+  uploadDataPeriod = {
     get periodGlobal() {
       return period;
     },
@@ -129,7 +131,7 @@ if (env.browser) {
 if (!env.electron && env.node) {
   // we're running as a Node process (e.g. running as a script),
   // so just default to delta
-  uploadDataPeriod = module.exports = {
+  uploadDataPeriod = {
     periodMedtronic600: PERIODS.DELTA,
     periodGlobal: PERIODS.DELTA,
     PERIODS,

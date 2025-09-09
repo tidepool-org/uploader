@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION_SHA = 
+const VERSION_SHA =
   process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -29,7 +29,7 @@ export default merge(baseConfig, {
 
   target: 'electron-main',
 
-  entry: ['./app/main.dev'],
+  entry: ['./app/main.dev.js'],
 
   output: {
     path: __dirname,

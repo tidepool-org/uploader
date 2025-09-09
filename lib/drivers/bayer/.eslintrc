@@ -19,7 +19,8 @@
     "no-else-return": "warn",
     "object-curly-newline": "warn",
     "linebreak-style": 0,
-    "implicit-arrow-linebreak": "warn"
+    "implicit-arrow-linebreak": "warn",
+    "import/extensions": "off"
   },
   "overrides": [
     {

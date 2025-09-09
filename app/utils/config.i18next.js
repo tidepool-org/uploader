@@ -1,6 +1,8 @@
-import env from './env';
+import env from './env.js';
 import { initReactI18next } from 'react-i18next';
 import _ from 'lodash';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 let i18n;
 let i18nextOptions = {};
@@ -164,8 +166,4 @@ if (env.browser && !env.electron_renderer) {
   setLanguage();
 }
 
-module.exports = {
-  i18nextOptions,
-  setLanguage,
-  i18n,
-};
+export { i18nextOptions, setLanguage, i18n };

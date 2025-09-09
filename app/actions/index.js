@@ -15,8 +15,8 @@
  * == BSD2 LICENSE ==
  */
 
-import * as async from './async';
-import * as sync from './sync';
+import * as async from './async.js';
+import * as sync from './sync.js';
 
 export default {
   async: async,

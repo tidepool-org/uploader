@@ -22,22 +22,22 @@ import semver from 'semver';
 import { get, set, del } from 'idb-keyval';
 
 import { checkCacheValid } from 'redux-cache';
-import { ipcRenderer } from '../utils/ipc';
+import { ipcRenderer } from '../utils/ipc.js';
 
-import * as actionSources from '../constants/actionSources';
-import * as actionTypes from '../constants/actionTypes';
-import ErrorMessages from '../constants/errorMessages';
-import * as metrics from '../constants/metrics';
-import { pages, pagesMap, paths } from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources.js';
+import * as actionTypes from '../constants/actionTypes.js';
+import ErrorMessages from '../constants/errorMessages.js';
+import * as metrics from '../constants/metrics.js';
+import { pages, pagesMap, paths } from '../constants/otherConstants.js';
 
-import api from '../../lib/core/api';
-import driverManifests from '../../lib/core/driverManifests';
-import localStore from '../../lib/core/localStore';
-import personUtils from '../../lib/core/personUtils';
-import { clinicUIDetails } from '../../lib/core/clinicUtils';
-import * as sync from './sync';
-import * as actionUtils from './utils';
-import env from '../utils/env';
+import api from '../../lib/core/api.js';
+import driverManifests from '../../lib/core/driverManifests.js';
+import localStore from '../../lib/core/localStore.js';
+import personUtils from '../../lib/core/personUtils.js';
+import { clinicUIDetails } from '../../lib/core/clinicUtils.js';
+import * as sync from './sync.js';
+import * as actionUtils from './utils.js';
+import env from '../utils/env.js';
 
 let services = { api };
 let versionInfo = {};

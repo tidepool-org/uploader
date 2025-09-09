@@ -18,13 +18,15 @@ import env from './env.js';
 import _ from 'lodash';
 import { ipcRenderer, ipcMain } from './ipc.js';
 
+let debugMode;
+
 if (env.electron_renderer) {
   let isDebug =
     process.env.DEBUG_ERROR ||
     JSON.parse(localStorage.getItem('isDebug')) ||
     false;
 
-  const debugMode = (module.exports = {
+  debugMode = {
     isDebug,
     setDebug: function(isDebug) {
       ipcRenderer.send('setDebug', isDebug);
@@ -32,7 +34,7 @@ if (env.electron_renderer) {
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
     },
-  });
+  };
 } else {
   let isDebug = _.get(process, 'env.DEBUG_ERROR', false);
 
@@ -42,11 +44,13 @@ if (env.electron_renderer) {
     });
   }
 
-  const debugMode = (module.exports = {
+  debugMode = {
     isDebug,
     setDebug: function(isDebug) {
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
     },
-  });
+  };
 }
+
+export default debugMode;

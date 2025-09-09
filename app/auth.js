@@ -4,11 +4,11 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { AuthProvider } from 'react-oidc-context';
 import { useSelector, useStore } from 'react-redux';
 import _ from 'lodash';
-import * as ActionTypes from './constants/actionTypes';
-import { sync, async } from './actions';
-import api from '../lib/core/api';
-import env from './utils/env';
-import { ipcRenderer } from './utils/ipc';
+import * as ActionTypes from './constants/actionTypes.js';
+import { sync, async } from './actions/index.js';
+import api from '../lib/core/api.js';
+import env from './utils/env.js';
+import { ipcRenderer } from './utils/ipc.js';
 
 /**
  * @type {Keycloak}

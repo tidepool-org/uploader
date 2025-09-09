@@ -52,7 +52,7 @@ export default (env => merge(baseConfig, {
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    path.resolve(__dirname, './app/index')
+    path.resolve(__dirname, './app/index.js')
   ],
 
   output: {

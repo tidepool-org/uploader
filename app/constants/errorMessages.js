@@ -15,10 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-// NB: this module is ES5 because the CLI tools run in node
-// and these error constants are a dependency through lib/core/api.js
-
-module.exports = {
+export default {
   E_CARELINK_CREDS: 'Check your CareLink username and password',
   E_CARELINK_UNSUPPORTED: 'Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry... If you are no longer using an unsupported pump and still get this message, create a new CareLink account and try uploading again.',
   E_CARELINK_UPLOAD: 'Error processing & uploading CareLink data',

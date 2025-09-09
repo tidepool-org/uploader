@@ -17,7 +17,7 @@
 
 var React = require('react');
 var styles = require('../../styles/components/App.module.less');
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.js';
 
 class Loading extends React.Component {
   render() {

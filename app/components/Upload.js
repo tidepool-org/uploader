@@ -25,21 +25,21 @@ import sundial from 'sundial';
 import BLE from 'ble-glucose';
 import pako from 'pako';
 
-import LoadingBar from './LoadingBar';
-import ProgressBar from './ProgressBar';
-import debugMode from '../utils/debugMode';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
+import LoadingBar from './LoadingBar.js';
+import ProgressBar from './ProgressBar.js';
+import debugMode from '../utils/debugMode.js';
+import uploadDataPeriod from '../utils/uploadDataPeriod.js';
 
 import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
 
 import * as styles from '../../styles/components/Upload.module.less';
-import env from '../utils/env';
+import env from '../utils/env.js';
 let keytar;
 if(env.electron_renderer){
   keytar = require('keytar');
 }
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.js';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();

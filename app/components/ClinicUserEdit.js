@@ -25,7 +25,7 @@ var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
 var styles = require('../../styles/components/ClinicUserEdit.module.less');
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.js';
 
 function zeroPad(value){
   return _.padStart(value, 2, '0');

@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import limitReached_img from '../../images/LimitReached.svg';
 import * as styles from '../../styles/components/PatientLimitModal.module.less';
-import { sync as syncActions } from '../actions/';
-import { URL_TIDEPOOL_PLUS_PLANS } from '../constants/otherConstants';
+import { sync as syncActions } from '../actions/index.js';
+import { URL_TIDEPOOL_PLUS_PLANS } from '../constants/otherConstants.js';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.js';
 
 const PatientLimitModal = () => {
   const showingPatientLimitModal = useSelector(

@@ -51,7 +51,8 @@
     "max-len": ["warn", { "code": 100 }],
     "prefer-destructuring": "warn",
     "linebreak-style": 0,
-    "no-buffer-constructor": "warn"
+    "no-buffer-constructor": "warn",
+    "import/extensions": "off"
   },
   "plugins": [
     "@babel",

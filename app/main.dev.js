@@ -3,16 +3,22 @@ import _ from 'lodash';
 import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
-import { autoUpdater } from 'electron-updater';
+import pkg from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
-import { sync as syncActions } from './actions/sync.js';
-import debugMode from '../app/utils/debugMode.js';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
 import Rollbar from 'rollbar/src/server/rollbar.js';
 import uploadDataPeriod from './utils/uploadDataPeriod.js';
 import { setLanguage, i18n } from './utils/config.i18next.js';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
+
+const { autoUpdater } = pkg;
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const { sync: syncActions } = require('./actions/index.js');
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';

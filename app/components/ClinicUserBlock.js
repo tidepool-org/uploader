@@ -22,7 +22,7 @@ var sundial = require('sundial');
 var personUtils = require('../../lib/core/personUtils');
 var cx = require('classnames');
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.js';
 
 var styles = require('../../styles/components/ClinicUserBlock.module.less');
 
