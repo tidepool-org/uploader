@@ -8568,10 +8568,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:8.0.0":
-  version: 8.0.0
-  resolution: "helmet@npm:8.0.0"
-  checksum: 1a7ef94d35d8e4adae8697f65f9f85d75b3711e4c8b5db5bc7c0480de31e16cf28c92dabe8204eb98aac43db82c69951c771f685a9cd011b15415ffba6fe293b
+"helmet@npm:8.1.0":
+  version: 8.1.0
+  resolution: "helmet@npm:8.1.0"
+  checksum: 58febddc95becb457a7dd5d062500b9e68437d4991b7a9d9455af63f35740962c258d2656cbed367fbd5704da5758408b674b2a6013e589a4a6b02be0a8d5f4e
   languageName: node
   linkType: hard
 
@@ -8673,9 +8673,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:5.6.3":
-  version: 5.6.3
-  resolution: "html-webpack-plugin@npm:5.6.3"
+"html-webpack-plugin@npm:5.6.4":
+  version: 5.6.4
+  resolution: "html-webpack-plugin@npm:5.6.4"
   dependencies:
     "@types/html-minifier-terser": ^6.0.0
     html-minifier-terser: ^6.0.2
@@ -8690,7 +8690,7 @@ __metadata:
       optional: true
     webpack:
       optional: true
-  checksum: 59e7d971b0cfd9ba34c7acaa3c161e43c62596474dd8cd35d7b690498ff5891f21296de0aa1d2e7810348caa657e938461267155dda47913b5eeca7124406270
+  checksum: b486d99ce820d563dda215f8b6bbeb78127a738b88b419c95d577165e10dd29125e151010b5745ce933e8055f2445c2f9ad1c93024ad3b752db9ac613e84cfac
   languageName: node
   linkType: hard
 
@@ -8892,19 +8892,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18n-iso-countries@npm:7.13.0":
-  version: 7.13.0
-  resolution: "i18n-iso-countries@npm:7.13.0"
+"i18n-iso-countries@npm:7.14.0":
+  version: 7.14.0
+  resolution: "i18n-iso-countries@npm:7.14.0"
   dependencies:
     diacritics: 1.3.0
-  checksum: daa1b458c79953f0868022320b626d07ab1691529cbcc5ab4bb33bac44e34f99773fa57beec3b8b60018a9ecb3aec974d27fb1d2e3c6e244688dd40ea20e0a01
+  checksum: 8f0e43401a9a58f3368a999495053023e46dd54459c5a5159f805739939164de83c47a19f359d7cc63a54976805b0c60d759a0fd625a9fff282f12b7e5bde36a
   languageName: node
   linkType: hard
 
-"i18next-fs-backend@npm:2.3.1":
-  version: 2.3.1
-  resolution: "i18next-fs-backend@npm:2.3.1"
-  checksum: 86273eecdebfb055c171d466e41e4e3d50b9d8184eed3a88dde4fca2cd30cc7bd92e3ae3d69a6aa51f74bad2f429384388b61b121c3a09596870670bbb833bdb
+"i18next-fs-backend@npm:2.6.0":
+  version: 2.6.0
+  resolution: "i18next-fs-backend@npm:2.6.0"
+  checksum: 2a34a6f0563f7cc5c98de93e66fff66696eaf19b295d073fb1fef426db75783ecfab10b0251272957c307cbb3ffb4e9b5073c17ddb10be2e352d9b6e6ee71a5a
   languageName: node
   linkType: hard
 
@@ -8963,10 +8963,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"idb-keyval@npm:6.2.1":
-  version: 6.2.1
-  resolution: "idb-keyval@npm:6.2.1"
-  checksum: 7c0836f832096086e99258167740181132a71dd2694c8b8454a4f5ec69114ba6d70983115153306f0b6de1c8d3bad04f67eed3dff8f50c96815b9985d6d78470
+"idb-keyval@npm:6.2.2":
+  version: 6.2.2
+  resolution: "idb-keyval@npm:6.2.2"
+  checksum: 5ac99363d346dd849fda82057301b95c8a79d4d8f5435f84fb921c6f5f471d6a2bdf89599bbe075ea3466612d0a58b787a1698ef5e8f1fbb9a5d629be96523fa
   languageName: node
   linkType: hard
 
@@ -15334,14 +15334,14 @@ __metadata:
     flux-standard-action: 2.1.2
     ftdi-js: 0.4.1
     ftp: 0.3.10
-    helmet: 8.0.0
+    helmet: 8.1.0
     history: 4.10.1
-    html-webpack-plugin: 5.6.3
-    i18n-iso-countries: 7.13.0
+    html-webpack-plugin: 5.6.4
+    i18n-iso-countries: 7.14.0
     i18next: 20.6.1
-    i18next-fs-backend: 2.3.1
-    iconv-lite: 0.6.3
-    idb-keyval: 6.2.1
+    i18next-fs-backend: 2.6.0
+    iconv-lite: 0.7.0
+    idb-keyval: 6.2.2
     identity-obj-proxy: 3.0.0
     immutability-helper: 3.1.1
     is-electron: 2.2.2
