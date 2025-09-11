@@ -109,7 +109,7 @@ jobs:
     steps:
       - setup_remote_docker:
           version: docker23
-      - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser fonts-liberation libappindicator3-1 libasound2t64 libatk-bridge2.0-0 libatspi2.0-0 libcairo2 libcups2 libgbm1 libgdk-pixbuf2.0-0 libgtk-3-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 libxss1 xdg-utils xvfb libdbus-glib-1-2 libgtk-3-dev libxt6
+      - run: sudo apt-get update && sudo apt-get install -y build-essential git curl libusb-1.0 libavutil-dev libxss1 libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module chromium-browser fonts-liberation libappindicator3-1 libasound2t64 libatk-bridge2.0-0 libatspi2.0-0 libcairo2 libcups2 libgbm1 libgdk-pixbuf2.0-0 libgtk-3-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 libxss1 xdg-utils xvfb libdbus-glib-1-2 libgtk-3-dev libxt6 python3-distutils python3-setuptools
       - checkout
       # - run: mv .nvmrc .nvmrc.tmp
       # - node/install:
@@ -121,7 +121,7 @@ jobs:
       - run: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
       - run: corepack enable --install-directory ~/bin
       - run: yarn config set cacheFolder ~/.cache/yarn
-      - run: yarn --frozen-lockfile
+      - run: yarn install --immutable
       # Test
       - run: yarn lint
       - run: Xvfb :99 -screen 0 1280x1024x24 & > /dev/null && yarn test
