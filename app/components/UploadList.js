@@ -29,7 +29,7 @@ import * as styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class UploadList extends Component {
   static propTypes = {

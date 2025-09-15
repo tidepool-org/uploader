@@ -9,6 +9,9 @@ const isNode =
   process.versions != null &&
   process.versions.node != null;
 
+
+console.log("IS ELECTRON:", is_electron);
+
 export default {
   electron: is_electron,
   electron_main: is_electron && !isRenderer,

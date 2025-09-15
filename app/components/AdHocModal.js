@@ -25,7 +25,7 @@ import { sync as syncActions } from '../actions/index.js';
 import * as styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class AdHocModal extends Component {
   handleContinue = () => {

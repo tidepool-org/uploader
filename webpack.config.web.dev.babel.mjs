@@ -323,6 +323,7 @@ export default merge(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      'i18next-fs-backend': false,
     },
     fallback: {
       dns: false,

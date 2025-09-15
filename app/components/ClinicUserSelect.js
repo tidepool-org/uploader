@@ -28,7 +28,7 @@ var styles = require('../../styles/components/ClinicUserSelect.module.less');
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 import api from '../../lib/core/api.js';
 

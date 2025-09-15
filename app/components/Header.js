@@ -34,7 +34,7 @@ import api from '../../lib/core/api.js';
 import * as styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class Header extends Component {
   static propTypes = {

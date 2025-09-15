@@ -9,7 +9,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 
 import env from '../utils/env.js';
-import { ipcRenderer } from '../utils/ipc.js';
+import { ipcRenderer } from '../utils/ipc.cjs';
 import config from '../../lib/config';
 window.DEBUG = config.DEBUG;
 import configureStore from '../store/configureStore.js';

@@ -6,7 +6,7 @@ import * as styles from '../../styles/components/PatientLimitModal.module.less';
 import { sync as syncActions } from '../actions/index.js';
 import { URL_TIDEPOOL_PLUS_PLANS } from '../constants/otherConstants.js';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 const PatientLimitModal = () => {
   const showingPatientLimitModal = useSelector(

@@ -22,7 +22,7 @@ import semver from 'semver';
 import { get, set, del } from 'idb-keyval';
 
 import { checkCacheValid } from 'redux-cache';
-import { ipcRenderer } from '../utils/ipc.js';
+import { ipcRenderer } from '../utils/ipc.cjs';
 
 import * as actionSources from '../constants/actionSources.js';
 import * as actionTypes from '../constants/actionTypes.js';

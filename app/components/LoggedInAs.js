@@ -18,8 +18,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { ipcRenderer } from '../utils/ipc.js';
-import { i18n } from '../utils/config.i18next.js';
+import { ipcRenderer } from '../utils/ipc.cjs';
+import { i18n } from '../utils/config.i18next.cjs';
 import personUtils from '../../lib/core/personUtils.js';
 import api from '../../lib/core/api.js';
 import * as metrics from '../constants/metrics.js';

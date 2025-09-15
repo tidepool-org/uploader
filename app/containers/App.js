@@ -60,7 +60,7 @@ import PatientLimitModal from '../components/PatientLimitModal.js';
 import LoggedOut from '../components/LoggedOut.js';
 
 import * as styles from '../../styles/components/App.module.less';
-import { ipcRenderer } from '../utils/ipc.js';
+import { ipcRenderer } from '../utils/ipc.cjs';
 
 let remote, dns;
 if(env.electron_renderer){

@@ -8,7 +8,7 @@ import { pages } from '../constants/otherConstants.js';
 import * as actionSources from '../constants/actionSources.js';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export const LoggedOut = () => {
   const dispatch = useDispatch();

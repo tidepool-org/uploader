@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 
 import * as styles from '../../styles/components/VersionCheck.module.less';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class UpdatePlease extends Component {
   static propTypes = {

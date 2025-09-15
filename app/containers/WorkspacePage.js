@@ -8,7 +8,7 @@ import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
 import api from '../../lib/core/api';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 const { async, sync } = actions;
 

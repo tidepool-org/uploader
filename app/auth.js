@@ -8,7 +8,7 @@ import * as ActionTypes from './constants/actionTypes.js';
 import { sync, async } from './actions/index.js';
 import api from '../lib/core/api.js';
 import env from './utils/env.js';
-import { ipcRenderer } from './utils/ipc.js';
+import { ipcRenderer } from './utils/ipc.cjs';
 
 /**
  * @type {Keycloak}

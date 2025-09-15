@@ -56,14 +56,6 @@ jest.mock('@electron/remote', () => ({
   }
 }));
 
-jest.mock('../../../app/utils/ipc.js', () => ({
-  ipcRenderer: {
-    send: jest.fn(),
-    on: jest.fn()
-  },
-  ipcMain: {}
-}));
-
 describe('Asynchronous Actions', () => {
   afterEach(() => {
     // very important to do this in an afterEach than in each test when __Rewire__ is used

@@ -26,7 +26,7 @@ import { sync as syncActions } from '../actions/index.js';
 
 import * as styles from '../../styles/components/DeviceTimeModal.module.less';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class DeviceTimeModal extends Component {
   determineDeviceType = () => {

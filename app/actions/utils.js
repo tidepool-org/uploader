@@ -221,7 +221,7 @@ export function sendToRollbar(err, props) {
     if (_.get(props, 'data.blobId', false)) {
       extra.blobId = props.data.blobId;
     }
-    
+
     rollbar.error(err, extra, (reportingErr, data) => {
       if (reportingErr) {
         console.log('Error while reporting error to Rollbar:', reportingErr);

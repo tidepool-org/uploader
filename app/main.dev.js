@@ -9,7 +9,7 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import Rollbar from 'rollbar/src/server/rollbar.js';
 import uploadDataPeriod from './utils/uploadDataPeriod.js';
-import { setLanguage, i18n } from './utils/config.i18next.js';
+import { setLanguage, i18n } from './utils/config.i18next.cjs';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';

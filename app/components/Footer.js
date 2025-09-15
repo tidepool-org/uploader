@@ -24,7 +24,7 @@ import debugMode from '../utils/debugMode.js';
 import env from '../utils/env.js';
 import { getOSDetails } from '../actions/utils.js';
 
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class Footer extends Component {
   static propTypes = {

@@ -16,7 +16,7 @@
  */
 import env from './env.js';
 import _ from 'lodash';
-import { ipcRenderer, ipcMain } from './ipc.js';
+import { ipcRenderer, ipcMain } from './ipc.cjs';
 
 let debugMode;
 

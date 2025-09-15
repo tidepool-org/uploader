@@ -15,7 +15,10 @@
  * == BSD2 LICENSE ==
  */
 import env from '../../app/utils/env.js';
-import { ipcRenderer, ipcMain } from '../../app/utils/ipc.js';
+//import { ipcRenderer, ipcMain } from '../../app/utils/ipc.cjs';
+
+import pkg from '../../app/utils/ipc.cjs';
+const { ipcRenderer, ipcMain } = pkg;
 
 const PERIODS = {
   ALL: 1,

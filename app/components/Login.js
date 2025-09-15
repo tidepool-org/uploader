@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 import * as styles from '../../styles/components/Login.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import env from '../utils/env.js';
-import { i18n } from '../utils/config.i18next.js';
+import { i18n } from '../utils/config.i18next.cjs';
 import { useAuth } from 'react-oidc-context';
 
 import actions from '../actions/index.js';
