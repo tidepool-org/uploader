@@ -1,7 +1,5 @@
 const _ = require('lodash');
 const env = require('./env.js');
-// import { createRequire } from 'module';
-// const require = createRequire(import.meta.url);
 
 let ipcRenderer = { send: _.noop, on: _.noop };
 let ipcMain = { send: _.noop, on: _.noop };
