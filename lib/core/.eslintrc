@@ -23,7 +23,6 @@
     "import/extensions": "off"
   },
   "settings": {
-    "lodash": 3,
-    "import/resolver": node
+    "lodash": 3
   }
 }

@@ -66,6 +66,10 @@
     "import/resolver": {
       "webpack": {
         "config": "./webpack.config.eslint.js"
+      },
+      "node": {
+        "extensions": [".js", ".cjs", ".mjs"],
+        "moduleDirectory": ["node_modules"]
       }
     }
   }
