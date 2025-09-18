@@ -40,6 +40,7 @@ module.exports = {
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
   E_LIBRE2_UNSUPPORTED: 'Uploading Libre 2 data?',
   E_G7_UNSUPPORTED: 'Dexcom G7 Receiver is not yet supported.',
+  E_OP5_UNSUPPORTED: 'Omnipod 5 PDM is not yet supported.',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
