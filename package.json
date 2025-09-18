@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0-op5-unsupported.1",
+  "version": "2.62.0-fix-ble-timestamp.2",
   "engines": {
     "node": "20.14.0"
   },
@@ -51,7 +51,7 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.4",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.9.0",
+    "ble-glucose": "0.10.0",
     "body-parser": "1.20.3",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
