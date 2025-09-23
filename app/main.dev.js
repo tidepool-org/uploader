@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
-import pkg from 'electron-updater';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
@@ -14,11 +13,11 @@ import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
 
-const { autoUpdater } = pkg;
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { sync: syncActions } = require('./actions/index.js');
+const { autoUpdater } = require('electron-updater');
 
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
