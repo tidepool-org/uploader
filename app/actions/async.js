@@ -380,6 +380,11 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
           deviceDetectErrProps.code = 'E_G7_UNSUPPORTED';
         }
 
+        if (err === 'E_OP5_UNSUPPORTED') {
+          displayErr = new Error(ErrorMessages.E_OP5_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_OP5_UNSUPPORTED';
+        }
+
         displayErr.originalError = err;
         if (process.env.NODE_ENV !== 'test') {
           deviceDetectErrProps = await actionUtils.sendToRollbar(displayErr, deviceDetectErrProps);

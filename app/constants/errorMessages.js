@@ -38,6 +38,7 @@ export default {
   E_LIBRE2_UNSUPPORTED_PERSONAL: 'Uploading Libre 2 data? You can now connect your FreeStyle Libre account so data can flow into Tidepool without any extra effort. You can make this connection in the Devices page in the Tidepool Data Platform (US only).',
   E_LIBRE2_UNSUPPORTED_CLINIC: 'Uploading Libre 2 data? You can automatically sync data from FreeStyle Libre accounts with the patient’s permission. You can invite your patient to connect their account in the Devices page in the Tidepool Data Platform (US only).',
   E_G7_UNSUPPORTED: 'Dexcom G7 Receiver is not yet supported.',
+  E_OP5_UNSUPPORTED: 'Omnipod 5 PDM is not yet supported.',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',
   E_DEXCOM_CONNECTION: 'Tidepool is having trouble connecting to your Dexcom receiver. Please make sure your other Dexcom uploading software programs are closed (like Dexcom Clarity or Glooko/Diasend). You can also try using another micro-USB cable. Some micro-USB cables are designed to carry a signal for power only.',
   E_USB_CABLE: 'Your device doesn\'t appear to be connected. You can try using another USB cable, as some USB cables are designed to carry a signal for power only.',
