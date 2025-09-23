@@ -14,7 +14,7 @@ if (env.electron_main) {
   }
 
   const { app } = require('electron');
-  let i18nextBackend = require('i18next-fs-backend');
+  let i18nextBackend = require('i18next-fs-backend/cjs');
 
   if(i18nextBackend.default) {
     i18nextBackend = i18nextBackend.default;
