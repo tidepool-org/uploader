@@ -12,7 +12,6 @@
   "dependencies": {
     "@tidepool/direct-io": "3.0.2",
     "drivelist": "12.0.2",
-    "electron-updater": "6.6.8",
     "keytar": "7.9.0",
     "usb": "2.13.0"
   }
