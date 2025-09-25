@@ -12,6 +12,7 @@ import { setLanguage, i18n } from './utils/config.i18next.cjs';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
+import 'electron-updater';     // forces bundling
 import { sync as syncActions } from './actions/index.js';
 
 const require = createRequire(import.meta.url);
