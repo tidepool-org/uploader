@@ -52,7 +52,7 @@ export default merge(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: ['./app/index.js'],
+  entry: ['./app/index'],
 
   output: {
     path: path.join(__dirname, 'app/dist'),

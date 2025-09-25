@@ -29,7 +29,7 @@ export default merge(baseConfig, {
 
   target: 'electron-main',
 
-  entry: ['./app/main.dev.js'],
+  entry: ['./app/main.dev'],
 
   output: {
     path: __dirname,
