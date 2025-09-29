@@ -12,8 +12,8 @@ import { setLanguage, i18n } from './utils/config.i18next.cjs';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import pkg from 'electron-updater';
-const { autoUpdater } = pkg;
+import * as updaterPkg from 'electron-updater';
+const { autoUpdater } = updaterPkg.default;
 import { sync as syncActions } from './actions/index.js';
 
 const require = createRequire(import.meta.url);
