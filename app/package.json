@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.62.0-ciq-plus-temp-basals.3",
+  "version": "2.63.0",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
