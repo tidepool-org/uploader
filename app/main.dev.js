@@ -13,11 +13,13 @@ import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
 import { sync as syncActions } from './actions/index.js';
+import * as electronUpdater from 'electron-updater';
+const { autoUpdater } = (electronUpdater.default ?? electronUpdater);
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const { autoUpdater } = require('electron-updater');
+
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
 const remoteMain = require('@electron/remote/main');

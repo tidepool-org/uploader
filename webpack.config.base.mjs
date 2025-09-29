@@ -62,9 +62,5 @@ export default {
     }),
   ],
 
-  externals: [
-    ...Object.keys(externals || {}),
-    ...Object.keys(additionalExternals || {}),
-    'electron-updater',
-  ]
+  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
 };
