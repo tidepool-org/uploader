@@ -62,5 +62,11 @@ export default {
     }),
   ],
 
-  externals: [...Object.keys(externals || {}), ...Object.keys(additionalExternals || {})]
+  externals: [
+    ...Object.keys(externals || {}),
+    ...Object.keys(additionalExternals || {}),
+    {
+      'electron-updater': 'commonjs2 electron-updater'
+    }
+  ],
 };
