@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.62.0-libre2-c2c-notice.4",
+  "version": "2.62.0-libre2-c2c-notice.5",
   "engines": {
     "node": "22.19.0"
   },
