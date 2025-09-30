@@ -53,7 +53,7 @@ console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 const PROTOCOL_PREFIX = 'tidepooluploader';
-const fileURL = pathToFileURL(path.join(__dirname, 'app.html'))
+const fileURL = pathToFileURL(path.join(__dirname, 'app.html'));
 const baseURL = fileURL.href;
 
 let menu;
