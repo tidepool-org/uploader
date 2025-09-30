@@ -26,7 +26,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 autoUpdater.logger = electronLog;
-console.log('electron-updater logger:', electronLog);
 autoUpdater.logger.transports.file.level = 'info';
 remoteMainModule.initialize();
 
@@ -175,10 +174,6 @@ function createWindow() {
   mainWindow.webContents.on('render-process-gone', (e, details) => {
     console.log('Render process gone:', details.reason);
   });
-
-  console.log('__dirname:', __dirname);
-  console.log('app.getAppPath():', app.getAppPath());
-  console.log('Looking for app.html at:', path.join(__dirname, 'app.html'));
 
   mainWindow.loadFile(htmlPath);
 
