@@ -15,14 +15,16 @@ import child_process from 'child_process';
 import { sync as syncActions } from './actions/index.js';
 import * as electronUpdater from 'electron-updater';
 const { autoUpdater } = (electronUpdater.default ?? electronUpdater);
+import electronLog from 'electron-log';
+import remoteMain from '@electron/remote/main/index.js';
+import sourceMapSupport from 'source-map-support';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-autoUpdater.logger = require('electron-log');
+autoUpdater.logger = electronLog;
 autoUpdater.logger.transports.file.level = 'info';
-const remoteMain = require('@electron/remote/main');
 remoteMain.initialize();
 
 let rollbar;
@@ -72,7 +74,6 @@ app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer,WebBluetoothConfirmPairingSupport');
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
 
