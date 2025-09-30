@@ -53,8 +53,6 @@ console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 const PROTOCOL_PREFIX = 'tidepooluploader';
-const fileURL = pathToFileURL(path.join(__dirname, 'app.html'));
-const baseURL = fileURL.href;
 
 let menu;
 let template;
@@ -177,7 +175,7 @@ function createWindow() {
     console.log('Render process gone:', details.reason);
   });
 
-  mainWindow.loadURL(baseURL);
+  mainWindow.loadFile(path.join(__dirname, 'app.html'));
 
   const { session: { webRequest } } = mainWindow.webContents;
 
@@ -707,6 +705,8 @@ const handleIncomingUrl = (url) => {
     if(mainWindow){
       const { webContents } = mainWindow;
       const requestHash = requestURL.hash;
+      const fileURL = pathToFileURL(path.join(__dirname, 'app.html'));
+      const baseURL = fileURL.href;
       const newUrl = `${baseURL}${requestHash}`;
       if(webContents.getURL() !== newUrl){
         webContents.loadURL(newUrl);
