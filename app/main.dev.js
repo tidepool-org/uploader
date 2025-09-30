@@ -5,7 +5,7 @@ import os from 'os';
 import osName from 'os-name';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
 import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import Rollbar from 'rollbar/src/server/rollbar.js';
 import uploadDataPeriod from './utils/uploadDataPeriod.js';
 import { setLanguage, i18n } from './utils/config.i18next.cjs';
@@ -53,7 +53,7 @@ console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 const PROTOCOL_PREFIX = 'tidepooluploader';
-const fileURL = new URL(`file://${__dirname}/app.html`);
+const fileURL = pathToFileURL(path.join(__dirname, 'app.html'))
 const baseURL = fileURL.href;
 
 let menu;
