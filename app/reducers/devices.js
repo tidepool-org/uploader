@@ -276,6 +276,13 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
   },
+  prodigyautocode: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy AutoCode',
+    key: 'prodigyautocode',
+    source: {type: 'device', driverId: 'ProdigyAutocode'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionplatinum: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     name: 'ReliOn Platinum (Connect with USB)',
