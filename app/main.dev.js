@@ -679,6 +679,35 @@ ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
 
+// TODO: include helper.exe in driver
+const helperPath = path.resolve(__dirname, '../../uploader-helper/zig-out/bin/helper');
+console.log('Helper path:', helperPath);
+const proc = child_process.spawn(helperPath);
+
+ipcMain.on('native-message', (event, msg) => {
+  const json = JSON.stringify(msg);
+  const length = Buffer.byteLength(json, 'utf8');
+  const buffer = Buffer.alloc(4 + length);
+  buffer.writeUInt32LE(length, 0);
+  buffer.write(json, 4, 'utf8');
+
+  console.log(`[send] ${json}`);
+  proc.stdin.write(buffer, (err) => {
+    if (err) {
+      console.error('[write error]', err);
+    } else {
+      console.log('[write] completed');
+    }
+  });
+});
+
+proc.stdout.on('data', (data) => {
+  console.log('receiving from zig');
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('native-reply', data.toString());
+  }
+});
+
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
 }
