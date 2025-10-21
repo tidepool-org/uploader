@@ -66,7 +66,7 @@ let usbFilter = null;
 let bluetoothPinCallback = null;
 let proc = null;
 // TODO: include helper.exe in driver
-const helperPath = path.resolve(__dirname, '../../uploader-helper/zig-out/bin/helper');
+const helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -184,7 +184,7 @@ function initHelperProcess() {
 
   proc.on('exit', (code, signal) => {
     console.log(`Helper process exited with code ${code} and signal ${signal}`);
-    
+
     // Don't auto-restart if the process was intentionally killed or if window is closing
     if (code !== 0 && code !== null && mainWindow && !mainWindow.isDestroyed()) {
       console.log('Helper process crashed, will restart on next use');
@@ -287,7 +287,7 @@ function createWindow() {
 
   mainWindow.webContents.on('did-finish-load', async () => {
     initHelperProcess();
-    
+
     if (osName() === 'Windows 7') {
       const options = {
         type: 'info',
@@ -735,7 +735,7 @@ ipcMain.on('native-message', (event, msg) => {
   if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
     console.log('[native-message] Helper process not available, restarting...');
     initHelperProcess();
-    
+
     // Wait a bit for the process to start before sending the message
     setTimeout(() => {
       if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
@@ -744,10 +744,15 @@ ipcMain.on('native-message', (event, msg) => {
         console.error('[write error] Failed to restart helper process');
         // Send error back to renderer
         if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('native-reply', JSON.stringify({
+          const errorJson = JSON.stringify({
             msgType: 'error',
             details: 'Helper process is not available'
-          }));
+          });
+          const errorLength = Buffer.byteLength(errorJson, 'utf8');
+          const errorBuffer = Buffer.alloc(4 + errorLength);
+          errorBuffer.writeUInt32LE(errorLength, 0);
+          errorBuffer.write(errorJson, 4, 'utf8');
+          mainWindow.webContents.send('native-reply', errorBuffer.toString());
         }
       }
     }, 100);
