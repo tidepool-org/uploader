@@ -144,7 +144,6 @@
     "@babel/runtime-corejs2": "7.28.4",
     "@electron/notarize": "3.1.0",
     "@kayahr/jest-electron-runner": "29.15.0",
-    "@tidepool/direct-io": "3.0.2",
     "aws-sdk": "2.1692.0",
     "babel-jest": "29.7.0",
     "babel-loader": "10.0.0",

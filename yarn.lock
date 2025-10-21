@@ -2810,13 +2810,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ronomon/queue@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@ronomon/queue@npm:3.0.1"
-  checksum: ab6a1585ce4a2401576216753f812708091edebe4e9f36bae4015c1d018c1bd375a6a018a5fa3d2bc1f4cf87dfa0ab403e77a1cb9b0f8703ac48f969e5e2e5c5
-  languageName: node
-  linkType: hard
-
 "@rtsao/scc@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
@@ -2881,16 +2874,6 @@ __metadata:
   dependencies:
     defer-to-connect: ^2.0.0
   checksum: c29df3bcec6fc3bdec2b17981d89d9c9fc9bd7d0c9bcfe92821dc533f4440bc890ccde79971838b4ceed1921d456973c4180d7175ee1d0023ad0562240a58d95
-  languageName: node
-  linkType: hard
-
-"@tidepool/direct-io@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@tidepool/direct-io@npm:3.0.2"
-  dependencies:
-    "@ronomon/queue": 3.0.1
-    node-gyp: latest
-  checksum: 4290146f9feeef3b0b118e7df5a6c3989449ed77562cd09c1dcfaaa5223dccf1c90adf6d1290df853b2fa66f9c2b7e40109c5d34c263674d26fe12ef36299588
   languageName: node
   linkType: hard
 
@@ -15236,7 +15219,6 @@ __metadata:
     "@mui/icons-material": 7.3.2
     "@mui/material": 7.3.2
     "@react-keycloak/web": 3.4.0
-    "@tidepool/direct-io": 3.0.2
     async: 2.6.4
     aws-sdk: 2.1692.0
     babel-jest: 29.7.0

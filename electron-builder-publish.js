@@ -95,7 +95,6 @@ const config = {
     notarize: false,
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
-      'app/node_modules/@tidepool/direct-io',
     ],
   },
   protocols: [{
