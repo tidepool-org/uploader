@@ -64,6 +64,9 @@ let mainWindow = null;
 let serialPortFilter = null;
 let usbFilter = null;
 let bluetoothPinCallback = null;
+let proc = null;
+// TODO: include helper.exe in driver
+const helperPath = path.resolve(__dirname, '../../uploader-helper/zig-out/bin/helper');
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -143,6 +146,52 @@ const openExternalUrl = (url) => {
   }
   return { action: 'deny' };
 };
+
+function initHelperProcess() {
+  console.log('Initializing helper process, path:', helperPath);
+
+  // Clean up existing process if any
+  if (proc && !proc.killed) {
+    console.log('Cleaning up existing helper process');
+    proc.stdout.removeAllListeners();
+    proc.stderr.removeAllListeners();
+    proc.removeAllListeners('error');
+    proc.removeAllListeners('exit');
+    try {
+      proc.stdin.end();
+    } catch (e) {
+      // Ignore errors if stdin is already destroyed
+    }
+    proc.kill();
+  }
+
+  proc = child_process.spawn(helperPath);
+
+  proc.stdout.on('data', (data) => {
+    console.log('receiving from uploader helper');
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('native-reply', data.toString());
+    }
+  });
+
+  proc.stderr.on('data', (data) => {
+    console.error('[helper process stderr]', data.toString());
+  });
+
+  proc.on('error', (err) => {
+    console.error('[helper process error]', err);
+  });
+
+  proc.on('exit', (code, signal) => {
+    console.log(`Helper process exited with code ${code} and signal ${signal}`);
+    
+    // Don't auto-restart if the process was intentionally killed or if window is closing
+    if (code !== 0 && code !== null && mainWindow && !mainWindow.isDestroyed()) {
+      console.log('Helper process crashed, will restart on next use');
+      proc = null;
+    }
+  });
+}
 
 app.on('ready', async () => {
   await installExtensions();
@@ -237,6 +286,8 @@ function createWindow() {
   setRequestFilter();
 
   mainWindow.webContents.on('did-finish-load', async () => {
+    initHelperProcess();
+    
     if (osName() === 'Windows 7') {
       const options = {
         type: 'info',
@@ -679,12 +730,34 @@ ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
 
-// TODO: include helper.exe in driver
-const helperPath = path.resolve(__dirname, '../../uploader-helper/zig-out/bin/helper');
-console.log('Helper path:', helperPath);
-const proc = child_process.spawn(helperPath);
-
 ipcMain.on('native-message', (event, msg) => {
+  // Check if process needs to be restarted
+  if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
+    console.log('[native-message] Helper process not available, restarting...');
+    initHelperProcess();
+    
+    // Wait a bit for the process to start before sending the message
+    setTimeout(() => {
+      if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
+        sendMessageToHelper(msg);
+      } else {
+        console.error('[write error] Failed to restart helper process');
+        // Send error back to renderer
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('native-reply', JSON.stringify({
+            msgType: 'error',
+            details: 'Helper process is not available'
+          }));
+        }
+      }
+    }, 100);
+    return;
+  }
+
+  sendMessageToHelper(msg);
+});
+
+function sendMessageToHelper(msg) {
   const json = JSON.stringify(msg);
   const length = Buffer.byteLength(json, 'utf8');
   const buffer = Buffer.alloc(4 + length);
@@ -699,14 +772,7 @@ ipcMain.on('native-message', (event, msg) => {
       console.log('[write] completed');
     }
   });
-});
-
-proc.stdout.on('data', (data) => {
-  console.log('receiving from zig');
-  if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.webContents.send('native-reply', data.toString());
-  }
-});
+}
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
