@@ -166,12 +166,28 @@ function initHelperProcess() {
   }
 
   proc = child_process.spawn(helperPath);
+  let buffer = Buffer.alloc(0);
 
-  proc.stdout.on('data', (data) => {
-    console.log('receiving from uploader helper');
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('native-reply', data.toString());
+  proc.stdout.on('data', (chunk) => {
+    buffer = Buffer.concat([buffer, chunk]);
+
+    let offset = 0;
+    while ((offset + 4) <= buffer.length) {
+      const messageLength = buffer.readUInt32LE(offset);
+
+      if ((offset + 4 + messageLength) > buffer.length)
+        break;
+
+      const messageBuffer = buffer.subarray(offset + 4, offset + 4 + messageLength);
+      const message = JSON.parse(messageBuffer.toString('utf8'));
+
+      // Send the parsed message object
+      mainWindow.webContents.send('native-reply', message);
+
+      offset += 4 + messageLength;
     }
+
+    buffer = buffer.subarray(offset);
   });
 
   proc.stderr.on('data', (data) => {
