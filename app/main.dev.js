@@ -65,8 +65,13 @@ let serialPortFilter = null;
 let usbFilter = null;
 let bluetoothPinCallback = null;
 let proc = null;
+
 // TODO: include helper.exe in driver
-const helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
+if (process.platform === 'darwin') {
+  helperPath = path.join(app.getPath('userData'), 'uploader-helper');
+} else {
+  helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
+}
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
