@@ -67,6 +67,7 @@ let bluetoothPinCallback = null;
 let proc = null;
 
 // TODO: include helper.exe in driver
+let helperPath;
 if (process.platform === 'darwin') {
   helperPath = path.join(app.getPath('userData'), 'uploader-helper');
 } else {
