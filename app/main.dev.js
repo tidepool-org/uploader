@@ -66,11 +66,12 @@ let usbFilter = null;
 let bluetoothPinCallback = null;
 let proc = null;
 
-// TODO: include helper.exe in driver
 let helperPath;
 if (process.platform === 'darwin') {
-  helperPath = path.join(app.getPath('userData'), 'uploader-helper');
+  // TODO: move inside app bundle
+  helperPath = path.join(app.getPath('userData'), 'helper');
 } else {
+  // TODO: move to appropriate folder on Windows and Linux
   helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
 }
 
