@@ -70,8 +70,11 @@ let helperPath;
 if (process.platform === 'darwin') {
   // TODO: move inside app bundle
   helperPath = path.join(app.getPath('userData'), 'helper');
+} else if (process.platform === 'linux') {
+  // TODO: use local path for Linux
+  helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper-linux');
 } else {
-  // TODO: move to appropriate folder on Windows and Linux
+  // TODO: move to appropriate folder on Windows
   helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
 }
 
