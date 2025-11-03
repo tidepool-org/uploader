@@ -67,15 +67,23 @@ let bluetoothPinCallback = null;
 let proc = null;
 
 let helperPath;
-if (process.platform === 'darwin') {
-  // TODO: move inside app bundle
-  helperPath = path.join(app.getPath('userData'), 'helper');
-} else if (process.platform === 'linux') {
-  // TODO: use local path for Linux
-  helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper-linux');
+
+if (app.isPackaged) {
+  if (process.platform === 'darwin') {
+    helperPath = path.join(process.resourcesPath, 'driver/helpers/', `helper-macos-${process.arch}`);
+  } else if (process.platform === 'linux') {
+    helperPath = path.join(process.resourcesPath, '/helper-linux');
+  } else {
+    helperPath = path.join(process.resourcesPath, 'driver/helper');
+  }
 } else {
-  // TODO: move to appropriate folder on Windows
-  helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
+  if (process.platform === 'darwin') {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/', `helper-macos-${process.arch}`);
+  } else if (process.platform === 'linux') {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper-linux');
+  } else {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
+  }
 }
 
 // Web Bluetooth should only be an experimental feature on Linux
