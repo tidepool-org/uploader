@@ -92,7 +92,11 @@ const config = {
       },
       'dir'
     ],
-    x64ArchFiles: 'Contents/Resources/driver/helpers/helper-macos-x64',
+    x64ArchFiles: [
+      // we determine arch at runtime, so include both helpers
+      'Contents/Resources/driver/helpers/helper-macos-x64',
+      'Contents/Resources/driver/helpers/helper-macos-arm64'
+    ],
     notarize: false,
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
