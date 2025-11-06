@@ -778,22 +778,17 @@ ipcMain.on('native-message', (event, msg) => {
         console.error('[write error] Failed to restart helper process');
         // Send error back to renderer
         if (mainWindow && !mainWindow.isDestroyed()) {
-          const errorJson = JSON.stringify({
+          const error = {
             msgType: 'error',
             details: 'Helper process is not available'
-          });
-          const errorLength = Buffer.byteLength(errorJson, 'utf8');
-          const errorBuffer = Buffer.alloc(4 + errorLength);
-          errorBuffer.writeUInt32LE(errorLength, 0);
-          errorBuffer.write(errorJson, 4, 'utf8');
-          mainWindow.webContents.send('native-reply', errorBuffer.toString());
+          };
+          mainWindow.webContents.send('native-reply', error);
         }
       }
     }, 100);
-    return;
+  } else {
+    sendMessageToHelper(msg);
   }
-
-  sendMessageToHelper(msg);
 });
 
 function sendMessageToHelper(msg) {
