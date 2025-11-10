@@ -92,7 +92,6 @@ const config = {
       },
       'dir'
     ],
-    x64ArchFiles: 'Contents/Resources/driver/helpers/helper-macos-*',
     notarize: false,
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
