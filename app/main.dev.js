@@ -70,9 +70,9 @@ let helperPath;
 
 if (app.isPackaged) {
   if (process.platform === 'darwin') {
-    helperPath = path.join(process.resourcesPath, `driver/helpers/${process.arch}`, 'helper-macos');
+    helperPath = path.join(process.resourcesPath, 'driver/helpers/helper-macos');
   } else if (process.platform === 'linux') {
-    helperPath = path.join(process.resourcesPath, '/helper-linux');
+    helperPath = path.join(process.resourcesPath, 'driver/helper-linux');
   } else {
     helperPath = path.join(process.resourcesPath, 'driver/helper');
   }
