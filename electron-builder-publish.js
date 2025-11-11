@@ -37,7 +37,8 @@ const config = {
     'app.html',
     'main.prod.js',
     'main.prod.js.map',
-    'package.json'
+    'package.json',
+    '!resources/mac'
   ],
   extraResources: [
     {
