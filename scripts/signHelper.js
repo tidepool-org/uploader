@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-exports.default = async function beforeSign(context) {
+exports.default = async function afterPack(context) {
   const { electronPlatformName, appOutDir } = context;
   if (electronPlatformName !== 'darwin') {
     return;
@@ -18,15 +18,10 @@ exports.default = async function beforeSign(context) {
   );
 
   if (fs.existsSync(helperPath)) {
-    console.log(`Signing helper binary: ${helperPath}`);
-    try {
-      // Sign with ad-hoc signature (no hardened runtime)
-      execSync(`codesign --force --sign - "${helperPath}"`, { stdio: 'inherit' });
-    } catch (err) {
-      console.error('Failed to sign helper binary:', err.message);
-      throw err;
-    }
-  } else {
-    console.warn('Helper binary not found at expected path');
+    console.log(`Signing helper binary without hardened runtime: ${helperPath}`);
+    execSync(
+      `codesign --force --sign "Developer ID Application: Tidepool Project" --timestamp "${helperPath}"`,
+      { stdio: 'inherit' }
+    );
   }
-};
+}
