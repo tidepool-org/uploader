@@ -24,4 +24,4 @@ exports.default = async function afterPack(context) {
       { stdio: 'inherit' }
     );
   }
-}
+};
