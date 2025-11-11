@@ -20,16 +20,17 @@ exports.default = async function afterPack(context) {
   if (fs.existsSync(helperPath)) {
     console.log(`Signing helper binary without hardened runtime: ${helperPath}`);
 
-    // Extract the identity hash from available identities
     const identityOutput = execSync('security find-identity -v -p codesigning').toString();
-    const match = identityOutput.match(/^\s*\d+\)\s+([A-F0-9]{40})\s+"([^"]+Developer ID Application[^"]+)"/m);
+    console.log('Identity output:', identityOutput);
+
+    const match = identityOutput.match(/([A-F0-9]{40})/);
 
     if (!match) {
-      throw new Error('Could not find Developer ID Application identity');
+      throw new Error('Could not find any signing identity');
     }
 
     const identityHash = match[1];
-    console.log(`Using identity: ${identityHash} "${match[2]}"`);
+    console.log(`Using identity hash: ${identityHash}`);
 
     try {
       execSync(
