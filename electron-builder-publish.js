@@ -38,8 +38,7 @@ const config = {
     'app.html',
     'main.prod.js',
     'main.prod.js.map',
-    'package.json',
-    '!resources/mac'
+    'package.json'
   ],
   extraResources: [
     {
@@ -95,6 +94,9 @@ const config = {
       'dir'
     ],
     notarize: false,
+    signIgnore: [
+      '.*/helper-macos$'
+    ],
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
     ],
