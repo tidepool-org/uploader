@@ -94,6 +94,7 @@ const config = {
       'dir'
     ],
     notarize: false,
+    beforeSign: 'scripts/signHelper.js',
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
     ],
