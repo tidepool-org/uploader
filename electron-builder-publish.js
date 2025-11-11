@@ -8,6 +8,7 @@ const config = {
     buildResources: 'resources',
     output: 'release'
   },
+  afterPack: 'scripts/signHelper.js',
   afterSign: 'scripts/notarize.js',
   dmg: {
     artifactName: '${productName}-${version}.${ext}',
@@ -94,7 +95,6 @@ const config = {
       'dir'
     ],
     notarize: false,
-    afterPack: 'scripts/signHelper.js',
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
     ],
