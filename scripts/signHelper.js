@@ -29,4 +29,4 @@ exports.default = async function beforeSign(context) {
   } else {
     console.warn('Helper binary not found at expected path');
   }
-}
+};
