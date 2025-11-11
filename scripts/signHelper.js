@@ -18,23 +18,28 @@ exports.default = async function afterPack(context) {
   );
 
   if (fs.existsSync(helperPath)) {
-    console.log('Available signing identities:');
-    try {
-      execSync('security find-identity -v -p codesigning', { stdio: 'inherit' });
-    } catch (err) {
-      console.error('Could not list identities');
+    console.log(`Signing helper binary without hardened runtime: ${helperPath}`);
+
+    // Extract the identity hash from available identities
+    const identityOutput = execSync('security find-identity -v -p codesigning').toString();
+    const match = identityOutput.match(/^\s*\d+\)\s+([A-F0-9]{40})\s+"([^"]+Developer ID Application[^"]+)"/m);
+
+    if (!match) {
+      throw new Error('Could not find Developer ID Application identity');
     }
 
-    // Try signing with explicit identity from electron-builder's context
-    const identity = context.packager.platformSpecificBuildOptions.identity ||
-                     process.env.CSC_NAME ||
-                     'Developer ID Application';
+    const identityHash = match[1];
+    console.log(`Using identity: ${identityHash} "${match[2]}"`);
 
-    console.log(`Attempting to sign with identity: ${identity}`);
-
-    execSync(
-      `codesign --force --sign "${identity}" "${helperPath}"`,
-      { stdio: 'inherit', timeout: 30000 }
-    );
+    try {
+      execSync(
+        `codesign --force --sign ${identityHash} "${helperPath}"`,
+        { stdio: 'inherit', timeout: 30000 }
+      );
+      console.log('Helper binary signed successfully');
+    } catch (err) {
+      console.error('Signing failed:', err.message);
+      throw err;
+    }
   }
 };
