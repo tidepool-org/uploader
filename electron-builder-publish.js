@@ -8,7 +8,7 @@ const config = {
     buildResources: 'resources',
     output: 'release'
   },
-  afterPack: 'scripts/signHelper.js',
+  afterPack: 'scripts/copyHelper.js',
   afterSign: 'scripts/notarize.js',
   dmg: {
     artifactName: '${productName}-${version}.${ext}',
@@ -46,7 +46,8 @@ const config = {
       to: 'driver/',
       filter: [
         '**/*',
-        '!*.md'
+        '!*.md',
+        '!helpers/helper-macos'
       ]
     },
     'sounds/',
@@ -94,9 +95,6 @@ const config = {
       'dir'
     ],
     notarize: false,
-    signIgnore: [
-      '.*/helper-macos$'
-    ],
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
     ],
