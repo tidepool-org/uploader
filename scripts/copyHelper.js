@@ -28,4 +28,4 @@ exports.default = async function afterPack(context) {
   fs.copyFileSync('resources/mac/helpers/helper-macos', helperPath);
   fs.chmodSync(helperPath, 0o755);
   console.log('Helper binary copied successfully');
-}
+};
