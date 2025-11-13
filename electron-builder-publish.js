@@ -8,7 +8,6 @@ const config = {
     buildResources: 'resources',
     output: 'release'
   },
-  afterPack: 'scripts/copyHelper.js',
   afterSign: 'scripts/notarize.js',
   dmg: {
     artifactName: '${productName}-${version}.${ext}',
@@ -93,6 +92,12 @@ const config = {
         ]
       },
       'dir'
+    ],
+    extraFiles: [
+        {
+            from: 'helpers/${arch}',
+            to: 'helpers'
+        }
     ],
     notarize: false,
     asarUnpack: [
