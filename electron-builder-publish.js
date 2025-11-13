@@ -46,7 +46,8 @@ const config = {
       filter: [
         '**/*',
         '!*.md',
-        '!helpers/helper-macos'
+        '!helpers/x64/**',
+        '!helpers/arm64/**'
       ]
     },
     'sounds/',
@@ -93,11 +94,12 @@ const config = {
       },
       'dir'
     ],
-    extraFiles: [
-        {
-            from: 'helpers/${arch}',
-            to: 'helpers'
-        }
+    extraResources: [
+      {
+        from: 'resources/mac/helpers/${arch}',
+        to: 'driver/helpers',
+        filter: ['**/*']
+      },
     ],
     notarize: false,
     asarUnpack: [
