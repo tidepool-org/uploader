@@ -35,6 +35,11 @@ jobs:
     - run: node-gyp -v
     - run: curl -o- -L https://yarnpkg.com/install.sh | bash
     - run: corepack enable
+    - run:
+        name: Install Python setuptools for distutils
+        command: |
+          source ~/.nvm/nvm.sh
+          pip3 install setuptools
     - run: yarn config set cacheFolder ~/.cache/yarn
     - run: yarn --frozen-lockfile
     # Test
