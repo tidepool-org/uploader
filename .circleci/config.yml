@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@5.2.0
 jobs:
   build-macos:
-    resource_class: macos.m1.medium.gen1
+    resource_class: m4pro.medium
     working_directory: ~/tidepool-org/chrome-uploader
     parallelism: 1
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
@@ -11,7 +11,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '13.4.1'
+      xcode: '26.1.0'
     steps:
     - checkout
     - run: git submodule sync
