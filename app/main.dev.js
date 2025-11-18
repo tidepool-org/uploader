@@ -764,6 +764,23 @@ ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
 
+function sendMessageToHelper(msg) {
+  const json = JSON.stringify(msg);
+  const length = Buffer.byteLength(json, 'utf8');
+  const buffer = Buffer.alloc(4 + length);
+  buffer.writeUInt32LE(length, 0);
+  buffer.write(json, 4, 'utf8');
+
+  console.log(`[send] ${json}`);
+  proc.stdin.write(buffer, (err) => {
+    if (err) {
+      console.error('[write error]', err);
+    } else {
+      console.log('[write] completed');
+    }
+  });
+}
+
 ipcMain.on('native-message', (event, msg) => {
   // Check if process needs to be restarted
   if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
@@ -790,23 +807,6 @@ ipcMain.on('native-message', (event, msg) => {
     sendMessageToHelper(msg);
   }
 });
-
-function sendMessageToHelper(msg) {
-  const json = JSON.stringify(msg);
-  const length = Buffer.byteLength(json, 'utf8');
-  const buffer = Buffer.alloc(4 + length);
-  buffer.writeUInt32LE(length, 0);
-  buffer.write(json, 4, 'utf8');
-
-  console.log(`[send] ${json}`);
-  proc.stdin.write(buffer, (err) => {
-    if (err) {
-      console.error('[write error]', err);
-    } else {
-      console.log('[write] completed');
-    }
-  });
-}
 
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
