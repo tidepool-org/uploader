@@ -165,7 +165,7 @@ const openExternalUrl = (url) => {
   return { action: 'deny' };
 };
 
-function initHelperProcess() {
+function initHelperProcess(msg) {
   console.log('Initializing helper process, path:', helperPath);
 
   // Clean up existing process if any
@@ -214,6 +214,24 @@ function initHelperProcess() {
 
   proc.on('error', (err) => {
     console.error('[helper process error]', err);
+  });
+
+  proc.on('spawn', (err) => {
+    if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
+      if (msg) {
+        sendMessageToHelper(msg);
+      }
+    } else {
+      console.error('[write error] Failed to restart helper process');
+      // Send error back to renderer
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        const error = {
+          msgType: 'error',
+          details: 'Helper process is not available'
+        };
+        mainWindow.webContents.send('native-reply', error);
+      }
+    }
   });
 
   proc.on('exit', (code, signal) => {
@@ -785,24 +803,7 @@ ipcMain.on('native-message', (event, msg) => {
   // Check if process needs to be restarted
   if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
     console.log('[native-message] Helper process not available, restarting...');
-    initHelperProcess();
-
-    // Wait a bit for the process to start before sending the message
-    setTimeout(() => {
-      if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
-        sendMessageToHelper(msg);
-      } else {
-        console.error('[write error] Failed to restart helper process');
-        // Send error back to renderer
-        if (mainWindow && !mainWindow.isDestroyed()) {
-          const error = {
-            msgType: 'error',
-            details: 'Helper process is not available'
-          };
-          mainWindow.webContents.send('native-reply', error);
-        }
-      }
-    }, 100);
+    initHelperProcess(msg);
   } else {
     sendMessageToHelper(msg);
   }
