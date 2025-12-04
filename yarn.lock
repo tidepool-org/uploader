@@ -6719,16 +6719,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:38.1.0":
-  version: 38.1.0
-  resolution: "electron@npm:38.1.0"
+"electron@npm:38.1.1":
+  version: 38.1.1
+  resolution: "electron@npm:38.1.1"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^22.7.7
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 1123a23ae8def30edff7b1e46bd595cbc0517d3a2f438dcf474cf40baa66e2b2a07f3981aeeab5e771c3e688af36272aecdbde90e9ca18ef8d5ee24e0c3c2318
+  checksum: d177b442e94a19aaa19f534b7da0bd7303484cbc7354a71588bf615195ebe621d475442b258157bef6b77fe77839bc06344dd5744fd12c9da92aed4667a26256
   languageName: node
   linkType: hard
 
@@ -15266,7 +15266,7 @@ __metadata:
     css-loader: 7.1.2
     difflet: 1.0.1
     drivelist: 12.0.2
-    electron: 38.1.0
+    electron: 38.1.1
     electron-builder: 26.0.20
     electron-devtools-installer: 4.0.0
     electron-log: 5.4.2
