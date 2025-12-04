@@ -19,9 +19,9 @@ import _ from 'lodash';
 
 import sundial from 'sundial';
 
-import ErrorMessages from '../constants/errorMessages';
-import * as syncActions from './sync';
-import rollbar from '../../app/utils/rollbar';
+import ErrorMessages from '../constants/errorMessages.js';
+import * as syncActions from './sync.js';
+import rollbar from '../../app/utils/rollbar.js';
 
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
@@ -221,7 +221,7 @@ export function sendToRollbar(err, props) {
     if (_.get(props, 'data.blobId', false)) {
       extra.blobId = props.data.blobId;
     }
-    
+
     rollbar.error(err, extra, (reportingErr, data) => {
       if (reportingErr) {
         console.log('Error while reporting error to Rollbar:', reportingErr);

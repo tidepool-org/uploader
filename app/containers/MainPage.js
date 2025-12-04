@@ -36,7 +36,7 @@ import { checkTimezoneName } from 'sundial';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class MainPage extends Component {
   handleClickEditUser = () => {

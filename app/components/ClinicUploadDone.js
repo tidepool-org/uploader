@@ -21,7 +21,7 @@ var PropTypes = require('prop-types');
 
 var styles = require('../../styles/components/ClinicUploadDone.module.less');
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 class ClinicUploadDone extends React.Component {
   static propTypes = {

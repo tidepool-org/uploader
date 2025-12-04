@@ -1,0 +1,9 @@
+{
+	"name": "org.tidepool.uploader_helper",
+	"description": "Tidepool Uploader Helper",
+	"path": "/usr/local/bin/helper-linux",
+	"type": "stdio",
+	"allowed_origins": [
+		"chrome-extension://nejgoemnddedidafdoppamlbijokiahb/"
+	]
+}

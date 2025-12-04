@@ -8,15 +8,15 @@ import { push } from 'connected-react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 
-import env from '../utils/env';
-import { ipcRenderer } from '../utils/ipc';
+import env from '../utils/env.js';
+import { ipcRenderer } from '../utils/ipc.cjs';
 import config from '../../lib/config';
 window.DEBUG = config.DEBUG;
-import configureStore from '../store/configureStore';
-import App from './App';
+import configureStore from '../store/configureStore.js';
+import App from './App.js';
 import '../app.global.css';
 import '../../styles/main.less';
-import { OidcWrapper } from '../auth';
+import { OidcWrapper } from '../auth.js';
 
 let history;
 if (env.electron) {

@@ -2,13 +2,13 @@ import React from 'react';
 import * as styles from '../../styles/components/LoggedOut.module.less';
 import { useDispatch } from 'react-redux';
 
-import actions from '../actions/';
+import actions from '../actions/index.js';
 const asyncActions = actions.async;
-import { pages } from '../constants/otherConstants';
-import * as actionSources from '../constants/actionSources';
+import { pages } from '../constants/otherConstants.js';
+import * as actionSources from '../constants/actionSources.js';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export const LoggedOut = () => {
   const dispatch = useDispatch();

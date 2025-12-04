@@ -1,3 +1,3 @@
-require('@babel/register');
+import '@babel/register';
 
-module.exports = require('./webpack.config.renderer.dev.babel').default;
+export { default } from './webpack.config.renderer.dev.babel.mjs';

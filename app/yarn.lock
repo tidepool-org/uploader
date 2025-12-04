@@ -57,30 +57,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ronomon/queue@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@ronomon/queue@npm:3.0.1"
-  checksum: ab6a1585ce4a2401576216753f812708091edebe4e9f36bae4015c1d018c1bd375a6a018a5fa3d2bc1f4cf87dfa0ab403e77a1cb9b0f8703ac48f969e5e2e5c5
-  languageName: node
-  linkType: hard
-
-"@tidepool/direct-io@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@tidepool/direct-io@npm:3.0.2"
-  dependencies:
-    "@ronomon/queue": 3.0.1
-    node-gyp: latest
-  checksum: 4290146f9feeef3b0b118e7df5a6c3989449ed77562cd09c1dcfaaa5223dccf1c90adf6d1290df853b2fa66f9c2b7e40109c5d34c263674d26fe12ef36299588
-  languageName: node
-  linkType: hard
-
-"@types/w3c-web-usb@npm:^1.0.6":
-  version: 1.0.10
-  resolution: "@types/w3c-web-usb@npm:1.0.10"
-  checksum: 6ac6786a0788f0846a48b103ab06ca5fde5eb95674217b522420a2f6157bee3e181a961c1b7011940f497c55f4f5cc46129657d881fdd8112b48764089679ad6
-  languageName: node
-  linkType: hard
-
 "abbrev@npm:^3.0.0":
   version: 3.0.0
   resolution: "abbrev@npm:3.0.0"
@@ -745,17 +721,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp-build@npm:^4.5.0":
-  version: 4.8.4
-  resolution: "node-gyp-build@npm:4.8.4"
-  bin:
-    node-gyp-build: bin.js
-    node-gyp-build-optional: optional.js
-    node-gyp-build-test: build-test.js
-  checksum: 8b81ca8ffd5fa257ad8d067896d07908a36918bc84fb04647af09d92f58310def2d2b8614d8606d129d9cd9b48890a5d2bec18abe7fcff54818f72bedd3a7d74
-  languageName: node
-  linkType: hard
-
 "node-gyp@npm:latest":
   version: 11.0.0
   resolution: "node-gyp@npm:11.0.0"
@@ -1126,10 +1091,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tidepool-uploader@workspace:."
   dependencies:
-    "@tidepool/direct-io": 3.0.2
     drivelist: 12.0.2
     keytar: 7.9.0
-    usb: 2.13.0
   languageName: unknown
   linkType: soft
 
@@ -1157,18 +1120,6 @@ __metadata:
   dependencies:
     imurmurhash: ^0.1.4
   checksum: 222d0322bc7bbf6e45c08967863212398313ef73423f4125e075f893a02405a5ffdbaaf150f7dd1e99f8861348a486dd079186d27c5f2c60e465b7dcbb1d3e5b
-  languageName: node
-  linkType: hard
-
-"usb@npm:2.13.0":
-  version: 2.13.0
-  resolution: "usb@npm:2.13.0"
-  dependencies:
-    "@types/w3c-web-usb": ^1.0.6
-    node-addon-api: ^8.0.0
-    node-gyp: latest
-    node-gyp-build: ^4.5.0
-  checksum: 9efea190bd3e28c5185ea35db771b0465227d580b4cab7dc7c49d74ac9da19db6f0001045041b9881b1a7ac1a475686ca4d31b84b9c523ab1f68ac199fe446e9
   languageName: node
   linkType: hard
 

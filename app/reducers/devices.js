@@ -2,7 +2,7 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 import env from '../utils/env';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -228,7 +228,7 @@ const devices = {
     name: 'OneTouch Select Plus Flex (Connect with USB)',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: false, mac: false, win: true},
+    enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
@@ -236,7 +236,7 @@ const devices = {
     name: 'OneTouch Verio, Verio Flex and Verio Reflect (Connect with USB)',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: false, mac: false, win: true},
+    enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   onetouchultraplus: {
@@ -335,9 +335,7 @@ if (navigator.userAgentData.platform === 'macOS') {
 }
 
 if (env.electron) {
-  devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
   devices.onetouchverio.instructions = i18n.t('Plug in meter with micro-USB cable');
-  devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
   devices.onetouchselect.instructions = i18n.t('Plug in meter with micro-USB cable');
 }
 

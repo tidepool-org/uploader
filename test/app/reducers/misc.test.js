@@ -20,7 +20,7 @@ import _ from 'lodash';
 import mutationTracker from 'object-invariant-test-helper';
 import { expect } from 'chai';
 
-import actions from '../../../app/actions/index';
+import actions from '../../../app/actions/index.js';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as misc from '../../../app/reducers/misc';
 import initialState from '../../../app/reducers/initialState';
@@ -34,6 +34,12 @@ jest.mock('@electron/remote', () => ({
     if (string === 'i18n') {
         return { t: (string) => string };
     }
+  }
+}));
+
+jest.mock('../../../app/utils/config.i18next.cjs', () => ({
+  i18n: {
+    t: jest.fn(),
   }
 }));
 
