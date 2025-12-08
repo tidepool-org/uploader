@@ -31,7 +31,7 @@ import debugMode from '../utils/debugMode.js';
 import uploadDataPeriod from '../utils/uploadDataPeriod.js';
 
 import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
-
+import { KetoMojo } from '../../lib/drivers/vivachek/ketomojo';
 import * as styles from '../../styles/components/Upload.module.less';
 import env from '../utils/env.js';
 let keytar;
@@ -44,6 +44,7 @@ import { i18n } from '../utils/config.i18next.cjs';
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
 const verioBLE = new VerioBLE();
+const ketoMojo = new KetoMojo();
 
 export default class Upload extends Component {
   static propTypes = {
@@ -97,7 +98,7 @@ export default class Upload extends Component {
     super(props);
     this.ble = ble;
     this.verioBLE = verioBLE;
-
+    this.ketoMojo = ketoMojo;
     this.populateRememberedSerialNumber();
   }
 
@@ -168,6 +169,8 @@ export default class Upload extends Component {
 
     if (device === 'onetouchverioble') {
       options.ble = this.verioBLE;
+    } else if (device === 'ketomojo') {
+      options.ble = this.ketoMojo;
     } else {
       options.ble = this.ble;
     }
@@ -212,7 +215,12 @@ export default class Upload extends Component {
       return this.handleMedtronic600Upload();
     }
 
-    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble' || device === 'relionplatinumble') {
+    if (device === 'caresensble' ||
+        device === 'onetouchverioble' ||
+        device === 'foracareble' ||
+        device === 'relionplatinumble' ||
+        device === 'ketomojo'
+    ) {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 

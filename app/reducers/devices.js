@@ -194,6 +194,13 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
   },
+  ketomojo: {
+    instructions: i18n.t('Turn meter on and check the Bluetooth icon is flashing'),
+    key: 'ketomojo',
+    name: 'Keto-Mojo (Connect with Bluetooth)',
+    source: {type: 'device', driverId: 'KetoMojo'},
+    enabled: {mac: true, win: true, linux: true},
+  },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
     image: {
