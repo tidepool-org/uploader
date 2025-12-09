@@ -95,5 +95,8 @@
   "Data is up to date": "Data is up to date",
   "Omnipod 5 PDM is not yet supported.": "Omnipod 5 PDM is not yet supported.",
   "Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.": "Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.",
-  "Share this issue with the Tidepool Support Team": "Share this issue with the Tidepool Support Team"
+  "You have been signed out of your session.": "You have been signed out of your session.",
+  "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.": "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.",
+  "Please sign in again to continue.": "Please sign in again to continue.",
+  "Return to Login": "Return to Login"
 }

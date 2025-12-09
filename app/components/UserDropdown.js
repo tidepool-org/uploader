@@ -24,7 +24,7 @@ var pagesMap = require('../constants/otherConstants').pagesMap;
 
 var styles = require('../../styles/components/UserDropdown.module.less');
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 class UserDropdown extends React.Component {
   static propTypes = {

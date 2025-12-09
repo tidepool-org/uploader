@@ -18,7 +18,8 @@
     "operator-linebreak": "warn",
     "arrow-parens": "warn",
     "linebreak-style": 0,
-    "object-curly-newline": "warn"
+    "object-curly-newline": "warn",
+    "import/extensions": "off"
   },
   "overrides": [
     {

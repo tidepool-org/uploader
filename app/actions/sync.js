@@ -17,9 +17,9 @@
 
 import _ from 'lodash';
 
-import * as ActionTypes from '../constants/actionTypes';
-import * as actionSources from '../constants/actionSources';
-import * as metrics from '../constants/metrics';
+import * as ActionTypes from '../constants/actionTypes.js';
+import * as actionSources from '../constants/actionSources.js';
+import * as metrics from '../constants/metrics.js';
 
 import {
   addInfoToError,
@@ -29,12 +29,12 @@ import {
   getUpdateProfileErrorMessage,
   getCreateCustodialAccountErrorMessage,
   UnsupportedError
-} from '../utils/errors';
-import ErrorMessages from '../constants/errorMessages';
+} from '../utils/errors.js';
+import ErrorMessages from '../constants/errorMessages.js';
 
-import * as actionUtils from './utils';
-import personUtils from '../../lib/core/personUtils';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
+import * as actionUtils from './utils.js';
+import personUtils from '../../lib/core/personUtils.js';
+import uploadDataPeriod from '../utils/uploadDataPeriod.js';
 
 const uploadDataPeriodLabels = {
   [uploadDataPeriod.PERIODS.ALL]: 'all data',

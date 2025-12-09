@@ -45,7 +45,9 @@ const config = {
       to: 'driver/',
       filter: [
         '**/*',
-        '!*.md'
+        '!*.md',
+        '!helpers/x64/**',
+        '!helpers/arm64/**'
       ]
     },
     'sounds/',
@@ -92,10 +94,16 @@ const config = {
       },
       'dir'
     ],
+    extraResources: [
+      {
+        from: 'resources/mac/helpers/${arch}',
+        to: 'driver/helpers',
+        filter: ['**/*']
+      },
+    ],
     notarize: false,
     asarUnpack: [
       'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
-      'app/node_modules/@tidepool/direct-io',
     ],
   },
   protocols: [{

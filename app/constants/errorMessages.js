@@ -15,10 +15,7 @@
  * == BSD2 LICENSE ==
  */
 
-// NB: this module is ES5 because the CLI tools run in node
-// and these error constants are a dependency through lib/core/api.js
-
-module.exports = {
+export default {
   E_CARELINK_CREDS: 'Check your CareLink username and password',
   E_CARELINK_UNSUPPORTED: 'Tidepool does not support Minimed pumps 522, 722 or older, or the newer 6-series pumps. Sorry... If you are no longer using an unsupported pump and still get this message, create a new CareLink account and try uploading again.',
   E_CARELINK_UPLOAD: 'Error processing & uploading CareLink data',
@@ -38,7 +35,8 @@ module.exports = {
   E_UNPLUG_AND_RETRY: 'Please unplug device and try again',
   E_UNPLUG_CABLE_AND_RETRY: 'Please unplug cable from computer and try again',
   E_UNSUPPORTED: 'Sorry, we don\'t support this device yet',
-  E_LIBRE2_UNSUPPORTED: 'Uploading Libre 2 data?',
+  E_LIBRE2_UNSUPPORTED_PERSONAL: 'Uploading Libre 2 data? You can now connect your FreeStyle Libre account so data can flow into Tidepool without any extra effort. You can make this connection in the Devices page in the Tidepool Data Platform (US only).',
+  E_LIBRE2_UNSUPPORTED_CLINIC: 'Uploading Libre 2 data? You can automatically sync data from FreeStyle Libre accounts with the patient’s permission. You can invite your patient to connect their account in the Devices page in the Tidepool Data Platform (US only).',
   E_G7_UNSUPPORTED: 'Dexcom G7 Receiver is not yet supported.',
   E_OP5_UNSUPPORTED: 'Omnipod 5 PDM is not yet supported.',
   E_BLUETOOTH_OFF: 'Make sure your Bluetooth is switched on',

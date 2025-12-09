@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
 
-import * as types from '../constants/actionTypes';
-import actionWorkingMap from '../constants/actionWorkingMap';
+import * as types from '../constants/actionTypes.js';
+import actionWorkingMap from '../constants/actionWorkingMap.js';
 
-import initialState from './initialState';
+import initialState from './initialState.js';
 const { working: initialWorkingState } = initialState;
 
 export default (state = initialWorkingState, action) => {
