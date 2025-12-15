@@ -15325,7 +15325,7 @@ __metadata:
     tidepool-platform-client: 0.63.2
     url-loader: 4.1.1
     uuid: 13.0.0
-    webmtp: 0.3.5
+    webmtp: 0.3.6
     webpack: 5.101.3
     webpack-bundle-analyzer: 4.10.2
     webpack-cli: 6.0.1
@@ -16118,13 +16118,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webmtp@npm:0.3.5":
-  version: 0.3.5
-  resolution: "webmtp@npm:0.3.5"
+"webmtp@npm:0.3.6":
+  version: 0.3.6
+  resolution: "webmtp@npm:0.3.6"
   dependencies:
     is-electron: 2.2.2
     usb: 2.16.0
-  checksum: 60ede43e505b8687391e8492939377c524b219a4f9485fb561603dca6f968d838b9b169804bc63fc5db2a191991a5b4cd38bc9458ad5d99720e827e983f55080
+  checksum: e21d2119196235ac59fdbad557713688e5c4823ff568668b7b2f5b89d5e7f9ad3bbffa44e5c32fad0a1c2f8df345d9d83f4ed0cd735afb4ca33eca3c972ac602
   languageName: node
   linkType: hard
 
