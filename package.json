@@ -52,7 +52,7 @@
     "async": "2.6.4",
     "babyparse": "0.4.6",
     "ble-glucose": "0.10.0",
-    "body-parser": "2.2.0",
+    "body-parser": "2.2.1",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
     "classnames": "2.5.1",
