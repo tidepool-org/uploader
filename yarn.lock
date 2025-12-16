@@ -3416,13 +3416,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/w3c-web-usb@npm:1.0.6":
-  version: 1.0.6
-  resolution: "@types/w3c-web-usb@npm:1.0.6"
-  checksum: 9f30948cb84174fa290066b08274bdfb034d38c6db0976e9a826508732fba04d81e3300bca41ea23b737f1424c51adec5ae810cdf85d5b5a158d5840914f0417
-  languageName: node
-  linkType: hard
-
 "@types/w3c-web-usb@npm:^1.0.6":
   version: 1.0.13
   resolution: "@types/w3c-web-usb@npm:1.0.13"
@@ -5726,13 +5719,6 @@ __metadata:
   dependencies:
     browserslist: ^4.28.0
   checksum: 425c8cb4c3277a11f3d7d4752c53e5903892635126ed1cdc326a1cd7d961606c5d2c951493f1c783e624f9cdc1ec791c6db68dc19988d68f112d7d82a4c39c9a
-  languageName: node
-  linkType: hard
-
-"core-js@npm:2.6.11":
-  version: 2.6.11
-  resolution: "core-js@npm:2.6.11"
-  checksum: 6944011e7aa2d86dae6c42fbb15c94bf20b7499c4f5ebd5e5d11bdde7101d3724788afacc8ab93fbacb2c881d634ef9ee783e1cf724cfbaaf501e882abda957f
   languageName: node
   linkType: hard
 
@@ -11537,15 +11523,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:^4.2.0":
-  version: 4.3.0
-  resolution: "node-addon-api@npm:4.3.0"
-  dependencies:
-    node-gyp: latest
-  checksum: 3de396e23cc209f539c704583e8e99c148850226f6e389a641b92e8967953713228109f919765abc1f4355e801e8f41842f96210b8d61c7dcc10a477002dcf00
-  languageName: node
-  linkType: hard
-
 "node-addon-api@npm:^7.0.0":
   version: 7.1.1
   resolution: "node-addon-api@npm:7.1.1"
@@ -11594,7 +11571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp-build@npm:^4.3.0, node-gyp-build@npm:^4.5.0":
+"node-gyp-build@npm:^4.5.0":
   version: 4.8.4
   resolution: "node-gyp-build@npm:4.8.4"
   bin:
@@ -15348,7 +15325,7 @@ __metadata:
     tidepool-platform-client: 0.63.2
     url-loader: 4.1.1
     uuid: 13.0.0
-    webmtp: 0.3.3
+    webmtp: 0.3.6
     webpack: 5.101.3
     webpack-bundle-analyzer: 4.10.2
     webpack-cli: 6.0.1
@@ -15949,15 +15926,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"usb@npm:2.5.2":
-  version: 2.5.2
-  resolution: "usb@npm:2.5.2"
+"usb@npm:2.16.0":
+  version: 2.16.0
+  resolution: "usb@npm:2.16.0"
   dependencies:
-    "@types/w3c-web-usb": 1.0.6
-    node-addon-api: ^4.2.0
+    "@types/w3c-web-usb": ^1.0.6
+    node-addon-api: ^8.0.0
     node-gyp: latest
-    node-gyp-build: ^4.3.0
-  checksum: 703d47c99aff5729d896c3eeb0fe4441d09a3883863551c63580224067467782380794597334d0e443f2f7bd2a2c141fdf205508366e303286dfaca5d8238de1
+    node-gyp-build: ^4.5.0
+  checksum: 7c945a91995f4dcb0058937224d4b66156e5f9375be29f58108a648c92d3f4abac48474b5d3a5c6d2acb7af08442a62ac791df2615c8f4b619b57a6bd1c7421a
   languageName: node
   linkType: hard
 
@@ -16141,13 +16118,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webmtp@npm:0.3.3":
-  version: 0.3.3
-  resolution: "webmtp@npm:0.3.3"
+"webmtp@npm:0.3.6":
+  version: 0.3.6
+  resolution: "webmtp@npm:0.3.6"
   dependencies:
-    core-js: 2.6.11
-    usb: 2.5.2
-  checksum: 60ec4addd54e56b6d55e2809f77213c912aea7a5248f37c875473ce3eedbd5c38780c9f44c85ab610b253af738529b2570bcd558398243ed21b327dfa7727d28
+    is-electron: 2.2.2
+    usb: 2.16.0
+  checksum: e21d2119196235ac59fdbad557713688e5c4823ff568668b7b2f5b89d5e7f9ad3bbffa44e5c32fad0a1c2f8df345d9d83f4ed0cd735afb4ca33eca3c972ac602
   languageName: node
   linkType: hard
 
