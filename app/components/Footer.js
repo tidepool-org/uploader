@@ -20,11 +20,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import * as styles from '../../styles/components/Footer.module.less';
-import debugMode from '../utils/debugMode';
-import env from '../utils/env';
-import { getOSDetails } from '../actions/utils';
+import debugMode from '../utils/debugMode.js';
+import env from '../utils/env.js';
+import { getOSDetails } from '../actions/utils.js';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class Footer extends Component {
   static propTypes = {

@@ -22,22 +22,22 @@ import semver from 'semver';
 import { get, set, del } from 'idb-keyval';
 
 import { checkCacheValid } from 'redux-cache';
-import { ipcRenderer } from '../utils/ipc';
+import { ipcRenderer } from '../utils/ipc.cjs';
 
-import * as actionSources from '../constants/actionSources';
-import * as actionTypes from '../constants/actionTypes';
-import ErrorMessages from '../constants/errorMessages';
-import * as metrics from '../constants/metrics';
-import { pages, pagesMap, paths } from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources.js';
+import * as actionTypes from '../constants/actionTypes.js';
+import ErrorMessages from '../constants/errorMessages.js';
+import * as metrics from '../constants/metrics.js';
+import { pages, pagesMap, paths } from '../constants/otherConstants.js';
 
-import api from '../../lib/core/api';
-import driverManifests from '../../lib/core/driverManifests';
-import localStore from '../../lib/core/localStore';
-import personUtils from '../../lib/core/personUtils';
-import { clinicUIDetails } from '../../lib/core/clinicUtils';
-import * as sync from './sync';
-import * as actionUtils from './utils';
-import env from '../utils/env';
+import api from '../../lib/core/api.js';
+import driverManifests from '../../lib/core/driverManifests.js';
+import localStore from '../../lib/core/localStore.js';
+import personUtils from '../../lib/core/personUtils.js';
+import { clinicUIDetails } from '../../lib/core/clinicUtils.js';
+import * as sync from './sync.js';
+import * as actionUtils from './utils.js';
+import env from '../utils/env.js';
 
 let services = { api };
 let versionInfo = {};
@@ -364,10 +364,15 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         if (err === 'E_LIBRE2_UNSUPPORTED') {
-          displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
-          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
-          displayErr.linkText = 'Please see this support article.';
+          if (selectedClinicId) {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_CLINIC);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_CLINIC';
+          } else {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_PERSONAL);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_PERSONAL';
+          }
+          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/35556633048340-Connecting-your-LibreView-Account-to-Tidepool';
+          displayErr.linkText = 'Learn more.';
         }
 
         if (err === 'E_G7_UNSUPPORTED') {

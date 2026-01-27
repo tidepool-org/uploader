@@ -27,40 +27,40 @@ import { Route, Switch } from 'react-router-dom';
 import bows from 'bows';
 
 import config from '../../lib/config.js';
-import api from '../../lib/core/api';
-import env from '../utils/env';
+import api from '../../lib/core/api.js';
+import env from '../utils/env.js';
 
 import device from '../../lib/core/device.js';
 import localStore from '../../lib/core/localStore.js';
 
-import actions from '../actions/';
+import actions from '../actions/index.js';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import { urls, pagesMap, paths } from '../constants/otherConstants';
-import debugMode from '../utils/debugMode';
+import { urls, pagesMap, paths } from '../constants/otherConstants.js';
+import debugMode from '../utils/debugMode.js';
 
-import MainPage from './MainPage';
-import Login from '../components/Login';
-import Loading from '../components/Loading';
-import SettingsPage from './SettingsPage';
-import ClinicUserSelectPage from './ClinicUserSelectPage';
-import ClinicUserEditPage from './ClinicUserEditPage';
-import NoUploadTargetsPage from './NoUploadTargetsPage';
-import WorkspacePage from './WorkspacePage';
-import UpdatePlease from '../components/UpdatePlease';
-import VersionCheckError from '../components/VersionCheckError';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import UpdateModal from '../components/UpdateModal';
-import DeviceTimeModal from '../components/DeviceTimeModal';
-import AdHocModal from '../components/AdHocModal';
-import BluetoothModal from '../components/BluetoothModal';
+import MainPage from './MainPage.js';
+import Login from '../components/Login.js';
+import Loading from '../components/Loading.js';
+import SettingsPage from './SettingsPage.js';
+import ClinicUserSelectPage from './ClinicUserSelectPage.js';
+import ClinicUserEditPage from './ClinicUserEditPage.js';
+import NoUploadTargetsPage from './NoUploadTargetsPage.js';
+import WorkspacePage from './WorkspacePage.js';
+import UpdatePlease from '../components/UpdatePlease.js';
+import VersionCheckError from '../components/VersionCheckError.js';
+import Footer from '../components/Footer.js';
+import Header from '../components/Header.js';
+import UpdateModal from '../components/UpdateModal.js';
+import DeviceTimeModal from '../components/DeviceTimeModal.js';
+import AdHocModal from '../components/AdHocModal.js';
+import BluetoothModal from '../components/BluetoothModal.js';
 import PatientLimitModal from '../components/PatientLimitModal.js';
 import LoggedOut from '../components/LoggedOut.js';
 
 import * as styles from '../../styles/components/App.module.less';
-import { ipcRenderer } from '../utils/ipc';
+import { ipcRenderer } from '../utils/ipc.cjs';
 
 let remote, dns;
 if(env.electron_renderer){

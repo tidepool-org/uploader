@@ -21,7 +21,8 @@
     "implicit-arrow-linebreak": "warn",
     "no-param-reassign": "warn",
     "no-restricted-syntax": "warn",
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "import/extensions": "off"
   },
   "overrides": [
     {

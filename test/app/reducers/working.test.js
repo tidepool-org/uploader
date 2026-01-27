@@ -24,6 +24,12 @@ jest.mock('@electron/remote', () => ({
   }
 }));
 
+jest.mock('../../../app/utils/config.i18next.cjs', () => ({
+  i18n: {
+    t: jest.fn(),
+  }
+}));
+
 describe('working', () => {
 
   describe('logout', () => {

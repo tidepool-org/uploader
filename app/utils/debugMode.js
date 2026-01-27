@@ -14,9 +14,11 @@
  * not, you can obtain one from Tidepool Project at tidepool.org.
  * == BSD2 LICENSE ==
  */
-import env from './env';
+import env from './env.js';
 import _ from 'lodash';
-import { ipcRenderer, ipcMain } from './ipc';
+import { ipcRenderer, ipcMain } from './ipc.cjs';
+
+let debugMode;
 
 if (env.electron_renderer) {
   let isDebug =
@@ -24,7 +26,7 @@ if (env.electron_renderer) {
     JSON.parse(localStorage.getItem('isDebug')) ||
     false;
 
-  const debugMode = (module.exports = {
+  debugMode = {
     isDebug,
     setDebug: function(isDebug) {
       ipcRenderer.send('setDebug', isDebug);
@@ -32,7 +34,7 @@ if (env.electron_renderer) {
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
     },
-  });
+  };
 } else {
   let isDebug = _.get(process, 'env.DEBUG_ERROR', false);
 
@@ -42,11 +44,13 @@ if (env.electron_renderer) {
     });
   }
 
-  const debugMode = (module.exports = {
+  debugMode = {
     isDebug,
     setDebug: function(isDebug) {
       debugMode.isDebug = isDebug;
       return debugMode.isDebug;
     },
-  });
+  };
 }
+
+export default debugMode;

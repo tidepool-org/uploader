@@ -9,6 +9,7 @@
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
+    "import/extensions": "off"
   },
   "settings": {
     "lodash": 3

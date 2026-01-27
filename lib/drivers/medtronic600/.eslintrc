@@ -18,7 +18,8 @@
     "function-paren-newline": "warn",
     "comma-style": "warn",
     "linebreak-style": 0,
-    "implicit-arrow-linebreak": "warn"
+    "implicit-arrow-linebreak": "warn",
+    "import/extensions": "off"
   },
   "settings": {
     "lodash": 3,

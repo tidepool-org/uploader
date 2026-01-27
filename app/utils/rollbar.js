@@ -1,5 +1,5 @@
 /* global  __VERSION_SHA__ */
-import Rollbar from 'rollbar/dist/rollbar.umd';
+import Rollbar from 'rollbar/dist/rollbar.umd.js';
 
 let rollbar;
 

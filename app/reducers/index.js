@@ -19,10 +19,10 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { reducer as formReducer } from 'redux-form';
-import * as misc from './misc';
-import * as uploads from './uploads';
-import * as users from './users';
-import working from './working';
+import * as misc from './misc.js';
+import * as uploads from './uploads.js';
+import * as users from './users.js';
+import working from './working.js';
 
 const rootReducer = function(history) {
   return combineReducers(

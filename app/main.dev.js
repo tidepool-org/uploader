@@ -3,21 +3,31 @@ import _ from 'lodash';
 import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
-import { autoUpdater } from 'electron-updater';
-import * as chromeFinder from 'chrome-launcher/dist/chrome-finder';
-import { sync as syncActions } from './actions';
-import debugMode from '../app/utils/debugMode';
-import Rollbar from 'rollbar/src/server/rollbar';
-import uploadDataPeriod from './utils/uploadDataPeriod';
-import { setLanguage, i18n } from './utils/config.i18next';
+import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
+import { createRequire } from 'module';
+import { fileURLToPath, pathToFileURL } from 'url';
+import Rollbar from 'rollbar/src/server/rollbar.js';
+import uploadDataPeriod from './utils/uploadDataPeriod.js';
+import { setLanguage, i18n } from './utils/config.i18next.cjs';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
+import { sync as syncActions } from './actions/index.js';
+import * as electronUpdater from 'electron-updater';
+const { autoUpdater } = (electronUpdater.default ?? electronUpdater);
+import electronLog from 'electron-log';
+import * as remoteMain from '@electron/remote/main/index.js';
+const remoteMainModule = remoteMain.default ?? remoteMain;
 
-autoUpdater.logger = require('electron-log');
+import sourceMapSupport from 'source-map-support';
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+autoUpdater.logger = electronLog;
 autoUpdater.logger.transports.file.level = 'info';
-const remoteMain = require('@electron/remote/main');
-remoteMain.initialize();
+remoteMainModule.initialize();
 
 let rollbar;
 if(process.env.NODE_ENV === 'production') {
@@ -42,8 +52,7 @@ console.log('Crash logs can be found in:', app.getPath('crashDumps'));
 console.log('Last crash report:', crashReporter.getLastCrashReport());
 
 const PROTOCOL_PREFIX = 'tidepooluploader';
-const fileURL = new URL(`file://${__dirname}/app.html`);
-const baseURL = fileURL.href;
+const htmlPath = path.join(app.getAppPath(), 'app.html');
 
 let menu;
 let template;
@@ -55,6 +64,27 @@ let mainWindow = null;
 let serialPortFilter = null;
 let usbFilter = null;
 let bluetoothPinCallback = null;
+let proc = null;
+
+let helperPath;
+
+if (app.isPackaged) {
+  if (process.platform === 'darwin') {
+    helperPath = path.join(process.resourcesPath, 'driver/helpers/helper-macos');
+  } else if (process.platform === 'linux') {
+    helperPath = path.join(process.resourcesPath, 'driver/helper-linux');
+  } else {
+    helperPath = path.join(process.resourcesPath, 'driver/helper');
+  }
+} else {
+  if (process.platform === 'darwin') {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/', `helper-macos-${process.arch}`);
+  } else if (process.platform === 'linux') {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper-linux');
+  } else {
+    helperPath = path.join(app.getAppPath(), '../../uploader-helper/zig-out/bin/helper');
+  }
+}
 
 // Web Bluetooth should only be an experimental feature on Linux
 app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
@@ -66,7 +96,6 @@ app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer,WebBluetoothConfirmPairingSupport');
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
 }
 
@@ -136,6 +165,86 @@ const openExternalUrl = (url) => {
   return { action: 'deny' };
 };
 
+function initHelperProcess(msg) {
+  console.log('Initializing helper process, path:', helperPath);
+
+  // Clean up existing process if any
+  if (proc && !proc.killed) {
+    console.log('Cleaning up existing helper process');
+    proc.stdout.removeAllListeners();
+    proc.stderr.removeAllListeners();
+    proc.removeAllListeners('error');
+    proc.removeAllListeners('exit');
+    try {
+      proc.stdin.end();
+    } catch (e) {
+      // Ignore errors if stdin is already destroyed
+    }
+    proc.kill();
+  }
+
+  proc = child_process.spawn(helperPath);
+  let buffer = Buffer.alloc(0);
+
+  proc.stdout.on('data', (chunk) => {
+    buffer = Buffer.concat([buffer, chunk]);
+
+    let offset = 0;
+    while ((offset + 4) <= buffer.length) {
+      const messageLength = buffer.readUInt32LE(offset);
+
+      if ((offset + 4 + messageLength) > buffer.length)
+        break;
+
+      const messageBuffer = buffer.subarray(offset + 4, offset + 4 + messageLength);
+      const message = JSON.parse(messageBuffer.toString('utf8'));
+
+      // Send the parsed message object
+      mainWindow.webContents.send('native-reply', message);
+
+      offset += 4 + messageLength;
+    }
+
+    buffer = buffer.subarray(offset);
+  });
+
+  proc.stderr.on('data', (data) => {
+    console.error('[helper process stderr]', data.toString());
+  });
+
+  proc.on('error', (err) => {
+    console.error('[helper process error]', err);
+  });
+
+  proc.on('spawn', (err) => {
+    if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
+      if (msg) {
+        sendMessageToHelper(msg);
+      }
+    } else {
+      console.error('[write error] Failed to restart helper process');
+      // Send error back to renderer
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        const error = {
+          msgType: 'error',
+          details: 'Helper process is not available'
+        };
+        mainWindow.webContents.send('native-reply', error);
+      }
+    }
+  });
+
+  proc.on('exit', (code, signal) => {
+    console.log(`Helper process exited with code ${code} and signal ${signal}`);
+
+    // Don't auto-restart if the process was intentionally killed or if window is closing
+    if (code !== 0 && code !== null && mainWindow && !mainWindow.isDestroyed()) {
+      console.log('Helper process crashed, will restart on next use');
+      proc = null;
+    }
+  });
+}
+
 app.on('ready', async () => {
   await installExtensions();
   setLanguage(() => {
@@ -167,7 +276,7 @@ function createWindow() {
     console.log('Render process gone:', details.reason);
   });
 
-  mainWindow.loadURL(baseURL);
+  mainWindow.loadFile(htmlPath);
 
   const { session: { webRequest } } = mainWindow.webContents;
 
@@ -229,6 +338,8 @@ function createWindow() {
   setRequestFilter();
 
   mainWindow.webContents.on('did-finish-load', async () => {
+    initHelperProcess();
+
     if (osName() === 'Windows 7') {
       const options = {
         type: 'info',
@@ -671,6 +782,33 @@ ipcMain.on('bluetooth-pairing-response', (event, response) => {
   bluetoothPinCallback(response);
 });
 
+function sendMessageToHelper(msg) {
+  const json = JSON.stringify(msg);
+  const length = Buffer.byteLength(json, 'utf8');
+  const buffer = Buffer.alloc(4 + length);
+  buffer.writeUInt32LE(length, 0);
+  buffer.write(json, 4, 'utf8');
+
+  console.log(`[send] ${json}`);
+  proc.stdin.write(buffer, (err) => {
+    if (err) {
+      console.error('[write error]', err);
+    } else {
+      console.log('[write] completed');
+    }
+  });
+}
+
+ipcMain.on('native-message', (event, msg) => {
+  // Check if process needs to be restarted
+  if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
+    console.log('[native-message] Helper process not available, restarting...');
+    initHelperProcess(msg);
+  } else {
+    sendMessageToHelper(msg);
+  }
+});
+
 if(!app.isDefaultProtocolClient('tidepoolupload')){
   app.setAsDefaultProtocolClient('tidepoolupload');
 }
@@ -697,6 +835,8 @@ const handleIncomingUrl = (url) => {
     if(mainWindow){
       const { webContents } = mainWindow;
       const requestHash = requestURL.hash;
+      const fileURL =  pathToFileURL(htmlPath);
+      const baseURL = fileURL.href;
       const newUrl = `${baseURL}${requestHash}`;
       if(webContents.getURL() !== newUrl){
         webContents.loadURL(newUrl);

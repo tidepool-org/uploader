@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import env from './env';
+const _ = require('lodash');
+const env = require('./env.js');
 
 let ipcRenderer = { send: _.noop, on: _.noop };
 let ipcMain = { send: _.noop, on: _.noop };
@@ -10,4 +10,4 @@ if (env.electron) {
   ipcMain = electron.ipcMain;
 }
 
-export { ipcRenderer, ipcMain };
+module.exports = { ipcRenderer, ipcMain };

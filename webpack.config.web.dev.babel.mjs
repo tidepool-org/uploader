@@ -30,7 +30,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const isTest = process.env.NODE_ENV === 'test';
 const isProd = process.env.NODE_ENV === 'production';
 
-const VERSION_SHA = 
+const VERSION_SHA =
   process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -323,6 +323,7 @@ export default merge(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      'i18next-fs-backend': false,
     },
     fallback: {
       dns: false,

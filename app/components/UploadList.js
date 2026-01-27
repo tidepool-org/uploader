@@ -19,17 +19,17 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cx from 'classnames';
-import api from '../../lib/core/api';
+import api from '../../lib/core/api.js';
 import * as metrics  from '../constants/metrics';
 import { v4 as uuidv4 } from 'uuid';
 
-import Upload from './Upload';
+import Upload from './Upload.js';
 
 import * as styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class UploadList extends Component {
   static propTypes = {

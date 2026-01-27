@@ -1,6 +1,6 @@
-import env from './env';
-import { initReactI18next } from 'react-i18next';
-import _ from 'lodash';
+const env = require('./env.js');
+const { initReactI18next } = require('react-i18next');
+const _  = require('lodash');
 
 let i18n;
 let i18nextOptions = {};
@@ -14,7 +14,7 @@ if (env.electron_main) {
   }
 
   const { app } = require('electron');
-  let i18nextBackend = require('i18next-fs-backend');
+  let i18nextBackend = require('i18next-fs-backend/cjs');
 
   if(i18nextBackend.default) {
     i18nextBackend = i18nextBackend.default;
@@ -164,8 +164,4 @@ if (env.browser && !env.electron_renderer) {
   setLanguage();
 }
 
-module.exports = {
-  i18nextOptions,
-  setLanguage,
-  i18n,
-};
+module.exports = { i18nextOptions, setLanguage, i18n };

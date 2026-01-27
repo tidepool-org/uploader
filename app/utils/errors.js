@@ -17,7 +17,7 @@
 
 import _ from 'lodash';
 
-import ErrorMessages from '../constants/errorMessages';
+import ErrorMessages from '../constants/errorMessages.js';
 
 const errorProps = {
   code: 'Code',
