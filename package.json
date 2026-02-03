@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.64.1",
+  "version": "2.64.1-g6-events.1",
   "engines": {
     "node": "22.19.0"
   },
