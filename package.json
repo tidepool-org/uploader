@@ -204,7 +204,7 @@
     "yup": "0.32.9"
   },
   "resolutions": {
-    "charm": "1.0.2",
+    "charm": "1.0.2"
   },
   "jest": {
     "moduleNameMapper": {
