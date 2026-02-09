@@ -63,7 +63,7 @@
     "electron-log": "5.4.3",
     "electron-updater": "6.7.3",
     "es6-error": "4.1.1",
-    "express": "4.21.2",
+    "express": "4.22.1",
     "fast-safe-stringify": "2.1.1",
     "ftdi-js": "0.4.1",
     "helmet": "8.1.0",
@@ -205,7 +205,6 @@
   },
   "resolutions": {
     "charm": "1.0.2",
-    "node-gyp": "^8.4.0"
   },
   "jest": {
     "moduleNameMapper": {
