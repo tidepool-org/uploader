@@ -4103,9 +4103,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-builder-lib@npm:26.7.0":
-  version: 26.7.0
-  resolution: "app-builder-lib@npm:26.7.0"
+"app-builder-lib@npm:26.6.0":
+  version: 26.6.0
+  resolution: "app-builder-lib@npm:26.6.0"
   dependencies:
     "@develar/schema-utils": ~2.6.5
     "@electron/asar": 3.4.1
@@ -4139,14 +4139,14 @@ __metadata:
     proper-lockfile: ^4.1.2
     resedit: ^1.7.0
     semver: ~7.7.3
-    tar: ^7.5.7
+    tar: ^7.5.6
     temp-file: ^3.4.0
     tiny-async-pool: 1.3.0
     which: ^5.0.0
   peerDependencies:
-    dmg-builder: 26.7.0
-    electron-builder-squirrel-windows: 26.7.0
-  checksum: 475df3bc1e45417a1ab9a2d5ca211bea94eb56a2deddda56e22cfde5f8b905568d45fc559e45f02002119ed147fc5c7c07e252b88cf29dfe5489a630dac8ffe2
+    dmg-builder: 26.6.0
+    electron-builder-squirrel-windows: 26.6.0
+  checksum: 04de5dcf6493158c1a5401fd9cf9e18f8fd35c78692ad800a909e25771a8deaa4d138b6922c8e11a18613b927f0e5aff6634eb619c1363b234dffa6750793066
   languageName: node
   linkType: hard
 
@@ -6536,11 +6536,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dmg-builder@npm:26.7.0":
-  version: 26.7.0
-  resolution: "dmg-builder@npm:26.7.0"
+"dmg-builder@npm:26.6.0":
+  version: 26.6.0
+  resolution: "dmg-builder@npm:26.6.0"
   dependencies:
-    app-builder-lib: 26.7.0
+    app-builder-lib: 26.6.0
     builder-util: 26.4.1
     dmg-license: ^1.0.11
     fs-extra: ^10.1.0
@@ -6549,7 +6549,7 @@ __metadata:
   dependenciesMeta:
     dmg-license:
       optional: true
-  checksum: fb5ddaa23cd5dc5702f686b928245e33fdf4db91f6ea07b4c82044afee50711edd374071c8e59cd70739e9d0dde26e04fe3db756ee5e1c2a422c6598a4b0a957
+  checksum: 3f7ba769642ec2ec732c0b96e864e9cfa0ca7d0ed34149bdfdfe753040100a27e2802a556338c376ffa86477d431e8f7d377d885c90105fd858c021f8dffd5b2
   languageName: node
   linkType: hard
 
@@ -6775,16 +6775,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-builder@npm:26.7.0":
-  version: 26.7.0
-  resolution: "electron-builder@npm:26.7.0"
+"electron-builder@npm:26.6.0":
+  version: 26.6.0
+  resolution: "electron-builder@npm:26.6.0"
   dependencies:
-    app-builder-lib: 26.7.0
+    app-builder-lib: 26.6.0
     builder-util: 26.4.1
     builder-util-runtime: 9.5.1
     chalk: ^4.1.2
     ci-info: ^4.2.0
-    dmg-builder: 26.7.0
+    dmg-builder: 26.6.0
     fs-extra: ^10.1.0
     lazy-val: ^1.0.5
     simple-update-notifier: 2.0.0
@@ -6792,7 +6792,7 @@ __metadata:
   bin:
     electron-builder: cli.js
     install-app-deps: install-app-deps.js
-  checksum: c8a8ab1192b408d42063c9d777f05d9407f66a29c2340fe8b4666151d9d549a5724cb164b92b71bd7cbb774e6d4bb6abf7a60bb451a1efd435c2a8aeb67b282e
+  checksum: 296fbf8c7bc8844e82ffbbb147daa45229de37c142d03b89049795895b99bda79c57c1a879491491b9ead07dc9ebe339b459c794de4385d822733b2e0216b770
   languageName: node
   linkType: hard
 
@@ -15209,7 +15209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.5.6, tar@npm:^7.5.7":
+"tar@npm:^7.5.6":
   version: 7.5.7
   resolution: "tar@npm:7.5.7"
   dependencies:
@@ -15399,7 +15399,7 @@ __metadata:
     difflet: 1.0.1
     drivelist: 12.0.2
     electron: 40.2.1
-    electron-builder: 26.7.0
+    electron-builder: 26.6.0
     electron-devtools-installer: 4.0.0
     electron-log: 5.4.3
     electron-updater: 6.7.3
