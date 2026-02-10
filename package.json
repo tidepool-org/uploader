@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.64.1-prodigy-autocode.3",
+  "version": "2.64.1-prodigy-autocode.4",
   "engines": {
     "node": "22.19.0"
   },
