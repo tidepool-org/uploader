@@ -277,7 +277,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   prodigyautocode: {
-    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    instructions: i18n.t('Plug in meter with mini-USB cable.'),
     name: 'Prodigy AutoCode',
     key: 'prodigyautocode',
     source: {type: 'device', driverId: 'ProdigyAutocode'},
@@ -339,6 +339,7 @@ if (navigator.userAgentData.platform === 'macOS') {
     linkText: i18n.t('EZSync002B cable'),
     link: 'https://purenitetech.com/product/ezsync002b/',
   };
+  devices.prodigyautocode.instructions = i18n.t('Plug in meter with mini-USB cable. V6 meter not compatible with MacOS.');
 }
 
 if (env.electron) {
