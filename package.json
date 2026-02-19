@@ -78,7 +78,7 @@
     "immutability-helper": "3.1.1",
     "is-electron": "2.2.2",
     "keycloak-js": "22.0.5",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "lzo-wasm": "0.0.4",
     "node-polyfill-webpack-plugin": "4.1.0",
     "oidc-client-ts": "3.3.0",
