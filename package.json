@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.64.0",
+  "version": "2.64.1-tandem-fsl3plus",
   "engines": {
     "node": "22.19.0"
   },
@@ -108,7 +108,7 @@
     "sundial": "1.7.5",
     "tidepool-platform-client": "0.63.2",
     "uuid": "13.0.0",
-    "webmtp": "0.3.3"
+    "webmtp": "0.3.6"
   },
   "browserslist": "last 2 electron major versions",
   "bin": {
