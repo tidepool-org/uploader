@@ -197,7 +197,7 @@ const devices = {
   ketomojo: {
     instructions: i18n.t('Turn meter on and check the Bluetooth icon is flashing'),
     key: 'ketomojo',
-    name: 'Keto-Mojo (Connect with Bluetooth)',
+    name: 'Keto-Mojo GK+/GKI (Connect with Bluetooth)',
     source: {type: 'device', driverId: 'KetoMojo'},
     enabled: {mac: true, win: true, linux: true},
   },
