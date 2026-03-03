@@ -11,7 +11,7 @@
 ### Required if Present
 
 - `[x]` smbg values
-- `*[ ]` units of smbg values (read from device, not hard-coded)
+- `[x]` units of smbg values (read from device, not hard-coded)
 - `[x]` out-of-range values (LO or HI)
 - `[x]` out-of-range value thresholds (e.g., often 20 for low and 600 for high on BGMs)
 - `[ ]` date & time settings changes
@@ -19,7 +19,7 @@
 - `[ ]` units of blood ketone values (read from device, not hard-coded)
 - `[x]` ketone out-of-range values
 - `[x]` ketone out-of-range value thresholds
-- `*[ ]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
+- `[ ]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ### No Tidepool Data Model Yet
 
@@ -31,9 +31,10 @@
 
 Choose one of the following:
 
-  - `[ ]` legacy "jellyfish" ingestion API
-  - `[x]` platform ingestion API
+  - `[x]` legacy "jellyfish" ingestion API
+  - `[ ]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
 *Use this space to describe device-specific known issues or implementation TODOs **not** contained in the above datatype-specific sections.*
+* On this meter you can only set the time, not read it (similar to the Embrace PRO). 
