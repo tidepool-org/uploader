@@ -31,8 +31,8 @@
 
 Choose one of the following:
 
-  - `[x]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+  - `[ ]` legacy "jellyfish" ingestion API
+  - `[x]` platform ingestion API
 
 ### Known implementation issues/TODOs
 
