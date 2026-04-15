@@ -14978,12 +14978,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sundial@npm:1.7.5":
-  version: 1.7.5
-  resolution: "sundial@npm:1.7.5"
+"sundial@npm:1.7.6-rc.1":
+  version: 1.7.6-rc.1
+  resolution: "sundial@npm:1.7.6-rc.1"
   dependencies:
     moment-timezone: 0.5.43
-  checksum: 906a9ad9743bfb45ed039b32e9afa1e7afe288fc8ecc6e8e922a27880524bd3799ed2056a911e859131a3c849811d8ba7604bbb5bec343a6808d9cb8fb5ce16b
+  checksum: d8c87511a0c17a014b23e5fd12700e64f7fffe8f095682092131817ad27450df915ff2a3d0eff2fa6ae8f89d9f4074747bdb372b3c54534a7db5f73867aa8039
   languageName: node
   linkType: hard
 
@@ -15370,7 +15370,7 @@ __metadata:
     stack-trace: 0.0.10
     style-loader: 4.0.0
     sudo-prompt: 9.2.1
-    sundial: 1.7.5
+    sundial: 1.7.6-rc.1
     terser-webpack-plugin: 5.3.16
     tidepool-platform-client: 0.64.0
     url-loader: 4.1.1
