@@ -11307,6 +11307,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment-timezone@npm:0.6.1":
+  version: 0.6.1
+  resolution: "moment-timezone@npm:0.6.1"
+  dependencies:
+    moment: ^2.29.4
+  checksum: b44e07c8636478682108e6d23ef0d1cb87f27c3e259859e9f6b929b8fb12f67ec07b1a705d295c061a88e84e63783054c66358f3ac2016aae35dba84f139209f
+  languageName: node
+  linkType: hard
+
 "moment@npm:2.30.1, moment@npm:^2.29.4":
   version: 2.30.1
   resolution: "moment@npm:2.30.1"
@@ -14928,12 +14937,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sundial@npm:1.7.5":
-  version: 1.7.5
-  resolution: "sundial@npm:1.7.5"
+"sundial@npm:1.7.5-update-deps.1":
+  version: 1.7.5-update-deps.1
+  resolution: "sundial@npm:1.7.5-update-deps.1"
   dependencies:
-    moment-timezone: 0.5.43
-  checksum: 906a9ad9743bfb45ed039b32e9afa1e7afe288fc8ecc6e8e922a27880524bd3799ed2056a911e859131a3c849811d8ba7604bbb5bec343a6808d9cb8fb5ce16b
+    moment-timezone: 0.6.1
+  checksum: 2ce6d53d01ad1aee6f4c5560dca349a9f08fa334b20031d348ac2e7290626a2a94061b8faf4a954554f67ef019174fa1bc41d03e3b59e2198734cfe3edce2e78
   languageName: node
   linkType: hard
 
@@ -15319,7 +15328,7 @@ __metadata:
     stack-trace: 0.0.10
     style-loader: 4.0.0
     sudo-prompt: 9.2.1
-    sundial: 1.7.5
+    sundial: 1.7.5-update-deps.1
     terser-webpack-plugin: 5.4.0
     tidepool-platform-client: 0.65.0
     url-loader: 4.1.1
