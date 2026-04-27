@@ -6761,16 +6761,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:41.2.1":
-  version: 41.2.1
-  resolution: "electron@npm:41.2.1"
+"electron@npm:41.3.0":
+  version: 41.3.0
+  resolution: "electron@npm:41.3.0"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^24.9.0
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: ce48adac71e397da3142cf8a8dc07916756258fb5e70f1012f1c2e10e9af6322c8ca677989801b8e8bb9bfb0a157cad0a3aaf813dc18249290d4d98ce45d0f24
+  checksum: 3049027ee47cd3b880376ab3bbd8eded8285765df2fb8f4e2a1fe7c100205b1c429b3e06ec8e3ce0a0ae12816dcb0be4309af78dcf3994496673398beb00585c
   languageName: node
   linkType: hard
 
@@ -7378,14 +7378,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-promise@npm:7.2.1":
-  version: 7.2.1
-  resolution: "eslint-plugin-promise@npm:7.2.1"
+"eslint-plugin-promise@npm:7.3.0":
+  version: 7.3.0
+  resolution: "eslint-plugin-promise@npm:7.3.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 9101a93efd79f5202d0239d7666935c1d5655f64f4527cea6e82e1438b4de4304351de60f2c26201289a22eed1da4b3a21e7996fa3268b9943b98d12c80b2030
+    eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+  checksum: 6b2196d89610c83baaaf0816ea76bcf9b8a42d3b14d0e85c052826e3f82f7a637c8f8bc504333974554f737e0181143495b123d9920ea1d64413e43c06a8d0a9
   languageName: node
   linkType: hard
 
@@ -8902,10 +8902,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-fs-backend@npm:2.6.4":
-  version: 2.6.4
-  resolution: "i18next-fs-backend@npm:2.6.4"
-  checksum: 49833d5cf8d3f39fbc9bd6ffcb505a4cb559437405a29f136d8803ba1e56efb3acf60b534beb4fae639c3756d3aa79b3a434084eabc7821769091e73fd1b86cf
+"i18next-fs-backend@npm:2.6.5":
+  version: 2.6.5
+  resolution: "i18next-fs-backend@npm:2.6.5"
+  checksum: 59ce0001b35fe83754a90fc0b6289835bbf976698bab13072418f9aeb49521194825f4b84bca434912bb60dba7c4a1851c6ee8b1f52701c80f825de1e10c92f9
   languageName: node
   linkType: hard
 
@@ -11307,12 +11307,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.6.1":
-  version: 0.6.1
-  resolution: "moment-timezone@npm:0.6.1"
+"moment-timezone@npm:0.6.2":
+  version: 0.6.2
+  resolution: "moment-timezone@npm:0.6.2"
   dependencies:
     moment: ^2.29.4
-  checksum: b44e07c8636478682108e6d23ef0d1cb87f27c3e259859e9f6b929b8fb12f67ec07b1a705d295c061a88e84e63783054c66358f3ac2016aae35dba84f139209f
+  checksum: ee2838659d26c094ca788cb0032dd9c584fc5f30df3d491ab385f32d01f16f7cf26339fa9d6a843f1c23420c72d283071911a8c86138740b68b381d9d78527d6
   languageName: node
   linkType: hard
 
@@ -14937,12 +14937,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sundial@npm:1.7.5-update-deps.1":
-  version: 1.7.5-update-deps.1
-  resolution: "sundial@npm:1.7.5-update-deps.1"
+"sundial@npm:1.7.5-update-deps.2":
+  version: 1.7.5-update-deps.2
+  resolution: "sundial@npm:1.7.5-update-deps.2"
   dependencies:
-    moment-timezone: 0.6.1
-  checksum: 2ce6d53d01ad1aee6f4c5560dca349a9f08fa334b20031d348ac2e7290626a2a94061b8faf4a954554f67ef019174fa1bc41d03e3b59e2198734cfe3edce2e78
+    moment-timezone: 0.6.2
+  checksum: 850d6451299f95b9c4979ce2ce60fa86a20bdaf062ce203ed6ee49a2b24434af11c9d2757ea5242843d25d7277e58eb1bd65c5fca70f3ef4513e41457a34d1c9
   languageName: node
   linkType: hard
 
@@ -15086,7 +15086,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:5.4.0, terser-webpack-plugin@npm:^5.3.17":
+"terser-webpack-plugin@npm:5.5.0":
+  version: 5.5.0
+  resolution: "terser-webpack-plugin@npm:5.5.0"
+  dependencies:
+    "@jridgewell/trace-mapping": ^0.3.25
+    jest-worker: ^27.4.5
+    schema-utils: ^4.3.0
+    terser: ^5.31.1
+  peerDependencies:
+    webpack: ^5.1.0
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    esbuild:
+      optional: true
+    uglify-js:
+      optional: true
+  checksum: 27849fc64ececdfdbaf5ebaa96e38743992aaae458c3b75bf7ed1d7c347833e281121e03adb79d110c529dcdba17a0af7898fb56efa3a26686ec9ed38894812e
+  languageName: node
+  linkType: hard
+
+"terser-webpack-plugin@npm:^5.3.17":
   version: 5.4.0
   resolution: "terser-webpack-plugin@npm:5.4.0"
   dependencies:
@@ -15251,7 +15272,7 @@ __metadata:
     css-loader: 7.1.4
     difflet: 1.0.1
     drivelist: 12.0.2
-    electron: 41.2.1
+    electron: 41.3.0
     electron-builder: 26.8.1
     electron-devtools-installer: 4.0.0
     electron-log: 5.4.3
@@ -15266,7 +15287,7 @@ __metadata:
     eslint-plugin-jest: 29.15.2
     eslint-plugin-jsx-a11y: 6.10.2
     eslint-plugin-lodash: 8.0.0
-    eslint-plugin-promise: 7.2.1
+    eslint-plugin-promise: 7.3.0
     eslint-plugin-react: 7.37.5
     express: 4.22.1
     fast-safe-stringify: 2.1.1
@@ -15279,7 +15300,7 @@ __metadata:
     html-webpack-plugin: 5.6.7
     i18n-iso-countries: 7.14.0
     i18next: 20.6.1
-    i18next-fs-backend: 2.6.4
+    i18next-fs-backend: 2.6.5
     iconv-lite: 0.7.2
     idb-keyval: 6.2.2
     identity-obj-proxy: 3.0.0
@@ -15328,8 +15349,8 @@ __metadata:
     stack-trace: 0.0.10
     style-loader: 4.0.0
     sudo-prompt: 9.2.1
-    sundial: 1.7.5-update-deps.1
-    terser-webpack-plugin: 5.4.0
+    sundial: 1.7.5-update-deps.2
+    terser-webpack-plugin: 5.5.0
     tidepool-platform-client: 0.65.0
     url-loader: 4.1.1
     uuid: 14.0.0
