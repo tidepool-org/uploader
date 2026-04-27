@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const aws = require('aws-sdk');
+const { SES } = require('@aws-sdk/client-ses');
 const semver = require('semver');
 const pkg = require('../package.json');
 
@@ -151,8 +151,6 @@ function verdict(stats) {
 }
 
 function sendEmail(filename, report, stats) {
-  aws.config.update({ region: 'us-west-2' });
-
   const params = {
     Source: SENDER,
     Destination: { ToAddresses: [RECIPIENT] },
@@ -163,8 +161,8 @@ function sendEmail(filename, report, stats) {
     ReplyToAddresses: [SENDER, RECIPIENT],
   };
 
-  const sendPromise = new aws.SES({ apiVersion: '2010-12-01' })
-    .sendEmail(params).promise();
+  const sendPromise = new SES({ region: 'us-west-2' })
+    .sendEmail(params);
 
   return sendPromise.then((data) => {
     console.log('E-mail has been sent:', data);
