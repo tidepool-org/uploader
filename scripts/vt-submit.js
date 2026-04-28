@@ -25,10 +25,13 @@ const VT_BASE = 'https://www.virustotal.com/api/v3';
 const RELEASE_DIR = path.join(__dirname, '..', 'release');
 const ORG = 'tidepool-org';
 const REPO = 'uploader';
-const SENDER = 'noreply@tidepool.org';
-const RECIPIENT = 'gerrit@tidepool.org';
+const SENDER = process.env.VT_SENDER || 'noreply@tidepool.org';
+const RECIPIENT = process.env.VT_RECIPIENT || 'gerrit@tidepool.org';
+const AWS_REGION = process.env.AWS_REGION || 'us-west-2';
 const POLL_INTERVAL_MS = 30 * 1000;
 const POLL_TIMEOUT_MS = 15 * 60 * 1000;
+const FETCH_TIMEOUT_MS = 30 * 1000;
+const UPLOAD_TIMEOUT_MS = 10 * 60 * 1000;
 
 async function isReleaseCandidate() {
   const current = pkg.version;
@@ -40,12 +43,23 @@ async function isReleaseCandidate() {
 
   const res = await fetch(
     `https://api.github.com/repos/${ORG}/${REPO}/releases/latest`,
-    { headers: { 'user-agent': `${ORG}.vt-submit`, accept: 'application/json' } }
+    {
+      headers: { 'user-agent': `${ORG}.vt-submit`, accept: 'application/json' },
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    }
   );
+  if (res.status === 404) {
+    console.log('No prior GitHub release found; treating as new release.');
+    return true;
+  }
   if (!res.ok) {
     throw new Error(`Failed to fetch latest release: ${res.status} ${await res.text()}`);
   }
-  const latest = semver.clean((await res.json()).tag_name);
+  const tagName = (await res.json()).tag_name;
+  const latest = semver.clean(tagName);
+  if (!latest) {
+    throw new Error(`Could not parse latest release tag: ${tagName}`);
+  }
 
   if (!semver.gt(current, latest)) {
     console.log(`Version ${current} is not greater than latest release ${latest}; skipping VT scan.`);
@@ -58,18 +72,23 @@ async function isReleaseCandidate() {
 
 function findInstaller() {
   const entries = fs.readdirSync(RELEASE_DIR, { withFileTypes: true });
-  const match = entries.find(
-    (e) => e.isFile() && /Setup.*\.exe$/i.test(e.name)
-  );
-  if (!match) {
+  const matches = entries
+    .filter((e) => e.isFile() && /Setup.*\.exe$/i.test(e.name))
+    .map((e) => e.name)
+    .sort();
+  if (matches.length === 0) {
     throw new Error(`No Setup .exe found in ${RELEASE_DIR}`);
   }
-  return path.join(RELEASE_DIR, match.name);
+  if (matches.length > 1) {
+    throw new Error(`Multiple Setup .exe files found in ${RELEASE_DIR}: ${matches.join(', ')}`);
+  }
+  return path.join(RELEASE_DIR, matches[0]);
 }
 
-async function vtFetch(url, init = {}, apiKey) {
+async function vtFetch(url, apiKey, init = {}) {
   const res = await fetch(url, {
     ...init,
+    signal: init.signal || AbortSignal.timeout(FETCH_TIMEOUT_MS),
     headers: {
       'x-apikey': apiKey,
       accept: 'application/json',
@@ -84,7 +103,7 @@ async function vtFetch(url, init = {}, apiKey) {
 }
 
 async function getUploadUrl(apiKey) {
-  const json = await vtFetch(`${VT_BASE}/files/upload_url`, {}, apiKey);
+  const json = await vtFetch(`${VT_BASE}/files/upload_url`, apiKey);
   return json.data;
 }
 
@@ -93,22 +112,25 @@ async function uploadFile(uploadUrl, filePath, apiKey) {
   const form = new FormData();
   form.append('file', blob, path.basename(filePath));
 
-  const json = await vtFetch(
-    uploadUrl,
-    { method: 'POST', body: form },
-    apiKey
-  );
+  const json = await vtFetch(uploadUrl, apiKey, {
+    method: 'POST',
+    body: form,
+    signal: AbortSignal.timeout(UPLOAD_TIMEOUT_MS),
+  });
   return json.data.id;
 }
 
 async function pollAnalysis(analysisId, apiKey) {
   const deadline = Date.now() + POLL_TIMEOUT_MS;
   while (Date.now() < deadline) {
-    const json = await vtFetch(`${VT_BASE}/analyses/${analysisId}`, {}, apiKey);
+    const json = await vtFetch(`${VT_BASE}/analyses/${analysisId}`, apiKey);
     const { status } = json.data.attributes;
     console.log(`Analysis ${analysisId}: ${status}`);
     if (status === 'completed') {
-      return json.data;
+      return json;
+    }
+    if (status !== 'queued' && status !== 'in-progress') {
+      throw new Error(`Analysis ${analysisId} returned unexpected status: ${status}`);
     }
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
   }
@@ -116,8 +138,8 @@ async function pollAnalysis(analysisId, apiKey) {
 }
 
 function formatReport(filename, analysisId, analysis) {
-  const { stats, results } = analysis.attributes;
-  const sha256 = analysis.meta && analysis.meta.file_info && analysis.meta.file_info.sha256;
+  const { stats, results } = analysis.data.attributes;
+  const sha256 = analysis.meta?.file_info?.sha256;
   const permalink = sha256
     ? `https://www.virustotal.com/gui/file/${sha256}`
     : `https://www.virustotal.com/gui/analysis/${analysisId}`;
@@ -146,39 +168,36 @@ function formatReport(filename, analysisId, analysis) {
 
 function verdict(stats) {
   if (stats.malicious > 0) return `MALICIOUS (${stats.malicious})`;
-  if (stats.suspicious > 0) return `suspicious (${stats.suspicious})`;
+  if (stats.suspicious > 0) return `SUSPICIOUS (${stats.suspicious})`;
   return 'clean';
 }
 
-function sendEmail(filename, report, stats) {
+async function sendEmail(filename, report, stats) {
   const params = {
     Source: SENDER,
     Destination: { ToAddresses: [RECIPIENT] },
     Message: {
-      Subject: { Data: `VirusTotal scan: ${filename} — ${verdict(stats)}` },
-      Body: { Text: { Data: report } },
+      Subject: {
+        Data: `VirusTotal scan: ${filename} — ${verdict(stats)}`,
+        Charset: 'UTF-8',
+      },
+      Body: { Text: { Data: report, Charset: 'UTF-8' } },
     },
-    ReplyToAddresses: [SENDER, RECIPIENT],
   };
 
-  const sendPromise = new SES({ region: 'us-west-2' })
-    .sendEmail(params);
-
-  return sendPromise.then((data) => {
-    console.log('E-mail has been sent:', data);
-  });
+  const data = await new SES({ region: AWS_REGION }).sendEmail(params);
+  console.log(`E-mail sent (MessageId: ${data.MessageId})`);
 }
 
 async function main() {
+  const apiKey = process.env.VIRUSTOTAL_API_KEY;
+  if (!apiKey) {
+    throw new Error('VIRUSTOTAL_API_KEY environment variable is not set');
+  }
+
   if (!(await isReleaseCandidate())) {
     return;
   }
-
-  if (!process.env.VIRUSTOTAL_API_KEY) {
-    console.log('Please set the VIRUSTOTAL_API_KEY environment variable');
-    return;
-  }
-  const apiKey = process.env.VIRUSTOTAL_API_KEY;
 
   const filePath = findInstaller();
   const filename = path.basename(filePath);
@@ -193,7 +212,7 @@ async function main() {
   const report = formatReport(filename, analysisId, analysis);
   console.log(report);
 
-  await sendEmail(filename, report, analysis.attributes.stats);
+  await sendEmail(filename, report, analysis.data.attributes.stats);
 }
 
 main().catch((err) => {
