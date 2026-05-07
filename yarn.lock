@@ -9941,10 +9941,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-fs-backend@npm:2.6.1":
-  version: 2.6.1
-  resolution: "i18next-fs-backend@npm:2.6.1"
-  checksum: 78a85714f92a029bb16818cfd45bd91322cd3b64e3c02b47d8b4c7ca82f00be762eda3b3ed032c17ef7b6482df91e78e27725f1bb2aa121101654abca91fcbe8
+"i18next-fs-backend@npm:2.6.4":
+  version: 2.6.4
+  resolution: "i18next-fs-backend@npm:2.6.4"
+  checksum: 49833d5cf8d3f39fbc9bd6ffcb505a4cb559437405a29f136d8803ba1e56efb3acf60b534beb4fae639c3756d3aa79b3a434084eabc7821769091e73fd1b86cf
   languageName: node
   linkType: hard
 
@@ -16294,7 +16294,7 @@ __metadata:
     html-webpack-plugin: 5.6.6
     i18n-iso-countries: 7.14.0
     i18next: 20.6.1
-    i18next-fs-backend: 2.6.1
+    i18next-fs-backend: 2.6.4
     iconv-lite: 0.7.2
     idb-keyval: 6.2.2
     identity-obj-proxy: 3.0.0
