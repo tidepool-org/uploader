@@ -19,7 +19,7 @@ const fs = require('fs');
 const builder = require('xmlbuilder');
 const Client = require('ftp');
 const https = require('https');
-const aws = require('aws-sdk');
+const { SES } = require('@aws-sdk/client-ses');
 
 const ORG = 'tidepool-org';
 const REPO = 'uploader';
@@ -110,8 +110,6 @@ function sendToKaspersky(downloadURL) {
 }
 
 function sendtoMcAfee(downloadURL) {
-  aws.config.update({region: 'us-west-2'});
-
   var params = {
     Destination: { /* required */
       CcAddresses: [
@@ -135,8 +133,8 @@ function sendtoMcAfee(downloadURL) {
   };
 
   // Create the promise and SES service object
-  const sendPromise = new aws.SES({apiVersion: '2010-12-01'})
-                             .sendTemplatedEmail(params).promise();
+  const sendPromise = new SES({ region: 'us-west-2' })
+                             .sendTemplatedEmail(params);
 
   sendPromise.then((data) => {
     console.log('E-mail has been sent:', data);
