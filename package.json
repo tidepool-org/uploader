@@ -107,7 +107,7 @@
     "sudo-prompt": "9.2.1",
     "sundial": "1.7.5",
     "tidepool-platform-client": "0.64.0",
-    "uuid": "13.0.0",
+    "uuid": "14.0.0",
     "webmtp": "0.3.6"
   },
   "browserslist": "last 2 electron major versions",
