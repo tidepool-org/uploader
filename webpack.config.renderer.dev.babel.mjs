@@ -191,7 +191,7 @@ export default (env => merge(baseConfig, {
     alias: {
       'react-dom': '@hot-loader/react-dom'
     },
-    conditionNames: ['browser', '...']
+    conditionNames: ['browser', 'electron', 'webpack', 'development', 'module', 'import', 'require', 'default']
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),

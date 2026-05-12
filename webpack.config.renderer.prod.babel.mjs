@@ -251,6 +251,6 @@ export default merge(baseConfig, {
   },
 
   resolve: {
-    conditionNames: ['browser', '...']
+    conditionNames: ['browser', 'electron', 'webpack', 'production', 'module', 'import', 'require', 'default']
   }
 });
