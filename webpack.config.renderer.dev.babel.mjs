@@ -190,7 +190,8 @@ export default (env => merge(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom'
-    }
+    },
+    conditionNames: ['browser', '...']
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),

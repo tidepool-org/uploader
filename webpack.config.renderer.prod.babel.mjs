@@ -248,5 +248,9 @@ export default merge(baseConfig, {
 
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+  },
+
+  resolve: {
+    conditionNames: ['browser', '...']
   }
 });

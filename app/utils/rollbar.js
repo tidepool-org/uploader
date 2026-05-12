@@ -1,5 +1,5 @@
 /* global  __VERSION_SHA__ */
-import Rollbar from 'rollbar/src/browser/rollbar.js';
+import Rollbar from 'rollbar';
 
 let rollbar;
 
