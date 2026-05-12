@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.65.1-update-deps-apr26.1",
+  "version": "2.65.1-keto-mojo.8",
   "engines": {
     "node": "24.15.0"
   },
