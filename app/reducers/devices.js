@@ -194,6 +194,13 @@ const devices = {
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
   },
+  ketomojo: {
+    instructions: i18n.t('Turn meter on and check the Bluetooth icon is flashing'),
+    key: 'ketomojo',
+    name: 'Keto-Mojo GK+/GKI (Connect with Bluetooth)',
+    source: {type: 'device', driverId: 'KetoMojo'},
+    enabled: {mac: true, win: true, linux: true},
+  },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
     image: {
@@ -276,6 +283,13 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
   },
+  prodigyautocode: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy AutoCode',
+    key: 'prodigyautocode',
+    source: {type: 'device', driverId: 'ProdigyAutocode'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionplatinum: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     name: 'ReliOn Platinum (Connect with USB)',
@@ -332,6 +346,7 @@ if (navigator.userAgentData.platform === 'macOS') {
     linkText: i18n.t('EZSync002B cable'),
     link: 'https://purenitetech.com/product/ezsync002b/',
   };
+  devices.prodigyautocode.instructions = i18n.t('Plug in meter with mini-USB cable. V6 meter not compatible with MacOS.');
 }
 
 if (env.electron) {
