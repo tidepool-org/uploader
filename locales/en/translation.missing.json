@@ -99,5 +99,7 @@
   "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.": "For security reasons, we automatically sign you out after a certain period of inactivity, or if you've signed out from another browser tab.",
   "Please sign in again to continue.": "Please sign in again to continue.",
   "Return to Login": "Return to Login",
-  "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.": "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again."
+  "Turn meter on and check the Bluetooth icon is flashing": "Turn meter on and check the Bluetooth icon is flashing",
+  "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.": "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.",
+  "Plug in meter with mini-USB cable": "Plug in meter with mini-USB cable"
 }
