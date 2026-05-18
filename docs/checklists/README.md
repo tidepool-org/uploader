@@ -7,7 +7,7 @@ Checklists for the implementation of drivers for reading data from diabetes devi
    * [Accu-chek Aviva Connect, Guide & Guide Me (BGM)](avivaConnectAndGuide.md)
    * [Ascensia/Bayer Contour (BGM)](bayerContour.md)
    * [Ascensia/Bayer Contour Next (BGM)](bayerContourNext.md)
-   * [CareSens N Premier & Dual (BGM)](caresensUSB.md)
+   * [CareSens N Premier & Dual (BGM)](careSensUSB.md)
    * [CareSens N Premier & Dual over Bluetooth (BGM)](caresensNPremierBluetooth.md)
    * [Dexcom CGM](dexcom.md)
    * [GLUCOCARD Shine, Shine XL, Shine Connex & Shine Express (GBM)](glucocard.md)
