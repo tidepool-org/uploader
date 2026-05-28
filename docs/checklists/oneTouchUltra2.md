@@ -1,12 +1,14 @@
-## OneTouch Ultra 2
+# OneTouch Ultra 2
+
+## Checklist for BGM Implementation
 
 (Key:
 
- - `[x]` available in data protocol/documented in spec and implemented
- - `[-]` available in data protocol/documented in spec but *not* yet implemented
- - `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
- - `*[ ]` TODO: needs implementation!
- - `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
+- `[x]` available in data protocol/documented in spec and implemented
+- `[-]` available in data protocol/documented in spec but *not* yet implemented
+- `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
+- `*[ ]` TODO: needs implementation!
+- `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
 
 ### Required if Present
 
@@ -31,8 +33,8 @@
 
 Choose one of the following:
 
-  - `[x]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+- `[x]` legacy "jellyfish" ingestion API
+- `[ ]` platform ingestion API
 
 ### Known implementation issues/TODOs
 

@@ -1,5 +1,7 @@
 <!-- NB: this markdown file is linked directly from a Tidepool blog post, DON'T MOVE -->
 
+# Bootstrapping To UTC
+
 ## Background
 
 At present, no diabetes device that Tidepool knows about represents the date & time at which device events occur in either UTC time or in a way that is anchored to UTC time - i.e., providing timezone and/or offset-from-UTC information. Because we are correlating data from many different sources for each user, we rely on UTC time as the absolute scale on which to place all the time series data ingested by the Tidepool platform.
@@ -61,7 +63,7 @@ _.each(data, function(datum) {
 });
 ```
 
-Each instance of the `TimezoneOffsetUtil` keeps track of which method for generating the `time` field is being employed - either across-the-board application of a timezone (when no date & time settings changes were provided to the constructor) or "bootstrapping" to UTC. The method of `time` generation is publicly available through the `type` property on the instance (i.e., `cfg.tzoUtil.type`) and must be retrieved and provided as the `timeProcessing` field of the [upload metadata](http://developer.tidepool.io/data-model/v1/upload/).
+Each instance of the `TimezoneOffsetUtil` keeps track of which method for generating the `time` field is being employed - either across-the-board application of a timezone (when no date & time settings changes were provided to the constructor) or "bootstrapping" to UTC. The method of `time` generation is publicly available through the `type` property on the instance (i.e., `cfg.tzoUtil.type`) and must be retrieved and provided as the `timeProcessing` field of the [upload metadata](http://developer.tidepool.org/data-model/device-data/types/upload.html).
 
 #### Expectations for `timeChange` events
 
@@ -69,9 +71,9 @@ The partially built `timeChange` events composing the array of `changes` provide
 
 - `deviceTime` = timestamp
 - `change` = an object that itself has the following fields:
-    + `from` = timestamp
-    + `to` = timestamp
-    + `agent` = string (*optional*, can have values such as `manual` or `automatic`)
+  - `from` = timestamp
+  - `to` = timestamp
+  - `agent` = string (*optional*, can have values such as `manual` or `automatic`)
 - `jsDate` = a JavaScript Date constructed from the `to` time
 - `index` = an index (with an expectation that all indices be monotonically increasing with event order) for the datum that allows it to be sorted with respect to all other events on the device in the order that the events actually happened (which will *not* match `deviceTime` order in the case of date & time settings changes on the device)
 
@@ -133,13 +135,13 @@ A timezone offset is an integer, positive or negative, giving the number of minu
 
 Overall, the relationship between the fields `deviceTime`, `time`, and `timezoneOffset` in the Tidepool data model can be generalized as follows (assuming all appropriate unit conversions have been made):
 
-```
+```Javascript
 deviceTime = time + timezoneOffset
 ```
 
 In the second version of BtUTC we are adding a `conversionOffset` to the data model to handle a wider range of use cases, and so the *new* generalization is:
 
-```
+```Javascript
 deviceTime = time + timezoneOffset + conversionOffset
 ```
 

@@ -1,6 +1,8 @@
+# PWD Simulators
+
 ## Background
 
-In order to be future-compatible with Bluetooth-enabled devices that may communicate with the Tidepool platform in real-time (and/or AP remote telemetry systems), the [jellyfish API](https://github.com/tidepool-org/jellyfish) and [Tidepool platform *ingestion* data model](http://developer.tidepool.io/data-model/v1/) are designed for real-time data ingestion. The data we currently read from devices consists entirely of *retrospective* records, and this presents some data ingestion challenges. Our current strategy for adapting these retrospective records to our real-time data model and ingestion API is to build a PWD ("person with diabetes") "simulator" for each device/source from which we are able to extract data. The simulator processes the retrospective records and then adds them to an array of records - in **strict** sequential order; the array is then `POST`ed to jellyfish. The idea here is that the simulator creates a array that represents a "play back" of all the events that happened on the pump, in the form we would expect if the device had been communicating with the platform in real-time. We simply upload them all batched together *ex post facto* instead of individually in real-time.
+In order to be future-compatible with Bluetooth-enabled devices that may communicate with the Tidepool platform in real-time (and/or AP remote telemetry systems), the [jellyfish API](https://github.com/tidepool-org/jellyfish) and [Tidepool platform *ingestion* data model](http://developer.tidepool.org/data-model/) are designed for real-time data ingestion. The data we currently read from devices consists entirely of *retrospective* records, and this presents some data ingestion challenges. Our current strategy for adapting these retrospective records to our real-time data model and ingestion API is to build a PWD ("person with diabetes") "simulator" for each device/source from which we are able to extract data. The simulator processes the retrospective records and then adds them to an array of records - in **strict** sequential order; the array is then `POST`ed to jellyfish. The idea here is that the simulator creates a array that represents a "play back" of all the events that happened on the pump, in the form we would expect if the device had been communicating with the platform in real-time. We simply upload them all batched together *ex post facto* instead of individually in real-time.
 
 ## Drivers (pre-simulator)
 
@@ -8,7 +10,7 @@ The device driver is the (obvious) first step in data processing. The driver for
 
 Every device driver should be configured with an instance of the [objectBuilder](https://github.com/tidepool-org/uploader/blob/master/lib/objectBuilder.js) (often referred to just as the 'builder' and stored in `cfg.builder`). An instance of the builder contains functions for building every type (or sub-type) of object in the ingestion data model; these functions contain some built-in validation for required fields, but not for the contents of any (optional or required) field(s).
 
-In the cases of datatypes that are simple, point-in-time events that do not meaningfully interact with other events (for example, smbg readings), *all* of the building of the corresponding Tidepool JavaScript objects should be done in the device driver. There may be exceptions, but in many cases the following types will fall into this category:
+In the cases of data types that are simple, point-in-time events that do not meaningfully interact with other events (for example, smbg readings), *all* of the building of the corresponding Tidepool JavaScript objects should be done in the device driver. There may be exceptions, but in many cases the following types will fall into this category:
 
 - `cbg`
 - `bloodKetone` and `urineKetone`
@@ -32,12 +34,12 @@ PWD simulators are, at present, unique to each device we are able to extract dat
 The following are the most common tasks performed in a PWD simulator, grouped by datatype:
 
 - `basal`
-   + determining and setting `duration`
-   + determining and setting the `suppressed` basal object(s) for `temp` and `suspend` basals
-   + adding the `previous` event
+  - determining and setting `duration`
+  - determining and setting the `suppressed` basal object(s) for `temp` and `suspend` basals
+  - adding the `previous` event
 - `bolus`
-   + connecting `normal` and `square` components into a dual-wave bolus where applicable
-   + connecting boluses with accompanying `wizard` events, although this is more commonly accomplished in the device driver
-   + adding an `expectedNormal` and/or `expectedExtended` and `expectedDuration` when a bolus is terminated early (i.e., bolus volume programmed !== bolus volume delivered)
+  - connecting `normal` and `square` components into a dual-wave bolus where applicable
+  - connecting boluses with accompanying `wizard` events, although this is more commonly accomplished in the device driver
+  - adding an `expectedNormal` and/or `expectedExtended` and `expectedDuration` when a bolus is terminated early (i.e., bolus volume programmed !== bolus volume delivered)
 - `deviceEvent` sub-type `status`
-   + adding the `previous` event
+  - adding the `previous` event
