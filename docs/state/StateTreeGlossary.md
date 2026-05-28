@@ -1,3 +1,5 @@
+# State Tree Glossary
+
 ## Glossary of Terms in the Tidepool Uploader's State Tree
 
 ### Preliminary
@@ -40,7 +42,7 @@ If there has not (yet) been an error updating profile information or profile inf
 
 #### `updateProfileErrorDismissed`
 
-*The property `updateProfileErrorDismissed`  is a flag indicating whether the user has dismissed the displayed `uploadProfileErrorMessage`. *
+*The property `updateProfileErrorDismissed` is a flag indicating whether the user has dismissed the displayed `uploadProfileErrorMessage`.*
 
 If the user has not dismissed the error or if there has been no error to dismiss, the value of `updateProfileErrorDismissed` is `null`. If the user has dismissed an existing error, the value is `true`.
 
@@ -52,7 +54,7 @@ If there has not (yet) been an error creating a custodial account or account cre
 
 #### `createCustodialAccountErrorDismissed`
 
-*The property `createCustodialAccountErrorDismissed`  is a flag indicating whether the user has dismissed the displayed `createCustodialAccountErrorMessage`. *
+*The property `createCustodialAccountErrorDismissed` is a flag indicating whether the user has dismissed the displayed `createCustodialAccountErrorMessage`.*
 
 If the user has not dismissed the error or if there has been no error to dismiss, the value of `createCustodialAccountErrorDismissed` is `false`. If the user has dismissed an existing error, the value is `true`.
 
@@ -74,7 +76,7 @@ This array drives the user selection dropdown menu that provides the interface f
 
 #### `uploadTargetUser`
 
-*The propery `uploadTargetUser` encodes the `userId` (for lookup in the [`allUsers`](#-allusers) branch of the state tree) of the PWD currently selected as the target for data upload.*
+*The propery `uploadTargetUser` encodes the `userId` (for lookup in the [`allUsers`](#allusers) branch of the state tree) of the PWD currently selected as the target for data upload.*
 
 The combination of `uploadTargetUser` and `uploadTargetDevice` provides the path into `uploadsByUser` to the upload currently in progress, if any.
 
@@ -98,7 +100,7 @@ One example of a property that is encoded in the object at the termination of ea
 
 #### `uploadTargetDevice`
 
-*The property `uploadTargetDevice` encodes the `key` (for lookup in the [`devices`](#-devices) branch of the state tree) of the device currently being uploaded when an upload is in progress.*
+*The property `uploadTargetDevice` encodes the `key` (for lookup in the [`devices`](#devices) branch of the state tree) of the device currently being uploaded when an upload is in progress.*
 
 When an upload is *not* in progress, the value of `uploadTargetDevice` is `null`. The combination of `uploadTargetUser` and `uploadTargetDevice` provides the path into `uploadsByUser` to the upload currently in progress, if any.
 
@@ -128,7 +130,7 @@ The properties of each "device" in `devices` should be fairly self-explanatory. 
 
 #### `dropdown`
 
-*The Tidepool Uploader inclues a dropdown menu, which is accessible after logging in by clicking on the area where the logged-in user's name is displayed in the upper-right corner. The property `dropdown` in the state tree encodes whether this menu is currently in its open (dropped-down) state (`true`) or closed and hidden (`false`).*
+*The Tidepool Uploader includes a dropdown menu, which is accessible after logging in by clicking on the area where the logged-in user's name is displayed in the upper-right corner. The property `dropdown` in the state tree encodes whether this menu is currently in its open (dropped-down) state (`true`) or closed and hidden (`false`).*
 
 #### `unsupported`
 
@@ -140,7 +142,7 @@ To ensure the highest possible standards of data quality, it is very important f
 
 *The `working` property is an object with a small handful of keys that record the app's current state with respect to certain asynchronous actions.*
 
-The properties `initializingApp.inProgress` (which defaults to `true`) and `checkingVersion.inProgress` serve to prevent rendering the warning message about the Tidepool Uploader being unsupported before the application has finished checking against the Tidepool data ingestion API to determine whether it is outdated and unsupported. (See [unsupported](#-unsupported) above, taking care to note that `unsupported` defaults to `true`, so without some other indicator(s) of the app's state with respect to validation of the current version against the Tidepool data ingestion API, the "uploader unsupported" warning message would render immediately.)
+The properties `initializingApp.inProgress` (which defaults to `true`) and `checkingVersion.inProgress` serve to prevent rendering the warning message about the Tidepool Uploader being unsupported before the application has finished checking against the Tidepool data ingestion API to determine whether it is outdated and unsupported. (See [unsupported](#unsupported) above, taking care to note that `unsupported` defaults to `true`, so without some other indicator(s) of the app's state with respect to validation of the current version against the Tidepool data ingestion API, the "uploader unsupported" warning message would render immediately.)
 
 The property `checkingElectronUpdate.inProgress` is used to indicate whether or not the Electron auto-update system is currently awating the message from the `main` Electron process indicating whether or not an update is currently available.
 
