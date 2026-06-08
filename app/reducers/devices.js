@@ -290,6 +290,20 @@ const devices = {
     source: {type: 'device', driverId: 'ProdigyAutocode'},
     enabled: {mac: true, win: true, linux: true}
   },
+  prodigypocket: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy Pocket',
+    key: 'prodigypocket',
+    source: {type: 'device', driverId: 'ProdigyPocket'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  prodigyvoice: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy VOICE',
+    key: 'prodigyvoice',
+    source: {type: 'device', driverId: 'ProdigyVoice'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionplatinum: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     name: 'ReliOn Platinum (Connect with USB)',
