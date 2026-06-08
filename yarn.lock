@@ -5708,15 +5708,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ble-glucose@npm:0.10.0":
-  version: 0.10.0
-  resolution: "ble-glucose@npm:0.10.0"
+"ble-glucose@npm:0.10.1":
+  version: 0.10.1
+  resolution: "ble-glucose@npm:0.10.1"
   dependencies:
     bows: 1.7.2
-    core-js: 3.36.1
-    lodash: 4.17.21
-    sundial: 1.7.4
-  checksum: b22c3b78a4838e43f77292ce4a5395b810179da15f3b74314ff8851c9861fb21b5eb9874d1ddd986eb54a44a4e669ae58b416861d6643ae3a6e0acbb3b4fc95b
+    lodash: 4.18.1
+    sundial: 1.7.6
+  checksum: 81c80733f1382d0a806fed4e56b5d4cc8e47b08ad240684d1bfdb04af9c672a482f10c4297c5c03c09b4f54f584c5688cd59044cade3c97f80af8fc707809479
   languageName: node
   linkType: hard
 
@@ -6786,13 +6785,6 @@ __metadata:
   version: 2.6.12
   resolution: "core-js@npm:2.6.12"
   checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
-  languageName: node
-  linkType: hard
-
-"core-js@npm:3.36.1":
-  version: 3.36.1
-  resolution: "core-js@npm:3.36.1"
-  checksum: 6f6c152179bd0673da34e67a82c6a5c37f31f9fbe908e9caf93749dc62a25b6e07fbff2411de3b74bb2d0661b7f9fb247115ba8efabf9904f5fef26edead515e
   languageName: node
   linkType: hard
 
@@ -12278,15 +12270,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.5.43":
-  version: 0.5.43
-  resolution: "moment-timezone@npm:0.5.43"
-  dependencies:
-    moment: ^2.29.4
-  checksum: 8075c897ed8a044f992ef26fe8cdbcad80caf974251db424cae157473cca03be2830de8c74d99341b76edae59f148c9d9d19c1c1d9363259085688ec1cf508d0
-  languageName: node
-  linkType: hard
-
 "moment-timezone@npm:0.6.2":
   version: 0.6.2
   resolution: "moment-timezone@npm:0.6.2"
@@ -15908,15 +15891,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sundial@npm:1.7.4":
-  version: 1.7.4
-  resolution: "sundial@npm:1.7.4"
-  dependencies:
-    moment-timezone: 0.5.43
-  checksum: 64979d87424738b5991e778df7e16b1615dde52e1a6dee1af3f0e49f7acc1802e36cc72fe1138e05bad799f10f477771cd005bf13e41375651b2b91b706d6136
-  languageName: node
-  linkType: hard
-
 "sundial@npm:1.7.6":
   version: 1.7.6
   resolution: "sundial@npm:1.7.6"
@@ -16236,7 +16210,7 @@ __metadata:
     babel-plugin-transform-define: 2.1.4
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babyparse: 0.4.6
-    ble-glucose: 0.10.0
+    ble-glucose: 0.10.1
     body-parser: 2.2.2
     bows: 1.7.2
     chai: 4.5.0
