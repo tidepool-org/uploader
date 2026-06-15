@@ -70,31 +70,31 @@ if(env.electron_renderer){
 
 const serverdata = {
   Local: {
-    API_URL: 'http://localhost:8009',
+    API_HOST: 'http://localhost:8009',
     UPLOAD_URL: 'http://localhost:9122',
     DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
   QA1: {
-    API_URL: 'https://qa1.development.tidepool.org',
+    API_HOST: 'https://qa1.development.tidepool.org',
     UPLOAD_URL: 'https://qa1.development.tidepool.org',
     DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa1.development.tidepool.org'
   },
   QA2: {
-    API_URL: 'https://qa2.development.tidepool.org',
+    API_HOST: 'https://qa2.development.tidepool.org',
     UPLOAD_URL: 'https://qa2.development.tidepool.org',
     DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa2.development.tidepool.org'
   },
   Integration: {
-    API_URL: 'https://external.integration.tidepool.org',
+    API_HOST: 'https://external.integration.tidepool.org',
     UPLOAD_URL: 'https://external.integration.tidepool.org',
     DATA_URL: 'https://external.integration.tidepool.org/dataservices',
     BLIP_URL: 'https://external.integration.tidepool.org'
   },
   Production: {
-    API_URL: 'https://api.tidepool.org',
+    API_HOST: 'https://api.tidepool.org',
     UPLOAD_URL: 'https://api.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
     BLIP_URL: 'https://app.tidepool.org'
@@ -173,7 +173,7 @@ export class App extends Component {
         const protocol = server.name === 'localhost' ? 'http://' : 'https://';
         const url = `${protocol}${server.name}:${server.port}`;
         serverdata[server.name] = {
-          API_URL: url,
+          API_HOST: url,
           UPLOAD_URL: url,
           DATA_URL: `${url}/dataservices`,
           BLIP_URL: url,

@@ -4,7 +4,7 @@ RUN mkdir -p dist node_modules .yarn-cache && chown -R node:node .
 
 FROM base as build
 ARG VERSION_SHA
-ARG API_URL
+ARG API_HOST
 ARG UPLOAD_URL
 ARG DATA_URL
 ARG BLIP_URL
@@ -18,7 +18,7 @@ ARG PENDO_ENABLED=true
 ARG TRAVIS_COMMIT
 # Set ENV from ARGs
 ENV \
-    API_URL=$API_URL \
+    API_HOST=$API_HOST \
     UPLOAD_URL=$UPLOAD_URL \
     DATA_URL=$DATA_URL \
     BLIP_URL=$BLIP_URL \
@@ -57,7 +57,7 @@ USER root
 RUN apk del .build-deps
 
 FROM base as production
-ARG API_URL
+ARG API_HOST
 ARG UPLOAD_URL
 ARG DATA_URL
 ARG BLIP_URL
@@ -71,7 +71,7 @@ ARG PENDO_ENABLED=true
 ARG TRAVIS_COMMIT
 # Set ENV from ARGs
 ENV \
-    API_URL=$API_URL \
+    API_HOST=$API_HOST \
     UPLOAD_URL=$UPLOAD_URL \
     DATA_URL=$DATA_URL \
     BLIP_URL=$BLIP_URL \

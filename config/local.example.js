@@ -8,31 +8,31 @@ const linkedPackages = {
 
 const environments = {
   local: {
-    API_URL: 'http://localhost:8009',
+    API_HOST: 'http://localhost:8009',
     UPLOAD_URL: 'http://localhost:8009',
     DATA_URL: 'http://localhost:9220',
     BLIP_URL: 'http://localhost:3000'
   },
   qa1: {
-    API_URL: 'https://qa1.development.tidepool.org',
+    API_HOST: 'https://qa1.development.tidepool.org',
     UPLOAD_URL: 'https://qa1.development.tidepool.org',
     DATA_URL: 'https://qa1.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa1.development.tidepool.org'
   },
   qa2: {
-    API_URL: 'https://qa2.development.tidepool.org',
+    API_HOST: 'https://qa2.development.tidepool.org',
     UPLOAD_URL: 'https://qa2.development.tidepool.org',
     DATA_URL: 'https://qa2.development.tidepool.org/dataservices',
     BLIP_URL: 'https://qa2.development.tidepool.org'
   },
   int: {
-    API_URL: 'https://external.integration.tidepool.org/',
+    API_HOST: 'https://external.integration.tidepool.org/',
     UPLOAD_URL: 'https://external.integration.tidepool.org/',
     DATA_URL: 'https://external.integration.tidepool.org/dataservices',
     BLIP_URL: 'https://external.integration.tidepool.org/'
   },
   prd: {
-    API_URL: 'https://api.tidepool.org',
+    API_HOST: 'https://api.tidepool.org',
     UPLOAD_URL: 'https://api.tidepool.org',
     DATA_URL: 'https://api.tidepool.org/dataservices',
     BLIP_URL: 'https://app.tidepool.org'
@@ -43,7 +43,7 @@ const environments = {
 const env = 'qa1';
 
 const selectedEnv = environments[env];
-const apiHost = selectedEnv.API_URL;
+const apiHost = selectedEnv.API_HOST;
 const uploadApi = apiHost;
 
 module.exports = {
