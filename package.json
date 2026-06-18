@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.66.0-add-model-rollbar.1",
+  "version": "2.66.0-add-model-rollbar.2",
   "engines": {
     "node": "24.15.0"
   },
