@@ -39,12 +39,12 @@ if (process.env.NODE_ENV === 'production') {
         // path. That makes the stack-based fingerprint identical for every upload
         // failure, so Rollbar groups distinct errors (e.g. "no new data") together.
         // Fingerprint by the error code we already report so each failure mode is
-        // its own group, with a stable title. Errors without a code (e.g. uncaught)
+        // its own group. We leave the title alone so Rollbar still derives it from
+        // the (human-readable) error message. Errors without a code (e.g. uncaught)
         // fall back to Rollbar's default grouping.
         var code = payload.custom && payload.custom.code;
         if (code) {
           payload.fingerprint = code;
-          payload.title = code;
         }
       }
     }
