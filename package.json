@@ -71,7 +71,7 @@
     "history": "4.10.1",
     "i18n-iso-countries": "7.14.0",
     "i18next": "20.6.1",
-    "i18next-fs-backend": "2.6.5",
+    "i18next-fs-backend": "2.6.6",
     "iconv-lite": "0.7.2",
     "idb-keyval": "6.2.2",
     "identity-obj-proxy": "3.0.0",
