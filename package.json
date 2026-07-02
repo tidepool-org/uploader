@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.66.0-add-more-prodigy.1",
+  "version": "2.67.0",
   "engines": {
     "node": "24.15.0"
   },
