@@ -363,14 +363,16 @@ export default class Upload extends Component {
 
     let post_link = null;
 
-    if(_.isArray(data) || _.isArray(data.post_records)) {
+    if(_.isArray(data) || _.isArray(data.post_records) || _.isArray(data.postRecords)) {
 
       let filename = 'uploader-processed-records.json';
       let jsonData = null;
       if (_.isArray(data)) {
         jsonData = JSON.stringify(data, undefined, 4);
-      } else {
+      } else if (_.isArray(data.post_records)) {
         jsonData = JSON.stringify(data.post_records, undefined, 4);
+      } else {
+        jsonData = JSON.stringify(data.postRecords, undefined, 4);
       }
       let blob = new Blob([jsonData], {type: 'text/json'});
       let dataHref = URL.createObjectURL(blob);

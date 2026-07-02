@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.66.0-dep-updates-jun26.1",
+  "version": "2.66.0-add-post-data.1",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
