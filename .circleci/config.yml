@@ -2,6 +2,24 @@ version: 2.1
 orbs:
   node: circleci/node@5.2.0
 jobs:
+  create-release-draft:
+    docker:
+      - image: cimg/node:24.15.0
+    resource_class: small
+    steps:
+      - run:
+          name: Halt for forked PRs
+          command: if [ -n "$CIRCLE_PR_NUMBER" ]; then circleci-agent step halt; fi
+      - run:
+          name: Shallow fetch of build commit
+          command: |
+            git init .
+            git remote add origin "https://github.com/tidepool-org/uploader.git"
+            git fetch --depth 1 origin "${CIRCLE_TAG:-$CIRCLE_BRANCH}"
+            git checkout "$CIRCLE_SHA1" 2>/dev/null || git checkout FETCH_HEAD
+      - run:
+          name: Ensure GitHub draft release exists before builds publish
+          command: node .circleci/create-release-draft.js
   build-macos:
     resource_class: m4pro.medium
     working_directory: ~/tidepool-org/chrome-uploader
@@ -183,7 +201,13 @@ workflows:
   version: 2
   build-release:
     jobs:
+      - create-release-draft:
+          filters:
+            tags:
+              only: /^v.*/
       - build-macos:
+          requires:
+            - create-release-draft
           filters:
             tags:
               only: /^v.*/
@@ -192,6 +216,8 @@ workflows:
             tags:
               only: /^v.*/
       - build-windows:
+          requires:
+            - create-release-draft
           context:
             - Azure Signing Uploader-01
           filters:

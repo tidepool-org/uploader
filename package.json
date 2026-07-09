@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.66.0-add-more-prodigy.1",
+  "version": "2.67.0",
   "engines": {
     "node": "24.15.0"
   },
@@ -160,7 +160,7 @@
     "difflet": "1.0.1",
     "drivelist": "12.0.2",
     "electron": "42.3.3",
-    "electron-builder": "26.15.2",
+    "electron-builder": "26.15.3",
     "electron-devtools-installer": "4.0.0",
     "enzyme": "3.11.0",
     "eslint": "8.57.1",
