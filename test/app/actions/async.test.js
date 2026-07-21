@@ -33,6 +33,19 @@ import ErrorMessages from '../../../app/constants/errorMessages';
 import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
+
+// uploadDataPeriod's Node fallback has no setters; sync.loginSuccess calls
+// setPeriodMedtronic600 for the clinic-account doLogin tests below.
+jest.mock('../../../app/utils/uploadDataPeriod', () => {
+  const actual = jest.requireActual('../../../app/utils/uploadDataPeriod');
+  return {
+    __esModule: true,
+    default: {
+      ...actual.default,
+      setPeriodMedtronic600: jest.fn((toPeriod) => toPeriod),
+    },
+  };
+});
 import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
 import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
 import {

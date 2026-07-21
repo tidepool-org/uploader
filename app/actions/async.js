@@ -1269,7 +1269,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
       _.assign(meta, metric);
       pageProps.state = { meta };
 
-      const { hash } = window.location;
+      const { hash } = typeof window !== 'undefined' ? window.location : {};
       if (hash) {
         pageProps.hash = hash;
       }
