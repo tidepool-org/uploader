@@ -19,43 +19,22 @@ module.exports = api => {
         require('@babel/preset-env'),
         {
           useBuiltIns: 'usage',
-          corejs: 2,
-          modules: 'commonjs'
+          // stay in sync with the installed core-js version so preset-env
+          // knows exactly which polyfills are available
+          corejs: require('core-js/package.json').version,
+          modules: 'commonjs',
+          bugfixes: true
         }
       ],
-      [require('@babel/preset-react'), { development }]
+      [require('@babel/preset-react'), { development, runtime: 'classic', useSpread: true }]
     ],
     retainLines: true,
     plugins: [
-      // Stage 0
-      require('@babel/plugin-proposal-function-bind'),
-
-      // Stage 1
-      require('@babel/plugin-proposal-export-default-from'),
-      require('@babel/plugin-proposal-logical-assignment-operators'),
-      [require('@babel/plugin-proposal-optional-chaining'), { loose: false }],
-      [
-        require('@babel/plugin-proposal-pipeline-operator'),
-        { proposal: 'minimal' }
-      ],
-      [
-        require('@babel/plugin-proposal-nullish-coalescing-operator'),
-        { loose: false }
-      ],
-      require('@babel/plugin-proposal-do-expressions'),
-
-      // Stage 2
-      [require('@babel/plugin-proposal-decorators'), { legacy: true }],
-      require('@babel/plugin-proposal-function-sent'),
-      require('@babel/plugin-proposal-export-namespace-from'),
-      require('@babel/plugin-proposal-numeric-separator'),
-      require('@babel/plugin-proposal-throw-expressions'),
-
-      // Stage 3
+      // Needed until Babel 8: parse-only support for syntax used in the app
       require('@babel/plugin-syntax-dynamic-import'),
       require('@babel/plugin-syntax-import-meta'),
-      [require('@babel/plugin-proposal-class-properties'), { loose: true }],
-      require('@babel/plugin-proposal-json-strings'),
+
+      require('@babel/plugin-transform-class-properties'),
 
       ...(development ? developmentPlugins : productionPlugins),
       require('babel-plugin-add-module-exports'),
