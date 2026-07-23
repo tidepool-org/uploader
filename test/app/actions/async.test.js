@@ -49,8 +49,9 @@ import appState from '../../../app/actions/appState';
 import * as actionUtils from '../../../app/actions/utils';
 import localStore from '../../../lib/core/localStore';
 
-// captured at module load: the state async.js installs ({ api })
+// captured at module load: the state async.js installs
 const defaultServices = appState.services;
+const defaultVersionInfo = appState.versionInfo;
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -77,6 +78,7 @@ describe('Asynchronous Actions', () => {
     // restore in an afterEach rather than at the end of each test, so that a
     // failing assertion can't skip the restore
     appState.services = defaultServices;
+    appState.versionInfo = defaultVersionInfo;
   });
 
   describe('doAppInit [hot reload, app already initialized]', () => {

@@ -18,10 +18,6 @@ module.exports = api => {
       [
         require('@babel/preset-env'),
         {
-          useBuiltIns: 'usage',
-          // stay in sync with the installed core-js version so preset-env
-          // knows exactly which polyfills are available
-          corejs: require('core-js/package.json').version,
           modules: 'commonjs',
           bugfixes: true
         }
@@ -30,15 +26,18 @@ module.exports = api => {
     ],
     retainLines: true,
     plugins: [
-      // Needed until Babel 8: parse-only support for syntax used in the app
-      require('@babel/plugin-syntax-dynamic-import'),
-      require('@babel/plugin-syntax-import-meta'),
-
-      require('@babel/plugin-transform-class-properties'),
+      [
+        require('babel-plugin-polyfill-corejs3'),
+        {
+          method: 'usage-global',
+          // stay in sync with the installed core-js version so the plugin
+          // knows exactly which polyfills are available
+          version: require('core-js/package.json').version
+        }
+      ],
 
       ...(development ? developmentPlugins : productionPlugins),
       require('babel-plugin-add-module-exports'),
-      require('@babel/plugin-transform-classes'),
     ],
     env: {
       development: {

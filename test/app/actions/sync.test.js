@@ -35,6 +35,12 @@ import {
 import ErrorMessages from '../../../app/constants/errorMessages';
 
 describe('Synchronous Actions', () => {
+  // restore in an afterEach so cleanup runs even when an assertion fails
+  const defaultPeriodMedtronic600 = uploadDataPeriod.periodMedtronic600;
+  afterEach(() => {
+    uploadDataPeriod.periodMedtronic600 = defaultPeriodMedtronic600;
+  });
+
   // several metric-property expectations in this file assume this OS string;
   // set the module-internal osString through its real code path
   beforeAll(async () => {
@@ -695,7 +701,6 @@ describe('Synchronous Actions', () => {
 
       test('should create appropriate metric properties for 600 series upload limits',  () => {
         const time = '2016-01-01T12:05:00.123Z';
-        const origPeriod = uploadDataPeriod.periodMedtronic600;
         uploadDataPeriod.periodMedtronic600 = 1;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
@@ -716,7 +721,6 @@ describe('Synchronous Actions', () => {
         };
 
         expect(sync.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
-        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 
@@ -785,7 +789,6 @@ describe('Synchronous Actions', () => {
 
       test('should create an action to record a successful 600 series upload w/ limit',  () => {
         const time = '2016-01-01T12:05:00.123Z';
-        const origPeriod = uploadDataPeriod.periodMedtronic600;
         uploadDataPeriod.periodMedtronic600 = 2;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
@@ -810,7 +813,6 @@ describe('Synchronous Actions', () => {
         };
 
         expect(sync.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
-        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 
@@ -863,7 +865,6 @@ describe('Synchronous Actions', () => {
       });
 
       test('should create an action to report an upload failure with limit for 600 series',  () => {
-        const origPeriod = uploadDataPeriod.periodMedtronic600;
         uploadDataPeriod.periodMedtronic600 = 3;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
@@ -893,7 +894,6 @@ describe('Synchronous Actions', () => {
         expectedAction.meta.metric.properties.error = action.payload;
         expect(action).to.deep.equal(expectedAction);
         expect(sync.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
-        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 

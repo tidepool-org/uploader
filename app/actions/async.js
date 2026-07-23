@@ -645,12 +645,10 @@ export function readFile(userId, deviceKey, file, extension) {
     if (!file) {
       const getFile = async () => {
         dispatch(sync.choosingFile(userId, deviceKey));
-        const regex = new RegExp('.+.ibf', 'g');
-
         for await (const entry of dirHandle.values()) {
           log(entry);
           // On Eros PDM there should only be one .ibf file
-          if (regex.test(entry.name)) {
+          if (entry.name.endsWith(extension)) {
             file = {
               handle: await entry.getFile(),
               name: entry.name,

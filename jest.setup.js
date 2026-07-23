@@ -4,8 +4,9 @@ const mockT = (str, obj = {}) => {
   const keys = Object.keys(obj);
   let replacedStr = str;
   for (const key of keys) {
-    const re = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-    replacedStr = replacedStr.replace(re, obj[key]);
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`{{\\s*${escapedKey}\\s*}}`, 'g');
+    replacedStr = replacedStr.replace(re, () => obj[key]);
   }
   return replacedStr;
 };
