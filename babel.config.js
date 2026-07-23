@@ -59,7 +59,6 @@ module.exports = api => {
               'root': ['./app/node_modules']
             }
           ],
-          require('babel-plugin-rewire'),
           [
             require('babel-plugin-transform-define'),
             {

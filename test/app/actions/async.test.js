@@ -41,13 +41,17 @@ jest.mock('../../../app/utils/uploadDataPeriod', () => {
   return {
     __esModule: true,
     default: {
-      ...actual.default,
+      ...(actual.default || actual),
       setPeriodMedtronic600: jest.fn((toPeriod) => toPeriod),
     },
   };
 });
-import { __Rewire__, __ResetDependency__ } from '../../../app/actions/async';
-import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
+import appState from '../../../app/actions/appState';
+import * as actionUtils from '../../../app/actions/utils';
+import localStore from '../../../lib/core/localStore';
+
+// captured at module load: the state async.js installs ({ api })
+const defaultServices = appState.services;
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -71,9 +75,9 @@ jest.mock('@electron/remote', () => ({
 
 describe('Asynchronous Actions', () => {
   afterEach(() => {
-    // very important to do this in an afterEach than in each test when __Rewire__ is used
-    // if you try to reset within each test you'll make it impossible for tests to fail!
-    __ResetDependency__('services');
+    // restore in an afterEach rather than at the end of each test, so that a
+    // failing assertion can't skip the restore
+    appState.services = defaultServices;
   });
 
   describe('doAppInit [hot reload, app already initialized]', () => {
@@ -82,8 +86,8 @@ describe('Asynchronous Actions', () => {
       const store = mockStore({
         working: { initializingApp: { inProgress: false } },
       });
-      utilsRewireAPI.__Rewire__('initOSDetails', () => {});
-      store.dispatch(async.doAppInit({}, {})).then(() => {
+      jest.spyOn(actionUtils, 'initOSDetails').mockImplementation(async () => {});
+      return store.dispatch(async.doAppInit({}, {})).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -172,13 +176,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
         }
       ];
-      __Rewire__('versionInfo', {
+      appState.versionInfo = ({
         semver: config.version
       });
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -260,7 +264,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: {user: pwd.user, profile: pwd.profile, memberships: pwd.memberships},
+          payload: {user: pwd.user, profile: pwd.profile, memberships: pwd.memberships, clinics: []},
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
@@ -289,7 +293,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       ];
-      __Rewire__('versionInfo', {
+      appState.versionInfo = ({
         semver: config.version
       });
       const state = {
@@ -299,7 +303,7 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: pwd.memberships.map(user=>user.userid),
       };
       const store = mockStore(state);
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -395,7 +399,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          payload: {user: userObj.user, profile: profile, memberships: memberships, clinics: clinics},
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
@@ -423,7 +427,7 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -524,7 +528,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          payload: {user: userObj.user, profile: profile, memberships: memberships, clinics: clinics},
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
@@ -571,7 +575,7 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -675,7 +679,7 @@ describe('Asynchronous Actions', () => {
         },
         {
           type: actionTypes.SET_USER_INFO_FROM_TOKEN,
-          payload: {user: userObj.user, profile: profile, memberships: memberships},
+          payload: {user: userObj.user, profile: profile, memberships: memberships, clinics: clinics},
           meta: {source: actionSources[actionTypes.SET_USER_INFO_FROM_TOKEN]}
         },
         {
@@ -706,7 +710,7 @@ describe('Asynchronous Actions', () => {
         targetUsersForUpload: ['def456', 'ghi789'],
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions).to.deep.equal(expectedActions);
       });
@@ -754,13 +758,13 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.INIT_APP_FAILURE]}
         }
       ];
-      __Rewire__('versionInfo', {
+      appState.versionInfo = ({
         semver: config.version
       });
       const store = mockStore({
         working: { initializingApp: { inProgress: true } },
       });
-      store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
+      return store.dispatch(async.doAppInit(config, servicesToInit)).then(() => {
         const actions = store.getActions();
         expect(actions[2].payload).to.deep.include({message:ErrorMessages.E_INIT});
         expectedActions[2].payload = actions[2].payload;
@@ -841,7 +845,7 @@ describe('Asynchronous Actions', () => {
           },
         },
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
@@ -899,7 +903,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.LOGIN_FAILURE]}
         }
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(getLoginErrorMessage())
@@ -986,7 +990,7 @@ describe('Asynchronous Actions', () => {
           }
         },
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
@@ -1091,7 +1095,7 @@ describe('Asynchronous Actions', () => {
           }
         },
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) => cb(null, [userObj, profile, memberships]),
@@ -1231,7 +1235,7 @@ describe('Asynchronous Actions', () => {
           }
         },
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) =>
@@ -1393,7 +1397,7 @@ describe('Asynchronous Actions', () => {
           }
         },
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             loginExtended: (creds, opts, cb) =>
@@ -1463,7 +1467,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             logout: (cb) => cb(null)
@@ -1506,7 +1510,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             logout: (cb) => cb('Error :(')
@@ -1549,7 +1553,7 @@ describe('Asynchronous Actions', () => {
           }
         }
       ];
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           user: {
             logout: (cb) => cb(null)
@@ -1569,14 +1573,14 @@ describe('Asynchronous Actions', () => {
       const currentVersion = '0.50.0';
       const time = '2016-01-01T12:05:00.123Z';
       const deviceKey = 'a_pump';
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: requiredVersion})
           }
         }
       });
-      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
+      jest.spyOn(actionUtils, 'getOSDetails').mockReturnValue('BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
@@ -1601,7 +1605,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      __Rewire__('versionInfo', {
+      appState.versionInfo = ({
         semver: currentVersion
       });
       const store = mockStore({});
@@ -1622,7 +1626,7 @@ describe('Asynchronous Actions', () => {
       };
       const deviceKey = 'a_pump';
       const time = '2016-01-01T12:05:00.123Z';
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1645,7 +1649,7 @@ describe('Asynchronous Actions', () => {
           meta: {source: actionSources[actionTypes.UPLOAD_ABORTED]}
         }
       ];
-      __Rewire__('versionInfo', {
+      appState.versionInfo = ({
         semver: '0.100.0'
       });
       const store = mockStore(initialState);
@@ -1698,7 +1702,7 @@ describe('Asynchronous Actions', () => {
       err.utc = errProps.utc;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1808,7 +1812,7 @@ describe('Asynchronous Actions', () => {
       err.utc = errProps.utc;
       err.version = errProps.version;
       err.debug = `UTC Time: ${time} | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -1921,7 +1925,7 @@ describe('Asynchronous Actions', () => {
       err.code = errProps.code;
       err.version = errProps.version;
       err.debug = `Details: ${basalErr} | UTC Time: ${time} | Name: Error | Code: ${errProps.code} | Version: ${errProps.version}`;
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -2025,7 +2029,7 @@ describe('Asynchronous Actions', () => {
         working: { uploading: { inProgress: false } },
       };
       let err = 'deviceTimePromptClose';
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -2110,7 +2114,7 @@ describe('Asynchronous Actions', () => {
         version: '0.100.0',
         working: { uploading: { inProgress: false } },
       };
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getVersions: (cb) => cb(null, {uploaderMinimum: '0.99.0'})
@@ -2195,6 +2199,9 @@ describe('Asynchronous Actions', () => {
         const state = {
           version: version
         };
+        // this test used to rely on a `log` leaked into services by earlier
+        // doAppInit tests; provide it explicitly instead
+        appState.services = ({ log: _.noop });
         const store = mockStore(state);
         store.dispatch(async.readFile(userId, deviceKey, {name: 'data.csv'}, ext));
         const actions = store.getActions();
@@ -2228,7 +2235,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             upload: {
               getVersions: (cb) => { cb(err); }
@@ -2264,7 +2271,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             upload: {
               getVersions: (cb) => { cb(err); }
@@ -2302,14 +2309,14 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             upload: {
               getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
             }
           }
         });
-        __Rewire__('versionInfo', {
+        appState.versionInfo = ({
           semver: currentVersion
         });
         const store = mockStore({});
@@ -2334,14 +2341,14 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.VERSION_CHECK_SUCCESS]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             upload: {
               getVersions: (cb) => { cb(null, {uploaderMinimum: requiredVersion}); }
             }
           }
         });
-        __Rewire__('versionInfo', {
+        appState.versionInfo = ({
           semver: currentVersion
         });
         const store = mockStore({});
@@ -2384,7 +2391,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -2450,7 +2457,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -2521,7 +2528,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -2589,7 +2596,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -2684,7 +2691,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -2755,7 +2762,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -2826,7 +2833,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -2880,7 +2887,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.UPDATE_PROFILE_FAILURE]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               updateProfile: (user, update, cb) => cb('error')
@@ -2946,7 +2953,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               updateProfile: (user, update, cb) => cb({status:401})
@@ -3004,7 +3011,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -3084,7 +3091,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -3144,7 +3151,7 @@ describe('Asynchronous Actions', () => {
             meta: {apiError:null}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               updateProfile: (user, update, cb) => cb('error')
@@ -3190,7 +3197,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3240,7 +3247,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3297,7 +3304,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_TARGET_TIMEZONE]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3358,7 +3365,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           localStore: {
             getItem: () => null,
             removeItem: (item) => null
@@ -3391,7 +3398,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           localStore: {
             getItem: () => null,
             removeItem: (item) => null
@@ -3446,7 +3453,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             makeBlipUrl: blipUrlMaker
           },
@@ -3454,7 +3461,7 @@ describe('Asynchronous Actions', () => {
 
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => null,
           removeItem: (item) => null
         });
@@ -3508,7 +3515,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             makeBlipUrl: blipUrlMaker
           },
@@ -3579,7 +3586,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -3649,7 +3656,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3662,7 +3669,7 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -3743,7 +3750,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3756,7 +3763,7 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -3828,12 +3835,12 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             makeBlipUrl: blipUrlMaker
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -3907,7 +3914,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -3920,7 +3927,7 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -3998,7 +4005,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -4011,7 +4018,7 @@ describe('Asynchronous Actions', () => {
             makeBlipUrl: blipUrlMaker
           }
         });
-        __Rewire__('localStore', {
+        Object.assign(localStore, {
           getItem: () => targets,
           removeItem: (item) => null
         });
@@ -4079,7 +4086,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               profile: (cb) => {
@@ -4156,7 +4163,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             makeBlipUrl: blipUrlMaker,
             metrics: {
@@ -4229,7 +4236,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               account: (cb) => cb(null, userObj.user),
@@ -4260,7 +4267,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.CREATE_CUSTODIAL_ACCOUNT_FAILURE]}
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             user: {
               createCustodialAccount: (profile, cb) => cb('error')
@@ -4299,7 +4306,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           }
         ];
-        __Rewire__('services', apiRewire);
+        appState.services = apiRewire;
         const store = mockStore({
           devices: {
             a_pump: {}
@@ -4348,7 +4355,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', apiRewire);
+        appState.services = apiRewire;
         const store = mockStore({
           devices: {
             medtronic: {},
@@ -4383,7 +4390,7 @@ describe('Asynchronous Actions', () => {
             meta: {source: actionSources[actionTypes.SET_BLIP_VIEW_DATA_URL]}
           }
         ];
-        __Rewire__('services', apiRewire);
+        appState.services = apiRewire;
         const store = mockStore({
           devices: {
             medtronic: {},
@@ -4567,7 +4574,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             patient: {
               get: (id, cb) => cb(null, {id: 'abc123'})
@@ -4644,7 +4651,7 @@ describe('Asynchronous Actions', () => {
             }
           }
         ];
-        __Rewire__('services', {
+        appState.services = ({
           api: {
             patient: {
               get: (id, cb) => cb(null, {id: 'abc123'})
@@ -4973,7 +4980,7 @@ describe('Asynchronous Actions', () => {
         id: 'relationship_id',
       }];
 
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           clinics: {
             getPatientsForClinic: sinon.stub().callsArgWith(2, null, {data:[{patient:'patient1'}],meta:{count:1}}  ),
@@ -5004,7 +5011,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('should trigger FETCH_PATIENTS_FOR_CLINIC_FAILURE and it should call error once for a failed request', () => {
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           clinics: {
             getPatientsForClinic: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
@@ -5037,7 +5044,7 @@ describe('Asynchronous Actions', () => {
       let patientUserId = 'patient_userId';
       let clinicId = '5f85fbe6686e6bb9170ab5d0';
 
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           clinics: {
             createClinicCustodialAccount: sinon.stub().callsArgWith(2, null, {
@@ -5081,7 +5088,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and it should call error once for a failed request', () => {
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           clinics: {
             createClinicCustodialAccount: sinon.stub().callsArgWith(2, {status: 500, body: 'Error!'}, null),
@@ -5110,7 +5117,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('should trigger CREATE_CLINIC_CUSTODIAL_ACCOUNT_FAILURE and it should call error once for a duplicate email address', () => {
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           clinics: {
             createClinicCustodialAccount: sinon.stub().callsArgWith(2, {status: 409, body: 'Error!'}, null),
@@ -5239,7 +5246,7 @@ describe('Asynchronous Actions', () => {
         }
       };
 
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getInfo: sinon.stub().callsArgWith(0, null, info),
@@ -5270,7 +5277,7 @@ describe('Asynchronous Actions', () => {
 
     it('should trigger FETCH_INFO_FAILURE and it should call error once for a failed request', () => {
 
-      __Rewire__('services', {
+      appState.services = ({
         api: {
           upload: {
             getInfo: sinon

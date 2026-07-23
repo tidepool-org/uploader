@@ -24,8 +24,9 @@ import * as actionTypes from '../../../app/constants/actionTypes';
 import * as metrics from '../../../app/constants/metrics';
 
 import * as sync from '../../../app/actions/sync';
-import { __Rewire__, __ResetDependency__ } from '../../../app/actions/sync';
-import { __RewireAPI__ as utilsRewireAPI } from '../../../app/actions/utils';
+import * as actionUtils from '../../../app/actions/utils';
+import * as errorUtils from '../../../app/utils/errors';
+import uploadDataPeriod from '../../../app/utils/uploadDataPeriod';
 import {
   getCreateCustodialAccountErrorMessage,
   getUpdateProfileErrorMessage,
@@ -34,6 +35,23 @@ import {
 import ErrorMessages from '../../../app/constants/errorMessages';
 
 describe('Synchronous Actions', () => {
+  // several metric-property expectations in this file assume this OS string;
+  // set the module-internal osString through its real code path
+  beforeAll(async () => {
+    Object.defineProperty(globalThis.navigator, 'userAgentData', {
+      value: {
+        platform: 'BeOS R5.1',
+        getHighEntropyValues: () => Promise.resolve({
+          platform: 'BeOS R5.1',
+          platformVersion: '(RISC-V)',
+          bitness: '64',
+        }),
+      },
+      configurable: true,
+    });
+    await actionUtils.initOSDetails();
+  });
+
   describe('addTargetDevice', () => {
     const DEVICE = 'a_pump', ID = 'a1b2c3', CLINICID='clinic123';
     test('should be an FSA', () => {
@@ -541,7 +559,7 @@ describe('Synchronous Actions', () => {
       });
 
       test('should create an action to report a login error', () => {
-        __Rewire__('getLoginErrorMessage', () => err);
+        const spy = jest.spyOn(errorUtils, 'getLoginErrorMessage').mockImplementation(() => err);
         const expectedAction = {
           type: actionTypes.LOGIN_FAILURE,
           error: true,
@@ -552,7 +570,7 @@ describe('Synchronous Actions', () => {
         expect(action.payload).to.deep.include({message:err});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
-        __ResetDependency__('getLoginErrorMessage');
+        spy.mockRestore();
       });
     });
   });
@@ -602,7 +620,7 @@ describe('Synchronous Actions', () => {
       });
 
       test('should create an action to report a logout error', () => {
-        __Rewire__('getLogoutErrorMessage', () => err);
+        const spy = jest.spyOn(errorUtils, 'getLogoutErrorMessage').mockImplementation(() => err);
         const expectedAction = {
           type: actionTypes.LOGOUT_FAILURE,
           error: true,
@@ -613,7 +631,7 @@ describe('Synchronous Actions', () => {
         expect(action.payload).to.deep.include({message:err});
         expectedAction.payload = action.payload;
         expect(action).to.deep.equal(expectedAction);
-        __ResetDependency__('getLoginErrorMessage');
+        spy.mockRestore();
       });
     });
   });
@@ -677,7 +695,8 @@ describe('Synchronous Actions', () => {
 
       test('should create appropriate metric properties for 600 series upload limits',  () => {
         const time = '2016-01-01T12:05:00.123Z';
-        __Rewire__('uploadDataPeriod', { periodMedtronic600: 1 });
+        const origPeriod = uploadDataPeriod.periodMedtronic600;
+        uploadDataPeriod.periodMedtronic600 = 1;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_REQUEST,
@@ -697,7 +716,7 @@ describe('Synchronous Actions', () => {
         };
 
         expect(sync.uploadRequest(userId, device, time)).to.deep.equal(expectedAction);
-        __ResetDependency__('uploadDataPeriod');
+        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 
@@ -735,8 +754,6 @@ describe('Synchronous Actions', () => {
         deviceModel: 'acme'
       };
 
-      utilsRewireAPI.__Rewire__('osString', 'BeOS R5.1 (RISC-V)');
-
       test('should be an FSA', () => {
         let action = sync.uploadSuccess(userId, device, upload, data);
 
@@ -768,7 +785,8 @@ describe('Synchronous Actions', () => {
 
       test('should create an action to record a successful 600 series upload w/ limit',  () => {
         const time = '2016-01-01T12:05:00.123Z';
-        __Rewire__('uploadDataPeriod', { periodMedtronic600: 2 });
+        const origPeriod = uploadDataPeriod.periodMedtronic600;
+        uploadDataPeriod.periodMedtronic600 = 2;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_SUCCESS,
@@ -792,7 +810,7 @@ describe('Synchronous Actions', () => {
         };
 
         expect(sync.uploadSuccess(userId, device, upload, data, time)).to.deep.equal(expectedAction);
-        __ResetDependency__('uploadDataPeriod');
+        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 
@@ -845,7 +863,8 @@ describe('Synchronous Actions', () => {
       });
 
       test('should create an action to report an upload failure with limit for 600 series',  () => {
-        __Rewire__('uploadDataPeriod', { periodMedtronic600: 3 });
+        const origPeriod = uploadDataPeriod.periodMedtronic600;
+        uploadDataPeriod.periodMedtronic600 = 3;
         device.source.driverId = 'Medtronic600';
         const expectedAction = {
           type: actionTypes.UPLOAD_FAILURE,
@@ -874,7 +893,7 @@ describe('Synchronous Actions', () => {
         expectedAction.meta.metric.properties.error = action.payload;
         expect(action).to.deep.equal(expectedAction);
         expect(sync.uploadFailure(origError, errProps, device)).to.deep.equal(expectedAction);
-        __ResetDependency__('uploadDataPeriod');
+        uploadDataPeriod.periodMedtronic600 = origPeriod;
       });
     });
 

@@ -1,6 +1,18 @@
+// Interpolating, key-returning translation function, matching the behaviour
+// tests relied on when they ran inside Electron with the i18n global mocked.
+const mockT = (str, obj = {}) => {
+  const keys = Object.keys(obj);
+  let replacedStr = str;
+  for (const key of keys) {
+    const re = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+    replacedStr = replacedStr.replace(re, obj[key]);
+  }
+  return replacedStr;
+};
+
 jest.mock('@electron/remote', () => {
   const mockI18n = {
-    t: jest.fn(require('./__mocks__/i18nTMock.js')),
+    t: jest.fn(mockT),
   };
 
   return {
@@ -12,18 +24,11 @@ jest.mock('@electron/remote', () => {
 // which is never initialized in tests.
 jest.mock('i18next', () => {
   const mockI18n = {
-    t: jest.fn(require('./__mocks__/i18nTMock.js')),
+    t: jest.fn(mockT),
   };
   mockI18n.default = mockI18n;
   return mockI18n;
 });
-
-// Several async action tests attach assertions to promise chains without
-// returning them, so they were never awaited or enforced under the Electron
-// runner — its renderer silently dropped the unhandled rejections. Node
-// crashes the worker on unhandled rejections instead; keep parity with the
-// old runner until those tests are reworked to return their promises.
-process.on('unhandledRejection', () => {});
 
 // idb-keyval needs indexedDB, which Electron's renderer provided and Node lacks.
 jest.mock('idb-keyval', () => ({

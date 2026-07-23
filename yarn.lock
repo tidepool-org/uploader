@@ -4641,13 +4641,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-rewire@npm:1.2.0":
-  version: 1.2.0
-  resolution: "babel-plugin-rewire@npm:1.2.0"
-  checksum: 28dd67a8ddc8d457f2a640beac706beefcdfcdd4a6b354f3fabad869e101c7ba81d9ffc87f133a371b9a76a872fa1f3bed80a339b2d6657254ab35d45f0150f9
-  languageName: node
-  linkType: hard
-
 "babel-plugin-transform-define@npm:2.1.4":
   version: 2.1.4
   resolution: "babel-plugin-transform-define@npm:2.1.4"
@@ -14823,7 +14816,6 @@ __metadata:
     babel-loader: 10.1.1
     babel-plugin-add-module-exports: 1.0.4
     babel-plugin-module-resolver: 5.0.3
-    babel-plugin-rewire: 1.2.0
     babel-plugin-transform-define: 2.1.4
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babyparse: 0.4.6
