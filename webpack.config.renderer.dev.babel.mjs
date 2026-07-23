@@ -225,6 +225,7 @@ export default (env => merge(baseConfig, {
   },
 
   devServer: {
+    allowedHosts: 'all',
     client: {
       logging: 'verbose'
     },
