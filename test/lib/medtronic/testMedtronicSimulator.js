@@ -398,13 +398,7 @@ describe('medtronicSimulator.js', () => {
       .with_conversionOffset(0)
       .with_scheduleName('Alice')
       .with_rate(0.85);
-    var basal3 = builder.makeScheduledBasal()
-      .with_time('2014-09-25T03:30:00.000Z')
-      .with_deviceTime('2014-09-25T03:30:00')
-      .with_timezoneOffset(0)
-      .with_conversionOffset(0)
-      .with_scheduleName('Alice')
-      .with_rate(0.90);
+    
 
     test('sets duration using a following basal', () => {
       var expectedFirstBasal = _.cloneDeep(basal1);

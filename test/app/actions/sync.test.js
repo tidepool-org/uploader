@@ -901,9 +901,7 @@ describe('Synchronous Actions', () => {
       const errProps = {
         utc: '2016-01-01T12:05:00.123Z',
       };
-      const device = {
-        source: {type: 'device', driverId: 'AcmePump'}
-      };
+      
       test('should be an FSA', () => {
         let action = sync.uploadCancelled();
 

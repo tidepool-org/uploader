@@ -48,8 +48,7 @@ let hostMap = {
   'Linux': 'linux',
 };
 
-const isBrowser = typeof window !== 'undefined';
-let win = isBrowser ? window : null;
+
 
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
@@ -117,7 +116,7 @@ export function doAppInit(opts, servicesToInit) {
     device.init({
       api,
       version: opts.namedVersion
-    }, function(deviceError, deviceResult){
+    }, function(deviceError, _deviceResult){
       if (deviceError) {
         return dispatch(sync.initializeAppFailure(deviceError));
       }
@@ -140,7 +139,7 @@ export function doAppInit(opts, servicesToInit) {
         }
 
         api.user.initializationInfo((err, results) => {
-          const [ user, profile, memberships, associatedAccounts, clinics ] = results;
+          const [ user, profile, memberships, ,clinics ] = results;
           if (err) {
             return dispatch(sync.initializeAppFailure(err));
           }
@@ -288,7 +287,7 @@ export function doLogout() {
 }
 
 export function doLoggedOut() {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     const { api } = appState.services;
     dispatch(sync.logoutRequest());
     api.user.logout((err) => {
@@ -307,7 +306,7 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
     const { device } = appState.services;
     const version = appState.versionInfo.semver;
-    const { devices, os, targetTimezones, uploadTargetUser, uploadsByUser } = getState();
+    const { devices, targetTimezones, uploadTargetUser, uploadsByUser } = getState();
     const targetDevice = _.find(devices, {source: {driverId: driverId}});
     dispatch(sync.deviceDetectRequest());
     _.assign(opts, {
@@ -632,7 +631,7 @@ export function doUpload(deviceKey, opts, utc) {
       dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const targetDevice = devices[deviceKey];
-      const deviceType = targetDevice.source.type;
+      
 
       dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
     });
@@ -642,11 +641,11 @@ export function doUpload(deviceKey, opts, utc) {
 export function readFile(userId, deviceKey, file, extension) {
   const { log } = appState.services;
 
-  return async (dispatch, getState) => {
+  return async (dispatch, _getState) => {
     if (!file) {
       const getFile = async () => {
         dispatch(sync.choosingFile(userId, deviceKey));
-        const regex = new RegExp('.+\.ibf', 'g');
+        const regex = new RegExp('.+.ibf', 'g');
 
         for await (const entry of dirHandle.values()) {
           log(entry);
@@ -776,7 +775,7 @@ export function readFile(userId, deviceKey, file, extension) {
 
         reader.onerror = onError;
 
-        reader.onloadend = ((theFile) => {
+        reader.onloadend = ((_theFile) => {
           return (e) => {
             dispatch(sync.readFileSuccess(userId, deviceKey, e.srcElement.result));
             dispatch(doUpload(deviceKey));
@@ -790,7 +789,7 @@ export function readFile(userId, deviceKey, file, extension) {
 }
 
 export function doVersionCheck() {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     dispatch(sync.versionCheckRequest());
     const { api } = appState.services;
     const version = appState.versionInfo.semver;
@@ -1171,7 +1170,7 @@ export function goToPrivateWorkspace() {
 }
 
 export function createCustodialAccount(profile) {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     const { api } = appState.services;
     dispatch(sync.createCustodialAccountRequest());
     api.user.createCustodialAccount(profile, (err, account) => {
@@ -1262,7 +1261,7 @@ export function clickAddNewUser(){
 }
 
 export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     if (pagesMap[page]) {
       const pageProps = { pathname: pagesMap[page] };
 

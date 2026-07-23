@@ -27,10 +27,9 @@ import initialState from '../../../app/reducers/initialState';
 import * as actionSources from '../../../app/constants/actionSources';
 import * as actionTypes from '../../../app/constants/actionTypes';
 import * as metrics from '../../../app/constants/metrics';
-import { pages, steps, urls } from '../../../app/constants/otherConstants';
+import { pages } from '../../../app/constants/otherConstants';
 import { UnsupportedError } from '../../../app/utils/errors';
 import ErrorMessages from '../../../app/constants/errorMessages';
-import UserMessages from '../../../app/constants/usrMessages';
 
 import * as async from '../../../app/actions/async';
 
@@ -60,7 +59,7 @@ import {
 } from '../../../app/utils/errors';
 
 let pwd = require('../../lib/fixtures/pwd.json');
-let nonpwd = require('../../lib/fixtures/nonpwd.json');
+
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -2479,7 +2478,7 @@ describe('Asynchronous Actions', () => {
                 {key: 'a_cgm', timezone: 'US/Eastern'}
               ]
             }; },
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const state = {
@@ -3337,7 +3336,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('retrieveTargetsFromStorage', () => {
-    const url = 'http://acme-blip.com/patients/abc123/data';
+    
     const blipUrlMaker = (path) => { return 'http://acme-blip.com' + path; };
     const profile = {
       fullName: 'John',
@@ -3368,7 +3367,7 @@ describe('Asynchronous Actions', () => {
         appState.services = ({
           localStore: {
             getItem: () => null,
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const store = mockStore({allUsers: {'abc123':{}}});
@@ -3401,7 +3400,7 @@ describe('Asynchronous Actions', () => {
         appState.services = ({
           localStore: {
             getItem: () => null,
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const state = {
@@ -3463,7 +3462,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => null,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3521,7 +3520,7 @@ describe('Asynchronous Actions', () => {
           },
           localStore: {
             getItem: () => null,
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const store = mockStore({
@@ -3588,7 +3587,7 @@ describe('Asynchronous Actions', () => {
         ];
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3671,7 +3670,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3765,7 +3764,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3842,7 +3841,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -3929,7 +3928,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -4020,7 +4019,7 @@ describe('Asynchronous Actions', () => {
         });
         Object.assign(localStore, {
           getItem: () => targets,
-          removeItem: (item) => null
+          removeItem: (_item) => null
         });
         const store = mockStore({
           allUsers: {
@@ -4064,10 +4063,7 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const devicesByUser = {
-          abc123: ['carelink'],
-          def456: ['dexcom', 'omnipod']
-        };
+        
         const expectedActions = [
           {
             type: actionTypes.SELECT_CLINIC_SUCCESS,
@@ -4103,7 +4099,7 @@ describe('Asynchronous Actions', () => {
           },
           localStore: {
             getItem: () => targets,
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const store = mockStore({
@@ -4141,10 +4137,7 @@ describe('Asynchronous Actions', () => {
             {key: 'omnipod', timezone: 'US/Mountain'}
           ]
         };
-        const devicesByUser = {
-          abc123: ['carelink'],
-          def456: ['dexcom', 'omnipod']
-        };
+        
         const expectedActions = [
           {
             type: actionTypes.SELECT_CLINIC_SUCCESS,
@@ -4172,7 +4165,7 @@ describe('Asynchronous Actions', () => {
           },
           localStore: {
             getItem: () => targets,
-            removeItem: (item) => null
+            removeItem: (_item) => null
           }
         });
         const store = mockStore({
@@ -4416,7 +4409,7 @@ describe('Asynchronous Actions', () => {
   });
 
   describe('checkUploadTargetUserAndMaybeRedirect', () => {
-    const userId = 'abc123';
+    
     describe('target user has selected devices', () => {
       test('should dispatch SET_PAGE (main)', () => {
         const expectedActions = [
@@ -4854,7 +4847,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('[500] should trigger FETCH_PATIENT_FAILURE and it should call error once for a failed request', () => {
-      let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
+      
 
       let api = {
         patient: {
@@ -4883,7 +4876,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('[404] should trigger FETCH_PATIENT_FAILURE and it should call error once for a failed request', () => {
-      let patient = { id: 58686, name: 'Buddy Holly', age: 65 };
+      
       let thisInitialState = Object.assign(initialState, {loggedInUserId: 58686});
 
       let api = {
@@ -4941,9 +4934,7 @@ describe('Asynchronous Actions', () => {
     });
 
     test('should trigger FETCH_ASSOCIATED_ACCOUNTS_FAILURE and it should call error once for a failed request', () => {
-      let patients = [
-        { id: 58686, name: 'Buddy Holly', age: 65 }
-      ];
+      
 
       let api = {
         user: {
@@ -4974,11 +4965,7 @@ describe('Asynchronous Actions', () => {
 
   describe('fetchPatientsForClinic', () => {
     test('should trigger FETCH_PATIENTS_FOR_CLINIC_SUCCESS and it should call clinics.getPatientsForClinic once for a successful request', () => {
-      let patients = [{
-        clinicId: '5f85fbe6686e6bb9170ab5d0',
-        patientId: 'patient_id',
-        id: 'relationship_id',
-      }];
+      
 
       appState.services = ({
         api: {

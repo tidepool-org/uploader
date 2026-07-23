@@ -1,6 +1,6 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, session, protocol } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, protocol } from 'electron';
 import os from 'os';
 import osName from 'os-name';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
@@ -29,9 +29,9 @@ autoUpdater.logger = electronLog;
 autoUpdater.logger.transports.file.level = 'info';
 remoteMainModule.initialize();
 
-let rollbar;
+let _rollbar;
 if(process.env.NODE_ENV === 'production') {
-  rollbar = new Rollbar({
+  _rollbar = new Rollbar({
     accessToken: __ROLLBAR_POST_TOKEN__,
     captureUncaught: true,
     captureUnhandledRejections: true,
@@ -177,7 +177,7 @@ function initHelperProcess(msg) {
     proc.removeAllListeners('exit');
     try {
       proc.stdin.end();
-    } catch (e) {
+    } catch  {
       // Ignore errors if stdin is already destroyed
     }
     proc.kill();
@@ -216,7 +216,7 @@ function initHelperProcess(msg) {
     console.error('[helper process error]', err);
   });
 
-  proc.on('spawn', (err) => {
+  proc.on('spawn', (_err) => {
     if (proc && !proc.killed && proc.stdin && !proc.stdin.destroyed) {
       if (msg) {
         sendMessageToHelper(msg);
@@ -852,7 +852,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+  app.on('second-instance', (event, commandLine, _workingDirectory) => {
     // windows opens a second instance for custom protocol handling
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
