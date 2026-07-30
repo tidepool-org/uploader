@@ -18,11 +18,10 @@ module.exports = api => {
       [
         require('@babel/preset-env'),
         {
-          modules: 'commonjs',
-          bugfixes: true
+          modules: 'commonjs'
         }
       ],
-      [require('@babel/preset-react'), { development, runtime: 'classic', useSpread: true }]
+      [require('@babel/preset-react'), { development, runtime: 'classic' }]
     ],
     retainLines: true,
     plugins: [
