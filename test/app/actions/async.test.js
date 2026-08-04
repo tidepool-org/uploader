@@ -50,8 +50,8 @@ import * as actionUtils from '../../../app/actions/utils';
 import localStore from '../../../lib/core/localStore';
 
 // captured at module load: the state async.js installs
-const defaultServices = appState.services;
-const defaultVersionInfo = appState.versionInfo;
+const defaultServices = { ...appState.services };
+const defaultVersionInfo = { ...appState.versionInfo };
 import {
   getLoginErrorMessage,
   getLogoutErrorMessage,
@@ -74,11 +74,15 @@ jest.mock('@electron/remote', () => ({
 }));
 
 describe('Asynchronous Actions', () => {
+  beforeEach(() => {
+    appState.versionInfo = { semver: '0.100.0' };
+    jest.spyOn(actionUtils, 'getOSDetails').mockReturnValue('BeOS R5.1 (RISC-V)');
+  });
+
   afterEach(() => {
-    // restore in an afterEach rather than at the end of each test, so that a
-    // failing assertion can't skip the restore
-    appState.services = defaultServices;
-    appState.versionInfo = defaultVersionInfo;
+    appState.services = { ...defaultServices };
+    appState.versionInfo = { ...defaultVersionInfo };
+    jest.restoreAllMocks();
   });
 
   describe('doAppInit [hot reload, app already initialized]', () => {
@@ -1581,7 +1585,6 @@ describe('Asynchronous Actions', () => {
           }
         }
       });
-      jest.spyOn(actionUtils, 'getOSDetails').mockReturnValue('BeOS R5.1 (RISC-V)');
       const expectedActions = [
         {
           type: actionTypes.VERSION_CHECK_REQUEST,
