@@ -114,7 +114,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "devDependencies": {
-    "@aws-sdk/client-ses": "3.1098.0",
+    "@aws-sdk/client-ses": "3.1102.0",
     "@babel/core": "8.0.1",
     "@babel/plugin-transform-react-constant-elements": "8.0.1",
     "@babel/plugin-transform-react-inline-elements": "8.0.1",
@@ -154,7 +154,7 @@
     "object-invariant-test-helper": "0.1.1",
     "optimize-css-assets-webpack-plugin": "6.0.1",
     "optional": "0.1.4",
-    "oxlint": "1.76.0",
+    "oxlint": "1.77.0",
     "redux-mock-store": "1.5.5",
     "salinity": "0.0.11",
     "sinon": "22.1.0",
@@ -165,7 +165,7 @@
     "webpack": "5.109.2",
     "webpack-bundle-analyzer": "5.3.1",
     "webpack-cli": "7.2.2",
-    "webpack-dev-middleware": "8.1.0",
+    "webpack-dev-middleware": "8.1.1",
     "webpack-dev-server": "6.0.0",
     "webpack-merge": "6.0.1",
     "xmlbuilder": "15.1.1",
