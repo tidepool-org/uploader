@@ -197,6 +197,13 @@ export default merge(baseConfig, {
         },
       },
       {
+        test: /\.m?js$/,
+        include: /node_modules/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
         test: /\.global\.css$/,
         use: [
           {
