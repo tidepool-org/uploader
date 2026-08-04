@@ -112,6 +112,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         userName: name,
         os: os,
         device: driverId,
+        model: _.get(recs, 'deviceModel', null),
       };
 
       if (selectedClinicId) {
