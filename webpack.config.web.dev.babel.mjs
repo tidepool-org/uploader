@@ -51,10 +51,10 @@ if (process.env.DEBUG_ERROR === 'true') {
 
 const localConfig = optional('./config/local');
 
-const apiUrl = _.get(
+const apiHost = _.get(
   localConfig,
-  'environment.API_URL',
-  process.env.API_URL || null
+  'environment.API_HOST',
+  process.env.API_HOST || null
 );
 const uploadUrl = _.get(
   localConfig,
@@ -77,7 +77,7 @@ const i18nEnabled = _.get(
   process.env.I18N_ENABLED || null
 );
 
-console.log('API_URL =', apiUrl);
+console.log('API_HOST =', apiHost);
 console.log('UPLOAD_URL =', uploadUrl);
 console.log('DATA_URL =', dataUrl);
 console.log('BLIP_URL =', blipUrl);
@@ -117,7 +117,7 @@ const plugins = [
     __DEBUG__: JSON.stringify(JSON.parse(process.env.DEBUG_ERROR || 'false')),
     __VERSION_SHA__: JSON.stringify(VERSION_SHA),
     'global.GENTLY': false, // http://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
-    'process.env.API_URL': JSON.stringify(apiUrl),
+    'process.env.API_HOST': JSON.stringify(apiHost),
     'process.env.UPLOAD_URL': JSON.stringify(uploadUrl),
     'process.env.DATA_URL': JSON.stringify(dataUrl),
     'process.env.BLIP_URL': JSON.stringify(blipUrl),

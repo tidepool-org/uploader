@@ -82,7 +82,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com'
+        API_HOST: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
@@ -177,7 +177,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com'
+        API_HOST: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
@@ -302,7 +302,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com'
+        API_HOST: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
@@ -426,7 +426,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com'
+        API_HOST: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
@@ -577,7 +577,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com'
+        API_HOST: 'http://www.acme.com'
       };
       const servicesToInit = {
         api: {
@@ -705,7 +705,7 @@ describe('Asynchronous Actions', () => {
       const config = {
         os: 'test',
         version: '0.100.0',
-        API_URL: 'http://www.acme.com/'
+        API_HOST: 'http://www.acme.com/'
       };
       const servicesToInit = {
         api: {
