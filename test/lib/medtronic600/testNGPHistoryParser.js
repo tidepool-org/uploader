@@ -103,6 +103,42 @@ describe('NGPHistoryParser.js', () => {
     });
   });
 
+  describe('easy bolus', () => {
+    test('should set delivery context on a one-button (easy) bolus', () => {
+      // same fixtures as the wizard bolus above, but with bolus source (byte 0x0B)
+      // set to 2 (EASY_BOLUS) and no wizard record
+      const bolusProgrammedData = '150016822dff2e9e029f8e02aa0000014dfc000032c8';
+      const bolusCompleteData = 'dc001a822dff189e029f8e02aa0000014dfc00014dfc000032c8';
+      const historyParser = new NGPHistoryParser(
+        cfg, settings,
+        [bolusProgrammedData + bolusCompleteData],
+      );
+      const events = [];
+
+      const expected = {
+        clockDriftOffset: 0,
+        conversionOffset: 0,
+        deliveryContext: 'oneButton',
+        deviceTime: '2017-02-10T15:54:36',
+        index: 2184052526,
+        jsDate: new Date('2017-02-10T15:54:36.000Z'),
+        normal: 8.55,
+        payload: {
+          logIndices: [
+            2184052526,
+          ],
+        },
+        subType: 'normal',
+        time: '2017-02-10T15:54:36.000Z',
+        timezoneOffset: 0,
+        type: 'bolus',
+      };
+
+      historyParser.buildNormalBolusRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+    });
+  });
+
   describe('suspend', () => {
     test('should calculate the correct suspend duration', () => {
       const suspendData = '1e000c81ee52f6a092886601';
