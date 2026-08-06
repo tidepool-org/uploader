@@ -169,6 +169,74 @@ describe('NGPHistoryParser.js', () => {
       historyParser.buildSuspendResumeRecords(events);
       expect(events[0]).to.deep.equal(expected);
     });
+
+    test('should fall back to clock-corrected timestamps when the RTC resets during a suspend', () => {
+      // suspend at 2019-03-01T12:00:00, then the pump loses its clock
+      // (TIME_RESET, so the RTC counter restarts lower), then resume at
+      // 2019-03-01T12:30:00 wall-clock time
+      const suspendData = '1e000c82000000a20bdb4001';
+      const resumeData = '1f000c80000100a40be14802';
+      const historyParser = new NGPHistoryParser(cfg, settings, [suspendData + resumeData]);
+      const events = [];
+
+      const expected = {
+        time: '2019-03-01T12:00:00.000Z',
+        timezoneOffset: 0,
+        clockDriftOffset: 0,
+        conversionOffset: 0,
+        deviceTime: '2019-03-01T12:00:00',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: { suspended: 'automatic', resumed: 'manual' },
+        duration: 1800000,
+        payload: {
+          suspended: { cause: 'Alarm suspend' },
+          resumed: { cause: 'User cleared alarm' },
+          logIndices: [2181038080],
+        },
+        index: 2181038080,
+        jsDate: new Date('2019-03-01T12:00:00.000Z'),
+      };
+
+      historyParser.buildSuspendResumeRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+      expect(events[1].duration).to.equal(1800000);
+    });
+
+    test('should treat a suspend as unresumed when the resume precedes it even in clock-corrected time', () => {
+      // resume wall-clock time (11:50:00) is before the suspend (12:00:00)
+      // and the RTC delta is also negative, so the pair is unusable
+      const suspendData = '1e000c82000000a20bdb4001';
+      const resumeData = '1f000c80000100a40bd7e802';
+      const historyParser = new NGPHistoryParser(cfg, settings, [suspendData + resumeData]);
+      const events = [];
+
+      const expected = {
+        time: '2019-03-01T12:00:00.000Z',
+        timezoneOffset: 0,
+        clockDriftOffset: 0,
+        conversionOffset: 0,
+        deviceTime: '2019-03-01T12:00:00',
+        type: 'deviceEvent',
+        subType: 'status',
+        status: 'suspended',
+        reason: { suspended: 'automatic', resumed: 'automatic' },
+        duration: 0,
+        payload: {
+          suspended: { cause: 'Alarm suspend' },
+          resumed: { cause: 'not_resumed' },
+          logIndices: [2181038080],
+        },
+        annotations: [{ code: 'status/incomplete-tuple' }],
+        index: 2181038080,
+        jsDate: new Date('2019-03-01T12:00:00.000Z'),
+      };
+
+      historyParser.buildSuspendResumeRecords(events);
+      expect(events[0]).to.deep.equal(expected);
+      expect(events[1].duration).to.equal(0);
+    });
   });
 
   describe('temp basal', () => {
