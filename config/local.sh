@@ -1,4 +1,4 @@
-export API_URL='http://localhost:31500'
+export API_HOST='http://localhost:31500'
 export UPLOAD_URL='http://localhost:31500'
 export DATA_URL='http://localhost:31500/dataservices'
 export BLIP_URL='http://localhost:31500'
