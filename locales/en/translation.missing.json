@@ -101,5 +101,8 @@
   "Return to Login": "Return to Login",
   "Turn meter on and check the Bluetooth icon is flashing": "Turn meter on and check the Bluetooth icon is flashing",
   "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.": "Please correct the {{device}}'s time or change your Tidepool time zone to match your {{device}} if appropriate and try again.",
-  "Plug in meter with mini-USB cable": "Plug in meter with mini-USB cable"
+  "Plug in meter with mini-USB cable": "Plug in meter with mini-USB cable",
+  "Plug in meter with": "Plug in meter with",
+  "EZSync002B cable": "EZSync002B cable",
+  "Plug in meter with mini-USB cable. V6 meter not compatible with MacOS.": "Plug in meter with mini-USB cable. V6 meter not compatible with MacOS."
 }
