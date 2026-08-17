@@ -10,7 +10,7 @@ const config = {
   },
   afterSign: 'scripts/notarize.js',
   dmg: {
-    artifactName: '${productName}-${version}.${ext}',
+    artifactName: 'Tidepool-Uploader-${version}.${ext}',
     contents: [
       {
         x: 381,
@@ -78,7 +78,7 @@ const config = {
   },
   mac: {
     category: 'public.app-category.tools',
-    artifactName: '${productName}-${version}-${os}.${ext}',
+    artifactName: 'Tidepool-Uploader-${version}-${os}.${ext}',
     target: [
       {
         target: 'zip',

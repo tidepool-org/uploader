@@ -62,7 +62,7 @@ export function clickGoToBlip() {
   };
 }
 
-export function rememberMedtronicSerialNumber(serialNumber) {
+export function rememberMedtronicSerialNumber(_serialNumber) {
   return {
     type: ActionTypes.MEDTRONIC_REMEMBER_SERIAL_NUMBER,
     meta: {

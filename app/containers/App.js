@@ -21,7 +21,6 @@ import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as metrics from '../constants/metrics';
 import { Route, Switch } from 'react-router-dom';
 
 import bows from 'bows';
@@ -320,7 +319,7 @@ export class App extends Component {
 App.propTypes = {};
 
 export default hot(connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       // plain state
       dropdown: state.dropdown,

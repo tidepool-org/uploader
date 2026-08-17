@@ -42,7 +42,7 @@ If there has not (yet) been an error updating profile information or profile inf
 
 #### `updateProfileErrorDismissed`
 
-*The property `updateProfileErrorDismissed` is a flag indicating whether the user has dismissed the displayed `uploadProfileErrorMessage`.*
+*The property `updateProfileErrorDismissed` is a flag indicating whether the user has dismissed the displayed `updateProfileErrorMessage`.*
 
 If the user has not dismissed the error or if there has been no error to dismiss, the value of `updateProfileErrorDismissed` is `null`. If the user has dismissed an existing error, the value is `true`.
 
@@ -76,7 +76,7 @@ This array drives the user selection dropdown menu that provides the interface f
 
 #### `uploadTargetUser`
 
-*The propery `uploadTargetUser` encodes the `userId` (for lookup in the [`allUsers`](#allusers) branch of the state tree) of the PWD currently selected as the target for data upload.*
+*The property `uploadTargetUser` encodes the `userId` (for lookup in the [`allUsers`](#allusers) branch of the state tree) of the PWD currently selected as the target for data upload.*
 
 The combination of `uploadTargetUser` and `uploadTargetDevice` provides the path into `uploadsByUser` to the upload currently in progress, if any.
 
