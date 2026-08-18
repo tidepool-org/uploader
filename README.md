@@ -100,7 +100,7 @@ $ yarn test
 
 ## Linting & Code Style
 
-We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
+We use [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, configured in the `.oxlintrc.json` configuration file.
 
 To run the linter (which also runs on CircleCI with every push, along with `npm test`), use:
 
