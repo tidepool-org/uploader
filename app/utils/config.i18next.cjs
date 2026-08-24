@@ -1,5 +1,4 @@
 const env = require('./env.js');
-const { initReactI18next } = require('react-i18next');
 const _  = require('lodash');
 
 let i18n;
@@ -56,7 +55,6 @@ if (env.electron_main) {
 
     if (!i18n.isInitialized) {
       i18n
-        .use(initReactI18next)
         .use(i18nextBackend)
         .init(i18nextOptions, function(err, _t) {
           if (err) {
@@ -108,13 +106,6 @@ if (env.browser && !env.electron_renderer) {
     // If the translation is empty, return the key instead
     returnEmptyString: false,
 
-    react: {
-      wait: true,
-      withRef: true,
-      // Needed for react < 16
-      defaultTransParent: 'div',
-    },
-
     resources: {
       en: {
         // Default namespace
@@ -139,7 +130,7 @@ if (env.browser && !env.electron_renderer) {
     }
 
     if (!i18n.isInitialized) {
-      i18n.use(initReactI18next).init(i18nextOptions, function(err, _t) {
+      i18n.init(i18nextOptions, function(err, _t) {
         if (err) {
           console.log('An error occurred in i18next:', err);
         }
