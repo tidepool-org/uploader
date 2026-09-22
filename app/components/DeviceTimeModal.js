@@ -63,13 +63,13 @@ export class DeviceTimeModal extends Component {
   };
 
   getActions = () => {
-    const { showingDeviceTimePrompt: { cfg: { timezone, tzoUtil }, times: { serverTime, deviceTime } } } = this.props;
+    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     const type = this.determineDeviceType();
     const reminder = this.getReminder();
     const isTimeSetOnly = this.isSetTimeOnly();
     const buttons = [];
     const footnote = type.value === 'bgm' ? '*' : '';
-    let prompt;
+    let _prompt;
     let question;
 
     buttons.push(
@@ -117,7 +117,7 @@ export class DeviceTimeModal extends Component {
           </div>
         );
       } else {
-        prompt = (
+        _prompt = (
           <div>
             {i18n.t('Is the time on your {{text}} incorrect?', { text: type.text })}<br/>&nbsp;
           </div>
@@ -143,7 +143,6 @@ export class DeviceTimeModal extends Component {
 
   getMessage = () => {
     const type = this.determineDeviceType();
-    const { showingDeviceTimePrompt: { cfg: { timezone } } } = this.props;
     let message;
 
     if (this.isDevice('AbbottFreeStyleNeo') ||
@@ -318,7 +317,7 @@ export class DeviceTimeModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       showingDeviceTimePrompt: state.showingDeviceTimePrompt
     };

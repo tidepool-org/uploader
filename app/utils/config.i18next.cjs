@@ -58,7 +58,7 @@ if (env.electron_main) {
       i18n
         .use(initReactI18next)
         .use(i18nextBackend)
-        .init(i18nextOptions, function(err, t) {
+        .init(i18nextOptions, function(err, _t) {
           if (err) {
             console.log('An error occurred in i18next:', err);
           }
@@ -88,17 +88,9 @@ if (env.browser && !env.electron_renderer) {
     //   loadPath: './locales/{{lng}}/{{ns}}.json',
     //   addPath: './locales/{{lng}}/{{ns}}.missing.json',
     // },
-    interpolation: {
-      escapeValue: false,
-    },
     lng: 'en',
     saveMissing: true,
-    fallbackLng: 'en',
-    returnEmptyString: false,
     supportedLngs: ['en', 'es'],
-    keySeparator: false,
-    nsSeparator: '|',
-    debug: false,
     wait: true,
     fallbackLng: 'en',
 
@@ -147,7 +139,7 @@ if (env.browser && !env.electron_renderer) {
     }
 
     if (!i18n.isInitialized) {
-      i18n.use(initReactI18next).init(i18nextOptions, function(err, t) {
+      i18n.use(initReactI18next).init(i18nextOptions, function(err, _t) {
         if (err) {
           console.log('An error occurred in i18next:', err);
         }

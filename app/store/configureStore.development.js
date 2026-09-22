@@ -10,7 +10,7 @@ import { createMetricsTracker } from '../utils/metrics';
 import { oidcMiddleware } from '../auth';
 
 api.create({
-  apiUrl: config.API_URL,
+  apiUrl: config.API_HOST,
   uploadUrl: config.UPLOAD_URL,
   dataUrl: config.DATA_URL,
   version: config.version

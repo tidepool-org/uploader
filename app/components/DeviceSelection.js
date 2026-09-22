@@ -21,7 +21,6 @@ var React = require('react');
 var cx = require('classnames');
 import { i18n } from '../utils/config.i18next.cjs';
 
-import { urls } from '../constants/otherConstants.js';
 
 import * as styles from '../../styles/components/DeviceSelection.module.less';
 

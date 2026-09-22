@@ -165,7 +165,7 @@ export default connect(
 
       try {
         checkTimezoneName(timezone);
-      } catch (err) {
+      } catch  {
         return null;
       }
       return timezone;

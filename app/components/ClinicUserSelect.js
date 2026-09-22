@@ -118,7 +118,7 @@ class ClinicUserSelect extends React.Component {
     this.props.onGoToWorkspaceSwitch();
   };
 
-  handleTidepoolWebLink = (e) => {
+  handleTidepoolWebLink = (_e) => {
     const metricProps = this.props.selectedClinicId
       ? { clinicId: this.props.selectedClinicId }
       : {};

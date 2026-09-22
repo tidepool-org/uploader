@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": [
+    "app/dist",
+    "app/main.prod.js",
+    "app/node_modules",
+    "dist",
+    "web",
+    "lib/drivers/tandem",
+    "lib/drivers/fora"
+  ],
+  "overrides": [
+    {
+      "files": ["test/**", "__mocks__/**", "jest.setup.js"],
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
+}

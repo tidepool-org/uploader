@@ -166,7 +166,7 @@ export class MainPage extends Component {
         {clinicUserBlock}
         <UploadList
           rememberMedtronicSerialNumber={this.props.sync.rememberMedtronicSerialNumber}
-          disabled={Boolean(this.props.unsupported) || !Boolean(this.props.selectedTimezone)}
+          disabled={Boolean(this.props.unsupported) || !this.props.selectedTimezone}
           isUploadInProgress={this.props.uploadIsInProgress}
           onChooseDevices={_.partial(this.handleClickChooseDevices, {metric: {eventName: metrics.CLINIC_CHANGE_DEVICES}})}
           onReset={this.props.sync.resetUpload}
@@ -202,7 +202,7 @@ export default connect(
 
       try {
         checkTimezoneName(timezone);
-      } catch (err) {
+      } catch  {
         return null;
       }
       return timezone;

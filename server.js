@@ -92,7 +92,7 @@ app.use(nonceMiddleware, helmet.contentSecurityPolicy({
     childSrc: ["'self'", 'blob:', 'https://docs.google.com', 'https://app.pendo.io'],
     frameSrc: ['https://docs.google.com', 'https://app.pendo.io', '*.tidepool.org', 'localhost:*', 'tidepooluploader://*'],
     connectSrc: [].concat([
-      process.env.API_URL || 'localhost:*',
+      process.env.API_HOST || 'localhost:*',
       process.env.UPLOAD_URL || 'localhost:*',
       process.env.DATA_URL || 'localhost:*',
       process.env.BLIP_URL || 'localhost:*',
