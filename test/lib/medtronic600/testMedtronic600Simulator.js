@@ -23,8 +23,8 @@ import sundial from 'sundial';
 
 import Medtronic600Simulator from '../../../lib/drivers/medtronic600/medtronic600Simulator';
 import { NGPTimestamp } from '../../../lib/drivers/medtronic600/NGPUtil';
-import builder from '../../../lib/objectBuilder';
-import TZOUtil from '../../../lib/TimezoneOffsetUtil';
+import builder from '@tidepool/uploader-common/objectBuilder';
+import TZOUtil from '@tidepool/uploader-common/TimezoneOffsetUtil';
 
 function addIndex(event) {
   // Use a hardcoded offset of -1643956064

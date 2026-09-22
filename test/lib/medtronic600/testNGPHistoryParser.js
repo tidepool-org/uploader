@@ -18,8 +18,8 @@
 import { expect } from 'chai';
 
 import NGPHistoryParser from '../../../lib/drivers/medtronic600/NGPHistoryParser';
-import builder from '../../../lib/objectBuilder';
-import TZOUtil from '../../../lib/TimezoneOffsetUtil';
+import builder from '@tidepool/uploader-common/objectBuilder';
+import TZOUtil from '@tidepool/uploader-common/TimezoneOffsetUtil';
 
 describe('NGPHistoryParser.js', () => {
   const tzoUtil = new TZOUtil('GMT', '2016-12-01T00:00:00.000Z', []);

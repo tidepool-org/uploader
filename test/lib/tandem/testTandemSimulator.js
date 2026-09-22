@@ -21,7 +21,7 @@ var _ = require('lodash');
 var expect = require('salinity').expect;
 
 var pwdSimulator = require('../../../lib/drivers/tandem/tandemSimulator.js');
-var builder = require('../../../lib/objectBuilder')();
+var builder = require('@tidepool/uploader-common/objectBuilder')();
 
 describe('tandemSimulator.js', () => {
   var simulator = null;

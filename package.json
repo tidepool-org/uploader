@@ -50,6 +50,7 @@
     "@mui/icons-material": "9.2.0",
     "@mui/material": "9.2.0",
     "@react-keycloak/web": "3.4.0",
+    "@tidepool/uploader-common": "0.1.0",
     "async": "2.6.4",
     "babyparse": "0.4.6",
     "ble-glucose": "0.10.1",
