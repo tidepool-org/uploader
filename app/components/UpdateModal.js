@@ -20,14 +20,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { sync as syncActions } from '../actions/';
+import { sync as syncActions } from '../actions/index.js';
 import config from '../../lib/config.js';
 
 import * as styles from '../../styles/components/UpdateModal.module.less';
 
-import { ipcRenderer } from '../utils/ipc';
-import env from '../utils/env';
-import { i18n } from '../utils/config.i18next';
+import { ipcRenderer } from '../utils/ipc.cjs';
+import env from '../utils/env.js';
+import { i18n } from '../utils/config.i18next.cjs';
 
 let remote;
 if (env.electron){
@@ -155,7 +155,7 @@ export class UpdateModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       // plain state
       checkingElectronUpdate: state.working.checkingElectronUpdate.inProgress,

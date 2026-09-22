@@ -1,5 +1,5 @@
 /* global  __VERSION_SHA__ */
-import Rollbar from 'rollbar/dist/rollbar.umd';
+import Rollbar from 'rollbar';
 
 let rollbar;
 
@@ -32,6 +32,19 @@ if (process.env.NODE_ENV === 'production') {
               trace.frames[i].filename = 'http://dynamichost/dist/renderer.prod.js';
             }
           }
+        }
+
+        // Every upload error is rethrown as `new Error(...)` at the same line in
+        // makeUploadCb, and the filename rewrite above collapses all frames to one
+        // path. That makes the stack-based fingerprint identical for every upload
+        // failure, so Rollbar groups distinct errors (e.g. "no new data") together.
+        // Fingerprint by the error code we already report so each failure mode is
+        // its own group. We leave the title alone so Rollbar still derives it from
+        // the (human-readable) error message. Errors without a code (e.g. uncaught)
+        // fall back to Rollbar's default grouping.
+        var code = payload.custom && payload.custom.code;
+        if (code) {
+          payload.fingerprint = code;
         }
       }
     }

@@ -20,12 +20,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { sync as syncActions } from '../actions/';
+import { sync as syncActions } from '../actions/index.js';
 
 import * as styles from '../../styles/components/AdHocModal.module.less';
 import step1_img from '../../images/adhoc_s1.png';
 import step2_img from '../../images/adhoc_s2.png';
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class AdHocModal extends Component {
   handleContinue = () => {
@@ -55,7 +55,7 @@ export class AdHocModal extends Component {
                 <div><img className={styles.image} src={step1_img} /></div>
               </div>
               <div className={styles.step}>
-                <div><span className={styles.numeral}>2.</span> {i18n.t('Select \"Yes\"')}</div>
+                <div><span className={styles.numeral}>2.</span> {i18n.t('Select "Yes"')}</div>
                 <div><img className={styles.image} src={step2_img} /></div>
               </div>
             </div>
@@ -73,7 +73,7 @@ export class AdHocModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       showingAdHocPairingDialog: state.showingAdHocPairingDialog
     };

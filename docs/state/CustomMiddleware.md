@@ -1,4 +1,4 @@
-## Custom Middleware
+# Custom Middleware
 
 One of the great benefits of [redux](http://redux.js.org/) is the easy path it provides for writing middleware to perform various actions in response to some or all of the redux actions that are the source of all changes to the application's state tree. The open-source community provides some great middleware options like the [redux logger](https://github.com/fcomb/redux-logger) that we include behind an environment variable to assist in development.
 

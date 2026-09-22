@@ -1,12 +1,14 @@
-## LifeScan OneTouch UltraMini
+# LifeScan OneTouch UltraMini
+
+## Checklist for BGM Implementation
 
 (Key:
 
- - `[x]` available in data protocol/documented in spec and implemented
- - `[-]` available in data protocol/documented in spec but *not* yet implemented
- - `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
- - `*[ ]` TODO: needs implementation!
- - `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
+- `[x]` available in data protocol/documented in spec and implemented
+- `[-]` available in data protocol/documented in spec but *not* yet implemented
+- `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
+- `*[ ]` TODO: needs implementation!
+- `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
 
 ### Required if Present
 
@@ -21,7 +23,8 @@
 - `[ ]` ketone out-of-range value thresholds
 - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
-#### Notes:
+#### Notes (Required if Present)
+
 - according to user manual, <20 mg/dL is LO and >600 mg/dL is HI
 
 ### No Tidepool Data Model Yet
@@ -30,15 +33,16 @@
 - `[ ]` device settings, other than date & time (e.g., target blood glucose range)
 - `[ ]` tag/note (e.g., pre- vs. post-meal)
 
-#### Notes:
+#### Notes (No Tidepool Data Model Yet)
+
 - control solution tests are not sent from the meter
 
 ### Tidepool ingestion API
 
 Choose one of the following:
 
-  - `[ ]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+- `[ ]` legacy "jellyfish" ingestion API
+- `[ ]` platform ingestion API
 
 ### Known implementation issues/TODOs
 

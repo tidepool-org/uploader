@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION_SHA = 
+const VERSION_SHA =
   process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -32,12 +32,12 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
+if ((!process.env.API_HOST && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
   console.log('The default right-click server menu may be incorrect.');
-  console.log('API_URL =', process.env.API_URL);
+  console.log('API_HOST =', process.env.API_HOST);
   console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
   console.log('DATA_URL =', process.env.DATA_URL);
   console.log('BLIP_URL =', process.env.BLIP_URL);
@@ -52,7 +52,7 @@ export default (env => merge(baseConfig, {
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    path.resolve(__dirname, './app/index')
+    path.resolve(__dirname, './app/index.js')
   ],
 
   output: {
@@ -74,7 +74,7 @@ export default (env => merge(baseConfig, {
       },
       // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
       {
-        test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+        test: /node_modules[/\\](iconv-lite)[/\\].+/,
         resolve: {
           aliasFields: ['main']
         }
@@ -190,7 +190,8 @@ export default (env => merge(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom'
-    }
+    },
+    conditionNames: ['browser', 'electron', 'webpack', 'development', 'module', 'require', 'default']
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
@@ -224,6 +225,7 @@ export default (env => merge(baseConfig, {
   },
 
   devServer: {
+    allowedHosts: 'all',
     client: {
       logging: 'verbose'
     },
@@ -246,13 +248,10 @@ export default (env => merge(baseConfig, {
       verbose: true,
       disableDotRule: false
     },
-    setupMiddlewares(middlewares, devServer) {
+    setupMiddlewares(middlewares, _devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
-        const argv = null;
-        if (env?.argv) {
-          const { argv } = env;
-        }
+        const argv = env?.argv;
 
         spawn('yarn', ['start-main-dev', `"${argv}"`], {
           shell: true,

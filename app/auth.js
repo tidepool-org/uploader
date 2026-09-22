@@ -4,11 +4,11 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { AuthProvider } from 'react-oidc-context';
 import { useSelector, useStore } from 'react-redux';
 import _ from 'lodash';
-import * as ActionTypes from './constants/actionTypes';
-import { sync, async } from './actions';
-import api from '../lib/core/api';
-import env from './utils/env';
-import { ipcRenderer } from './utils/ipc';
+import * as ActionTypes from './constants/actionTypes.js';
+import { sync, async } from './actions/index.js';
+import api from '../lib/core/api.js';
+import env from './utils/env.js';
+import { ipcRenderer } from './utils/ipc.cjs';
 
 /**
  * @type {Keycloak}
@@ -20,7 +20,7 @@ export let keycloak = null;
  */
 let userManager;
 
-export const oidcMiddleware = api => storeAPI => next => action => {
+export const oidcMiddleware = _api => storeAPI => next => action => {
   switch (action.type) {
     case ActionTypes.KEYCLOAK_READY: {
       const blipUrl = storeAPI.getState()?.blipUrls?.blipUrl;

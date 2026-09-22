@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VERSION_SHA = 
+const VERSION_SHA =
   process.env.VERSION_SHA ||
   process.env.CIRCLE_SHA1 ||
   process.env.APPVEYOR_REPO_COMMIT ||
@@ -34,12 +34,12 @@ if (process.env.DEBUG_ERROR === 'true') {
   console.log();
 }
 
-if ((!process.env.API_URL && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
+if ((!process.env.API_HOST && !process.env.UPLOAD_URL && !process.env.DATA_URL && !process.env.BLIP_URL)) {
   console.log('Using the default environment, which is now production.');
 } else {
   console.log('***** NOT using the default environment *****');
   console.log('The default right-click server menu may be incorrect.');
-  console.log('API_URL =', process.env.API_URL);
+  console.log('API_HOST =', process.env.API_HOST);
   console.log('UPLOAD_URL =', process.env.UPLOAD_URL);
   console.log('DATA_URL =', process.env.DATA_URL);
   console.log('BLIP_URL =', process.env.BLIP_URL);
@@ -248,5 +248,9 @@ export default merge(baseConfig, {
 
   node: {
     __dirname: true, // https://github.com/visionmedia/superagent/wiki/SuperAgent-for-Webpack for platform-client
+  },
+
+  resolve: {
+    conditionNames: ['browser', 'electron', 'webpack', 'production', 'module', 'require', 'default']
   }
 });

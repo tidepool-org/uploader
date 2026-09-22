@@ -22,33 +22,33 @@ import semver from 'semver';
 import { get, set, del } from 'idb-keyval';
 
 import { checkCacheValid } from 'redux-cache';
-import { ipcRenderer } from '../utils/ipc';
+import { ipcRenderer } from '../utils/ipc.cjs';
 
-import * as actionSources from '../constants/actionSources';
-import * as actionTypes from '../constants/actionTypes';
-import ErrorMessages from '../constants/errorMessages';
-import * as metrics from '../constants/metrics';
-import { pages, pagesMap, paths } from '../constants/otherConstants';
+import * as actionSources from '../constants/actionSources.js';
+import * as actionTypes from '../constants/actionTypes.js';
+import ErrorMessages from '../constants/errorMessages.js';
+import * as metrics from '../constants/metrics.js';
+import { pages, pagesMap, paths } from '../constants/otherConstants.js';
 
-import api from '../../lib/core/api';
-import driverManifests from '../../lib/core/driverManifests';
-import localStore from '../../lib/core/localStore';
-import personUtils from '../../lib/core/personUtils';
-import { clinicUIDetails } from '../../lib/core/clinicUtils';
-import * as sync from './sync';
-import * as actionUtils from './utils';
-import env from '../utils/env';
+import api from '../../lib/core/api.js';
+import driverManifests from '../../lib/core/driverManifests.js';
+import localStore from '../../lib/core/localStore.js';
+import personUtils from '../../lib/core/personUtils.js';
+import { clinicUIDetails } from '../../lib/core/clinicUtils.js';
+import * as sync from './sync.js';
+import * as actionUtils from './utils.js';
+import env from '../utils/env.js';
+import appState from './appState.js';
 
-let services = { api };
-let versionInfo = {};
+appState.services = { api };
+appState.versionInfo = {};
 let hostMap = {
   'macOS': 'mac',
   'Windows' : 'win',
   'Linux': 'linux',
 };
 
-const isBrowser = typeof window !== 'undefined';
-let win = isBrowser ? window : null;
+
 
 function createActionError(usrErrMessage, apiError) {
   const err = new Error(usrErrMessage);
@@ -91,10 +91,10 @@ export function doAppInit(opts, servicesToInit) {
       console.log('App already initialized! Skipping initialization.');
       return;
     }
-    services = servicesToInit;
-    versionInfo.semver = opts.version;
-    versionInfo.name = opts.namedVersion;
-    const { api, device, log } = services;
+    appState.services = servicesToInit;
+    appState.versionInfo.semver = opts.version;
+    appState.versionInfo.name = opts.namedVersion;
+    const { api, device, log } = appState.services;
 
     dispatch(sync.initializeAppRequest());
     log('Platform detected:', navigator.userAgentData.platform);
@@ -117,7 +117,7 @@ export function doAppInit(opts, servicesToInit) {
       api,
       version: opts.namedVersion,
       uploaderDestination: opts.uploaderDestination,
-    }, function(deviceError, deviceResult){
+    }, function(deviceError, _deviceResult){
       if (deviceError) {
         return dispatch(sync.initializeAppFailure(deviceError));
       }
@@ -127,7 +127,7 @@ export function doAppInit(opts, servicesToInit) {
           return dispatch(sync.initializeAppFailure(apiError));
         }
         log('Setting all api hosts');
-        api.setHosts(_.pick(opts, ['API_URL', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
+        api.setHosts(_.pick(opts, ['API_HOST', 'UPLOAD_URL', 'BLIP_URL', 'environment']));
         dispatch(sync.setForgotPasswordUrl(api.makeBlipUrl(paths.FORGOT_PASSWORD)));
         dispatch(sync.setSignUpUrl(api.makeBlipUrl(paths.SIGNUP)));
         dispatch(sync.setNewPatientUrl(api.makeBlipUrl(paths.NEW_PATIENT)));
@@ -140,7 +140,7 @@ export function doAppInit(opts, servicesToInit) {
         }
 
         api.user.initializationInfo((err, results) => {
-          const [ user, profile, memberships, associatedAccounts, clinics ] = results;
+          const [ user, profile, memberships, ,clinics ] = results;
           if (err) {
             return dispatch(sync.initializeAppFailure(err));
           }
@@ -201,7 +201,7 @@ export function doAppInit(opts, servicesToInit) {
 
 export function doLogin(creds, opts) {
   return (dispatch, getState) => {
-    const { api } = services;
+    const { api } = appState.services;
     if (getState().working.loggingIn.inProgress) {
       return;
     }
@@ -273,7 +273,7 @@ export function doLogin(creds, opts) {
 
 export function doLogout() {
   return (dispatch) => {
-    const { api } = services;
+    const { api } = appState.services;
     dispatch(sync.logoutRequest());
     api.user.logout((err) => {
       if (err) {
@@ -288,8 +288,8 @@ export function doLogout() {
 }
 
 export function doLoggedOut() {
-  return (dispatch, getState) => {
-    const { api } = services;
+  return (dispatch, _getState) => {
+    const { api } = appState.services;
     dispatch(sync.logoutRequest());
     api.user.logout((err) => {
       if (err) {
@@ -305,9 +305,9 @@ export function doLoggedOut() {
 
 export function doDeviceUpload(driverId, opts = {}, utc) {
   return (dispatch, getState) => {
-    const { device } = services;
-    const version = versionInfo.semver;
-    const { devices, os, targetTimezones, uploadTargetUser, uploadsByUser } = getState();
+    const { device } = appState.services;
+    const version = appState.versionInfo.semver;
+    const { devices, targetTimezones, uploadTargetUser, uploadsByUser } = getState();
     const targetDevice = _.find(devices, {source: {driverId: driverId}});
     dispatch(sync.deviceDetectRequest());
     _.assign(opts, {
@@ -365,15 +365,25 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         }
 
         if (err === 'E_LIBRE2_UNSUPPORTED') {
-          displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED);
-          deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED';
-          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/4413124445972';
-          displayErr.linkText = 'Please see this support article.';
+          if (selectedClinicId) {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_CLINIC);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_CLINIC';
+          } else {
+            displayErr = new Error(ErrorMessages.E_LIBRE2_UNSUPPORTED_PERSONAL);
+            deviceDetectErrProps.code = 'E_LIBRE2_UNSUPPORTED_PERSONAL';
+          }
+          displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/35556633048340-Connecting-your-LibreView-Account-to-Tidepool';
+          displayErr.linkText = 'Learn more.';
         }
 
         if (err === 'E_G7_UNSUPPORTED') {
           displayErr = new Error(ErrorMessages.E_G7_UNSUPPORTED);
           deviceDetectErrProps.code = 'E_G7_UNSUPPORTED';
+        }
+
+        if (err === 'E_OP5_UNSUPPORTED') {
+          displayErr = new Error(ErrorMessages.E_OP5_UNSUPPORTED);
+          deviceDetectErrProps.code = 'E_OP5_UNSUPPORTED';
         }
 
         displayErr.originalError = err;
@@ -404,11 +414,6 @@ export function doDeviceUpload(driverId, opts = {}, utc) {
         if (selectedClinicId) {
           disconnectedErrProps.clinicId = selectedClinicId;
           disconnectedErrProps.clinicName = clinic.name;
-        }
-
-        if (targetDevice.powerOnlyWarning) {
-          displayErr = new Error(ErrorMessages.E_USB_CABLE);
-          disconnectedErrProps.code = 'E_USB_CABLE';
         }
 
         if (_.get(targetDevice, 'source.driverId', null) === 'Dexcom') {
@@ -443,7 +448,7 @@ export function doUpload(deviceKey, opts, utc) {
   return async (dispatch, getState) => {
 
     const { devices, uploadTargetUser, working } = getState();
-    const { log } = services;
+    const { log } = appState.services;
 
     const targetDevice = _.get(devices, deviceKey);
     const driverId = _.get(targetDevice, 'source.driverId');
@@ -516,7 +521,7 @@ export function doUpload(deviceKey, opts, utc) {
         const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
         const clinic = _.get(clinics, selectedClinicId, {});
         const os = actionUtils.getOSDetails();
-        const version = versionInfo.semver;
+        const version = appState.versionInfo.semver;
 
         log('Error:', err);
 
@@ -564,7 +569,7 @@ export function doUpload(deviceKey, opts, utc) {
         const name = _.get(allUsers, [loggedInUser, 'profile','fullName'], 'Unknown');
         const clinic = _.get(clinics, selectedClinicId, {});
         const os = actionUtils.getOSDetails();
-        const version = versionInfo.semver;
+        const version = appState.versionInfo.semver;
         log('Error:', err);
 
         let btErr = new Error(ErrorMessages.E_BLUETOOTH_OFF);
@@ -594,8 +599,8 @@ export function doUpload(deviceKey, opts, utc) {
     }
 
     dispatch(sync.versionCheckRequest());
-    const { api } = services;
-    const version = versionInfo.semver;
+    const { api } = appState.services;
+    const version = appState.versionInfo.semver;
     api.upload.getVersions((err, versions) => {
       if (err) {
         dispatch(sync.versionCheckFailure(err));
@@ -627,7 +632,7 @@ export function doUpload(deviceKey, opts, utc) {
       dispatch(sync.uploadRequest(uploadTargetUser, devices[deviceKey], utc));
 
       const targetDevice = devices[deviceKey];
-      const deviceType = targetDevice.source.type;
+      
 
       dispatch(doDeviceUpload(targetDevice.source.driverId, opts, utc));
     });
@@ -635,18 +640,16 @@ export function doUpload(deviceKey, opts, utc) {
 }
 
 export function readFile(userId, deviceKey, file, extension) {
-  const { log } = services;
+  const { log } = appState.services;
 
-  return async (dispatch, getState) => {
+  return async (dispatch, _getState) => {
     if (!file) {
       const getFile = async () => {
         dispatch(sync.choosingFile(userId, deviceKey));
-        const regex = new RegExp('.+\.ibf', 'g');
-
         for await (const entry of dirHandle.values()) {
           log(entry);
           // On Eros PDM there should only be one .ibf file
-          if (regex.test(entry.name)) {
+          if (entry.name.endsWith(extension)) {
             file = {
               handle: await entry.getFile(),
               name: entry.name,
@@ -656,7 +659,7 @@ export function readFile(userId, deviceKey, file, extension) {
       };
 
       let dirHandle = await get('directory');
-      const version = versionInfo.semver;
+      const version = appState.versionInfo.semver;
 
       if (dirHandle) {
         log(`Retrieved directory handle "${dirHandle.name}" from indexedDB.`);
@@ -720,7 +723,7 @@ export function readFile(userId, deviceKey, file, extension) {
       }
     }
 
-    const version = versionInfo.semver;
+    const version = appState.versionInfo.semver;
 
     if (!file || file.name.slice(-extension.length) !== extension) {
       let err = new Error(ErrorMessages.E_FILE_EXT + extension);
@@ -771,7 +774,7 @@ export function readFile(userId, deviceKey, file, extension) {
 
         reader.onerror = onError;
 
-        reader.onloadend = ((theFile) => {
+        reader.onloadend = ((_theFile) => {
           return (e) => {
             dispatch(sync.readFileSuccess(userId, deviceKey, e.srcElement.result));
             dispatch(doUpload(deviceKey));
@@ -785,10 +788,10 @@ export function readFile(userId, deviceKey, file, extension) {
 }
 
 export function doVersionCheck() {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     dispatch(sync.versionCheckRequest());
-    const { api } = services;
-    const version = versionInfo.semver;
+    const { api } = appState.services;
+    const version = appState.versionInfo.semver;
     if(env.browser){
       return dispatch(sync.versionCheckSuccess());
     }
@@ -819,7 +822,7 @@ export function doVersionCheck() {
 export function fetchInfo(cb = _.noop) {
   return (dispatch) => {
     dispatch(sync.fetchInfoRequest());
-    const { api } = services;
+    const { api } = appState.services;
     api.upload.getInfo((err, info) => {
       if (err) {
         dispatch(sync.fetchInfoFailure(
@@ -837,7 +840,7 @@ export function setTargetTimezone(userId, timezoneName) {
   return (dispatch, getState) => {
     const { allUsers, loggedInUser } = getState();
     const isClinicAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
-    const { api } = services;
+    const { api } = appState.services;
     dispatch(sync.updateProfileRequest());
     let updates = {
       patient: {
@@ -880,7 +883,7 @@ export function clickDeviceSelectionDone() {
       clinics,
     } = getState();
     const isClinicAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
-    const { api } = services;
+    const { api } = appState.services;
     const userTargetDevices = targetDevices[uploadTargetUser];
     if (selectedClinicId) {
       dispatch(sync.updateClinicPatientRequest());
@@ -962,7 +965,7 @@ export function clickDeviceSelectionDone() {
 export function clickEditUserNext(profile) {
   return (dispatch, getState) => {
     const { uploadTargetUser, allUsers } = getState();
-    const { api } = services;
+    const { api } = appState.services;
     const previousProfile = _.get(allUsers[uploadTargetUser], 'profile', {});
     const updates = profile;
     if (!_.isEmpty(profile)){
@@ -1011,7 +1014,7 @@ export function clickEditUserNext(profile) {
 
 export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
   return (dispatch, getState) => {
-    const { api } = services;
+    const { api } = appState.services;
     const { clinics } = getState();
     const previousPatient = _.get(clinics, [selectedClinicId, 'patients', patientId]);
     if (!_.isEmpty(patient)){
@@ -1047,7 +1050,7 @@ export function clickClinicEditUserNext(selectedClinicId, patientId, patient) {
 export function retrieveTargetsFromStorage() {
   return (dispatch, getState) => {
     const { devices, uploadTargetUser } = getState();
-    const { api } = services;
+    const { api } = appState.services;
     let fromLocalStore = false;
 
     dispatch(sync.retrieveUsersTargetsFromStorage());
@@ -1144,7 +1147,7 @@ export function retrieveTargetsFromStorage() {
 
 export function goToPrivateWorkspace() {
   return (dispatch, getState) => {
-    const { api } = services;
+    const { api } = appState.services;
     const { loggedInUser, allUsers, selectedClinicId } = getState();
     const isClinicianAccount = personUtils.isClinicianAccount(allUsers[loggedInUser]);
     const metricProps = selectedClinicId ? { clinicId: selectedClinicId } : {};
@@ -1166,8 +1169,8 @@ export function goToPrivateWorkspace() {
 }
 
 export function createCustodialAccount(profile) {
-  return (dispatch, getState) => {
-    const { api } = services;
+  return (dispatch, _getState) => {
+    const { api } = appState.services;
     dispatch(sync.createCustodialAccountRequest());
     api.user.createCustodialAccount(profile, (err, account) => {
       if (err) {
@@ -1196,7 +1199,7 @@ export function setUploadTargetUserAndMaybeRedirect(targetId) {
   return (dispatch, getState) => {
     const { devices, targetDevices } = getState();
     dispatch(sync.setUploadTargetUser(targetId));
-    const { api } = services;
+    const { api } = appState.services;
     dispatch(sync.setBlipViewDataUrl(
       api.makeBlipUrl(actionUtils.viewDataPathForUser(targetId))
     ));
@@ -1213,7 +1216,7 @@ export function setUploadTargetUserAndMaybeRedirect(targetId) {
 
 export function checkUploadTargetUserAndMaybeRedirect() {
   return (dispatch, getState) => {
-    const { api } = services;
+    const { api } = appState.services;
     const { devices, targetDevices, uploadTargetUser, clinics, selectedClinicId } = getState();
     if (!uploadTargetUser) {
       return;
@@ -1257,7 +1260,7 @@ export function clickAddNewUser(){
 }
 
 export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE], metric) {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     if (pagesMap[page]) {
       const pageProps = { pathname: pagesMap[page] };
 
@@ -1265,7 +1268,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
       _.assign(meta, metric);
       pageProps.state = { meta };
 
-      const { hash } = window.location;
+      const { hash } = typeof window !== 'undefined' ? window.location : {};
       if (hash) {
         pageProps.hash = hash;
       }
@@ -1352,7 +1355,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
  * @param {Number} [options.sort] - directionally prefixed field to sort by (e.g. +name or -name)
  */
  export function fetchPatientsForClinic(clinicId, options = {}) {
-  const { api } = services;
+  const { api } = appState.services;
   return (dispatch) => {
     dispatch(sync.fetchPatientsForClinicRequest());
 
@@ -1381,7 +1384,7 @@ export function setPage(page, actionSource = actionSources[actionTypes.SET_PAGE]
  * @param {String[]} [patient.targetDevices] - Array of string target devices
  */
  export function createClinicCustodialAccount(clinicId, patient) {
-  const { api } = services;
+  const { api } = appState.services;
   return (dispatch) => {
     dispatch(sync.createClinicCustodialAccountRequest());
     api.clinics.createClinicCustodialAccount(clinicId, patient, (err, result) => {

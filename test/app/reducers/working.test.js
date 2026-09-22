@@ -9,7 +9,6 @@ import {expect} from 'chai';
 
 import reducer from '../../../app/reducers/working';
 import actions from '../../../app/actions/index';
-import devices from '../../../app/reducers/devices';
 
 import initialAll from '../../../app/reducers/initialState';
 import {getLoginErrorMessage, getCreateCustodialAccountErrorMessage, getUpdateProfileErrorMessage, getAppInitErrorMessage} from '../../../app/utils/errors';
@@ -21,6 +20,12 @@ jest.mock('@electron/remote', () => ({
     if (string === 'i18n') {
         return { t: (string) => string };
     }
+  }
+}));
+
+jest.mock('../../../app/utils/config.i18next.cjs', () => ({
+  i18n: {
+    t: jest.fn(),
   }
 }));
 
@@ -1007,7 +1012,7 @@ describe('working', () => {
       });
 
       it('should set uploading.inProgress to be false', () => {
-        let user = 'user';
+        
 
         let requestAction = actions.sync.uploadRequest(userId, device);
         expect(initialState.uploading.inProgress).to.be.false;

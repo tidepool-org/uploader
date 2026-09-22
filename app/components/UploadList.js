@@ -19,17 +19,17 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cx from 'classnames';
-import api from '../../lib/core/api';
+import api from '../../lib/core/api.js';
 import * as metrics  from '../constants/metrics';
 import { v4 as uuidv4 } from 'uuid';
 
-import Upload from './Upload';
+import Upload from './Upload.js';
 
 import * as styles from '../../styles/components/UploadList.module.less';
 import Email from '@mui/icons-material/Email';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class UploadList extends Component {
   static propTypes = {
@@ -66,6 +66,7 @@ export default class UploadList extends Component {
     this.state = {
       uploadErrorSubmitSuccessSet: [],
       uploadErrorSubmitFailedSet: [],
+      uploadErrorSubmitClicked: false,
     };
   }
 
@@ -85,7 +86,7 @@ export default class UploadList extends Component {
     const { disabled, onReset, onUpload, targetId } = this.props;
 
     const headlineText = this.props.renderClinicUi ? i18n.t('Devices') : i18n.t('Upload Devices');
-    const medtronicEnabled = _.findIndex(this.props.uploads, { key: 'medtronic' }) === -1 ? false : true;
+    
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
         if (upload.key === 'carelink') {
@@ -126,7 +127,7 @@ export default class UploadList extends Component {
   }
 
   handleErrorSubmit(error) {
-    const { targetId, uploads } = this.props;
+    const { targetId, } = this.props;
     const baseUrl = 'https://tidepoolsupport.zendesk.com';
     const url = `${baseUrl}/api/v2/requests`;
     const headers = {
@@ -144,6 +145,10 @@ export default class UploadList extends Component {
       'Selected Device': error.device,
       '[Tidepool Support] Troubleshooting Info': error.debug
     };
+
+    if (this.state.uploadErrorSubmitClicked) return;
+
+    this.setState({ uploadErrorSubmitClicked: true });
 
     if (error.uuid) {
       errorParts['[Tidepool Support] Rollbar UUID'] = error.uuid;
@@ -180,6 +185,7 @@ export default class UploadList extends Component {
       headers,
       body: JSON.stringify(body),
     }).then((response) => {
+      this.setState({ uploadErrorSubmitClicked: false });
       if (response.status === 201) {
         api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_SUCCESS);
         this.setState({
@@ -195,7 +201,8 @@ export default class UploadList extends Component {
           ),
         });
       }
-    }).catch((err) => {
+    }).catch((_err) => {
+      this.setState({ uploadErrorSubmitClicked: false });
       api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
       this.setState({
         uploadErrorSubmitFailedSet: this.state.uploadErrorSubmitFailedSet.concat(
@@ -233,6 +240,7 @@ export default class UploadList extends Component {
 
     let sendToSupport = null;
     const errorId = upload.error.uuid || upload.error.unique_id;
+    const { uploadErrorSubmitClicked } = this.state;
     if (this.state.uploadErrorSubmitSuccessSet.includes(errorId)) {
       sendToSupport = (
         <div className={styles.errorSubmitSuccess}>
@@ -274,6 +282,7 @@ export default class UploadList extends Component {
             className={styles.errorMessageLink}
             href="#"
             onClick={this.handleErrorSubmit.bind(this, upload.error)}
+            style={{ pointerEvents: uploadErrorSubmitClicked ? 'none' : 'auto', opacity: uploadErrorSubmitClicked ? 0.5 : 1 }}
           >
             <Email className={styles.errorLinkIcon} sx={{ height: '0.8em', width: '0.8em' }} />
             {i18n.t('Share this issue with the Tidepool Support Team')}

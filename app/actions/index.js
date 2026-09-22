@@ -15,10 +15,10 @@
  * == BSD2 LICENSE ==
  */
 
-import * as async from './async';
-import * as sync from './sync';
+ const async = require('./async.js');
+ const sync = require('./sync.js');
 
-export default {
-  async: async,
-  sync: sync
-};
+ module.exports = {
+   async,
+   sync
+ };

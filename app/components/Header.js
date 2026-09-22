@@ -20,21 +20,21 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import actions from '../actions/';
+import actions from '../actions/index.js';
 
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import LoggedInAs from '../components/LoggedInAs';
+import LoggedInAs from '../components/LoggedInAs.js';
 
-import * as actionSources from '../constants/actionSources';
-import { pages, pagesMap } from '../constants/otherConstants';
-import api from '../../lib/core/api';
+import * as actionSources from '../constants/actionSources.js';
+import { pages, pagesMap } from '../constants/otherConstants.js';
+import api from '../../lib/core/api.js';
 
 import * as styles from '../../styles/components/Header.module.less';
 import logo from '../../images/Tidepool_Logo_Light x2.png';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class Header extends Component {
   static propTypes = {
@@ -148,7 +148,7 @@ export class Header extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     function isClinicMember(state) {
       return !!_.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
     }
@@ -162,7 +162,6 @@ export default connect(
       uploadIsInProgress: state.working.uploading.inProgress,
       clinics: state.clinics,
       uploadTargetUser: state.uploadTargetUser,
-      loggedInUser: state.loggedInUser,
       selectedClinicId: state.selectedClinicId,
       // derived state
       hasPrivateWorkspace: true,

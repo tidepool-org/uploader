@@ -1,6 +1,6 @@
-## Flat-Rate Basals
+# Flat-Rate Basals
 
-### The Problem
+## The Problem
 
 Most - if not all - diabetes manufacturers represent basal rate insulin data with _basal rate change_ events (see [Terminology](#terminology) below) rather than _basal rate intervals_. In the particular case where the user of an insulin pump has programmed a _flat-rate basal schedule_, this means that flat-rate basal rate change events are represented in one of two ways:
 
@@ -10,7 +10,7 @@ Most - if not all - diabetes manufacturers represent basal rate insulin data wit
 
 The second representation - only recording basal rate change events when the insulin delivery rate has truly changed - unfortunately poses quite a challenge for any data processing (such as ours at Tidepool) attempting to transform _basal rate change events_ (point-in-time data) to _basal rate segments_ (interval data). The issue is that when determining the duration of a basal rate segment from the user's current settings (as is necessary for the final basal segment in any upload), our general strategy is to only extend the duration of the final segment up to the maximum based on the final basal's matched segment in the schedule - no greater than twenty-four hours on a normal (i.e., not affected by DST) day. If a user has a flat-rate basal, this means we may fail to extend basal data up until the time of upload (if the last rate change was several days prior to upload). In this case, the user will appear to be missing basal data for the most recent day(s) in their upload. One potential solution to this problem is to "simulate" basal rate change events at midnight as an aid to producing the correct basal rate segments representing the scheduled delivery for each day. If this strategy is employed, the segments resulting from such fabrication should be given an annotation to record that they are fabricated events.
 
-### Terminology
+## Terminology
 
 **basal rate change**: A basal rate change event is a point-in-time data type. It consists of a _rate_ (insulin delivery in units of insulin per hour) and a timestamp.
 

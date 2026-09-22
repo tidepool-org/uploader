@@ -18,12 +18,12 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
 
-import initialState from './initialState';
-import * as types from '../constants/actionTypes';
-import { UnsupportedError } from '../utils/errors';
-import actionWorkingMap from '../constants/actionWorkingMap';
+import initialState from './initialState.js';
+import * as types from '../constants/actionTypes.js';
+import { UnsupportedError } from '../utils/errors.js';
+import actionWorkingMap from '../constants/actionWorkingMap.js';
 
-import initialDevices from './devices';
+import initialDevices from './devices.js';
 
 export const notification = (state = initialState.notification, action) => {
   switch (action.type) {

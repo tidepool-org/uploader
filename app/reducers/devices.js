@@ -2,7 +2,7 @@ import mm723Image from '../../images/MM723_CNL_combo@2x.jpg';
 import mm600Image from '../../images/MM600_CNL_combo@2x.jpg';
 import env from '../utils/env';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 const devices = {
   abbottfreestylelibre: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
@@ -98,6 +98,13 @@ const devices = {
     source: {type: 'device', driverId: 'Dexcom'},
     enabled: {mac: true, win: true, linux: true}
   },
+  embracepro: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'EmbracePRO',
+    key: 'embracepro',
+    source: {type: 'device', driverId: 'EmbracePRO'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   embracetalk: {
     instructions: {
                     text: i18n.t('Plug in meter with cable and set meter to'),
@@ -164,6 +171,13 @@ const devices = {
     source: {type: 'device', driverId: 'GlucoRx'},
     enabled: {mac: true, win: true, linux: true}
   },
+  glucozenauto: {
+    instructions: i18n.t('Plug in meter with cable and make sure the meter is switched on'),
+    name: 'GlucoZen.auto',
+    key: 'glucozenauto',
+    source: {type: 'device', driverId: 'GlucoZenAuto'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   omnipod: {
     instructions: i18n.t('Unlock PDM. Plug into USB. Tap Export on PDM. Click Upload.'),
     key: 'omnipod',
@@ -179,6 +193,13 @@ const devices = {
     source: {type: 'device', driverId: 'InsuletOmniPod', extension: '.ibf'},
     enabled: {mac: true, win: true, linux: true},
     powerOnlyWarning: true,
+  },
+  ketomojo: {
+    instructions: i18n.t('Turn meter on and check the Bluetooth icon is flashing'),
+    key: 'ketomojo',
+    name: 'Keto-Mojo GK+/GKI (Connect with Bluetooth)',
+    source: {type: 'device', driverId: 'KetoMojo'},
+    enabled: {mac: true, win: true, linux: true},
   },
   medtronic: {
     instructions: i18n.t('Connect your Contour Next Link to your computer'),
@@ -214,7 +235,7 @@ const devices = {
     name: 'OneTouch Select Plus Flex (Connect with USB)',
     key: 'onetouchselect',
     source: {type: 'device', driverId: 'OneTouchSelect'},
-    enabled: {linux: false, mac: false, win: true},
+    enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   onetouchverio: {
@@ -222,7 +243,7 @@ const devices = {
     name: 'OneTouch Verio, Verio Flex and Verio Reflect (Connect with USB)',
     key: 'onetouchverio',
     source: {type: 'device', driverId: 'OneTouchVerio'},
-    enabled: {linux: false, mac: false, win: true},
+    enabled: {linux: true, mac: true, win: true},
     powerOnlyWarning: true,
   },
   onetouchultraplus: {
@@ -262,6 +283,27 @@ const devices = {
     source: {type: 'device', driverId: 'OneTouchUltra2'},
     enabled: {mac: true, win: true, linux: true}
   },
+  prodigyautocode: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy AutoCode',
+    key: 'prodigyautocode',
+    source: {type: 'device', driverId: 'ProdigyAutocode'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  prodigypocket: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy Pocket',
+    key: 'prodigypocket',
+    source: {type: 'device', driverId: 'ProdigyPocket'},
+    enabled: {mac: true, win: true, linux: true}
+  },
+  prodigyvoice: {
+    instructions: i18n.t('Plug in meter with mini-USB cable'),
+    name: 'Prodigy VOICE',
+    key: 'prodigyvoice',
+    source: {type: 'device', driverId: 'ProdigyVoice'},
+    enabled: {mac: true, win: true, linux: true}
+  },
   relionplatinum: {
     instructions: i18n.t('Plug in meter with micro-USB cable'),
     name: 'ReliOn Platinum (Connect with USB)',
@@ -289,7 +331,7 @@ const devices = {
     enabled: {mac: true, win: true, linux: true}
   },
   relionprime: {
-    instructions: i18n.t('Make sure meter is switched off before plugging in cable'),
+    instructions: i18n.t('Make sure the meter is off before plugging in cable. Meter will turn on after plugging in.'),
     name: 'ReliOn Prime',
     key: 'relionprime',
     source: {type: 'device', driverId: 'ReliOnPrime'},
@@ -318,12 +360,11 @@ if (navigator.userAgentData.platform === 'macOS') {
     linkText: i18n.t('EZSync002B cable'),
     link: 'https://purenitetech.com/product/ezsync002b/',
   };
+  devices.prodigyautocode.instructions = i18n.t('Plug in meter with mini-USB cable. V6 meter not compatible with MacOS.');
 }
 
 if (env.electron) {
-  devices.onetouchverio.enabled = {mac: true, win: true, linux:true};
   devices.onetouchverio.instructions = i18n.t('Plug in meter with micro-USB cable');
-  devices.onetouchselect.enabled = {mac: true, win: true, linux:true};
   devices.onetouchselect.instructions = i18n.t('Plug in meter with micro-USB cable');
 }
 

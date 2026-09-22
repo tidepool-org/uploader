@@ -32,7 +32,7 @@ import { checkTimezoneName } from 'sundial';
 const asyncActions = actions.async;
 const syncActions = actions.sync;
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export class SettingsPage extends Component {
   handleClickChangePerson = (metric = {metric: {eventName: metrics.CLINIC_SEARCH_DISPLAYED}}) => {
@@ -165,7 +165,7 @@ export default connect(
 
       try {
         checkTimezoneName(timezone);
-      } catch (err) {
+      } catch  {
         return null;
       }
       return timezone;
