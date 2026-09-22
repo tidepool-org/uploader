@@ -23,27 +23,27 @@ import Select from 'react-select';
 
 import sundial from 'sundial';
 import BLE from 'ble-glucose';
-import pako from 'pako';
 
-import LoadingBar from './LoadingBar';
-import ProgressBar from './ProgressBar';
-import debugMode from '../utils/debugMode';
-import uploadDataPeriod from '../utils/uploadDataPeriod';
+import ProgressBar from './ProgressBar.js';
+import debugMode from '../utils/debugMode.js';
+import uploadDataPeriod from '../utils/uploadDataPeriod.js';
 
 import { VerioBLE } from '../../lib/drivers/onetouch/oneTouchVerioBLE';
+import { KetoMojo } from '../../lib/drivers/vivachek/ketomojo';
 
 import * as styles from '../../styles/components/Upload.module.less';
-import env from '../utils/env';
+import env from '../utils/env.js';
 let keytar;
 if(env.electron_renderer){
   keytar = require('keytar');
 }
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 const MEDTRONIC_KEYTAR_SERVICE = 'org.tidepool.uploader.medtronic.serialnumber';
 const ble = new BLE();
 const verioBLE = new VerioBLE();
+const ketoMojo = new KetoMojo();
 
 export default class Upload extends Component {
   static propTypes = {
@@ -97,7 +97,7 @@ export default class Upload extends Component {
     super(props);
     this.ble = ble;
     this.verioBLE = verioBLE;
-
+    this.ketoMojo = ketoMojo;
     this.populateRememberedSerialNumber();
   }
 
@@ -168,6 +168,8 @@ export default class Upload extends Component {
 
     if (device === 'onetouchverioble') {
       options.ble = this.verioBLE;
+    } else if (device === 'ketomojo') {
+      options.ble = this.ketoMojo;
     } else {
       options.ble = this.ble;
     }
@@ -212,7 +214,12 @@ export default class Upload extends Component {
       return this.handleMedtronic600Upload();
     }
 
-    if (device === 'caresensble' || device === 'onetouchverioble' || device === 'foracareble' || device === 'relionplatinumble') {
+    if (device === 'caresensble' ||
+        device === 'onetouchverioble' ||
+        device === 'foracareble' ||
+        device === 'relionplatinumble' ||
+        device === 'ketomojo'
+    ) {
       return this.handleBluetoothUpload(_.get(upload, 'key', null));
     }
 
@@ -252,7 +259,7 @@ export default class Upload extends Component {
 
     // Check if input is purely numbers.
     // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
-    let isValid = _.every(chars, function(char, n) {
+    let isValid = _.every(chars, function(char, _n) {
       return !isNaN(char);
     });
 
@@ -354,14 +361,16 @@ export default class Upload extends Component {
 
     let post_link = null;
 
-    if(_.isArray(data) || _.isArray(data.post_records)) {
+    if(_.isArray(data) || _.isArray(data.post_records) || _.isArray(data.postRecords)) {
 
       let filename = 'uploader-processed-records.json';
       let jsonData = null;
       if (_.isArray(data)) {
         jsonData = JSON.stringify(data, undefined, 4);
-      } else {
+      } else if (_.isArray(data.post_records)) {
         jsonData = JSON.stringify(data.post_records, undefined, 4);
+      } else {
+        jsonData = JSON.stringify(data.postRecords, undefined, 4);
       }
       let blob = new Blob([jsonData], {type: 'text/json'});
       let dataHref = URL.createObjectURL(blob);

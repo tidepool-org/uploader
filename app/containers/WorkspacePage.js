@@ -8,13 +8,13 @@ import * as actionSources from '../constants/actionSources';
 import actions from '../actions/';
 import api from '../../lib/core/api';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 const { async, sync } = actions;
 
 const styles = require('../../styles/components/WorkspacePage.module.less');
 
-export const WorkspacePage = (props) => {
+export const WorkspacePage = (_props) => {
   const dispatch = useDispatch();
   const clinics = useSelector((state)=>state.clinics);
   const blipUrls = useSelector((state)=>state.blipUrls);
@@ -38,7 +38,7 @@ export const WorkspacePage = (props) => {
     dispatch(async.goToPrivateWorkspace());
   };
 
-  const handleTidepoolLogin = (e) => {
+  const handleTidepoolLogin = (_e) => {
     api.metrics.track(metrics.WORKSPACE_TIDEPOOL_LOGIN);
   };
 
@@ -70,7 +70,7 @@ export const WorkspacePage = (props) => {
           </a>
         </div>
         <div className={styles.workspaceList}>
-          {map(clinics, (clinic, i) => (
+          {map(clinics, (clinic, _i) => (
             <div className={styles.workspaceItem} key={clinic.id}>
               <div className={styles.clinicName}>{clinic.name}</div>
               <div

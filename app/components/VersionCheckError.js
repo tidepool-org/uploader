@@ -24,7 +24,7 @@ import ErrorMessages from '../constants/errorMessages';
 import * as styles from '../../styles/components/VersionCheck.module.less';
 import CloudOff from '@mui/icons-material/CloudOff';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class VersionCheckError extends Component {
   static propTypes = {

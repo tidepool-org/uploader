@@ -1,9 +1,8 @@
-## An Example State Tree
+# An Example State Tree
 
 ![Tidepool Uploader snapshot](./app-snapshot.png)
 
 The JSON that follows on this page represents a snapshot of the Tidepool Uploader's application state as shown in the above screenshot. We provide this example mainly as a reference to use while reading the [glossary of terms](./StateTreeGlossary.md) for the Tidepool Uploader's redux-managed state tree.
-
 
 ```json
 {

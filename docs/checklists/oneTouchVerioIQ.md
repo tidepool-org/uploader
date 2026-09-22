@@ -1,14 +1,14 @@
 # LifeScan OneTouch VerioIQ
 
-## Checklist for Blood Glucose Meter Implementation
+## Checklist for BGM Implementation
 
 (Key:
 
- - `[x]` available in data protocol/documented in spec and implemented
- - `[-]` available in data protocol/documented in spec but *not* yet implemented
- - `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
- - `*[ ]` TODO: needs implementation!
- - `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
+- `[x]` available in data protocol/documented in spec and implemented
+- `[-]` available in data protocol/documented in spec but *not* yet implemented
+- `[?]` unknown whether available in data protocol/documented in spec; *not* yet implemented
+- `*[ ]` TODO: needs implementation!
+- `[ ]` unavailable in data protocol and/or not documented in spec and not yet implemented)
 
 ### Required if Present
 
@@ -24,6 +24,7 @@
 - `[x]` use `common.checkDeviceTime(currentDeviceTime, timezone, cb)` to check against server time
 
 ## Notes
+
 - Units of smbg values are available in data protocol, but always reported in mg/dL
 - HI/LO values are not described in spec, but user manual states that values above 600 and below 20 mg/dL are out-of-range, and are annotated as such
 
@@ -37,8 +38,8 @@
 
 Choose one of the following:
 
-  - `[x]` legacy "jellyfish" ingestion API
-  - `[ ]` platform ingestion API
+- `[x]` legacy "jellyfish" ingestion API
+- `[ ]` platform ingestion API
 
 ### Known implementation issues/TODOs
 

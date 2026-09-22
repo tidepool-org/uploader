@@ -1,11 +1,11 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV NODE_VERSION "v12.13.0"
+ENV NODE_VERSION "v24.18.0"
 
 # Lots of packages. Some dependencies and stuff for GUI.
 RUN apt-get -qq -y update && \
-    apt-get -qq -y install build-essential git curl libusb-1.0 libavutil-dev libxss1 \
+    apt-get -qq -y install build-essential git curl xz-utils libusb-1.0 libavutil-dev libxss1 \
     libsecret-1-dev libudev-dev libgtk-3-0 libcanberra-gtk3-module packagekit-gtk3-module \
     chromium-browser
 
@@ -19,8 +19,8 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get -qq -y update && apt-get -qq -y install yarn
 
 # Node 
-RUN curl -O https://nodejs.org/download/release/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz \
-    && tar -xzf node-$NODE_VERSION-linux-x64.tar.gz -C /usr/local/bin
+RUN curl -fsSLO https://nodejs.org/download/release/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.xz \
+    && tar -xJf node-$NODE_VERSION-linux-x64.tar.xz -C /usr/local/bin
 
 ENV PATH=/usr/local/bin/node-$NODE_VERSION-linux-x64/bin:${PATH}
 

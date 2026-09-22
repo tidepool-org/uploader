@@ -31,7 +31,7 @@ function compareData(data1, data2){
 
   for (var i = 0; i < data1.length - 1; i++) {
     var record1 = data1[i];
-    var records2 = _.filter(data2, {deviceTime: record1.deviceTime, type: record1.type, type: record1.type});
+    var records2 = _.filter(data2, {deviceTime: record1.deviceTime, type: record1.type});
     var matched = false;
     if(records2.length > 0) {
       records2.forEach(function (record2) {

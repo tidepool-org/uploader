@@ -578,7 +578,7 @@ describe('uploads', () => {
     });
 
     test('should handle UPLOAD_CANCELLED', () => {
-      const data = [1,2,3,4,5];
+      
       let initialState = {
         [userId]: {
           a_pump: {disabled: true, history: []},

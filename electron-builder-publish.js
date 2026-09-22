@@ -9,9 +9,8 @@ const config = {
     output: 'release'
   },
   afterSign: 'scripts/notarize.js',
-  nativeRebuilder: 'legacy',
   dmg: {
-    artifactName: '${productName}-${version}.${ext}',
+    artifactName: 'Tidepool-Uploader-${version}.${ext}',
     contents: [
       {
         x: 381,
@@ -46,7 +45,9 @@ const config = {
       to: 'driver/',
       filter: [
         '**/*',
-        '!*.md'
+        '!*.md',
+        '!helpers/x64/**',
+        '!helpers/arm64/**'
       ]
     },
     'sounds/',
@@ -57,27 +58,27 @@ const config = {
       {
         target: 'nsis',
         arch: [
-          'ia32',
           'x64'
         ]
       },
       {
         target: 'zip',
         arch: [
-          'ia32',
           'x64'
         ]
       }
     ],
-    publisherName: [
-      'Tidepool Project'
-    ],
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
+    azureSignOptions: {
+      publisherName: 'Tidepool Project',
+      endpoint: 'https://wus2.codesigning.azure.net/',
+      certificateProfileName: 'tidepool-public-certificate',
+      codeSigningAccountName: 'tidepool-org-signing'
+    },
     asarUnpack: '**\\*.node',
   },
   mac: {
     category: 'public.app-category.tools',
-    artifactName: '${productName}-${version}-${os}.${ext}',
+    artifactName: 'Tidepool-Uploader-${version}-${os}.${ext}',
     target: [
       {
         target: 'zip',
@@ -93,8 +94,17 @@ const config = {
       },
       'dir'
     ],
+    extraResources: [
+      {
+        from: 'resources/mac/helpers/${arch}',
+        to: 'driver/helpers',
+        filter: ['**/*']
+      },
+    ],
     notarize: false,
-    asarUnpack: 'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
+    asarUnpack: [
+      'app/node_modules/keytar', // https://github.com/electron-userland/electron-builder/issues/3940#issuecomment-900527250
+    ],
   },
   protocols: [{
     name: 'Tidepool Uploader',

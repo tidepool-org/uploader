@@ -18,12 +18,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { urls } from '../constants/otherConstants';
-import personUtils from '../../lib/core/personUtils';
+import { urls } from '../constants/otherConstants.js';
+import personUtils from '../../lib/core/personUtils.js';
 
 import * as styles from '../../styles/components/NoUploadTargets.module.less';
 
-import { i18n } from '../utils/config.i18next';
+import { i18n } from '../utils/config.i18next.cjs';
 
 export default class NoUploadTargets extends Component {
   static propTypes = {

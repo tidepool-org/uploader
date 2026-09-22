@@ -23,7 +23,7 @@ This README is focused on just the details of getting the uploader running local
 ## How to set it up
 
 1. Clone this repository.
-1. Make sure you have node v16.x installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
+1. Make sure you have the right version of Node.js installed. If you are managing node installations with [`nvm`](https://github.com/creationix/nvm 'GitHub: nvm'), which we **highly recommend**, you can just do `nvm use` when navigating to this repository to switch to the correct version of node. (In this repository, the correct version of node will always be the version of node packaged by the version of Electron that we are using and specified in the `.nvmrc` file.)
 1. Run `npm install` or, preferably, `yarn`
 1. Set the config for the environment you want to target (see [Config](#config) below)
 1. Run the following command:
@@ -40,7 +40,7 @@ $ yarn dev
 
 ### Docker for Linux
 
-If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distrubutions you can try to build a local docker image which is based on Ubuntu 18.04 and use the yarn/npm commands interactively.
+If you are running Linux you probably need to be using an Ubuntu distribution or derivative. To get around this for other distributions you can try to build a local docker image which is based on Ubuntu 22.04 and use the yarn/npm commands interactively.
 
 **NOTE:** You need to add udev rules to your host for uploads to actually work. You can find the udev rules [here](resources/linux/51-tidepool-uploader.rules). The file should be placed in `/etc/udev/rules.d/` and the host should be rebooted.
 

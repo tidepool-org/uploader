@@ -19,9 +19,9 @@ import _ from 'lodash';
 
 import sundial from 'sundial';
 
-import ErrorMessages from '../constants/errorMessages';
-import * as syncActions from './sync';
-import rollbar from '../../app/utils/rollbar';
+import ErrorMessages from '../constants/errorMessages.js';
+import * as syncActions from './sync.js';
+import rollbar from '../../app/utils/rollbar.js';
 
 const isBrowser = typeof window !== 'undefined';
 // eslint-disable-next-line no-console
@@ -112,6 +112,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
         userName: name,
         os: os,
         device: driverId,
+        model: _.get(recs, 'deviceModel', null),
       };
 
       if (selectedClinicId) {
@@ -162,7 +163,7 @@ export function makeUploadCb(dispatch, getState, errCode, utc) {
       if (err.code === 'E_OMNIPOD_CHECKSUM') {
         displayErr.message = 'Before you click to upload, please wait until your PDM displays the message';
         displayErr.link = 'https://support.tidepool.org/hc/en-us/articles/360029369472-Uploading-your-Insulet-Omnipod-DASH#h_351dc475-a17c-4d1d-a66b-04912d0b652f';
-        displayErr.linkText = '\"Your PDM data is ready for export\".';
+        displayErr.linkText = '"Your PDM data is ready for export".';
       }
 
       if (err.message === 'E_DATETIME_SET_BY_PUMP') {
@@ -221,7 +222,7 @@ export function sendToRollbar(err, props) {
     if (_.get(props, 'data.blobId', false)) {
       extra.blobId = props.data.blobId;
     }
-    
+
     rollbar.error(err, extra, (reportingErr, data) => {
       if (reportingErr) {
         console.log('Error while reporting error to Rollbar:', reportingErr);

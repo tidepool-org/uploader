@@ -1,6 +1,6 @@
-import env from './env';
-import { initReactI18next } from 'react-i18next';
-import _ from 'lodash';
+const env = require('./env.js');
+const { initReactI18next } = require('react-i18next');
+const _  = require('lodash');
 
 let i18n;
 let i18nextOptions = {};
@@ -14,7 +14,7 @@ if (env.electron_main) {
   }
 
   const { app } = require('electron');
-  let i18nextBackend = require('i18next-fs-backend');
+  let i18nextBackend = require('i18next-fs-backend/cjs');
 
   if(i18nextBackend.default) {
     i18nextBackend = i18nextBackend.default;
@@ -58,7 +58,7 @@ if (env.electron_main) {
       i18n
         .use(initReactI18next)
         .use(i18nextBackend)
-        .init(i18nextOptions, function(err, t) {
+        .init(i18nextOptions, function(err, _t) {
           if (err) {
             console.log('An error occurred in i18next:', err);
           }
@@ -88,17 +88,9 @@ if (env.browser && !env.electron_renderer) {
     //   loadPath: './locales/{{lng}}/{{ns}}.json',
     //   addPath: './locales/{{lng}}/{{ns}}.missing.json',
     // },
-    interpolation: {
-      escapeValue: false,
-    },
     lng: 'en',
     saveMissing: true,
-    fallbackLng: 'en',
-    returnEmptyString: false,
     supportedLngs: ['en', 'es'],
-    keySeparator: false,
-    nsSeparator: '|',
-    debug: false,
     wait: true,
     fallbackLng: 'en',
 
@@ -147,7 +139,7 @@ if (env.browser && !env.electron_renderer) {
     }
 
     if (!i18n.isInitialized) {
-      i18n.use(initReactI18next).init(i18nextOptions, function(err, t) {
+      i18n.use(initReactI18next).init(i18nextOptions, function(err, _t) {
         if (err) {
           console.log('An error occurred in i18next:', err);
         }
@@ -164,8 +156,4 @@ if (env.browser && !env.electron_renderer) {
   setLanguage();
 }
 
-module.exports = {
-  i18nextOptions,
-  setLanguage,
-  i18n,
-};
+module.exports = { i18nextOptions, setLanguage, i18n };
