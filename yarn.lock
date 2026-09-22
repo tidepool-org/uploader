@@ -3507,6 +3507,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tidepool/uploader-common@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@tidepool/uploader-common@npm:0.1.0"
+  dependencies:
+    bows: 1.7.2
+    lodash: 4.18.1
+    sundial: 1.7.6
+  checksum: 12e1fe399bbbf0def7ec24762ee95a6cc9cd4abb809fb2773bf3e06b670dec733c866f0ba2499d9ef92c8c06eabb398d210434c8886647586dd75750314cedde
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.10.3":
   version: 0.10.3
   resolution: "@tybys/wasm-util@npm:0.10.3"
@@ -14428,6 +14439,7 @@ __metadata:
     "@mui/icons-material": 9.2.0
     "@mui/material": 9.2.0
     "@react-keycloak/web": 3.4.0
+    "@tidepool/uploader-common": 0.1.0
     async: 2.6.4
     babel-jest: 30.4.1
     babel-loader: 10.1.1
