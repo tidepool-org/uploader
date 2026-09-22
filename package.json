@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.67.0-dep-updates-jul26.4",
+  "version": "2.68.0",
   "engines": {
     "node": "24.18.0"
   },
