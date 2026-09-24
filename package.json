@@ -191,7 +191,8 @@
     },
     "verbose": true,
     "testMatch": [
-      "**/test/(app|lib)/**/*.js"
+      "**/test/(app|lib)/**/*.js",
+      "**/lib/drivers/*/test/**/*.js"
     ],
     "transformIgnorePatterns": [
       "../node_modules/(?!(webmtp|uuid)/)",
