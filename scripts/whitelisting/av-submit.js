@@ -123,9 +123,9 @@ function sendtoMcAfee(downloadURL) {
     Template: 'mcafee-template', /* required */
     ConfigurationSetName: 'mcafee-email',
     TemplateData: /* required */
-      '{ \"contactName\":\"' + CONTACT_PERSON +
-      '\", \"windowsLink\":\"' + downloadURL.windows +
-      '\", \"macOSLink\":\"' + downloadURL.macOS + '\"}',
+      '{ "contactName":"' + CONTACT_PERSON +
+      '", "windowsLink":"' + downloadURL.windows +
+      '", "macOSLink":"' + downloadURL.macOS + '"}',
     ReplyToAddresses: [
        'noreply@tidepool.org',
        CONTACT_EMAIL,

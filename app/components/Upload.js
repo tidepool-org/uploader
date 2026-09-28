@@ -23,9 +23,7 @@ import Select from 'react-select';
 
 import sundial from 'sundial';
 import BLE from 'ble-glucose';
-import pako from 'pako';
 
-import LoadingBar from './LoadingBar.js';
 import ProgressBar from './ProgressBar.js';
 import debugMode from '../utils/debugMode.js';
 import uploadDataPeriod from '../utils/uploadDataPeriod.js';
@@ -261,7 +259,7 @@ export default class Upload extends Component {
 
     // Check if input is purely numbers.
     // E.g., 123e4 is considered numeric, as is -123, but for our purposes they are not valid input.
-    let isValid = _.every(chars, function(char, n) {
+    let isValid = _.every(chars, function(char, _n) {
       return !isNaN(char);
     });
 

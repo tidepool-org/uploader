@@ -155,7 +155,7 @@ export class UpdateModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       // plain state
       checkingElectronUpdate: state.working.checkingElectronUpdate.inProgress,

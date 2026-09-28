@@ -22,7 +22,7 @@ var expect = require('salinity').expect;
 var objectBuilder = require('../../lib/objectBuilder.js');
 
 describe('objectBuilder.js', () => {
-  var objBuilder = null;
+  
   var REQUIRED = '**REQUIRED**';
   var OPTIONAL = '**OPTIONAL**';
   var bob;

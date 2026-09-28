@@ -128,7 +128,7 @@ export class BluetoothModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       showingBluetoothPairingDialog: state.showingBluetoothPairingDialog
     };

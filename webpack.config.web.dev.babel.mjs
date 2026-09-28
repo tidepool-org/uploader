@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const isDev = process.env.NODE_ENV === 'development';
-const isTest = process.env.NODE_ENV === 'test';
+
 const isProd = process.env.NODE_ENV === 'production';
 
 const VERSION_SHA =
@@ -191,9 +191,16 @@ export default merge(baseConfig, {
       },
       // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
       {
-        test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+        test: /node_modules[/\\](iconv-lite)[/\\].+/,
         resolve: {
           aliasFields: ['main'],
+        },
+      },
+      {
+        test: /\.m?js$/,
+        include: /node_modules/,
+        resolve: {
+          fullySpecified: false,
         },
       },
       {

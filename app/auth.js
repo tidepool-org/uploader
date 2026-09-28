@@ -20,7 +20,7 @@ export let keycloak = null;
  */
 let userManager;
 
-export const oidcMiddleware = api => storeAPI => next => action => {
+export const oidcMiddleware = _api => storeAPI => next => action => {
   switch (action.type) {
     case ActionTypes.KEYCLOAK_READY: {
       const blipUrl = storeAPI.getState()?.blipUrls?.blipUrl;

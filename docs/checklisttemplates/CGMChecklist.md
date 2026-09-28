@@ -72,8 +72,8 @@ Device-specific? (Add any device-specific notes/additions here.)
 ### General
 
 - [ ] device time is in UTC, with records using UTC timestamps, OR
-- [ ] internal timestamp or persistent log index (across device communication sessions) to order all pump events (regardless of type), independent of device display time OR
-- [ ] ephemeral log index (does not persist across device communication sessions) to order all pump events (regardless of type), independent of device display time
+- [ ] internal timestamp or persistent log index (across device communication sessions) to order all CGM events (regardless of type), independent of device display time OR
+- [ ] ephemeral log index (does not persist across device communication sessions) to order all CGM events (regardless of type), independent of device display time
 
 Device-specific? (Add any device-specific notes/additions here.)
 

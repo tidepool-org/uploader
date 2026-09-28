@@ -55,7 +55,7 @@ export class AdHocModal extends Component {
                 <div><img className={styles.image} src={step1_img} /></div>
               </div>
               <div className={styles.step}>
-                <div><span className={styles.numeral}>2.</span> {i18n.t('Select \"Yes\"')}</div>
+                <div><span className={styles.numeral}>2.</span> {i18n.t('Select "Yes"')}</div>
                 <div><img className={styles.image} src={step2_img} /></div>
               </div>
             </div>
@@ -73,7 +73,7 @@ export class AdHocModal extends Component {
 };
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     return {
       showingAdHocPairingDialog: state.showingAdHocPairingDialog
     };

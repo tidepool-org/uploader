@@ -92,7 +92,7 @@ async function vtFetch(url, apiKey, init = {}) {
     headers: {
       'x-apikey': apiKey,
       accept: 'application/json',
-      ...(init.headers || {}),
+      ...init.headers,
     },
   });
   if (!res.ok) {

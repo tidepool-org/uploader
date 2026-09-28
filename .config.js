@@ -118,13 +118,6 @@ function stringToBoolean(str, defaultValue) {
   return defaultValue || false;
 }
 
-function stringToArray(str, defaultValue) {
-  if (!(str && str.length)) {
-    return defaultValue;
-  }
-  return str.split(',');
-}
-
 const selectedServerEnv = env.browser ? serverEnvFromLocation() : 'prd';
 
 module.exports = {

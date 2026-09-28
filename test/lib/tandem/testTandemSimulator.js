@@ -684,32 +684,8 @@ describe('tandemSimulator.js', () => {
   });
 
   describe('finalBasal', () => {
-    var settings = {
-      time: '2014-09-25T01:00:00.000Z',
-      deviceTime: '2014-09-25T01:00:00',
-      activeSchedule: 'billy',
-      units: { 'bg': 'mg/dL' },
-      basalSchedules: {
-        'billy': [
-          { start: 0, rate: 1.0 },
-          { start: 21600000, rate: 1.1 },
-          { start: 43200000, rate: 1.2 },
-          { start: 64800000, rate: 1.3 }
-        ],
-        'bob': [
-          { start: 0, rate: 0.0}
-        ]
-      },
-      timezoneOffset: 0,
-      conversionOffset: 0
-    };
-    var basal = builder.makeScheduledBasal()
-      .with_time('2014-09-25T18:05:00.000Z')
-      .with_deviceTime('2014-09-25T18:05:00')
-      .with_timezoneOffset(0)
-      .with_conversionOffset(0)
-      .with_rate(1.3)
-      .with_scheduleName('billy');
+    
+    
 
     test('a temp basal is completed ', () => {
       var temp = builder.makeTempBasal()

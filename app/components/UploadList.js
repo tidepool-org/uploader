@@ -86,7 +86,7 @@ export default class UploadList extends Component {
     const { disabled, onReset, onUpload, targetId } = this.props;
 
     const headlineText = this.props.renderClinicUi ? i18n.t('Devices') : i18n.t('Upload Devices');
-    const medtronicEnabled = _.findIndex(this.props.uploads, { key: 'medtronic' }) === -1 ? false : true;
+    
     const items = _.map(this.props.uploads, (upload) => {
       if (upload.name) {
         if (upload.key === 'carelink') {
@@ -127,7 +127,7 @@ export default class UploadList extends Component {
   }
 
   handleErrorSubmit(error) {
-    const { targetId, uploads } = this.props;
+    const { targetId, } = this.props;
     const baseUrl = 'https://tidepoolsupport.zendesk.com';
     const url = `${baseUrl}/api/v2/requests`;
     const headers = {
@@ -201,7 +201,7 @@ export default class UploadList extends Component {
           ),
         });
       }
-    }).catch((err) => {
+    }).catch((_err) => {
       this.setState({ uploadErrorSubmitClicked: false });
       api.metrics.track(metrics.SUBMIT_ERROR_TO_ZENDESK_FAILURE);
       this.setState({

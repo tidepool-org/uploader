@@ -25,7 +25,6 @@ import configureStore from 'redux-mock-store';
 import ErrorMessages from '../../../app/constants/errorMessages';
 import * as utils from '../../../app/actions/utils';
 import { addInfoToError } from '../../../app/utils/errors';
-import { __Rewire__ } from '../../../app/actions/utils';
 
 describe('utils', () => {
   describe('makeUploadCb', () => {
@@ -48,7 +47,21 @@ describe('utils', () => {
       uploadTargetDevice: 'foo',
       version: '0.100.0'
     });
-    __Rewire__('osString', 'BeOS R5.1 (RISC-V)');
+    // set the module-internal osString through its real code path
+    beforeAll(async () => {
+      Object.defineProperty(globalThis.navigator, 'userAgentData', {
+        value: {
+          platform: 'BeOS R5.1',
+          getHighEntropyValues: () => Promise.resolve({
+            platform: 'BeOS R5.1',
+            platformVersion: '(RISC-V)',
+            bitness: '64',
+          }),
+        },
+        configurable: true,
+      });
+      await utils.initOSDetails();
+    });
     const { getState } = mockStore;
     const fn = utils.makeUploadCb(dispatch, getState, errCode, utc);
     test('should return a function', () => {

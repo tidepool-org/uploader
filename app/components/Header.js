@@ -148,7 +148,7 @@ export class Header extends Component {
 }
 
 export default connect(
-  (state, ownProps) => {
+  (state, _ownProps) => {
     function isClinicMember(state) {
       return !!_.get(state.allUsers, [state.loggedInUser, 'isClinicMember'], false);
     }
@@ -162,7 +162,6 @@ export default connect(
       uploadIsInProgress: state.working.uploading.inProgress,
       clinics: state.clinics,
       uploadTargetUser: state.uploadTargetUser,
-      loggedInUser: state.loggedInUser,
       selectedClinicId: state.selectedClinicId,
       // derived state
       hasPrivateWorkspace: true,

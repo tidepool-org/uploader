@@ -74,7 +74,7 @@ export default (env => merge(baseConfig, {
       },
       // https://github.com/ashtuchkin/iconv-lite/issues/204#issuecomment-432048618
       {
-        test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
+        test: /node_modules[/\\](iconv-lite)[/\\].+/,
         resolve: {
           aliasFields: ['main']
         }
@@ -248,7 +248,7 @@ export default (env => merge(baseConfig, {
       verbose: true,
       disableDotRule: false
     },
-    setupMiddlewares(middlewares, devServer) {
+    setupMiddlewares(middlewares, _devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         const argv = env?.argv;
