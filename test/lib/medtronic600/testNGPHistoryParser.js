@@ -202,6 +202,68 @@ describe('NGPHistoryParser.js', () => {
       historyParser.buildSuspendResumeRecords(events);
       expect(events[0]).to.deep.equal(expected);
       expect(events[1].duration).to.equal(1800000);
+      expect(events[1].annotations).to.deep.equal([{ code: 'basal/unknown-duration' }]);
+    });
+
+    test('should drop the USER_TIME_DATE_CHANGE that follows a TIME_RESET and still pair the suspend', () => {
+      // suspend at 2019-03-01T12:00:00, then the pump loses its
+      // clock: TIME_RESET at 12:10:00, the user sets the clock at
+      // 12:20:00 -> 12:25:00 (USER_TIME_DATE_CHANGE), then
+      // resume at 12:30:00 wall-clock time
+      const suspendData = '1e000c82000000a20bdb4001';
+      const timeResetData = '02001380000000a40bdd9880000000a40bdd98';
+      const userTimeChangeData = '03001380000080a40bdf7080000080a40be09c';
+      const resumeData = '1f000c80000100a40be14802';
+      const localCfg = { ...cfg, timezone: 'Europe/London' };
+      const historyParser = new NGPHistoryParser(
+        localCfg, settings,
+        [suspendData + timeResetData + userTimeChangeData + resumeData],
+      );
+      const events = [];
+
+      // processPages keeps the TIME_RESET but drops the following USER_TIME_DATE_CHANGE
+      expect(historyParser.events.map((event) => event.eventType)).to.deep.equal([
+        0x1e, // INSULIN_DELIVERY_STOPPED
+        0x02, // TIME_RESET
+        0x1f, // INSULIN_DELIVERY_RESTARTED
+      ]);
+
+      const { postRecords } = historyParser.buildTimeChangeRecords();
+      expect(postRecords).to.deep.equal([]);
+
+      historyParser.buildSuspendResumeRecords(events);
+      expect(events[0].duration).to.equal(1800000); // suspend/resume status
+      expect(events[0].reason).to.deep.equal({ suspended: 'automatic', resumed: 'manual' });
+      expect(events[0].annotations).to.be.undefined;
+      expect(events[1].duration).to.equal(1800000); // suspended basal
+      expect(events[1].annotations).to.deep.equal([{ code: 'basal/unknown-duration' }]);
+    });
+
+    test('should keep a USER_TIME_DATE_CHANGE that is not preceded by a TIME_RESET', () => {
+      // same records as above, minus the TIME_RESET
+      const suspendData = '1e000c82000000a20bdb4001';
+      const userTimeChangeData = '03001380000080a40bdf7080000080a40be09c';
+      const resumeData = '1f000c80000100a40be14802';
+      const localCfg = { ...cfg, timezone: 'Europe/London' };
+      const historyParser = new NGPHistoryParser(
+        localCfg, settings,
+        [suspendData + userTimeChangeData + resumeData],
+      );
+
+      expect(historyParser.events.map((event) => event.eventType)).to.deep.equal([
+        0x1e, // INSULIN_DELIVERY_STOPPED
+        0x03, // USER_TIME_DATE_CHANGE
+        0x1f, // INSULIN_DELIVERY_RESTARTED
+      ]);
+
+      const { postRecords } = historyParser.buildTimeChangeRecords();
+      expect(postRecords).to.have.lengthOf(1);
+      expect(postRecords[0].subType).to.equal('timeChange');
+      expect(postRecords[0].change).to.deep.equal({
+        from: '2019-03-01T12:20:00',
+        to: '2019-03-01T12:25:00',
+        agent: 'manual',
+      });
     });
 
     test('should treat a suspend as unresumed when the resume precedes it even in clock-corrected time', () => {
@@ -236,6 +298,7 @@ describe('NGPHistoryParser.js', () => {
       historyParser.buildSuspendResumeRecords(events);
       expect(events[0]).to.deep.equal(expected);
       expect(events[1].duration).to.equal(0);
+      expect(events[1].annotations).to.be.undefined;
     });
   });
 
