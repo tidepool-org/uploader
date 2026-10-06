@@ -144,7 +144,7 @@ export class App extends Component {
       this.props.async.doAppInit(
         _.assign({
           environment: this.state.server,
-          uploaderDestination: info.versions?.uploaderDestination,
+          uploaderDestination: info?.versions?.uploaderDestination,
         }, config, selectedEnv),
         {
           api: api,
