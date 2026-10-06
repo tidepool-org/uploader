@@ -100,7 +100,7 @@ $ yarn test
 
 ## Linting & Code Style
 
-We use [ESLint](http://eslint.org/) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, noted with comments in the `.eslintrc` configuration file.
+We use [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) to lint our JavaScript code. We try to use the same linting options across all our client apps, but there are a few exceptions in this application, configured in the `.oxlintrc.json` configuration file.
 
 To run the linter (which also runs on CircleCI with every push, along with `npm test`), use:
 
@@ -157,15 +157,11 @@ We use the following environment variables on the CI server:
 | FTP_AV_PASSWORD_TIDEPOOL | Windows  | AV submission |
 
 ## Editor Configuration
-**Atom**
-```bash
-apm install editorconfig es6-javascript javascript-snippets linter linter-eslint language-babel autocomplete-modules file-icons
-```
+
+Linting is done by [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) (see [Linting & Code Style](#linting--code-style)). To see the same `.oxlintrc.json` rules inline as you type, set up your editor using the [Oxlint editor setup](https://oxc.rs/docs/guide/usage/linter/editors.html) guide. The editor plugins do not bundle the linter — they use the `oxlint` already installed as a dev dependency of this project.
 
 **Sublime**
 * [Editorconfig Integration](https://github.com/sindresorhus/editorconfig-sublime#readme)
-* [Linting](https://github.com/SublimeLinter/SublimeLinter3)
-* [ESLint Integration](https://github.com/roadhump/SublimeLinter-eslint)
 * [Syntax Highlighting](https://github.com/babel/babel-sublime)
 * [Autocompletion](https://github.com/ternjs/tern_for_sublime)
 * [Node Snippets](https://packagecontrol.io/packages/JavaScript%20%26%20NodeJS%20Snippets)
@@ -173,7 +169,6 @@ apm install editorconfig es6-javascript javascript-snippets linter linter-eslint
 
 **Others**
 * [Editorconfig](http://editorconfig.org/#download)
-* [ESLint](http://eslint.org/docs/user-guide/integrations#editors)
 * Babel Syntax Plugin
 
 ## DevTools
