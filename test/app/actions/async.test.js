@@ -74,6 +74,11 @@ jest.mock('@electron/remote', () => ({
 }));
 
 describe('Asynchronous Actions', () => {
+  const localStoreOriginals = {
+    getItem: localStore.getItem,
+    removeItem: localStore.removeItem,
+  };
+
   beforeEach(() => {
     appState.versionInfo = { semver: '0.100.0' };
     jest.spyOn(actionUtils, 'getOSDetails').mockReturnValue('BeOS R5.1 (RISC-V)');
@@ -82,6 +87,7 @@ describe('Asynchronous Actions', () => {
   afterEach(() => {
     appState.services = { ...defaultServices };
     appState.versionInfo = { ...defaultVersionInfo };
+    Object.assign(localStore, localStoreOriginals);
     jest.restoreAllMocks();
   });
 
