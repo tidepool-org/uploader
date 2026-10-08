@@ -1,7 +1,7 @@
 {
   "name": "tidepool-uploader",
   "productName": "tidepool-uploader",
-  "version": "2.68.0-one-button-bolus.1",
+  "version": "2.69.0",
   "description": "Tidepool Project Universal Uploader",
   "main": "./main.prod.js",
   "author": {
