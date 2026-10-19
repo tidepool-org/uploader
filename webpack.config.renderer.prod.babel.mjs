@@ -11,7 +11,7 @@ import RollbarSourceMapPlugin from 'rollbar-sourcemap-webpack-plugin';
 import cp from 'node:child_process';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { fileURLToPath } from 'node:url';
 
@@ -189,14 +189,7 @@ export default merge(baseConfig, {
             sourceMap: true,
           }
         }),
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorOptions: {
-            map: {
-              inline: false,
-              annotation: true,
-            }
-          }
-        })
+        new CssMinimizerPlugin()
       ],
   },
 
