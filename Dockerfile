@@ -1,4 +1,4 @@
-FROM node:24.18.0-alpine as base
+FROM node:24.18.1-alpine as base
 WORKDIR /app
 RUN mkdir -p dist node_modules .yarn-cache && chown -R node:node .
 
@@ -86,7 +86,7 @@ ENV \
     NODE_ENV=production
 # Only install dependancies needed for the production server
 USER node
-RUN yarn add express@4.16.3 helmet@7.0.0 body-parser@1.18.3
+RUN yarn add express@4.22.2 helmet@8.3.0 body-parser@2.3.0
 # Copy only files needed to run the server
 COPY --from=build /app/dist dist
 COPY --from=build \
