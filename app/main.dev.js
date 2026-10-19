@@ -1,8 +1,7 @@
 /* global __ROLLBAR_POST_TOKEN__ */
 import _ from 'lodash';
-import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, dialog, protocol } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain, crashReporter, protocol } from 'electron';
 import os from 'os';
-import osName from 'os-name';
 import * as chromeFinder from 'chrome-launcher/dist/chrome-finder.js';
 import { createRequire } from 'module';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -339,22 +338,6 @@ function createWindow() {
 
   mainWindow.webContents.on('did-finish-load', async () => {
     initHelperProcess();
-
-    if (osName() === 'Windows 7') {
-      const options = {
-        type: 'info',
-        title: 'Please update to a modern operating system',
-        message:
-          `Windows 7 won't be patched for any new viruses or security problems
-going forward.
-
-While Windows 7 will continue to work, Microsoft recommends you
-start planning to upgrade to Windows 10, or an alternative
-operating system, as soon as possible.`,
-        buttons: ['Continue']
-      };
-      await dialog.showMessageBox(options);
-    }
 
     mainWindow.show();
     mainWindow.focus();

@@ -6230,7 +6230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -7516,23 +7516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^4.0.2":
-  version: 4.1.0
-  resolution: "execa@npm:4.1.0"
-  dependencies:
-    cross-spawn: ^7.0.0
-    get-stream: ^5.0.0
-    human-signals: ^1.1.1
-    is-stream: ^2.0.0
-    merge-stream: ^2.0.0
-    npm-run-path: ^4.0.0
-    onetime: ^5.1.0
-    signal-exit: ^3.0.2
-    strip-final-newline: ^2.0.0
-  checksum: e30d298934d9c52f90f3847704fd8224e849a081ab2b517bbc02f5f7732c24e56a21f14cb96a08256deffeb2d12b2b7cb7e2b014a12fb36f8d3357e06417ed55
-  languageName: node
-  linkType: hard
-
 "execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
@@ -8145,7 +8128,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stream@npm:^5.0.0, get-stream@npm:^5.1.0":
+"get-stream@npm:^5.1.0":
   version: 5.2.0
   resolution: "get-stream@npm:5.2.0"
   dependencies:
@@ -8652,13 +8635,6 @@ __metadata:
   version: 0.5.5
   resolution: "httpxy@npm:0.5.5"
   checksum: 02d20bbfe5c66d310701cea6b860891fc8678a0b4897fad160c2b68eb81c09c93794006449f5d107af654d187de8cd6370468a052014833fa406861c761690b6
-  languageName: node
-  linkType: hard
-
-"human-signals@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "human-signals@npm:1.1.1"
-  checksum: d587647c9e8ec24e02821b6be7de5a0fc37f591f6c4e319b3054b43fd4c35a70a94c46fc74d8c1a43c47fde157d23acd7421f375e1c1365b09a16835b8300205
   languageName: node
   linkType: hard
 
@@ -10386,13 +10362,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"macos-release@npm:^2.5.0":
-  version: 2.5.1
-  resolution: "macos-release@npm:2.5.1"
-  checksum: aca64595302b6c6f7252be30dc10dfafae6c664d83790f43bc00b5996cbd1748b4268dd980743cb7ae8dbfabf5315990bc5d241aa9ff7336fc45fa0b9fa1b4ce
-  languageName: node
-  linkType: hard
-
 "make-dir@npm:^4.0.0":
   version: 4.0.0
   resolution: "make-dir@npm:4.0.0"
@@ -11220,7 +11189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-run-path@npm:^4.0.0, npm-run-path@npm:^4.0.1":
+"npm-run-path@npm:^4.0.1":
   version: 4.0.1
   resolution: "npm-run-path@npm:4.0.1"
   dependencies:
@@ -11355,7 +11324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"onetime@npm:^5.1.0, onetime@npm:^5.1.2":
+"onetime@npm:^5.1.2":
   version: 5.1.2
   resolution: "onetime@npm:5.1.2"
   dependencies:
@@ -11398,16 +11367,6 @@ __metadata:
   version: 0.3.0
   resolution: "os-browserify@npm:0.3.0"
   checksum: 16e37ba3c0e6a4c63443c7b55799ce4066d59104143cb637ecb9fce586d5da319cdca786ba1c867abbe3890d2cbf37953f2d51eea85e20dd6c4570d6c54bfebf
-  languageName: node
-  linkType: hard
-
-"os-name@npm:4.0.1":
-  version: 4.0.1
-  resolution: "os-name@npm:4.0.1"
-  dependencies:
-    macos-release: ^2.5.0
-    windows-release: ^4.0.0
-  checksum: 507ae75979ec410b5fccaddddc7e8afb3f9fd096e902230d8ae940590513e64fce6fe25fd1ccc410ec89defc78b5593d71cb1c323e546621c210c4a7086c7399
   languageName: node
   linkType: hard
 
@@ -14505,7 +14464,6 @@ __metadata:
     object-invariant-test-helper: 0.1.1
     oidc-client-ts: 3.5.0
     optional: 0.1.4
-    os-name: 4.0.1
     oxlint: 1.88.0
     pako: 2.2.0
     pl2303: 0.1.1
@@ -15619,15 +15577,6 @@ __metadata:
   version: 2.0.1
   resolution: "wildcard@npm:2.0.1"
   checksum: e0c60a12a219e4b12065d1199802d81c27b841ed6ad6d9d28240980c73ceec6f856771d575af367cbec2982d9ae7838759168b551776577f155044f5a5ba843c
-  languageName: node
-  linkType: hard
-
-"windows-release@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "windows-release@npm:4.0.0"
-  dependencies:
-    execa: ^4.0.2
-  checksum: 77c87d332d9e8ad94a72844c0bee169babd63ab06636521fc6ffacb2f1fb2ec3f38b81bc3fcb53ec76b57c1add33348c16660a38ac6aed381190d9c2b95c39e6
   languageName: node
   linkType: hard
 
