@@ -64,7 +64,7 @@
     "electron-log": "5.4.4",
     "electron-updater": "6.8.9",
     "es6-error": "4.1.1",
-    "express": "4.22.2",
+    "express": "4.22.3",
     "fast-safe-stringify": "2.1.1",
     "ftdi-js": "0.4.1",
     "helmet": "8.3.0",

@@ -7585,9 +7585,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:4.22.2":
-  version: 4.22.2
-  resolution: "express@npm:4.22.2"
+"express@npm:4.22.3":
+  version: 4.22.3
+  resolution: "express@npm:4.22.3"
   dependencies:
     accepts: ~1.3.8
     array-flatten: 1.1.1
@@ -7608,9 +7608,9 @@ __metadata:
     methods: ~1.1.2
     on-finished: ~2.4.1
     parseurl: ~1.3.3
-    path-to-regexp: ~0.1.12
+    path-to-regexp: ~0.1.13
     proxy-addr: ~2.0.7
-    qs: ~6.15.1
+    qs: ~6.16.0
     range-parser: ~1.2.1
     safe-buffer: 5.2.1
     send: ~0.19.0
@@ -7620,7 +7620,7 @@ __metadata:
     type-is: ~1.6.18
     utils-merge: 1.0.1
     vary: ~1.1.2
-  checksum: e93b51284cc2f0b37c41ab3666ccdf71de5adf45fa5701116402fa9c43eb97665712b0bc5fbf6b25b1aef733fb28625b95a43a5d9dedeef89eddb1b04ad2b203
+  checksum: 847cc2c07e21a0c49de44e213628f057b836cba30f766cbf44b18827b8aedf62cce88cca34392e1f46ce2af155c8fae9f3f8473a8b924c79d5d410bfb2cdfc1e
   languageName: node
   linkType: hard
 
@@ -11769,7 +11769,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:~0.1.12":
+"path-to-regexp@npm:~0.1.13":
   version: 0.1.13
   resolution: "path-to-regexp@npm:0.1.13"
   checksum: 0bf61c6068a0d92dbd3c2f4b24a9b8f153be2d8ec13c99bb7a45f31e5f7e153b91811e63b895ac9e0942ae16890ee15526e842f6f1b4920aa01335f94f6ce58e
@@ -12525,16 +12525,6 @@ __metadata:
     es-define-property: ^1.0.1
     side-channel: ^1.1.1
   checksum: 56d617a5e3ea475eaafd1e860a66c0aa362c0d58c23e787ad71a137d67fb52fd9a9fff6aea2d38612443f24825fb23ea4d01bb7222e9d2ac32a5b6007027747c
-  languageName: node
-  linkType: hard
-
-"qs@npm:~6.15.1":
-  version: 6.15.3
-  resolution: "qs@npm:6.15.3"
-  dependencies:
-    es-define-property: ^1.0.1
-    side-channel: ^1.1.1
-  checksum: b59a0f20498f323d1f990f1fad3b808ee328f96c3c45575beeb0d51ec27dc0ed3422d9e9308a7c09f6000cb914b95dfb6eb7cca8636bc4d1befdc2a10cf59d2b
   languageName: node
   linkType: hard
 
@@ -14484,7 +14474,7 @@ __metadata:
     electron-updater: 6.8.9
     enzyme: 3.11.0
     es6-error: 4.1.1
-    express: 4.22.2
+    express: 4.22.3
     fast-safe-stringify: 2.1.1
     file-loader: 6.2.0
     flux-standard-action: 2.1.2
