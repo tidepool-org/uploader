@@ -337,11 +337,10 @@ function createWindow() {
   setRequestFilter();
 
   mainWindow.webContents.on('did-finish-load', async () => {
-    initHelperProcess();
-
     mainWindow.show();
     mainWindow.focus();
     checkUpdates();
+    initHelperProcess();
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -786,7 +785,17 @@ ipcMain.on('native-message', (event, msg) => {
   // Check if process needs to be restarted
   if (!proc || proc.killed || !proc.stdin || proc.stdin.destroyed) {
     console.log('[native-message] Helper process not available, restarting...');
-    initHelperProcess(msg);
+    try {
+      initHelperProcess(msg);
+    } catch (err) {
+      // spawn() throws synchronously for errors like EPERM, so reply
+      // with an error instead of leaving the driver waiting forever
+      console.error('[native-message] Failed to start helper process', err);
+      event.sender.send('native-reply', {
+        msgType: 'error',
+        details: `Helper process could not be started: ${err.code || err.message}`
+      });
+    }
   } else {
     sendMessageToHelper(msg);
   }
