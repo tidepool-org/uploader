@@ -86,7 +86,7 @@ ENV \
     NODE_ENV=production
 # Only install dependancies needed for the production server
 USER node
-RUN yarn add express@4.22.3 helmet@8.3.0 body-parser@2.3.0
+RUN yarn add express@4.22.3 helmet@8.3.0 body-parser@2.4.0
 # Copy only files needed to run the server
 COPY --from=build /app/dist dist
 COPY --from=build \
