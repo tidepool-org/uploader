@@ -9,7 +9,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import { merge } from 'webpack-merge';
 import baseConfig from './webpack.config.base.mjs';
 import cp from 'node:child_process';
@@ -349,14 +349,7 @@ export default merge(baseConfig, {
             },
             extractComments: false
           }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-              map: {
-                inline: false,
-                annotation: true
-              }
-            }
-          })
+          new CssMinimizerPlugin()
         ],
       moduleIds: 'named',
   },
