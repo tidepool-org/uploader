@@ -39,7 +39,7 @@ DriverPackageDisplayName=%DESC%
 Class=Ports
 ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider=%Provider%
-DriverVer=02/27/2023,4.0.0.0
+DriverVer=11/09/2026,4.0.0.1
 CatalogFile=tidepoolvcp.cat
 
 ; ================= Device section =====================
