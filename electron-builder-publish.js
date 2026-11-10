@@ -47,7 +47,16 @@ const config = {
         '**/*',
         '!*.md',
         '!helpers/x64/**',
-        '!helpers/arm64/**'
+        '!helpers/arm64/**',
+        // resources/win is the windows-driver submodule; skip its
+        // Inno Setup installer sources and the helper (added below)
+        '!.git',
+        '!.gitignore',
+        '!LICENSE',
+        '!innosetup.iss',
+        '!tidepool_licence.rtf',
+        '!Tidepool_T_Icon.ico',
+        '!helper/**'
       ]
     },
     'sounds/',
@@ -75,6 +84,13 @@ const config = {
       codeSigningAccountName: 'tidepool-org-signing'
     },
     asarUnpack: '**\\*.node',
+    extraResources: [
+      {
+        from: 'resources/win/helper',
+        to: 'driver/',
+        filter: ['helper.exe']
+      },
+    ],
   },
   mac: {
     category: 'public.app-category.tools',
