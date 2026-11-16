@@ -37,11 +37,6 @@ RequestExecutionLevel admin
 
   StrCpy $DriverDir "$INSTDIR\resources\driver"
 
-  ; Add our certificate to the local store to prevent unnecessary pop-up
-  nsExec::ExecToStack 'certutil -addstore "TrustedPublisher" "$DriverDir\tidepool.cer"'
-  Pop $1
-  WriteINIStr "$TEMP\TidepoolUploader.ini" "CertInstallResult" "Value" "$1"
-
   ${If} ${AtLeastWin10}
     ; Only install USB drivers on Win 10 and later
     StrCpy $Installer_x64 "$DriverDir\TidepoolUSBDriver_x64.exe /q"

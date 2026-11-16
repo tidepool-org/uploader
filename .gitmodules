@@ -4,3 +4,6 @@
 [submodule "lib/drivers/fora"]
 	path = lib/drivers/fora
 	url = git@github.com:tidepool-org/fora-driver.git
+[submodule "resources/win"]
+	path = resources/win
+	url = git@github.com:tidepool-org/windows-driver.git
