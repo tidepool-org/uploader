@@ -52,7 +52,7 @@
     "@react-keycloak/web": "3.4.0",
     "async": "2.6.4",
     "babyparse": "0.4.6",
-    "ble-glucose": "0.10.1",
+    "ble-glucose": "0.10.2-dep-updates.1",
     "body-parser": "2.4.0",
     "bows": "1.7.2",
     "chrome-launcher": "0.15.2",
@@ -101,7 +101,7 @@
     "semver": "7.8.5",
     "source-map-support": "0.5.21",
     "sudo-prompt": "9.2.1",
-    "sundial": "1.7.6",
+    "sundial": "1.7.7-update-deps-nov26.1",
     "tidepool-platform-client": "0.67.0",
     "uuid": "14.0.3",
     "webmtp": "0.3.6"

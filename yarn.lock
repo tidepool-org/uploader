@@ -5115,14 +5115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ble-glucose@npm:0.10.1":
-  version: 0.10.1
-  resolution: "ble-glucose@npm:0.10.1"
+"ble-glucose@npm:0.10.2-dep-updates.1":
+  version: 0.10.2-dep-updates.1
+  resolution: "ble-glucose@npm:0.10.2-dep-updates.1"
   dependencies:
     bows: 1.7.2
-    lodash: 4.18.1
-    sundial: 1.7.6
-  checksum: 81c80733f1382d0a806fed4e56b5d4cc8e47b08ad240684d1bfdb04af9c672a482f10c4297c5c03c09b4f54f584c5688cd59044cade3c97f80af8fc707809479
+    sundial: 1.7.7-update-deps-nov26.1
+  checksum: 261d5aae893e396e404a3241019910302ad3d0baabe6bcb78e7dd50f02daf0d2e3275347d68eeef1ff9b9cb3e88d522e0a341d98948452ddb4fbf4b9eb868b6f
   languageName: node
   linkType: hard
 
@@ -10801,12 +10800,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.6.2":
-  version: 0.6.2
-  resolution: "moment-timezone@npm:0.6.2"
+"moment-timezone@npm:0.6.6":
+  version: 0.6.6
+  resolution: "moment-timezone@npm:0.6.6"
   dependencies:
     moment: ^2.29.4
-  checksum: ee2838659d26c094ca788cb0032dd9c584fc5f30df3d491ab385f32d01f16f7cf26339fa9d6a843f1c23420c72d283071911a8c86138740b68b381d9d78527d6
+  checksum: a01983e23465a13d42041ee7c042d632137161d36dd5b3f34dc11b084136fcf0c2a8340c963cebfcddaaa31728e09f1648e558488c8a426afbc2ee2f1b37fecd
   languageName: node
   linkType: hard
 
@@ -14151,12 +14150,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sundial@npm:1.7.6":
-  version: 1.7.6
-  resolution: "sundial@npm:1.7.6"
+"sundial@npm:1.7.7-update-deps-nov26.1":
+  version: 1.7.7-update-deps-nov26.1
+  resolution: "sundial@npm:1.7.7-update-deps-nov26.1"
   dependencies:
-    moment-timezone: 0.6.2
-  checksum: 7cacba1f6d44fd32de77074d53cba96262bf673093d335b6de3d23d715b10ae319f5b6fed218d8b0631b0e1c5be791e4d3e8f5e13679b2443a9f7c02392678bd
+    moment-timezone: 0.6.6
+  checksum: 0cab322d303a7e0b010bf98e3c75b0ab4c8504d99bfb390ffc085c8c322f1f1ccfa5b90c46529a286db8b56aa8e767fb6f1344d149ee1eb42354ab04bf01dd3f
   languageName: node
   linkType: hard
 
@@ -14419,7 +14418,7 @@ __metadata:
     babel-plugin-transform-define: 2.1.4
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babyparse: 0.4.6
-    ble-glucose: 0.10.1
+    ble-glucose: 0.10.2-dep-updates.1
     body-parser: 2.4.0
     bows: 1.7.2
     chai: 4.5.0
@@ -14500,7 +14499,7 @@ __metadata:
     source-map-support: 0.5.21
     style-loader: 4.0.0
     sudo-prompt: 9.2.1
-    sundial: 1.7.6
+    sundial: 1.7.7-update-deps-nov26.1
     terser-webpack-plugin: 5.6.1
     tidepool-platform-client: 0.67.0
     url-loader: 4.1.1
