@@ -29,7 +29,7 @@ jobs:
     environment:
       BASH_ENV: ".circleci/bash_env.sh"
     macos:
-      xcode: '26.1.0'
+      xcode: '26.6'
     steps:
     - checkout
     - run: git submodule sync
