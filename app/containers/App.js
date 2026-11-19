@@ -137,9 +137,15 @@ export class App extends Component {
   UNSAFE_componentWillMount(){
     const selectedEnv = getSavedEnv();
 
-    this.props.async.fetchInfo(() => {
+    this.props.async.fetchInfo((err, info) => {
+      if (err) {
+        this.log('fetchInfo error:', err);
+      }
       this.props.async.doAppInit(
-        _.assign({ environment: this.state.server }, config, selectedEnv),
+        _.assign({
+          environment: this.state.server,
+          uploaderDestination: info.versions?.uploaderDestination,
+        }, config, selectedEnv),
         {
           api: api,
           device,
