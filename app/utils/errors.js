@@ -38,9 +38,15 @@ export function addInfoToError(err, props) {
     if (!_.isEmpty(v) && v !== err.message &&
         k !== 'utc' &&
         k !== 'code' &&
-        k !== 'version' &&
-        k !== 'data'
+        k !== 'version'
       ) {
+      if (k === 'data') {
+        // the device data is needed for the debug download links on failed
+        // uploads, but has to stay non-enumerable so it is never serialized
+        // into the metrics query string or error reports
+        Object.defineProperty(err, k, { value: v, writable: true, configurable: true });
+        return;
+      }
       err[k] = v;
       if (
         k !== 'uuid' &&
