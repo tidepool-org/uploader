@@ -21,7 +21,7 @@ var _ = require('lodash');
 var expect = require('salinity').expect;
 var sundial = require('sundial');
 
-var builder = require('../../../lib/objectBuilder')();
+var builder = require('@tidepool/uploader-common/objectBuilder')();
 var userSettingsChanges = require('../../../lib/drivers/dexcom/userSettingsChanges');
 
 describe('userSettingsChanges.js', () => {

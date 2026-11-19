@@ -21,8 +21,8 @@ var _ = require('lodash');
 var expect = require('salinity').expect;
 
 var proc = require('../../../lib/drivers/medtronic/processData.js');
-var builder = require('../../../lib/objectBuilder')();
-var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
+var builder = require('@tidepool/uploader-common/objectBuilder')();
+var TZOUtil = require('@tidepool/uploader-common/TimezoneOffsetUtil');
 
 describe('processData.js', () => {
   var tzoUtil = new TZOUtil('Europe/London', '2019-02-22T14:00:00.000Z', []);

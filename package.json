@@ -1,6 +1,6 @@
 {
   "name": "tidepool-uploader",
-  "version": "2.70.0-remove-jellyfish.1",
+  "version": "2.70.0-tandem-c2c.1",
   "engines": {
     "node": "24.22.0"
   },
@@ -50,6 +50,7 @@
     "@mui/icons-material": "9.5.0",
     "@mui/material": "9.5.0",
     "@react-keycloak/web": "3.4.0",
+    "@tidepool/uploader-common": "0.1.0",
     "async": "2.6.4",
     "babyparse": "0.4.6",
     "ble-glucose": "0.10.1",
@@ -184,7 +185,8 @@
     },
     "verbose": true,
     "testMatch": [
-      "**/test/(app|lib)/**/*.js"
+      "**/test/(app|lib)/**/*.js",
+      "**/lib/drivers/*/test/**/*.js"
     ],
     "transformIgnorePatterns": [
       "../node_modules/(?!(webmtp|uuid)/)",

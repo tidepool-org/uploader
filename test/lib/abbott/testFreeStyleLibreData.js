@@ -19,8 +19,8 @@
 
 import {expect} from 'salinity';
 
-import builder from '../../../lib/objectBuilder';
-import annotate from '../../../lib/eventAnnotations';
+import builder from '@tidepool/uploader-common/objectBuilder';
+import annotate from '@tidepool/uploader-common/eventAnnotations';
 
 import FreeStyleLibreData, {
   FORMAT_LENGTH,

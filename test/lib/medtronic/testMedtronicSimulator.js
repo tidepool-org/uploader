@@ -21,8 +21,8 @@ var _ = require('lodash');
 var expect = require('salinity').expect;
 
 var pwdSimulator = require('../../../lib/drivers/medtronic/medtronicSimulator.js');
-var builder = require('../../../lib/objectBuilder')();
-var TZOUtil = require('../../../lib/TimezoneOffsetUtil');
+var builder = require('@tidepool/uploader-common/objectBuilder')();
+var TZOUtil = require('@tidepool/uploader-common/TimezoneOffsetUtil');
 
 describe('medtronicSimulator.js', () => {
   var simulator = null;
