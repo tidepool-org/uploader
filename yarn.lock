@@ -1710,7 +1710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.0, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.0, @babel/runtime@npm:^7.9.2":
   version: 7.29.10
   resolution: "@babel/runtime@npm:7.29.10"
   checksum: b0ea4fdc84105e46d4a22fe6af7f835397294b0291795f9c0c3e1ad917a5bfdbd38914ea717007e12904ec4ccb8b5a4b05a1acd45ccae3e424cdc0ef2df4912a
@@ -8668,12 +8668,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:20.6.1":
-  version: 20.6.1
-  resolution: "i18next@npm:20.6.1"
-  dependencies:
-    "@babel/runtime": ^7.12.0
-  checksum: 313cd4b17f9092eaf8ca92a02bb74d099f4a8b26de6e38018f438ce6f706220e5f72d865e1f50d815e13504ec38bc77e0f6341f670ca5162689f8d11a859e564
+"i18next@npm:26.3.4":
+  version: 26.3.4
+  resolution: "i18next@npm:26.3.4"
+  peerDependencies:
+    typescript: ^5 || ^6
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 08fb3cd474fe8725c5a7c8d0a31bbaaf8c9d906f0ec1306cc1e131d517334629f2e2de6e548b8d537c359f58537a9e9b835cf86a32897819bff3a2c6378310ca
   languageName: node
   linkType: hard
 
@@ -14453,7 +14456,7 @@ __metadata:
     history: 4.10.1
     html-webpack-plugin: 5.6.8
     i18n-iso-countries: 7.14.0
-    i18next: 20.6.1
+    i18next: 26.3.4
     i18next-fs-backend: 2.6.9
     iconv-lite: 0.7.3
     idb-keyval: 6.3.0
